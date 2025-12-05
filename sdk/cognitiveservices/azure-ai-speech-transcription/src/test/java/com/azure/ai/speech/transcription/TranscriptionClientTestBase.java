@@ -4,7 +4,6 @@
 package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
@@ -150,13 +149,22 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             AudioFileDetails audioFileDetails
                 = new AudioFileDetails(BinaryData.fromBytes(audioData)).setFilename(new File(audioFilePath).getName());
 
-            TranscriptionContent requestContent
-                = new TranscriptionContent().setAudio(audioFileDetails).setOptions(options);
+            // Create new options with audio file details if options is currently using URL or null
+            if (options.getAudioUrl() == null) {
+                // Options was created with null, need to create a new one with audio file details
+                options = new TranscriptionOptions(audioFileDetails).setLocales(options.getLocales())
+                    .setLocaleModelMapping(options.getLocaleModelMapping())
+                    .setProfanityFilterMode(options.getProfanityFilterMode())
+                    .setDiarizationOptions(options.getDiarizationOptions())
+                    .setActiveChannels(options.getActiveChannels())
+                    .setEnhancedModeOptions(options.getEnhancedModeOptions())
+                    .setPhraseListOptions(options.getPhraseListOptions());
+            }
 
             if (sync) {
                 TranscriptionResult result = null;
                 if (!transcribeWithResponse) {
-                    result = client.transcribe(requestContent);
+                    result = client.transcribe(options);
                 } else {
                     // For transcribeWithResponse, we need to manually prepare the multipart request body
                     if (requestOptions == null) {
@@ -164,11 +172,9 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                     }
                     BinaryData multipartBody
                         = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
-                            .serializeJsonField("definition", requestContent.getOptions())
-                            .serializeFileField("audio",
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
+                            .serializeJsonField("definition", options)
+                            .serializeFileField("audio", audioFileDetails.getContent(),
+                                audioFileDetails.getContentType(), audioFileDetails.getFilename())
                             .end()
                             .getRequestBody();
 
@@ -180,7 +186,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             } else {
                 TranscriptionResult result = null;
                 if (!transcribeWithResponse) {
-                    result = asyncClient.transcribe(requestContent).block();
+                    result = asyncClient.transcribe(options).block();
                 } else {
                     // For transcribeWithResponse, we need to manually prepare the multipart request body
                     if (requestOptions == null) {
@@ -188,11 +194,9 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                     }
                     BinaryData multipartBody
                         = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
-                            .serializeJsonField("definition", requestContent.getOptions())
-                            .serializeFileField("audio",
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
-                                requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
+                            .serializeJsonField("definition", options)
+                            .serializeFileField("audio", audioFileDetails.getContent(),
+                                audioFileDetails.getContentType(), audioFileDetails.getFilename())
                             .end()
                             .getRequestBody();
 

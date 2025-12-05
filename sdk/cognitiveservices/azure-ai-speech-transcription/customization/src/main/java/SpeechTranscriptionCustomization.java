@@ -59,9 +59,9 @@ public class SpeechTranscriptionCustomization extends Customization {
             logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
             customizeDiarizationOptionsToJson(models);
 
-            // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private
-            logger.info(
-                "Customizing TranscriptionOptions to add AudioFileDetails support and String audioUrl constructor");
+            // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private, remove no-arg constructor
+            logger
+                .info("Customizing TranscriptionOptions to add AudioFileDetails support and remove no-arg constructor");
             customizeTranscriptionOptions(models);
         } catch (IllegalArgumentException e) {
             logger.warn("Models package not found or empty - skipping model customizations: " + e.getMessage());
@@ -117,7 +117,9 @@ public class SpeechTranscriptionCustomization extends Customization {
      * 2. Remove default no-arg constructor
      * 3. Add constructor with String audioUrl parameter
      * 4. Add constructor with AudioFileDetails parameter
-     * 5. Make setAudioUrl() private instead of public
+     * 5. Add getFileDetails() method to access AudioFileDetails
+     * 6. Make setAudioUrl() private instead of public
+     * 7. Fix fromJson to use one of the parameterized constructors
      *
      * @param packageCustomization the package customization
      */
@@ -136,6 +138,36 @@ public class SpeechTranscriptionCustomization extends Customization {
                     .findFirst()
                     .ifPresent(com.github.javaparser.ast.Node::remove);
 
+                // Fix fromJson method to use parameterized constructor instead of no-arg
+                clazz.getMethodsByName("fromJson").forEach(method -> {
+                    // Replace the entire method body to use the String constructor
+                    method.setBody(parseBlock("{ return jsonReader.readObject(reader -> { "
+                        + "TranscriptionOptions deserializedTranscriptionOptions = new TranscriptionOptions((String) null); "
+                        + "while (reader.nextToken() != JsonToken.END_OBJECT) { "
+                        + "String fieldName = reader.getFieldName(); " + "reader.nextToken(); "
+                        + "if (\"audioUrl\".equals(fieldName)) { "
+                        + "deserializedTranscriptionOptions.audioUrl = reader.getString(); "
+                        + "} else if (\"locales\".equals(fieldName)) { "
+                        + "List<String> locales = reader.readArray(reader1 -> reader1.getString()); "
+                        + "deserializedTranscriptionOptions.locales = locales; "
+                        + "} else if (\"localeModelMapping\".equals(fieldName)) { "
+                        + "Map<String, String> localeModelMapping = reader.readMap(reader1 -> reader1.getString()); "
+                        + "deserializedTranscriptionOptions.localeModelMapping = localeModelMapping; "
+                        + "} else if (\"profanityFilterMode\".equals(fieldName)) { "
+                        + "deserializedTranscriptionOptions.profanityFilterMode = ProfanityFilterMode.fromString(reader.getString()); "
+                        + "} else if (\"diarization\".equals(fieldName)) { "
+                        + "deserializedTranscriptionOptions.diarizationOptions = TranscriptionDiarizationOptions.fromJson(reader); "
+                        + "} else if (\"channels\".equals(fieldName)) { "
+                        + "List<Integer> activeChannels = reader.readArray(reader1 -> reader1.getInt()); "
+                        + "deserializedTranscriptionOptions.activeChannels = activeChannels; "
+                        + "} else if (\"enhancedMode\".equals(fieldName)) { "
+                        + "deserializedTranscriptionOptions.enhancedModeOptions = EnhancedModeOptions.fromJson(reader); "
+                        + "} else if (\"phraseList\".equals(fieldName)) { "
+                        + "deserializedTranscriptionOptions.phraseListOptions = PhraseListOptions.fromJson(reader); "
+                        + "} else { " + "reader.skipChildren(); " + "} " + "} "
+                        + "return deserializedTranscriptionOptions; " + "}); }"));
+                });
+
                 // Add constructor with String audioUrl parameter
                 ConstructorDeclaration audioUrlConstructor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
                 audioUrlConstructor.addParameter("String", "audioUrl");
@@ -151,6 +183,15 @@ public class SpeechTranscriptionCustomization extends Customization {
                 fileDetailsConstructor.setJavadocComment(
                     new Javadoc(parseText("Creates an instance of TranscriptionOptions class with audio file details."))
                         .addBlockTag("param", "fileDetails the audio file details"));
+
+                // Add getFileDetails() method
+                com.github.javaparser.ast.body.MethodDeclaration getFileDetailsMethod
+                    = clazz.addMethod("getFileDetails", Modifier.Keyword.PUBLIC);
+                getFileDetailsMethod.setType("AudioFileDetails");
+                getFileDetailsMethod.setBody(parseBlock("{ return this.audioFileDetails; }"));
+                getFileDetailsMethod.setJavadocComment(new Javadoc(
+                    parseText("Get the audioFileDetails property: The audio file details for transcription."))
+                        .addBlockTag("return", "the audioFileDetails value."));
 
                 // Make setAudioUrl() private
                 clazz.getMethodsByName("setAudioUrl").forEach(method -> {
@@ -185,38 +226,39 @@ public class SpeechTranscriptionCustomization extends Customization {
                 });
 
                 // Add public transcribeWithResponse method that returns Response<TranscriptionResult>
-                com.github.javaparser.ast.body.MethodDeclaration transcribeWithResponseMethod = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
-                    .addParameter("TranscriptionOptions", "options")
-                    .setType("Response<TranscriptionResult>");
-                com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
+                com.github.javaparser.ast.body.MethodDeclaration transcribeWithResponseMethod
+                    = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
+                        .addParameter("TranscriptionOptions", "options")
+                        .setType("Response<TranscriptionResult>");
+                com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation
+                    = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 serviceMethodAnnotation.setName("ServiceMethod");
                 serviceMethodAnnotation.addPair("returns", "ReturnType.SINGLE");
                 transcribeWithResponseMethod.addAnnotation(serviceMethodAnnotation);
-                transcribeWithResponseMethod.setBody(parseBlock(
-                        "{ TranscriptionContent requestContent = new TranscriptionContent(); "
-                        + "requestContent.setOptions(options); "
+                transcribeWithResponseMethod
+                    .setBody(parseBlock("{ TranscriptionContent requestContent = new TranscriptionContent(options); "
+                        + "AudioFileDetails audio = requestContent.getAudio() != null ? requestContent.getAudio() : options.getFileDetails(); "
                         + "RequestOptions requestOptions = new RequestOptions(); "
                         + "Response<BinaryData> response = transcribeWithResponse("
-                        + "new MultipartFormDataHelper(requestOptions).serializeJsonField(\"definition\", requestContent.getOptions())"
-                        + ".serializeFileField(\"audio\", requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(), "
-                        + "requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(), "
-                        + "requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())"
-                        + ".end().getRequestBody(), requestOptions); "
-                        + "return new Response<TranscriptionResult>() { "
-                        + "public int getStatusCode() { return response.getStatusCode(); } "
-                        + "public com.azure.core.http.HttpHeaders getHeaders() { return response.getHeaders(); } "
-                        + "public com.azure.core.http.HttpRequest getRequest() { return response.getRequest(); } "
-                        + "public TranscriptionResult getValue() { return response.getValue().toObject(TranscriptionResult.class); } "
-                        + "}; }"));
-                transcribeWithResponseMethod.setJavadocComment(new Javadoc(parseText(
-                        "Transcribes the provided audio stream with the specified options."))
-                        .addBlockTag("param", "options the transcription options including audio file details or audio URL")
+                        + "new MultipartFormDataHelper(requestOptions).serializeJsonField(\"options\", requestContent.getOptions())"
+                        + ".serializeFileField(\"audio\", audio == null ? null : audio.getContent(), "
+                        + "audio == null ? null : audio.getContentType(), "
+                        + "audio == null ? null : audio.getFilename())" + ".end().getRequestBody(), requestOptions); "
+                        + "return new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class)); }"));
+                transcribeWithResponseMethod.setJavadocComment(
+                    new Javadoc(parseText("Transcribes the provided audio stream with the specified options."))
+                        .addBlockTag("param",
+                            "options the transcription options including audio file details or audio URL")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server.")
-                        .addBlockTag("throws", "ClientAuthenticationException thrown if the request is rejected by server on status code 401.")
-                        .addBlockTag("throws", "ResourceNotFoundException thrown if the request is rejected by server on status code 404.")
-                        .addBlockTag("throws", "ResourceModifiedException thrown if the request is rejected by server on status code 409.")
-                        .addBlockTag("throws", "RuntimeException all other wrapped checked exceptions if the request fails to be sent.")
+                        .addBlockTag("throws",
+                            "ClientAuthenticationException thrown if the request is rejected by server on status code 401.")
+                        .addBlockTag("throws",
+                            "ResourceNotFoundException thrown if the request is rejected by server on status code 404.")
+                        .addBlockTag("throws",
+                            "ResourceModifiedException thrown if the request is rejected by server on status code 409.")
+                        .addBlockTag("throws",
+                            "RuntimeException all other wrapped checked exceptions if the request fails to be sent.")
                         .addBlockTag("return", "the response containing the result of the transcribe operation."));
             });
         });
@@ -246,39 +288,40 @@ public class SpeechTranscriptionCustomization extends Customization {
                 });
 
                 // Add public transcribeWithResponse method that returns Mono<Response<TranscriptionResult>>
-                com.github.javaparser.ast.body.MethodDeclaration transcribeWithResponseMethod = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
-                    .addParameter("TranscriptionOptions", "options")
-                    .setType("Mono<Response<TranscriptionResult>>");
-                com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
+                com.github.javaparser.ast.body.MethodDeclaration transcribeWithResponseMethod
+                    = clazz.addMethod("transcribeWithResponse", Modifier.Keyword.PUBLIC)
+                        .addParameter("TranscriptionOptions", "options")
+                        .setType("Mono<Response<TranscriptionResult>>");
+                com.github.javaparser.ast.expr.NormalAnnotationExpr serviceMethodAnnotation
+                    = new com.github.javaparser.ast.expr.NormalAnnotationExpr();
                 serviceMethodAnnotation.setName("ServiceMethod");
                 serviceMethodAnnotation.addPair("returns", "ReturnType.SINGLE");
                 transcribeWithResponseMethod.addAnnotation(serviceMethodAnnotation);
-                transcribeWithResponseMethod.setBody(parseBlock(
-                        "{ TranscriptionContent requestContent = new TranscriptionContent(); "
-                        + "requestContent.setOptions(options); "
-                        + "RequestOptions requestOptions = new RequestOptions(); "
-                        + "return transcribeWithResponse("
-                        + "new MultipartFormDataHelper(requestOptions).serializeJsonField(\"definition\", requestContent.getOptions())"
-                        + ".serializeFileField(\"audio\", requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(), "
-                        + "requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(), "
-                        + "requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())"
-                        + ".end().getRequestBody(), requestOptions)"
-                        + ".map(response -> new Response<TranscriptionResult>() { "
-                        + "public int getStatusCode() { return response.getStatusCode(); } "
-                        + "public com.azure.core.http.HttpHeaders getHeaders() { return response.getHeaders(); } "
-                        + "public com.azure.core.http.HttpRequest getRequest() { return response.getRequest(); } "
-                        + "public TranscriptionResult getValue() { return response.getValue().toObject(TranscriptionResult.class); } "
-                        + "}); }"));
-                transcribeWithResponseMethod.setJavadocComment(new Javadoc(parseText(
-                        "Transcribes the provided audio stream with the specified options."))
-                        .addBlockTag("param", "options the transcription options including audio file details or audio URL")
+                transcribeWithResponseMethod
+                    .setBody(parseBlock("{ TranscriptionContent requestContent = new TranscriptionContent(options); "
+                        + "AudioFileDetails audio = requestContent.getAudio() != null ? requestContent.getAudio() : options.getFileDetails(); "
+                        + "RequestOptions requestOptions = new RequestOptions(); " + "return transcribeWithResponse("
+                        + "new MultipartFormDataHelper(requestOptions).serializeJsonField(\"options\", requestContent.getOptions())"
+                        + ".serializeFileField(\"audio\", audio == null ? null : audio.getContent(), "
+                        + "audio == null ? null : audio.getContentType(), "
+                        + "audio == null ? null : audio.getFilename())" + ".end().getRequestBody(), requestOptions)"
+                        + ".map(response -> new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class))); }"));
+                transcribeWithResponseMethod.setJavadocComment(
+                    new Javadoc(parseText("Transcribes the provided audio stream with the specified options."))
+                        .addBlockTag("param",
+                            "options the transcription options including audio file details or audio URL")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server.")
-                        .addBlockTag("throws", "ClientAuthenticationException thrown if the request is rejected by server on status code 401.")
-                        .addBlockTag("throws", "ResourceNotFoundException thrown if the request is rejected by server on status code 404.")
-                        .addBlockTag("throws", "ResourceModifiedException thrown if the request is rejected by server on status code 409.")
-                        .addBlockTag("throws", "RuntimeException all other wrapped checked exceptions if the request fails to be sent.")
-                        .addBlockTag("return", "the response containing the result of the transcribe operation on successful completion of Mono."));
+                        .addBlockTag("throws",
+                            "ClientAuthenticationException thrown if the request is rejected by server on status code 401.")
+                        .addBlockTag("throws",
+                            "ResourceNotFoundException thrown if the request is rejected by server on status code 404.")
+                        .addBlockTag("throws",
+                            "ResourceModifiedException thrown if the request is rejected by server on status code 409.")
+                        .addBlockTag("throws",
+                            "RuntimeException all other wrapped checked exceptions if the request fails to be sent.")
+                        .addBlockTag("return",
+                            "the response containing the result of the transcribe operation on successful completion of Mono."));
             });
         });
     }

@@ -18,6 +18,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -45,7 +46,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -111,7 +112,7 @@ public final class TranscriptionClient {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", body.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", body.getOptions())
                 .serializeFileField("audio", body.getAudio() == null ? null : body.getAudio().getContent(),
                     body.getAudio() == null ? null : body.getAudio().getContentType(),
                     body.getAudio() == null ? null : body.getAudio().getFilename())
@@ -120,6 +121,7 @@ public final class TranscriptionClient {
             requestOptions).getValue().toObject(TranscriptionResult.class);
     }
 
+    // Customized method added via post-generation customization
     /**
      * Transcribes the provided audio stream with the specified options.
      *
@@ -132,10 +134,13 @@ public final class TranscriptionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the transcribe operation.
      */
+    // Customized method added via post-generation customization
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TranscriptionResult transcribe(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent();
-        requestContent.setOptions(options);
+        TranscriptionContent requestContent = new TranscriptionContent(options);
+        if (options.getFileDetails() != null) {
+            requestContent.setAudio(options.getFileDetails());
+        }
         return transcribe(requestContent);
     }
 
@@ -151,12 +156,15 @@ public final class TranscriptionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation.
      */
+    // Customized method added via post-generation customization
     public Response<TranscriptionResult> transcribeWithResponse(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent();
-        requestContent.setOptions(options);
+        TranscriptionContent requestContent = new TranscriptionContent(options);
+        if (options.getFileDetails() != null) {
+            requestContent.setAudio(options.getFileDetails());
+        }
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", requestContent.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", requestContent.getOptions())
                 .serializeFileField("audio",
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
@@ -164,23 +172,6 @@ public final class TranscriptionClient {
                 .end()
                 .getRequestBody(),
             requestOptions);
-        return new Response<TranscriptionResult>() {
-
-            public int getStatusCode() {
-                return response.getStatusCode();
-            }
-
-            public com.azure.core.http.HttpHeaders getHeaders() {
-                return response.getHeaders();
-            }
-
-            public com.azure.core.http.HttpRequest getRequest() {
-                return response.getRequest();
-            }
-
-            public TranscriptionResult getValue() {
-                return response.getValue().toObject(TranscriptionResult.class);
-            }
-        };
+        return new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class));
     }
 }

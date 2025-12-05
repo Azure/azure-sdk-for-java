@@ -32,7 +32,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions();
+        TranscriptionOptions options = new TranscriptionOptions((String) null);
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -44,7 +44,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US"));
+        TranscriptionOptions options = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US"));
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -56,7 +56,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US", "es-ES", "fr-FR"));
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US", "es-ES", "fr-FR"));
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -70,7 +71,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
         TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
-        TranscriptionOptions options = new TranscriptionOptions().setDiarizationOptions(diarizationOptions);
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setDiarizationOptions(diarizationOptions);
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -82,7 +84,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.MASKED);
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.MASKED);
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -94,7 +97,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setActiveChannels(Arrays.asList(0));
+        TranscriptionOptions options = new TranscriptionOptions((String) null).setActiveChannels(Arrays.asList(0));
 
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
@@ -108,7 +111,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
         TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US"))
+        TranscriptionOptions options = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US"))
             .setDiarizationOptions(diarizationOptions)
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
             .setActiveChannels(Arrays.asList(0));
@@ -123,7 +126,7 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions();
+        TranscriptionOptions options = new TranscriptionOptions((String) null);
         RequestOptions requestOptions
             = new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value");
 
@@ -139,10 +142,11 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
         TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
 
-        TranscriptionOptions options = new TranscriptionOptions().setLocales(Arrays.asList("en-US", "es-ES"))
-            .setDiarizationOptions(diarizationOptions)
-            .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
-            .setActiveChannels(Arrays.asList(0, 1));
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US", "es-ES"))
+                .setDiarizationOptions(diarizationOptions)
+                .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
+                .setActiveChannels(Arrays.asList(0, 1));
 
         RequestOptions requestOptions
             = new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value")
@@ -178,7 +182,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.MASKED);
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.MASKED);
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
 
@@ -189,7 +194,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.REMOVED);
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.REMOVED);
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
 
@@ -200,7 +206,8 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
         String methodName = new Object() {
         }.getClass().getEnclosingMethod().getName();
 
-        TranscriptionOptions options = new TranscriptionOptions().setProfanityFilterMode(ProfanityFilterMode.TAGS);
+        TranscriptionOptions options
+            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.TAGS);
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
 

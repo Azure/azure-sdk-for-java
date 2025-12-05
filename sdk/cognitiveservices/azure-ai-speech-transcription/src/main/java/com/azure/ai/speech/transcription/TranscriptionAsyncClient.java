@@ -18,6 +18,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -47,7 +48,7 @@ public final class TranscriptionAsyncClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -114,7 +115,7 @@ public final class TranscriptionAsyncClient {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", body.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", body.getOptions())
                 .serializeFileField("audio", body.getAudio() == null ? null : body.getAudio().getContent(),
                     body.getAudio() == null ? null : body.getAudio().getContentType(),
                     body.getAudio() == null ? null : body.getAudio().getFilename())
@@ -136,10 +137,13 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the transcribe operation on successful completion of Mono.
      */
+    // Customized method added via post-generation customization
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranscriptionResult> transcribe(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent();
-        requestContent.setOptions(options);
+        TranscriptionContent requestContent = new TranscriptionContent(options);
+        if (options.getFileDetails() != null) {
+            requestContent.setAudio(options.getFileDetails());
+        }
         return transcribe(requestContent);
     }
 
@@ -155,35 +159,22 @@ public final class TranscriptionAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response containing the result of the transcribe operation on successful completion of Mono.
      */
+    // Customized method added via post-generation customization
     public Mono<Response<TranscriptionResult>> transcribeWithResponse(TranscriptionOptions options) {
-        TranscriptionContent requestContent = new TranscriptionContent();
-        requestContent.setOptions(options);
+        TranscriptionContent requestContent = new TranscriptionContent(options);
+        if (options.getFileDetails() != null) {
+            requestContent.setAudio(options.getFileDetails());
+        }
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", requestContent.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", requestContent.getOptions())
                 .serializeFileField("audio",
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getFilename())
                 .end()
                 .getRequestBody(),
-            requestOptions).map(response -> new Response<TranscriptionResult>() {
-
-                public int getStatusCode() {
-                    return response.getStatusCode();
-                }
-
-                public com.azure.core.http.HttpHeaders getHeaders() {
-                    return response.getHeaders();
-                }
-
-                public com.azure.core.http.HttpRequest getRequest() {
-                    return response.getRequest();
-                }
-
-                public TranscriptionResult getValue() {
-                    return response.getValue().toObject(TranscriptionResult.class);
-                }
-            });
+            requestOptions).map(
+                response -> new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class)));
     }
 }

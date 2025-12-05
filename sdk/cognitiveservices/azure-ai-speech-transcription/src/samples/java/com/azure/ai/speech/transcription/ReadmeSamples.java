@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
@@ -43,15 +42,11 @@ public final class ReadmeSamples {
             // Create transcription options
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-            // Create transcribe request content
-            TranscriptionContent requestContent = new TranscriptionContent()
-                .setOptions(options);
-
             // Transcribe audio
-            TranscriptionResult result = client.transcribe(requestContent);
+            TranscriptionResult result = client.transcribe(options);
 
             // Process results
-            System.out.println("Duration: " + result.getDuration() + "ms");
+            System.out.println("Duration: " + result.getDuration() + " ms");
             result.getCombinedPhrases().forEach(phrase -> {
                 System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
             });
@@ -102,12 +97,9 @@ public final class ReadmeSamples {
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
+        TranscriptionResult result = client.transcribe(options);
 
-        TranscriptionResult result = client.transcribe(requestContent);
-
-        System.out.println("Duration: " + result.getDuration() + "ms");
+        System.out.println("Duration: " + result.getDuration() + " ms");
         result.getCombinedPhrases().forEach(phrase -> {
             System.out.println("Transcription: " + phrase.getText());
         });
@@ -131,12 +123,9 @@ public final class ReadmeSamples {
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        asyncClient.transcribe(requestContent)
+        asyncClient.transcribe(options)
             .subscribe(result -> {
-                System.out.println("Duration: " + result.getDuration() + "ms");
+                System.out.println("Duration: " + result.getDuration() + " ms");
                 result.getCombinedPhrases().forEach(phrase -> {
                     System.out.println("Transcription: " + phrase.getText());
                 });
@@ -166,16 +155,13 @@ public final class ReadmeSamples {
             .setDiarizationOptions(new TranscriptionDiarizationOptions()   // Enable speaker diarization
                 .setMaxSpeakers(5));
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Access detailed results
         result.getPhrases().forEach(phrase -> {
             System.out.println("Speaker " + phrase.getSpeaker() + ": " + phrase.getText());
             System.out.println("Confidence: " + phrase.getConfidence());
-            System.out.println("Offset: " + phrase.getOffset() + "ms");
+            System.out.println("Offset: " + phrase.getOffset() + " ms");
         });
         // END: com.azure.ai.speech.transcription.transcriptionoptions.advanced
     }
@@ -214,14 +200,13 @@ public final class ReadmeSamples {
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(new TranscriptionOptions(audioFileDetails));
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionresult.detailed
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Get overall duration
-        System.out.println("Total duration: " + result.getDuration() + "ms");
+        System.out.println("Total duration: " + result.getDuration() + " ms");
 
         // Process each phrase with detailed information
         result.getPhrases().forEach(phrase -> {
@@ -230,14 +215,14 @@ public final class ReadmeSamples {
             System.out.println("  Speaker: " + phrase.getSpeaker());
             System.out.println("  Locale: " + phrase.getLocale());
             System.out.println("  Confidence: " + phrase.getConfidence());
-            System.out.println("  Timing: " + phrase.getOffset() + "ms - "
-                + (phrase.getOffset() + phrase.getDuration().toMillis()) + "ms");
+            System.out.println("  Timing: " + phrase.getOffset() + " ms - "
+                + (phrase.getOffset() + phrase.getDuration().toMillis()) + " ms");
 
             // Process individual words with timestamps
             if (phrase.getWords() != null) {
                 phrase.getWords().forEach(word -> {
                     System.out.println("    Word: " + word.getText() + " @ "
-                        + word.getOffset() + "ms");
+                        + word.getOffset() + " ms");
                 });
             }
         });
@@ -266,10 +251,7 @@ public final class ReadmeSamples {
             .setLocales(java.util.Arrays.asList("en-US"))
             .setEnhancedModeOptions(enhancedMode);
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
         // END: readme-sample-enhancedModeBasic
     }
 
@@ -300,10 +282,7 @@ public final class ReadmeSamples {
             .setLocales(java.util.Arrays.asList("en-US"))
             .setEnhancedModeOptions(enhancedMode);
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
         // END: readme-sample-enhancedModeWithPrompts
     }
 
@@ -330,10 +309,7 @@ public final class ReadmeSamples {
             .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
             .setEnhancedModeOptions(enhancedMode);
 
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
         // END: readme-sample-enhancedModeWithTranslation
     }
 
@@ -350,12 +326,8 @@ public final class ReadmeSamples {
         // Create transcription options with audio URL
         TranscriptionOptions options = new TranscriptionOptions("https://example.com/audio.wav");
 
-        // Create transcribe request content
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
         // Transcribe audio
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Process results
         result.getCombinedPhrases().forEach(phrase -> {
@@ -385,12 +357,8 @@ public final class ReadmeSamples {
         // Create transcription options with AudioFileDetails
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-        // Create transcribe request content
-        TranscriptionContent requestContent = new TranscriptionContent()
-            .setOptions(options);
-
         // Transcribe audio
-        TranscriptionResult result = client.transcribe(requestContent);
+        TranscriptionResult result = client.transcribe(options);
 
         // Process results
         result.getCombinedPhrases().forEach(phrase -> {

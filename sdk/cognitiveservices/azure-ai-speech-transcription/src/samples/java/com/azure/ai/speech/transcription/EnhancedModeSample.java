@@ -276,7 +276,7 @@ public class EnhancedModeSample {
             if (result.getPhrases() != null && !result.getPhrases().isEmpty()) {
                 System.out.println("\nTranscription phrases:");
                 result.getPhrases().forEach(phrase ->
-                    System.out.println("  [" + phrase.getOffset() + "ms] " + phrase.getText())
+                    System.out.println("  [" + phrase.getOffset() + " ms] " + phrase.getText())
                 );
             }
             System.out.println();

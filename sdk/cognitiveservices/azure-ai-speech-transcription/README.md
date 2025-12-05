@@ -141,15 +141,11 @@ try {
     // Create transcription options
     TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-    // Create transcribe request content
-    TranscriptionContent requestContent = new TranscriptionContent()
-        .setOptions(options);
-
     // Transcribe audio
-    TranscriptionResult result = client.transcribe(requestContent);
+    TranscriptionResult result = client.transcribe(options);
 
     // Process results
-    System.out.println("Duration: " + result.getDuration() + "ms");
+    System.out.println("Duration: " + result.getDuration() + " ms");
     result.getCombinedPhrases().forEach(phrase -> {
         System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
     });
@@ -171,12 +167,8 @@ TranscriptionClient client = new TranscriptionClientBuilder()
 // Create transcription options with audio URL
 TranscriptionOptions options = new TranscriptionOptions("https://example.com/audio.wav");
 
-// Create transcribe request content
-TranscriptionContent requestContent = new TranscriptionContent()
-    .setOptions(options);
-
 // Transcribe audio
-TranscriptionResult result = client.transcribe(requestContent);
+TranscriptionResult result = client.transcribe(options);
 
 // Process results
 result.getCombinedPhrases().forEach(phrase -> {
@@ -205,12 +197,8 @@ AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(au
 // Create transcription options with AudioFileDetails
 TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
-// Create transcribe request content
-TranscriptionContent requestContent = new TranscriptionContent()
-    .setOptions(options);
-
 // Transcribe audio
-TranscriptionResult result = client.transcribe(requestContent);
+TranscriptionResult result = client.transcribe(options);
 
 // Process results
 result.getCombinedPhrases().forEach(phrase -> {
@@ -237,10 +225,7 @@ TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("en-US"))
     .setEnhancedModeOptions(enhancedMode);
 
-TranscriptionContent requestContent = new TranscriptionContent()
-    .setOptions(options);
-
-TranscriptionResult result = client.transcribe(requestContent);
+TranscriptionResult result = client.transcribe(options);
 ```
 
 #### Enhanced mode with custom prompts
@@ -265,10 +250,7 @@ TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("en-US"))
     .setEnhancedModeOptions(enhancedMode);
 
-TranscriptionContent requestContent = new TranscriptionContent()
-    .setOptions(options);
-
-TranscriptionResult result = client.transcribe(requestContent);
+TranscriptionResult result = client.transcribe(options);
 ```
 
 #### Enhanced mode with translation
@@ -289,10 +271,7 @@ TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
     .setEnhancedModeOptions(enhancedMode);
 
-TranscriptionContent requestContent = new TranscriptionContent()
-    .setOptions(options);
-
-TranscriptionResult result = client.transcribe(requestContent);
+TranscriptionResult result = client.transcribe(options);
 ```
 
 ### Service API versions
