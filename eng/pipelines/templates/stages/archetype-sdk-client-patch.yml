@@ -104,8 +104,14 @@ extends:
             # generate_from_source_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
+                $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
+                  | ConvertFrom-Json `
+                  | Select-Object -ExpandProperty name)
                 foreach($ServiceDir in $ServiceDirs.Split(',')) {
-                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 `
+                    -ServiceDirectory $ServiceDir `
+                    -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo `
+                    -artifactList $ArtifactList
                 }
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
