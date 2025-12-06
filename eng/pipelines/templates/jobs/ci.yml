@@ -148,8 +148,8 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
+          ArtifactsJson: '${{ convertToJson(parameters.ReleaseArtifacts) }}'
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
@@ -351,8 +351,8 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
+          ArtifactsJson: '${{ convertToJson(parameters.ReleaseArtifacts) }}'
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
