@@ -356,7 +356,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION.)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TransliteratedText>> transliterate(String language, String fromScript, String toScript,
         List<String> inputs) {
         return transliterateInner(language, fromScript, toScript, convertTextsToInputTextItems(inputs));
@@ -494,7 +494,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TranslatedTextItem>> translate(List<TranslateInputItem> inputs) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();

@@ -346,7 +346,7 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TransliteratedText> transliterate(String language, String fromScript, String toScript,
         List<String> inputs) {
         return transliterateInner(language, fromScript, toScript, convertTextsToInputTextItems(inputs));
@@ -482,7 +482,7 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TranslatedTextItem> translate(List<TranslateInputItem> inputs) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
