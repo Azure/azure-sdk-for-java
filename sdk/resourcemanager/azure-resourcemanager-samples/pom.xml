@@ -84,7 +84,7 @@
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
+      <version>3.12.0</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
@@ -195,7 +195,7 @@
                 <include>com.google.guava:guava:[33.1.0-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.4.0]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
-                <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
+                <include>commons-net:commons-net:[3.12.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.8.3]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
