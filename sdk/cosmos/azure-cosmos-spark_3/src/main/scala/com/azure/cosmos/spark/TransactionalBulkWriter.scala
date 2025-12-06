@@ -4,14 +4,14 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation}
-import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, UUIDs}
+import com.azure.cosmos.implementation.batch.{BatchRequestResponseConstants, BulkExecutorDiagnosticsTracker, ItemBulkOperation, TransactionalBulkExecutor}
+import com.azure.cosmos.implementation.{CosmosDaemonThreadFactory, CosmosBulkExecutionOptionsImpl, ImplementationBridgeHelpers, UUIDs}
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
+import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, bulkWriterInputBoundedElastic, bulkWriterRequestsBoundedElastic, bulkWriterResponsesBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import reactor.core.Scannable
-import reactor.core.publisher.Mono
+import reactor.core.publisher.{Flux, Mono}
 import reactor.core.scheduler.Scheduler
 
 import java.util
@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.BulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
+import com.azure.cosmos.spark.TransactionalBulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
@@ -47,7 +47,7 @@ import scala.collection.JavaConverters._
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
 //scalastyle:off file.size.limit
-private class BulkWriter
+private class TransactionalBulkWriter
 (
   container: CosmosAsyncContainer,
   containerConfig: CosmosContainerConfig,
@@ -115,7 +115,7 @@ private class BulkWriter
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
     .enable(true)
     .build
-  private val cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
+  private val cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(TransactionalBulkWriter.bulkProcessingThresholds)
 
   private val cosmosBulkExecutionOptionsImpl = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
     .getCosmosBulkExecutionOptionsAccessor
@@ -131,7 +131,7 @@ private class BulkWriter
       val ctxOption = Option.apply(ctx)
       outputMetricsPublisher.trackWriteOperation(0, ctxOption)
       if (ctxOption.isDefined && verboseLoggingEnabled.get) {
-        BulkWriter.log.logWarning(s"Track bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
+        TransactionalBulkWriter.log.logWarning(s"Track bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
       }
     }
 
@@ -532,9 +532,9 @@ private class BulkWriter
           deferredRetryMono
               .delaySubscription(
                   Duration(
-                      BulkWriter.minDelayOn408RequestTimeoutInMs +
+                      TransactionalBulkWriter.minDelayOn408RequestTimeoutInMs +
                           scala.util.Random.nextInt(
-                              BulkWriter.maxDelayOn408RequestTimeoutInMs - BulkWriter.minDelayOn408RequestTimeoutInMs),
+                              TransactionalBulkWriter.maxDelayOn408RequestTimeoutInMs - TransactionalBulkWriter.minDelayOn408RequestTimeoutInMs),
                       TimeUnit.MILLISECONDS),
                   Schedulers.boundedElastic())
               .subscribeOn(Schedulers.boundedElastic())
@@ -558,15 +558,24 @@ private class BulkWriter
         log.logError(s"Input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
       })
 
+    // Use TransactionalBulkExecutor which internally uses SinglePartitionKeyServerBatchRequest
+    // with setAtomicBatch(true) and setShouldContinueOnError(false) for true transactional semantics
+    val cosmosBulkExecutionOptionsImpl = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+      .getCosmosBulkExecutionOptionsAccessor
+      .getImpl(cosmosBulkExecutionOptions)
+    
+    val transactionalExecutor = new TransactionalBulkExecutor[Object](
+      container,
+      inputFlux,
+      cosmosBulkExecutionOptionsImpl)
+
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-      container
-          .executeBulkOperations[Object](
-            inputFlux,
-            cosmosBulkExecutionOptions)
+      transactionalExecutor
+          .execute()
           .onBackpressureBuffer()
           .publishOn(bulkWriterResponsesBoundedElastic)
           .doOnError(t => {
-            log.logError(s"Bulk execution flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
+            log.logError(s"Transactional bulk execution flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
           })
           .asScala
 
@@ -650,8 +659,6 @@ private class BulkWriter
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
-    // BulkWriter doesn't support per-row operation types - it uses global ItemWriteStrategy
-    // The operationType parameter is ignored here for interface compatibility
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
@@ -661,7 +668,9 @@ private class BulkWriter
       partitionKeyValue,
       getETag(objectNode),
       1,
-      monotonicOperationCounter.incrementAndGet())
+      monotonicOperationCounter.incrementAndGet(),
+      None,
+      operationType)
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
@@ -736,10 +745,28 @@ private class BulkWriter
                                         objectNode: ObjectNode,
                                         operationContext: OperationContext): Unit = {
 
-    val bulkItemOperation = writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemOverwrite =>
+    // Determine the effective operation type from per-row operationType or global strategy
+    val effectiveOperationType = operationContext.operationType match {
+      case Some(opType) => opType.toLowerCase
+      case None => writeConfig.itemWriteStrategy match {
+        case ItemWriteStrategy.ItemOverwrite => "upsert"
+        case ItemWriteStrategy.ItemAppend => "create"
+        case ItemWriteStrategy.ItemDelete | ItemWriteStrategy.ItemDeleteIfNotModified => "delete"
+        case ItemWriteStrategy.ItemOverwriteIfNotModified => "replace"
+        case ItemWriteStrategy.ItemTransactionalBatch => "upsert" // Default to upsert for transactional batch
+        case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => "patch"
+        case _ => throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported for transactional batch")
+      }
+    }
+
+    val bulkItemOperation = effectiveOperationType match {
+      case "create" =>
+        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+      
+      case "upsert" =>
         CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+      
+      case "replace" =>
         operationContext.eTag match {
           case Some(eTag) =>
             CosmosBulkOperations.getReplaceItemOperation(
@@ -748,29 +775,41 @@ private class BulkWriter
               partitionKeyValue,
               new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
               operationContext)
-          case _ =>  CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+          case _ =>
+            CosmosBulkOperations.getReplaceItemOperation(
+              operationContext.itemId,
+              objectNode,
+              partitionKeyValue,
+              operationContext)
         }
-      case ItemWriteStrategy.ItemAppend =>
-        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemDelete =>
-        CosmosBulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        CosmosBulkOperations.getDeleteItemOperation(
+      
+      case "delete" =>
+        operationContext.eTag match {
+          case Some(eTag) =>
+            CosmosBulkOperations.getDeleteItemOperation(
+              operationContext.itemId,
+              partitionKeyValue,
+              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
+              operationContext)
+          case _ =>
+            CosmosBulkOperations.getDeleteItemOperation(
+              operationContext.itemId,
+              partitionKeyValue,
+              operationContext)
+        }
+      
+      case "patch" =>
+        getPatchItemOperation(
           operationContext.itemId,
           partitionKeyValue,
-          operationContext.eTag match {
-            case Some(eTag) => new CosmosBulkItemRequestOptions().setIfMatchETag(eTag)
-            case _ =>  new CosmosBulkItemRequestOptions()
-          },
+          partitionKeyDefinition,
+          objectNode,
           operationContext)
-      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => getPatchItemOperation(
-        operationContext.itemId,
-        partitionKeyValue,
-        partitionKeyDefinition,
-        objectNode,
-        operationContext)
+      
       case _ =>
-        throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
+        throw new IllegalArgumentException(
+          s"Unsupported operationType '$effectiveOperationType'. " +
+          s"Supported types for transactional batch: create, upsert, replace, delete")
     }
 
       this.emitBulkInput(bulkItemOperation)
@@ -778,7 +817,8 @@ private class BulkWriter
 
   private[this] def emitBulkInput(bulkItemOperation: CosmosItemOperation): Unit = {
       activeBulkWriteOperations.add(bulkItemOperation)
-      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+      
+      // Simply emit the operation - TransactionalBulkExecutor will handle batching by partition key
       bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
   }
 
@@ -910,7 +950,7 @@ private class BulkWriter
     val sb = new StringBuilder()
 
     activeOperationsSnapshot
-      .take(BulkWriter.maxItemOperationsToShowInErrorMessage)
+      .take(TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage)
       .foreach(itemOperation => {
         if (sb.nonEmpty) {
           sb.append(", ")
@@ -924,7 +964,7 @@ private class BulkWriter
 
     // add readMany snapshot logs
     activeReadManyOperationsSnapshot
-        .take(BulkWriter.maxItemOperationsToShowInErrorMessage - activeOperationsSnapshot.size)
+        .take(TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage - activeOperationsSnapshot.size)
         .foreach(readManyOperation => {
             if (sb.nonEmpty) {
                 sb.append(", ")
@@ -1032,14 +1072,14 @@ private class BulkWriter
 
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion identified in $operationName - the following active operations have not been " +
-            s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
+            s"completed (first ${TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
             s"$maxNoProgressIntervalInSeconds seconds: $operationsLog",
           commitAttempt,
           retriableRemainingOperations)
       } else {
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion as well as readMany operations identified in $operationName - the following active operations have not been " +
-            s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
+            s"completed (first ${TransactionalBulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
             s"${maxNoProgressIntervalInSeconds} : $operationsLog",
           commitAttempt,
           None)
@@ -1060,10 +1100,9 @@ private class BulkWriter
     this.synchronized {
       try {
         if (!closed.get()) {
-          log.logInfo(s"flushAndClose invoked, Context: ${operationContext.toString} $getThreadInfo")
+          log.logInfo(s"flushAndClose invoked $getThreadInfo")
           log.logInfo(s"completed so far ${totalSuccessfulIngestionMetrics.get()}, " +
-            s"pending bulkWrite asks ${activeBulkWriteOperations.size}, pending readMany tasks ${activeReadManyOperations.size}," +
-            s" Context: ${operationContext.toString} $getThreadInfo")
+            s"pending bulkWrite asks ${activeBulkWriteOperations.size}, pending readMany tasks ${activeReadManyOperations.size} $getThreadInfo")
 
           // error handling, if there is any error and the subscription is cancelled
           // the remaining tasks will not be processed hence we never reach activeTasks = 0
@@ -1122,8 +1161,9 @@ private class BulkWriter
                     if (activeBulkWriteOperations.contains(operation)) {
                       // re-validating whether the operation is still active - if so, just re-enqueue another retry
                       // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
-
+                      
                       // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+                      // TransactionalBulkExecutor will handle batching by partition key
                       bulkInputEmitter.emitNext(operation, emitFailureHandler)
                       log.logWarning(s"Re-enqueued a retry for pending active write task '${operation.getOperationType} "
                         + s"(${operation.getPartitionKeyValue}/${operation.getId})' "
@@ -1170,11 +1210,11 @@ private class BulkWriter
 
           logInfoOrWarning(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
           semaphore.release(Math.max(0, activeTasks.get()))
-          bulkInputEmitter.emitComplete(BulkWriter.emitFailureHandlerForComplete)
+          bulkInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
 
           // complete readManyInputEmitter
           if (readManyInputEmitterOpt.isDefined) {
-              readManyInputEmitterOpt.get.emitComplete(BulkWriter.emitFailureHandlerForComplete)
+              readManyInputEmitterOpt.get.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
           }
 
           throwIfCapturedExceptionExists()
@@ -1322,7 +1362,7 @@ private class BulkWriter
 
   private def shouldRetryForItemPatchBulkUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
       Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-          statusCode == 0 // Gateway mode reports inability to connect due to
+          statusCode == 0 || // Gateway mode reports inability to connect due to
                           // PoolAcquirePendingLimitException as status code 0
           Exceptions.isResourceExistsException(statusCode) ||
           Exceptions.isPreconditionFailedException(statusCode)
@@ -1359,9 +1399,10 @@ private class BulkWriter
     val attemptNumber: Int,
     val sequenceNumber: Long,
     /** starts from 1 * */
-    sourceItemInput: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    sourceItemInput: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    operationTypeInput: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
   {
-    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput)
+    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput, operationTypeInput)
 
     override def equals(obj: Any): Boolean = ctxCore.equals(obj)
 
@@ -1378,6 +1419,8 @@ private class BulkWriter
     def eTag: Option[String] = ctxCore.eTag
 
     def sourceItem: Option[ObjectNode] = ctxCore.sourceItem
+
+    def operationType: Option[String] = ctxCore.operationType
   }
 
   private case class OperationContextCore
@@ -1385,7 +1428,8 @@ private class BulkWriter
     itemId: String,
     partitionKeyValue: PartitionKey,
     eTag: Option[String],
-    sourceItem: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    sourceItem: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    operationType: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
   {
     override def productPrefix: String = "OperationContext"
   }
@@ -1397,7 +1441,7 @@ private class BulkWriter
                                         operationContext: OperationContext)
 }
 
-private object BulkWriter {
+private object TransactionalBulkWriter {
   private val log = new DefaultDiagnostics().getLogger(this.getClass)
   //scalastyle:off magic.number
   private val maxDelayOn408RequestTimeoutInMs = 3000
@@ -1434,19 +1478,20 @@ private object BulkWriter {
       }
     }
 
-  private val emitFailureHandlerForComplete: EmitFailureHandler =
-    (signalType, emitResult) => {
-      if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
-        log.logDebug(s"emitFailureHandlerForComplete - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-        true
-      } else if (emitResult.equals(EmitResult.FAIL_CANCELLED) || emitResult.equals(EmitResult.FAIL_TERMINATED)) {
-        log.logDebug(s"emitFailureHandlerForComplete - Already completed - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-        false
-      } else {
-        log.logError(s"emitFailureHandlerForComplete - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-        false
-      }
+  private val emitFailureHandlerForComplete: EmitFailureHandler = (signalType, emitResult) => {
+    if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
+      log.logWarning(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
+      true
+    } else if (emitResult.equals(EmitResult.FAIL_CANCELLED) ||
+      emitResult.equals(EmitResult.FAIL_TERMINATED) ||
+      emitResult.equals(EmitResult.FAIL_OVERFLOW)) {
+      log.logWarning(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
+      false
+    } else {
+      log.logError(s"emitFailureHandlerForComplete - Signal:$signalType, Result:$emitResult")
+      false
     }
+  }
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 

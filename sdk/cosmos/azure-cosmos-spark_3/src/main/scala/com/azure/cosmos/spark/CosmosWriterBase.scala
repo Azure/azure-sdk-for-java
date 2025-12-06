@@ -62,14 +62,31 @@ private abstract class CosmosWriterBase(
 
   private val writer: AtomicReference[AsyncItemWriter] = new AtomicReference(
     if (cosmosWriteConfig.bulkEnabled) {
-      new BulkWriter(
-        container,
-        cosmosTargetContainerConfig,
-        partitionKeyDefinition,
-        cosmosWriteConfig,
-        diagnosticsConfig,
-        getOutputMetricsPublisher(),
-        commitAttempt.getAndIncrement())
+      // Use TransactionalBulkWriter if either:
+      // 1. bulkEnableTransactions is explicitly set, OR
+      // 2. ItemWriteStrategy is ItemTransactionalBatch
+      val useTransactional = cosmosWriteConfig.bulkEnableTransactions ||
+        cosmosWriteConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch
+
+      if (useTransactional) {
+        new TransactionalBulkWriter(
+          container,
+          cosmosTargetContainerConfig,
+          partitionKeyDefinition,
+          cosmosWriteConfig,
+          diagnosticsConfig,
+          getOutputMetricsPublisher(),
+          commitAttempt.getAndIncrement())
+      } else {
+        new BulkWriter(
+          container,
+          cosmosTargetContainerConfig,
+          partitionKeyDefinition,
+          cosmosWriteConfig,
+          diagnosticsConfig,
+          getOutputMetricsPublisher(),
+          commitAttempt.getAndIncrement())
+      }
     } else {
       new PointWriter(
         container,
@@ -82,6 +99,23 @@ private abstract class CosmosWriterBase(
 
   override def write(internalRow: InternalRow): Unit = {
     val objectNode = cosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
+
+    // Extract operationType if column exists (for per-row operation support)
+    val operationType: Option[String] = if (inputSchema.fieldNames.contains("operationType")) {
+      val opTypeIndex = inputSchema.fieldIndex("operationType")
+      if (!internalRow.isNullAt(opTypeIndex)) {
+        Some(internalRow.getString(opTypeIndex))
+      } else {
+        None
+      }
+    } else {
+      None
+    }
+
+    // Remove operationType from objectNode if present (don't persist to Cosmos)
+    if (objectNode.has("operationType")) {
+      objectNode.remove("operationType")
+    }
 
     require(objectNode.has(CosmosConstants.Properties.Id) &&
       objectNode.get(CosmosConstants.Properties.Id).isTextual,
@@ -96,7 +130,7 @@ private abstract class CosmosWriterBase(
     }
 
     val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
-    writer.get.scheduleWrite(partitionKeyValue, objectNode)
+    writer.get.scheduleWrite(partitionKeyValue, objectNode, operationType)
   }
 
   override def commit(): WriterCommitMessage = {
