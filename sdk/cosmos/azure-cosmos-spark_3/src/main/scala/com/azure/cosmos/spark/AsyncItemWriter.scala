@@ -15,6 +15,14 @@ private  trait AsyncItemWriter {
   def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit
 
   /**
+    * Schedule a write to happen in async and return immediately with per-row operation type
+    * @param partitionKeyValue the partition key value
+    * @param objectNode the json object node
+    * @param operationType optional operation type (create, upsert, replace, delete) for this specific row
+    */
+  def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit
+
+  /**
     * Wait for all remaining work
     * Throws if any of the work resulted in failure
     */

@@ -634,4 +634,269 @@ class TransactionalBatchITest extends IntegrationSpec
       }
     }
   }
+
+  "Transactional batch with per-row operation types" should "support mixed operations in same partition key" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+
+    // Pre-create an item for replace operation
+    val itemForReplace = Utils.getSimpleObjectMapper.createObjectNode()
+    itemForReplace.put("id", "item-to-replace")
+    itemForReplace.put("pk", "mixed-ops")
+    itemForReplace.put("prop", "original-value")
+    container.createItem(itemForReplace).block()
+
+    // Pre-create item for delete operation
+    val itemForDelete = Utils.getSimpleObjectMapper.createObjectNode()
+    itemForDelete.put("id", "item-to-delete")
+    itemForDelete.put("pk", "mixed-ops")
+    itemForDelete.put("prop", "to-be-deleted")
+    container.createItem(itemForDelete).block()
+
+    // Create DataFrame with mixed operations
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("operationType", StringType, nullable = false),
+      StructField("prop", StringType, nullable = false)
+    ))
+
+    val mixedOpsItems = Seq(
+      Row("item-new-create", "mixed-ops", "create", "created-value"),
+      Row("item-new-upsert", "mixed-ops", "upsert", "upserted-value"),
+      Row("item-to-replace", "mixed-ops", "replace", "replaced-value"),
+      Row("item-to-delete", "mixed-ops", "delete", "delete-value")
+    )
+
+    val mixedOpsDf = spark.createDataFrame(mixedOpsItems.asJava, schema)
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.write.strategy" -> "ItemTransactionalBatch",
+      "spark.cosmos.write.maxRetryCount" -> "3",
+      "spark.cosmos.write.bulk.enabled" -> "true"
+    )
+
+    // Write with mixed operations
+    mixedOpsDf.write.format("cosmos.oltp").mode(SaveMode.Append).options(writeCfg).save()
+
+    // Verify all operations succeeded
+    // 1. Check created item
+    val createdItem = container.readItem("item-new-create", new PartitionKey("mixed-ops"), classOf[ObjectNode]).block().getItem
+    createdItem.get("prop").asText() shouldEqual "created-value"
+
+    // 2. Check upserted item
+    val upsertedItem = container.readItem("item-new-upsert", new PartitionKey("mixed-ops"), classOf[ObjectNode]).block().getItem
+    upsertedItem.get("prop").asText() shouldEqual "upserted-value"
+
+    // 3. Check replaced item
+    val replacedItem = container.readItem("item-to-replace", new PartitionKey("mixed-ops"), classOf[ObjectNode]).block().getItem
+    replacedItem.get("prop").asText() shouldEqual "replaced-value"
+
+    // 4. Verify deleted item no longer exists
+    try {
+      container.readItem("item-to-delete", new PartitionKey("mixed-ops"), classOf[ObjectNode]).block()
+      fail("Item should have been deleted")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
+  }
+
+  it should "rollback all mixed operations when one fails" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+
+    // Pre-create an item
+    val existingItem = Utils.getSimpleObjectMapper.createObjectNode()
+    existingItem.put("id", "existing-item")
+    existingItem.put("pk", "rollback-test")
+    existingItem.put("prop", "original")
+    container.createItem(existingItem).block()
+
+    // Create DataFrame with mixed operations where create will fail (duplicate)
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("operationType", StringType, nullable = false),
+      StructField("prop", StringType, nullable = false)
+    ))
+
+    val rollbackItems = Seq(
+      Row("new-item-1", "rollback-test", "create", "new-value-1"),
+      Row("existing-item", "rollback-test", "create", "duplicate-will-fail"),
+      Row("new-item-2", "rollback-test", "upsert", "new-value-2")
+    )
+
+    val rollbackDf = spark.createDataFrame(rollbackItems.asJava, schema)
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.write.strategy" -> "ItemTransactionalBatch",
+      "spark.cosmos.write.maxRetryCount" -> "3",
+      "spark.cosmos.write.bulk.enabled" -> "true"
+    )
+
+    // Attempt write - should fail atomically
+    try {
+      rollbackDf.write.format("cosmos.oltp").mode(SaveMode.Append).options(writeCfg).save()
+      fail("Transactional batch should have failed due to duplicate create")
+    } catch {
+      case e: Exception =>
+        // Expected failure (409 Conflict or 424 Failed Dependency)
+        println(s"Expected failure: ${e.getMessage}")
+    }
+
+    // Verify NO operations were committed (atomic rollback)
+    // 1. Original item should be unchanged
+    val originalItem = container.readItem("existing-item", new PartitionKey("rollback-test"), classOf[ObjectNode]).block().getItem
+    originalItem.get("prop").asText() shouldEqual "original"
+
+    // 2. new-item-1 should NOT exist (rollback)
+    try {
+      container.readItem("new-item-1", new PartitionKey("rollback-test"), classOf[ObjectNode]).block()
+      fail("new-item-1 should not exist due to rollback")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
+
+    // 3. new-item-2 should NOT exist (rollback)
+    try {
+      container.readItem("new-item-2", new PartitionKey("rollback-test"), classOf[ObjectNode]).block()
+      fail("new-item-2 should not exist due to rollback")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
+  }
+
+  it should "support delete operations in transactional batch" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+
+    // Pre-create items to delete
+    val itemToDelete1 = Utils.getSimpleObjectMapper.createObjectNode()
+    itemToDelete1.put("id", "delete-item-1")
+    itemToDelete1.put("pk", "delete-test")
+    itemToDelete1.put("prop", "delete-me-1")
+    container.createItem(itemToDelete1).block()
+
+    val itemToDelete2 = Utils.getSimpleObjectMapper.createObjectNode()
+    itemToDelete2.put("id", "delete-item-2")
+    itemToDelete2.put("pk", "delete-test")
+    itemToDelete2.put("prop", "delete-me-2")
+    container.createItem(itemToDelete2).block()
+
+    // Create DataFrame with create + delete operations
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("operationType", StringType, nullable = false),
+      StructField("prop", StringType, nullable = false)
+    ))
+
+    val deleteItems = Seq(
+      Row("new-item", "delete-test", "create", "new-value"),
+      Row("delete-item-1", "delete-test", "delete", "ignored"),
+      Row("delete-item-2", "delete-test", "delete", "ignored")
+    )
+
+    val deleteDf = spark.createDataFrame(deleteItems.asJava, schema)
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.write.strategy" -> "ItemTransactionalBatch",
+      "spark.cosmos.write.maxRetryCount" -> "3",
+      "spark.cosmos.write.bulk.enabled" -> "true"
+    )
+
+    // Execute transactional batch
+    deleteDf.write.format("cosmos.oltp").mode(SaveMode.Append).options(writeCfg).save()
+
+    // Verify new item was created
+    val newItem = container.readItem("new-item", new PartitionKey("delete-test"), classOf[ObjectNode]).block().getItem
+    newItem.get("prop").asText() shouldEqual "new-value"
+
+    // Verify items were deleted
+    try {
+      container.readItem("delete-item-1", new PartitionKey("delete-test"), classOf[ObjectNode]).block()
+      fail("delete-item-1 should have been deleted")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
+
+    try {
+      container.readItem("delete-item-2", new PartitionKey("delete-test"), classOf[ObjectNode]).block()
+      fail("delete-item-2 should have been deleted")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
+  }
+
+  it should "default to global strategy when operationType column absent" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+
+    // Create DataFrame WITHOUT operationType column
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("prop", StringType, nullable = false)
+    ))
+
+    val backwardCompatItems = Seq(
+      Row("compat-item-1", "compat-test", "value-1"),
+      Row("compat-item-2", "compat-test", "value-2")
+    )
+
+    val compatDf = spark.createDataFrame(backwardCompatItems.asJava, schema)
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.write.strategy" -> "ItemTransactionalBatch",
+      "spark.cosmos.write.maxRetryCount" -> "3",
+      "spark.cosmos.write.bulk.enabled" -> "true"
+    )
+
+    // Write without operationType column (should default to upsert)
+    compatDf.write.format("cosmos.oltp").mode(SaveMode.Append).options(writeCfg).save()
+
+    // Verify items were created (upsert default for ItemTransactionalBatch)
+    val item1 = container.readItem("compat-item-1", new PartitionKey("compat-test"), classOf[ObjectNode]).block().getItem
+    item1.get("prop").asText() shouldEqual "value-1"
+
+    val item2 = container.readItem("compat-item-2", new PartitionKey("compat-test"), classOf[ObjectNode]).block().getItem
+    item2.get("prop").asText() shouldEqual "value-2"
+
+    // Update items - should succeed with upsert
+    val updateItems = Seq(
+      Row("compat-item-1", "compat-test", "updated-1"),
+      Row("compat-item-2", "compat-test", "updated-2")
+    )
+
+    val updateDf = spark.createDataFrame(updateItems.asJava, schema)
+
+    updateDf.write.format("cosmos.oltp").mode(SaveMode.Append).options(writeCfg).save()
+
+    // Verify items were updated
+    val updatedItem1 = container.readItem("compat-item-1", new PartitionKey("compat-test"), classOf[ObjectNode]).block().getItem
+    updatedItem1.get("prop").asText() shouldEqual "updated-1"
+
+    val updatedItem2 = container.readItem("compat-item-2", new PartitionKey("compat-test"), classOf[ObjectNode]).block().getItem
+    updatedItem2.get("prop").asText() shouldEqual "updated-2"
+  }
 }

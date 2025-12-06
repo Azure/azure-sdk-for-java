@@ -646,6 +646,12 @@ private class BulkWriter
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+    scheduleWrite(partitionKeyValue, objectNode, None)
+  }
+
+  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
+    // BulkWriter doesn't support per-row operation types - it uses global ItemWriteStrategy
+    // The operationType parameter is ignored here for interface compatibility
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
