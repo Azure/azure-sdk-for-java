@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import org.apache.commons.io.IOUtils
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.execution.streaming.{HDFSMetadataLog, MetadataVersionUtil}
 
@@ -25,7 +24,7 @@ private class ChangeFeedInitialOffsetWriter
   }
 
   override def deserialize(in: InputStream): String = {
-    val content = IOUtils.toString(new InputStreamReader(in, StandardCharsets.UTF_8))
+    val content = readerToString(new InputStreamReader(in, StandardCharsets.UTF_8))
     // HDFSMetadataLog would never create a partial file.
     require(content.nonEmpty)
     val indexOfNewLine = content.indexOf("\n")
@@ -36,5 +35,26 @@ private class ChangeFeedInitialOffsetWriter
 
     MetadataVersionUtil.validateVersion(content.substring(0, indexOfNewLine), VERSION)
     content.substring(indexOfNewLine + 1)
+  }
+
+  private def readerToString(reader: java.io.Reader): String = {
+    val writer = new StringBuilderWriter
+    val buffer = new Array[Char](4096)
+    Stream.continually(reader.read(buffer)).takeWhile(_ != -1).foreach(writer.write(buffer, 0, _))
+    writer.toString
+  }
+
+  private class StringBuilderWriter extends java.io.Writer {
+    private val stringBuilder = new StringBuilder
+
+    override def write(cbuf: Array[Char], off: Int, len: Int): Unit = {
+      stringBuilder.appendAll(cbuf, off, len)
+    }
+
+    override def flush(): Unit = {}
+
+    override def close(): Unit = {}
+
+    override def toString: String = stringBuilder.toString()
   }
 }
