@@ -40,7 +40,7 @@ public class TranslateNoTranslate {
             Arrays.asList(new TranslationTarget("en"))
         ).setLanguage("cs").setTextType(TextType.HTML);
 
-        TranslatedTextItem translation = client.translate(input);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
             System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");

@@ -35,7 +35,7 @@ public class TranslateWithTransliteration {
         TranslateInputItem input = new TranslateInputItem("hudha akhtabar.", Arrays.asList(target))
             .setLanguage("ar").setScript("Latn");
 
-        TranslatedTextItem translation = client.translate(input);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
             System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");

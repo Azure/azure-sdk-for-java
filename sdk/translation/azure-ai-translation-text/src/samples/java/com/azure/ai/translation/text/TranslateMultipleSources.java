@@ -4,11 +4,13 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.models.DetectedLanguage;
+import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
+import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,12 +36,12 @@ public class TranslateMultipleSources {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<String> content = new ArrayList<>();
-        content.add("This is a test.");
-        content.add("Esto es una prueba.");
-        content.add("Dies ist ein Test.");
+        List<TranslateInputItem> inputs = Arrays.asList(
+            new TranslateInputItem("This is a test.", Arrays.asList(new TranslationTarget("cs"))),
+            new TranslateInputItem("Esto es una prueba.", Arrays.asList(new TranslationTarget("cs"))),
+            new TranslateInputItem("Dies ist ein Test.", Arrays.asList(new TranslationTarget("cs"))));
 
-        List<TranslatedTextItem> translations = client.translate("cs", content);
+        List<TranslatedTextItem> translations = client.translate(inputs);
 
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {

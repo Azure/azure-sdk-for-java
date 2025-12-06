@@ -313,8 +313,8 @@ public final class TextTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    private List<TransliteratedText> transliterateInner(String language, String fromScript,
-        String toScript, List<InputTextItem> inputs) {
+    private List<TransliteratedText> transliterateInner(String language, String fromScript, String toScript,
+        List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
         TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
         TransliterateResult result = transliterateWithResponse(language, fromScript, toScript,
@@ -347,10 +347,9 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<TransliteratedText> transliterate(String language, String fromScript,
-        String toScript, List<String> inputs) {
-        return transliterateInner(language, fromScript, toScript,
-            convertTextsToInputTextItems(inputs));
+    public List<TransliteratedText> transliterate(String language, String fromScript, String toScript,
+        List<String> inputs) {
+        return transliterateInner(language, fromScript, toScript, convertTextsToInputTextItems(inputs));
     }
 
     /**
@@ -378,8 +377,7 @@ public final class TextTranslationClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransliteratedText transliterate(String language, String fromScript, String toScript,
-        String text) {
+    public TransliteratedText transliterate(String language, String fromScript, String toScript, String text) {
         return transliterate(language, fromScript, toScript, Arrays.asList(text)).get(0);
     }
 
@@ -497,54 +495,6 @@ public final class TextTranslationClient {
 
     /**
      * Translate Text.
-     *
-     * @param input Defines the content of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TranslatedTextItem translate(TranslateInputItem input) {
-        return translate(Arrays.asList(input)).get(0);
-    }
-
-    /**
-     * Translate Text.
-     * <p>
-     * This method is used when you have single target language and multiple texts to translate.
-     * </p>
-     *
-     * @param targetLanguage Specifies the language of the output text. The target language must be one of the
-     * supported languages included
-     * in the translation scope. For example, use to=de to translate to German.
-     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
-     * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param texts Defines the content of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<TranslatedTextItem> translate(String targetLanguage, List<String> texts) {
-        List<TranslateInputItem> body = new ArrayList<>();
-        for (String text : texts) {
-            TranslateInputItem translateInputItem
-                = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
-            body.add(translateInputItem);
-        }
-        return translate(body);
-    }
-
-    /**
-     * Translate Text.
      * <p>
      * This method is used when you have single target language and single text to translate.
      * </p>
@@ -565,7 +515,9 @@ public final class TextTranslationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TranslatedTextItem translate(String targetLanguage, String text) {
-        return translate(targetLanguage, Arrays.asList(text)).get(0);
+        TranslateInputItem translateInputItem
+            = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
+        return translate(Arrays.asList(translateInputItem)).get(0);
     }
 
     private List<InputTextItem> convertTextsToInputTextItems(List<String> texts) {

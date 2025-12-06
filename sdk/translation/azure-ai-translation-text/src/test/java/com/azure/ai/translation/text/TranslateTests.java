@@ -12,7 +12,6 @@ import com.azure.ai.translation.text.models.TranslationTarget;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class TranslateTests extends TextTranslationClientBase {
             Arrays.asList(new TranslationTarget("en")));
         input.setLanguage("zh-Hans");
         input.setTextType(TextType.HTML);
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertTrue(response.getTranslations().get(0).getText().contains("今天是怎么回事是"));
@@ -60,7 +59,7 @@ public class TranslateTests extends TextTranslationClientBase {
             Arrays.asList(new TranslationTarget("es")));
         input.setLanguage("en");
         input.setTextType(TextType.HTML);
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("es", response.getTranslations().get(0).getLanguage());
@@ -71,7 +70,7 @@ public class TranslateTests extends TextTranslationClientBase {
     public void translateWithTransliteration() {
         TranslateInputItem input = new TranslateInputItem("hudha akhtabar.",
             Arrays.asList(new TranslationTarget("zh-Hans").setScript("Latn"))).setLanguage("ar").setScript("Latn");
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals("zh-Hans", response.getTranslations().get(0).getLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
@@ -83,19 +82,19 @@ public class TranslateTests extends TextTranslationClientBase {
             = new TranslateInputItem("ap kaise ho", Arrays.asList(new TranslationTarget("ta").setScript("Latn")))
                 .setLanguage("hi")
                 .setScript("Latn");
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals("eppadi irukkiraai?", response.getTranslations().get(0).getText());
     }
 
     @Test
     public void translateWithMultipleInputTexts() {
-        ArrayList<String> content = new ArrayList<>();
-        content.add("This is a test.");
-        content.add("Esto es una prueba.");
-        content.add("Dies ist ein Test.");
+        List<TranslateInputItem> inputs
+            = Arrays.asList(new TranslateInputItem("This is a test.", Arrays.asList(new TranslationTarget("cs"))),
+                new TranslateInputItem("Esto es una prueba.", Arrays.asList(new TranslationTarget("cs"))),
+                new TranslateInputItem("Dies ist ein Test.", Arrays.asList(new TranslationTarget("cs"))));
 
-        List<TranslatedTextItem> response = getTranslationClient().translate("cs", content);
+        List<TranslatedTextItem> response = getTranslationClient().translate(inputs);
 
         assertEquals(3, response.size());
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
@@ -116,7 +115,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslateInputItem input = new TranslateInputItem("This is a test.",
             Arrays.asList(new TranslationTarget("cs"), new TranslationTarget("es"), new TranslationTarget("de")));
 
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(3, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
@@ -130,7 +129,7 @@ public class TranslateTests extends TextTranslationClientBase {
     public void translateWithLlm() {
         TranslationTarget target = new TranslationTarget("cs").setDeploymentName("gpt-4o-mini");
         TranslateInputItem input = new TranslateInputItem("This is a test", Arrays.asList(target));
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
@@ -141,7 +140,7 @@ public class TranslateTests extends TextTranslationClientBase {
     public void translateDifferentTextTypes() {
         TranslateInputItem input = new TranslateInputItem("<html><body>This <b>is</b> a test.</body></html>",
             Arrays.asList(new TranslationTarget("cs"))).setTextType(TextType.HTML);
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());
@@ -155,7 +154,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslateInputItem input
             = new TranslateInputItem("shit this is fucking crazy shit fuck", Arrays.asList(target));
 
-        TranslatedTextItem response = getTranslationClient().translate(input);
+        TranslatedTextItem response = getTranslationClient().translate(Arrays.asList(input)).get(0);
 
         assertEquals(1, response.getTranslations().size());
         assertEquals("en", response.getDetectedLanguage().getLanguage());

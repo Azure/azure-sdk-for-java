@@ -50,7 +50,7 @@ public class TranslateCustom {
         TranslateInputItem input = 
             new TranslateInputItem("This is a test.", Arrays.asList(target)).setLanguage("en");
 
-        TranslatedTextItem translation = client.translate(input);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
             System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");

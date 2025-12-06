@@ -321,16 +321,15 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
-    private Mono<List<TransliteratedText>> transliterateInner(String language, String fromScript,
-        String toScript, List<InputTextItem> inputs) {
+    private Mono<List<TransliteratedText>> transliterateInner(String language, String fromScript, String toScript,
+        List<InputTextItem> inputs) {
         RequestOptions requestOptions = new RequestOptions();
         TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
-        return transliterateWithResponse(language, fromScript, toScript,
-            BinaryData.fromObject(transliterateBody), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> {
-                    TransliterateResult result = protocolMethodData.toObject(TransliterateResult.class);
-                    return result.getValue();
-                });
+        return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(transliterateBody),
+            requestOptions).flatMap(FluxUtil::toMono).map(protocolMethodData -> {
+                TransliterateResult result = protocolMethodData.toObject(TransliterateResult.class);
+                return result.getValue();
+            });
     }
 
     /**
@@ -357,11 +356,10 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<TransliteratedText>> transliterate(String language, String fromScript,
-        String toScript, List<String> inputs) {
-        return transliterateInner(language, fromScript, toScript,
-            convertTextsToInputTextItems(inputs));
+    @ServiceMethod(returns = ReturnType.COLLECTION.)
+    public Mono<List<TransliteratedText>> transliterate(String language, String fromScript, String toScript,
+        List<String> inputs) {
+        return transliterateInner(language, fromScript, toScript, convertTextsToInputTextItems(inputs));
     }
 
     /**
@@ -389,8 +387,7 @@ public final class TextTranslationAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransliteratedText> transliterate(String language, String fromScript,
-        String toScript, String text) {
+    public Mono<TransliteratedText> transliterate(String language, String fromScript, String toScript, String text) {
         return transliterate(language, fromScript, toScript, Arrays.asList(text))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
             .defaultIfEmpty(null);
@@ -511,56 +508,6 @@ public final class TextTranslationAsyncClient {
 
     /**
      * Translate Text.
-     *
-     * @param input Defines the content of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TranslatedTextItem> translate(TranslateInputItem input) {
-        return translate(Arrays.asList(input))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
-    }
-
-    /**
-     * Translate Text.
-     * <p>
-     * This method is used when you have single target language and multiple texts to translate.
-     * </p>
-     *
-     * @param targetLanguage Specifies the language of the output text. The target language must be one of the
-     * supported languages included
-     * in the translation scope. For example, use to=de to translate to German.
-     * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
-     * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param texts Defines the content of the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<TranslatedTextItem>> translate(String targetLanguage, List<String> texts) {
-        List<TranslateInputItem> body = new ArrayList<>();
-        for (String text : texts) {
-            TranslateInputItem translateInputItem
-                = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
-            body.add(translateInputItem);
-        }
-        return translate(body);
-    }
-
-    /**
-     * Translate Text.
      * <p>
      * This method is used when you have single target language and single text to translate.
      * </p>
@@ -581,7 +528,9 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranslatedTextItem> translate(String targetLanguage, String text) {
-        return translate(targetLanguage, Arrays.asList(text))
+        TranslateInputItem translateInputItem
+            = new TranslateInputItem(text, Arrays.asList(new TranslationTarget(targetLanguage)));
+        return translate(Arrays.asList(translateInputItem))
             .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
             .defaultIfEmpty(null);
     }
