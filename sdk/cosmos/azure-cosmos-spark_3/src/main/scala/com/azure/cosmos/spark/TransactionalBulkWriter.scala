@@ -655,6 +655,10 @@ private class TransactionalBulkWriter
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
+    scheduleWrite(partitionKeyValue, objectNode, None)
+  }
+
+  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
@@ -664,7 +668,9 @@ private class TransactionalBulkWriter
       partitionKeyValue,
       getETag(objectNode),
       1,
-      monotonicOperationCounter.incrementAndGet())
+      monotonicOperationCounter.incrementAndGet(),
+      None,
+      operationType)
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
@@ -739,10 +745,28 @@ private class TransactionalBulkWriter
                                         objectNode: ObjectNode,
                                         operationContext: OperationContext): Unit = {
 
-    val bulkItemOperation = writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemOverwrite =>
+    // Determine the effective operation type from per-row operationType or global strategy
+    val effectiveOperationType = operationContext.operationType match {
+      case Some(opType) => opType.toLowerCase
+      case None => writeConfig.itemWriteStrategy match {
+        case ItemWriteStrategy.ItemOverwrite => "upsert"
+        case ItemWriteStrategy.ItemAppend => "create"
+        case ItemWriteStrategy.ItemDelete | ItemWriteStrategy.ItemDeleteIfNotModified => "delete"
+        case ItemWriteStrategy.ItemOverwriteIfNotModified => "replace"
+        case ItemWriteStrategy.ItemTransactionalBatch => "upsert" // Default to upsert for transactional batch
+        case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => "patch"
+        case _ => throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported for transactional batch")
+      }
+    }
+
+    val bulkItemOperation = effectiveOperationType match {
+      case "create" =>
+        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+      
+      case "upsert" =>
         CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+      
+      case "replace" =>
         operationContext.eTag match {
           case Some(eTag) =>
             CosmosBulkOperations.getReplaceItemOperation(
@@ -751,29 +775,41 @@ private class TransactionalBulkWriter
               partitionKeyValue,
               new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
               operationContext)
-          case _ =>  CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+          case _ =>
+            CosmosBulkOperations.getReplaceItemOperation(
+              operationContext.itemId,
+              objectNode,
+              partitionKeyValue,
+              operationContext)
         }
-      case ItemWriteStrategy.ItemAppend =>
-        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemDelete =>
-        CosmosBulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
-      case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        CosmosBulkOperations.getDeleteItemOperation(
+      
+      case "delete" =>
+        operationContext.eTag match {
+          case Some(eTag) =>
+            CosmosBulkOperations.getDeleteItemOperation(
+              operationContext.itemId,
+              partitionKeyValue,
+              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
+              operationContext)
+          case _ =>
+            CosmosBulkOperations.getDeleteItemOperation(
+              operationContext.itemId,
+              partitionKeyValue,
+              operationContext)
+        }
+      
+      case "patch" =>
+        getPatchItemOperation(
           operationContext.itemId,
           partitionKeyValue,
-          operationContext.eTag match {
-            case Some(eTag) => new CosmosBulkItemRequestOptions().setIfMatchETag(eTag)
-            case _ =>  new CosmosBulkItemRequestOptions()
-          },
+          partitionKeyDefinition,
+          objectNode,
           operationContext)
-      case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => getPatchItemOperation(
-        operationContext.itemId,
-        partitionKeyValue,
-        partitionKeyDefinition,
-        objectNode,
-        operationContext)
+      
       case _ =>
-        throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
+        throw new IllegalArgumentException(
+          s"Unsupported operationType '$effectiveOperationType'. " +
+          s"Supported types for transactional batch: create, upsert, replace, delete")
     }
 
       this.emitBulkInput(bulkItemOperation)
@@ -1363,9 +1399,10 @@ private class TransactionalBulkWriter
     val attemptNumber: Int,
     val sequenceNumber: Long,
     /** starts from 1 * */
-    sourceItemInput: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    sourceItemInput: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    operationTypeInput: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
   {
-    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput)
+    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput, operationTypeInput)
 
     override def equals(obj: Any): Boolean = ctxCore.equals(obj)
 
@@ -1382,6 +1419,8 @@ private class TransactionalBulkWriter
     def eTag: Option[String] = ctxCore.eTag
 
     def sourceItem: Option[ObjectNode] = ctxCore.sourceItem
+
+    def operationType: Option[String] = ctxCore.operationType
   }
 
   private case class OperationContextCore
@@ -1389,7 +1428,8 @@ private class TransactionalBulkWriter
     itemId: String,
     partitionKeyValue: PartitionKey,
     eTag: Option[String],
-    sourceItem: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    sourceItem: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
+    operationType: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
   {
     override def productPrefix: String = "OperationContext"
   }
