@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.azure.v2</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.0.1-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-sdk-template;current} -->
+      <version>1.0.1-beta.2</version> <!-- {x-version-update;com.azure.v2:azure-sdk-template;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.v2</groupId>
