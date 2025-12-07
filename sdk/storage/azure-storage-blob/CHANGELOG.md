@@ -3,6 +3,7 @@
 ## 12.33.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
 
 ### Breaking Changes
 
