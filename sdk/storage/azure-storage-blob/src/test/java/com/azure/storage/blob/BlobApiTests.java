@@ -2559,6 +2559,45 @@ public class BlobApiTests extends BlobTestBase {
             () -> bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditions(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfModifiedSince(changeTime.plusDays(-1));
+        } else {
+            // requires no modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusMinutes(5));
+        }
+
+        assertResponseStatusCode(bc.deleteWithResponse(null, brc, null, null), 202);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditionsFail(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfModifiedSince(changeTime.plusMinutes(5));
+        } else {
+            // requires no modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusDays(-1));
+        }
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> bc.deleteWithResponse(null, brc, null, null));
+        assertEquals(412, e.getStatusCode());
+        assertEquals("AccessTierChangeTimeConditionNotMet", e.getErrorCode().toString());
+    }
+
     @Test
     public void blobDeleteError() {
         bc = cc.getBlobClient(generateBlobName());
