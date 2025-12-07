@@ -364,6 +364,17 @@ public final class Constants {
          */
         public static final String SAS_ENCRYPTION_SCOPE = "ses";
 
+
+        /**
+         * The SAS request headers parameter.
+         */
+        public static final String SAS_REQUEST_HEADERS = "srh";
+
+        /**
+         * The SAS request query parameters parameter.
+         */
+        public static final String SAS_REQUEST_QUERY_PARAMETERS = "srq";
+
         /**
          * The SAS cache control parameter.
          */

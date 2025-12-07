@@ -20,10 +20,13 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeadersForSasSigning;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParametersForSasSigning;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
 /**
@@ -53,46 +56,28 @@ public class DataLakeSasImplUtil {
         .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
-
     private OffsetDateTime startTime;
-
     private OffsetDateTime expiryTime;
-
     private String permissions;
-
     private SasIpRange sasIpRange;
-
     private String fileSystemName;
-
     private String pathName;
-
     private String resource;
-
     private String identifier;
-
     private String cacheControl;
-
     private String contentDisposition;
-
     private String contentEncoding;
-
     private String contentLanguage;
-
     private String contentType;
-
     private Boolean isDirectory;
-
     private Integer directoryDepth;
-
     private String authorizedAadObjectId;
-
     private String unauthorizedAadObjectId;
-
     private String correlationId;
-
     private String encryptionScope;
-
     private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
@@ -134,6 +119,8 @@ public class DataLakeSasImplUtil {
         this.isDirectory = isDirectory;
         this.encryptionScope = sasValues.getEncryptionScope();
         this.delegatedUserObjectId = sasValues.getDelegatedUserObjectId();
+        this.requestHeaders = sasValues.getRequestHeaders();
+        this.requestQueryParameters = sasValues.getRequestQueryParameters();
     }
 
     /**
@@ -270,20 +257,23 @@ public class DataLakeSasImplUtil {
         }
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
+            formatRequestHeadersForSasSigning(this.requestHeaders));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
+            formatRequestQueryParametersForSasSigning(this.requestQueryParameters));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
 
     }
 
     /**
-     * Ensures that the builder's properties are in a consistent state.
-    
+     * <p>Ensures that the builder's properties are in a consistent state.
      * 1. If there is no identifier set, ensure expiryTime and permissions are set.
      * 2. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
@@ -291,11 +281,11 @@ public class DataLakeSasImplUtil {
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
      *    d. Otherwise, it is a blob resource.
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
-     * 4. Ensure saoid is not set when suoid is set and vice versa.
+     * 4. Ensure saoid is not set when suoid is set and vice versa. </p>
      *
      * Taken from:
-     * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
-     * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     * <a href="https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33">sas_service.go</a>
+     * <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs">BlobSasBuilder.cs</a>
      */
     public void ensureState() {
         if (identifier == null) {
@@ -445,6 +435,30 @@ public class DataLakeSasImplUtil {
                 this.contentEncoding == null ? "" : this.contentEncoding,
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType);
+        } else if (VERSION.compareTo(DataLakeServiceVersion.V2026_02_06.getVersion()) <= 0) {
+            return String.join("\n", this.permissions == null ? "" : this.permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName, key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
+                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+                key.getSignedExpiry() == null
+                    ? ""
+                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+                key.getSignedService() == null ? "" : key.getSignedService(),
+                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+                this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
+                this.encryptionScope == null ? "" : this.encryptionScope,
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType);
         } else {
             return String.join("\n", this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -464,6 +478,10 @@ public class DataLakeSasImplUtil {
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
                 this.encryptionScope == null ? "" : this.encryptionScope,
+                this.requestHeaders == null ? "" : formatRequestHeadersForSasSigning(this.requestHeaders),
+                this.requestQueryParameters == null
+                    ? ""
+                    : formatRequestQueryParametersForSasSigning(this.requestQueryParameters),
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
