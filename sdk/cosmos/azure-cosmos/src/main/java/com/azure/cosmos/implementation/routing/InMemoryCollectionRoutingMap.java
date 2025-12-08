@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
@@ -16,13 +15,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Used internally to cache partition key ranges of a collection in the Azure Cosmos DB database service.
@@ -54,7 +53,9 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
                 false)).collect(Collectors.toList());
 
         this.collectionUniqueId = collectionUniqueId;
-        this.goneRanges = new HashSet<>(orderedPartitionKeyRanges.stream().flatMap(r -> CollectionUtils.emptyIfNull(r.getParents()).stream()).collect(Collectors.toSet()));
+        this.goneRanges = orderedPartitionKeyRanges.stream()
+            .flatMap(r -> r.getParents() == null ? Stream.of() : r.getParents().stream())
+            .collect(Collectors.toSet());
         this.changeFeedNextIfNoneMatch.set(changeFeedNextIfNoneMatch);
     }
 
@@ -242,7 +243,9 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
         String changeFeedNextIfNoneMatch,
         String collectionRid) {
-        Set<String> newGoneRanges = new HashSet<>(ranges.stream().flatMap(tuple -> CollectionUtils.emptyIfNull(tuple.getLeft().getParents()).stream()).collect(Collectors.toSet()));
+        Set<String> newGoneRanges = ranges.stream()
+            .flatMap(tuple -> tuple.getLeft().getParents() == null ? Stream.of() : tuple.getLeft().getParents().stream())
+            .collect(Collectors.toSet());
         newGoneRanges.addAll(this.goneRanges);
 
         Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> newRangeById =
@@ -253,7 +256,7 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
             newRangeById.put(tuple.getLeft().getId(), tuple);
         }
 
-        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = newRangeById.values().stream().collect(Collectors.toList());
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = new ArrayList<>(newRangeById.values());
 
         Collections.sort(sortedRanges, new MinPartitionKeyPairComparator());
 

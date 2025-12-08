@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.GatewayTestUtils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -20,6 +19,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -253,8 +253,7 @@ public class RegionScopedSessionContainerConcurrencyTest {
         for (URI u : orderedReadEndpoints) {
             endpointBuilder.add(new RegionalRoutingContext(u));
         }
-        UnmodifiableList<RegionalRoutingContext> endpoints =
-            new UnmodifiableList<>(endpointBuilder.build());
+        List<RegionalRoutingContext> endpoints = Collections.unmodifiableList(endpointBuilder.build());
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(EAST_US), Mockito.any()))

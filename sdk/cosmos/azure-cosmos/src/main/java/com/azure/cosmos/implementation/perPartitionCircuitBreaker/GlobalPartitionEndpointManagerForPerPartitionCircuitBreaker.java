@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
@@ -138,7 +137,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                 if (isFailureThresholdBreached.get()) {
 
-                    UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts = request.isReadOnlyRequest() ?
+                    List<RegionalRoutingContext> applicableRegionalRoutingContexts = request.isReadOnlyRequest() ?
                         this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request.requestContext.getExcludeRegions()) :
                         this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request.requestContext.getExcludeRegions());
 
@@ -270,7 +269,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 }
             }
 
-            return UnmodifiableList.unmodifiableList(unavailableRegions);
+            return Collections.unmodifiableList(unavailableRegions);
         } catch (Exception e) {
             throw wrapAsCosmosException(request, e);
         }
@@ -432,12 +431,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 return false;
             }
 
-            UnmodifiableList<RegionalRoutingContext> applicableReadEndpoints = globalEndpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList());
+            List<RegionalRoutingContext> applicableReadEndpoints = globalEndpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList());
 
             return applicableReadEndpoints != null && applicableReadEndpoints.size() > 1;
         }
 
-        UnmodifiableList<RegionalRoutingContext> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteRegionalRoutingContexts(Collections.emptyList());
+        List<RegionalRoutingContext> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteRegionalRoutingContexts(Collections.emptyList());
 
         return applicableWriteEndpoints != null && applicableWriteEndpoints.size() > 1;
     }

@@ -17,16 +17,6 @@
         "type": "maven",
         "maven": {
           "groupId": "org.apache.commons",
-          "artifactId": "commons-collections4",
-          "version": "4.2"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "org.apache.commons",
           "artifactId": "commons-text",
           "version": "1.10.0"
         }

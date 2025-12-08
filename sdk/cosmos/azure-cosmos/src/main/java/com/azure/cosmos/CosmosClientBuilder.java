@@ -15,11 +15,9 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -300,7 +298,7 @@ public class CosmosClientBuilder implements
     }
 
     List<CosmosOperationPolicy> getOperationPolicies() {
-        return UnmodifiableList.unmodifiableList(this.requestPolicies);
+        return Collections.unmodifiableList(this.requestPolicies);
     }
 
     /**

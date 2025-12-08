@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
@@ -181,8 +180,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosAsyncContainer.openConnectionsAndInitCaches(proactiveConnectionRegionCount).block();
 
-            UnmodifiableList<RegionalRoutingContext> readEndpoints =
-                globalEndpointManager.getReadEndpoints();
+            List<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
@@ -345,7 +343,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
@@ -495,7 +493,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
                 Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
@@ -666,7 +664,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
+            List<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
                     Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))

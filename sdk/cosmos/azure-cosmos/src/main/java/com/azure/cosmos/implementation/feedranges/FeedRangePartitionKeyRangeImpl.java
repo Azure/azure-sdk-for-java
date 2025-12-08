@@ -12,12 +12,12 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -125,8 +125,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
         final ArrayList<String> temp = new ArrayList<>();
         temp.add(this.partitionKeyRangeId);
 
-        return Mono.just(
-            UnmodifiableList.unmodifiableList(temp));
+        return Mono.just(Collections.unmodifiableList(temp));
     }
 
     @Override
