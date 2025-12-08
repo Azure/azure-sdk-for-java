@@ -48,38 +48,5 @@ public class TextTranslationCustomization extends Customization {
                 }
             )
         );
-
-        logger.info("Fixing ReturnType.COLLECTION to ReturnType.SINGLE for List return types");
-        customization.getClass("com.azure.ai.translation.text", "TextTranslationAsyncClient")
-            .customizeAst(ast -> ast.getClassByName("TextTranslationAsyncClient").ifPresent(clazz -> {
-                clazz.getMethods().forEach(method -> {
-                    method.getAnnotations().forEach(annotation -> {
-                        if (annotation.getNameAsString().equals("ServiceMethod")) {
-                            annotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
-                                if (pair.getNameAsString().equals("returns") 
-                                    && pair.getValue().toString().contains("COLLECTION")) {
-                                    pair.setValue("ReturnType.SINGLE");
-                                }
-                            });
-                        }
-                    });
-                });
-            }));
-
-        customization.getClass("com.azure.ai.translation.text", "TextTranslationClient")
-            .customizeAst(ast -> ast.getClassByName("TextTranslationClient").ifPresent(clazz -> {
-                clazz.getMethods().forEach(method -> {
-                    method.getAnnotations().forEach(annotation -> {
-                        if (annotation.getNameAsString().equals("ServiceMethod")) {
-                            annotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
-                                if (pair.getNameAsString().equals("returns") 
-                                    && pair.getValue().toString().contains("COLLECTION")) {
-                                    pair.setValue("ReturnType.SINGLE");
-                                }
-                            });
-                        }
-                    });
-                });
-            }));
     }
 }
