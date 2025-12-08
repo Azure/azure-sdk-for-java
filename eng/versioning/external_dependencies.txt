@@ -352,7 +352,7 @@ springboot4_org.springframework.boot:spring-boot-data-redis;4.0.0
 springboot4_org.springframework.boot:spring-boot-docker-compose;4.0.0
 springboot4_org.springframework.boot:spring-boot-health;4.0.0
 springboot4_org.springframework.boot:spring-boot-http-converter;4.0.0
-springboot4_org.springframework.boot:spring-boot-jackson;4.0.0
+springboot4_org.springframework.boot:spring-boot-jackson2;4.0.0
 springboot4_org.springframework.boot:spring-boot-jdbc;4.0.0
 springboot4_org.springframework.boot:spring-boot-jms;4.0.0
 springboot4_org.springframework.boot:spring-boot-kafka;4.0.0

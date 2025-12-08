@@ -181,15 +181,8 @@
     <!--Jackson-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-jackson</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jackson;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.20.1</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-      <optional>true</optional>
+      <artifactId>spring-boot-jackson2</artifactId>
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jackson2;external_dependency} -->
     </dependency>
 
     <!-- Azure SDKs-->
@@ -549,7 +542,6 @@
               <includes>
                 <include>com.azure:azure-servicebus-jms:[2.1.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.mysql:mysql-connector-j:[9.5.0]</include> <!-- {x-include-update;springboot4_com.mysql:mysql-connector-j;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.20.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>io.lettuce:lettuce-core:[6.8.1.RELEASE]</include> <!-- {x-include-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.1.0]</include> <!-- {x-include-update;springboot4_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.1.1]</include> <!-- {x-include-update;springboot4_jakarta.validation:jakarta.validation-api;external_dependency} -->
@@ -562,7 +554,7 @@
                 <include>org.springframework.boot:spring-boot-data-redis:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-http-converter:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-http-converter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-kafka:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-kafka;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-jackson:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jackson;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-jackson2:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jackson2;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jdbc:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-jms:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-jms;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-restclient:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-restclient;external_dependency} -->
