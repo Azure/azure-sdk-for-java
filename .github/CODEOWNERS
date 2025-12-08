@@ -83,13 +83,13 @@
 # ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jhakulin @jpalvarezl @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @trrwilson @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @jhakulin @jayantjha @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @dargilco @trrwilson @jayantjha @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @dargilco @trrwilson @glharper @Azure/azure-java-sdk
 
 # PRLabel: %Voice Live
 /sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang @amber-yujueWang

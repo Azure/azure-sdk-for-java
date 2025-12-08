@@ -1,7 +1,0 @@
-emit:
-  - "@azure-tools/typespec-java"
-options:
-  "@azure-tools/typespec-java":
-    customization-class: "SpeechTranscriptionCustomization"
-    namespace: "com.azure.ai.speech.transcription"
-    service-name: "Transcription"

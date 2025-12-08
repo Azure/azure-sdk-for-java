@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupVaultsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupVaults_List.json
+     * x-ms-original-file: 2025-09-01-preview/BackupVaults_List.json
      */
     /**
      * Sample code: BackupVaults_List.

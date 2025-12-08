@@ -285,7 +285,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Generated
     public static TranscriptionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TranscriptionOptions deserializedTranscriptionOptions = new TranscriptionOptions();
+            TranscriptionOptions deserializedTranscriptionOptions = new TranscriptionOptions((String) null);
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -294,7 +294,7 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
                 } else if ("locales".equals(fieldName)) {
                     List<String> locales = reader.readArray(reader1 -> reader1.getString());
                     deserializedTranscriptionOptions.locales = locales;
-                } else if ("models".equals(fieldName)) {
+                } else if ("localeModelMapping".equals(fieldName)) {
                     Map<String, String> localeModelMapping = reader.readMap(reader1 -> reader1.getString());
                     deserializedTranscriptionOptions.localeModelMapping = localeModelMapping;
                 } else if ("profanityFilterMode".equals(fieldName)) {
@@ -337,5 +337,14 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     public TranscriptionOptions(AudioFileDetails fileDetails) {
         this.audioFileDetails = fileDetails;
+    }
+
+    /**
+     * Get the audioFileDetails property: The audio file details for transcription.
+     *
+     * @return the audioFileDetails value.
+     */
+    public AudioFileDetails getFileDetails() {
+        return this.audioFileDetails;
     }
 }

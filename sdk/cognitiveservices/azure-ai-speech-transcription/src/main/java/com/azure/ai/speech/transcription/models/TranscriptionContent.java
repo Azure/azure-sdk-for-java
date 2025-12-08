@@ -13,49 +13,11 @@ import com.azure.core.annotation.Generated;
 public final class TranscriptionContent {
 
     /*
-     * Metadata for a transcription request. This field contains a JSON-serialized object of type
-     * `TranscriptionOptions`.
-     */
-    @Generated
-    private TranscriptionOptions options;
-
-    /*
      * The content of the audio file to be transcribed. The audio file must be shorter than 2 hours in audio duration
      * and smaller than 250 MB in size. Optional if audioUrl is provided in the definition.
      */
     @Generated
     private AudioFileDetails audio;
-
-    /**
-     * Creates an instance of TranscriptionContent class.
-     */
-    @Generated
-    public TranscriptionContent() {
-    }
-
-    /**
-     * Get the options property: Metadata for a transcription request. This field contains a JSON-serialized object of
-     * type `TranscriptionOptions`.
-     *
-     * @return the options value.
-     */
-    @Generated
-    public TranscriptionOptions getOptions() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: Metadata for a transcription request. This field contains a JSON-serialized object of
-     * type `TranscriptionOptions`.
-     *
-     * @param options the options value to set.
-     * @return the TranscriptionContent object itself.
-     */
-    @Generated
-    public TranscriptionContent setOptions(TranscriptionOptions options) {
-        this.options = options;
-        return this;
-    }
 
     /**
      * Get the audio property: The content of the audio file to be transcribed. The audio file must be shorter than 2
@@ -79,5 +41,33 @@ public final class TranscriptionContent {
     public TranscriptionContent setAudio(AudioFileDetails audio) {
         this.audio = audio;
         return this;
+    }
+
+    /**
+     * Creates an instance of TranscriptionContent class.
+     *
+     * @param options the options value to set.
+     */
+    @Generated
+    public TranscriptionContent(TranscriptionOptions options) {
+        this.options = options;
+    }
+
+    /*
+     * Metadata for a transcription request. This field contains a JSON-serialized object of type
+     * `TranscriptionOptions`.
+     */
+    @Generated
+    private final TranscriptionOptions options;
+
+    /**
+     * Get the options property: Metadata for a transcription request. This field contains a JSON-serialized object of
+     * type `TranscriptionOptions`.
+     *
+     * @return the options value.
+     */
+    @Generated
+    public TranscriptionOptions getOptions() {
+        return this.options;
     }
 }

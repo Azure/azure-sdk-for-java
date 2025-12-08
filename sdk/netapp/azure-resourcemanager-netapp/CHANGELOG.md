@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,459 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0-beta.1 (2025-12-04)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.RansomwareSuspects` was added
+
+* `models.BucketPatch` was added
+
+* `models.ElasticBackupProperties` was added
+
+* `models.EncryptionState` was added
+
+* `models.ElasticBackupPolicyProperties` was added
+
+* `models.ElasticBackupPolicyUpdateProperties` was added
+
+* `models.ElasticSnapshot` was added
+
+* `models.ElasticCapacityPools` was added
+
+* `models.ElasticKeyVaultProperties` was added
+
+* `models.LdapConfiguration` was added
+
+* `models.RansomwareReport` was added
+
+* `models.ElasticVolumeUpdateProperties` was added
+
+* `models.ActualRansomwareProtectionState` was added
+
+* `models.ElasticBackup$Definition` was added
+
+* `models.ElasticSnapshotPolicyHourlySchedule` was added
+
+* `models.ElasticMountTargetProperties` was added
+
+* `models.Bucket$DefinitionStages` was added
+
+* `models.ElasticVolumeUpdate` was added
+
+* `models.ElasticVolume$UpdateStages` was added
+
+* `models.KerberosState` was added
+
+* `models.ElasticVolumeDataProtectionProperties` was added
+
+* `models.ElasticSnapshotPolicyProperties` was added
+
+* `models.ElasticVolumeSnapshotProperties` was added
+
+* `models.ElasticPoolEncryptionKeySource` was added
+
+* `models.ListQuotaReportResponse` was added
+
+* `models.ElasticServiceLevel` was added
+
+* `models.CacheLifeCycleState` was added
+
+* `models.ElasticBackupPolicy` was added
+
+* `models.SmbSettings` was added
+
+* `models.BucketServerProperties` was added
+
+* `models.ElasticResourceAvailabilityStatus` was added
+
+* `models.Cache$UpdateStages` was added
+
+* `models.LdapServerType` was added
+
+* `models.ElasticCapacityPoolUpdateProperties` was added
+
+* `models.ElasticNfsv3Access` was added
+
+* `models.RansomwareSuspectResolution` was added
+
+* `models.CheckElasticVolumeFilePathAvailabilityRequest` was added
+
+* `models.SuspectFile` was added
+
+* `models.VolumeLanguage` was added
+
+* `models.ElasticSmbEncryption` was added
+
+* `models.ElasticVolumeProperties` was added
+
+* `models.BreakthroughMode` was added
+
+* `models.ElasticAccount$DefinitionStages` was added
+
+* `models.ElasticEncryption` was added
+
+* `models.ElasticBackupPolicy$Definition` was added
+
+* `models.RansomwareReportSeverity` was added
+
+* `models.ElasticVolumeRevert` was added
+
+* `models.RansomwareReports` was added
+
+* `models.ElasticBackupVaultUpdate` was added
+
+* `models.ActiveDirectoryConfig$Definition` was added
+
+* `models.SnapshotUsage` was added
+
+* `models.ElasticSnapshotPolicyUpdateProperties` was added
+
+* `models.ActiveDirectoryConfig` was added
+
+* `models.VolumeSize` was added
+
+* `models.ElasticBackupPolicies` was added
+
+* `models.CacheMountTargetProperties` was added
+
+* `models.ElasticExportPolicyRule` was added
+
+* `models.BucketPermissions` was added
+
+* `models.ActiveDirectoryConfig$DefinitionStages` was added
+
+* `models.ElasticAccountUpdate` was added
+
+* `models.ElasticCapacityPoolUpdate` was added
+
+* `models.ElasticSnapshot$UpdateStages` was added
+
+* `models.CifsChangeNotifyState` was added
+
+* `models.ActiveDirectoryConfigUpdateProperties` was added
+
+* `models.ElasticAccountProperties` was added
+
+* `models.ElasticSnapshotPolicyUpdate` was added
+
+* `models.ElasticSnapshots` was added
+
+* `models.ElasticKeyVaultStatus` was added
+
+* `models.BucketPatchPermissions` was added
+
+* `models.Bucket$Definition` was added
+
+* `models.ElasticEncryptionIdentity` was added
+
+* `models.Bucket` was added
+
+* `models.ElasticSnapshotProperties` was added
+
+* `models.ActiveDirectoryConfigs` was added
+
+* `models.ElasticBackup$UpdateStages` was added
+
+* `models.CacheProperties` was added
+
+* `models.NfsUser` was added
+
+* `models.BucketGenerateCredentials` was added
+
+* `models.ActiveDirectoryConfig$Update` was added
+
+* `models.SecretPasswordIdentity` was added
+
+* `models.Caches` was added
+
+* `models.Cache$Definition` was added
+
+* `models.ElasticAccount$UpdateStages` was added
+
+* `models.ElasticBackupPolicy$Update` was added
+
+* `models.ElasticBackupVaults` was added
+
+* `models.RansomwareReportState` was added
+
+* `models.ElasticCapacityPool` was added
+
+* `models.CacheProvisioningState` was added
+
+* `models.ElasticExportPolicy` was added
+
+* `models.ElasticSnapshotPolicyWeeklySchedule` was added
+
+* `models.OriginClusterInformation` was added
+
+* `models.ElasticVolume$Definition` was added
+
+* `models.BucketCredentialsExpiry` was added
+
+* `models.CacheUpdate` was added
+
+* `models.ElasticRootAccess` was added
+
+* `models.ElasticBackupVault$Update` was added
+
+* `models.RansomwareSuspectsClearRequest` was added
+
+* `models.ElasticBackups` was added
+
+* `models.ElasticSnapshotPolicy` was added
+
+* `models.CheckElasticResourceAvailabilityStatus` was added
+
+* `models.SecretPassword` was added
+
+* `models.ElasticBackup$Update` was added
+
+* `models.ElasticCapacityPool$Update` was added
+
+* `models.ElasticSnapshotPolicyDailySchedule` was added
+
+* `models.ElasticCapacityPool$UpdateStages` was added
+
+* `models.PeeringPassphrases` was added
+
+* `models.Bucket$Update` was added
+
+* `models.ElasticAccount$Update` was added
+
+* `models.LdapState` was added
+
+* `models.Cache$Update` was added
+
+* `models.RansomwareProtectionPatchSettings` was added
+
+* `models.Cache` was added
+
+* `models.ElasticSnapshotPolicy$Definition` was added
+
+* `models.RansomwareProtectionSettings` was added
+
+* `models.ElasticSnapshot$Definition` was added
+
+* `models.ElasticBackupVaultProperties` was added
+
+* `models.CachePropertiesExportPolicy` was added
+
+* `models.ElasticBackupPolicy$DefinitionStages` was added
+
+* `models.ElasticNfsv4Access` was added
+
+* `models.ActiveDirectoryConfigProperties` was added
+
+* `models.ElasticVolumeRestorationState` was added
+
+* `models.ElasticVolumePolicyEnforcement` was added
+
+* `models.SecretPasswordKeyVaultProperties` was added
+
+* `models.ElasticAccount$Definition` was added
+
+* `models.ElasticVolumes` was added
+
+* `models.ElasticBackupVault$Definition` was added
+
+* `models.ElasticSnapshotPolicy$Update` was added
+
+* `models.ProtocolTypes` was added
+
+* `models.ElasticBackup$DefinitionStages` was added
+
+* `models.CifsUser` was added
+
+* `models.DesiredRansomwareProtectionState` was added
+
+* `models.ElasticSnapshotPolicies` was added
+
+* `models.ElasticAccount` was added
+
+* `models.QuotaReport` was added
+
+* `models.CheckElasticResourceAvailabilityReason` was added
+
+* `models.ElasticCapacityPoolProperties` was added
+
+* `models.ActiveDirectoryConfigUpdate` was added
+
+* `models.BucketServerPatchProperties` was added
+
+* `models.ElasticVolume$DefinitionStages` was added
+
+* `models.CacheUpdateProperties` was added
+
+* `models.ElasticAccountUpdateProperties` was added
+
+* `models.ElasticCapacityPool$DefinitionStages` was added
+
+* `models.CredentialsStatus` was added
+
+* `models.ElasticSmbProperties` was added
+
+* `models.LargeVolumeType` was added
+
+* `models.PolicyStatus` was added
+
+* `models.ElasticVolumeBackupProperties` was added
+
+* `models.ElasticBackup` was added
+
+* `models.ChangeZoneRequest` was added
+
+* `models.ElasticBackupVault$DefinitionStages` was added
+
+* `models.ElasticSnapshot$Update` was added
+
+* `models.CheckElasticResourceAvailabilityResponse` was added
+
+* `models.SmbEncryptionState` was added
+
+* `models.ElasticBackupVault` was added
+
+* `models.ElasticUnixAccessRule` was added
+
+* `models.ActiveDirectoryConfig$UpdateStages` was added
+
+* `models.ElasticVolume` was added
+
+* `models.ElasticVolume$Update` was added
+
+* `models.RansomwareReportProperties` was added
+
+* `models.ElasticBackupPolicyState` was added
+
+* `models.ElasticSnapshotPolicyMonthlySchedule` was added
+
+* `models.ExternalReplicationSetupStatus` was added
+
+* `models.GlobalFileLockingState` was added
+
+* `models.Cache$DefinitionStages` was added
+
+* `models.ElasticVolumeDataProtectionPatchProperties` was added
+
+* `models.ElasticAccounts` was added
+
+* `models.ElasticSmbPatchProperties` was added
+
+* `models.Bucket$UpdateStages` was added
+
+* `models.Buckets` was added
+
+* `models.ElasticSnapshot$DefinitionStages` was added
+
+* `models.FileSystemUser` was added
+
+* `models.ElasticBackupVault$UpdateStages` was added
+
+* `models.ElasticBackupPolicyUpdate` was added
+
+* `models.SnapshotDirectoryVisibility` was added
+
+* `models.ElasticBackupPolicy$UpdateStages` was added
+
+* `models.ElasticEncryptionConfiguration` was added
+
+* `models.EnableWriteBackState` was added
+
+* `models.DayOfWeek` was added
+
+* `models.ElasticCapacityPool$Definition` was added
+
+* `models.ElasticSnapshotPolicy$DefinitionStages` was added
+
+* `models.ElasticBackupType` was added
+
+* `models.ElasticProtocolType` was added
+
+* `models.ElasticSnapshotPolicy$UpdateStages` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+
+#### `models.ReplicationObject` was modified
+
+* `relationshipStatus()` was added
+* `externalReplicationSetupInfo()` was added
+* `externalReplicationSetupStatus()` was added
+* `mirrorState()` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+* `ldapConfiguration()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withLdapConfiguration(models.LdapConfiguration)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `ldapServerType()` was added
+* `largeVolumeType()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `breakthroughMode()` was added
+* `language()` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLdapServerType(models.LdapServerType)` was added
+
+#### `models.Volume` was modified
+
+* `listQuotaReport(com.azure.core.util.Context)` was added
+* `language()` was added
+* `largeVolumeType()` was added
+* `breakthroughMode()` was added
+* `listQuotaReport()` was added
+* `ldapServerType()` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `ransomwareProtection()` was added
+* `withRansomwareProtection(models.RansomwareProtectionSettings)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `buckets()` was added
+* `activeDirectoryConfigs()` was added
+* `elasticCapacityPools()` was added
+* `elasticAccounts()` was added
+* `caches()` was added
+* `elasticBackupPolicies()` was added
+* `ransomwareReports()` was added
+* `elasticSnapshotPolicies()` was added
+* `elasticVolumes()` was added
+* `elasticBackups()` was added
+* `elasticBackupVaults()` was added
+* `elasticSnapshots()` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `withRansomwareProtection(models.RansomwareProtectionPatchSettings)` was added
+* `ransomwareProtection()` was added
+
+#### `models.Volumes` was modified
+
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listQuotaReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `ldapConfiguration()` was added
 
 ## 2.0.0 (2025-11-14)
 
