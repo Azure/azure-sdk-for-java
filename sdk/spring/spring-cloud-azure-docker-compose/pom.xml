@@ -83,6 +83,11 @@
       <artifactId>spring-boot-docker-compose</artifactId>
       <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.20.1</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
         which is used in @Nullable annotation in reactor core classes -->
