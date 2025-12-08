@@ -1,10 +1,10 @@
 # Release History
 
 ## 12.29.0-beta.2 (Unreleased)
-- Added support for improved error handling for file share provisioning.
+
 
 ### Features Added
-
+- Added support for improved error handling for file share provisioning.
 ### Breaking Changes
 
 ### Bugs Fixed
