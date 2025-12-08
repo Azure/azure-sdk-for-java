@@ -583,7 +583,7 @@ public class DocumentProducerTest {
                     range1,
                     () -> "n/a");
 
-            StepVerifier.create(documentProducer.produceAsync().collectList())
+            StepVerifier.create(documentProducer.produceAsync())
                 .expectNextCount(responses.size())
                 .verifyComplete();
 
