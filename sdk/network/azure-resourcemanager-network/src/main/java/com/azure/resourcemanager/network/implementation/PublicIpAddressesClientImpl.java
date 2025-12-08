@@ -36,7 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpDdosProtectionStatusResultInner;
+import com.azure.resourcemanager.network.models.DisassociateCloudServicePublicIpRequest;
 import com.azure.resourcemanager.network.models.PublicIpAddressListResult;
+import com.azure.resourcemanager.network.models.ReserveCloudServicePublicIpAddressRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -179,6 +181,28 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/reserveCloudServicePublicIpAddress")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reserveCloudServicePublicIpAddress(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("publicIpAddressName") String publicIpAddressName,
+            @BodyParam("application/json") ReserveCloudServicePublicIpAddressRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}/disassociateCloudServiceReservedPublicIp")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> disassociateCloudServiceReservedPublicIp(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("publicIpAddressName") String publicIpAddressName,
+            @BodyParam("application/json") DisassociateCloudServicePublicIpRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -293,7 +317,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServicePublicIpAddresses(this.client.getEndpoint(),
@@ -334,7 +358,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -465,7 +489,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstancePublicIpAddresses(this.client.getEndpoint(),
@@ -523,7 +547,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,7 +702,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName,
@@ -740,7 +764,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServicePublicIpAddress(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -847,7 +871,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -885,7 +909,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1055,7 +1079,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1095,7 +1119,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1188,7 +1212,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -1232,7 +1256,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1424,7 +1448,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1468,7 +1492,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, publicIpAddressName, apiVersion,
@@ -1546,7 +1570,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1576,7 +1600,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1661,7 +1685,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1697,7 +1721,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1797,7 +1821,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName,
@@ -1836,7 +1860,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.ddosProtectionStatus(this.client.getEndpoint(), resourceGroupName, publicIpAddressName,
@@ -1986,6 +2010,539 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
     public PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(String resourceGroupName,
         String publicIpAddressName, Context context) {
         return ddosProtectionStatusAsync(resourceGroupName, publicIpAddressName, context).block();
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> reserveCloudServicePublicIpAddressWithResponseAsync(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.reserveCloudServicePublicIpAddress(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, publicIpAddressName, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reserveCloudServicePublicIpAddressWithResponseAsync(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.reserveCloudServicePublicIpAddress(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, publicIpAddressName, parameters, accept, context);
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginReserveCloudServicePublicIpAddressAsync(String resourceGroupName, String publicIpAddressName,
+            ReserveCloudServicePublicIpAddressRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reserveCloudServicePublicIpAddressWithResponseAsync(resourceGroupName, publicIpAddressName, parameters);
+        return this.client.<PublicIpAddressInner, PublicIpAddressInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PublicIpAddressInner.class, PublicIpAddressInner.class, this.client.getContext());
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginReserveCloudServicePublicIpAddressAsync(String resourceGroupName, String publicIpAddressName,
+            ReserveCloudServicePublicIpAddressRequest parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = reserveCloudServicePublicIpAddressWithResponseAsync(resourceGroupName,
+            publicIpAddressName, parameters, context);
+        return this.client.<PublicIpAddressInner, PublicIpAddressInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PublicIpAddressInner.class, PublicIpAddressInner.class, context);
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
+        return this.beginReserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginReserveCloudServicePublicIpAddress(
+        String resourceGroupName, String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters,
+        Context context) {
+        return this
+            .beginReserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PublicIpAddressInner> reserveCloudServicePublicIpAddressAsync(String resourceGroupName,
+        String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters) {
+        return beginReserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PublicIpAddressInner> reserveCloudServicePublicIpAddressAsync(String resourceGroupName,
+        String publicIpAddressName, ReserveCloudServicePublicIpAddressRequest parameters, Context context) {
+        return beginReserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
+        ReserveCloudServicePublicIpAddressRequest parameters) {
+        return reserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters).block();
+    }
+
+    /**
+     * Reserves the specified Cloud Service Public IP by switching its allocation method to Static. If rollback is
+     * requested, reverts the allocation method to Dynamic.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner reserveCloudServicePublicIpAddress(String resourceGroupName, String publicIpAddressName,
+        ReserveCloudServicePublicIpAddressRequest parameters, Context context) {
+        return reserveCloudServicePublicIpAddressAsync(resourceGroupName, publicIpAddressName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> disassociateCloudServiceReservedPublicIpWithResponseAsync(
+        String resourceGroupName, String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.disassociateCloudServiceReservedPublicIp(this.client.getEndpoint(),
+                apiVersion, this.client.getSubscriptionId(), resourceGroupName, publicIpAddressName, parameters, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> disassociateCloudServiceReservedPublicIpWithResponseAsync(
+        String resourceGroupName, String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.disassociateCloudServiceReservedPublicIp(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, publicIpAddressName, parameters, accept, context);
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginDisassociateCloudServiceReservedPublicIpAsync(String resourceGroupName, String publicIpAddressName,
+            DisassociateCloudServicePublicIpRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = disassociateCloudServiceReservedPublicIpWithResponseAsync(
+            resourceGroupName, publicIpAddressName, parameters);
+        return this.client.<PublicIpAddressInner, PublicIpAddressInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PublicIpAddressInner.class, PublicIpAddressInner.class, this.client.getContext());
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginDisassociateCloudServiceReservedPublicIpAsync(String resourceGroupName, String publicIpAddressName,
+            DisassociateCloudServicePublicIpRequest parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = disassociateCloudServiceReservedPublicIpWithResponseAsync(
+            resourceGroupName, publicIpAddressName, parameters, context);
+        return this.client.<PublicIpAddressInner, PublicIpAddressInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PublicIpAddressInner.class, PublicIpAddressInner.class, context);
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginDisassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
+            DisassociateCloudServicePublicIpRequest parameters) {
+        return this
+            .beginDisassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner>
+        beginDisassociateCloudServiceReservedPublicIp(String resourceGroupName, String publicIpAddressName,
+            DisassociateCloudServicePublicIpRequest parameters, Context context) {
+        return this
+            .beginDisassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PublicIpAddressInner> disassociateCloudServiceReservedPublicIpAsync(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
+        return beginDisassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PublicIpAddressInner> disassociateCloudServiceReservedPublicIpAsync(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters, Context context) {
+        return beginDisassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters) {
+        return disassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters)
+            .block();
+    }
+
+    /**
+     * Disassociates the Cloud Service reserved Public IP and associates the specified Standalone Public IP to the same
+     * Cloud Service frontend.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameter that define which Public IP Address should be associated in place of given Public IP
+     * Address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner disassociateCloudServiceReservedPublicIp(String resourceGroupName,
+        String publicIpAddressName, DisassociateCloudServicePublicIpRequest parameters, Context context) {
+        return disassociateCloudServiceReservedPublicIpAsync(resourceGroupName, publicIpAddressName, parameters,
+            context).block();
     }
 
     /**

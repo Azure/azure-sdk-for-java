@@ -27,7 +27,7 @@ public final class UserInfo implements JsonSerializable<UserInfo> {
     private String lastName;
 
     /*
-     * User Email
+     * Reusable representation of an email address
      */
     private String emailAddress;
 
@@ -88,7 +88,7 @@ public final class UserInfo implements JsonSerializable<UserInfo> {
     }
 
     /**
-     * Get the emailAddress property: User Email.
+     * Get the emailAddress property: Reusable representation of an email address.
      * 
      * @return the emailAddress value.
      */
@@ -97,7 +97,7 @@ public final class UserInfo implements JsonSerializable<UserInfo> {
     }
 
     /**
-     * Set the emailAddress property: User Email.
+     * Set the emailAddress property: Reusable representation of an email address.
      * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserInfo object itself.

@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -65,7 +65,7 @@ public final class DeploymentsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -82,7 +82,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDeployment(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -92,7 +92,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDeploymentSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -102,7 +102,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeployments(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -112,7 +112,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -122,7 +122,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listDeploymentsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
@@ -132,7 +132,7 @@ public final class DeploymentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listDeploymentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
@@ -159,9 +159,9 @@ public final class DeploymentsImpl {
      * @return a deployed model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDeployment(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
@@ -187,10 +187,10 @@ public final class DeploymentsImpl {
      * @return a deployed model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeploymentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            accept, requestOptions, Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name, accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -226,10 +226,10 @@ public final class DeploymentsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listDeployments(this.client.getEndpoint(),
+            .withContext(context -> service.list(this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -267,12 +267,12 @@ public final class DeploymentsImpl {
      * @return paged collection of Deployment items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeploymentsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listDeploymentsSinglePageAsync(requestOptions),
-            nextLink -> listDeploymentsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
+            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -307,9 +307,9 @@ public final class DeploymentsImpl {
      * @return paged collection of Deployment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listDeploymentsSync(this.client.getEndpoint(),
+        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -347,12 +347,12 @@ public final class DeploymentsImpl {
      * @return paged collection of Deployment items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeployments(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listDeploymentsSinglePage(requestOptions),
-            nextLink -> listDeploymentsNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listSinglePage(requestOptions),
+            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -378,12 +378,11 @@ public final class DeploymentsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listDeploymentsNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listDeploymentsNext(nextLink, this.client.getEndpoint(), accept,
-                requestOptions, context))
+            .withContext(
+                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -410,10 +409,10 @@ public final class DeploymentsImpl {
      * @return paged collection of Deployment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listDeploymentsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listDeploymentsNextSync(nextLink, this.client.getEndpoint(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

@@ -52,6 +52,11 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
      */
     private AzureDeviceRegistryNamespaceRef adrNamespaceRef;
 
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of InstanceProperties class.
      */
@@ -179,6 +184,15 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
     }
 
     /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -225,6 +239,8 @@ public final class InstanceProperties implements JsonSerializable<InstanceProper
                     deserializedInstanceProperties.features = features;
                 } else if ("adrNamespaceRef".equals(fieldName)) {
                     deserializedInstanceProperties.adrNamespaceRef = AzureDeviceRegistryNamespaceRef.fromJson(reader);
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedInstanceProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

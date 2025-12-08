@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * profilePhoto.
+ * Represents a profile photo.
  */
 @Fluent
 public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {

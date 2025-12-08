@@ -9,14 +9,19 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.guava27.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;
 
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
 public abstract class CosmosEncryptionAsyncClientTest implements ITest {
+    protected static Logger logger = LoggerFactory.getLogger(CosmosEncryptionAsyncClientTest.class.getSimpleName());
+    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor =
         ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
@@ -42,7 +47,7 @@ public abstract class CosmosEncryptionAsyncClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method, Object[] row) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = String.format("%s::%s",
             method.getDeclaringClass().getSimpleName(),
             method.getName());
 
@@ -54,7 +59,7 @@ public abstract class CosmosEncryptionAsyncClientTest implements ITest {
                 : "Gateway";
 
             ConsistencyLevel consistencyLevel = cosmosClientBuilderAccessor.getConsistencyLevel(clientBuilder);
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            this.testName = String.format("%s[%s with %s consistency]",
                 testClassAndMethodName,
                 connectionMode,
                 consistencyLevel);

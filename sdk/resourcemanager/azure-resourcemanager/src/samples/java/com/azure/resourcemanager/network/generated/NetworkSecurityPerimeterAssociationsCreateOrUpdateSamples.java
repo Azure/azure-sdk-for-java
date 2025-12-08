@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.AssociationAccessMode;
 public final class NetworkSecurityPerimeterAssociationsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NspAssociationPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NspAssociationPut.json
      */
     /**
      * Sample code: NspAssociationPut.

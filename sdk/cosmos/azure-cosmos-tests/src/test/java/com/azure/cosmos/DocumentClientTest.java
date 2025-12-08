@@ -4,15 +4,19 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.guava27.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;
 
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
 public abstract class DocumentClientTest implements ITest {
-
+    protected static Logger logger = LoggerFactory.getLogger(DocumentClientTest.class.getSimpleName());
+    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     private final AsyncDocumentClient.Builder clientBuilder;
     private String testName;
 
@@ -35,7 +39,7 @@ public abstract class DocumentClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = String.format("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -44,7 +48,7 @@ public abstract class DocumentClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
                     : "Gateway";
 
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            this.testName = String.format("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getDesiredConsistencyLevel());

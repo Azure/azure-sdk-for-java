@@ -17,22 +17,23 @@ import java.io.IOException;
 @Fluent
 public final class DbServerMetadata implements JsonSerializable<DbServerMetadata> {
     /*
-     * Location of database server
+     * Location of database server.
      */
     private String location;
 
     /*
-     * Version for database engine
+     * Major version of PostgreSQL database engine.
      */
     private String version;
 
     /*
-     * Storage size in MB for database server
+     * Storage size (in MB) for database server.
      */
     private Integer storageMb;
 
     /*
-     * SKU for the database server. This object is empty for PG single server
+     * Compute tier and size of the database server. This object is empty for an Azure Database for PostgreSQL single
+     * server.
      */
     private ServerSku sku;
 
@@ -52,7 +53,7 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Get the version property: Version for database engine.
+     * Get the version property: Major version of PostgreSQL database engine.
      * 
      * @return the version value.
      */
@@ -61,7 +62,7 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Set the version property: Version for database engine.
+     * Set the version property: Major version of PostgreSQL database engine.
      * 
      * @param version the version value to set.
      * @return the DbServerMetadata object itself.
@@ -72,7 +73,7 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Get the storageMb property: Storage size in MB for database server.
+     * Get the storageMb property: Storage size (in MB) for database server.
      * 
      * @return the storageMb value.
      */
@@ -81,7 +82,7 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Set the storageMb property: Storage size in MB for database server.
+     * Set the storageMb property: Storage size (in MB) for database server.
      * 
      * @param storageMb the storageMb value to set.
      * @return the DbServerMetadata object itself.
@@ -92,7 +93,8 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Get the sku property: SKU for the database server. This object is empty for PG single server.
+     * Get the sku property: Compute tier and size of the database server. This object is empty for an Azure Database
+     * for PostgreSQL single server.
      * 
      * @return the sku value.
      */
@@ -101,7 +103,8 @@ public final class DbServerMetadata implements JsonSerializable<DbServerMetadata
     }
 
     /**
-     * Set the sku property: SKU for the database server. This object is empty for PG single server.
+     * Set the sku property: Compute tier and size of the database server. This object is empty for an Azure Database
+     * for PostgreSQL single server.
      * 
      * @param sku the sku value to set.
      * @return the DbServerMetadata object itself.

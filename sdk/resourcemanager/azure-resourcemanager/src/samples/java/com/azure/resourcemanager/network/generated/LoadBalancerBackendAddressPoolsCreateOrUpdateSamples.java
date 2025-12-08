@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancerBackendAddressPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * LBBackendAddressPoolWithBackendAddressesPut.json
      */
     /**

@@ -106,7 +106,7 @@ public final class ContainerServiceOperationsClientImpl implements ContainerServ
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNodeImageVersions(this.client.getEndpoint(), apiVersion,
@@ -145,7 +145,7 @@ public final class ContainerServiceOperationsClientImpl implements ContainerServ
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

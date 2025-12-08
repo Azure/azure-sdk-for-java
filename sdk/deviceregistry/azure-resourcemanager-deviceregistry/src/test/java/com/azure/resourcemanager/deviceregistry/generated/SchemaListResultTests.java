@@ -14,13 +14,13 @@ public final class SchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"mylweazulc\",\"displayName\":\"thwwn\",\"description\":\"hlf\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Succeeded\",\"tags\":{\"fepgfew\":\"ahfbous\",\"gncxykxhdj\":\"twly\",\"bcporxvxcjzhqizx\":\"limmbcxf\",\"t\":\"pxtgqscjav\"}},\"id\":\"hdqazkmtgguwp\",\"name\":\"jrajcivm\",\"type\":\"ghfcfiwrxgkneuvy\"},{\"properties\":{\"uuid\":\"qodfvp\",\"displayName\":\"hoxgsgbpf\",\"description\":\"djtxvzflbq\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Canceled\",\"tags\":{\"cqusr\":\"a\",\"lduycv\":\"vetnwsdtutn\"}},\"id\":\"hyrmewipmvekdx\",\"name\":\"kuqgsjjxundxgket\",\"type\":\"zhhzjhfjmhvvmu\"},{\"properties\":{\"uuid\":\"mun\",\"displayName\":\"sx\",\"description\":\"hfbuzjyihsasbhud\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Canceled\",\"tags\":{\"ynsqyrpfoobr\":\"ms\",\"qdnfwqzdz\":\"ttymsjny\",\"fhqlyvi\":\"tilaxh\"}},\"id\":\"uwivkxoy\",\"name\":\"un\",\"type\":\"ixxrtikvcpw\"}],\"nextLink\":\"clrcivtsox\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"guufuzboyjathwtz\",\"displayName\":\"b\",\"description\":\"mwmdxmebwjscjpa\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"xnmwmqtibxyijddt\":\"f\",\"ekpndzaapmudq\":\"qcttadijaeukmrsi\",\"gp\":\"eqw\",\"qwyxebeybpm\":\"bu\"}},\"id\":\"nrtffyaqi\",\"name\":\"mhh\",\"type\":\"ioqaqhvs\"},{\"properties\":{\"uuid\":\"uqyrxpdl\",\"displayName\":\"qlsismjqfrddg\",\"description\":\"quhiosrsjuivf\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"rxzbujr\":\"nxzhcze\",\"nlnzonzlrpi\":\"rhqvwrevkh\"}},\"id\":\"wncvjtszcofiz\",\"name\":\"htd\",\"type\":\"gbjkvreljeamur\"}],\"nextLink\":\"mlovuanashcxl\"}")
             .toObject(SchemaListResult.class);
-        Assertions.assertEquals("thwwn", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("hlf", model.value().get(0).properties().description());
+        Assertions.assertEquals("b", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("mwmdxmebwjscjpa", model.value().get(0).properties().description());
         Assertions.assertEquals(Format.DELTA_1_0, model.value().get(0).properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, model.value().get(0).properties().schemaType());
-        Assertions.assertEquals("ahfbous", model.value().get(0).properties().tags().get("fepgfew"));
-        Assertions.assertEquals("clrcivtsox", model.nextLink());
+        Assertions.assertEquals("f", model.value().get(0).properties().tags().get("xnmwmqtibxyijddt"));
+        Assertions.assertEquals("mlovuanashcxl", model.nextLink());
     }
 }

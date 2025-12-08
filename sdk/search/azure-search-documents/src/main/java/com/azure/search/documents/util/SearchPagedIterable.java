@@ -3,6 +3,11 @@
 
 package com.azure.search.documents.util;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
@@ -12,11 +17,6 @@ import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchResults;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Implementation of {@link ContinuablePagedIterable} where the continuation token type is {@link SearchRequest}, the

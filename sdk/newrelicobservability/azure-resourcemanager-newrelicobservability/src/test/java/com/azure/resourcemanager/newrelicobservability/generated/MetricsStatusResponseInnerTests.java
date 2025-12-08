@@ -13,15 +13,16 @@ public final class MetricsStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsStatusResponseInner model
-            = BinaryData.fromString("{\"azureResourceIds\":[\"paierh\"]}").toObject(MetricsStatusResponseInner.class);
-        Assertions.assertEquals("paierh", model.azureResourceIds().get(0));
+            = BinaryData.fromString("{\"azureResourceIds\":[\"wooc\",\"cbonqvpk\",\"lrxnjeaseiphe\"]}")
+                .toObject(MetricsStatusResponseInner.class);
+        Assertions.assertEquals("wooc", model.azureResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MetricsStatusResponseInner model
-            = new MetricsStatusResponseInner().withAzureResourceIds(Arrays.asList("paierh"));
+            = new MetricsStatusResponseInner().withAzureResourceIds(Arrays.asList("wooc", "cbonqvpk", "lrxnjeaseiphe"));
         model = BinaryData.fromObject(model).toObject(MetricsStatusResponseInner.class);
-        Assertions.assertEquals("paierh", model.azureResourceIds().get(0));
+        Assertions.assertEquals("wooc", model.azureResourceIds().get(0));
     }
 }

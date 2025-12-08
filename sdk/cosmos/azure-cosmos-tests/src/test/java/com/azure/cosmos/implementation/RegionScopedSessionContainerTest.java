@@ -18,6 +18,8 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.mockito.internal.util.collections.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -31,7 +33,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.TestSuiteBase.logger;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -40,6 +41,7 @@ import static org.assertj.core.api.Assertions.fail;
  * Tests for {@link RegionScopedSessionContainer}
  */
 public class RegionScopedSessionContainerTest {
+    protected static Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainerTest.class.getSimpleName());
 
     private final static URI DefaultEndpoint = createUrl("https://default.documents.azure.com");
     private final static Pair<URI, String> LocationEastUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-east-us.documents.azure.com"), "eastus");
@@ -478,8 +480,8 @@ public class RegionScopedSessionContainerTest {
 
         assertThat(globalProgress).isNotNull();
         assertThat(globalProgress.getSessionToken()).isNotNull();
-        assertThat(globalProgress.getSessionToken().convertToString()).isNotNull();
-        assertThat(globalProgress.getSessionToken().convertToString()).isEqualTo(sessionToken);
+        assertThat(globalProgress.getSessionToken().get().convertToString()).isNotNull();
+        assertThat(globalProgress.getSessionToken().get().convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());

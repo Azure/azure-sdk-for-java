@@ -12,14 +12,13 @@ import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.BasicItemRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,12 +26,13 @@ import java.util.Iterator;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class BasicItemRepositoryIT {
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -51,7 +51,7 @@ public class BasicItemRepositoryIT {
 
     private static final BasicItem BASIC_ITEM_2 = new BasicItem(ID_2);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(BASIC_ITEM_1, BASIC_ITEM_2));
@@ -61,9 +61,9 @@ public class BasicItemRepositoryIT {
     public void testFindAllById() {
         final Iterable<BasicItem> allById =
             TestUtils.toList(this.repository.findAllById(Arrays.asList(BASIC_ITEM_1.getId(), BASIC_ITEM_2.getId())));
-        Assert.assertTrue(((ArrayList) allById).size() == 2);
+        Assertions.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<BasicItem> it = allById.iterator();
-        Assert.assertEquals(BASIC_ITEM_1, it.next());
-        Assert.assertEquals(BASIC_ITEM_2, it.next());
+        assertEquals(BASIC_ITEM_1, it.next());
+        assertEquals(BASIC_ITEM_2, it.next());
     }
 }

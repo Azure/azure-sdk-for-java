@@ -8,6 +8,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
 
@@ -17,7 +18,7 @@ import java.util.Arrays;
 public final class PrivateEndpointsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PrivateEndpointCreateWithASG.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PrivateEndpointCreateWithASG.
      * json
      */
     /**
@@ -46,7 +47,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/PrivateEndpointCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PrivateEndpointCreate.json
      */
     /**
      * Sample code: Create private endpoint.
@@ -61,6 +62,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
             .createOrUpdate("rg1", "testPe", new PrivateEndpointInner().withLocation("eastus2euap")
                 .withSubnet(new SubnetInner().withId(
                     "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
+                .withIpVersionType(PrivateEndpointIpVersionType.IPV4)
                 .withPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
                     .withPrivateLinkServiceId(
                         "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
@@ -74,7 +76,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * PrivateEndpointCreateForManualApproval.json
      */
     /**

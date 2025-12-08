@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specify which proxy mode to use ('IPTABLES' or 'IPVS').
+ * Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES').
  */
 public final class Mode extends ExpandableStringEnum<Mode> {
     /**
@@ -20,6 +20,11 @@ public final class Mode extends ExpandableStringEnum<Mode> {
      * Static value IPVS for Mode.
      */
     public static final Mode IPVS = fromString("IPVS");
+
+    /**
+     * Static value NFTABLES for Mode.
+     */
+    public static final Mode NFTABLES = fromString("NFTABLES");
 
     /**
      * Creates a new instance of Mode value.

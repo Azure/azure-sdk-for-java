@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class FlowLogsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/NetworkWatcherFlowLogGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkWatcherFlowLogGet.json
      */
     /**
      * Sample code: Get flow log.

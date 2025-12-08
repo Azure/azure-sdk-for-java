@@ -24,6 +24,6 @@ public final class DataCollectionRuleAssociationsListByRuleSamples {
             .manager()
             .serviceClient()
             .getDataCollectionRuleAssociations()
-            .listByRule("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
+            .listByRule("myResourceGroup", "myCollectionRule");
     }
 }

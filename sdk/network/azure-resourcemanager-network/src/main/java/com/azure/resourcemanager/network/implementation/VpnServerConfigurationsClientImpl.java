@@ -195,7 +195,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -234,7 +234,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -326,7 +326,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -373,7 +373,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -580,7 +580,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -626,7 +626,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -717,7 +717,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -755,7 +755,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -920,7 +920,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -956,7 +956,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1046,7 +1046,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1076,7 +1076,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1169,7 +1169,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName,
@@ -1208,7 +1208,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName, vpnServerConfigurationName,

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -35,6 +36,11 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * The provisioning state of the private endpoint resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4.
+     */
+    private PrivateEndpointIpVersionType ipVersionType;
 
     /*
      * A grouping of information about the connection to the remote resource.
@@ -111,6 +117,28 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the ipVersionType property: Specifies the IP version type for the private IPs of the private endpoint. If not
+     * defined, this defaults to IPv4.
+     * 
+     * @return the ipVersionType value.
+     */
+    public PrivateEndpointIpVersionType ipVersionType() {
+        return this.ipVersionType;
+    }
+
+    /**
+     * Set the ipVersionType property: Specifies the IP version type for the private IPs of the private endpoint. If not
+     * defined, this defaults to IPv4.
+     * 
+     * @param ipVersionType the ipVersionType value to set.
+     * @return the PrivateEndpointPropertiesInner object itself.
+     */
+    public PrivateEndpointPropertiesInner withIpVersionType(PrivateEndpointIpVersionType ipVersionType) {
+        this.ipVersionType = ipVersionType;
+        return this;
     }
 
     /**
@@ -282,6 +310,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeStringField("ipVersionType", this.ipVersionType == null ? null : this.ipVersionType.toString());
         jsonWriter.writeArrayField("privateLinkServiceConnections", this.privateLinkServiceConnections,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("manualPrivateLinkServiceConnections", this.manualPrivateLinkServiceConnections,
@@ -321,6 +350,9 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPrivateEndpointPropertiesInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("ipVersionType".equals(fieldName)) {
+                    deserializedPrivateEndpointPropertiesInner.ipVersionType
+                        = PrivateEndpointIpVersionType.fromString(reader.getString());
                 } else if ("privateLinkServiceConnections".equals(fieldName)) {
                     List<PrivateLinkServiceConnection> privateLinkServiceConnections
                         = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));

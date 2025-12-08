@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * baseItemVersion.
+ * Represents a base item version.
  */
 @Fluent
 public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {

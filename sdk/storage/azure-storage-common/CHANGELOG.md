@@ -1,6 +1,6 @@
 # Release History
 
-## 12.32.0-beta.1 (Unreleased)
+## 12.32.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.32.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Bugs Fixed
+- Addressed a performance regression introduced in version 12.27.0+ of the Azure Storage SDK for Java, where token 
+retrieval became thread-local, causing a consistent 4 to 5-second delay across threads during initial authorization.
 
 ## 12.31.0 (2025-10-21)
 

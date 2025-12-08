@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * swapShiftsChangeRequest.
+ * Represents a swap shifts change request.
  */
 @Fluent
 public final class MicrosoftGraphSwapShiftsChangeRequest extends MicrosoftGraphOfferShiftRequest {

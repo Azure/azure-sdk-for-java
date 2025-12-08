@@ -43,6 +43,9 @@ public interface BareMetalMachinesClient {
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +54,7 @@ public interface BareMetalMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineInner> list(Context context);
+    PagedIterable<BareMetalMachineInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List bare metal machines in the resource group.
@@ -74,6 +77,9 @@ public interface BareMetalMachinesClient {
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,7 +88,8 @@ public interface BareMetalMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the bare metal machine.
@@ -839,6 +846,86 @@ public interface BareMetalMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsRestricted(
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsRestricted(
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.

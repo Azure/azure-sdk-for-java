@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * attendeeBase.
+ * Represents an attendee base.
  */
 @Fluent
 public class MicrosoftGraphAttendeeBase extends MicrosoftGraphRecipient {

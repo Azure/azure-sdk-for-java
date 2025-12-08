@@ -12,7 +12,7 @@ public final class NodeTypeSkuCapacityTests {
     public void testDeserialize() throws Exception {
         NodeTypeSkuCapacity model = BinaryData
             .fromString(
-                "{\"minimum\":1877295480,\"maximum\":1922609600,\"default\":462603095,\"scaleType\":\"Automatic\"}")
+                "{\"minimum\":1812829551,\"maximum\":1377717439,\"default\":355548039,\"scaleType\":\"Manual\"}")
             .toObject(NodeTypeSkuCapacity.class);
     }
 }

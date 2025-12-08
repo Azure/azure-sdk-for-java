@@ -155,7 +155,8 @@ public class Paginator {
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         int maxPageSize,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker) {
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+        boolean isChangeFeed) {
 
         int preFetchCount = getPreFetchCount(cosmosQueryRequestOptions, -1, maxPageSize);
 
@@ -165,7 +166,7 @@ public class Paginator {
                 createRequestFunc,
                 executeFunc,
                 ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
-                false,
+                isChangeFeed,
                 -1,
                 maxPageSize,
                 qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),

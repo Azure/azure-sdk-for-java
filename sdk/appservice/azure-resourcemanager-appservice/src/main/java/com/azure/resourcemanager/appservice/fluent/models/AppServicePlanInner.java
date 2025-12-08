@@ -9,14 +9,21 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appservice.models.DefaultIdentity;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
+import com.azure.resourcemanager.appservice.models.InstallScript;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
+import com.azure.resourcemanager.appservice.models.RegistryAdapter;
+import com.azure.resourcemanager.appservice.models.ServerFarmNetworkSettings;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
+import com.azure.resourcemanager.appservice.models.StorageMount;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +40,11 @@ public final class AppServicePlanInner extends Resource {
      * Description of a SKU for a scalable resource.
      */
     private SkuDescription sku;
+
+    /*
+     * Managed service identity.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Extended Location.
@@ -93,6 +105,26 @@ public final class AppServicePlanInner extends Resource {
      */
     public AppServicePlanInner withSku(SkuDescription sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed service identity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -660,6 +692,173 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
+     * Get the planDefaultIdentity property: Identity to use by platform for various features and integrations using
+     * managed identity.
+     * 
+     * @return the planDefaultIdentity value.
+     */
+    public DefaultIdentity planDefaultIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().planDefaultIdentity();
+    }
+
+    /**
+     * Set the planDefaultIdentity property: Identity to use by platform for various features and integrations using
+     * managed identity.
+     * 
+     * @param planDefaultIdentity the planDefaultIdentity value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withPlanDefaultIdentity(DefaultIdentity planDefaultIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withPlanDefaultIdentity(planDefaultIdentity);
+        return this;
+    }
+
+    /**
+     * Get the isCustomMode property: Whether this server farm is in custom mode.
+     * 
+     * @return the isCustomMode value.
+     */
+    public Boolean isCustomMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().isCustomMode();
+    }
+
+    /**
+     * Set the isCustomMode property: Whether this server farm is in custom mode.
+     * 
+     * @param isCustomMode the isCustomMode value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withIsCustomMode(Boolean isCustomMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withIsCustomMode(isCustomMode);
+        return this;
+    }
+
+    /**
+     * Get the registryAdapters property: Registry adapters associated with this App Service plan.
+     * 
+     * @return the registryAdapters value.
+     */
+    public List<RegistryAdapter> registryAdapters() {
+        return this.innerProperties() == null ? null : this.innerProperties().registryAdapters();
+    }
+
+    /**
+     * Set the registryAdapters property: Registry adapters associated with this App Service plan.
+     * 
+     * @param registryAdapters the registryAdapters value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withRegistryAdapters(List<RegistryAdapter> registryAdapters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withRegistryAdapters(registryAdapters);
+        return this;
+    }
+
+    /**
+     * Get the installScripts property: Install scripts associated with this App Service plan.
+     * 
+     * @return the installScripts value.
+     */
+    public List<InstallScript> installScripts() {
+        return this.innerProperties() == null ? null : this.innerProperties().installScripts();
+    }
+
+    /**
+     * Set the installScripts property: Install scripts associated with this App Service plan.
+     * 
+     * @param installScripts the installScripts value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withInstallScripts(List<InstallScript> installScripts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withInstallScripts(installScripts);
+        return this;
+    }
+
+    /**
+     * Get the network property: All network settings for the server farm.
+     * 
+     * @return the network value.
+     */
+    public ServerFarmNetworkSettings network() {
+        return this.innerProperties() == null ? null : this.innerProperties().network();
+    }
+
+    /**
+     * Set the network property: All network settings for the server farm.
+     * 
+     * @param network the network value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withNetwork(ServerFarmNetworkSettings network) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withNetwork(network);
+        return this;
+    }
+
+    /**
+     * Get the storageMounts property: Storage mounts associated with this App Service plan.
+     * 
+     * @return the storageMounts value.
+     */
+    public List<StorageMount> storageMounts() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageMounts();
+    }
+
+    /**
+     * Set the storageMounts property: Storage mounts associated with this App Service plan.
+     * 
+     * @param storageMounts the storageMounts value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withStorageMounts(List<StorageMount> storageMounts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withStorageMounts(storageMounts);
+        return this;
+    }
+
+    /**
+     * Get the rdpEnabled property: If &lt;code&gt;true&lt;/code&gt;, RDP access is enabled for this App Service plan.
+     * Only applicable for IsCustomMode ASPs.
+     * If &lt;code&gt;false&lt;/code&gt;, RDP access is disabled.
+     * 
+     * @return the rdpEnabled value.
+     */
+    public Boolean rdpEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().rdpEnabled();
+    }
+
+    /**
+     * Set the rdpEnabled property: If &lt;code&gt;true&lt;/code&gt;, RDP access is enabled for this App Service plan.
+     * Only applicable for IsCustomMode ASPs.
+     * If &lt;code&gt;false&lt;/code&gt;, RDP access is disabled.
+     * 
+     * @param rdpEnabled the rdpEnabled value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withRdpEnabled(Boolean rdpEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withRdpEnabled(rdpEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -670,6 +869,9 @@ public final class AppServicePlanInner extends Resource {
         }
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();
@@ -686,6 +888,7 @@ public final class AppServicePlanInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
         jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
@@ -722,6 +925,8 @@ public final class AppServicePlanInner extends Resource {
                     deserializedAppServicePlanInner.innerProperties = AppServicePlanProperties.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
                     deserializedAppServicePlanInner.sku = SkuDescription.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppServicePlanInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedAppServicePlanInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {

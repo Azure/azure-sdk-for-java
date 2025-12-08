@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.SplitTestsRetryAnalyzer;
 import com.azure.cosmos.SplitTimeoutException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
@@ -2207,53 +2208,24 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             log.info("LEASES processing from thread {}", Thread.currentThread().getId());
         };
     }
+    @BeforeMethod(groups = {  "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    public void beforeMethod() throws Exception {
+        // add a cool off time
+        CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+    }
 
-    @BeforeMethod(groups = { "long-emulator", "cfp-split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
-     public void beforeMethod() {
-     }
+    @AfterMethod(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    public void afterMethod() throws Exception {
+        logger.info("captureNettyLeaks: {}", captureNettyLeaks());
+    }
 
-    @BeforeClass(groups = { "long-emulator", "cfp-split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
-
-        // Following is code that when enabled locally it allows for a predicted database/collection name that can be
-        // checked in the Azure Portal
-//        try {
-//            client.getDatabase(databaseId).read()
-//                .map(cosmosDatabaseResponse -> cosmosDatabaseResponse.getDatabase())
-//                .flatMap(database -> database.delete())
-//                .onErrorResume(throwable -> {
-//                    if (throwable instanceof com.azure.cosmos.CosmosClientException) {
-//                        com.azure.cosmos.CosmosClientException clientException = (com.azure.cosmos.CosmosClientException) throwable;
-//                        if (clientException.getStatusCode() == 404) {
-//                            return Mono.empty();
-//                        }
-//                    }
-//                    return Mono.error(throwable);
-//                }).block();
-//            Thread.sleep(500);
-//        } catch (Exception e){
-//            log.warn("Database delete", e);
-//        }
-//        createdDatabase = createDatabase(client, databaseId);
     }
-
-    @AfterMethod(groups = { "long-emulator", "cfp-split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterMethod() {
-    }
-
-    @AfterClass(groups = { "long-emulator", "cfp-split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long-emulator", "cfp-split", "multi-master", "query" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-//        try {
-//            client.readAllDatabases()
-//                .flatMap(cosmosDatabaseProperties -> {
-//                    CosmosAsyncDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseProperties.getId());
-//                    return cosmosDatabase.delete();
-//                }).blockLast();
-//            Thread.sleep(500);
-//        } catch (Exception e){ }
-
         safeClose(client);
     }
 

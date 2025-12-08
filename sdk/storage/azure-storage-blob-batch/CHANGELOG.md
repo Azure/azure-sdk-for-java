@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.29.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Bugs Fixed
+- Fixed an issue where `BlobBatchSetBlobAccessTierOptions` would not properly handle blob names with special characters.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
 
 ## 12.28.0 (2025-10-21)
 

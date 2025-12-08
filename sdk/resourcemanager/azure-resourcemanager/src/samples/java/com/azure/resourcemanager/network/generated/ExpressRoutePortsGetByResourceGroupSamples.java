@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class ExpressRoutePortsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/ExpressRoutePortGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/ExpressRoutePortGet.json
      */
     /**
      * Sample code: ExpressRoutePortGet.

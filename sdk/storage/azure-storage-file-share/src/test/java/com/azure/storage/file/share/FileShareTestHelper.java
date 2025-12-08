@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -381,5 +382,10 @@ public class FileShareTestHelper {
     protected static void assertSmbPropertiesNull(FileSmbProperties smbProperties) {
         assertNull(smbProperties.getFilePermissionKey());
         assertNull(smbProperties.getNtfsFileAttributes());
+    }
+
+    protected static Stream<Arguments> filePropertySemanticsSupplier() {
+        return Stream.of(Arguments.of(FilePropertySemantics.NEW), Arguments.of(FilePropertySemantics.RESTORE),
+            Arguments.of((Object) null));
     }
 }

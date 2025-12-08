@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * sharingDetail.
+ * Represents a sharing detail.
  */
 @Fluent
 public final class MicrosoftGraphSharingDetail implements JsonSerializable<MicrosoftGraphSharingDetail> {

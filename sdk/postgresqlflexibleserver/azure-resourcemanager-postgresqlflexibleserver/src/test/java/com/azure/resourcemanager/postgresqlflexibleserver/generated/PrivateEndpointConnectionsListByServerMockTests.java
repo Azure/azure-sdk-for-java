@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"eimawzovgkkumui\",\"jcjcazt\",\"wsnsqowx\"],\"privateEndpoint\":{\"id\":\"mlikytw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"swkacvej\",\"actionsRequired\":\"dvlvhbwrnfxtgdd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ehnmnaoyankco\",\"name\":\"qswankltytmhdr\",\"type\":\"znnhd\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"jpmcub\",\"mifoxxkub\"],\"privateEndpoint\":{\"id\":\"avp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"bqgvgovpbbtte\",\"actionsRequired\":\"oknssqyzqedikdf\"},\"provisioningState\":\"Deleting\"},\"id\":\"qmrjg\",\"name\":\"ihfqlggwfiwzc\",\"type\":\"mjpb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListByServerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().listByServer("y", "rhpw", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections().listByServer("d", "fypiv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("swkacvej",
+        Assertions.assertEquals("bqgvgovpbbtte",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("dvlvhbwrnfxtgdd",
+        Assertions.assertEquals("oknssqyzqedikdf",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

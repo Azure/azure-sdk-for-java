@@ -27,7 +27,7 @@ public final class ContainerServiceNetworkProfileKubeProxyConfig
     private Boolean enabled;
 
     /*
-     * Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+     * Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES')
      */
     private Mode mode;
 
@@ -65,7 +65,7 @@ public final class ContainerServiceNetworkProfileKubeProxyConfig
     }
 
     /**
-     * Get the mode property: Specify which proxy mode to use ('IPTABLES' or 'IPVS').
+     * Get the mode property: Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES').
      * 
      * @return the mode value.
      */
@@ -74,7 +74,7 @@ public final class ContainerServiceNetworkProfileKubeProxyConfig
     }
 
     /**
-     * Set the mode property: Specify which proxy mode to use ('IPTABLES' or 'IPVS').
+     * Set the mode property: Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES').
      * 
      * @param mode the mode value to set.
      * @return the ContainerServiceNetworkProfileKubeProxyConfig object itself.

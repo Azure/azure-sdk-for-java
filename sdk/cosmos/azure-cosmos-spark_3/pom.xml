@@ -69,12 +69,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version> <!-- {x-version-update;cosmos_commons-io:commons-io;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.76.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
@@ -113,7 +107,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.53.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>2.54.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -301,7 +295,6 @@
                 <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark33.version}]</include>
                 <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark34.version}]</include>
                 <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark35.version}]</include>
-                <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[${scala.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_${scala.binary.version}:[${scala-java8-compat.version}]</include>
                 <include>io.projectreactor:reactor-scala-extensions_${scala.binary.version}:[${reactor-scala-extensions.version}]</include>
@@ -760,6 +753,12 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
@@ -767,6 +766,16 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <properties>
+                <property>
+                  <name>surefire.testng.verbose</name>
+                  <value>2</value>
+                </property>
+                <property>
+                  <name>listener</name>
+                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
           <!-- To use the ScalaTest Maven plugin, SureFire needs to be disabled and ScalaTest enabled -->

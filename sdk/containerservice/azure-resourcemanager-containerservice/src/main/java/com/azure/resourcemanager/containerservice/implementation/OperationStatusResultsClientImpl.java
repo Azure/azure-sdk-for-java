@@ -128,7 +128,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -168,7 +168,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -277,7 +277,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -319,7 +319,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -416,7 +416,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByAgentPool(this.client.getEndpoint(), apiVersion,
@@ -463,7 +463,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2025-08-02-preview";
+        final String apiVersion = "2025-09-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByAgentPool(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

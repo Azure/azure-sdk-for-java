@@ -8,7 +8,7 @@
 # Format;
 # groupId:artifactId;dependency-version
 ch.qos.logback:logback-classic;1.3.14
-com.azure:azure-servicebus-jms;2.0.0
+com.azure:azure-servicebus-jms;2.1.0
 com.azure.tools:azure-autorest-customization;1.0.0-beta.11
 com.fasterxml:aalto-xml;1.3.3
 com.fasterxml.jackson.core:jackson-annotations;2.18.4
@@ -30,14 +30,13 @@ com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.knuddels:jtokkit;1.0.0
 com.microsoft.azure:azure-client-authentication;1.7.14
 com.microsoft.azure:azure-client-runtime;1.7.14
-com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.6
 com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
-com.openai:openai-java;2.3.0
+com.openai:openai-java;4.6.1
 com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
@@ -92,8 +91,6 @@ org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;6.2.0
-io.lettuce:lettuce-core;6.8.1.RELEASE
-org.redisson:redisson;3.51.0
 testdep_net.bytebuddy:byte-buddy;1.17.7
 testdep_net.bytebuddy:byte-buddy-agent;1.17.7
 org.openrewrite.recipe:rewrite-recipe-bom;3.9.0
@@ -137,7 +134,6 @@ com.squareup.okio:okio-jvm;3.16.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.9.0
 org.assertj:assertj-core;3.22.0
-org.bouncycastle:bcprov-jdk15to18;1.81
 org.bouncycastle:bcprov-jdk18on;1.81
 org.bouncycastle:bcpkix-lts8on;2.73.8
 org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
@@ -183,7 +179,6 @@ org.apache.maven.plugins:maven-clean-plugin;3.5.0
 org.apache.maven.plugins:maven-compiler-plugin;3.14.0
 org.apache.maven.plugins:maven-enforcer-plugin;3.6.1
 org.apache.maven.plugins:maven-failsafe-plugin;3.5.3
-org.apache.maven.plugins:maven-help-plugin;3.5.1
 org.apache.maven.plugins:maven-install-plugin;3.1.4
 org.apache.maven.plugins:maven-jar-plugin;3.4.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.11.3
@@ -309,17 +304,6 @@ cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.4
 # Maven Tools for Cosmos Kafka connector only
 
-# sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
-# all of these unique references below are listed here because they're old, some are over 10 years old
-media_javax.xml.bind:jaxb-api;2.2.7
-media_javax.inject:javax.inject;1
-media_javax.mail:mail;1.4.5
-media_com.sun.jersey:jersey-client;1.19
-media_com.sun.jersey:jersey-json;1.19
-media_commons-logging:commons-logging;1.1.1
-media_io.jsonwebtoken:jjwt;0.5.1
-media_org.mockito:mockito-all;1.9.0
-media_com.microsoft.azure:adal4j;1.2.0
 # sdk\resourcemanager\azure-resourcemanager\pom.xml
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.jcraft:jsch;0.1.55
@@ -355,7 +339,6 @@ springboot3_io.projectreactor:reactor-test;3.7.9
 springboot3_jakarta.servlet:jakarta.servlet-api;6.0.0
 springboot3_jakarta.validation:jakarta.validation-api;3.0.2
 springboot3_javax.annotation:javax.annotation-api;1.3.2
-springboot3_junit:junit;4.13.2
 springboot3_net.bytebuddy:byte-buddy-agent;1.17.7
 springboot3_net.bytebuddy:byte-buddy;1.17.7
 springboot3_org.apache.commons:commons-lang3;3.17.0
@@ -371,7 +354,6 @@ springboot3_org.assertj:assertj-core;3.27.4
 springboot3_org.hibernate.validator:hibernate-validator;8.0.3.Final
 springboot3_org.javatuples:javatuples;1.2
 springboot3_org.junit.jupiter:junit-jupiter;5.12.2
-springboot3_org.junit.vintage:junit-vintage-engine;5.12.2
 springboot3_org.messaginghub:pooled-jms;3.1.7
 springboot3_org.mockito:mockito-core;5.17.0
 springboot3_org.postgresql:postgresql;42.7.7
@@ -433,6 +415,5 @@ springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.0
 
 # Jackson dropped support for Java 7 with the release of 2.14.0.
 # Add custom Jackson dependencies for Track 1 libraries using Jackson.
-java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
-java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
+org.mockito:mockito-junit-jupiter;4.11.0
+com.github.tomakehurst:wiremock-jre8;2.35.2

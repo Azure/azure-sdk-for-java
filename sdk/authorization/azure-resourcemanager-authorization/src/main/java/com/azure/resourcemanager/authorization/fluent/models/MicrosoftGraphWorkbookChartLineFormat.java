@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookChartLineFormat.
+ * Represents a workbook chart line format.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartLineFormat extends MicrosoftGraphEntity {

@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * directoryObject
- * 
+ * Represents a directory object.
+ * <p>
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
