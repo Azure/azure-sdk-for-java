@@ -181,8 +181,7 @@ $generateScript = {
       }
 
       # Update code snippets before comparing the diff
-      # TODO: remove spotless:apply when issue fixed in emitter
-      $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet spotless:apply 2>&1)
+      $mvnOutput = (& mvn --no-transfer-progress codesnippet:update-codesnippet 2>&1)
       if ($LastExitCode -ne 0) {
         Write-Host "$separatorBar`nError updating TypeSpec codesnippets in directory $directory`n$([String]::Join("`n", $mvnOutput))`n$separatorBar"
         throw
