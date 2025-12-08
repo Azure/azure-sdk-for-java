@@ -3,6 +3,8 @@
 ## 12.33.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
 
 ### Breaking Changes
 
