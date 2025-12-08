@@ -371,11 +371,11 @@ jobs:
         condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
         parameters:
           ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           TestPipeline: ${{ parameters.TestPipeline }}
-        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
