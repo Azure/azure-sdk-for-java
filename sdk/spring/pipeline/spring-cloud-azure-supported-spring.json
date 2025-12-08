@@ -1,9 +1,17 @@
 [
   {
-    "current" : true,
+    "current" : false,
+    "releaseStatus" : "SNAPSHOT",
+    "snapshot" : true,
+    "supportStatus" : "TODO",
+    "spring-boot-version" : "3.5.9-SNAPSHOT",
+    "spring-cloud-version" : "2025.0.0"
+  },
+  {
+    "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : "SUPPORTED",
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.5.7",
     "spring-cloud-version" : "2025.0.0"
   },
