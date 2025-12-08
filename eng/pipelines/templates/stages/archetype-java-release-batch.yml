@@ -125,11 +125,21 @@ stages:
               inputs:
                 versionSpec: $(PythonVersion)
 
+            - pwsh: |
+                $filtered = @($(ArtifactsJson) | Where-Object { $_.name -like 'azure-sdk-template*' })
+                $filteredJson = ConvertTo-Json -InputObject $filtered -Compress -AsArray
+                Write-Host "Filtered artifacts JSON: $filteredJson"
+                Write-Host "##vso[task.setvariable variable=FilteredArtifactsJson;isOutput=true]$filteredJson"
+              displayName: Filter artifacts for test pipeline
+              name: FilterArtifacts
+              condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
+
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                ArtifactsJson: '$(ArtifactsJson)'
+                ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestPipeline: ${{ parameters.TestPipeline }}
+              condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
 
             # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |

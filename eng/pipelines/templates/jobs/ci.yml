@@ -146,11 +146,22 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
+      - pwsh: |
+          $artifacts = '${{ convertToJson(parameters.ReleaseArtifacts) }}' | ConvertFrom-Json
+          $filtered = @($artifacts | Where-Object { $_.name -like 'azure-sdk-template*' })
+          $filteredJson = ConvertTo-Json -InputObject $filtered -Compress -AsArray
+          Write-Host "Filtered artifacts JSON: $filteredJson"
+          Write-Host "##vso[task.setvariable variable=FilteredArtifactsJson;isOutput=true]$filteredJson"
+        displayName: Filter artifacts for test pipeline
+        name: FilterArtifacts
+        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
+    
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          ArtifactsJson: '${{ convertToJson(parameters.ReleaseArtifacts) }}'
+          ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           TestPipeline: ${{ parameters.TestPipeline }}
+        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
@@ -349,11 +360,22 @@ jobs:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
 
+      - pwsh: |
+          $artifacts = '${{ convertToJson(parameters.ReleaseArtifacts) }}' | ConvertFrom-Json
+          $filtered = @($artifacts | Where-Object { $_.name -like 'azure-sdk-template*' })
+          $filteredJson = ConvertTo-Json -InputObject $filtered -Compress -AsArray
+          Write-Host "Filtered artifacts JSON: $filteredJson"
+          Write-Host "##vso[task.setvariable variable=FilteredArtifactsJson;isOutput=true]$filteredJson"
+        displayName: Filter artifacts for test pipeline
+        name: FilterArtifacts
+        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
+
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
-          ArtifactsJson: '${{ convertToJson(parameters.ReleaseArtifacts) }}'
+          ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           TestPipeline: ${{ parameters.TestPipeline }}
+        condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
