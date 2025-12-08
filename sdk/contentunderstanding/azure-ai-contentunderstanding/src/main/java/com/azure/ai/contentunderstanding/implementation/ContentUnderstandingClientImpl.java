@@ -212,8 +212,8 @@ public final class ContentUnderstandingClientImpl {
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -224,8 +224,8 @@ public final class ContentUnderstandingClientImpl {
             @BodyParam("application/json") BinaryData copyAnalyzerRequest, RequestOptions requestOptions,
             Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
