@@ -1,5 +1,15 @@
 # Release History
 
+## 6.1.0 (Not released)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+
+- 2 `TokenCredential` bean found in AzureServiceBusMessagingAutoConfiguration. [#47470](https://github.com/Azure/azure-sdk-for-java/pull/47470)
+- `spring.cloud.azure.eventhubs.credential.token-credential-bean-name` not take effect in AzureEventHubsMessagingAutoConfiguration. [#47470](https://github.com/Azure/azure-sdk-for-java/pull/47470)
+
 ## 6.0.0 (2025-09-22)
 - This release is compatible with Spring Boot 3.5.0-3.5.5. (Note: 3.5.x (x>5) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
