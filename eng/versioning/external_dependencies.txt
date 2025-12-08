@@ -302,7 +302,6 @@ springboot4_com.diffplug.spotless:spotless-maven-plugin;2.30.0
 springboot4_com.fasterxml.jackson.core:jackson-annotations;2.20
 springboot4_com.fasterxml.jackson.core:jackson-databind;2.20.1
 springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.20.1
-springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.20.1
 springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.1
 springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 springboot4_com.google.code.findbugs:jsr305;3.0.2
