@@ -125,21 +125,20 @@ stages:
               inputs:
                 versionSpec: $(PythonVersion)
 
-            - pwsh: |
-                $filtered = @('$(ArtifactsJson)' | ConvertFrom-Json | Where-Object { $_.name -like 'azure-sdk-template*' })
-                $filteredJson = ConvertTo-Json -InputObject $filtered -Compress -AsArray
-                Write-Host "Filtered artifacts JSON: $filteredJson"
-                Write-Host "##vso[task.setvariable variable=FilteredArtifactsJson;isOutput=true]$filteredJson"
-              displayName: Filter artifacts for test pipeline
-              name: FilterArtifacts
-              condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
+            - ${{ if eq(parameters.TestPipeline, true) }}:
+              - pwsh: |
+                  $filtered = @('$(ArtifactsJson)' | ConvertFrom-Json | Where-Object { $_.name -like 'azure-sdk-template*' })
+                  $filteredJson = ConvertTo-Json -InputObject $filtered -Compress -AsArray
+                  Write-Host "Filtered artifacts JSON: $filteredJson"
+                  Write-Host "##vso[task.setvariable variable=FilteredArtifactsJson;isOutput=true]$filteredJson"
+                displayName: Filter artifacts for test pipeline
+                name: FilterArtifacts
 
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              condition: and(succeeded(), eq(${{ parameters.TestPipeline }}, true))
-              parameters:
-                ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
-                ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                TestPipeline: ${{ parameters.TestPipeline }}
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  ArtifactsJson: $(FilterArtifacts.FilteredArtifactsJson)
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                  TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |
