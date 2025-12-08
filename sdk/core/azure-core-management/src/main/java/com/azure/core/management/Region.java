@@ -77,6 +77,10 @@ public final class Region {
      * Mexico Central (Mexico)
      */
     public static final Region MEXICO_CENTRAL = new Region("mexicocentral", "Mexico Central");
+    /**
+     * Chile Central (South America)
+     */
+    public static final Region CHILE_CENTRAL = new Region("chilecentral", "Chile Central");
     /*
      * Azure Cloud - Europe
      */
@@ -144,6 +148,10 @@ public final class Region {
      * Poland Central (Europe)
      */
     public static final Region POLAND_CENTRAL = new Region("polandcentral", "Poland Central");
+    /**
+     * Austria East (Europe)
+     */
+    public static final Region AUSTRIA_EAST = new Region("austriaeast", "Austria East");
     /*
      * Azure Cloud - Asia
      */
@@ -207,6 +215,10 @@ public final class Region {
      * New Zealand North (Asia Pacific)
      */
     public static final Region NEW_ZEALAND_NORTH = new Region("newzealandnorth", "New Zealand North");
+    /**
+     * Malaysia West (Asia Pacific)
+     */
+    public static final Region MALAYSIA_WEST = new Region("malaysiawest", "Malaysia West");
     /*
      * Azure Cloud - Middle East and Africa
      */
