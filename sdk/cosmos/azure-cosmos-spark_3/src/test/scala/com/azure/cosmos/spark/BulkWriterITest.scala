@@ -408,7 +408,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
     val containerConfig = CosmosContainerConfig(container.getDatabase.getId, container.getId, None)
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, bulkEnableTransactions = false, Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
     val bulkWriter = new BulkWriter(
       container,
       containerConfig,

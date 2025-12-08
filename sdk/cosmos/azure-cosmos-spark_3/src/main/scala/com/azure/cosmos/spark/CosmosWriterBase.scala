@@ -62,11 +62,8 @@ private abstract class CosmosWriterBase(
 
   private val writer: AtomicReference[AsyncItemWriter] = new AtomicReference(
     if (cosmosWriteConfig.bulkEnabled) {
-      // Use TransactionalBulkWriter if either:
-      // 1. bulkEnableTransactions is explicitly set, OR
-      // 2. ItemWriteStrategy is ItemTransactionalBatch
-      val useTransactional = cosmosWriteConfig.bulkEnableTransactions ||
-        cosmosWriteConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch
+      // Use TransactionalBulkWriter if ItemWriteStrategy is ItemTransactionalBatch
+      val useTransactional = cosmosWriteConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch
 
       if (useTransactional) {
         new TransactionalBulkWriter(
