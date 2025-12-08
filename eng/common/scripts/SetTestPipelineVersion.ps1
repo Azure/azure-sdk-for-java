@@ -15,6 +15,9 @@ param (
 
 . (Join-Path $PSScriptRoot common.ps1)
 
+# Ensure Artifacts is always an array
+$Artifacts = @($Artifacts)
+
 Write-Host "PackageNames: $PackageNames"
 Write-Host "ServiceDirectory: $ServiceDirectory"
 Write-Host "BuildID: $BuildID"
@@ -42,6 +45,12 @@ if ($Artifacts -and $Artifacts.Count -gt 0) {
         if (![String]::IsNullOrWhiteSpace($artifact.ServiceDirectory)) {
           $artifactServiceDirectory = $artifact.ServiceDirectory
         }
+      }
+      
+      # Validate ServiceDirectory is available
+      if ([String]::IsNullOrWhiteSpace($artifactServiceDirectory)) {
+        LogError "ServiceDirectory is required but not provided for artifact '$packageName'. Provide it via script parameter or artifact property."
+        exit 1
       }
 
       $newVersion = [AzureEngSemanticVersion]::new("1.0.0")
