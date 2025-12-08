@@ -234,7 +234,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
                 "spring.jms.listener.session.acknowledge-mode=client",
-                "spring.jms.listener.concurrency=2",
+                "spring.jms.listener.minConcurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING
@@ -275,7 +275,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
                 "spring.jms.listener.session.acknowledge-mode=client",
-                "spring.jms.listener.concurrency=2",
+                "spring.jms.listener.minConcurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
