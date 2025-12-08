@@ -132,6 +132,7 @@ stages:
                     - ${{ each artifact in parameters.Artifacts }}:
                       - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
                         - ${{ artifact }}
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
                   TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparse-checkout
