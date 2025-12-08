@@ -15,6 +15,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -42,9 +43,14 @@ public class Sample12_GetResultFile {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildClient();
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
+        if (key == null || key.trim().isEmpty()) {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        } else {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        }
 
         // BEGIN: com.azure.ai.contentunderstanding.getResultFile
         // For video analysis, use a video URL to get keyframes
@@ -249,9 +255,14 @@ public class Sample12_GetResultFile {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        asyncClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildAsyncClient();
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
+        if (key == null || key.trim().isEmpty()) {
+            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        } else {
+            asyncClient = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        }
 
         // For video analysis
         String videoUrl

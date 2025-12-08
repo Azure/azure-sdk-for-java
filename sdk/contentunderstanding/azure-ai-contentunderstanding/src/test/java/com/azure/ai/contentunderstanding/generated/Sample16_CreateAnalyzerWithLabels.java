@@ -21,6 +21,7 @@ import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -57,9 +58,14 @@ public class Sample16_CreateAnalyzerWithLabels {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildClient();
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
+        if (key == null || key.trim().isEmpty()) {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        } else {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        }
 
         String analyzerId = "test_receipt_analyzer_" + UUID.randomUUID().toString().replace("-", "");
 
@@ -242,7 +248,7 @@ public class Sample16_CreateAnalyzerWithLabels {
         }
 
         client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         String analyzerId = "receipt_analyzer_with_training_" + UUID.randomUUID().toString().replace("-", "");

@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -53,9 +54,14 @@ public class Sample15_GrantCopyAuth {
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        sourceClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildClient();
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
+        if (key == null || key.trim().isEmpty()) {
+            sourceClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        } else {
+            sourceClient = builder.credential(new AzureKeyCredential(key)).buildClient();
+        }
 
         String sourceAnalyzerId = "test_grant_copy_source_" + UUID.randomUUID().toString().replace("-", "");
 
@@ -207,18 +213,28 @@ public class Sample15_GrantCopyAuth {
             || targetRegion == null) {
             System.out.println("⚠️ Cross-resource copying requires environment variables:");
             System.out.println("   SOURCE_RESOURCE_ID, SOURCE_REGION");
-            System.out.println("   TARGET_ENDPOINT, TARGET_RESOURCE_ID, TARGET_REGION, TARGET_KEY (optional)");
+            System.out.println("   TARGET_ENDPOINT, TARGET_RESOURCE_ID, TARGET_REGION");
+            System.out.println("   TARGET_KEY (optional, uses DefaultAzureCredential if not provided)");
             System.out.println("   Skipping cross-resource copy test.");
             return;
         }
 
-        sourceClient = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new AzureKeyCredential(key))
-            .buildClient();
+        // Source client: Use DefaultAzureCredential if key is not provided
+        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+        if (key == null || key.trim().isEmpty()) {
+            sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        } else {
+            sourceClient = sourceBuilder.credential(new AzureKeyCredential(key)).buildClient();
+        }
 
-        targetClient = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint)
-            .credential(new AzureKeyCredential(targetKey != null ? targetKey : key))
-            .buildClient();
+        // Target client: Use DefaultAzureCredential if targetKey is not provided
+        ContentUnderstandingClientBuilder targetBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint);
+        if (targetKey == null || targetKey.trim().isEmpty()) {
+            targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        } else {
+            targetClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildClient();
+        }
 
         String sourceAnalyzerId = "test_cross_resource_source_" + UUID.randomUUID().toString().replace("-", "");
         String targetAnalyzerId = "test_cross_resource_target_" + UUID.randomUUID().toString().replace("-", "");
