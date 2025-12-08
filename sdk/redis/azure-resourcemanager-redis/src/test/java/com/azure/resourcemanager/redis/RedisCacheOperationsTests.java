@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 public class RedisCacheOperationsTests extends RedisManagementTest {
 
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     @SuppressWarnings("unchecked")
     public void canCRUDRedisCache() throws Exception {
         // Create
@@ -206,7 +207,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
         // The SAS token is poorly formatted.
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
-        
+
         premiumCache.importData(Arrays.asList("snapshot1"));*/
     }
 
@@ -241,6 +242,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     public void canCRUDLinkedServers() throws Exception {
 
         RedisCache rgg = redisManager.redisCaches()
@@ -298,6 +300,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     public void canCreateRedisWithRdbAof() {
         StorageAccount storageAccount = storageManager.storageAccounts()
             .define(saName)
@@ -349,6 +352,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     public void canCreateRedisCacheWithDisablePublicNetworkAccess() {
         resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
 
