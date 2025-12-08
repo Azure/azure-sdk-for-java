@@ -48,16 +48,15 @@ class TransactionalBatchITest extends IntegrationSpec
 
     val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
     
-    // Execute transactional batch using regular write with bulkEnableTransactions config
+    // Execute transactional batch using ItemTransactionalBatch write strategy
     operationsDf.write
       .format("cosmos.oltp")
       .option("spark.cosmos.accountEndpoint", cosmosEndpoint)
       .option("spark.cosmos.accountKey", cosmosMasterKey)
       .option("spark.cosmos.database", cosmosDatabase)
       .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-      .option("spark.cosmos.write.strategy", "ItemOverwrite")
+      .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
       .option("spark.cosmos.write.bulk.enabled", "true")
-      .option("spark.cosmos.write.bulk.enableTransactions", "true")
       .mode(SaveMode.Append)
       .save()
 
@@ -90,17 +89,18 @@ class TransactionalBatchITest extends IntegrationSpec
     val schema = StructType(Seq(
       StructField("id", StringType, nullable = false),
       StructField("pk", StringType, nullable = false),
+      StructField("operationType", StringType, nullable = false),
       StructField("name", StringType, nullable = false)
     ))
 
     val batchOperations = Seq(
-      Row(item1Id, partitionKeyValue, "NewItem"),
-      Row(duplicateId, partitionKeyValue, "Duplicate")
+      Row(item1Id, partitionKeyValue, "create", "NewItem"),
+      Row(duplicateId, partitionKeyValue, "create", "Duplicate")
     )
 
     val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
 
-    // This should fail because we're using ItemAppend strategy (create only) and duplicateId already exists
+    // This should fail because we're using create operations and duplicateId already exists
     val exception = intercept[Exception] {
       operationsDf.write
         .format("cosmos.oltp")
@@ -108,9 +108,8 @@ class TransactionalBatchITest extends IntegrationSpec
         .option("spark.cosmos.accountKey", cosmosMasterKey)
         .option("spark.cosmos.database", cosmosDatabase)
         .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-        .option("spark.cosmos.write.strategy", "ItemAppend")
+        .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
         .option("spark.cosmos.write.bulk.enabled", "true")
-        .option("spark.cosmos.write.bulk.enableTransactions", "true")
         .mode(SaveMode.Append)
         .save()
     }
@@ -162,9 +161,8 @@ class TransactionalBatchITest extends IntegrationSpec
       .option("spark.cosmos.accountKey", cosmosMasterKey)
       .option("spark.cosmos.database", cosmosDatabase)
       .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-      .option("spark.cosmos.write.strategy", "ItemOverwrite")
+      .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
       .option("spark.cosmos.write.bulk.enabled", "true")
-      .option("spark.cosmos.write.bulk.enableTransactions", "true")
       .mode(SaveMode.Append)
       .save()
 
@@ -206,9 +204,8 @@ class TransactionalBatchITest extends IntegrationSpec
       .option("spark.cosmos.accountKey", cosmosMasterKey)
       .option("spark.cosmos.database", cosmosDatabase)
       .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-      .option("spark.cosmos.write.strategy", "ItemOverwrite")
+      .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
       .option("spark.cosmos.write.bulk.enabled", "true")
-      .option("spark.cosmos.write.bulk.enableTransactions", "true")
       .mode(SaveMode.Append)
       .save()
 
@@ -255,9 +252,8 @@ class TransactionalBatchITest extends IntegrationSpec
       .option("spark.cosmos.accountKey", cosmosMasterKey)
       .option("spark.cosmos.database", cosmosDatabase)
       .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-      .option("spark.cosmos.write.strategy", "ItemOverwrite")
+      .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
       .option("spark.cosmos.write.bulk.enabled", "true")
-      .option("spark.cosmos.write.bulk.enableTransactions", "true")
       .mode(SaveMode.Append)
       .save()
 
@@ -295,9 +291,8 @@ class TransactionalBatchITest extends IntegrationSpec
         .option("spark.cosmos.accountKey", cosmosMasterKey)
         .option("spark.cosmos.database", cosmosDatabase)
         .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-        .option("spark.cosmos.write.strategy", "ItemOverwrite")
+        .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
         .option("spark.cosmos.write.bulk.enabled", "true")
-        .option("spark.cosmos.write.bulk.enableTransactions", "true")
         .mode(SaveMode.Append)
         .save()
     }
@@ -355,9 +350,8 @@ class TransactionalBatchITest extends IntegrationSpec
         .option("spark.cosmos.accountKey", cosmosMasterKey)
         .option("spark.cosmos.database", cosmosDatabase)
         .option("spark.cosmos.container", containerName)
-        .option("spark.cosmos.write.strategy", "ItemOverwrite")
+        .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
         .option("spark.cosmos.write.bulk.enabled", "true")
-        .option("spark.cosmos.write.bulk.enableTransactions", "true")
         .mode(SaveMode.Append)
         .save()
 
@@ -434,9 +428,8 @@ class TransactionalBatchITest extends IntegrationSpec
         .option("spark.cosmos.accountKey", cosmosMasterKey)
         .option("spark.cosmos.database", cosmosDatabase)
         .option("spark.cosmos.container", containerName)
-        .option("spark.cosmos.write.strategy", "ItemOverwrite")
+        .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
         .option("spark.cosmos.write.bulk.enabled", "true")
-        .option("spark.cosmos.write.bulk.enableTransactions", "true")
         .mode(SaveMode.Append)
         .save()
 
@@ -503,9 +496,8 @@ class TransactionalBatchITest extends IntegrationSpec
         .option("spark.cosmos.accountKey", cosmosMasterKey)
         .option("spark.cosmos.database", cosmosDatabase)
         .option("spark.cosmos.container", containerName)
-        .option("spark.cosmos.write.strategy", "ItemOverwrite")
+        .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
         .option("spark.cosmos.write.bulk.enabled", "true")
-        .option("spark.cosmos.write.bulk.enableTransactions", "true")
         .mode(SaveMode.Append)
         .save()
 
@@ -562,9 +554,8 @@ class TransactionalBatchITest extends IntegrationSpec
           .option("spark.cosmos.accountKey", cosmosMasterKey)
           .option("spark.cosmos.database", cosmosDatabase)
           .option("spark.cosmos.container", containerName)
-          .option("spark.cosmos.write.strategy", "ItemOverwrite")
+          .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
           .option("spark.cosmos.write.bulk.enabled", "true")
-          .option("spark.cosmos.write.bulk.enableTransactions", "true")
           .mode(SaveMode.Append)
           .save()
       }
@@ -619,9 +610,8 @@ class TransactionalBatchITest extends IntegrationSpec
       .option("spark.cosmos.accountKey", cosmosMasterKey)
       .option("spark.cosmos.database", cosmosDatabase)
       .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
-      .option("spark.cosmos.write.strategy", "ItemOverwrite")
+      .option("spark.cosmos.write.strategy", "ItemTransactionalBatch")
       .option("spark.cosmos.write.bulk.enabled", "true")
-      .option("spark.cosmos.write.bulk.enableTransactions", "true")
       .mode(SaveMode.Append)
       .save()
 

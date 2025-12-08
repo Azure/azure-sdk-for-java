@@ -87,7 +87,7 @@ private class ItemsWriterBuilder
     override def supportedCustomMetrics(): Array[CustomMetric] = supportedCosmosMetrics
 
     override def requiredDistribution(): Distribution = {
-      if (writeConfig.bulkEnabled && writeConfig.bulkEnableTransactions) {
+      if (writeConfig.bulkEnabled && writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch) {
         // For transactional writes, partition by all partition key columns
         val partitionKeyPaths = getPartitionKeyColumnNames()
         if (partitionKeyPaths.nonEmpty) {
@@ -103,7 +103,7 @@ private class ItemsWriterBuilder
     }
 
     override def requiredOrdering(): Array[SortOrder] = {
-      if (writeConfig.bulkEnabled && writeConfig.bulkEnableTransactions) {
+      if (writeConfig.bulkEnabled && writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch) {
         // For transactional writes, order by all partition key columns (ascending)
         val partitionKeyPaths = getPartitionKeyColumnNames()
         if (partitionKeyPaths.nonEmpty) {

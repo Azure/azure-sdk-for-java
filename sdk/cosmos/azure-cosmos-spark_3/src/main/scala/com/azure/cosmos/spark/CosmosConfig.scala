@@ -113,7 +113,6 @@ private[spark] object CosmosConfigNames {
   val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled" // keep this to avoid breaking changes
   val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint" // keep this to avoid breaking changes
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
-  val WriteBulkEnableTransactions = "spark.cosmos.write.bulk.enableTransactions"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
   val WriteBulkMinTargetBatchSize = "spark.cosmos.write.bulk.minTargetBatchSize"
@@ -243,7 +242,6 @@ private[spark] object CosmosConfigNames {
     ClientTelemetryEnabled,
     ClientTelemetryEndpoint,
     WriteBulkEnabled,
-    WriteBulkEnableTransactions,
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
     WriteBulkPayloadSizeInBytes,
@@ -1464,7 +1462,6 @@ private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPa
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
                                      bulkEnabled: Boolean,
-                                     bulkEnableTransactions: Boolean = false,
                                      bulkMaxPendingOperations: Option[Int] = None,
                                      pointMaxConcurrency: Option[Int] = None,
                                      maxConcurrentCosmosPartitions: Option[Int] = None,
@@ -1488,12 +1485,6 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
-
-  private val bulkEnableTransactions = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkEnableTransactions,
-    defaultValue = Option.apply(false),
-    mandatory = false,
-    parseFromStringFunction = enableTransactionsAsString => enableTransactionsAsString.toBoolean,
-    helpMessage = "Cosmos DB Item Write enable transactional batch - requires bulk write to be enabled and Spark 3.5+")
 
   private val microBatchPayloadSizeInBytes = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkPayloadSizeInBytes,
     defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES),
@@ -1767,7 +1758,6 @@ private object CosmosWriteConfig {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
-    val bulkEnableTransactionsOpt = CosmosConfigEntry.parse(cfg, bulkEnableTransactions)
     var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
@@ -1798,7 +1788,6 @@ private object CosmosWriteConfig {
       itemWriteStrategyOpt.get,
       maxRetryCountOpt.get,
       bulkEnabled = bulkEnabledOpt.get,
-      bulkEnableTransactions = bulkEnableTransactionsOpt.getOrElse(false),
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
       maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
