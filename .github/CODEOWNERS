@@ -845,10 +845,10 @@
 # ServiceOwners:                                                   @klaaslanghout
 
 # PRLabel: %Text Translation
-/sdk/translation/azure-ai-translation-text/                        @MikeyMCZ @Azure/azure-java-sdk
+/sdk/translation/azure-ai-translation-text/                        @jrjrguo @SG-MS @Azure/azure-java-sdk
 
 # ServiceLabel: %Text Translation
-# ServiceOwners:                                                   @MikeyMCZ
+# ServiceOwners:                                                   @jrjrguo @SG-MS
 
 # ServiceLabel: %TimeseriesInsights
 # ServiceOwners:                                                   @Shipra1Mishra
