@@ -62,8 +62,8 @@ private abstract class CosmosWriterBase(
 
   private val writer: AtomicReference[AsyncItemWriter] = new AtomicReference(
     if (cosmosWriteConfig.bulkEnabled) {
-      // Use TransactionalBulkWriter if ItemWriteStrategy is ItemTransactionalBatch
-      val useTransactional = cosmosWriteConfig.itemWriteStrategy == ItemWriteStrategy.ItemTransactionalBatch
+      // Use TransactionalBulkWriter if bulkTransactional config is enabled
+      val useTransactional = cosmosWriteConfig.bulkTransactional
 
       if (useTransactional) {
         new TransactionalBulkWriter(
@@ -127,7 +127,16 @@ private abstract class CosmosWriterBase(
     }
 
     val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
-    writer.get.scheduleWrite(partitionKeyValue, objectNode, operationType)
+    
+    // Call the appropriate scheduleWrite method based on whether operationType is specified
+    operationType match {
+      case Some(opType) =>
+        // Per-row operation type specified - use 3-parameter method
+        writer.get.scheduleWrite(partitionKeyValue, objectNode, Some(opType))
+      case None =>
+        // No per-row operation type - use 2-parameter method (global strategy)
+        writer.get.scheduleWrite(partitionKeyValue, objectNode)
+    }
   }
 
   override def commit(): WriterCommitMessage = {

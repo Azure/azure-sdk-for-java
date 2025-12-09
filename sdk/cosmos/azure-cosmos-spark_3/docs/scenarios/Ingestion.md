@@ -79,6 +79,61 @@ When your container has a "unique key constraint policy" any 409 "Conflict" (ind
 - For `ItemOverwrite` a 409 - Conflict due to unique key violation will result in an error - and the Spark job will fail. *NOTE: Conflicts due to pk+id being identical to another document  won't even result in a 409 - because with Upsert the existing document would simply be updated.*
 - For `ItemAppend` like conflicts on pk+id any unique key policy constraint violation will be ignored.
 
+### Transactional batch writes
+
+For scenarios requiring atomic all-or-nothing semantics within a partition, you can enable transactional batch writes using the `spark.cosmos.write.bulk.transactional` configuration. When enabled, all operations for a single partition key value either succeed or fail together.
+
+#### Configuration
+
+**Python example:**
+```python
+df.write \
+  .format("cosmos.oltp") \
+  .option("spark.cosmos.accountEndpoint", cosmosEndpoint) \
+  .option("spark.cosmos.accountKey", cosmosKey) \
+  .option("spark.cosmos.database", cosmosDatabase) \
+  .option("spark.cosmos.container", cosmosContainer) \
+  .option("spark.cosmos.write.bulk.enabled", "true") \
+  .option("spark.cosmos.write.bulk.transactional", "true") \
+  .mode("Append") \
+  .save()
+```
+
+**Scala example:**
+```scala
+df.write
+  .format("cosmos.oltp")
+  .option("spark.cosmos.accountEndpoint", cosmosEndpoint)
+  .option("spark.cosmos.accountKey", cosmosKey)
+  .option("spark.cosmos.database", cosmosDatabase)
+  .option("spark.cosmos.container", cosmosContainer)
+  .option("spark.cosmos.write.bulk.enabled", "true")
+  .option("spark.cosmos.write.bulk.transactional", "true")
+  .mode(SaveMode.Append)
+  .save()
+```
+
+#### Characteristics and limitations
+
+- **Atomic semantics**: All operations for the same partition key succeed or all fail (rollback)
+- **Operation type**: Only upsert operations are supported (equivalent to `ItemOverwrite` write strategy)
+- **Partition grouping**: Spark automatically partitions and orders data by partition key columns
+- **Size limits**: Maximum 100 operations per transaction; maximum 2MB total payload per transaction
+- **Partition key requirement**: All operations in a transaction must share the same partition key value
+- **Bulk mode required**: Must have `spark.cosmos.write.bulk.enabled=true` (enabled by default)
+
+#### Use cases
+
+Transactional batch writes are ideal for:
+- Financial transactions requiring consistency across multiple documents
+- Order processing where order header and line items must be committed together
+- Multi-document updates that must be atomic (e.g., inventory adjustments)
+- Any scenario where partial success would leave data in an inconsistent state
+
+#### Error handling
+
+If any operation in a transaction fails (e.g., insufficient RUs, document too large, transaction exceeds 100 operations), the entire transaction is rolled back and no documents are modified. The Spark task will fail and retry according to Spark's retry policy.
+
 ## Preparation
 Below are a couple of tips/best-practices that can help you to prepare for a data migration into a Cosmos DB container.
 
