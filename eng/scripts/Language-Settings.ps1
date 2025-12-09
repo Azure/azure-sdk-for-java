@@ -504,20 +504,8 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $packageInfo)
     return $null
   }
 
-  if ($packageInfo) {
-    $artifactPath = Join-Path $artifactDir $packageInfo.Group $pkgName
-    $files = @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-  } else {
-    # Find all source jar files in given artifact directory
-    # Filter for package in "com.azure*" groupId.
-    $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
-    Write-Host "Checking for source jar in artifact path $($artifactPath)"
-    $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-    # And filter for packages in "io.clientcore*" groupId.
-    # (Is there a way to pass more information here to know the explicit groupId?)
-    $artifactPath = Join-Path $artifactDir "io.clientcore*" $pkgName
-    $files += @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-  }
+  $artifactPath = Join-Path $artifactDir $packageInfo.Group $pkgName
+  $files = @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
 
   if (!$files)
   {
