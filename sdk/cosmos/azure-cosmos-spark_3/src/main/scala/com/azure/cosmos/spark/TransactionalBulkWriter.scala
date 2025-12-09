@@ -77,6 +77,13 @@ private class TransactionalBulkWriter
     // multiplied by 2 to leave space for partition splits during ingestion
     case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
   }
+  // Validate write strategy for transactional batches
+  if (writeConfig.itemWriteStrategy != ItemWriteStrategy.ItemOverwrite) {
+    throw new IllegalArgumentException(
+      s"Transactional batches only support ItemOverwrite (upsert) write strategy. " +
+      s"Requested strategy: ${writeConfig.itemWriteStrategy}")
+  }
+
   log.logInfo(
     s"BulkWriter instantiated (Host CPU count: $cpuCount, maxPendingOperations: $maxPendingOperations, " +
   s"maxConcurrentPartitions: $maxConcurrentPartitions ...")
@@ -102,9 +109,16 @@ private class TransactionalBulkWriter
   private val pendingReadManyRetries = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-  private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+  private val bulkInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
+
+  // Partition key buffering for batch construction
+  // Buffer holds tuples of (ObjectNode, OperationContext, effectiveOperationType)
+  private var currentPartitionKey: PartitionKey = null
+  private val currentBatchOperations = new mutable.ListBuffer[(ObjectNode, OperationContext, String)]()
+  private val batchConstructionLock = new Object()
 
   private val activeBulkWriteOperations =java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
+  private val operationContextMap = new java.util.concurrent.ConcurrentHashMap[CosmosItemOperation, OperationContext]().asScala
   private val activeReadManyOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
@@ -383,16 +397,11 @@ private class TransactionalBulkWriter
                                       .get
                                       .patchBulkUpdateItem(resultMap.get(readManyOperation.cosmosItemIdentity), cosmosPatchBulkUpdateOperations)
 
-                              // create bulk item operation
+                              // Add operation to batch - ReadMany results become batch operations
                               val etagOpt = Option.apply(rootNode.get(CosmosConstants.Properties.ETag))
-                              val bulkItemOperation = etagOpt match {
+                              val (effectiveOperationType, operationContext) = etagOpt match {
                                   case Some(etag) =>
-                                      CosmosBulkOperations.getReplaceItemOperation(
-                                          readManyOperation.cosmosItemIdentity.getId,
-                                          rootNode,
-                                          readManyOperation.cosmosItemIdentity.getPartitionKey,
-                                          new CosmosBulkItemRequestOptions().setIfMatchETag(etag.asText()),
-                                          new OperationContext(
+                                      ("replace", new OperationContext(
                                               readManyOperation.operationContext.itemId,
                                               readManyOperation.operationContext.partitionKeyValue,
                                               Some(etag.asText()),
@@ -400,20 +409,24 @@ private class TransactionalBulkWriter
                                               monotonicOperationCounter.incrementAndGet(),
                                               Some(readManyOperation.objectNode)
                                           ))
-                                  case None => CosmosBulkOperations.getCreateItemOperation(
-                                      rootNode,
-                                      readManyOperation.cosmosItemIdentity.getPartitionKey,
-                                      new OperationContext(
-                                          readManyOperation.operationContext.itemId,
-                                          readManyOperation.operationContext.partitionKeyValue,
-                                          eTagInput = None,
-                                          readManyOperation.operationContext.attemptNumber,
-                                          monotonicOperationCounter.incrementAndGet(),
-                                          Some(readManyOperation.objectNode)
+                                  case None =>
+                                      ("create", new OperationContext(
+                                              readManyOperation.operationContext.itemId,
+                                              readManyOperation.operationContext.partitionKeyValue,
+                                              eTagInput = None,
+                                              readManyOperation.operationContext.attemptNumber,
+                                              monotonicOperationCounter.incrementAndGet(),
+                                              Some(readManyOperation.objectNode)
                                       ))
                               }
 
-                              this.emitBulkInput(bulkItemOperation)
+                              // Add to batch buffer - will be flushed on PK change or 100-op limit
+                              addOperationToBatch(
+                                  readManyOperation.cosmosItemIdentity.getPartitionKey,
+                                  rootNode,
+                                  operationContext,
+                                  effectiveOperationType
+                              )
                           }
                       })
                       .onErrorResume(throwable => {
@@ -600,7 +613,10 @@ private class TransactionalBulkWriter
             shouldSkipTaskCompletion.set(true)
           }
           if (pendingRetriesFound || itemOperationFound) {
-            val context = itemOperation.getContext[OperationContext]
+            // Look up context from our external map since ItemBatchOperation.getContext() returns null
+            val context = operationContextMap.remove(itemOperation).getOrElse(
+              throw new IllegalStateException(s"Cannot find context for operation: ${itemOperation.getId}")
+            )
             val itemResponse = resp.getResponse
 
             if (resp.getException != null) {
@@ -623,6 +639,8 @@ private class TransactionalBulkWriter
               // no error case
               outputMetricsPublisher.trackWriteOperation(1, None)
               totalSuccessfulIngestionMetrics.getAndIncrement()
+              log.logTrace(s"Successfully processed operation: ${itemOperation.getOperationType} " +
+                s"for item ${itemOperation.getId}, PK: ${itemOperation.getPartitionKeyValue}")
             }
           }
         }
@@ -655,10 +673,6 @@ private class TransactionalBulkWriter
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
-    scheduleWrite(partitionKeyValue, objectNode, None)
-  }
-
-  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
@@ -669,8 +683,7 @@ private class TransactionalBulkWriter
       getETag(objectNode),
       1,
       monotonicOperationCounter.incrementAndGet(),
-      None,
-      operationType)
+      None)
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
     // to reduce perf impact before the Semaphore has been acquired
@@ -713,6 +726,18 @@ private class TransactionalBulkWriter
     scheduleWriteInternal(partitionKeyValue, objectNode, operationContext)
   }
 
+  /**
+    * Per-row operation type is not supported for transactional batches.
+    * All operations in a transactional batch must be upserts (ItemOverwrite strategy).
+    * This method is implemented to satisfy the AsyncItemWriter interface but throws an exception.
+    */
+  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
+    throw new UnsupportedOperationException(
+      "Per-row operation types are not supported for transactional batches. " +
+      "All operations in a transactional batch must use ItemOverwrite (upsert) strategy. " +
+      "Use scheduleWrite(partitionKeyValue, objectNode) instead.")
+  }
+
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey,
                                     objectNode: ObjectNode,
                                     operationContext: OperationContext): Unit = {
@@ -745,81 +770,86 @@ private class TransactionalBulkWriter
                                         objectNode: ObjectNode,
                                         operationContext: OperationContext): Unit = {
 
-    // Determine the effective operation type from per-row operationType or global strategy
-    val effectiveOperationType = operationContext.operationType match {
-      case Some(opType) => opType.toLowerCase
-      case None => writeConfig.itemWriteStrategy match {
-        case ItemWriteStrategy.ItemOverwrite => "upsert"
-        case ItemWriteStrategy.ItemAppend => "create"
-        case ItemWriteStrategy.ItemDelete | ItemWriteStrategy.ItemDeleteIfNotModified => "delete"
-        case ItemWriteStrategy.ItemOverwriteIfNotModified => "replace"
-        case ItemWriteStrategy.ItemTransactionalBatch => "upsert" // Default to upsert for transactional batch
-        case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => "patch"
-        case _ => throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported for transactional batch")
-      }
-    }
+    // For transactional batches, only upsert is supported
+    // This is validated in the constructor
+    val effectiveOperationType = "upsert"
 
-    val bulkItemOperation = effectiveOperationType match {
-      case "create" =>
-        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
-      
-      case "upsert" =>
-        CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
-      
-      case "replace" =>
-        operationContext.eTag match {
-          case Some(eTag) =>
-            CosmosBulkOperations.getReplaceItemOperation(
-              operationContext.itemId,
-              objectNode,
-              partitionKeyValue,
-              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
-              operationContext)
-          case _ =>
-            CosmosBulkOperations.getReplaceItemOperation(
-              operationContext.itemId,
-              objectNode,
-              partitionKeyValue,
-              operationContext)
-        }
-      
-      case "delete" =>
-        operationContext.eTag match {
-          case Some(eTag) =>
-            CosmosBulkOperations.getDeleteItemOperation(
-              operationContext.itemId,
-              partitionKeyValue,
-              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
-              operationContext)
-          case _ =>
-            CosmosBulkOperations.getDeleteItemOperation(
-              operationContext.itemId,
-              partitionKeyValue,
-              operationContext)
-        }
-      
-      case "patch" =>
-        getPatchItemOperation(
-          operationContext.itemId,
-          partitionKeyValue,
-          partitionKeyDefinition,
-          objectNode,
-          operationContext)
-      
-      case _ =>
-        throw new IllegalArgumentException(
-          s"Unsupported operationType '$effectiveOperationType'. " +
-          s"Supported types for transactional batch: create, upsert, replace, delete")
-    }
-
-      this.emitBulkInput(bulkItemOperation)
+    // Buffer operation for batch construction
+    this.addOperationToBatch(partitionKeyValue, objectNode, operationContext, effectiveOperationType)
   }
 
-  private[this] def emitBulkInput(bulkItemOperation: CosmosItemOperation): Unit = {
-      activeBulkWriteOperations.add(bulkItemOperation)
+  private[this] def addOperationToBatch(partitionKey: PartitionKey,
+                                        objectNode: ObjectNode,
+                                        operationContext: OperationContext,
+                                        effectiveOperationType: String): Unit = {
+
+    batchConstructionLock.synchronized {
+      // Check if partition key changed - flush existing batch if needed
+      if (currentPartitionKey != null && !currentPartitionKey.equals(partitionKey)) {
+        flushCurrentBatch()
+      }
+
+      // Initialize partition key if this is the first operation
+      if (currentPartitionKey == null) {
+        currentPartitionKey = partitionKey
+      }
+
+      // Add operation data to buffer
+      currentBatchOperations += ((objectNode, operationContext, effectiveOperationType))
+
+      // Note: We don't auto-flush at 100 operations in transactional mode because:
+      // 1. Auto-splitting would break transactional atomicity
+      // 2. The service will reject batches with >100 operations with a clear error
+      // 3. Users should ensure their transactional batches respect the 100 operation limit
+    }
+  }
+
+  private[this] def flushCurrentBatch(): Unit = {
+    // Must be called within batchConstructionLock.synchronized
+    if (currentBatchOperations.nonEmpty && currentPartitionKey != null) {
+      // Build the batch using the builder API
+      val batch = CosmosBatch.createCosmosBatch(currentPartitionKey)
+
+      // Build the batch and keep track of context for each operation
+      // For transactional batches, all operations are upserts
+      val contextList = new scala.collection.mutable.ListBuffer[OperationContext]()
+
+      currentBatchOperations.foreach { case (objectNode, operationContext, _) =>
+        batch.upsertItemOperation(objectNode)
+        contextList += operationContext
+      }
+
+      // After building the batch, get the operations and track them with their contexts
+      val batchOperations = batch.getOperations()
       
-      // Simply emit the operation - TransactionalBulkExecutor will handle batching by partition key
-      bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
+      // Map each operation to its context and add to tracking
+      for (i <- 0 until batchOperations.size()) {
+        val operation = batchOperations.get(i)
+        val context = contextList(i)
+        operationContextMap.put(operation, context)
+        activeBulkWriteOperations.add(operation)
+      }
+
+      // Emit the batch
+      bulkInputEmitter.emitNext(batch, emitFailureHandler)
+
+      // Clear the buffer
+      currentBatchOperations.clear()
+      currentPartitionKey = null
+    }
+  }
+
+  private[this] def getPatchOperationsForBatch(itemId: String, objectNode: ObjectNode): CosmosPatchOperations = {
+    assert(writeConfig.patchConfigs.isDefined)
+    assert(cosmosPatchHelperOpt.isDefined)
+    val cosmosPatchHelper = cosmosPatchHelperOpt.get
+    cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
+  }
+
+  private[this] def finalFlushBatch(): Unit = {
+    batchConstructionLock.synchronized {
+      flushCurrentBatch()
+    }
   }
 
   private[this] def getPatchItemOperation(itemId: String,
@@ -1100,6 +1130,9 @@ private class TransactionalBulkWriter
     this.synchronized {
       try {
         if (!closed.get()) {
+          // Flush any remaining batched operations before closing
+          finalFlushBatch()
+          
           log.logInfo(s"flushAndClose invoked $getThreadInfo")
           log.logInfo(s"completed so far ${totalSuccessfulIngestionMetrics.get()}, " +
             s"pending bulkWrite asks ${activeBulkWriteOperations.size}, pending readMany tasks ${activeReadManyOperations.size} $getThreadInfo")
@@ -1158,18 +1191,13 @@ private class TransactionalBulkWriter
                   }
 
                   activeOperationsSnapshot.foreach(operation => {
-                    if (activeBulkWriteOperations.contains(operation)) {
-                      // re-validating whether the operation is still active - if so, just re-enqueue another retry
-                      // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
-                      
-                      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-                      // TransactionalBulkExecutor will handle batching by partition key
-                      bulkInputEmitter.emitNext(operation, emitFailureHandler)
-                      log.logWarning(s"Re-enqueued a retry for pending active write task '${operation.getOperationType} "
-                        + s"(${operation.getPartitionKeyValue}/${operation.getId})' "
-                        + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
-                        + s"Context: ${operationContext.toString} $getThreadInfo")
-                    }
+                    // Note: In transactional batch mode, we don't retry individual operations
+                    // because batches are constructed and executed atomically. The executor
+                    // handles retries at the batch level. Individual operation retry would require
+                    // reconstructing batches, which could lead to incorrect retry behavior.
+                    // Failed batches will be retried by Spark's task retry mechanism.
+                    log.logTrace(s"Skipping individual operation retry in transactional batch mode - "
+                      + s"Context: ${operationContext.toString} $getThreadInfo")
                   })
 
                   activeReadManyOperationsSnapshot.foreach(operation => {
@@ -1399,10 +1427,9 @@ private class TransactionalBulkWriter
     val attemptNumber: Int,
     val sequenceNumber: Long,
     /** starts from 1 * */
-    sourceItemInput: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
-    operationTypeInput: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
+    sourceItemInput: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
   {
-    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput, operationTypeInput)
+    private val ctxCore: OperationContextCore = OperationContextCore(itemIdInput, partitionKeyValueInput, eTagInput, sourceItemInput)
 
     override def equals(obj: Any): Boolean = ctxCore.equals(obj)
 
@@ -1419,8 +1446,6 @@ private class TransactionalBulkWriter
     def eTag: Option[String] = ctxCore.eTag
 
     def sourceItem: Option[ObjectNode] = ctxCore.sourceItem
-
-    def operationType: Option[String] = ctxCore.operationType
   }
 
   private case class OperationContextCore
@@ -1428,8 +1453,7 @@ private class TransactionalBulkWriter
     itemId: String,
     partitionKeyValue: PartitionKey,
     eTag: Option[String],
-    sourceItem: Option[ObjectNode] = None, // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
-    operationType: Option[String] = None) // per-row operation type (create, upsert, replace, delete)
+    sourceItem: Option[ObjectNode] = None) // for patchBulkUpdate: source item refers to the original objectNode from which SDK constructs the final bulk item operation
   {
     override def productPrefix: String = "OperationContext"
   }
