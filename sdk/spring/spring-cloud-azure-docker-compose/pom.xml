@@ -165,6 +165,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.20.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-docker-compose:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
