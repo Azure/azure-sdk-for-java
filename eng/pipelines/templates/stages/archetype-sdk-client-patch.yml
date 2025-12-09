@@ -61,8 +61,10 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: UsePythonVersion@0
@@ -104,8 +106,14 @@ extends:
             # generate_from_source_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
+                $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
+                  | ConvertFrom-Json `
+                  | Select-Object -ExpandProperty name)
                 foreach($ServiceDir in $ServiceDirs.Split(',')) {
-                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 `
+                    -ServiceDirectory $ServiceDir `
+                    -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo `
+                    -artifactList $ArtifactList
                 }
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
@@ -209,8 +217,10 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: PythonScript@0

@@ -146,11 +146,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
@@ -159,6 +163,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -179,6 +184,7 @@ jobs:
               -ServiceDirectory ${{parameters.ServiceDirectory}}
               -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
               -AddDevVersion
+              -artifactList @('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Select-Object -ExpandProperty name)
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
@@ -274,7 +280,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
           PackageInfoFiles:
-            - ${{ each artifact in parameters.Artifacts }}:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
               - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
@@ -347,11 +353,15 @@ jobs:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
