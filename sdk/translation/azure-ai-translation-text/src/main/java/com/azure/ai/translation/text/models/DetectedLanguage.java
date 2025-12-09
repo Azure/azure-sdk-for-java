@@ -23,6 +23,13 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     @Generated
     private final String language;
 
+    /*
+     * A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     */
+    @Generated
+    private final double score;
+
     /**
      * Creates an instance of DetectedLanguage class.
      *
@@ -43,6 +50,17 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     @Generated
     public String getLanguage() {
         return this.language;
+    }
+
+    /**
+     * Get the score property: A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     *
+     * @return the score value.
+     */
+    @Generated
+    public double getScore() {
+        return this.score;
     }
 
     /**
@@ -84,23 +102,5 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
             }
             return new DetectedLanguage(language, score);
         });
-    }
-
-    /*
-     * A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     */
-    @Generated
-    private final double score;
-
-    /**
-     * Get the score property: A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     *
-     * @return the score value.
-     */
-    @Generated
-    public double getScore() {
-        return this.score;
     }
 }

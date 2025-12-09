@@ -32,6 +32,13 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
     private List<TranslationText> translations;
 
     /**
+     * Creates an instance of TranslatedTextItem class.
+     */
+    @Generated
+    private TranslatedTextItem() {
+    }
+
+    /**
      * Get the detectedLanguage property: The detectedLanguage property is only present in the result object when
      * language auto-detection is requested.
      *
@@ -92,12 +99,5 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
             }
             return deserializedTranslatedTextItem;
         });
-    }
-
-    /**
-     * Creates an instance of TranslatedTextItem class.
-     */
-    @Generated
-    private TranslatedTextItem() {
     }
 }

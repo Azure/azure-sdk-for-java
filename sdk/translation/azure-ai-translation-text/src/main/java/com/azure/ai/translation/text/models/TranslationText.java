@@ -18,6 +18,42 @@ import java.io.IOException;
 public final class TranslationText implements JsonSerializable<TranslationText> {
 
     /*
+     * A string representing the language code of the target language.
+     */
+    @Generated
+    private final String language;
+
+    /*
+     * An integer indicating the number of characters in the source text string
+     */
+    @Generated
+    private Integer sourceCharacters;
+
+    /*
+     * An integer indicating the number of tokens used in generating the translated text
+     */
+    @Generated
+    private Integer instructionTokens;
+
+    /*
+     * An integer indicating the number of tokens used in the source sentence
+     */
+    @Generated
+    private Integer sourceTokens;
+
+    /*
+     * An integer indicating the number of tokens used in the translation response
+     */
+    @Generated
+    private Integer responseTokens;
+
+    /*
+     * An integer indicating the number of tokens used in the target sentence
+     */
+    @Generated
+    private Integer targetTokens;
+
+    /*
      * A string giving the translated text.
      */
     @Generated
@@ -33,6 +69,67 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
     private TranslationText(String language, String text) {
         this.language = language;
         this.text = text;
+    }
+
+    /**
+     * Get the language property: A string representing the language code of the target language.
+     *
+     * @return the language value.
+     */
+    @Generated
+    public String getLanguage() {
+        return this.language;
+    }
+
+    /**
+     * Get the sourceCharacters property: An integer indicating the number of characters in the source text string.
+     *
+     * @return the sourceCharacters value.
+     */
+    @Generated
+    public Integer getSourceCharacters() {
+        return this.sourceCharacters;
+    }
+
+    /**
+     * Get the instructionTokens property: An integer indicating the number of tokens used in generating the translated
+     * text.
+     *
+     * @return the instructionTokens value.
+     */
+    @Generated
+    public Integer getInstructionTokens() {
+        return this.instructionTokens;
+    }
+
+    /**
+     * Get the sourceTokens property: An integer indicating the number of tokens used in the source sentence.
+     *
+     * @return the sourceTokens value.
+     */
+    @Generated
+    public Integer getSourceTokens() {
+        return this.sourceTokens;
+    }
+
+    /**
+     * Get the responseTokens property: An integer indicating the number of tokens used in the translation response.
+     *
+     * @return the responseTokens value.
+     */
+    @Generated
+    public Integer getResponseTokens() {
+        return this.responseTokens;
+    }
+
+    /**
+     * Get the targetTokens property: An integer indicating the number of tokens used in the target sentence.
+     *
+     * @return the targetTokens value.
+     */
+    @Generated
+    public Integer getTargetTokens() {
+        return this.targetTokens;
     }
 
     /**
@@ -110,102 +207,5 @@ public final class TranslationText implements JsonSerializable<TranslationText> 
             deserializedTranslationText.targetTokens = targetTokens;
             return deserializedTranslationText;
         });
-    }
-
-    /*
-     * A string representing the language code of the target language.
-     */
-    @Generated
-    private final String language;
-
-    /*
-     * An integer indicating the number of characters in the source text string
-     */
-    @Generated
-    private Integer sourceCharacters;
-
-    /*
-     * An integer indicating the number of tokens used in generating the translated text
-     */
-    @Generated
-    private Integer instructionTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the source sentence
-     */
-    @Generated
-    private Integer sourceTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the translation response
-     */
-    @Generated
-    private Integer responseTokens;
-
-    /*
-     * An integer indicating the number of tokens used in the target sentence
-     */
-    @Generated
-    private Integer targetTokens;
-
-    /**
-     * Get the language property: A string representing the language code of the target language.
-     *
-     * @return the language value.
-     */
-    @Generated
-    public String getLanguage() {
-        return this.language;
-    }
-
-    /**
-     * Get the sourceCharacters property: An integer indicating the number of characters in the source text string.
-     *
-     * @return the sourceCharacters value.
-     */
-    @Generated
-    public Integer getSourceCharacters() {
-        return this.sourceCharacters;
-    }
-
-    /**
-     * Get the instructionTokens property: An integer indicating the number of tokens used in generating the translated
-     * text.
-     *
-     * @return the instructionTokens value.
-     */
-    @Generated
-    public Integer getInstructionTokens() {
-        return this.instructionTokens;
-    }
-
-    /**
-     * Get the sourceTokens property: An integer indicating the number of tokens used in the source sentence.
-     *
-     * @return the sourceTokens value.
-     */
-    @Generated
-    public Integer getSourceTokens() {
-        return this.sourceTokens;
-    }
-
-    /**
-     * Get the responseTokens property: An integer indicating the number of tokens used in the translation response.
-     *
-     * @return the responseTokens value.
-     */
-    @Generated
-    public Integer getResponseTokens() {
-        return this.responseTokens;
-    }
-
-    /**
-     * Get the targetTokens property: An integer indicating the number of tokens used in the target sentence.
-     *
-     * @return the targetTokens value.
-     */
-    @Generated
-    public Integer getTargetTokens() {
-        return this.targetTokens;
     }
 }

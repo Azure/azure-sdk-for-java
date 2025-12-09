@@ -4,16 +4,16 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
+import com.azure.ai.translation.text.implementation.models.InputTextItem;
+import com.azure.ai.translation.text.implementation.models.TranslateBody;
+import com.azure.ai.translation.text.implementation.models.TranslationResult;
+import com.azure.ai.translation.text.implementation.models.TransliterateBody;
+import com.azure.ai.translation.text.implementation.models.TransliterateResult;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.ai.translation.text.models.TranslateInputItem;
-import com.azure.ai.translation.text.models.TranslateInputs;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.TranslationResult;
 import com.azure.ai.translation.text.models.TranslationTarget;
-import com.azure.ai.translation.text.models.TransliterateInputs;
-import com.azure.ai.translation.text.models.TransliterateResult;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -301,25 +301,61 @@ public final class TextTranslationClient {
      * @param fromScript Specifies the script used by the input text. Look up supported languages using the
      * transliteration scope,
      * to find input scripts available for the selected language.
-     * @param toScript Specifies the output script. Look up supported languages using the transliteration
-     * scope, to find output
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
+     * output
      * scripts available for the selected combination of input language and input script.
-     * @param inputs Defines the text inputs to transliterate.
+     * @param transliterateInput Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response for the transliteration API.
      */
-    private List<TransliteratedText> transliterateInner(String language, String fromScript, String toScript,
-        List<InputTextItem> inputs) {
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransliterateResult transliterate(String language, String fromScript, String toScript,
+        TransliterateBody transliterateInput, String clientTraceId) {
+        // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        TransliterateInputs transliterateBody = new TransliterateInputs(inputs);
-        TransliterateResult result = transliterateWithResponse(language, fromScript, toScript,
-            BinaryData.fromObject(transliterateBody), requestOptions).getValue().toObject(TransliterateResult.class);
-        return result.getValue();
+        if (clientTraceId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
+        }
+        return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(transliterateInput),
+            requestOptions).getValue().toObject(TransliterateResult.class);
+    }
+
+    /**
+     * Transliterate Text.
+     *
+     * @param language Specifies the language of the text to convert from one script to another.
+     * Possible languages are listed in the transliteration scope obtained by querying the service
+     * for its supported languages.
+     * @param fromScript Specifies the script used by the input text. Look up supported languages using the
+     * transliteration scope,
+     * to find input scripts available for the selected language.
+     * @param toScript Specifies the output script. Look up supported languages using the transliteration scope, to find
+     * output
+     * scripts available for the selected combination of input language and input script.
+     * @param transliterateInput Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the transliteration API.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransliterateResult transliterate(String language, String fromScript, String toScript,
+        TransliterateBody transliterateInput) {
+        // Generated convenience method for transliterateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return transliterateWithResponse(language, fromScript, toScript, BinaryData.fromObject(transliterateInput),
+            requestOptions).getValue().toObject(TransliterateResult.class);
     }
 
     /**
@@ -349,7 +385,8 @@ public final class TextTranslationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TransliteratedText> transliterate(String language, String fromScript, String toScript,
         List<String> inputs) {
-        return transliterateInner(language, fromScript, toScript, convertTextsToInputTextItems(inputs));
+        TransliterateBody transliterateBody = new TransliterateBody(convertTextsToInputTextItems(inputs));
+        return transliterate(language, fromScript, toScript, transliterateBody).getValue();
     }
 
     /**
@@ -473,6 +510,52 @@ public final class TextTranslationClient {
     /**
      * Translate Text.
      *
+     * @param translateInput Defines the content of the request.
+     * @param clientTraceId A client-generated GUID to uniquely identify the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the translation API.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TranslationResult translate(TranslateBody translateInput, String clientTraceId) {
+        // Generated convenience method for translateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (clientTraceId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
+        }
+        return translateWithResponse(BinaryData.fromObject(translateInput), requestOptions).getValue()
+            .toObject(TranslationResult.class);
+    }
+
+    /**
+     * Translate Text.
+     *
+     * @param translateInput Defines the content of the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the translation API.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TranslationResult translate(TranslateBody translateInput) {
+        // Generated convenience method for translateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return translateWithResponse(BinaryData.fromObject(translateInput), requestOptions).getValue()
+            .toObject(TranslationResult.class);
+    }
+
+    /**
+     * Translate Text.
+     *
      * @param inputs Defines the inputs to translate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -484,12 +567,8 @@ public final class TextTranslationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TranslatedTextItem> translate(List<TranslateInputItem> inputs) {
-        // Generated convenience method for translateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        TranslateInputs translateBody = new TranslateInputs(inputs);
-        TranslationResult result
-            = translateWithResponse(BinaryData.fromObject(translateBody), requestOptions).getValue()
-                .toObject(TranslationResult.class);
+        TranslateBody translateBody = new TranslateBody(inputs);
+        TranslationResult result = translate(translateBody);
         return result.getValue();
     }
 

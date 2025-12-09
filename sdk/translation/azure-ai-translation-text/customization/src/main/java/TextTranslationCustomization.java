@@ -48,5 +48,17 @@ public class TextTranslationCustomization extends Customization {
                 }
             )
         );
+
+        logger.info("Customizing the client classes - public protocol methods");
+        customization.getClass("com.azure.ai.translation.text", "TextTranslationClient").customizeAst(ast -> 
+            ast.getClassByName("TextTranslationClient").ifPresent(clazz -> {
+                clazz.getMethodsByName("translateWithResponse").forEach(method -> method.setPublic(true));
+                clazz.getMethodsByName("transliterateWithResponse").forEach(method -> method.setPublic(true));
+            }));
+        customization.getClass("com.azure.ai.translation.text", "TextTranslationAsyncClient").customizeAst(ast -> 
+            ast.getClassByName("TextTranslationAsyncClient").ifPresent(clazz -> {
+                clazz.getMethodsByName("translateWithResponse").forEach(method -> method.setPublic(true));
+                clazz.getMethodsByName("transliterateWithResponse").forEach(method -> method.setPublic(true));
+            }));
     }
 }
