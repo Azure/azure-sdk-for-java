@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
@@ -43,7 +44,7 @@ class HttpClientHelperTests {
     void executeMapsRequestAndResponse() {
         RecordingHttpClient recordingClient = new RecordingHttpClient(request -> createMockResponse(request, 201,
             new HttpHeaders().set(REQUEST_ID_HEADER, "req-123").set(CUSTOM_HEADER_NAME, "custom-value"), "pong"));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
 
@@ -70,7 +71,7 @@ class HttpClientHelperTests {
     void executeAsyncCompletesSuccessfully() {
         RecordingHttpClient recordingClient
             = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
 
@@ -93,7 +94,7 @@ class HttpClientHelperTests {
             }
             return createMockResponse(request, 200, new HttpHeaders(), "success");
         });
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.GET)
@@ -111,7 +112,7 @@ class HttpClientHelperTests {
     void executeThrowsUncheckedIOExceptionOnBodyBufferingFailure() {
         RecordingHttpClient recordingClient
             = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.POST)
@@ -132,7 +133,7 @@ class HttpClientHelperTests {
     void executeThrowsExceptionOnMalformedUrl() {
         RecordingHttpClient recordingClient
             = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.GET)
@@ -149,7 +150,7 @@ class HttpClientHelperTests {
     void executeAsyncPropagatesRequestBuildingErrors() {
         RecordingHttpClient recordingClient
             = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(recordingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.POST)
@@ -169,7 +170,7 @@ class HttpClientHelperTests {
     @Test
     void executeAsyncPropagatesHttpClientFailures() {
         FailingHttpClient failingClient = new FailingHttpClient(new RuntimeException("Network error"));
-        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(failingClient);
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(failingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
             .method(com.openai.core.http.HttpMethod.GET)

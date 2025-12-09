@@ -20,7 +20,7 @@ import java.util.StringJoiner;
  * OpenAI request metadata. The builder keeps the low-level path/query handling isolated so that
  * {@link HttpClientHelper} can focus on the higher-level request mapping logic.
  */
-final class OpenAiRequestUrlBuilder {
+public final class OpenAiRequestUrlBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAiRequestUrlBuilder.class);
 

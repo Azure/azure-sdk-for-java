@@ -328,9 +328,8 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsAsyncClient.
      */
     public ConversationsAsyncClient buildConversationsAsyncClient() {
-        HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -339,9 +338,8 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsClient.
      */
     public ConversationsClient buildConversationsClient() {
-        HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -350,9 +348,8 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -361,9 +358,8 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        HttpClient decoratedHttpClient = getOpenAIHttpClient();
         return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(decoratedHttpClient))));
+                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
@@ -390,10 +386,6 @@ public final class AgentsClientBuilder
         }
         builder.maxRetries(0);
         return builder;
-    }
-
-    private HttpClient getOpenAIHttpClient() {
-        return createHttpPipeline()::send;
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentsClientBuilder.class);

@@ -5,12 +5,15 @@ package com.azure.ai.agents.implementation.http;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.Headers;
+import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
@@ -36,23 +39,22 @@ public final class HttpClientHelper {
     }
 
     /**
-     * Wraps the given Azure {@link com.azure.core.http.HttpClient} with an implementation of the OpenAI
-     * {@link com.openai.core.http.HttpClient} interface. All requests and responses are converted on the fly.
+     * Implements the OpenAI {@link HttpClient} interface that sends the HTTP request through the Azure HTTP pipeline.
+     * All requests and responses are converted on the fly.
      *
-     * @param azureHttpClient The Azure HTTP client that should execute requests.
+     * @param httpPipeline The Azure HTTP pipeline that will execute HTTP requests.
      * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
      */
-    public static com.openai.core.http.HttpClient
-        mapToOpenAIHttpClient(com.azure.core.http.HttpClient azureHttpClient) {
-        return new HttpClientWrapper(azureHttpClient);
+    public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline) {
+        return new HttpClientWrapper(httpPipeline);
     }
 
-    private static final class HttpClientWrapper implements com.openai.core.http.HttpClient {
+    private static final class HttpClientWrapper implements HttpClient {
 
-        private final com.azure.core.http.HttpClient azureHttpClient;
+        private final HttpPipeline httpPipeline;
 
-        private HttpClientWrapper(com.azure.core.http.HttpClient azureHttpClient) {
-            this.azureHttpClient = Objects.requireNonNull(azureHttpClient, "'azureHttpClient' cannot be null.");
+        private HttpClientWrapper(HttpPipeline httpPipeline) {
+            this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         }
 
         @Override
@@ -71,7 +73,7 @@ public final class HttpClientHelper {
             Objects.requireNonNull(requestOptions, "requestOptions");
 
             com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-            com.azure.core.http.HttpResponse azureResponse = this.azureHttpClient.sendSync(azureRequest, Context.NONE);
+            com.azure.core.http.HttpResponse azureResponse = this.httpPipeline.sendSync(azureRequest, Context.NONE);
             return new AzureHttpResponseAdapter(azureResponse);
         }
 
@@ -92,7 +94,7 @@ public final class HttpClientHelper {
                 return failedFuture(runtimeException);
             }
 
-            return this.azureHttpClient.send(azureRequest)
+            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", true))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
 //                    .onErrorMap(t -> {
 //                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
@@ -127,7 +129,7 @@ public final class HttpClientHelper {
             }
 
             com.azure.core.http.HttpRequest azureRequest
-                = new com.azure.core.http.HttpRequest(com.azure.core.http.HttpMethod.valueOf(request.method().name()),
+                = new com.azure.core.http.HttpRequest(HttpMethod.valueOf(request.method().name()),
                     OpenAiRequestUrlBuilder.buildUrl(request), headers);
 
             if (bodyData != null) {
