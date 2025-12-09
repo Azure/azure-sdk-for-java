@@ -1,5 +1,10 @@
 ## Release History
 
+### 5.24.1 (2025-12-09)
+
+#### Other Changes
+* regular release
+
 ### 5.24.0 (2025-12-04)
 
 #### Other Changes
