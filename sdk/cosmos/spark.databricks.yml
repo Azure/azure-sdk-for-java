@@ -135,6 +135,6 @@ stages:
             fi
         env:
           JAR_URL: '${{ parameters.JarReadOnlySasUri }}'
-          JAR_NAME: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
+          JAR_NAME: '${{ parameters.SparkVersion }}-latest-ci-candidate.jar'
           JAR_CHECK_SUM: $(JarCheckSum)
           AVOID_DBFS:  ${{ parameters.AvoidDBFS }}
