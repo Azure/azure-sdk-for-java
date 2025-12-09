@@ -269,8 +269,11 @@
 # AzureSdkOwners:                                                  @samvaity
 # ServiceOwners:                                                   @assafi
 
+# PRLabel: %Cognitive - Translator
+/sdk/translation/                                                  @jrjrguo @SG-MS @Azure/azure-java-sdk
+
 # ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                                   @swmachan @MikeyMCZ
+# ServiceOwners:                                                   @swmachan @jrjrguo @SG-MS
 
 # ServiceLabel: %Commerce
 # ServiceOwners:                                                   @ms-premp @qiaozha
@@ -843,12 +846,6 @@
 # ServiceLabel: %Tables
 # AzureSdkOwners:                                                  @jairmyree
 # ServiceOwners:                                                   @klaaslanghout
-
-# PRLabel: %Text Translation
-/sdk/translation/azure-ai-translation-text/                        @jrjrguo @SG-MS @Azure/azure-java-sdk
-
-# ServiceLabel: %Text Translation
-# ServiceOwners:                                                   @jrjrguo @SG-MS
 
 # ServiceLabel: %TimeseriesInsights
 # ServiceOwners:                                                   @Shipra1Mishra
