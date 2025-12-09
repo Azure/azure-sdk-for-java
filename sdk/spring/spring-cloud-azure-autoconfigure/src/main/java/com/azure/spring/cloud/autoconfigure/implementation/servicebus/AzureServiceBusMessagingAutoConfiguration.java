@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,6 +45,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 
@@ -92,7 +94,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
             ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
-            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) ObjectProvider<TokenCredential> defaultTokenCredentials,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
@@ -115,7 +117,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ConsumerProperties>> suppliers,
             ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
-            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) ObjectProvider<TokenCredential> defaultTokenCredentials,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> sessionReceiverCustomizers) {
             DefaultServiceBusNamespaceConsumerFactory factory = new DefaultServiceBusNamespaceConsumerFactory(properties, suppliers.getIfAvailable());
@@ -136,7 +138,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
             ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
-            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) ObjectProvider<TokenCredential> defaultTokenCredentials,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
