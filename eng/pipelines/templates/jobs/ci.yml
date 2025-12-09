@@ -153,6 +153,7 @@ jobs:
               - ${{ each artifact in parameters.ReleaseArtifacts }}:
                 - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
                   - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
             TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
@@ -359,6 +360,7 @@ jobs:
               - ${{ each artifact in parameters.ReleaseArtifacts }}:
                 - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
                   - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
             TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
