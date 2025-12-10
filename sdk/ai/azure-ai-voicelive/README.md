@@ -352,32 +352,42 @@ VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
     .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
 
 // 3. Handle function call events
-session.receiveEvents()
-    .subscribe(event -> {
-        if (event instanceof SessionUpdateConversationItemCreated) {
-            SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
-            if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                ResponseFunctionCallItem functionCall = (ResponseFunctionCallItem) itemCreated.getItem();
-                
-                // Wait for arguments
-                String callId = functionCall.getCallId();
-                String arguments = waitForArguments(session, callId); // Helper method
-                
-                // Execute function
-                Map<String, Object> result = getCurrentWeather(arguments);
-                String resultJson = new ObjectMapper().writeValueAsString(result);
-                
-                // Return result
-                FunctionCallOutputItem output = new FunctionCallOutputItem(callId, resultJson);
-                ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
-                    .setItem(output)
-                    .setPreviousItemId(functionCall.getId());
-                
-                session.sendEvent(createItem).subscribe();
-                session.sendEvent(new ClientEventResponseCreate()).subscribe();
-            }
-        }
-    });
+client.startSession("gpt-4o-realtime-preview")
+    .flatMap(session -> {
+        session.receiveEvents()
+            .subscribe(event -> {
+                if (event instanceof SessionUpdateConversationItemCreated) {
+                    SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
+                    if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
+                        ResponseFunctionCallItem functionCall = (ResponseFunctionCallItem) itemCreated.getItem();
+
+                        // Wait for arguments
+                        String callId = functionCall.getCallId();
+                        String arguments = waitForArguments(session, callId); // Helper method
+
+                        // Execute function
+                        try {
+                            Map<String, Object> result = getCurrentWeather(arguments);
+                            String resultJson = new ObjectMapper().writeValueAsString(result);
+
+                            // Return result
+                            FunctionCallOutputItem output = new FunctionCallOutputItem(callId, resultJson);
+                            ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                                .setItem(output)
+                                .setPreviousItemId(functionCall.getId());
+
+                            session.sendEvent(createItem).subscribe();
+                            session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                        } catch (Exception e) {
+                            System.err.println("Error executing function: " + e.getMessage());
+                        }
+                    }
+                }
+            });
+
+        return Mono.just(session);
+    })
+    .block();
 ```
 
 **Key points:**

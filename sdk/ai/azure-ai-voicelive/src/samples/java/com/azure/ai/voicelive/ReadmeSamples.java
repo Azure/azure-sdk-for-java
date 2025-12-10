@@ -9,6 +9,13 @@ import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
 import com.azure.ai.voicelive.models.AudioNoiseReduction;
 import com.azure.ai.voicelive.models.AudioNoiseReductionType;
 import com.azure.ai.voicelive.models.AzureCustomVoice;
+import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
+import com.azure.ai.voicelive.models.ClientEventResponseCreate;
+import com.azure.ai.voicelive.models.FunctionCallOutputItem;
+import com.azure.ai.voicelive.models.ItemType;
+import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
+import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
+import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
 import com.azure.ai.voicelive.models.AzurePersonalVoice;
 import com.azure.ai.voicelive.models.AzureStandardVoice;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
@@ -30,9 +37,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -332,7 +342,77 @@ public final class ReadmeSamples {
         // END: com.azure.ai.voicelive.voice.azure
     }
 
+    /**
+     * Sample for function calling
+     */
+    public void functionCalling() {
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .buildAsyncClient();
+
+        // BEGIN: com.azure.ai.voicelive.functioncalling
+        // 1. Define function tool with parameters
+        VoiceLiveFunctionDefinition getWeatherFunction = new VoiceLiveFunctionDefinition("get_current_weather")
+            .setDescription("Get the current weather in a given location")
+            .setParameters(BinaryData.fromObject(parametersSchema)); // JSON schema
+
+        // 2. Configure session with tools
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions()
+            .setTools(Arrays.asList(getWeatherFunction))
+            .setInstructions("You have access to weather information. Use get_current_weather when asked about weather.");
+
+        // 3. Handle function call events
+        client.startSession("gpt-4o-realtime-preview")
+            .flatMap(session -> {
+                session.receiveEvents()
+                    .subscribe(event -> {
+                        if (event instanceof SessionUpdateConversationItemCreated) {
+                            SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
+                            if (itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
+                                ResponseFunctionCallItem functionCall = (ResponseFunctionCallItem) itemCreated.getItem();
+
+                                // Wait for arguments
+                                String callId = functionCall.getCallId();
+                                String arguments = waitForArguments(session, callId); // Helper method
+
+                                // Execute function
+                                try {
+                                    Map<String, Object> result = getCurrentWeather(arguments);
+                                    String resultJson = new ObjectMapper().writeValueAsString(result);
+
+                                    // Return result
+                                    FunctionCallOutputItem output = new FunctionCallOutputItem(callId, resultJson);
+                                    ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate()
+                                        .setItem(output)
+                                        .setPreviousItemId(functionCall.getId());
+
+                                    session.sendEvent(createItem).subscribe();
+                                    session.sendEvent(new ClientEventResponseCreate()).subscribe();
+                                } catch (Exception e) {
+                                    System.err.println("Error executing function: " + e.getMessage());
+                                }
+                            }
+                        }
+                    });
+
+                return Mono.just(session);
+            })
+            .block();
+        // END: com.azure.ai.voicelive.functioncalling
+    }
+
     // Helper methods
+    private Object parametersSchema = new Object();
+
+    private String waitForArguments(VoiceLiveSessionAsyncClient session, String callId) {
+        return "{}";
+    }
+
+    private Map<String, Object> getCurrentWeather(String arguments) {
+        return new HashMap<>();
+    }
+
     private byte[] readAudioChunk() {
         return new byte[0];
     }
