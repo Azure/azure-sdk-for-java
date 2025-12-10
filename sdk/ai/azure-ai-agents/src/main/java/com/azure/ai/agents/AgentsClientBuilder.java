@@ -328,8 +328,9 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsAsyncClient.
      */
     public ConversationsAsyncClient buildConversationsAsyncClient() {
-        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -338,8 +339,9 @@ public final class AgentsClientBuilder
      * @return an instance of ConversationsClient.
      */
     public ConversationsClient buildConversationsClient() {
-        return new ConversationsClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+        return new ConversationsClient(getOpenAIClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -348,8 +350,9 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
-        return new ResponsesClient(getOpenAIClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+        return new ResponsesClient(getOpenAIClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -358,8 +361,9 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build().withOptions(optionBuilder ->
-                optionBuilder.httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {

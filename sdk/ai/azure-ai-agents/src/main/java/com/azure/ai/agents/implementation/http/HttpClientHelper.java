@@ -94,17 +94,17 @@ public final class HttpClientHelper {
                 return failedFuture(runtimeException);
             }
 
-            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", true))
+            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", false))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
-//                    .onErrorMap(t -> {
-//                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
-//                        // - Auth
-//                        // - Resource not found
-//                        // - HttpResponse Ex
-//                        //
-//                        // new StainlessException(t.getCause())
-//                    })
-                    .toFuture();
+                //                    .onErrorMap(t -> {
+                //                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
+                //                        // - Auth
+                //                        // - Resource not found
+                //                        // - HttpResponse Ex
+                //                        //
+                //                        // new StainlessException(t.getCause())
+                //                    })
+                .toFuture();
         }
 
         /**
@@ -128,9 +128,8 @@ public final class HttpClientHelper {
                 headers.set(HttpHeaderName.CONTENT_TYPE, contentType);
             }
 
-            com.azure.core.http.HttpRequest azureRequest
-                = new com.azure.core.http.HttpRequest(HttpMethod.valueOf(request.method().name()),
-                    OpenAiRequestUrlBuilder.buildUrl(request), headers);
+            com.azure.core.http.HttpRequest azureRequest = new com.azure.core.http.HttpRequest(
+                HttpMethod.valueOf(request.method().name()), OpenAiRequestUrlBuilder.buildUrl(request), headers);
 
             if (bodyData != null) {
                 azureRequest.setBody(bodyData);

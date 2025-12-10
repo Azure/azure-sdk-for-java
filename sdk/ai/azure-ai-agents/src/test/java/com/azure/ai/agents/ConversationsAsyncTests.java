@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConversationsAsyncTests extends ClientTestBase {
 
-    ClientLogger LOGGER = new ClientLogger(ConversationsAsyncTests.class);
+    private final ClientLogger logger = new ClientLogger(ConversationsAsyncTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -39,7 +39,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
-        LOGGER.log(LogLevel.INFORMATIONAL, () -> "Create completed");
+        logger.log(LogLevel.INFORMATIONAL, () -> "Create completed");
 
         // update
         ConversationUpdateParams.Metadata metadata = ConversationUpdateParams.Metadata.builder()
