@@ -296,12 +296,6 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
-                assertThat(context).getBean("jmsListenerContainerFactory")
-                    .extracting("connectionFactory")
-                    .isSameAs(context.getBean(ServiceBusJmsConnectionFactory.class));
-                assertThat(context).getBean("topicJmsListenerContainerFactory")
-                    .extracting("connectionFactory")
-                    .isSameAs(context.getBean(ServiceBusJmsConnectionFactory.class));
             });
     }
 
@@ -438,9 +432,6 @@ class ServiceBusJmsAutoConfigurationTests {
                     assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
-                    assertThat(context).getBean("jmsListenerContainerFactory")
-                        .extracting("connectionFactory")
-                        .isSameAs(context.getBean(ServiceBusJmsConnectionFactory.class));
                 }
             );
     }

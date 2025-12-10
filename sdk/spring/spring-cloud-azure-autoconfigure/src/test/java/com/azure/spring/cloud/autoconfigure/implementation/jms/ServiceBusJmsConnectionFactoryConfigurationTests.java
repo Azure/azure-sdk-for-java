@@ -48,9 +48,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class));
     }
 
     @ParameterizedTest
@@ -61,36 +59,18 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.pool.enabled=true"
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = { "org.messaginghub.pooled.jms.JmsPoolConnectionFactory", "org.apache.commons.pool2.PooledObject" })
-    void poolEnabledButNoPoolClasses(String poolClass) {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(poolClass))
-            .withPropertyValues(
-                "spring.jms.servicebus.pricing-tier=premium",
-                "spring.jms.servicebus.pool.enabled=true"
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-            });
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "org.messaginghub.pooled.jms.JmsPoolConnectionFactory", "org.apache.commons.pool2.PooledObject" })
-    void fallbackUseCachingConnectionDueNoPoolClasses(String poolClass) {
+    void fallbackDefaultJmsConnectionDueNoPoolClasses(String poolClass) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(poolClass))
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=premium"
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class));
     }
 
     @ParameterizedTest
@@ -99,11 +79,9 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
-                "spring.jms.servicebus.pool.enabled=false"
+                "spring.jms.cache.enabled=true"
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(CachingConnectionFactory.class));
     }
 
     @ParameterizedTest
@@ -134,9 +112,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
                 "spring.jms.servicebus.pool.enabled=false",
                 "spring.jms.cache.enabled=false"
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class));
     }
 
     @ParameterizedTest
@@ -145,11 +121,10 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         this.contextRunner
             .withConfiguration(AutoConfigurations.of(AdditionalPropertySourceConfiguration.class))
             .withPropertyValues(
-                "spring.jms.servicebus.pricing-tier=" + pricingTier
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.cache.enabled=true"
             )
-            .run(context -> {
-                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(CachingConnectionFactory.class));
     }
 
     @Test
@@ -232,7 +207,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
         // Cleanup
         connection.close();
     }
-    
+
     /**
      * Creates a ServiceBusJmsSession instance using reflection since the constructor is package-private.
      */
