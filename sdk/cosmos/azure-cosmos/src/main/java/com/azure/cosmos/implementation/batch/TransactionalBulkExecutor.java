@@ -95,7 +95,6 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private final CosmosAsyncContainer container;
-    private final int maxMicroBatchPayloadSizeInBytes;
     private final AsyncDocumentClient docClientWrapper;
     private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
@@ -126,7 +125,6 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         checkNotNull(inputOperations, "expected non-null inputOperations");
         checkNotNull(cosmosBulkOptions, "expected non-null bulkOptions");
 
-        this.maxMicroBatchPayloadSizeInBytes = cosmosBulkOptions.getMaxMicroBatchPayloadSizeInBytes();
         this.cosmosBulkExecutionOptions = cosmosBulkOptions;
         this.container = container;
         this.bulkSpanName = "transactionalBatch." + this.container.getId();
@@ -286,31 +284,6 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         String batchTrackingId = UUIDs.nonBlockingRandomUUID().toString();
         PartitionKey partitionKey = cosmosBatch.getPartitionKeyValue();
         
-        // Validate batch payload size before execution
-        int totalSerializedLength = this.calculateTotalSerializedLength(operations);
-        if (totalSerializedLength > this.maxMicroBatchPayloadSizeInBytes) {
-            String errorMessage = String.format(
-                "Transactional batch exceeds maximum payload size: %d bytes (limit: %d bytes), PK: %s",
-                totalSerializedLength,
-                this.maxMicroBatchPayloadSizeInBytes,
-                partitionKey);
-            logger.error("{}, Context: {}", errorMessage, this.operationContextText);
-            
-            // Return error responses for all operations in the batch
-            CosmosException payloadSizeException = BridgeInternal.createCosmosException(
-                HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE,
-                errorMessage);
-            
-            return Flux.fromIterable(operations)
-                .map(operation -> {
-                    TContext actualContext = this.getActualContext(operation);
-                    return ModelBridgeInternal.createCosmosBulkOperationResponse(
-                        operation,
-                        payloadSizeException,
-                        actualContext);
-                });
-        }
-        
         logDebugOrWarning(
             "Executing transactional batch - {} operations, PK: {}, TrackingId: {}, Context: {}",
             operations.size(),
@@ -425,16 +398,6 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
                             actualContext);
                     });
             });
-    }
-
-    private int calculateTotalSerializedLength(List<CosmosItemOperation> operations) {
-        int totalLength = 0;
-        for (CosmosItemOperation operation : operations) {
-            if (operation instanceof CosmosItemOperationBase) {
-                totalLength += ((CosmosItemOperationBase) operation).getSerializedLength(this.effectiveItemSerializer);
-            }
-        }
-        return totalLength;
     }
 
     private TContext getActualContext(CosmosItemOperation itemOperation) {

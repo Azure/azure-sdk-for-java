@@ -1037,26 +1037,28 @@ private object TransactionalBulkWriter {
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 
-  private val maxPendingOperationsPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
+  // For batch-level backpressure: use a conservative estimate of concurrent batches across the JVM
+  // Each batch can have up to 100 operations, so this sizing provides headroom for the scheduler queues
+  private val maxPendingBatchesPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores / 50
 
   // Custom bounded elastic scheduler to consume input flux
   val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingBatchesPerJVM,
     BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to consume input flux
   val bulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingBatchesPerJVM,
     BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val bulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingBatchesPerJVM,
     BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
