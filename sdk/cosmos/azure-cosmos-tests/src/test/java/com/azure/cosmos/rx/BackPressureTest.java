@@ -22,12 +22,13 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.subscriber.TestSubscriber;
 import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
@@ -81,7 +82,9 @@ public class BackPressureTest extends TestSuiteBase {
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<FeedResponse<InternalObjectNode>>(1);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = TestSubscriber.builder()
+            .initialRequest(1)
+            .build();
         queryObservable.byPage(1).doOnNext(feedResponse -> {
             if (!feedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
@@ -92,26 +95,25 @@ public class BackPressureTest extends TestSuiteBase {
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
-        while (subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+        while (!subscriber.isTerminated()) {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
             if (sleepTimeInMillis > 1000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
             // validate that only one item is returned to subscriber in each iteration
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                 .isLessThanOrEqualTo(2 * Queues.SMALL_BUFFER_SIZE);
 
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
         assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
@@ -126,35 +128,34 @@ public class BackPressureTest extends TestSuiteBase {
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
-        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
-        queryObservable.doOnNext(feedResponse -> {
-            valueCount.incrementAndGet();
-        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
+        TestSubscriber<InternalObjectNode> subscriber = TestSubscriber.builder().initialRequest(1).build();
+        queryObservable.doOnNext(feedResponse -> valueCount.incrementAndGet())
+            .publishOn(Schedulers.boundedElastic(), 1)
+            .subscribe(subscriber);
 
         int sleepTimeInMillis = 10000; // 10 seconds
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
-        while (subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+        while (!subscriber.isTerminated()) {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
             if (sleepTimeInMillis > 1000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
             // validate that only one item is returned to subscriber in each iteration
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                 .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
 
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
         assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
@@ -167,7 +168,9 @@ public class BackPressureTest extends TestSuiteBase {
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<FeedResponse<InternalObjectNode>>(1);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = TestSubscriber.builder()
+            .initialRequest(1)
+            .build();
         AtomicInteger valueCount = new AtomicInteger();
 
         queryObservable.byPage(1).doOnNext(feedResponse -> {
@@ -180,26 +183,24 @@ public class BackPressureTest extends TestSuiteBase {
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
-        while(subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+        while (!subscriber.isTerminated()) {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
             if (sleepTimeInMillis > 1000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                     .isLessThanOrEqualTo(2 * Queues.SMALL_BUFFER_SIZE);
 
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
-
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
         assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }
 
@@ -212,37 +213,35 @@ public class BackPressureTest extends TestSuiteBase {
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
-        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<InternalObjectNode> subscriber = TestSubscriber.builder().initialRequest(1).build();
         AtomicInteger valueCount = new AtomicInteger();
 
-        queryObservable.doOnNext(internalObjectNode -> {
-            valueCount.incrementAndGet();
-        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
+        queryObservable.doOnNext(internalObjectNode -> valueCount.incrementAndGet())
+            .publishOn(Schedulers.boundedElastic(), 1)
+            .subscribe(subscriber);
 
         int sleepTimeInMillis = 10000;
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
-        while(subscriber.completions() == 0 && subscriber.getEvents().get(1).isEmpty()) {
+        while (!subscriber.isTerminated()) {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
             if (sleepTimeInMillis > 1000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                 .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
 
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
-
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
         logger.debug("final value count {}", valueCount);
         assertThat(valueCount.get()).isEqualTo(createdDocuments.size());
     }

@@ -5,28 +5,30 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.query.LimitContinuationToken;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.query.LimitContinuationToken;
+import com.azure.cosmos.implementation.query.TopContinuationToken;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.query.TopContinuationToken;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -194,14 +196,14 @@ public class TopQueryTests extends TestSuiteBase {
             CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.<InternalObjectNode>queryItems(query, options, InternalObjectNode.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
-            TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertNoErrors();
-            testSubscriber.assertComplete();
+            AtomicReference<FeedResponse<InternalObjectNode>> value = new AtomicReference<>();
+            StepVerifier.create(queryObservable.byPage(requestContinuation, pageSize))
+                .assertNext(value::set)
+                .thenConsumeWhile(Objects::nonNull)
+                .expectComplete()
+                .verify(Duration.ofMillis(TIMEOUT));
 
-            @SuppressWarnings("unchecked")
-            FeedResponse<InternalObjectNode> firstPage = (FeedResponse<InternalObjectNode>) testSubscriber.getEvents().get(0).get(0);
+            FeedResponse<InternalObjectNode> firstPage = value.get();
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);

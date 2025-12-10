@@ -17,19 +17,21 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -284,15 +286,14 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             CosmosPagedFlux<InternalObjectNode> queryObservable =
                 createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-            TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage(requestContinuation,5).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertNoErrors();
-            testSubscriber.assertComplete();
+            AtomicReference<FeedResponse<InternalObjectNode>> value = new AtomicReference<>();
+            StepVerifier.create(queryObservable.byPage(requestContinuation, 5))
+                .consumeNextWith(value::set)
+                .thenConsumeWhile(Objects::nonNull)
+                .expectComplete()
+                .verify(Duration.ofMillis(TIMEOUT));
 
-            @SuppressWarnings("unchecked")
-            FeedResponse<InternalObjectNode> firstPage =
-                (FeedResponse<InternalObjectNode>) testSubscriber.getEvents().get(0).get(0);
+            FeedResponse<InternalObjectNode> firstPage = value.get();
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
 

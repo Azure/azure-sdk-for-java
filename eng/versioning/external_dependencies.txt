@@ -163,7 +163,6 @@ com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.12.0
 commons-io:commons-io;2.17.0
-io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.17.0
 net.oneandone.reflections8:reflections8;0.11.7
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6

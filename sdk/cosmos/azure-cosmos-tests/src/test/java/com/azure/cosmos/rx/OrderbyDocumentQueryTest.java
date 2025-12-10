@@ -19,8 +19,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
@@ -39,7 +39,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -49,7 +48,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,8 +58,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -339,13 +341,14 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         int pageSize = 20;
         CosmosPagedFlux<InternalObjectNode> queryFlux = createdCollection
                                                             .queryItems(query, options, InternalObjectNode.class);
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
-        queryFlux.byPage(pageSize).subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertComplete();
-        subscriber.assertNoErrors();
+
         List<InternalObjectNode> results = new ArrayList<>();
-        subscriber.values().forEach(feedResponse -> results.addAll(feedResponse.getResults()));
+        StepVerifier.create(queryFlux.byPage(pageSize))
+            .thenConsumeWhile(feedResponse -> {
+                results.addAll(feedResponse.getResults());
+                return true;
+            }).verifyComplete();
+
         // Make sure all elements inserted are returned
         assertThat(results.size()).isEqualTo(createdDocuments.size());
 
@@ -489,16 +492,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         int preferredPageSize = 3;
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
-        queryObservable.byPage(preferredPageSize).take(1).subscribe(subscriber);
+        AtomicReference<FeedResponse<InternalObjectNode>> value = new AtomicReference<>();
+        StepVerifier.create(queryObservable.byPage(preferredPageSize).take(1))
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
-        subscriber.awaitTerminalEvent();
-        subscriber.assertComplete();
-        subscriber.assertNoErrors();
-        assertThat(subscriber.valueCount()).isEqualTo(1);
-
-        @SuppressWarnings("unchecked")
-        FeedResponse<InternalObjectNode> page = (FeedResponse<InternalObjectNode>) subscriber.getEvents().get(0).get(0);
+        FeedResponse<InternalObjectNode> page = value.get();
         assertThat(page.getResults()).hasSize(3);
 
         assertThat(page.getContinuationToken()).isNotEmpty();
@@ -881,10 +880,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                     options, InternalObjectNode.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
-            TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage(orderByContinuationToken.toString(),1).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertError(CosmosException.class);
+            StepVerifier.create(queryObservable.byPage(orderByContinuationToken.toString(), 1))
+                .expectError(CosmosException.class)
+                .verify(Duration.ofMillis(TIMEOUT));
         } while (requestContinuation != null);
     }
 
@@ -912,14 +910,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                     options, InternalObjectNode.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
-            TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertNoErrors();
-            testSubscriber.assertComplete();
+            AtomicReference<FeedResponse<InternalObjectNode>> value = new AtomicReference<>();
+            StepVerifier.create(queryObservable.byPage(requestContinuation, pageSize))
+                .consumeNextWith(value::set)
+                .thenConsumeWhile(Objects::nonNull)
+                .verifyComplete();
 
-            @SuppressWarnings("unchecked")
-            FeedResponse<InternalObjectNode> firstPage = (FeedResponse<InternalObjectNode>) testSubscriber.getEvents().get(0).get(0);
+            FeedResponse<InternalObjectNode> firstPage = value.get();
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);

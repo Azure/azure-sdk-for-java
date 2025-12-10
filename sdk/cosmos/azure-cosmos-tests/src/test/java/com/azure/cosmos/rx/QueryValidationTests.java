@@ -38,13 +38,12 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -57,6 +56,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -610,10 +610,12 @@ public class QueryValidationTests extends TestSuiteBase {
 
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
         CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        queryPagedFlux.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-        return testSubscriber.values();
+        AtomicReference<List<T>> value = new AtomicReference<>();
+        StepVerifier.create(queryPagedFlux.collectList())
+            .consumeNextWith(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(TIMEOUT));
+        return value.get();
     }
 
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {

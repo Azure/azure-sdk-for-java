@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Strings;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
@@ -35,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -42,7 +42,6 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -513,14 +512,10 @@ public class StoreReaderDotNetTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
-        TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateSuccess(Mono<StoreResult> single,
@@ -530,14 +525,10 @@ public class StoreReaderDotNetTest {
 
     public static void validateSuccess(Mono<StoreResult> single,
                                        StoreResultValidator validator, long timeout) {
-        TestSubscriber<StoreResult> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateException(Mono<StoreResult> single,
@@ -547,14 +538,9 @@ public class StoreReaderDotNetTest {
 
     public static void validateException(Mono<StoreResult> single,
                                          FailureValidator validator, long timeout) {
-        TestSubscriber<StoreResult> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate(testSubscriber.errors().get(0));
+        StepVerifier.create(single)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     /**

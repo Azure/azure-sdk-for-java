@@ -71,7 +71,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
@@ -79,6 +78,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -91,7 +91,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
@@ -907,17 +906,8 @@ public final class RntbdTransportClientTest {
     }
 
     private static void validateFailure(
-        final Mono<? extends StoreResponse> mono, final FailureValidator validator, final long timeout
-    ) {
-
-        final TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
-        mono.subscribe(subscriber);
-
-        subscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        assertThat(subscriber.errorCount()).isEqualTo(1);
-        subscriber.assertSubscribed();
-        subscriber.assertNoValues();
-        validator.validate(subscriber.errors().get(0));
+        final Mono<? extends StoreResponse> mono, final FailureValidator validator, final long timeout) {
+        StepVerifier.create(mono).expectErrorSatisfies(validator::validate).verify(Duration.ofMillis(timeout));
     }
 
     // region Types

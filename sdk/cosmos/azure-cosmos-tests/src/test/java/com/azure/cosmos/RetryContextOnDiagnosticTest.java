@@ -61,12 +61,12 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.ReferenceCountUtil;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
@@ -955,30 +955,24 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     private StoreResponse validateSuccess(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<StoreResponse> value = new AtomicReference<>();
+        StepVerifier.create(storeResponse)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
+
+        return value.get();
     }
 
     private void validateFailure(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
+        StepVerifier.create(storeResponse).expectError().verify(Duration.ofMillis(60_000));
     }
 
     private void validateServiceResponseSuccess(Mono<ResourceResponse<Document>> documentServiceResponseMono) {
-        TestSubscriber<ResourceResponse<Document>> testSubscriber = new TestSubscriber<>();
-        documentServiceResponseMono.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
+        StepVerifier.create(documentServiceResponseMono)
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
     }
 
     private static class TestRetryPolicy extends DocumentClientRetryPolicy {

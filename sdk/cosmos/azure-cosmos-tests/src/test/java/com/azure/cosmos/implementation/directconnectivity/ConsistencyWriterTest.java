@@ -21,7 +21,6 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -29,7 +28,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.subscriber.TestSubscriber;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -117,12 +119,7 @@ public class ConsistencyWriterTest {
                 .subStatusCode(expectedSubStatusCode)
                 .build();
 
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
-        res.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertNotComplete();
-        assertThat(subscriber.errorCount()).isEqualTo(1);
-        failureValidator.validate(subscriber.errors().get(0));
+        StepVerifier.create(res).verifyErrorSatisfies(failureValidator::validate);
     }
 
     @Test(groups = "unit")
@@ -228,20 +225,15 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
         RetryContext retryContext = Mockito.mock(RetryContext.class);
         ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
         Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
-                .subscribe(subscriber);
-
-        subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
-        subscriber.assertNoValues();
-
-        subscriber.assertError(RequestTimeoutException.class);
+        StepVerifier.create(spyConsistencyWriter.writeAsync(request, timeoutHelper, false))
+            .expectError(RequestTimeoutException.class)
+            .verify(Duration.ofMillis(10));
     }
 
     @Test(groups = "unit")
@@ -250,18 +242,15 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
         ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
         RetryContext retryContext = Mockito.mock(RetryContext.class);
         ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
         Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
-                .subscribe(subscriber);
-
-        subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
-        subscriber.assertError(RequestTimeoutException.class);
+        StepVerifier.create(spyConsistencyWriter.writeAsync(request, timeoutHelper, false))
+            .expectError(RequestTimeoutException.class)
+            .verify(Duration.ofMillis(10));
     }
 
     @Test(groups = "unit", dataProvider = "storeResponseArgProvider")
@@ -388,7 +377,7 @@ public class ConsistencyWriterTest {
 
     public static <T> void validateError(Mono<T> single,
                                          FailureValidator validator) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+        TestSubscriber<T> testSubscriber = TestSubscriber.create();
 
         try {
             single.flux().subscribe(testSubscriber);
