@@ -13,6 +13,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,9 +43,18 @@ public class Sample08_UpdateAnalyzer {
     @BeforeEach
     public void setup() {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        client = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint)
-            .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        assertNotNull(client, "Client should be successfully created");
 
         // Create an analyzer for testing
         analyzerId = "update_test_analyzer_" + System.currentTimeMillis();

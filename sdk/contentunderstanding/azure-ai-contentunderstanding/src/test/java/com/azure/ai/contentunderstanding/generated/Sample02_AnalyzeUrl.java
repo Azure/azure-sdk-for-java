@@ -14,11 +14,14 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -36,12 +39,28 @@ public class Sample02_AnalyzeUrl {
 
     @Test
     public void testAnalyzeUrlAsync() {
-        // Create the Content Understanding client
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeUrlAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
@@ -125,6 +144,11 @@ public class Sample02_AnalyzeUrl {
                     tableCounter++;
                 }
             }
+        } else {
+            // Content is not DocumentContent - verify it's MediaContent
+            Assertions.assertTrue(content instanceof MediaContent,
+                "Content should be MediaContent when not DocumentContent");
+            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
         }
 
         Assertions.assertNotNull(content, "Content should not be null for document properties validation");
@@ -225,9 +249,12 @@ public class Sample02_AnalyzeUrl {
 
             System.out.println("All document properties validated successfully");
         } else {
+            // Content is not DocumentContent - validate alternative types
+            Assertions.assertTrue(content instanceof MediaContent,
+                "Content should be MediaContent when not DocumentContent, but got "
+                    + (content != null ? content.getClass().getSimpleName() : "null"));
             System.out.println("⚠️ Content is not DocumentContent type, skipping document-specific validations");
-            System.out.println("⚠️ Expected DocumentContent but got "
-                + (content != null ? content.getClass().getSimpleName() : "null"));
+            System.out.println("⚠️ Content type: " + content.getClass().getSimpleName() + " (MediaContent validated)");
         }
     }
 }

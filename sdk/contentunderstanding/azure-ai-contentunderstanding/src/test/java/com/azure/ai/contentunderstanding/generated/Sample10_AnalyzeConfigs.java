@@ -14,12 +14,15 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentFigure;
 import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,12 +44,28 @@ public class Sample10_AnalyzeConfigs {
 
     @Test
     public void testAnalyzeConfigsAsync() throws IOException {
-        // Create the Content Understanding client
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
         // Load local test file

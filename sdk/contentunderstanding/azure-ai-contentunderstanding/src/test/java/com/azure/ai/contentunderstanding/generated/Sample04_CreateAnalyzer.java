@@ -52,10 +52,18 @@ public class Sample04_CreateAnalyzer {
         if (createdAnalyzerId != null) {
             try {
                 String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-                ContentUnderstandingClient client
-                    = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint(endpoint)
-                        .buildClient();
+                String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+                ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+                    .endpoint(endpoint);
+
+                ContentUnderstandingClient client;
+                if (key != null && !key.trim().isEmpty()) {
+                    client = builder.credential(new AzureKeyCredential(key)).buildClient();
+                } else {
+                    client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+                }
+
                 client.deleteAnalyzer(createdAnalyzerId);
                 System.out.println("Analyzer '" + createdAnalyzerId + "' deleted successfully.");
             } catch (Exception e) {
@@ -66,12 +74,28 @@ public class Sample04_CreateAnalyzer {
 
     @Test
     public void testCreateAnalyzerAsync() {
-        // Create the Content Understanding client
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingCreateAnalyzer
         // Generate a unique analyzer ID
@@ -272,10 +296,19 @@ public class Sample04_CreateAnalyzer {
     public void testUseCustomAnalyzerAsync() {
         // Create the Content Understanding client
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        assertNotNull(client, "Client should be successfully created");
 
         // First create an analyzer
         String analyzerId = "test_analyzer_" + UUID.randomUUID().toString().replace("-", "");

@@ -17,11 +17,14 @@ import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.ai.contentunderstanding.models.StringField;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,12 +42,28 @@ public class Sample03_AnalyzeInvoice {
 
     @Test
     public void testAnalyzeInvoiceAsync() {
-        // Create the Content Understanding client
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeInvoice
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
@@ -218,6 +237,10 @@ public class Sample03_AnalyzeInvoice {
                 + " to " + docContent.getEndPageNumber());
 
             System.out.println("All invoice fields validated successfully");
+        } else {
+            // This should not happen given the assertTrue above, but handle it for completeness
+            Assertions.fail("Content type validation failed: expected DocumentContent but got "
+                + (content != null ? content.getClass().getSimpleName() : "null"));
         }
         // END:Assertion_ContentUnderstandingExtractInvoiceFields
     }

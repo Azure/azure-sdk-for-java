@@ -7,10 +7,13 @@ package com.azure.ai.contentunderstanding.generated;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Sample demonstrating how to get analyzer information.
@@ -24,12 +27,28 @@ public class Sample06_GetAnalyzer {
 
     @Test
     public void testGetAnalyzerAsync() {
-        // Create the Content Understanding client
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingGetAnalyzer
         // Get a prebuilt analyzer (these are always available)
@@ -76,8 +95,8 @@ public class Sample06_GetAnalyzer {
         // Display models if available
         if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
             System.out.println("\nModel Mappings:");
-            analyzer.getModels().forEach((key, value) -> {
-                System.out.println("  " + key + ": " + value);
+            analyzer.getModels().forEach((modelKey, modelValue) -> {
+                System.out.println("  " + modelKey + ": " + modelValue);
             });
         }
 
@@ -128,13 +147,22 @@ public class Sample06_GetAnalyzer {
     }
 
     @Test
-    public void testGetPrebuiltDocumentAnalyzerAsync() {
+    public void testGetAnalyzerNotFoundAsync() {
         // Create the Content Understanding client
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        ContentUnderstandingClient client
-            = new ContentUnderstandingClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(endpoint)
-                .buildClient();
+        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        assertNotNull(client, "Client should be successfully created");
 
         // Test getting another prebuilt analyzer
         String analyzerId = "prebuilt-document";

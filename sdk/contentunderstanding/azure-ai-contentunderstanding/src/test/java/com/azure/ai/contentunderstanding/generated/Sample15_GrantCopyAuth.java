@@ -51,17 +51,27 @@ public class Sample15_GrantCopyAuth {
      */
     @Test
     public void testGrantCopyAuthAsync() {
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
 
-        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
-        if (key == null || key.trim().isEmpty()) {
-            sourceClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        } else {
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
             sourceClient = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            sourceClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(sourceClient, "Source client should be successfully created");
 
         String sourceAnalyzerId = "test_grant_copy_source_" + UUID.randomUUID().toString().replace("-", "");
 
@@ -219,21 +229,22 @@ public class Sample15_GrantCopyAuth {
             return;
         }
 
-        // Source client: Use DefaultAzureCredential if key is not provided
-        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-        if (key == null || key.trim().isEmpty()) {
-            sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        } else {
+        // Source client: Use API key authentication if available
+        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
+        if (key != null && !key.trim().isEmpty()) {
             sourceClient = sourceBuilder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
-        // Target client: Use DefaultAzureCredential if targetKey is not provided
+        // Target client: Use API key authentication if available
         ContentUnderstandingClientBuilder targetBuilder
             = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint);
-        if (targetKey == null || targetKey.trim().isEmpty()) {
-            targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        } else {
+        if (targetKey != null && !targetKey.trim().isEmpty()) {
             targetClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildClient();
+        } else {
+            targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
         String sourceAnalyzerId = "test_cross_resource_source_" + UUID.randomUUID().toString().replace("-", "");

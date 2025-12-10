@@ -36,17 +36,27 @@ public class Sample13_DeleteResult {
      */
     @Test
     public void testDeleteResult() {
+        // BEGIN: com.azure.ai.contentunderstanding.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
 
-        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
-        if (key == null || key.trim().isEmpty()) {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        } else {
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
             client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
+        // END: com.azure.ai.contentunderstanding.buildClient
+
+        // Verify client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN: com.azure.ai.contentunderstanding.deleteResult
         // Step 1: Analyze a document
@@ -130,17 +140,27 @@ public class Sample13_DeleteResult {
      */
     @Test
     public void testDeleteResultAsync() {
+        // BEGIN: com.azure.ai.contentunderstanding.buildAsyncClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+        // Build the async client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
+            .endpoint(endpoint);
 
-        // Use DefaultAzureCredential if key is not provided, otherwise use AzureKeyCredential
-        if (key == null || key.trim().isEmpty()) {
-            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        } else {
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
             asyncClient = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
         }
+        // END: com.azure.ai.contentunderstanding.buildAsyncClient
+
+        // Verify async client initialization
+        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
+        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
+        assertNotNull(asyncClient, "Async client should be successfully created");
 
         // Analyze document
         String documentUrl
