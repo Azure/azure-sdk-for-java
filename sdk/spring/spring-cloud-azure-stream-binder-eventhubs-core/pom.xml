@@ -46,6 +46,10 @@
           <groupId>org.springframework.integration</groupId>
           <artifactId>spring-integration-core</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
       </exclusions>
       <version>5.0.0</version> <!-- {x-version-update;springboot4_org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>

@@ -78,6 +78,7 @@ public class EventHubsHealthIndicatorTests {
     public void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
         healthIndicator = new EventHubsHealthIndicator(binder);
     }
