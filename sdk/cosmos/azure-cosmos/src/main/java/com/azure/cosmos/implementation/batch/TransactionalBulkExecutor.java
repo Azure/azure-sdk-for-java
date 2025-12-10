@@ -164,7 +164,7 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
             ? schedulerSnapshotFromOptions
             : CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC;
 
-        logger.debug("Instantiated BulkExecutor, Context: {}",
+        logger.info("Instantiated BulkExecutor, Context: {}",
             this.operationContextText);
     }
 

@@ -59,18 +59,21 @@ private class ItemsWriterBuilder
       )
     }
 
+    // Extract userConfig conversion to avoid repeated calls
+    private[this] val userConfigMap = userConfig.asCaseSensitiveMap().asScala.toMap
+
     private[this] val writeConfig = CosmosWriteConfig.parseWriteConfig(
-      userConfig.asCaseSensitiveMap().asScala.toMap,
+      userConfigMap,
       inputSchema
     )
 
     private[this] val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(
-      userConfig.asCaseSensitiveMap().asScala.toMap
+      userConfigMap
     )
 
     override def toBatch(): BatchWrite =
       new ItemsBatchWriter(
-        userConfig.asCaseSensitiveMap().asScala.toMap,
+        userConfigMap,
         inputSchema,
         cosmosClientStateHandles,
         diagnosticsConfig,
@@ -78,7 +81,7 @@ private class ItemsWriterBuilder
 
     override def toStreaming: StreamingWrite =
       new ItemsBatchWriter(
-        userConfig.asCaseSensitiveMap().asScala.toMap,
+        userConfigMap,
         inputSchema,
         cosmosClientStateHandles,
         diagnosticsConfig,
@@ -88,6 +91,7 @@ private class ItemsWriterBuilder
 
     override def requiredDistribution(): Distribution = {
       if (writeConfig.bulkEnabled && writeConfig.bulkTransactional) {
+        log.logInfo("Transactional batch mode enabled - configuring data distribution by partition key columns")
         // For transactional writes, partition by all partition key columns
         val partitionKeyPaths = getPartitionKeyColumnNames()
         if (partitionKeyPaths.nonEmpty) {
@@ -125,43 +129,62 @@ private class ItemsWriterBuilder
 
     private def getPartitionKeyColumnNames(): Seq[String] = {
       try {
-        // Need to create a temporary container client to get partition key definition
-        val clientCacheItem = CosmosClientCache(
-          CosmosClientConfiguration(
-            userConfig.asCaseSensitiveMap().asScala.toMap,
-            ReadConsistencyStrategy.EVENTUAL,
-            sparkEnvironmentInfo
-          ),
-          Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
-          "ItemsWriterBuilder-PKLookup"
-        )
+        // Use loan pattern to ensure client is properly closed
+        using(createClientForPartitionKeyLookup()) { clientCacheItem =>
+          val container = ThroughputControlHelper.getContainer(
+            userConfigMap,
+            containerConfig,
+            clientCacheItem,
+            None
+          )
 
-        val container = ThroughputControlHelper.getContainer(
-          userConfig.asCaseSensitiveMap().asScala.toMap,
-          containerConfig,
-          clientCacheItem,
-          None
-        )
+          // Simplified retrieval using SparkBridgeInternal directly
+          val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
+          val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-        val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
-        val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-
-        // Release the client
-        clientCacheItem.close()
-
-        if (partitionKeyDefinition != null && partitionKeyDefinition.getPaths != null) {
-          val paths = partitionKeyDefinition.getPaths.asScala
-          paths.map(path => {
-            // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
-            if (path.startsWith("/")) path.substring(1) else path
-          }).toSeq
-        } else {
-          Seq.empty[String]
+          extractPartitionKeyPaths(partitionKeyDefinition)
         }
       } catch {
         case ex: Exception =>
           log.logWarning(s"Failed to get partition key definition for transactional writes: ${ex.getMessage}")
           Seq.empty[String]
+      }
+    }
+
+    private def createClientForPartitionKeyLookup(): CosmosClientCacheItem = {
+      CosmosClientCache(
+        CosmosClientConfiguration(
+          userConfigMap,
+          ReadConsistencyStrategy.EVENTUAL,
+          sparkEnvironmentInfo
+        ),
+        Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+        "ItemsWriterBuilder-PKLookup"
+      )
+    }
+
+    private def extractPartitionKeyPaths(partitionKeyDefinition: com.azure.cosmos.models.PartitionKeyDefinition): Seq[String] = {
+      if (partitionKeyDefinition != null && partitionKeyDefinition.getPaths != null) {
+        val paths = partitionKeyDefinition.getPaths.asScala
+        if (paths.isEmpty) {
+          log.logError("Partition key definition has 0 columns - this should not happen for modern containers")
+        }
+        paths.map(path => {
+          // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
+          if (path.startsWith("/")) path.substring(1) else path
+        }).toSeq
+      } else {
+        log.logError("Partition key definition is null - this should not happen for modern containers")
+        Seq.empty[String]
+      }
+    }
+
+    // Scala loan pattern to ensure resources are properly cleaned up
+    private def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B = {
+      try {
+        f(resource)
+      } finally {
+        if (resource != null) resource.close()
       }
     }
   }

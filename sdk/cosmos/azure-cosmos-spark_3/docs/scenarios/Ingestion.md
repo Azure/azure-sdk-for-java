@@ -118,21 +118,35 @@ df.write
 - **Atomic semantics**: All operations for the same partition key succeed or all fail (rollback)
 - **Operation type**: Only upsert operations are supported (equivalent to `ItemOverwrite` write strategy)
 - **Partition grouping**: Spark automatically partitions and orders data by partition key columns
-- **Size limits**: Maximum 100 operations per transaction; maximum 2MB total payload per transaction
+- **Size limits**: Maximum 100 operations per transaction; maximum 2MB total payload per transaction. These limits are **enforced service-side by Azure Cosmos DB** and cannot be configured client-side.
 - **Partition key requirement**: All operations in a transaction must share the same partition key value
+- **Hierarchical partition keys**: For containers using hierarchical partition keys (HPK), transactional scope applies only to **logical partitions** (complete partition key paths), not partial top-level keys
 - **Bulk mode required**: Must have `spark.cosmos.write.bulk.enabled=true` (enabled by default)
 
 #### Use cases
 
 Transactional batch writes are ideal for:
-- Financial transactions requiring consistency across multiple documents
+- Financial transactions requiring consistency across multiple documents (e.g., double-entry bookkeeping, account balance updates)
 - Order processing where order header and line items must be committed together
 - Multi-document updates that must be atomic (e.g., inventory adjustments)
+- **Temporal data scenarios** where historical versioning must be consistent (e.g., financial instrument versioning, audit trails, snapshot consistency)
 - Any scenario where partial success would leave data in an inconsistent state
 
 #### Error handling
 
-If any operation in a transaction fails (e.g., insufficient RUs, document too large, transaction exceeds 100 operations), the entire transaction is rolled back and no documents are modified. The Spark task will fail and retry according to Spark's retry policy.
+Errors during transactional batch execution fall into two categories:
+
+**Transient errors** (automatically retried):
+- Insufficient RUs (429 throttling) - the entire transaction is retried according to the SDK's retry policy
+- Temporary network issues or service unavailability - automatic retry with exponential backoff
+
+**Non-transient errors** (Spark job fails):
+- Transaction size limit exceeded (> 100 operations or > 2MB payload)
+- Document validation errors (e.g., blank ID, schema violations)
+- Unique key constraint violations
+- Any service-side rejection that cannot be resolved by retry
+
+When any operation in a transaction fails with a non-transient error, the entire transaction is rolled back and no documents are modified. The Spark task will fail and may retry according to Spark's retry policy.
 
 ## Preparation
 Below are a couple of tips/best-practices that can help you to prepare for a data migration into a Cosmos DB container.
