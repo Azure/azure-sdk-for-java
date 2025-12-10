@@ -424,11 +424,11 @@ class TransactionalBatchITest extends IntegrationSpec
     rootCause.getMessage should include("Batch request has more operations than what is supported")
   }
 
-  "Transactional Batch with Hierarchical Partition Keys" should "create items atomically with PermId and SourceId" in {
+  "Transactional Batch with Hierarchical Partition Keys" should "create items atomically with testPrimaryKey and testSecondaryKey" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    // Create container with hierarchical partition keys (PermId, SourceId)
+    // Create container with hierarchical partition keys (testPrimaryKey, testSecondaryKey)
     val containerName = s"test-hpk-${UUID.randomUUID()}"
     val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
       containerName,
@@ -494,7 +494,7 @@ class TransactionalBatchITest extends IntegrationSpec
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    // Create container with hierarchical partition keys (PermId, SourceId)
+    // Create container with hierarchical partition keys (testPrimaryKey, testSecondaryKey)
     val containerName = s"test-hpk-temporal-${UUID.randomUUID()}"
     val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
       containerName,
@@ -570,11 +570,11 @@ class TransactionalBatchITest extends IntegrationSpec
     }
   }
 
-  it should "handle operations across multiple PermId/SourceId combinations" in {
+  it should "handle operations across multiple testPrimaryKey/testSecondaryKey combinations" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    // Create container with hierarchical partition keys (PermId, SourceId)
+    // Create container with hierarchical partition keys (testPrimaryKey, testSecondaryKey)
     val containerName = s"test-hpk-multi-${UUID.randomUUID()}"
     val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
       containerName,
@@ -633,7 +633,7 @@ class TransactionalBatchITest extends IntegrationSpec
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    // Create container with hierarchical partition keys (PermId, SourceId)
+    // Create container with hierarchical partition keys (testPrimaryKey, testSecondaryKey)
     val containerName = s"test-hpk-limit-${UUID.randomUUID()}"
     val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
       containerName,
