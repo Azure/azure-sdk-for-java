@@ -30,6 +30,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -80,6 +81,10 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -599,14 +604,18 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             final ParallelTransferOptions validatedParallelTransferOptions
                 = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long fileOffset = 0;
+            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+                ? StorageChecksumAlgorithm.NONE
+                : options.getStorageChecksumAlgorithm();
 
             Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction
                 = (stream) -> uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, options.getHeaders(),
-                    validatedUploadRequestConditions);
+                    validatedUploadRequestConditions, storageChecksumAlgorithm);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod
                 = (stream, length) -> uploadWithResponse(stream, fileOffset, length, options.getHeaders(),
-                    validatedUploadRequestConditions, validatedParallelTransferOptions.getProgressListener());
+                    validatedUploadRequestConditions, validatedParallelTransferOptions.getProgressListener(),
+                    storageChecksumAlgorithm);
 
             BinaryData binaryData = options.getData();
 
@@ -632,7 +641,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
-        DataLakeRequestConditions requestConditions) {
+        DataLakeRequestConditions requestConditions, StorageChecksumAlgorithm storageChecksumAlgorithm) {
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea
@@ -678,6 +687,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
+                if (storageChecksumAlgorithm != null
+                    && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+                    appendContexts = Contexts.with(appendContexts.getContext()
+                        .addData(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT));
+                }
                 return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength,
                     new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()),
                     appendContexts.getContext()).map(resp -> offset) /* End of file after append to pass to flush. */
@@ -688,10 +702,22 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, ProgressListener progressListener) {
+        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, ProgressListener progressListener,
+        StorageChecksumAlgorithm storageChecksumAlgorithm) {
         Contexts appendContexts = Contexts.empty();
         if (progressListener != null) {
             appendContexts.setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progressListener));
+        }
+        if (storageChecksumAlgorithm != null
+            && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+            String contentValidationContextValue;
+            if (length <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                contentValidationContextValue = USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+            } else {
+                contentValidationContextValue = USE_STRUCTURED_MESSAGE_CONTEXT;
+            }
+            appendContexts = Contexts.with(
+                appendContexts.getContext().addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationContextValue));
         }
         return appendWithResponse(data, fileOffset, length,
             new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext())
@@ -882,7 +908,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         // Otherwise, we know it can be sent in a single request reducing network overhead.
                         return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                             .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                validatedUploadRequestConditions, finalParallelTransferOptions.getProgressListener()));
+                                validatedUploadRequestConditions, finalParallelTransferOptions.getProgressListener(),
+                                null));
                     }
                 } catch (IOException ex) {
                     return Mono.error(ex);

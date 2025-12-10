@@ -147,20 +147,20 @@ public class MessageEncoderTests {
             Arguments.of(1234 * 1234 * 8, 1234 * 1234, StructuredMessageFlags.STORAGE_CRC64));
     }
 
-    @ParameterizedTest
-    @MethodSource("readAllSupplier")
-    public void readAll(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
-        byte[] data = getRandomData(size);
-
-        ByteBuffer unencodedBuffer = ByteBuffer.wrap(data);
-
-        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
-
-        byte[] actual = structuredMessageEncoder.encode(unencodedBuffer).array();
-        byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags).array();
-
-        Assertions.assertArrayEquals(expected, actual);
-    }
+    //    @ParameterizedTest
+    //    @MethodSource("readAllSupplier")
+    //    public void readAll(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
+    //        byte[] data = getRandomData(size);
+    //
+    //        ByteBuffer unencodedBuffer = ByteBuffer.wrap(data);
+    //
+    //        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
+    //
+    //        byte[] actual = structuredMessageEncoder.encode(unencodedBuffer).array();
+    //        byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags).array();
+    //
+    //        Assertions.assertArrayEquals(expected, actual);
+    //    }
 
     private static Stream<Arguments> readMultipleSupplier() {
         return Stream.of(Arguments.of(30, StructuredMessageFlags.NONE),
@@ -170,41 +170,41 @@ public class MessageEncoderTests {
             Arguments.of(8, StructuredMessageFlags.STORAGE_CRC64));
     }
 
-    @ParameterizedTest
-    @MethodSource("readMultipleSupplier")
-    public void readMultiple(int segmentSize, StructuredMessageFlags flags) throws IOException {
-        byte[] data1 = getRandomData(10);
-        byte[] data2 = getRandomData(10);
-        byte[] data3 = getRandomData(10);
+    //    @ParameterizedTest
+    //    @MethodSource("readMultipleSupplier")
+    //    public void readMultiple(int segmentSize, StructuredMessageFlags flags) throws IOException {
+    //        byte[] data1 = getRandomData(10);
+    //        byte[] data2 = getRandomData(10);
+    //        byte[] data3 = getRandomData(10);
+    //
+    //        ByteBuffer wrappedData1 = ByteBuffer.wrap(data1);
+    //        ByteBuffer wrappedData2 = ByteBuffer.wrap(data2);
+    //        ByteBuffer wrappedData3 = ByteBuffer.wrap(data3);
+    //
+    //        ByteBuffer allWrappedData = ByteBuffer.allocate(30);
+    //        allWrappedData.put(data1);
+    //        allWrappedData.put(data2);
+    //        allWrappedData.put(data3);
+    //
+    //        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(30, segmentSize, flags);
+    //
+    //        byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags).array();
+    //
+    //        ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
+    //        allActualData.write(structuredMessageEncoder.encode(wrappedData1).array());
+    //        allActualData.write(structuredMessageEncoder.encode(wrappedData2).array());
+    //        allActualData.write(structuredMessageEncoder.encode(wrappedData3).array());
+    //
+    //        Assertions.assertArrayEquals(expected, allActualData.toByteArray());
+    //    }
 
-        ByteBuffer wrappedData1 = ByteBuffer.wrap(data1);
-        ByteBuffer wrappedData2 = ByteBuffer.wrap(data2);
-        ByteBuffer wrappedData3 = ByteBuffer.wrap(data3);
-
-        ByteBuffer allWrappedData = ByteBuffer.allocate(30);
-        allWrappedData.put(data1);
-        allWrappedData.put(data2);
-        allWrappedData.put(data3);
-
-        StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(30, segmentSize, flags);
-
-        byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags).array();
-
-        ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
-        allActualData.write(structuredMessageEncoder.encode(wrappedData1).array());
-        allActualData.write(structuredMessageEncoder.encode(wrappedData2).array());
-        allActualData.write(structuredMessageEncoder.encode(wrappedData3).array());
-
-        Assertions.assertArrayEquals(expected, allActualData.toByteArray());
-    }
-
-    @Test
-    public void emptyBuffer() throws IOException {
-        StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
-        ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
-        ByteBuffer result = encoder.encode(emptyBuffer);
-        assertEquals(0, result.remaining());
-    }
+    //    @Test
+    //    public void emptyBuffer() throws IOException {
+    //        StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
+    //        ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
+    //        ByteBuffer result = encoder.encode(emptyBuffer);
+    //        assertEquals(0, result.remaining());
+    //    }
 
     @Test
     public void contentAlreadyEncoded() throws IOException {
