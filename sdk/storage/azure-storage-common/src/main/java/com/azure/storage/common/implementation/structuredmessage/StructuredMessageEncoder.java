@@ -121,27 +121,25 @@ public class StructuredMessageEncoder {
      *
      * @param unencodedBuffer The buffer to be encoded.
      * @return A Flux of encoded ByteBuffers.
-     * @throws IllegalArgumentException If the buffer length exceeds the content length, or the content has already been
-     * encoded.
      */
     public Flux<ByteBuffer> encode(ByteBuffer unencodedBuffer) {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
-        if (currentContentOffset == contentLength) {
-            return Flux
-                .error(LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
-        }
-
-        if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
-            return Flux.error(
-                LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length.")));
-        }
-
-        if (!unencodedBuffer.hasRemaining()) {
-            return Flux.empty();
-        }
-
         return Flux.defer(() -> {
+            if (currentContentOffset == contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
+            }
+
+            if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length.")));
+            }
+
+            if (!unencodedBuffer.hasRemaining()) {
+                return Flux.empty();
+            }
+
             List<ByteBuffer> buffers = new ArrayList<>();
 
             // if we are at the beginning of the message, encode message header

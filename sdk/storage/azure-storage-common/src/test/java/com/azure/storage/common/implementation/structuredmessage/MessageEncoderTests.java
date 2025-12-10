@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import static com.azure.storage.common.implementation.structuredmessage.Structur
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MessageEncoderTests {
@@ -215,16 +217,18 @@ public class MessageEncoderTests {
     public void contentAlreadyEncoded() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 })).blockLast();
-        assertThrows(IllegalArgumentException.class,
-            () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })).blockLast());
+        StepVerifier.create(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
+            .expectError(IllegalArgumentException.class)
+            .verify();
     }
 
     @Test
     public void bufferLengthExceedsContentLength() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 })).blockLast();
-        assertThrows(IllegalArgumentException.class,
-            () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })).blockLast());
+        StepVerifier.create(encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })))
+            .expectError(IllegalArgumentException.class)
+            .verify();
     }
 
     @Test
