@@ -30,7 +30,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Telem
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
