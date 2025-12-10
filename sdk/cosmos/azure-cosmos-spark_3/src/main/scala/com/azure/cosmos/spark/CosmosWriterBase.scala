@@ -97,23 +97,6 @@ private abstract class CosmosWriterBase(
   override def write(internalRow: InternalRow): Unit = {
     val objectNode = cosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
 
-    // Extract operationType if column exists (for per-row operation support)
-    val operationType: Option[String] = if (inputSchema.fieldNames.contains("operationType")) {
-      val opTypeIndex = inputSchema.fieldIndex("operationType")
-      if (!internalRow.isNullAt(opTypeIndex)) {
-        Some(internalRow.getString(opTypeIndex))
-      } else {
-        None
-      }
-    } else {
-      None
-    }
-
-    // Remove operationType from objectNode if present (don't persist to Cosmos)
-    if (objectNode.has("operationType")) {
-      objectNode.remove("operationType")
-    }
-
     require(objectNode.has(CosmosConstants.Properties.Id) &&
       objectNode.get(CosmosConstants.Properties.Id).isTextual,
       s"${CosmosConstants.Properties.Id} is a mandatory field. " +
@@ -127,16 +110,7 @@ private abstract class CosmosWriterBase(
     }
 
     val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
-    
-    // Call the appropriate scheduleWrite method based on whether operationType is specified
-    operationType match {
-      case Some(opType) =>
-        // Per-row operation type specified - use 3-parameter method
-        writer.get.scheduleWrite(partitionKeyValue, objectNode, Some(opType))
-      case None =>
-        // No per-row operation type - use 2-parameter method (global strategy)
-        writer.get.scheduleWrite(partitionKeyValue, objectNode)
-    }
+    writer.get.scheduleWrite(partitionKeyValue, objectNode)
   }
 
   override def commit(): WriterCommitMessage = {
