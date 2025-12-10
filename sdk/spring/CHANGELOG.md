@@ -24,7 +24,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
-Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5241-12-09) for more details.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5241-2025-12-09) for more details.
 
 ## 5.24.0 (2025-12-04)
 - This release is compatible with Spring Boot 3.5.0-3.5.8, 3.4.0-3.4.12, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.5.x (x>8) and 3.4.y (y>12) should be supported, but they aren't tested with this release.)
