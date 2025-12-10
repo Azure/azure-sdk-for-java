@@ -411,18 +411,6 @@ private class TransactionalBulkWriter
     scheduleWriteInternal(partitionKeyValue, objectNode, operationContext)
   }
 
-  /**
-    * Per-row operation type is not supported for transactional batches.
-    * All operations in a transactional batch must be upserts (ItemOverwrite strategy).
-    * This method is implemented to satisfy the AsyncItemWriter interface but throws an exception.
-    */
-  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
-    throw new UnsupportedOperationException(
-      "Per-row operation types are not supported for transactional batches. " +
-      "All operations in a transactional batch must use ItemOverwrite (upsert) strategy. " +
-      "Use scheduleWrite(partitionKeyValue, objectNode) instead.")
-  }
-
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey,
                                     objectNode: ObjectNode,
                                     operationContext: OperationContext): Unit = {

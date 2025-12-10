@@ -76,10 +76,6 @@ private class PointWriter(container: CosmosAsyncContainer,
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
-    scheduleWrite(partitionKeyValue, objectNode, None)
-  }
-
-  override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationType: Option[String]): Unit = {
     checkState(!closed.get())
 
     val etag = getETag(objectNode)
