@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.structuredmessage.StructuredMessageEncoder;
@@ -112,7 +111,42 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
             .getBody()
             .flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
-            .flatMap(bufferAggregator -> bufferAggregator.asFlux().flatMap(structuredMessageEncoder::encode));
+            .concatMap(bufferAggregator -> bufferAggregator.asFlux().concatMap(structuredMessageEncoder::encode));
+        //
+        //        // For test purposes, write the encoded body to a file.
+        //        final AtomicReference<FileChannel> fileChannelRef = new AtomicReference<>();
+        //        encodedBody = encodedBody.doOnSubscribe(subscription -> {
+        //            try {
+        //                Path path = Paths.get("encoded-output-bad.bin");
+        //                fileChannelRef.set(FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
+        //                    StandardOpenOption.TRUNCATE_EXISTING));
+        //            } catch (IOException e) {
+        //                throw new UncheckedIOException(e);
+        //            }
+        //        }).doOnNext(buffer -> {
+        //            try {
+        //                // Duplicate buffer to avoid affecting the original buffer's position
+        //                fileChannelRef.get().write(buffer.duplicate());
+        //            } catch (IOException e) {
+        //                throw new UncheckedIOException(e);
+        //            }
+        //        }).doOnComplete(() -> {
+        //            try {
+        //                if (fileChannelRef.get() != null) {
+        //                    fileChannelRef.get().close();
+        //                }
+        //            } catch (IOException e) {
+        //                throw new UncheckedIOException(e);
+        //            }
+        //        }).doOnError(error -> {
+        //            try {
+        //                if (fileChannelRef.get() != null) {
+        //                    fileChannelRef.get().close();
+        //                }
+        //            } catch (IOException e) {
+        //                error.addSuppressed(e);
+        //            }
+        //        });
 
         // Set the encoded body
         context.getHttpRequest().setBody(encodedBody);
