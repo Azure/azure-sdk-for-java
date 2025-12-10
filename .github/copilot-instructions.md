@@ -25,7 +25,61 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 ### Prerequisites
 
 - To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+- See the next section for how to set up the Azure SDK MCP server in your IDE for advanced Copilot features.
 - Always run the [`azsdk_verify_setup`](../eng/common/instructions/azsdk-tools/verify-setup.instructions.md) tool to check the user's development environment setup for using SDK MCP tools. DO NOT PROCEED with running other tools before completing this step. Only skip for queries that don't need tools.
+
+## Azure SDK MCP Server: Quick Start
+
+The Azure SDK MCP server enables advanced Copilot-powered automation, validation, and Azure-specific guidance in your IDE.
+
+| IDE      | Config File Location                  | What to Do                                                                 |
+|----------|--------------------------------------|----------------------------------------------------------------------------|
+| VSCode   | `.vscode/mcp.json`                   | Add the JSON config below and restart VSCode                               |
+| IntelliJ | `github-copilot/intellij/mcp.json`   | Add the JSON config below and restart IntelliJ                             |
+
+### Configuration Example
+
+#### VSCode (`.vscode/mcp.json`)
+```json
+{
+  "azure-sdk-mcp": {
+    "type": "stdio",
+    "command": "pwsh",
+    "args": [
+      "${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1",
+      "-Run"
+    ]
+  }
+}
+```
+
+#### IntelliJ (`github-copilot/intellij/mcp.json`)
+```json
+{
+  "servers": {
+    "azure-sdk-mcp": {
+      "type": "stdio",
+      "command": "pwsh",
+      "args": [
+        "${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1",
+        "-Run"
+      ]
+    }
+  }
+}
+```
+
+- Make sure PowerShell is installed and available in your system PATH.
+- Adjust the path to `azure-sdk-mcp.ps1` if your repository is structured differently.
+
+### Troubleshooting
+
+- If IntelliJ does not detect the MCP server, double-check the path and file name.
+- Start the server manually with:
+  ```powershell
+  eng/common/mcp/azure-sdk-mcp.ps1 -Run
+  ```
+- For more help, see [eng/common/mcp/README.md](../eng/common/mcp/README.md) or open an issue.
 
 ## Behavior
 
