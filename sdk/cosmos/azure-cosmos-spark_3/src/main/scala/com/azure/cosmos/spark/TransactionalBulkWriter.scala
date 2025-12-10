@@ -63,10 +63,16 @@ private class TransactionalBulkWriter
   private val verboseLoggingAfterReEnqueueingRetriesEnabled = new AtomicBoolean(false)
 
   private val cpuCount = SparkUtils.getNumberOfHostCPUCores
-  // each bulk writer allows up to maxPendingOperations being buffered
-  // there is one bulk writer per spark task/partition
-  // and default config will create one executor per core on the executor host
-  // so multiplying by cpuCount in the default config is too aggressive
+  
+  // NOTE: The public API config property is "maxPendingOperations" for backward compatibility,
+  // but internally TransactionalBulkWriter limits concurrent *batches* not individual operations.
+  // This is semantically correct because transactional batches are atomic units.
+  // We convert maxPendingOperations to maxPendingBatches by assuming ~50 operations per batch.
+  private val maxPendingBatches = {
+    val maxOps = writeConfig.bulkMaxPendingOperations.getOrElse(DefaultMaxPendingOperationPerCore)
+    // Assume average batch size of 50 operations - limit concurrent batches accordingly
+    Math.max(1, maxOps / 50)
+  }
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
     .getOrElse(DefaultMaxPendingOperationPerCore)
   private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
@@ -85,8 +91,8 @@ private class TransactionalBulkWriter
   }
 
   log.logInfo(
-    s"BulkWriter instantiated (Host CPU count: $cpuCount, maxPendingOperations: $maxPendingOperations, " +
-  s"maxConcurrentPartitions: $maxConcurrentPartitions ...")
+    s"TransactionalBulkWriter instantiated (Host CPU count: $cpuCount, maxPendingBatches: $maxPendingBatches, " +
+  s"maxPendingOperations: $maxPendingOperations, maxConcurrentPartitions: $maxConcurrentPartitions ...")
 
 
   private val closed = new AtomicBoolean(false)
@@ -106,7 +112,11 @@ private class TransactionalBulkWriter
 
   private val activeBulkWriteOperations =java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val operationContextMap = new java.util.concurrent.ConcurrentHashMap[CosmosItemOperation, OperationContext]().asScala
-  private val semaphore = new Semaphore(maxPendingOperations)
+  // Semaphore limits number of outstanding batches (not individual operations)
+  private val semaphore = new Semaphore(maxPendingBatches)
+  private val activeBatches = new AtomicInteger(0)
+  // Map each batch's first operation to the batch size for semaphore release tracking
+  private val batchSizeMap = new java.util.concurrent.ConcurrentHashMap[CosmosItemOperation, Integer]()
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
@@ -288,10 +298,15 @@ private class TransactionalBulkWriter
       resp => {
         val isGettingRetried = new AtomicBoolean(false)
         val shouldSkipTaskCompletion = new AtomicBoolean(false)
+        val isFirstOperationInBatch = new AtomicBoolean(false)
         try {
           val itemOperation = resp.getOperation
           val itemOperationFound = activeBulkWriteOperations.remove(itemOperation)
           val pendingRetriesFound = pendingBulkWriteRetries.remove(itemOperation)
+          
+          // Check if this is the first operation in a batch (used for semaphore release)
+          val batchSizeOption = Option(batchSizeMap.remove(itemOperation))
+          isFirstOperationInBatch.set(batchSizeOption.isDefined)
 
           if (pendingRetriesFound) {
             pendingRetries.decrementAndGet()
@@ -337,8 +352,12 @@ private class TransactionalBulkWriter
           }
         }
         finally {
-          if (!isGettingRetried.get) {
+          // Release semaphore when we process the first operation of a batch
+          // This indicates the entire batch has been processed
+          if (!isGettingRetried.get && isFirstOperationInBatch.get) {
+            activeBatches.decrementAndGet()
             semaphore.release()
+            log.logTrace(s"Released semaphore for completed batch, activeBatches: ${activeBatches.get} $getThreadInfo")
           }
         }
 
@@ -368,7 +387,6 @@ private class TransactionalBulkWriter
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
-    val activeTasksSemaphoreTimeout = 10
     val operationContext = new OperationContext(
       getId(objectNode),
       partitionKeyValue,
@@ -376,34 +394,6 @@ private class TransactionalBulkWriter
       1,
       monotonicOperationCounter.incrementAndGet(),
       None)
-    val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-    // Don't clone the activeOperations for the first iteration
-    // to reduce perf impact before the Semaphore has been acquired
-    // this means if the semaphore can't be acquired within 10 minutes
-    // the first attempt will always assume it wasn't stale - so effectively we
-    // allow staleness for ten additional minutes - which is perfectly fine
-    var activeBulkWriteOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
-    var pendingBulkWriteRetriesSnapshot = mutable.Set.empty[CosmosItemOperation]
-
-    log.logTrace(
-      s"Before TryAcquire ${totalScheduledMetrics.get}, Context: ${operationContext.toString} $getThreadInfo")
-    while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
-      log.logDebug(s"Not able to acquire semaphore, Context: ${operationContext.toString} $getThreadInfo")
-      if (subscriptionDisposable.isDisposed) {
-        captureIfFirstFailure(
-          new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"))
-      }
-
-      throwIfProgressStaled(
-        "Semaphore acquisition",
-        activeBulkWriteOperationsSnapshot,
-        pendingBulkWriteRetriesSnapshot,
-        numberOfIntervalsWithIdenticalActiveOperationSnapshots,
-        allowRetryOnNewBulkWriterInstance = false)
-
-      activeBulkWriteOperationsSnapshot = activeBulkWriteOperations.clone()
-      pendingBulkWriteRetriesSnapshot = pendingBulkWriteRetries.clone()
-    }
 
     val cnt = totalScheduledMetrics.getAndIncrement()
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
@@ -464,6 +454,36 @@ private class TransactionalBulkWriter
   private[this] def flushCurrentBatch(): Unit = {
     // Must be called within batchConstructionLock.synchronized
     if (currentBatchOperations.nonEmpty && currentPartitionKey != null) {
+      // Acquire semaphore before emitting batch - this limits concurrent batches
+      val activeTasksSemaphoreTimeout = 10
+      val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+      var activeBulkWriteOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
+      var pendingBulkWriteRetriesSnapshot = mutable.Set.empty[CosmosItemOperation]
+      
+      val dummyContext = new OperationContext("batch-flush", currentPartitionKey, null, 1, 0, None)
+      
+      log.logTrace(s"Before acquiring semaphore for batch emission, activeBatches: ${activeBatches.get} $getThreadInfo")
+      while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
+        log.logDebug(s"Not able to acquire semaphore for batch, activeBatches: ${activeBatches.get} $getThreadInfo")
+        if (subscriptionDisposable.isDisposed) {
+          captureIfFirstFailure(
+            new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"))
+        }
+
+        throwIfProgressStaled(
+          "Batch semaphore acquisition",
+          activeBulkWriteOperationsSnapshot,
+          pendingBulkWriteRetriesSnapshot,
+          numberOfIntervalsWithIdenticalActiveOperationSnapshots,
+          allowRetryOnNewBulkWriterInstance = false)
+
+        activeBulkWriteOperationsSnapshot = activeBulkWriteOperations.clone()
+        pendingBulkWriteRetriesSnapshot = pendingBulkWriteRetries.clone()
+      }
+      
+      activeBatches.incrementAndGet()
+      log.logTrace(s"Acquired semaphore for batch emission, activeBatches: ${activeBatches.get} $getThreadInfo")
+      
       // Build the batch using the builder API
       val batch = CosmosBatch.createCosmosBatch(currentPartitionKey)
 
@@ -478,13 +498,19 @@ private class TransactionalBulkWriter
 
       // After building the batch, get the operations and track them with their contexts
       val batchOperations = batch.getOperations()
+      val batchSize = batchOperations.size()
       
       // Map each operation to its context and add to tracking
-      for (i <- 0 until batchOperations.size()) {
+      for (i <- 0 until batchSize) {
         val operation = batchOperations.get(i)
         val context = contextList(i)
         operationContextMap.put(operation, context)
         activeBulkWriteOperations.add(operation)
+      }
+      
+      // Track batch size using first operation as key - needed for semaphore release
+      if (batchSize > 0) {
+        batchSizeMap.put(batchOperations.get(0), batchSize)
       }
 
       // Emit the batch
@@ -800,7 +826,12 @@ private class TransactionalBulkWriter
           }
 
           logInfoOrWarning(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
-          semaphore.release(Math.max(0, activeTasks.get()))
+          // Release any remaining batch permits
+          val remainingBatches = activeBatches.get()
+          if (remainingBatches > 0) {
+            semaphore.release(remainingBatches)
+            log.logDebug(s"Released $remainingBatches batch permits during cleanup")
+          }
           bulkInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
 
           throwIfCapturedExceptionExists()
@@ -808,7 +839,7 @@ private class TransactionalBulkWriter
           assume(activeTasks.get() <= 0)
 
           assume(activeBulkWriteOperations.isEmpty)
-          assume(semaphore.availablePermits() >= maxPendingOperations)
+          assume(semaphore.availablePermits() >= maxPendingBatches)
 
           if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
             log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
