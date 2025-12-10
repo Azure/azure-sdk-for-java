@@ -323,8 +323,18 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     $cmdOutput = git fetch $RemoteName $releaseTag
 
     if ($LASTEXITCODE -ne 0) {
-      LogError "Could not restore the tags for release tag $releaseTag"
-      exit $LASTEXITCODE
+      # Fall back to old tag format: <artifactId>_<version>
+      $oldReleaseTag = "$($artifactId)_$($releaseVersion)"
+      Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
+      Write-Host "git fetch $RemoteName $oldReleaseTag"
+      $cmdOutput = git fetch $RemoteName $oldReleaseTag
+      
+      if ($LASTEXITCODE -ne 0) {
+        LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
+        exit $LASTEXITCODE
+      }
+      
+      $releaseTag = $oldReleaseTag
     }
 
     Write-Host "git restore --source $releaseTag -W -S $artifactDirPath"

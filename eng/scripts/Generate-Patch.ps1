@@ -108,8 +108,17 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not restore the tags for release tag $ReleaseTag"
-    exit 1
+    # Fall back to old tag format: <artifactName>_<version>
+    $OldReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+    Write-Information "Failed to fetch new tag format. Trying old tag format: $OldReleaseTag"
+    $CmdOutput = git fetch $RemoteName $OldReleaseTag
+    
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not restore the tags for release tag $ReleaseTag or $OldReleaseTag"
+      exit 1
+    }
+    
+    $ReleaseTag = $OldReleaseTag
   }
 
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
