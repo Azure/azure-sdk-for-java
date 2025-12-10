@@ -17,6 +17,8 @@ public class TempDirs {
     private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES
         = Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
 
+    public static final String UNABLE_TO_CREATE_DIRECTORY = "Unable to create directory: ";
+
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -51,7 +53,7 @@ public class TempDirs {
         File dir = new File(parent, name);
 
         if (!dir.exists() && !dir.mkdirs()) {
-            throw new IllegalArgumentException("Unable to create directory: " + dir);
+            throw new IllegalArgumentException(UNABLE_TO_CREATE_DIRECTORY + dir);
         }
         if (!dir.canRead()) {
             throw new IllegalArgumentException("Missing read permission to subdirectory: " + dir);

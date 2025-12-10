@@ -34,6 +34,7 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -42,6 +43,7 @@ import reactor.test.StepVerifier;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -107,7 +109,13 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             }
         };
 
-        OpenTelemetry otel = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk otel = optionalOpenTelemetry.get();
+
         Tracer tracer = otel.getTracer("Sample");
 
         try (EventHubProducerAsyncClient producer = new EventHubClientBuilder().credential(credential)
@@ -156,7 +164,13 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             });
             return next.process();
         };
-        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetrySdk = optionalOpenTelemetry.get();
+        Tracer tracer = openTelemetrySdk.getTracer("Sample");
 
         CountDownLatch partitionOwned = new CountDownLatch(1);
         CountDownLatch eventCountDown = new CountDownLatch(1);

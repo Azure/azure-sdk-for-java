@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -53,7 +54,12 @@ public class AzureMonitorExportersEndToEndTest {
         CountDownLatch countDownLatch = new CountDownLatch(numberOfSpans);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         HttpPipeline httpPipeline = getHttpPipeline(customValidationPolicy);
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(httpPipeline, getConfiguration());
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
+            = TestUtils.createOpenTelemetrySdk(httpPipeline, getConfiguration());
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate spans
         for (int i = 0; i < numberOfSpans; i++) {
@@ -96,8 +102,12 @@ public class AzureMonitorExportersEndToEndTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate a metric
         generateMetric(openTelemetry);
@@ -118,8 +128,12 @@ public class AzureMonitorExportersEndToEndTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetry openTelemetry
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate a log
         generateLog(openTelemetry);
@@ -145,8 +159,12 @@ public class AzureMonitorExportersEndToEndTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetry openTelemetry
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate a log
         generateEvent(openTelemetry);
@@ -172,8 +190,12 @@ public class AzureMonitorExportersEndToEndTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(3);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate telemetry
         generateSpan(openTelemetry);

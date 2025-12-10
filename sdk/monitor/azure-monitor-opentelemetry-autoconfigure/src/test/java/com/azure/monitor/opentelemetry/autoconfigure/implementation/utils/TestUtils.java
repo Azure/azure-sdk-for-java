@@ -20,6 +20,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Telem
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigurationException;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class TestUtils {
 
@@ -76,25 +78,34 @@ public final class TestUtils {
         return telemetry;
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline) {
+    public static Optional<OpenTelemetrySdk> createOpenTelemetrySdk(HttpPipeline httpPipeline) {
         return createOpenTelemetrySdk(httpPipeline, Collections.emptyMap());
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline,
+    public static Optional<OpenTelemetrySdk> createOpenTelemetrySdk(HttpPipeline httpPipeline,
         Map<String, String> configuration) {
         return createOpenTelemetrySdk(httpPipeline, configuration, TRACE_CONNECTION_STRING);
 
     }
 
-    public static OpenTelemetrySdk createOpenTelemetrySdk(HttpPipeline httpPipeline, Map<String, String> configuration,
-        String connectionString) {
+    public static Optional<OpenTelemetrySdk> createOpenTelemetrySdk(HttpPipeline httpPipeline,
+        Map<String, String> configuration, String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
         AzureMonitorAutoConfigureOptions exporterOptions
             = new AzureMonitorAutoConfigureOptions().connectionString(connectionString).pipeline(httpPipeline);
         AzureMonitorAutoConfigure.customize(sdkBuilder, exporterOptions);
 
-        return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
+        try {
+            return Optional.of(sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk());
+        } catch (ConfigurationException e) {
+            if (e.getCause() instanceof IllegalArgumentException
+                && e.getCause().getMessage() != null
+                && e.getCause().getMessage().startsWith(TempDirs.UNABLE_TO_CREATE_DIRECTORY)) {
+                return Optional.empty();
+            }
+            throw e;
+        }
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData

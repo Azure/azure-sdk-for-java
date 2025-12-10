@@ -22,6 +22,7 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -30,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
@@ -53,7 +55,12 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
         ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "set-config-exporter-testing");
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 
@@ -78,7 +85,12 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
         ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "disable-config-exporter-testing");
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 

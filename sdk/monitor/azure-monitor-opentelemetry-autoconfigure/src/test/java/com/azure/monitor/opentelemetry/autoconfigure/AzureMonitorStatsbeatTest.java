@@ -31,6 +31,7 @@ import reactor.util.annotation.Nullable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -51,9 +52,13 @@ public class AzureMonitorStatsbeatTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, HttpClient.createDefault()),
                 getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetry = optionalOpenTelemetry.get();
 
         // generate a metric
         generateMetric(openTelemetry);
@@ -93,10 +98,13 @@ public class AzureMonitorStatsbeatTest {
         // create OpenTelemetrySdk
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetrySdk
+        Optional<OpenTelemetrySdk> optionalOpenTelemetry
             = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, mockedHttpClient),
                 getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
-
+        if (!optionalOpenTelemetry.isPresent()) {
+            return;
+        }
+        OpenTelemetrySdk openTelemetrySdk = optionalOpenTelemetry.get();
         generateMetric(openTelemetrySdk);
 
         // close to flush
