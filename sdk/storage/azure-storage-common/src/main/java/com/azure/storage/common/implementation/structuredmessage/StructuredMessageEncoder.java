@@ -4,14 +4,16 @@
 package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
@@ -35,7 +37,6 @@ public class StructuredMessageEncoder {
     private int currentContentOffset;
     private int currentSegmentNumber;
     private int currentSegmentOffset;
-    private int currentMessageLength;
     private long messageCRC64;
     private final Map<Integer, Long> segmentCRC64s;
 
@@ -66,7 +67,6 @@ public class StructuredMessageEncoder {
         this.currentSegmentOffset = 0;
         this.messageCRC64 = 0;
         this.segmentCRC64s = new HashMap<>();
-        this.currentMessageLength = 0;
 
         if (numSegments > Short.MAX_VALUE) {
             StorageImplUtils.assertInBounds("numSegments", numSegments, 1, Short.MAX_VALUE);
@@ -109,115 +109,102 @@ public class StructuredMessageEncoder {
         return buffer.array();
     }
 
-    private byte[] generateSegmentHeader() {
-        int segmentHeaderSize = Math.min(segmentSize, contentLength - currentContentOffset);
-        // 2 byte number, 8 byte size
+    private byte[] generateSegmentHeader(int segmentContentSize) {
         ByteBuffer buffer = ByteBuffer.allocate(getSegmentHeaderLength()).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) currentSegmentNumber);
-        buffer.putLong(segmentHeaderSize);
+        buffer.putLong(segmentContentSize);
 
         return buffer.array();
     }
 
     /**
-     * Encodes the given buffer into a structured message format.
+     * Encodes the given buffer into a structured message format as a stream of ByteBuffers.
+     * The encoder maintains mutable state and is designed for single, sequential subscription only.
+     * Callers should pre-chunk input buffers to appropriate sizes (e.g., using {@link BufferStagingArea}) to
+     * control memory usage.
      *
      * @param unencodedBuffer The buffer to be encoded.
-     * @return The encoded buffer.
-     * @throws IOException If an error occurs while encoding the buffer.
+     * @return A Flux of encoded ByteBuffers.
      * @throws IllegalArgumentException If the buffer length exceeds the content length, or the content has already been
      * encoded.
      */
-    public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
+    public Flux<ByteBuffer> encode(ByteBuffer unencodedBuffer) {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
-        if (currentContentOffset == contentLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded."));
-        }
-
-        if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length."));
-        }
-
-        if (!unencodedBuffer.hasRemaining()) {
-            return ByteBuffer.allocate(0);
-        }
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        // if we are at the beginning of the message, encode message header
-        if (currentMessageLength == 0) {
-            encodeMessageHeader(byteArrayOutputStream);
-        }
-
-        while (unencodedBuffer.hasRemaining()) {
-            // if we are at the beginning of a segment's content, encode segment header
-            if (currentSegmentOffset == 0) {
-                encodeSegmentHeader(byteArrayOutputStream);
+        return Flux.defer(() -> {
+            if (currentContentOffset == contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded.")));
             }
 
-            encodeSegmentContent(unencodedBuffer, byteArrayOutputStream);
-
-            // if we are at the end of a segment's content, encode segment footer
-            if (currentSegmentOffset == getSegmentContentLength()) {
-                encodeSegmentFooter(byteArrayOutputStream);
+            if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
+                return Flux.error(
+                    LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length.")));
             }
-        }
 
-        // if all content has been encoded, encode message footer
-        if (currentContentOffset == contentLength) {
-            encodeMessageFooter(byteArrayOutputStream);
-        }
+            if (!unencodedBuffer.hasRemaining()) {
+                return Flux.empty();
+            }
 
-        return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
+            List<ByteBuffer> buffers = new ArrayList<>();
+
+            // if we are at the beginning of the message, encode message header
+            if (currentContentOffset == 0) {
+                buffers.add(ByteBuffer.wrap(generateMessageHeader()));
+            }
+
+            while (unencodedBuffer.hasRemaining()) {
+                // if we are at the beginning of a segment's content, encode segment header
+                if (currentSegmentOffset == 0) {
+                    incrementCurrentSegment();
+                    // Calculate actual segment size based on remaining content
+                    int actualSegmentSize = Math.min(segmentSize, contentLength - currentContentOffset);
+                    buffers.add(ByteBuffer.wrap(generateSegmentHeader(actualSegmentSize)));
+                }
+
+                buffers.add(encodeSegmentContent(unencodedBuffer));
+
+                // if we are at the end of a segment's content, encode segment footer
+                if (currentSegmentOffset == getSegmentContentLength()) {
+                    byte[] footer = generateSegmentFooter();
+                    if (footer.length > 0) {
+                        buffers.add(ByteBuffer.wrap(footer));
+                    }
+                    currentSegmentOffset = 0;
+                }
+            }
+
+            // if all content has been encoded, encode message footer
+            if (currentContentOffset == contentLength) {
+                byte[] footer = generateMessageFooter();
+                if (footer.length > 0) {
+                    buffers.add(ByteBuffer.wrap(footer));
+                }
+            }
+
+            return Flux.fromIterable(buffers);
+        });
     }
 
-    private void encodeMessageHeader(ByteArrayOutputStream output) {
-        byte[] metadata = generateMessageHeader();
-        output.write(metadata, 0, metadata.length);
-
-        currentMessageLength += metadata.length;
-    }
-
-    private void encodeSegmentHeader(ByteArrayOutputStream output) {
-        incrementCurrentSegment();
-        byte[] metadata = generateSegmentHeader();
-        output.write(metadata, 0, metadata.length);
-
-        currentMessageLength += metadata.length;
-    }
-
-    private void encodeSegmentFooter(ByteArrayOutputStream output) {
-        byte[] metadata;
+    private byte[] generateSegmentFooter() {
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            metadata = ByteBuffer.allocate(CRC64_LENGTH)
+            return ByteBuffer.allocate(CRC64_LENGTH)
                 .order(ByteOrder.LITTLE_ENDIAN)
                 .putLong(segmentCRC64s.get(currentSegmentNumber))
                 .array();
-        } else {
-            metadata = new byte[0];
         }
-        output.write(metadata, 0, metadata.length);
-
-        currentMessageLength += metadata.length;
-        currentSegmentOffset = 0;
+        return new byte[0];
     }
 
-    private void encodeMessageFooter(ByteArrayOutputStream output) {
-        byte[] metadata;
+    private byte[] generateMessageFooter() {
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            metadata = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC64).array();
-        } else {
-            metadata = new byte[0];
+            return ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC64).array();
         }
-
-        output.write(metadata, 0, metadata.length);
-        currentMessageLength += metadata.length;
+        return new byte[0];
     }
 
-    private void encodeSegmentContent(ByteBuffer unencodedBuffer, ByteArrayOutputStream output) {
+    private ByteBuffer encodeSegmentContent(ByteBuffer unencodedBuffer) {
         int readSize = Math.min(unencodedBuffer.remaining(), getSegmentContentLength() - currentSegmentOffset);
-
         byte[] content = new byte[readSize];
         unencodedBuffer.get(content, 0, readSize);
 
@@ -230,8 +217,7 @@ public class StructuredMessageEncoder {
         currentContentOffset += readSize;
         currentSegmentOffset += readSize;
 
-        output.write(content, 0, content.length);
-        currentMessageLength += readSize;
+        return ByteBuffer.wrap(content);
     }
 
     private int calculateMessageLength() {
@@ -255,7 +241,7 @@ public class StructuredMessageEncoder {
      *
      * @return The length of the message.
      */
-    public int getMessageLength() {
+    public long getEncodedMessageLength() {
         return messageLength;
     }
 }
