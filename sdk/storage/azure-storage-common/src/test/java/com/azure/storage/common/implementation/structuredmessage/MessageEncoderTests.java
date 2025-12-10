@@ -15,17 +15,18 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.FluxUtil.collectBytesInByteBufferStream;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MessageEncoderTests {
-
-    private static final int V1_HEADER_LENGTH = 13;
-    private static final int V1_SEGMENT_HEADER_LENGTH = 10;
-    private static final int CRC64_LENGTH = 8;
 
     private static byte[] getRandomData(int size) {
         byte[] result = new byte[size];
@@ -156,7 +157,7 @@ public class MessageEncoderTests {
 
         StructuredMessageEncoder structuredMessageEncoder = new StructuredMessageEncoder(size, segmentSize, flags);
 
-        byte[] actual = structuredMessageEncoder.encode(unencodedBuffer).array();
+        byte[] actual = collectBytesInByteBufferStream(structuredMessageEncoder.encode(unencodedBuffer)).block();
         byte[] expected = buildStructuredMessage(unencodedBuffer, segmentSize, flags).array();
 
         Assertions.assertArrayEquals(expected, actual);
@@ -191,33 +192,39 @@ public class MessageEncoderTests {
         byte[] expected = buildStructuredMessage(allWrappedData, segmentSize, flags).array();
 
         ByteArrayOutputStream allActualData = new ByteArrayOutputStream();
-        allActualData.write(structuredMessageEncoder.encode(wrappedData1).array());
-        allActualData.write(structuredMessageEncoder.encode(wrappedData2).array());
-        allActualData.write(structuredMessageEncoder.encode(wrappedData3).array());
+        allActualData.write(Objects
+            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData1)).block()));
+        allActualData.write(Objects
+            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData2)).block()));
+        allActualData.write(Objects
+            .requireNonNull(collectBytesInByteBufferStream(structuredMessageEncoder.encode(wrappedData3)).block()));
 
         Assertions.assertArrayEquals(expected, allActualData.toByteArray());
     }
 
     @Test
-    public void emptyBuffer() throws IOException {
+    public void emptyBuffer() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
         ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
-        ByteBuffer result = encoder.encode(emptyBuffer);
+        ByteBuffer result = ByteBuffer
+            .wrap(Objects.requireNonNull(collectBytesInByteBufferStream(encoder.encode(emptyBuffer)).block()));
         assertEquals(0, result.remaining());
     }
 
     @Test
-    public void contentAlreadyEncoded() throws IOException {
+    public void contentAlreadyEncoded() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
-        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }));
-        assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
+        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 })).blockLast();
+        assertThrows(IllegalArgumentException.class,
+            () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })).blockLast());
     }
 
     @Test
-    public void bufferLengthExceedsContentLength() throws IOException {
+    public void bufferLengthExceedsContentLength() {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
-        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 }));
-        assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
+        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 })).blockLast();
+        assertThrows(IllegalArgumentException.class,
+            () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })).blockLast());
     }
 
     @Test
