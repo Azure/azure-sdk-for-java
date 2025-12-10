@@ -104,12 +104,6 @@ private class TransactionalBulkWriter
   private val currentBatchOperations = new mutable.ListBuffer[(ObjectNode, OperationContext, String)]()
   private val batchConstructionLock = new Object()
 
-  private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
-    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
-      Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
-    case _ => None
-  }
-
   private val activeBulkWriteOperations =java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val operationContextMap = new java.util.concurrent.ConcurrentHashMap[CosmosItemOperation, OperationContext]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
@@ -514,38 +508,10 @@ private class TransactionalBulkWriter
     }
   }
 
-  private[this] def getPatchOperationsForBatch(itemId: String, objectNode: ObjectNode): CosmosPatchOperations = {
-    assert(writeConfig.patchConfigs.isDefined)
-    assert(cosmosPatchHelperOpt.isDefined)
-    val cosmosPatchHelper = cosmosPatchHelperOpt.get
-    cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
-  }
-
   private[this] def finalFlushBatch(): Unit = {
     batchConstructionLock.synchronized {
       flushCurrentBatch()
     }
-  }
-
-  private[this] def getPatchItemOperation(itemId: String,
-                                          partitionKey: PartitionKey,
-                                          partitionKeyDefinition: PartitionKeyDefinition,
-                                          objectNode: ObjectNode,
-                                          context: OperationContext): CosmosItemOperation = {
-
-    assert(writeConfig.patchConfigs.isDefined)
-    assert(cosmosPatchHelperOpt.isDefined)
-    val patchConfigs = writeConfig.patchConfigs.get
-    val cosmosPatchHelper = cosmosPatchHelperOpt.get
-
-    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
-
-    val requestOptions = new CosmosBulkPatchItemRequestOptions()
-    if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
-      requestOptions.setFilterPredicate(patchConfigs.filter.get)
-    }
-
-    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, context)
   }
 
   //scalastyle:off method.length
@@ -918,51 +884,24 @@ private class TransactionalBulkWriter
   }
 
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
-    val returnValue = writeConfig.itemWriteStrategy match {
-      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
-      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
-        Exceptions.isPreconditionFailedException(statusCode)
-      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
-        Exceptions.isResourceExistsException(statusCode) ||
-        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
-        Exceptions.isPreconditionFailedException(statusCode)
-      case _ => false
-    }
-
-    returnValue
+    // Transactional batches only support ItemOverwrite - no errors to ignore
+    false
   }
 
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
-      var returnValue = false
-      if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
-          returnValue = writeConfig.itemWriteStrategy match {
-              case ItemWriteStrategy.ItemBulkUpdate =>
-                  this.shouldRetryForItemPatchBulkUpdate(statusCode, subStatusCode)
-              // Upsert can return 404/0 in rare cases (when due to TTL expiration there is a race condition
-              case ItemWriteStrategy.ItemOverwrite =>
-                Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-                  statusCode == 0 || // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
-                  Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
-              case _ =>
-                Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-                  statusCode == 0 // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
-          }
-      }
+    var returnValue = false
+    if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
+      // Transactional batches only support ItemOverwrite (upsert)
+      // Upsert can return 404/0 in rare cases (when due to TTL expiration there is a race condition)
+      returnValue = Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+        statusCode == 0 || // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
+        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+    }
 
     log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
 
     returnValue
-  }
-
-  private def shouldRetryForItemPatchBulkUpdate(statusCode: Int, subStatusCode: Int): Boolean = {
-      Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-          statusCode == 0 || // Gateway mode reports inability to connect due to
-                          // PoolAcquirePendingLimitException as status code 0
-          Exceptions.isResourceExistsException(statusCode) ||
-          Exceptions.isPreconditionFailedException(statusCode)
   }
 
   private def getId(objectNode: ObjectNode) = {
