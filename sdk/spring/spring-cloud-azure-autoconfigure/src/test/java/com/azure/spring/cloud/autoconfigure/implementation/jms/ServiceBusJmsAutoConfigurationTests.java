@@ -11,7 +11,6 @@ import com.azure.spring.cloud.core.service.AzureServiceType;
 import jakarta.jms.ConnectionFactory;
 import jakarta.jms.Session;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -61,7 +60,7 @@ class ServiceBusJmsAutoConfigurationTests {
         assertThat(container.getMaxConcurrentConsumers()).isEqualTo(10);
         assertThat(container).hasFieldOrPropertyWithValue("receiveTimeout", 2000L);
         assertThat(container.isReplyPubSubDomain()).isFalse();
-        Assertions.assertNotNull(container.getReplyQosSettings());
+        assertThat(container.getReplyQosSettings()).isNotNull();
         assertThat(container.getReplyQosSettings().getPriority()).isEqualTo(1);
         assertThat(container.isSubscriptionDurable()).isFalse();
         assertThat(container.isSubscriptionShared()).isFalse();
@@ -81,7 +80,7 @@ class ServiceBusJmsAutoConfigurationTests {
         assertThat(container.getMaxConcurrentConsumers()).isEqualTo(10);
         assertThat(container).hasFieldOrPropertyWithValue("receiveTimeout", 2000L);
         assertThat(container.isReplyPubSubDomain()).isFalse();
-        Assertions.assertNotNull(container.getReplyQosSettings());
+        assertThat(container.getReplyQosSettings()).isNotNull();
         assertThat(container.getReplyQosSettings().getPriority()).isEqualTo(1);
         assertThat(container.isSubscriptionDurable()).isTrue();
         assertThat(container.isSubscriptionShared()).isFalse();
