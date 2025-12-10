@@ -112,41 +112,6 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
             .flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .concatMap(bufferAggregator -> bufferAggregator.asFlux().concatMap(structuredMessageEncoder::encode));
-        //
-        //        // For test purposes, write the encoded body to a file.
-        //        final AtomicReference<FileChannel> fileChannelRef = new AtomicReference<>();
-        //        encodedBody = encodedBody.doOnSubscribe(subscription -> {
-        //            try {
-        //                Path path = Paths.get("encoded-output-bad.bin");
-        //                fileChannelRef.set(FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE,
-        //                    StandardOpenOption.TRUNCATE_EXISTING));
-        //            } catch (IOException e) {
-        //                throw new UncheckedIOException(e);
-        //            }
-        //        }).doOnNext(buffer -> {
-        //            try {
-        //                // Duplicate buffer to avoid affecting the original buffer's position
-        //                fileChannelRef.get().write(buffer.duplicate());
-        //            } catch (IOException e) {
-        //                throw new UncheckedIOException(e);
-        //            }
-        //        }).doOnComplete(() -> {
-        //            try {
-        //                if (fileChannelRef.get() != null) {
-        //                    fileChannelRef.get().close();
-        //                }
-        //            } catch (IOException e) {
-        //                throw new UncheckedIOException(e);
-        //            }
-        //        }).doOnError(error -> {
-        //            try {
-        //                if (fileChannelRef.get() != null) {
-        //                    fileChannelRef.get().close();
-        //                }
-        //            } catch (IOException e) {
-        //                error.addSuppressed(e);
-        //            }
-        //        });
 
         // Set the encoded body
         context.getHttpRequest().setBody(encodedBody);
