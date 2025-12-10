@@ -27,4 +27,19 @@ extends:
       safeName: azuresdktemplatethree
       skipPublishDocMs: true
       ServiceDirectory: template
+    - name: azure-sdk-template
+      groupId: com.azure.v2
+      safeName: azuresdktemplate
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
+    - name: azure-sdk-template-two
+      groupId: com.azure.v2
+      safeName: azuresdktemplatetwo
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
+    - name: azure-sdk-template-three
+      groupId: com.azure.v2
+      safeName: azuresdktemplatethree
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
 
