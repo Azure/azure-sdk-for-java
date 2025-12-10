@@ -303,7 +303,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     Write-Output "PatchVersion is: $patchVersion"
   }
 
-  $releaseTag = "$($artifactId)_$($releaseVersion)"
+  $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
   if (!$currentPomFileVersion -or !$artifactDirPath -or !$changelogPath) {
     $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName -GroupId $GroupId)
     $artifactDirPath = $pkgProperties.DirectoryPath

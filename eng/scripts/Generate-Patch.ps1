@@ -83,7 +83,7 @@ function GetRemoteName($MainRemoteUrl) {
 }
 
 function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName, $GroupId = "com.azure") {
-  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+  $ReleaseTag = "${GroupId}+${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   $SdkDirPath = Join-Path $RepoRoot "sdk"
