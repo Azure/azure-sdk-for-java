@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -118,9 +119,14 @@ public class StructuredMessageEncoder {
 
     /**
      * Encodes the given buffer into a structured message format as a stream of ByteBuffers.
+     * The encoder maintains mutable state and is designed for single, sequential subscription only.
+     * Callers should pre-chunk input buffers to appropriate sizes (e.g., using {@link BufferStagingArea}) to
+     * control memory usage.
      *
      * @param unencodedBuffer The buffer to be encoded.
      * @return A Flux of encoded ByteBuffers.
+     * @throws IllegalArgumentException If the buffer length exceeds the content length, or the content has already been
+     * encoded.
      */
     public Flux<ByteBuffer> encode(ByteBuffer unencodedBuffer) {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
