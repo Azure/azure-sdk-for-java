@@ -84,11 +84,8 @@ private class TransactionalBulkWriter
     case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
   }
   // Validate write strategy for transactional batches
-  if (writeConfig.itemWriteStrategy != ItemWriteStrategy.ItemOverwrite) {
-    throw new IllegalArgumentException(
-      s"Transactional batches only support ItemOverwrite (upsert) write strategy. " +
-      s"Requested strategy: ${writeConfig.itemWriteStrategy}")
-  }
+  require(writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemOverwrite,
+    s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${writeConfig.itemWriteStrategy}")
 
   log.logInfo(
     s"TransactionalBulkWriter instantiated (Host CPU count: $cpuCount, maxPendingBatches: $maxPendingBatches, " +
@@ -186,7 +183,7 @@ private class TransactionalBulkWriter
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
 
-    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "transactional-BulkWriter")
 
     if (taskContext != null) {
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
@@ -406,7 +403,7 @@ private class TransactionalBulkWriter
                                     operationContext: OperationContext): Unit = {
       activeTasks.incrementAndGet()
       if (operationContext.attemptNumber > 1) {
-        logInfoOrWarning(s"bulk scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
+        logInfoOrWarning(s"TransactionalBulkWriter scheduleWrite attemptCnt: ${operationContext.attemptNumber}, " +
               s"Context: ${operationContext.toString} $getThreadInfo")
       }
 

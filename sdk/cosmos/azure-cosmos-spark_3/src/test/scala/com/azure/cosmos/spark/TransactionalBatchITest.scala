@@ -435,8 +435,8 @@ class TransactionalBatchITest extends IntegrationSpec
       new com.azure.cosmos.models.PartitionKeyDefinition()
     )
     val paths = new java.util.ArrayList[String]()
-    paths.add("/PermId")
-    paths.add("/SourceId")
+    paths.add("/testPrimaryKey")
+    paths.add("/testSecondaryKey")
     containerProperties.getPartitionKeyDefinition.setPaths(paths)
     containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
     containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
@@ -452,9 +452,9 @@ class TransactionalBatchITest extends IntegrationSpec
       // Create batch operations with hierarchical partition keys
       val schema = StructType(Seq(
         StructField("id", StringType, nullable = false),
-        StructField("PermId", StringType, nullable = false),
-        StructField("SourceId", StringType, nullable = false),
-        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+        StructField("testPrimaryKey", StringType, nullable = false),
+        StructField("testSecondaryKey", StringType, nullable = false),
+        StructField("testPrice", org.apache.spark.sql.types.DoubleType, nullable = false)
       ))
 
       val batchOperations = Seq(
@@ -479,11 +479,11 @@ class TransactionalBatchITest extends IntegrationSpec
       val pk = new PartitionKeyBuilder().add(permId).add(sourceId).build()
       val item1 = container.readItem(item1Id, pk, classOf[ObjectNode]).block()
       item1 should not be null
-      item1.getItem.get("price").asDouble() shouldEqual 100.5
+      item1.getItem.get("testPrice").asDouble() shouldEqual 100.5
 
       val item2 = container.readItem(item2Id, pk, classOf[ObjectNode]).block()
       item2 should not be null
-      item2.getItem.get("price").asDouble() shouldEqual 101.25
+      item2.getItem.get("testPrice").asDouble() shouldEqual 101.25
     } finally {
       // Clean up container
       container.delete().block()
@@ -501,8 +501,8 @@ class TransactionalBatchITest extends IntegrationSpec
       new com.azure.cosmos.models.PartitionKeyDefinition()
     )
     val paths = new java.util.ArrayList[String]()
-    paths.add("/PermId")
-    paths.add("/SourceId")
+    paths.add("/testPrimaryKey")
+    paths.add("/testSecondaryKey")
     containerProperties.getPartitionKeyDefinition.setPaths(paths)
     containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
     containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
@@ -518,18 +518,18 @@ class TransactionalBatchITest extends IntegrationSpec
       // First, create initial record
       val initialDoc = Utils.getSimpleObjectMapper.createObjectNode()
       initialDoc.put("id", oldRecordId)
-      initialDoc.put("PermId", permId)
-      initialDoc.put("SourceId", sourceId)
-      initialDoc.put("price", 100.0)
+      initialDoc.put("testPrimaryKey", permId)
+      initialDoc.put("testSecondaryKey", sourceId)
+      initialDoc.put("testPrice", 100.0)
       initialDoc.putNull("valid_to")
       container.createItem(initialDoc).block()
 
       // Now perform atomic temporal update: close old record + create new record
       val schema = StructType(Seq(
         StructField("id", StringType, nullable = false),
-        StructField("PermId", StringType, nullable = false),
-        StructField("SourceId", StringType, nullable = false),
-        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false),
+        StructField("testPrimaryKey", StringType, nullable = false),
+        StructField("testSecondaryKey", StringType, nullable = false),
+        StructField("testPrice", org.apache.spark.sql.types.DoubleType, nullable = false),
         StructField("valid_to", StringType, nullable = true)
       ))
 
@@ -562,7 +562,7 @@ class TransactionalBatchITest extends IntegrationSpec
       // Verify new record was created
       val newRecord = container.readItem(newRecordId, pk, classOf[ObjectNode]).block()
       newRecord should not be null
-      newRecord.getItem.get("price").asDouble() shouldEqual 150.0
+      newRecord.getItem.get("testPrice").asDouble() shouldEqual 150.0
       newRecord.getItem.get("valid_to").isNull shouldBe true
     } finally {
       // Clean up container
@@ -581,8 +581,8 @@ class TransactionalBatchITest extends IntegrationSpec
       new com.azure.cosmos.models.PartitionKeyDefinition()
     )
     val paths = new java.util.ArrayList[String]()
-    paths.add("/PermId")
-    paths.add("/SourceId")
+    paths.add("/testPrimaryKey")
+    paths.add("/testSecondaryKey")
     containerProperties.getPartitionKeyDefinition.setPaths(paths)
     containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
     containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
@@ -593,9 +593,9 @@ class TransactionalBatchITest extends IntegrationSpec
       // Create operations for different PermId/SourceId combinations
       val schema = StructType(Seq(
         StructField("id", StringType, nullable = false),
-        StructField("PermId", StringType, nullable = false),
-        StructField("SourceId", StringType, nullable = false),
-        StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+        StructField("testPrimaryKey", StringType, nullable = false),
+        StructField("testSecondaryKey", StringType, nullable = false),
+        StructField("testPrice", org.apache.spark.sql.types.DoubleType, nullable = false)
       ))
 
       val batchOperations = Seq(
@@ -640,8 +640,8 @@ class TransactionalBatchITest extends IntegrationSpec
       new com.azure.cosmos.models.PartitionKeyDefinition()
     )
     val paths = new java.util.ArrayList[String]()
-    paths.add("/PermId")
-    paths.add("/SourceId")
+    paths.add("/testPrimaryKey")
+    paths.add("/testSecondaryKey")
     containerProperties.getPartitionKeyDefinition.setPaths(paths)
     containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
     containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
@@ -654,9 +654,9 @@ class TransactionalBatchITest extends IntegrationSpec
     // Create 101 operations for the same hierarchical partition key
     val schema = StructType(Seq(
       StructField("id", StringType, nullable = false),
-      StructField("PermId", StringType, nullable = false),
-      StructField("SourceId", StringType, nullable = false),
-      StructField("price", org.apache.spark.sql.types.DoubleType, nullable = false)
+      StructField("testPrimaryKey", StringType, nullable = false),
+      StructField("testSecondaryKey", StringType, nullable = false),
+      StructField("testPrice", org.apache.spark.sql.types.DoubleType, nullable = false)
     ))
 
     val batchOperations = (1 to 101).map { i =>
