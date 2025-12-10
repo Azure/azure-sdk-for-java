@@ -82,8 +82,8 @@ function GetRemoteName($MainRemoteUrl) {
   return $null
 }
 
-function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
-  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName, $GroupId = "com.azure") {
+  $ReleaseTag = "${GroupId}+${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   $SdkDirPath = Join-Path $RepoRoot "sdk"
@@ -92,7 +92,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
   TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
 
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $currentPackageVersion = $pkgProperties.Version
   if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
@@ -108,8 +108,17 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not restore the tags for release tag $ReleaseTag"
-    exit 1
+    # Fall back to old tag format: <artifactName>_<version>
+    $OldReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+    Write-Information "Failed to fetch new tag format. Trying old tag format: $OldReleaseTag"
+    $CmdOutput = git fetch $RemoteName $OldReleaseTag
+    
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not restore the tags for release tag $ReleaseTag or $OldReleaseTag"
+      exit 1
+    }
+    
+    $ReleaseTag = $OldReleaseTag
   }
 
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
@@ -162,7 +171,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $EngVersioningDir = Join-Path $EngDir "versioning"
   $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
   $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
 
@@ -264,7 +273,7 @@ try {
 
   ## Hard resetting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
-  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
+  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName -GroupId $GroupId
   CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {
