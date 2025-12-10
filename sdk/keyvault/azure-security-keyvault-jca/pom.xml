@@ -32,7 +32,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
-      <version>2.73.8</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <version>2.73.9</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Apache HttpClient -->
@@ -79,13 +79,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- For some reason upgrading past Mockito 4.6.1 requires this to be added. -->
@@ -294,7 +294,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.bouncycastle:bcpkix-lts8on:[2.73.8]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+                <include>org.bouncycastle:bcpkix-lts8on:[2.73.9]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents.client5:httpclient5:[5.4.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                 <include>org.brotli:dec:[0.1.2]</include> <!-- {x-include-update;org.brotli:dec;external_dependency} -->
