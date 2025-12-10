@@ -45,8 +45,7 @@ public class Sample08_UpdateAnalyzer {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         if (key != null && !key.trim().isEmpty()) {
             client = builder.credential(new AzureKeyCredential(key)).buildClient();

@@ -22,12 +22,15 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.StringField;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,8 +57,7 @@ public class Sample04_CreateAnalyzer {
                 String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
                 String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-                ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-                    .endpoint(endpoint);
+                ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
                 ContentUnderstandingClient client;
                 if (key != null && !key.trim().isEmpty()) {
@@ -79,8 +81,7 @@ public class Sample04_CreateAnalyzer {
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {
@@ -298,8 +299,7 @@ public class Sample04_CreateAnalyzer {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {

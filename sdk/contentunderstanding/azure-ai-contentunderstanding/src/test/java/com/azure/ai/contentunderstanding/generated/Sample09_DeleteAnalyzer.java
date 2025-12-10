@@ -41,8 +41,7 @@ public class Sample09_DeleteAnalyzer {
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {
@@ -133,8 +132,7 @@ public class Sample09_DeleteAnalyzer {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {

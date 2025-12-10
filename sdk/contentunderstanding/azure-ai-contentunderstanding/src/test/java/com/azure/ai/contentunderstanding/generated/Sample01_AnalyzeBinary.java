@@ -48,8 +48,7 @@ public class Sample01_AnalyzeBinary {
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {
@@ -178,7 +177,7 @@ public class Sample01_AnalyzeBinary {
             }
         } else {
             // Content is not DocumentContent - verify it's MediaContent
-            Assertions.assertTrue(content instanceof MediaContent, 
+            Assertions.assertTrue(content instanceof MediaContent,
                 "Content should be MediaContent when not DocumentContent");
             System.out.println("Content is MediaContent (not document-specific), skipping document properties");
         }

@@ -56,8 +56,7 @@ public class Sample15_GrantCopyAuth {
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
@@ -230,8 +229,7 @@ public class Sample15_GrantCopyAuth {
         }
 
         // Source client: Use API key authentication if available
-        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
         if (key != null && !key.trim().isEmpty()) {
             sourceClient = sourceBuilder.credential(new AzureKeyCredential(key)).buildClient();
         } else {

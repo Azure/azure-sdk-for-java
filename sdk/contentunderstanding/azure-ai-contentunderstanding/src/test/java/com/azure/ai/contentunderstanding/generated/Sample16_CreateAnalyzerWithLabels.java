@@ -60,8 +60,7 @@ public class Sample16_CreateAnalyzerWithLabels {
         String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder()
-            .endpoint(endpoint);
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
