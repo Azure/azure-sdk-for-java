@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.LiveOnly;
 import com.openai.core.JsonValue;
 import com.openai.core.RequestOptions;
 import com.openai.core.Timeout;
@@ -120,14 +119,13 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals(conversationId, conversationWithDeletedItem.id());
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
 
         RequestOptions requestOptions
-            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
+            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
         assertThrows(Exception.class, () -> client.getConversationService().create(requestOptions));
     }
 }

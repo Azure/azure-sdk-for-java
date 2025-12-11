@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.openai.core.JsonValue;
@@ -137,14 +136,12 @@ public class ConversationsAsyncTests extends ClientTestBase {
 
     }
 
-    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion)
-        throws ExecutionException, InterruptedException {
+    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
         RequestOptions requestOptions
-            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
+            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
 
         assertThrows(Exception.class, () -> client.getConversationServiceAsync().create(requestOptions).get());
     }
