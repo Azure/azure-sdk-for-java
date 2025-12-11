@@ -125,11 +125,15 @@ stages:
               inputs:
                 versionSpec: $(PythonVersion)
 
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
+            - ${{ if eq(parameters.TestPipeline, true) }}:
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  Artifacts:
+                    - ${{ each artifact in parameters.Artifacts }}:
+                      - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                        - ${{ artifact }}
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                  TestPipeline: ${{ parameters.TestPipeline }}
 
             # Do all the verifications for all the artifacts after the sparse-checkout
             - pwsh: |
@@ -152,13 +156,13 @@ stages:
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
+            - ${{if ne(parameters.SDKType, 'data')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Pipeline.Workspace)/packages-signed/PackageInfo
+                  ForRelease: true
+
             - ${{ each artifact in parameters.Artifacts }}:
-              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
               # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
               - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
                 parameters:

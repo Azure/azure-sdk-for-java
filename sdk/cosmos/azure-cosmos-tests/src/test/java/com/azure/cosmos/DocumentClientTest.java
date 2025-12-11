@@ -4,26 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.guava27.Strings;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.util.internal.PlatformDependent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITest;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import java.lang.management.BufferPoolMXBean;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
 public abstract class DocumentClientTest implements ITest {
@@ -51,7 +39,7 @@ public abstract class DocumentClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = String.format("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -60,7 +48,7 @@ public abstract class DocumentClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
                     : "Gateway";
 
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            this.testName = String.format("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getDesiredConsistencyLevel());

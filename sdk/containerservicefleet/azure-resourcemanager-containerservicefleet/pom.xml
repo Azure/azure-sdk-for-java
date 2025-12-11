@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Fleet Management</name>
-  <description>This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes Fleet Manager api client. Package api-version 2025-04-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes Fleet Manager api client. Package api-version 2025-08-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

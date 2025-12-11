@@ -1660,12 +1660,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<CacheInner>, CacheInner> beginPoolChangeAsync(String resourceGroupName,
-        String accountName, String poolName, String cacheName, PoolChangeRequest body) {
+    private PollerFlux<PollResult<Void>, Void> beginPoolChangeAsync(String resourceGroupName, String accountName,
+        String poolName, String cacheName, PoolChangeRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = poolChangeWithResponseAsync(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
-            CacheInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1682,12 +1682,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
+    public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body) {
         Response<BinaryData> response
             = poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
-            Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1705,11 +1704,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CacheInner>, CacheInner> beginPoolChange(String resourceGroupName, String accountName,
+    public SyncPoller<PollResult<Void>, Void> beginPoolChange(String resourceGroupName, String accountName,
         String poolName, String cacheName, PoolChangeRequest body, Context context) {
         Response<BinaryData> response
             = poolChangeWithResponse(resourceGroupName, accountName, poolName, cacheName, body, context);
-        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1723,11 +1722,11 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CacheInner> poolChangeAsync(String resourceGroupName, String accountName, String poolName,
-        String cacheName, PoolChangeRequest body) {
+    private Mono<Void> poolChangeAsync(String resourceGroupName, String accountName, String poolName, String cacheName,
+        PoolChangeRequest body) {
         return beginPoolChangeAsync(resourceGroupName, accountName, poolName, cacheName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1743,12 +1742,11 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
     }
 
     /**
@@ -1763,12 +1761,11 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CacheInner poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        return beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
     }
 
     /**

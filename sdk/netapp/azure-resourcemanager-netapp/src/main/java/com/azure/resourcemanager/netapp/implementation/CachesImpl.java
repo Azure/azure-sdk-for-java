@@ -95,25 +95,14 @@ public final class CachesImpl implements Caches {
         }
     }
 
-    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        CacheInner inner = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
-        if (inner != null) {
-            return new CacheImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
     }
 
-    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        CacheInner inner
-            = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
-        if (inner != null) {
-            return new CacheImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
     }
 
     public Cache getById(String id) {

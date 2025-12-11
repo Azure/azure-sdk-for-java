@@ -32,10 +32,10 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     /*
      * Set of export policy rules
      */
-    private List<ExportPolicyRule> exportPolicy;
+    private CachePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol
+     * Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol
      */
     private List<ProtocolTypes> protocolTypes;
 
@@ -195,7 +195,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
      * 
      * @return the exportPolicy value.
      */
-    public List<ExportPolicyRule> exportPolicy() {
+    public CachePropertiesExportPolicy exportPolicy() {
         return this.exportPolicy;
     }
 
@@ -205,13 +205,13 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
      * @param exportPolicy the exportPolicy value to set.
      * @return the CacheProperties object itself.
      */
-    public CacheProperties withExportPolicy(List<ExportPolicyRule> exportPolicy) {
+    public CacheProperties withExportPolicy(CachePropertiesExportPolicy exportPolicy) {
         this.exportPolicy = exportPolicy;
         return this;
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol.
      * 
      * @return the protocolTypes value.
      */
@@ -220,7 +220,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the CacheProperties object itself.
@@ -579,7 +579,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
                 .log(new IllegalArgumentException("Missing required property filepath in model CacheProperties"));
         }
         if (exportPolicy() != null) {
-            exportPolicy().forEach(e -> e.validate());
+            exportPolicy().validate();
         }
         if (cacheSubnetResourceId() == null) {
             throw LOGGER.atError()
@@ -626,7 +626,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
         jsonWriter.writeStringField("encryptionKeySource",
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
         jsonWriter.writeJsonField("originClusterInformation", this.originClusterInformation);
-        jsonWriter.writeArrayField("exportPolicy", this.exportPolicy, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("exportPolicy", this.exportPolicy);
         jsonWriter.writeArrayField("protocolTypes", this.protocolTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("kerberos", this.kerberos == null ? null : this.kerberos.toString());
@@ -674,9 +674,7 @@ public final class CacheProperties implements JsonSerializable<CacheProperties> 
                 } else if ("originClusterInformation".equals(fieldName)) {
                     deserializedCacheProperties.originClusterInformation = OriginClusterInformation.fromJson(reader);
                 } else if ("exportPolicy".equals(fieldName)) {
-                    List<ExportPolicyRule> exportPolicy
-                        = reader.readArray(reader1 -> ExportPolicyRule.fromJson(reader1));
-                    deserializedCacheProperties.exportPolicy = exportPolicy;
+                    deserializedCacheProperties.exportPolicy = CachePropertiesExportPolicy.fromJson(reader);
                 } else if ("protocolTypes".equals(fieldName)) {
                     List<ProtocolTypes> protocolTypes
                         = reader.readArray(reader1 -> ProtocolTypes.fromString(reader1.getString()));

@@ -140,7 +140,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
+      <version>2.1.0</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -202,7 +202,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.75.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.76.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -542,7 +542,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:azure-servicebus-jms:[2.0.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
+                <include>com.azure:azure-servicebus-jms:[2.1.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.mysql:mysql-connector-j:[9.4.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.19.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.19.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->

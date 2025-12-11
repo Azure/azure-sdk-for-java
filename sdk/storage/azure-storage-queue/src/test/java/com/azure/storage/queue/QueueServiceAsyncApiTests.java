@@ -15,6 +15,7 @@ import com.azure.storage.queue.models.QueueMetrics;
 import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -25,6 +26,8 @@ import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -235,7 +238,7 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
             = getOAuthServiceClientBuilder().audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
                 .buildAsyncClient();
 
-        StepVerifier.create(aadService.getProperties()).assertNext(r -> assertNotNull(r)).verifyComplete();
+        StepVerifier.create(aadService.getProperties()).assertNext(Assertions::assertNotNull).verifyComplete();
     }
 
     @Test
@@ -246,6 +249,29 @@ public class QueueServiceAsyncApiTests extends QueueTestBase {
 
         QueueServiceAsyncClient aadService = getOAuthServiceClientBuilder().audience(audience).buildAsyncClient();
 
-        StepVerifier.create(aadService.getProperties()).assertNext(r -> assertNotNull(r)).verifyComplete();
+        StepVerifier.create(aadService.getProperties()).assertNext(Assertions::assertNotNull).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueServiceGetUserDelegationKey() {
+        QueueServiceAsyncClient oAuthServiceClient = getOAuthQueueServiceAsyncClient();
+
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+        StepVerifier.create(oAuthServiceClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
+            .assertNext(r -> assertEquals(expiry, r.getValue().getSignedExpiry()))
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueServiceGetUserDelegationKeyAuthError() {
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+
+        //not oauth client
+        StepVerifier
+            .create(primaryQueueServiceAsyncClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry))
+            .verifyErrorSatisfies(
+                e -> QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED));
     }
 }
