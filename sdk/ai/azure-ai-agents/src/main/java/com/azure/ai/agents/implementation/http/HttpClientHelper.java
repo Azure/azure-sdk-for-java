@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.RequestOptions;
+import com.openai.core.Timeout;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
@@ -21,6 +22,7 @@ import com.openai.core.http.HttpResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -94,7 +96,13 @@ public final class HttpClientHelper {
                 return failedFuture(runtimeException);
             }
 
-            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", true))
+            Context requestContext = new Context("azure-eagerly-read-response", true);
+            Timeout timeout = requestOptions.getTimeout();
+            if (timeout != null && !timeout.connect().isZero() && !timeout.connect().isNegative()) {
+                requestContext.addData("azure-response-timeout", timeout.connect());
+            }
+
+            return this.httpPipeline.send(azureRequest, requestContext)
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 //                    .onErrorMap(t -> {
                 //                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
