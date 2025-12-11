@@ -14,7 +14,7 @@ import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * Profanity handling: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-translate#handle-profanity
+ * Profanity handling:
  *
  * Normally the Translator service will retain profanity that is present in the source in the translation.
  * The degree of profanity and the context that makes words profane differ between cultures, and as a result

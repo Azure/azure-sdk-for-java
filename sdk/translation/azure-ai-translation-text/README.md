@@ -1,18 +1,16 @@
 # Azure Text Translation client library for Java
 
-Text translation is a cloud-based REST API feature of the Translator service that uses neural machine translation technology to enable quick and accurate source-to-target text translation in real time across all supported languages.
+Azure text translation is a cloud-based REST API provided by the Azure Translator service. It utilizes neural machine translation technology to deliver precise, contextually relevant, and semantically accurate real-time text translations across all supported languages.
 
 Use the Text Translation client library for Java to:
 
-* Return a list of languages supported by Translate, Transliterate, and Dictionary operations.
+- Retrieve the list of languages supported for translation and transliteration operations, as well as LLM models available for translations.
 
-* Render single source-language text to multiple target-language texts with a single request.
+- Perform deterministic text translation from a specified source language to a target language, with configurable parameters to ensure precision and maintain contextual integrity.
 
-* Convert text of a source language in letters of a different script.
+- Execute transliteration by converting text from the original script to an alternative script representation.
 
-* Return equivalent words for the source term in the target language.
-
-* Return grammatical structure and context examples for the source term and target term pair.
+- Use LLM models to produce translation output variants that are tone-specific and gender-aware.
 
 ## Documentation
 
@@ -174,19 +172,14 @@ Samples are provided for each main functional area, and for each area, samples a
 * [Translation to multiple languages][sample_translatetargets]
 * [Translation of multiple sources][sample_translatesources]
 * [Translation and Transliteration][sample_translatetransliteration]
+* [Translation using LLM][sample_translatellm]
 * [Using Custom Translation Model][sample_translatecustom]
-* [Translation with Custom Dictionary][sample_translatedictionary]
 * [Translation with NoTranslate tag][sample_translatenotranslate]
-* [Translation with Alignments][sample_translatealignments]
-* [Translation with Sentence Boundaries][sample_translatesentencelength]
 * [Handling translation of HTML text][sample_translatetexttypes]
 * [Transliteration][sample_transliterate]
 * [Get Languages][sample_getlanguages]
 * [Get Localized Languages][sample_getlanguagesaccept]
 * [Get Scoped Languages][sample_getlanguagesscope]
-* [Find Sentence Boundaries][sample_breaksentence]
-* [Lookup Dictionary Examples][sample_dictionaryexamples]
-* [Lookup Dictionary Entries][sample_dictionarylookup]
 
 ## Contributing
 
@@ -219,6 +212,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_getlanguagesaccept]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesAcceptLanguage.java
 [sample_getlanguagesscope]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesScope.java
 [sample_translate]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/Translate.java
+[sample_translatellm]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateLlm.java
 [sample_translatecustom]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateCustom.java
 [sample_translatedetection]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateDetection.java
 [sample_translatesources]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateMultipleSources.java
