@@ -116,7 +116,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Djava.io.tmpdir=$(Agent.TempDirectory) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
           exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
@@ -133,7 +133,7 @@ steps:
         displayName: 'Run tests'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Djava.io.tmpdir=$(Agent.TempDirectory) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaTestVersion)
@@ -206,7 +206,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Djava.io.tmpdir=$(Agent.TempDirectory) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
           exit $LASTEXITCODE
       env:
         # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
@@ -224,9 +224,9 @@ steps:
         # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
         # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
         ${{ if eq(parameters.IsLiveTest, 'true') }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
+          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Djava.io.tmpdir=$(Agent.TempDirectory) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
         ${{ else }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
+          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Djava.io.tmpdir=$(Agent.TempDirectory) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaTestVersion)
