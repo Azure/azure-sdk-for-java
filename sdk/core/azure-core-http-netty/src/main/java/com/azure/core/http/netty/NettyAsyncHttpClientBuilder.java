@@ -216,9 +216,9 @@ public class NettyAsyncHttpClientBuilder {
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
         // instead of overwritten.
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
+        long connectTimeoutMillis = getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis();
         nettyHttpClient = nettyHttpClient.port(port)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeoutMillis)
             .httpResponseDecoder(httpResponseDecoderSpec -> {
                 int maxHeaderSize = initialSpec.maxHeaderSize();
                 if (maxHeaderSize == HttpDecoderSpec.DEFAULT_MAX_HEADER_SIZE) {
@@ -266,19 +266,21 @@ public class NettyAsyncHttpClientBuilder {
                 addProxyHandler = true;
                 nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
                     if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
-                        channel.pipeline()
-                            .addFirst(NettyPipeline.ProxyHandler,
-                                new HttpProxyHandler(AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
-                                    handler, proxyChallengeHolder));
+                        HttpProxyHandler httpProxyHandler = new HttpProxyHandler(
+                            AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()), handler,
+                            proxyChallengeHolder);
+                        httpProxyHandler.setConnectTimeoutMillis(connectTimeoutMillis);
+                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, httpProxyHandler);
                     }
                 });
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
-                        .socketAddress(buildProxyOptions.getAddress())
-                        .username(buildProxyOptions.getUsername())
-                        .password(ignored -> buildProxyOptions.getPassword())
-                        .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+                    .socketAddress(buildProxyOptions.getAddress())
+                    .connectTimeoutMillis(connectTimeoutMillis)
+                    .username(buildProxyOptions.getUsername())
+                    .password(ignored -> buildProxyOptions.getPassword())
+                    .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
             }
 
             if (setDefaultAddressResolverGroup) {
