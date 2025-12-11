@@ -32,26 +32,11 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 
 The Azure SDK MCP server enables advanced Copilot-powered automation, validation, and Azure-specific guidance in your IDE.
 
-| IDE      | Config File Location                  | What to Do                                                                 |
-|----------|--------------------------------------|----------------------------------------------------------------------------|
-| VSCode   | `.vscode/mcp.json`                   | Add the JSON config below and restart VSCode                               |
-| IntelliJ | `github-copilot/intellij/mcp.json`   | Add the JSON config below and restart IntelliJ                             |
+| IDE      | Config File Location               | What to Do                |
+|----------|------------------------------------|---------------------------|
+| IntelliJ | `github-copilot/intellij/mcp.json` | Add the JSON config below |
 
 ### Configuration Example
-
-#### VSCode (`.vscode/mcp.json`)
-```json
-{
-  "azure-sdk-mcp": {
-    "type": "stdio",
-    "command": "pwsh",
-    "args": [
-      "${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1",
-      "-Run"
-    ]
-  }
-}
-```
 
 #### IntelliJ (`github-copilot/intellij/mcp.json`)
 ```json
@@ -61,7 +46,7 @@ The Azure SDK MCP server enables advanced Copilot-powered automation, validation
       "type": "stdio",
       "command": "pwsh",
       "args": [
-        "${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1",
+        "<Path to azure-sdk-for-java repo>/eng/common/mcp/azure-sdk-mcp.ps1",
         "-Run"
       ]
     }
@@ -70,7 +55,7 @@ The Azure SDK MCP server enables advanced Copilot-powered automation, validation
 ```
 
 - Make sure PowerShell is installed and available in your system PATH.
-- Adjust the path to `azure-sdk-mcp.ps1` if your repository is structured differently.
+- Replace `<Path to azure-sdk-for-java repo>` with the absolute path to your local clone of the Azure SDK for Java repository.
 
 ### Troubleshooting
 
