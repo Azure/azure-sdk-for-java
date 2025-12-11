@@ -3,9 +3,7 @@
 
 package com.azure.ai.agents.implementation.http;
 
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -126,29 +124,48 @@ public final class HttpClientHelper {
          * @return The corresponding OpenAI exception.
          */
         private static Throwable mapAzureExceptionToOpenAI(Throwable throwable) {
-            if (throwable instanceof HttpResponseException httpResponseException) {
+            if (throwable instanceof HttpResponseException) {
+                HttpResponseException httpResponseException = (HttpResponseException) throwable;
                 int statusCode = httpResponseException.getResponse().getStatusCode();
                 Headers headers = toOpenAIHeaders(httpResponseException.getResponse().getHeaders());
                 Throwable cause = httpResponseException.getCause();
 
-                return switch (statusCode) {
-                    case 400 -> BadRequestException.builder().headers(headers).cause(cause).build();
-                    case 401 -> UnauthorizedException.builder().headers(headers).cause(cause).build();
-                    case 403 -> PermissionDeniedException.builder().headers(headers).cause(cause).build();
-                    case 404 -> NotFoundException.builder().headers(headers).cause(cause).build();
-                    case 422 -> UnprocessableEntityException.builder().headers(headers).cause(cause).build();
-                    case 429 -> RateLimitException.builder().headers(headers).cause(cause).build();
-                    case 500, 502, 503, 504 -> InternalServerException.builder()
-                        .statusCode(statusCode)
-                        .headers(headers)
-                        .cause(cause)
-                        .build();
-                    default -> UnexpectedStatusCodeException.builder()
-                        .statusCode(statusCode)
-                        .headers(headers)
-                        .cause(cause)
-                        .build();
-                };
+                switch (statusCode) {
+                    case 400:
+                        return BadRequestException.builder().headers(headers).cause(cause).build();
+
+                    case 401:
+                        return UnauthorizedException.builder().headers(headers).cause(cause).build();
+
+                    case 403:
+                        return PermissionDeniedException.builder().headers(headers).cause(cause).build();
+
+                    case 404:
+                        return NotFoundException.builder().headers(headers).cause(cause).build();
+
+                    case 422:
+                        return UnprocessableEntityException.builder().headers(headers).cause(cause).build();
+
+                    case 429:
+                        return RateLimitException.builder().headers(headers).cause(cause).build();
+
+                    case 500:
+                    case 502:
+                    case 503:
+                    case 504:
+                        return InternalServerException.builder()
+                            .statusCode(statusCode)
+                            .headers(headers)
+                            .cause(cause)
+                            .build();
+
+                    default:
+                        return UnexpectedStatusCodeException.builder()
+                            .statusCode(statusCode)
+                            .headers(headers)
+                            .cause(cause)
+                            .build();
+                }
             } else {
                 return new OpenAIException(throwable.getMessage(), throwable.getCause());
             }
