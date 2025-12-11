@@ -75,7 +75,14 @@ public final class HttpClientHelper {
             Objects.requireNonNull(requestOptions, "requestOptions");
 
             com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-            com.azure.core.http.HttpResponse azureResponse = this.httpPipeline.sendSync(azureRequest, Context.NONE);
+
+            Context requestContext = Context.NONE;
+            Timeout timeout = requestOptions.getTimeout();
+            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
+                requestContext = requestContext.addData("azure-response-timeout", timeout.request());
+            }
+
+            com.azure.core.http.HttpResponse azureResponse = this.httpPipeline.sendSync(azureRequest, requestContext);
             return new AzureHttpResponseAdapter(azureResponse);
         }
 
@@ -98,8 +105,8 @@ public final class HttpClientHelper {
 
             Context requestContext = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
-            if (timeout != null && !timeout.connect().isZero() && !timeout.connect().isNegative()) {
-                requestContext = requestContext.addData("azure-response-timeout", timeout.connect());
+            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
+                requestContext = requestContext.addData("azure-response-timeout", timeout.read());
             }
 
             return this.httpPipeline.send(azureRequest, requestContext)

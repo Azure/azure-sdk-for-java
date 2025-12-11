@@ -5,6 +5,8 @@ package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
 import com.openai.core.JsonValue;
+import com.openai.core.RequestOptions;
+import com.openai.core.Timeout;
 import com.openai.models.conversations.*;
 import com.openai.models.conversations.items.*;
 import com.openai.models.responses.EasyInputMessage;
@@ -12,6 +14,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.util.StringUtils;
+
+import java.time.Duration;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -114,5 +118,15 @@ public class ConversationsTests extends ClientTestBase {
                 .build());
         assertNotNull(conversationWithDeletedItem);
         assertEquals(conversationId, conversationWithDeletedItem.id());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
+
+        RequestOptions requestOptions = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
+        // creation - conversation
+        assertThrows(Exception.class, () -> client.getConversationService().create(requestOptions));
     }
 }
