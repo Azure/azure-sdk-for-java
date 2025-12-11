@@ -30,7 +30,7 @@ variables:
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx4096m'
   DefaultSkipOptions: '-Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -Dspotless.apply.skip=true -Dspotless.check.skip=true'
-  DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
+  DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -Djava.io.tmpdir=$(Agent.TempDirectory) -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
 
