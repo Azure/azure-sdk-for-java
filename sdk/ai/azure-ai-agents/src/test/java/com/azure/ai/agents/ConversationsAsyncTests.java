@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.openai.core.JsonValue;
@@ -15,7 +16,6 @@ import com.openai.models.conversations.ConversationUpdateParams;
 import com.openai.models.conversations.Message;
 import com.openai.models.conversations.items.*;
 import com.openai.models.responses.EasyInputMessage;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.util.StringUtils;
@@ -137,13 +137,13 @@ public class ConversationsAsyncTests extends ClientTestBase {
 
     }
 
+    @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws ExecutionException, InterruptedException {
         ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
         RequestOptions requestOptions = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
 
-        // creation - conversation
         assertThrows(Exception.class, () -> client.getConversationServiceAsync().create(requestOptions).get());
     }
 }
