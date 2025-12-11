@@ -99,7 +99,7 @@ public final class HttpClientHelper {
             Context requestContext = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
             if (timeout != null && !timeout.connect().isZero() && !timeout.connect().isNegative()) {
-                requestContext.addData("azure-response-timeout", timeout.connect());
+                requestContext = requestContext.addData("azure-response-timeout", timeout.connect());
             }
 
             return this.httpPipeline.send(azureRequest, requestContext)
