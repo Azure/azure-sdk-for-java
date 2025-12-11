@@ -15,6 +15,7 @@ public class App {
             BlockBlobOutputStream.class,
             BlockBlobUpload.class,
             CommitBlockList.class,
+            BlobMetadataOperations.class,
             DownloadToFile.class,
             DownloadStream.class,
             DownloadContent.class,
