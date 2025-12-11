@@ -172,7 +172,7 @@ Samples are provided for each main functional area, and for each area, samples a
 * [Translation to multiple languages][sample_translatetargets]
 * [Translation of multiple sources][sample_translatesources]
 * [Translation and Transliteration][sample_translatetransliteration]
-* [Translation using LLM][sample_translatellm]
+* [Translation using LLM][sample_translatelargelanguagemodel]
 * [Using Custom Translation Model][sample_translatecustom]
 * [Translation with NoTranslate tag][sample_translatenotranslate]
 * [Handling translation of HTML text][sample_translatetexttypes]
@@ -212,7 +212,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_getlanguagesaccept]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesAcceptLanguage.java
 [sample_getlanguagesscope]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/GetLanguagesScope.java
 [sample_translate]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/Translate.java
-[sample_translatellm]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateLlm.java
+[sample_translatelargelanguagemodel]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateLlm.java
 [sample_translatecustom]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateCustom.java
 [sample_translatedetection]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateDetection.java
 [sample_translatesources]: https://github.com/azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-text/src/samples/java/com/azure/ai/translation/text/TranslateMultipleSources.java
