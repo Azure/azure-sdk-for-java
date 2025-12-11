@@ -94,7 +94,7 @@ public final class HttpClientHelper {
                 return failedFuture(runtimeException);
             }
 
-            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", false))
+            return this.httpPipeline.send(azureRequest, new Context("azure-eagerly-read-response", true))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 //                    .onErrorMap(t -> {
                 //                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
