@@ -20,9 +20,6 @@ import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -96,12 +93,7 @@ public final class HttpClientHelper {
             Objects.requireNonNull(request, "request");
             Objects.requireNonNull(requestOptions, "requestOptions");
 
-            final com.azure.core.http.HttpRequest azureRequest;
-            try {
-                azureRequest = buildAzureRequest(request);
-            } catch (RuntimeException runtimeException) {
-                return failedFuture(runtimeException);
-            }
+            final com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
 
             Context requestContext = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
@@ -131,11 +123,9 @@ public final class HttpClientHelper {
             BinaryData bodyData = null;
 
             if (requestBody != null) {
-                try {
-                    bodyData = toBinaryData(requestBody);
-                } finally {
-                    closeQuietly(requestBody);
-                }
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                requestBody.writeTo(outputStream);
+                bodyData = BinaryData.fromBytes(outputStream.toByteArray());
             }
 
             HttpHeaders headers = toAzureHeaders(request.headers());
@@ -170,44 +160,5 @@ public final class HttpClientHelper {
             return target;
         }
 
-        /**
-         * Buffers the OpenAI {@link HttpRequestBody} into {@link BinaryData} so it can be attached to the Azure
-         * request. The body is consumed exactly once and closed afterwards.
-         */
-        private static BinaryData toBinaryData(HttpRequestBody requestBody) {
-            if (requestBody == null) {
-                return null;
-            }
-
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                requestBody.writeTo(outputStream);
-                return BinaryData.fromBytes(outputStream.toByteArray());
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to buffer request body", e));
-            }
-        }
-
-        /**
-         * Closes the OpenAI request body while suppressing any exceptions (to avoid masking the root cause).
-         */
-        private static void closeQuietly(HttpRequestBody body) {
-            if (body == null) {
-                return;
-            }
-            try {
-                body.close();
-            } catch (Exception ignored) {
-                // no-op
-            }
-        }
-
-        /**
-         * Creates a failed {@link CompletableFuture} for callers that require a future even when conversion fails.
-         */
-        private static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
-            CompletableFuture<T> future = new CompletableFuture<>();
-            future.completeExceptionally(throwable);
-            return future;
-        }
     }
 }

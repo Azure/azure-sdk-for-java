@@ -140,9 +140,11 @@ public class ConversationsAsyncTests extends ClientTestBase {
     @LiveOnly
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
-    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws ExecutionException, InterruptedException {
+    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion)
+        throws ExecutionException, InterruptedException {
         ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
-        RequestOptions requestOptions = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
+        RequestOptions requestOptions
+            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
 
         assertThrows(Exception.class, () -> client.getConversationServiceAsync().create(requestOptions).get());
     }

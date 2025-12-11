@@ -126,7 +126,8 @@ public class ConversationsTests extends ClientTestBase {
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         ConversationsClient client = getConversationsSyncClient(httpClient, serviceVersion);
 
-        RequestOptions requestOptions = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
+        RequestOptions requestOptions
+            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(10)).build()).build();
         assertThrows(Exception.class, () -> client.getConversationService().create(requestOptions));
     }
 }
