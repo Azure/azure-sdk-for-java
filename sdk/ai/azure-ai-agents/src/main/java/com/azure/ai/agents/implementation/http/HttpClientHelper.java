@@ -3,6 +3,9 @@
 
 package com.azure.ai.agents.implementation.http;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -18,6 +21,15 @@ import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
+import com.openai.errors.BadRequestException;
+import com.openai.errors.InternalServerException;
+import com.openai.errors.NotFoundException;
+import com.openai.errors.OpenAIException;
+import com.openai.errors.PermissionDeniedException;
+import com.openai.errors.RateLimitException;
+import com.openai.errors.UnauthorizedException;
+import com.openai.errors.UnexpectedStatusCodeException;
+import com.openai.errors.UnprocessableEntityException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -103,15 +115,70 @@ public final class HttpClientHelper {
 
             return this.httpPipeline.send(azureRequest, requestContext)
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
-                //                    .onErrorMap(t -> {
-                //                        // 2 or 3 from Azure Errors, should be mapped to Stainless Error.
-                //                        // - Auth
-                //                        // - Resource not found
-                //                        // - HttpResponse Ex
-                //                        //
-                //                        // new StainlessException(t.getCause())
-                //                    })
+                .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
                 .toFuture();
+        }
+
+        /**
+         * Maps Azure exceptions to their corresponding OpenAI exception types.
+         *
+         * @param throwable The Azure exception to map.
+         * @return The corresponding OpenAI exception.
+         */
+        private static Throwable mapAzureExceptionToOpenAI(Throwable throwable) {
+            if (throwable instanceof HttpResponseException httpResponseException) {
+                int statusCode = httpResponseException.getResponse().getStatusCode();
+                Headers headers = toOpenAIHeaders(httpResponseException.getResponse().getHeaders());
+                Throwable cause = httpResponseException.getCause();
+
+                return switch (statusCode) {
+                    case 400 -> BadRequestException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 401 -> UnauthorizedException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 403 -> PermissionDeniedException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 404 -> NotFoundException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 422 -> UnprocessableEntityException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 429 -> RateLimitException.builder()
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    case 500, 502, 503, 504 -> InternalServerException.builder()
+                        .statusCode(statusCode)
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                    default -> UnexpectedStatusCodeException.builder()
+                        .statusCode(statusCode)
+                        .headers(headers)
+                        .cause(cause)
+                        .build();
+                };
+            } else {
+                return new OpenAIException(throwable.getMessage(), throwable.getCause());
+            }
+        }
+
+        /**
+         * Converts Azure {@link HttpHeaders} to OpenAI {@link Headers}.
+         */
+        private static Headers toOpenAIHeaders(HttpHeaders azureHeaders) {
+            Headers.Builder builder = Headers.builder();
+            azureHeaders.forEach(header -> builder.put(header.getName(), header.getValue()));
+            return builder.build();
         }
 
         /**
