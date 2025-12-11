@@ -350,7 +350,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
-    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
+    ReleaseTag     = "$($groupId)+$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -484,8 +484,17 @@ function Get-java-GithubIoDocIndex()
 }
 
 # function is used to filter packages to submit to API view tool
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
+# Function pointer name: FindArtifactForApiReviewFn
+function Find-java-Artifacts-For-Apireview($artifactDir, $packageInfo)
 {
+  # Check if packageInfo is null first
+  if (!$packageInfo) {
+    Write-Host "Package info is null, skipping API review artifact search"
+    return $null
+  }
+
+  $pkgName = $packageInfo.ArtifactName ?? $packageInfo.Name
+
   # skip spark packages
   if ($pkgName.Contains("-spark")) {
     return $null
@@ -495,15 +504,9 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
     return $null
   }
 
-  # Find all source jar files in given artifact directory
-  # Filter for package in "com.azure*" groupId.
-  $artifactPath = Join-Path $artifactDir "com.azure*" $pkgName
-  Write-Host "Checking for source jar in artifact path $($artifactPath)"
-  $files = @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
-  # And filter for packages in "io.clientcore*" groupId.
-  # (Is there a way to pass more information here to know the explicit groupId?)
-  $artifactPath = Join-Path $artifactDir "io.clientcore*" $pkgName
-  $files += @(Get-ChildItem -Recurse "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  $artifactPath = Join-Path $artifactDir $packageInfo.Group $pkgName
+  $files = @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+
   if (!$files)
   {
     Write-Host "$($artifactPath) does not have any package"
@@ -548,7 +551,7 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   # -ll option says "only update README and CHANGELOG entries for libraries that are on the list"
   python "$EngDir/versioning/update_versions.py" --library-list $fullLibraryName
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
+  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate -GroupId $GroupId
 }
 
 function GetExistingPackageVersions ($PackageName, $GroupId=$null)
@@ -643,6 +646,7 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
   }
 }
 
+# Function pointer: IsApiviewStatusCheckRequiredFn
 function Get-java-ApiviewStatusCheckRequirement($packageInfo) {
   if ($packageInfo.IsNewSdk -and ($packageInfo.SdkType -eq "client" -or $packageInfo.SdkType -eq "spring")) {
     return $true
