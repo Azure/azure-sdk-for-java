@@ -117,9 +117,12 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             transcriptionClientBuilder.credential(new KeyCredential(key));
         }
 
-        // Set recording filters
+        // Configure sanitizers - must be done after registering the record policy or playback client
         if (!interceptorManager.isLiveMode()) {
-            // Remove sanitizers that might interfere with transcription-specific headers
+            // Remove default sanitizers that would interfere with Speech service recordings:
+            // - AZSDK3430 (id sanitizer): Preserve resource identifiers needed for request matching
+            // - AZSDK3493 (name sanitizer): Preserve resource names needed for request matching
+            // - AZSDK2003, AZSDK2030: URI-related sanitizers that may affect Speech endpoints
             interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
 
@@ -127,6 +130,33 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             client = transcriptionClientBuilder.buildClient();
         } else {
             asyncClient = transcriptionClientBuilder.buildAsyncClient();
+        }
+    }
+
+    /**
+     * Performs transcription with audio URL and validates the result.
+     *
+     * @param testName A label that uniquely defines the test. Used in console printout.
+     * @param sync 'true' to use synchronous client, 'false' to use asynchronous client.
+     * @param options TranscriptionOptions with audioUrl set
+     */
+    protected void doTranscriptionWithUrl(String testName, Boolean sync, TranscriptionOptions options) {
+        try {
+            // Verify that audioUrl is set
+            assertNotNull(options.getAudioUrl(), "AudioUrl must be set for URL-based transcription");
+            assertFalse(options.getAudioUrl().isEmpty(), "AudioUrl must not be empty");
+
+            TranscriptionResult result = null;
+            if (sync) {
+                result = client.transcribe(options);
+            } else {
+                result = asyncClient.transcribe(options).block();
+            }
+
+            validateTranscriptionResult(testName, result);
+        } catch (Exception e) {
+            LOGGER.error("Error in test {}: {}", testName, e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -166,21 +196,25 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                 if (!transcribeWithResponse) {
                     result = client.transcribe(options);
                 } else {
-                    // For transcribeWithResponse, we need to manually prepare the multipart request body
                     if (requestOptions == null) {
-                        requestOptions = new RequestOptions();
+                        // Use the new transcribeWithResponse(TranscriptionOptions) convenience method
+                        Response<TranscriptionResult> response = client.transcribeWithResponse(options);
+                        printHttpRequestAndResponse(response);
+                        result = response.getValue();
+                    } else {
+                        // When custom RequestOptions are needed, use the lower-level API
+                        BinaryData multipartBody
+                            = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(
+                                requestOptions)
+                                    .serializeJsonField("definition", options)
+                                    .serializeFileField("audio", audioFileDetails.getContent(),
+                                        audioFileDetails.getContentType(), audioFileDetails.getFilename())
+                                    .end()
+                                    .getRequestBody();
+                        Response<BinaryData> response = client.transcribeWithResponse(multipartBody, requestOptions);
+                        printHttpRequestAndResponse(response);
+                        result = response.getValue().toObject(TranscriptionResult.class);
                     }
-                    BinaryData multipartBody
-                        = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
-                            .serializeJsonField("definition", options)
-                            .serializeFileField("audio", audioFileDetails.getContent(),
-                                audioFileDetails.getContentType(), audioFileDetails.getFilename())
-                            .end()
-                            .getRequestBody();
-
-                    Response<BinaryData> response = client.transcribeWithResponse(multipartBody, requestOptions);
-                    printHttpRequestAndResponse(response);
-                    result = response.getValue().toObject(TranscriptionResult.class);
                 }
                 validateTranscriptionResult(testName, result);
             } else {
@@ -188,22 +222,26 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
                 if (!transcribeWithResponse) {
                     result = asyncClient.transcribe(options).block();
                 } else {
-                    // For transcribeWithResponse, we need to manually prepare the multipart request body
                     if (requestOptions == null) {
-                        requestOptions = new RequestOptions();
+                        // Use the new transcribeWithResponse(TranscriptionOptions) convenience method
+                        Response<TranscriptionResult> response = asyncClient.transcribeWithResponse(options).block();
+                        printHttpRequestAndResponse(response);
+                        result = response.getValue();
+                    } else {
+                        // When custom RequestOptions are needed, use the lower-level API
+                        BinaryData multipartBody
+                            = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(
+                                requestOptions)
+                                    .serializeJsonField("definition", options)
+                                    .serializeFileField("audio", audioFileDetails.getContent(),
+                                        audioFileDetails.getContentType(), audioFileDetails.getFilename())
+                                    .end()
+                                    .getRequestBody();
+                        Response<BinaryData> response
+                            = asyncClient.transcribeWithResponse(multipartBody, requestOptions).block();
+                        printHttpRequestAndResponse(response);
+                        result = response.getValue().toObject(TranscriptionResult.class);
                     }
-                    BinaryData multipartBody
-                        = new com.azure.ai.speech.transcription.implementation.MultipartFormDataHelper(requestOptions)
-                            .serializeJsonField("definition", options)
-                            .serializeFileField("audio", audioFileDetails.getContent(),
-                                audioFileDetails.getContentType(), audioFileDetails.getFilename())
-                            .end()
-                            .getRequestBody();
-
-                    Response<BinaryData> response
-                        = asyncClient.transcribeWithResponse(multipartBody, requestOptions).block();
-                    printHttpRequestAndResponse(response);
-                    result = response.getValue().toObject(TranscriptionResult.class);
                 }
                 validateTranscriptionResult(testName, result);
             }

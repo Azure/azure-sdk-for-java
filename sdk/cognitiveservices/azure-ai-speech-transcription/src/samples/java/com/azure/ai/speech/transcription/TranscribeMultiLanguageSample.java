@@ -100,7 +100,8 @@ public class TranscribeMultiLanguageSample {
 
             System.out.println("\nNote: When no locales are specified, the service transcribes all languages");
             System.out.println("present in the audio. However, the locale field in each phrase may not always");
-            System.out.println("accurately reflect the actual language of that specific phrase.");        } catch (Exception e) {
+            System.out.println("accurately reflect the actual language of that specific phrase.");
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         }

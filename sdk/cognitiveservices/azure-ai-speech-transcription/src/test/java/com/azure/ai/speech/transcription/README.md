@@ -6,9 +6,9 @@ This directory contains tests for the Azure AI Speech Transcription client libra
 
 The tests are organized as follows:
 
-- **TranscriptionClientTestBase.java**: Base class containing common test infrastructure, helper methods, and validation logic
-- **TranscriptionClientTest.java**: Tests for the synchronous `TranscriptionClient`
-- **TranscriptionAsyncClientTest.java**: Tests for the asynchronous `TranscriptionAsyncClient`
+- **TranscriptionClientTestBase.java**: Base class containing common test infrastructure, helper methods, and validation logic. Includes support for both file-based and URL-based transcription.
+- **TranscriptionClientTest.java**: Tests for the synchronous `TranscriptionClient` (14 tests)
+- **TranscriptionAsyncClientTest.java**: Tests for the asynchronous `TranscriptionAsyncClient` (16 tests)
 - **generated/**: Auto-generated test templates (for reference only)
 
 ## Prerequisites
@@ -47,7 +47,9 @@ export SPEECH_API_KEY="<your-api-key>"
 
 ## Configure Test Proxy
 
-The Azure SDK for Java uses a test proxy for recording and playing back HTTP interactions. Configure the test mode by setting the `AZURE_TEST_MODE` environment variable:
+The Azure SDK for Java uses a test proxy for recording and playing back HTTP interactions. This library has been migrated to use the test proxy following the [Test Proxy Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/README.md).
+
+Test recordings are stored in the [azure-sdk-assets](https://github.com/Azure/azure-sdk-assets) repository and referenced via the `assets.json` file. Configure the test mode by setting the `AZURE_TEST_MODE` environment variable:
 
 ### Live Mode (against live service)
 
@@ -63,7 +65,11 @@ This mode makes real HTTP calls to the Azure service. Use this when you want to 
 $env:AZURE_TEST_MODE = "RECORD"
 ```
 
-This mode makes real HTTP calls and records them for later playback. Recorded sessions are saved in the `session-records` directory.
+This mode makes real HTTP calls and records them for later playback. Recordings are managed by the test-proxy tool and can be pushed to the azure-sdk-assets repository using:
+
+```bash
+test-proxy push -a assets.json
+```
 
 ### Playback Mode (use recordings)
 
@@ -105,9 +111,10 @@ mvn test -Dtest=TranscriptionClientTest#testTranscribeSyncBasicFromFile
 
 ### Synchronous Tests (TranscriptionClientTest)
 
-Tests for the synchronous `TranscriptionClient`, including:
+Tests for the synchronous `TranscriptionClient` (14 tests), including:
 
 - Basic transcription from file
+- Transcription from URL (using publicly accessible audio URL)
 - Transcription with language specification
 - Transcription with multiple languages
 - Transcription with speaker diarization
@@ -118,7 +125,11 @@ Tests for the synchronous `TranscriptionClient`, including:
 
 ### Asynchronous Tests (TranscriptionAsyncClientTest)
 
-Tests for the asynchronous `TranscriptionAsyncClient`, mirroring the synchronous tests but using reactive programming patterns with `Mono` and `Flux`.
+Tests for the asynchronous `TranscriptionAsyncClient` (16 tests), mirroring the synchronous tests but using reactive programming patterns with `Mono` and `Flux`. Includes additional tests for:
+
+- Transcription from URL (using publicly accessible audio URL)
+- Error handling with invalid language codes
+- Placeholder tests for empty audio data and cancellation scenarios
 
 ## Authentication
 
@@ -135,8 +146,9 @@ To test with token-based authentication, some tests use `createClient(false, tru
 
 1. **Missing environment variables**: Ensure `SPEECH_ENDPOINT` and `SPEECH_API_KEY` are set correctly
 2. **Missing sample audio file**: Make sure you have a `sample.wav` file in the test directory (WAV, MP3, or OGG format, shorter than 2 hours, smaller than 250 MB)
-3. **Test proxy issues**: If playback tests fail, try running in LIVE or RECORD mode first
-4. **Network issues**: Check your network connection and firewall settings
+3. **URL transcription failures**: URL-based transcription requires a specific API key tier that supports this feature. If URL tests fail with 401 errors, verify your Speech resource supports URL transcription.
+4. **Test proxy issues**: If playback tests fail, try running in LIVE or RECORD mode first to regenerate recordings
+5. **Network issues**: Check your network connection and firewall settings
 
 ### Enable Detailed Logging
 
@@ -158,15 +170,45 @@ $env:AZURE_LOG_LEVEL = "verbose"
 The current tests cover:
 
 - ✅ Client instantiation with different authentication methods
-- ✅ Basic transcription functionality
+- ✅ Basic transcription functionality from files
+- ✅ Transcription from publicly accessible URLs
 - ✅ Transcription with various options (language, diarization, profanity filter, timestamps)
 - ✅ Both synchronous and asynchronous clients
 - ✅ Methods with and without `Response` wrappers
 - ✅ Custom RequestOptions and headers
+- ✅ Error handling (invalid language codes)
 
 Areas for future enhancement:
 
-- ⬜ Error handling scenarios (invalid input, network errors, etc.)
+- ⏳ Empty audio data handling (placeholder test exists)
+- ⏳ Cancellation scenarios (placeholder test exists)
 - ⬜ Performance tests
 - ⬜ Concurrent request handling
 - ⬜ Edge cases (very long audio, multiple channels, etc.)
+
+## Recording Sanitizers
+
+The tests use the test-proxy's built-in sanitizers to automatically redact sensitive information from recordings:
+
+- API keys and authentication tokens
+- Connection strings and passwords
+- Account names and identifiers
+- Hostnames in URLs
+
+Some default sanitizers (AZSDK2003, AZSDK2030, AZSDK3430, AZSDK3493) are explicitly removed to preserve resource identifiers needed for proper request matching during playback.
+
+## Managing Test Recordings
+
+### Restore recordings from assets repo
+
+```bash
+test-proxy restore -a assets.json
+```
+
+### Push new recordings to assets repo
+
+```bash
+test-proxy push -a assets.json
+```
+
+This creates a new tag in the azure-sdk-assets repository and updates `assets.json` with the new tag reference.
