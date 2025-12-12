@@ -6,6 +6,7 @@ package com.azure.ai.speech.transcription;
 
 import com.azure.ai.speech.transcription.models.AudioFileDetails;
 import com.azure.ai.speech.transcription.models.EnhancedModeOptions;
+import com.azure.ai.speech.transcription.models.PhraseListOptions;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
@@ -244,11 +245,14 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
             .setFilename("audio.wav");
 
-        // Enable enhanced mode for improved transcription quality
-        EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
+        // Enable enhanced mode for improved transcription quality with lexical format
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setPrompts(java.util.Arrays.asList(
+                "Output must be in lexical format."
+            ));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-            .setLocales(java.util.Arrays.asList("en-US"))
+            .setLocales(java.util.Arrays.asList("en-US", "es-ES"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionResult result = client.transcribe(options);
@@ -271,15 +275,17 @@ public final class ReadmeSamples {
             .setFilename("audio.wav");
 
         // Use prompts to guide transcription with domain-specific terminology
+        // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
             .setPrompts(java.util.Arrays.asList(
+                "Output must be in lexical format.",
                 "Medical consultation discussing hypertension and diabetes",
                 "Common medications: metformin, lisinopril, atorvastatin",
                 "Patient symptoms and treatment plan"
             ));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-            .setLocales(java.util.Arrays.asList("en-US"))
+            .setLocales(java.util.Arrays.asList("en-US", "es-ES"))
             .setEnhancedModeOptions(enhancedMode);
 
         TranscriptionResult result = client.transcribe(options);
@@ -365,6 +371,92 @@ public final class ReadmeSamples {
             System.out.println(phrase.getText());
         });
         // END: readme-sample-transcribeWithAudioFileDetails
+    }
+
+    /**
+     * Sample for multi-language transcription.
+     */
+    public void transcribeMultiLanguage() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.multilanguage
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        // Configure transcription WITHOUT specifying locales
+        // This allows the service to auto-detect and transcribe multiple languages
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
+
+        TranscriptionResult result = client.transcribe(options);
+
+        result.getPhrases().forEach(phrase -> {
+            System.out.println("Language: " + phrase.getLocale());
+            System.out.println("Text: " + phrase.getText());
+        });
+        // END: com.azure.ai.speech.transcription.transcriptionoptions.multilanguage
+    }
+
+    /**
+     * Sample for enhanced mode transcription.
+     */
+    public void transcribeEnhancedMode() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setTask("transcribe")
+            .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
+
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
+            .setEnhancedModeOptions(enhancedMode);
+
+        TranscriptionResult result = client.transcribe(options);
+
+        System.out.println("Transcription: " + result.getCombinedPhrases().get(0).getText());
+        // END: com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
+    }
+
+    /**
+     * Sample for transcription with phrase list.
+     */
+    public void transcribeWithPhraseList() throws Exception {
+        TranscriptionClient client = new TranscriptionClientBuilder()
+            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
+            .credential(new KeyCredential("<your-api-key>"))
+            .buildClient();
+
+        // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.phraselist
+        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
+
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
+            .setFilename("audio.wav");
+
+        PhraseListOptions phraseListOptions = new PhraseListOptions()
+            .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
+            .setBiasingWeight(5.0);
+
+        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
+            .setPhraseListOptions(phraseListOptions);
+
+        TranscriptionResult result = client.transcribe(options);
+
+        result.getCombinedPhrases().forEach(phrase -> {
+            System.out.println(phrase.getText());
+        });
+        // END: com.azure.ai.speech.transcription.transcriptionoptions.phraselist
     }
 }
 

@@ -206,72 +206,72 @@ result.getCombinedPhrases().forEach(phrase -> {
 });
 ```
 
-### Use enhanced mode for improved transcription quality
+### Transcribe with multi-language support
 
-Enhanced mode provides advanced features to improve transcription accuracy with custom prompts, translation capabilities, and task-specific optimizations.
+The service can automatically detect and transcribe multiple languages within the same audio file.
 
-#### Basic enhanced mode
-
-```java readme-sample-enhancedModeBasic
+```java com.azure.ai.speech.transcription.transcriptionoptions.multilanguage
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
     .setFilename("audio.wav");
 
-// Enable enhanced mode for improved transcription quality
-EnhancedModeOptions enhancedMode = new EnhancedModeOptions();
-
-TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-    .setLocales(java.util.Arrays.asList("en-US"))
-    .setEnhancedModeOptions(enhancedMode);
+// Configure transcription WITHOUT specifying locales
+// This allows the service to auto-detect and transcribe multiple languages
+TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
 TranscriptionResult result = client.transcribe(options);
+
+result.getPhrases().forEach(phrase -> {
+    System.out.println("Language: " + phrase.getLocale());
+    System.out.println("Text: " + phrase.getText());
+});
 ```
 
-#### Enhanced mode with custom prompts
+### Transcribe with enhanced mode
 
-Use prompts to guide transcription with domain-specific terminology, improving accuracy for specialized content like medical, legal, or technical discussions.
+Enhanced mode provides advanced features to improve transcription accuracy with custom prompts.
 
-```java readme-sample-enhancedModeWithPrompts
+```java com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
     .setFilename("audio.wav");
 
-// Use prompts to guide transcription with domain-specific terminology
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-    .setPrompts(java.util.Arrays.asList(
-        "Medical consultation discussing hypertension and diabetes",
-        "Common medications: metformin, lisinopril, atorvastatin",
-        "Patient symptoms and treatment plan"
-    ));
+    .setTask("transcribe")
+    .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 
 TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-    .setLocales(java.util.Arrays.asList("en-US"))
     .setEnhancedModeOptions(enhancedMode);
 
 TranscriptionResult result = client.transcribe(options);
+
+System.out.println("Transcription: " + result.getCombinedPhrases().get(0).getText());
 ```
 
-#### Enhanced mode with translation
+### Transcribe with phrase list
 
-Transcribe audio in one language and translate to another language simultaneously.
+You can use a phrase list to improve recognition accuracy for specific terms.
 
-```java readme-sample-enhancedModeWithTranslation
+```java com.azure.ai.speech.transcription.transcriptionoptions.phraselist
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
     .setFilename("audio.wav");
 
-// Configure enhanced mode to transcribe Spanish audio and translate to English
-EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-    .setTargetLanguage("en-US"); // Translate to English
+PhraseListOptions phraseListOptions = new PhraseListOptions()
+    .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
+    .setBiasingWeight(5.0);
 
 TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
-    .setLocales(java.util.Arrays.asList("es-ES")) // Source language: Spanish
-    .setEnhancedModeOptions(enhancedMode);
+    .setPhraseListOptions(phraseListOptions);
 
 TranscriptionResult result = client.transcribe(options);
+
+result.getCombinedPhrases().forEach(phrase -> {
+    System.out.println(phrase.getText());
+});
 ```
 
 ### Service API versions
