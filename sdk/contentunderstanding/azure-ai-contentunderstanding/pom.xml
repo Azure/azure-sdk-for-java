@@ -44,8 +44,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Disable code coverage checks for this beta release as tests are still being developed -->
-    <jacoco.min.linecoverage>0.00</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <!-- Exclude generated sample files from Checkstyle validation -->
     <checkstyle.excludes>**/generated/Sample*.java,**/samples/Sample*.java</checkstyle.excludes>
   </properties>
