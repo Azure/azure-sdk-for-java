@@ -4,7 +4,6 @@
 package com.azure.ai.translation.text;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
@@ -13,10 +12,20 @@ import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * You can provide multiple target languages which results to each input element be translated to
- * all target languages.
+ * By default, Azure Translator uses neural Machine Translation (NMT) technology. With the newest preview 
+ * release, you now can optionally select either the standard NMT translation or Large Language Model (LLM) 
+ * models — GPT-4o-mini or GPT-4o. You can choose a large language model for translation based on factors such 
+ * as quality, cost, and other considerations. However, using an LLM model requires you to have a [Microsoft 
+ * Foundry resource]. 
+ * 
+ * https://learn.microsoft.com/azure/ai-services/translator/how-to/create-translator-resource?tabs=foundry
+ * 
+ * To use an LLM model for translation, set the `deploymentName` property in the `TranslationTarget` object to the 
+ * name of your Foundry resource deployment, e.g., `gpt-4o-mini` or `gpt-4o`. You can also configure the tone and 
+ * gender of the translation by setting the `tone` and `gender` properties.
+ * 
  */
-public class TranslateMultipleTargets {
+public class TranslateLlm {
     /**
      * Main method to invoke this demo.
      *
@@ -33,11 +42,13 @@ public class TranslateMultipleTargets {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<TranslationTarget> targets = Arrays.asList(
-            new TranslationTarget("cs"),
-            new TranslationTarget("es"),
-            new TranslationTarget("de"));
-        TranslateInputItem input = new TranslateInputItem("This is a test.", targets).setLanguage("en");
+        TranslationTarget target = new TranslationTarget("es")
+            .setDeploymentName("gpt-4o-mini")
+            .setTone("formal")
+            .setGender("female");
+        TranslateInputItem input = new TranslateInputItem(
+            "Doctor is available next Monday. Do you want to schedule an appointment?",
+            Arrays.asList(target));
 
         TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
