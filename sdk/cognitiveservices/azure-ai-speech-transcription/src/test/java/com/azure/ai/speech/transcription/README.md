@@ -47,7 +47,7 @@ export SPEECH_API_KEY="<your-api-key>"
 
 ## Configure Test Proxy
 
-The Azure SDK for Java uses a test proxy for recording and playing back HTTP interactions. This library has been migrated to use the test proxy following the [Test Proxy Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/README.md).
+The Azure SDK for Java uses a test proxy for recording and playing back HTTP interactions. This library has been migrated to use the test proxy following the [Test Proxy Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/TestProxyMigrationGuide.md).
 
 Test recordings are stored in the [azure-sdk-assets](https://github.com/Azure/azure-sdk-assets) repository and referenced via the `assets.json` file. Configure the test mode by setting the `AZURE_TEST_MODE` environment variable:
 
