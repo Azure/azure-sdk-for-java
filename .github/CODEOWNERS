@@ -263,11 +263,11 @@
 # ServiceOwners:                                                   @rhurey
 
 # PRLabel: %Speech Transcription
-/sdk/cognitiveservices/azure-ai-speech-transcription/              @amber-yujueWang @rhurey @xitzhang @Azure/azure-java-sdk
+/sdk/cognitiveservices/azure-ai-speech-transcription/              @amber-yujueWang @rhurey @xitzhang @Azure/azure-java-sdk @pankopon
 
 # ServiceLabel: %Speech Transcription
-# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang
-# ServiceOwners:                                                   @rhurey @xitzhang @amber-yujueWang
+# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang @pankopon
+# ServiceOwners:                                                   @rhurey @xitzhang @amber-yujueWang @pankopon
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                                @samvaity @quentinRobinson @Azure/azure-java-sdk
