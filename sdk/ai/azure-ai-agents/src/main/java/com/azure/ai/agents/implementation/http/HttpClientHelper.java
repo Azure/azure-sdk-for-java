@@ -184,7 +184,7 @@ public final class HttpClientHelper {
             String contentType = requestBody != null ? requestBody.contentType() : null;
             BinaryData bodyData = null;
 
-            if (requestBody != null) {
+            if (requestBody != null && requestBody.contentLength() > 0) {
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 requestBody.writeTo(outputStream);
                 bodyData = BinaryData.fromBytes(outputStream.toByteArray());
