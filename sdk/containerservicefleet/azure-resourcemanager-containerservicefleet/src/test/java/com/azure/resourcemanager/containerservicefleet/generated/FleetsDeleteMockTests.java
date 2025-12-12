@@ -27,7 +27,7 @@ public final class FleetsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.fleets().delete("wgdrjervnaenqp", "hin", "oygmift", com.azure.core.util.Context.NONE);
+        manager.fleets().delete("mzqa", "krmnjijpxacqqud", "nbyxbaaabjyv", com.azure.core.util.Context.NONE);
 
     }
 }

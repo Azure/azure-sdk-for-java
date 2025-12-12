@@ -89,7 +89,7 @@ function UpdateCIInformation($ArtifactInfos) {
         $serviceDirectory = $arInfo.ServiceDirectoryName
 
         if (!$serviceDirectory) {
-            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory)
+            $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectory -GroupId $arInfo.GroupId)
             $arInfo.ServiceDirectoryName = $pkgProperties.ServiceDirectory
             $arInfo.ArtifactDirPath = $pkgProperties.DirectoryPath
             $arInfo.CurrentPomFileVersion = $pkgProperties.Version
@@ -188,7 +188,7 @@ function UpdateDependenciesInVersionClient([hashtable]$ArtifactInfos) {
 
 # Get the release version for the next bom artifact.
 function GetNextBomVersion() {
-    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom")
+    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName "azure-sdk-bom" -GroupId "com.azure")
     $currentVersion = $pkgProperties.Version
 
     $patchVersion = GetPatchVersion -ReleaseVersion $currentVersion

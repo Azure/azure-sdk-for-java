@@ -48,7 +48,7 @@ public final class TranscriptionAsyncClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -115,7 +115,7 @@ public final class TranscriptionAsyncClient {
         // Generated convenience method for transcribeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", body.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", body.getOptions())
                 .serializeFileField("audio", body.getAudio() == null ? null : body.getAudio().getContent(),
                     body.getAudio() == null ? null : body.getAudio().getContentType(),
                     body.getAudio() == null ? null : body.getAudio().getFilename())
@@ -165,7 +165,7 @@ public final class TranscriptionAsyncClient {
         }
         RequestOptions requestOptions = new RequestOptions();
         return transcribeWithResponse(
-            new MultipartFormDataHelper(requestOptions).serializeJsonField("options", requestContent.getOptions())
+            new MultipartFormDataHelper(requestOptions).serializeJsonField("definition", requestContent.getOptions())
                 .serializeFileField("audio",
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContent(),
                     requestContent.getAudio() == null ? null : requestContent.getAudio().getContentType(),

@@ -87,15 +87,15 @@ The samples will automatically detect which authentication method to use based o
 
 ## Available Samples
 
-### BasicTranscriptionSample.java
+### TranscribeAudioFileSample.java
 
-**Champion scenario**: Simple audio transcription
+**Champion scenario**: Basic audio transcription from a file
 
 Demonstrates the most common use case - transcribing a single audio file with minimal configuration.
 
 **Key features**:
 
-- Creating a TranscriptionClient with API Key or Azure AD authentication
+- Creating a TranscriptionClient
 - Reading an audio file
 - Transcribing with default options
 - Processing results
@@ -104,73 +104,124 @@ Demonstrates the most common use case - transcribing a single audio file with mi
 
 ```bash
 cd sdk/cognitiveservices/azure-ai-speech-transcription
-mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.BasicTranscriptionSample"
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeAudioFileSample"
 ```
 
 ---
 
-### AdvancedTranscriptionSample.java
+### TranscribeFromUrlSample.java
 
-**Champion scenario**: Complex transcription with custom configuration
+**Champion scenario**: Transcribe audio from a URL
 
-Shows how to use advanced features for production scenarios.
+Demonstrates how to transcribe audio directly from a URL without downloading the file locally.
 
 **Key features**:
 
-- Custom client configuration (logging, retry policies)
-- Both API Key and Azure AD authentication examples
-- Advanced transcription options (locale, profanity filtering)
-- Speaker diarization (identifying different speakers)
-- Detailed result processing with word-level timings
+- Creating TranscriptionOptions with a URL
+- Transcribing remote audio files
 
 **Run**:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.AdvancedTranscriptionSample"
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeFromUrlSample"
 ```
 
 ---
 
-### AsyncTranscriptionSample.java
+### TranscribeMultiLanguageSample.java
 
-**Champion scenario**: Asynchronous transcription with reactive programming
+**Champion scenario**: Multi-language transcription
 
-Demonstrates non-blocking operations using TranscriptionAsyncClient and Project Reactor.
+Demonstrates how to transcribe audio containing multiple languages with automatic language detection.
 
 **Key features**:
 
-- Creating a TranscriptionAsyncClient with both authentication methods
-- Using reactive patterns (subscribe, block, timeout)
-- Error handling in async operations
-- Different async patterns for various use cases
+- Automatic language detection
+- Handling multi-language results
 
 **Run**:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.AsyncTranscriptionSample"
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeMultiLanguageSample"
 ```
 
 ---
 
-### ErrorHandlingSample.java
+### EnhancedModeSample.java
 
-**Champion scenario**: Robust error handling
+**Champion scenario**: Enhanced transcription quality
 
-Shows how to properly handle errors and exceptions in production code.
+Demonstrates how to use enhanced mode with custom prompts and other advanced features.
 
 **Key features**:
 
-- API Key authentication error handling
-- Azure AD authentication error handling (token expiration, missing credentials)
-- File I/O error handling
-- Service error handling (rate limiting, server errors)
-- Retry logic with exponential backoff
-- Comprehensive error handling pattern
+- Using EnhancedModeOptions
+- Providing custom prompts for better accuracy
+- Specifying task types
 
 **Run**:
 
 ```bash
-mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.ErrorHandlingSample"
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.EnhancedModeSample"
+```
+
+---
+
+### TranscribeWithDiarizationSample.java
+
+**Champion scenario**: Speaker diarization
+
+Demonstrates how to identify different speakers in the audio.
+
+**Key features**:
+
+- Enabling speaker diarization
+- Configuring max speakers
+- Processing speaker-separated results
+
+**Run**:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeWithDiarizationSample"
+```
+
+---
+
+### TranscribeWithPhraseListSample.java
+
+**Champion scenario**: Improving accuracy with phrase lists
+
+Demonstrates how to use a phrase list to improve recognition of specific terms.
+
+**Key features**:
+
+- Creating a PhraseListOptions
+- Adding custom phrases and boosting their probability
+- Improving accuracy for domain-specific terminology
+
+**Run**:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeWithPhraseListSample"
+```
+
+---
+
+### TranscribeWithProfanityFilterSample.java
+
+**Champion scenario**: Profanity filtering
+
+Demonstrates how to configure profanity filtering options.
+
+**Key features**:
+
+- Setting ProfanityFilterMode (Masked, Removed, None)
+- Handling filtered results
+
+**Run**:
+
+```bash
+mvn exec:java -Dexec.mainClass="com.azure.ai.speech.transcription.TranscribeWithProfanityFilterSample"
 ```
 
 ---
