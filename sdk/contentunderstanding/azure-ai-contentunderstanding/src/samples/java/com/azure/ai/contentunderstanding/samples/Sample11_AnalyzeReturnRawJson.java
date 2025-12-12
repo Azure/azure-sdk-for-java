@@ -55,8 +55,8 @@ public class Sample11_AnalyzeReturnRawJson {
         System.out.println("Client initialized successfully");
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJson
-        // Load local test file
-        Path filePath = Paths.get("src/test/resources/sample_invoice.pdf");
+        // Load local sample file
+        Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
 
         // Prepare request body with binary data using JSON format

@@ -57,8 +57,8 @@ public class Sample10_AnalyzeConfigs {
         System.out.println("Client initialized successfully");
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
-        // Load local test file
-        Path filePath = Paths.get("src/test/resources/sample_document_features.pdf");
+        // Load local sample file
+        Path filePath = Paths.get("src/samples/resources/sample_document_features.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
 
         com.azure.ai.contentunderstanding.models.AnalyzeInput input

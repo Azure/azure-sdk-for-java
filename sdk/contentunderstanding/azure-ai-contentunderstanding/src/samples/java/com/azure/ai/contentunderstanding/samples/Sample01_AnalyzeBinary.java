@@ -52,26 +52,10 @@ public class Sample01_AnalyzeBinary {
         // END: com.azure.ai.contentunderstanding.sample01.buildClient
 
         // Load the sample file
-        String filePath = "src/test/resources/sample_invoice.pdf";
+        String filePath = "src/samples/resources/sample_invoice.pdf";
         Path path = Paths.get(filePath);
-
-        byte[] fileBytes;
-        BinaryData binaryData;
-        boolean hasRealFile = Files.exists(path);
-
-        // Check if sample file exists
-        if (!hasRealFile) {
-            System.out.println("⚠️ Sample file not found at " + filePath);
-            System.out.println("Creating a minimal test PDF for demonstration...");
-            // Create a minimal valid PDF for testing
-            String pdfContent
-                = "%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n0000000115 00000 n\ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n203\n%%EOF";
-            fileBytes = pdfContent.getBytes();
-        } else {
-            fileBytes = Files.readAllBytes(path);
-        }
-
-        binaryData = BinaryData.fromBytes(fileBytes);
+        byte[] fileBytes = Files.readAllBytes(path);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
@@ -99,12 +83,9 @@ public class Sample01_AnalyzeBinary {
         }
         // END:ContentUnderstandingExtractMarkdown
 
-        if (hasRealFile && content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+        if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
             System.out
                 .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        } else {
-            System.out
-                .println("⚠️ Skipping markdown content validation (using minimal test PDF or no markdown available)");
         }
 
         // BEGIN:ContentUnderstandingAccessDocumentProperties
