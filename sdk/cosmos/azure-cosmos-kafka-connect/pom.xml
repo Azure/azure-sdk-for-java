@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>2.7.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -92,7 +92,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.76.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.77.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -111,7 +111,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
       <scope>test</scope>
     </dependency>
 
