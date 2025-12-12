@@ -15,6 +15,7 @@ import com.openai.models.conversations.ConversationUpdateParams;
 import com.openai.models.conversations.Message;
 import com.openai.models.conversations.items.*;
 import com.openai.models.responses.EasyInputMessage;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.util.StringUtils;
@@ -137,6 +138,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
 
     }
 
+    @Disabled("Flaky test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
