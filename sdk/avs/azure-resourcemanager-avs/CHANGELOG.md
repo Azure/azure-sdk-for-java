@@ -1,14 +1,128 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2025-12-12)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ImpactedMaintenanceResource` was added
 
-### Bugs Fixed
+* `models.License` was added
 
-### Other Changes
+* `models.AvailableWindowForMaintenanceWhileScheduleOperation` was added
+
+* `models.MaintenanceStateName` was added
+
+* `models.MaintenanceSchedule` was added
+
+* `models.MaintenanceReadinessStatus` was added
+
+* `models.License$Update` was added
+
+* `models.BlockedDatesConstraintCategory` was added
+
+* `models.MaintenanceState` was added
+
+* `models.License$UpdateStages` was added
+
+* `models.SchedulingWindow` was added
+
+* `models.Licenses` was added
+
+* `models.MaintenanceType` was added
+
+* `models.LicenseKind` was added
+
+* `models.RescheduleOperationConstraint` was added
+
+* `models.MaintenanceProvisioningState` was added
+
+* `models.BlockedDatesConstraintTimeRange` was added
+
+* `models.RescheduleOperationConstraintKind` was added
+
+* `models.Vcf5License` was added
+
+* `models.MaintenanceReadinessRefreshOperationStatus` was added
+
+* `models.Maintenances` was added
+
+* `models.VmwareFirewallLicenseProperties` was added
+
+* `models.ScheduleOperationConstraintKind` was added
+
+* `models.ScheduleOperation` was added
+
+* `models.RescheduleOperation` was added
+
+* `models.VcfLicenseKind` was added
+
+* `models.LicenseName` was added
+
+* `models.License$DefinitionStages` was added
+
+* `models.Maintenance` was added
+
+* `models.MaintenanceCheckType` was added
+
+* `models.PrivateCloudProperties` was added
+
+* `models.MaintenanceReschedule` was added
+
+* `models.License$Definition` was added
+
+* `models.MaintenanceManagementOperationKind` was added
+
+* `models.BlockedWhileScheduleOperation` was added
+
+* `models.Label` was added
+
+* `models.MaintenanceManagementOperation` was added
+
+* `models.ScheduleOperationConstraint` was added
+
+* `models.VcfLicense` was added
+
+* `models.AvailableWindowForMaintenanceWhileRescheduleOperation` was added
+
+* `models.BlockedWhileRescheduleOperation` was added
+
+* `models.LicenseProperties` was added
+
+* `models.MaintenanceProperties` was added
+
+* `models.LicenseProvisioningState` was added
+
+* `models.MaintenanceReadinessRefreshOperation` was added
+
+* `models.MaintenanceStatusFilter` was added
+
+* `models.MaintenanceReadiness` was added
+
+* `models.MaintenanceFailedCheck` was added
+
+* `models.ImpactedMaintenanceResourceError` was added
+
+#### `models.PrivateClouds` was modified
+
+* `getVcfLicense(java.lang.String,java.lang.String)` was added
+* `getVcfLicenseWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `AvsManager` was modified
+
+* `maintenances()` was added
+* `licenses()` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withVcfLicense(fluent.models.VcfLicenseInner)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
+* `getVcfLicense()` was added
+* `vcfLicense()` was added
 
 ## 1.3.0 (2025-07-08)
 

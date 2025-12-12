@@ -22,6 +22,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.LocationsClient;
 import com.azure.resourcemanager.avs.fluent.models.QuotaInner;
 import com.azure.resourcemanager.avs.fluent.models.TrialInner;
@@ -107,6 +108,20 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrialInner>> checkTrialAvailabilityWithResponseAsync(String location, Sku sku) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (sku != null) {
+            sku.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkTrialAvailability(this.client.getEndpoint(),
@@ -142,6 +157,23 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrialInner> checkTrialAvailabilityWithResponse(String location, Sku sku, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (sku != null) {
+            sku.validate();
+        }
         final String accept = "application/json";
         return service.checkTrialAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, accept, sku, context);
@@ -173,6 +205,17 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaInner>> checkQuotaAvailabilityWithResponseAsync(String location) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkQuotaAvailability(this.client.getEndpoint(),
@@ -206,6 +249,20 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaInner> checkQuotaAvailabilityWithResponse(String location, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
         final String accept = "application/json";
         return service.checkQuotaAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, accept, context);
@@ -224,4 +281,6 @@ public final class LocationsClientImpl implements LocationsClient {
     public QuotaInner checkQuotaAvailability(String location) {
         return checkQuotaAvailabilityWithResponse(location, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsClientImpl.class);
 }
