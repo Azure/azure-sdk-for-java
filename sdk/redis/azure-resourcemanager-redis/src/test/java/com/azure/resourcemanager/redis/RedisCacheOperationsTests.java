@@ -49,14 +49,16 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .define(rrName)
             .withRegion(Region.ASIA_EAST)
             .withNewResourceGroup(rgName)
-            .withBasicSku();
+            .withBasicSku()
+            .disableLocalAuth();
         Creatable<RedisCache> redisCacheDefinition2 = redisManager.redisCaches()
             .define(rrNameSecond)
             .withRegion(Region.US_CENTRAL)
             .withNewResourceGroup(resourceGroups)
             .withPremiumSku()
             .withShardCount(2)
-            .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302));
+            .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302))
+            .disableLocalAuth();
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
             .define(rrNameThird)
             .withRegion(Region.US_CENTRAL)
@@ -64,7 +66,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withPremiumSku(2)
             .withNonSslPort()
             .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
-            .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40");
+            .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40")
+            .disableLocalAuth();
         // Server throws "The 'minimumTlsVersion' property is not yet supported." exception. Uncomment when fixed.
         // .withMinimumTlsVersion(TlsVersion.ONE_FULL_STOP_ONE);
 
@@ -98,6 +101,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withoutFirewallRule("rule1")
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
+            .disableLocalAuth()
             .apply();
 
         ResourceManagerUtils.sleep(Duration.ofSeconds(10));
@@ -114,7 +118,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         premiumCache.update().withoutRedisConfiguration().apply();
 
         Assertions.assertEquals(0, premiumCache.patchSchedules().size());
-        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).apply();
+        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).disableLocalAuth().apply();
 
         Assertions.assertEquals(2, premiumCache.patchSchedules().size());
         // Reboot
@@ -206,7 +210,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
         // The SAS token is poorly formatted.
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
-        
+
         premiumCache.importData(Arrays.asList("snapshot1"));*/
     }
 
@@ -253,6 +257,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withNonSslPort()
             .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
             .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40")
+            .disableLocalAuth()
             .create();
 
         RedisCache rggLinked = redisManager.redisCaches()
@@ -260,6 +265,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgNameSecond)
             .withPremiumSku(2)
+            .disableLocalAuth()
             .create();
 
         Assertions.assertNotNull(rgg);
@@ -283,7 +289,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
             premiumRgg.removeLinkedServer(llName);
 
-            rgg.update().withoutPatchSchedule().apply();
+            rgg.update().withoutPatchSchedule().disableLocalAuth().apply();
 
             rggLinked.update().withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20").apply();
 
@@ -303,6 +309,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .define(saName)
             .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
+            .disableSharedKeyAccess()
             .create();
 
         String connectionString = ResourceManagerUtils.getStorageConnectionString(saName,
@@ -319,6 +326,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRdbBackupFrequency("15")
                 .withRdbBackupMaxSnapshotCount("1")
                 .withRdbStorageConnectionString(connectionString))
+            .disableLocalAuth()
             .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
         Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
@@ -371,9 +379,10 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRegion(Region.ASIA_EAST)
             .withNewResourceGroup(rgName)
             .withBasicSku()
+            .disableLocalAuth()
             .create();
 
-        redisCache.update().disablePublicNetworkAccess().apply();
+        redisCache.update().disablePublicNetworkAccess().disableLocalAuth().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
 
         redisCache.update().enablePublicNetworkAccess().apply();

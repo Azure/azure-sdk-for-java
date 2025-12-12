@@ -181,6 +181,15 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      * Fluent interfaces to provision a RedisCache
      **************************************************************/
 
+    /**
+     * Checks whether local auth is disabled.
+     *
+     * @return whether local auth is disabled
+     */
+    default boolean localAuthDisabled() {
+        throw new UnsupportedOperationException("[localAuthDisabled] is not supported in " + getClass());
+    }
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
         DefinitionStages.WithCreate, DefinitionStages.WithPremiumSkuCreate {
@@ -194,6 +203,20 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
         /** A Redis Cache definition allowing resource group to be set. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
+        }
+
+        /**
+         * The stage of Redis namespace definition allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Redis namespace.
+             *
+             * @return next stage of the Redis namespace definition
+             */
+            default WithCreate disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
         }
 
         /** A Redis Cache definition allowing the sku to be set. */
@@ -250,7 +273,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
          * A Redis Cache definition with sufficient inputs to create a new Redis Cache in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate>, DefinitionStages.WithLocalAuth {
             /**
              * Enables non-ssl Redis server port (6379).
              *
@@ -408,6 +431,21 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
     /** Grouping of all the Redis Cache update stages. */
     interface UpdateStages {
+
+        /**
+         * The stage of Redis namespace definition allowing to disable local auth.
+         */
+        interface WithLocalAuth {
+            /**
+             * Disables SAS authentication for the Redis namespace.
+             *
+             * @return next stage of the Redis namespace definition
+             */
+            default Update disableLocalAuth() {
+                throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
+        }
+
         /** A Redis Cache update stage allowing to change the parameters. */
         interface WithSku {
 
@@ -540,7 +578,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<RedisCache>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
-        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess {
+        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithLocalAuth {
         /**
          * The number of shards to be created on a Premium Cluster Cache.
          *

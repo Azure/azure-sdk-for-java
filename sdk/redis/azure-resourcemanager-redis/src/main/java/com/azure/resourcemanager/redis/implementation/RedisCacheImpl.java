@@ -381,6 +381,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     }
 
     @Override
+    public boolean localAuthDisabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableAccessKeyAuthentication());
+    }
+
+    @Override
     public RedisCacheImpl withBasicSku() {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C));
@@ -739,6 +744,12 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         } else {
             updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl disableLocalAuth() {
+        this.innerModel().withDisableAccessKeyAuthentication(true);
         return this;
     }
 
