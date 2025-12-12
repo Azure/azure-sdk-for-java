@@ -375,6 +375,7 @@ public final class AgentsClientBuilder
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         }
+        // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }
@@ -388,6 +389,7 @@ public final class AgentsClientBuilder
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         }
+        // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }

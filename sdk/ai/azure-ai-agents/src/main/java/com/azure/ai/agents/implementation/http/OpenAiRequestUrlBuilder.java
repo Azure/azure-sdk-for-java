@@ -19,6 +19,8 @@ import java.util.StringJoiner;
  * Utility methods that reconstruct the absolute {@link URL} required by the Azure pipeline from the
  * OpenAI request metadata. The builder keeps the low-level path/query handling isolated so that
  * {@link HttpClientHelper} can focus on the higher-level request mapping logic.
+ * This class will be deprecated as soon as support is added in the OpenAI SDK as described in this issue:
+ * <a href="https://github.com/openai/openai-java/issues/660"/>
  */
 public final class OpenAiRequestUrlBuilder {
 
@@ -30,6 +32,8 @@ public final class OpenAiRequestUrlBuilder {
     /**
      * Builds an absolute {@link URL} using the base URL, path segments, and query parameters that are stored in the
      * OpenAI {@link HttpRequest} abstraction.
+     * This method will be deprecated as soon as support is added in the OpenAI SDK as described in this issue:
+     * <a href="https://github.com/openai/openai-java/issues/660"/>
      *
      * @param request Source request provided by the OpenAI client.
      * @return Absolute URL that can be consumed by Azure HTTP components.

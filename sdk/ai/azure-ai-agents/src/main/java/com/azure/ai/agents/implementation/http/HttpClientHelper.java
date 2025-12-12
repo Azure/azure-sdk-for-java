@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
@@ -83,14 +84,8 @@ public final class HttpClientHelper {
 
             com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
 
-            Context requestContext = Context.NONE;
-            Timeout timeout = requestOptions.getTimeout();
-            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
-                requestContext = requestContext.addData("azure-response-timeout", timeout.read());
-            }
-
-            com.azure.core.http.HttpResponse azureResponse = this.httpPipeline.sendSync(azureRequest, requestContext);
-            return new AzureHttpResponseAdapter(azureResponse);
+            return new AzureHttpResponseAdapter(
+                this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
         }
 
         @Override
@@ -105,13 +100,7 @@ public final class HttpClientHelper {
 
             final com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
 
-            Context requestContext = new Context("azure-eagerly-read-response", true);
-            Timeout timeout = requestOptions.getTimeout();
-            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
-                requestContext = requestContext.addData("azure-response-timeout", timeout.read());
-            }
-
-            return this.httpPipeline.send(azureRequest, requestContext)
+            return this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
                 .toFuture();
@@ -128,26 +117,31 @@ public final class HttpClientHelper {
                 HttpResponseException httpResponseException = (HttpResponseException) throwable;
                 int statusCode = httpResponseException.getResponse().getStatusCode();
                 Headers headers = toOpenAIHeaders(httpResponseException.getResponse().getHeaders());
-                Throwable cause = httpResponseException.getCause();
 
                 switch (statusCode) {
                     case 400:
-                        return BadRequestException.builder().headers(headers).cause(cause).build();
+                        return BadRequestException.builder().headers(headers).cause(httpResponseException).build();
 
                     case 401:
-                        return UnauthorizedException.builder().headers(headers).cause(cause).build();
+                        return UnauthorizedException.builder().headers(headers).cause(httpResponseException).build();
 
                     case 403:
-                        return PermissionDeniedException.builder().headers(headers).cause(cause).build();
+                        return PermissionDeniedException.builder()
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
 
                     case 404:
-                        return NotFoundException.builder().headers(headers).cause(cause).build();
+                        return NotFoundException.builder().headers(headers).cause(httpResponseException).build();
 
                     case 422:
-                        return UnprocessableEntityException.builder().headers(headers).cause(cause).build();
+                        return UnprocessableEntityException.builder()
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
 
                     case 429:
-                        return RateLimitException.builder().headers(headers).cause(cause).build();
+                        return RateLimitException.builder().headers(headers).cause(httpResponseException).build();
 
                     case 500:
                     case 502:
@@ -156,16 +150,18 @@ public final class HttpClientHelper {
                         return InternalServerException.builder()
                             .statusCode(statusCode)
                             .headers(headers)
-                            .cause(cause)
+                            .cause(httpResponseException)
                             .build();
 
                     default:
                         return UnexpectedStatusCodeException.builder()
                             .statusCode(statusCode)
                             .headers(headers)
-                            .cause(cause)
+                            .cause(httpResponseException)
                             .build();
                 }
+            } else if (throwable instanceof TimeoutException) {
+                return throwable;
             } else {
                 return new OpenAIException(throwable.getMessage(), throwable.getCause());
             }
@@ -226,5 +222,19 @@ public final class HttpClientHelper {
             return target;
         }
 
+        /**
+         * Builds the request context from the given request options.
+         * @param requestOptions OpenAI SDK request options
+         * @return Azure request {@link Context}
+         */
+        private static Context buildRequestContext(RequestOptions requestOptions) {
+            Context context = new Context("azure-eagerly-read-response", true);
+            Timeout timeout = requestOptions.getTimeout();
+            // we use "read" as it's the closes thing to the "response timeout"
+            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
+                context = context.addData("azure-response-timeout", timeout.read());
+            }
+            return context;
+        }
     }
 }

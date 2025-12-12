@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.util.StringUtils;
 
 import java.time.Duration;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,6 +127,8 @@ public class ConversationsTests extends ClientTestBase {
 
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
-        assertThrows(Exception.class, () -> client.getConversationService().create(requestOptions));
+        RuntimeException thrown
+            = assertThrows(RuntimeException.class, () -> client.getConversationService().create(requestOptions));
+        assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 }

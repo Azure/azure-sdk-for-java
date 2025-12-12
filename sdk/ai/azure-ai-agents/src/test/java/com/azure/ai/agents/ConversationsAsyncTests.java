@@ -21,6 +21,7 @@ import org.junit.platform.commons.util.StringUtils;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -143,6 +144,8 @@ public class ConversationsAsyncTests extends ClientTestBase {
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
 
-        assertThrows(Exception.class, () -> client.getConversationServiceAsync().create(requestOptions).get());
+        ExecutionException thrown = assertThrows(ExecutionException.class,
+            () -> client.getConversationServiceAsync().create(requestOptions).get());
+        assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 }
