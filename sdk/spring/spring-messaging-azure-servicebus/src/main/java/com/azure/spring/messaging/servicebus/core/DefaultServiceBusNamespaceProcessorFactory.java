@@ -25,6 +25,7 @@ import com.azure.spring.messaging.servicebus.implementation.properties.merger.Pr
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -53,6 +54,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceProcessorFactory.class);
     private final Map<ConsumerIdentifier, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
     private final List<Listener> listeners = new ArrayList<>();
+    private ApplicationContext applicationContext;
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
@@ -180,6 +182,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                factory.setApplicationContext(this.applicationContext);
 
                 ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
                 customizeBuilder(name, subscription, builder);
@@ -192,6 +195,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                factory.setApplicationContext(this.applicationContext);
 
                 ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = factory.build();
                 customizeBuilder(name, subscription, builder);
@@ -259,7 +263,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", 
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
         } else {
             this.customizers.add(customizer);
@@ -274,7 +278,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addSessionBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", 
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
         } else {
             this.sessionCustomizers.add(customizer);
@@ -340,6 +344,14 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private String buildProcessorName(ConsumerIdentifier k) {
         String group = k.getGroup();
         return k.getDestination() + "/" + (group == null ? "" : group);
+    }
+
+    /**
+     * Set the application context.
+     * @param applicationContext the application context.
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
 }
