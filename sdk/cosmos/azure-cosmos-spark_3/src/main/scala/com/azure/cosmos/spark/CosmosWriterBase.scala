@@ -62,14 +62,28 @@ private abstract class CosmosWriterBase(
 
   private val writer: AtomicReference[AsyncItemWriter] = new AtomicReference(
     if (cosmosWriteConfig.bulkEnabled) {
-      new BulkWriter(
-        container,
-        cosmosTargetContainerConfig,
-        partitionKeyDefinition,
-        cosmosWriteConfig,
-        diagnosticsConfig,
-        getOutputMetricsPublisher(),
-        commitAttempt.getAndIncrement())
+      // Use TransactionalBulkWriter if bulkTransactional config is enabled
+      val useTransactional = cosmosWriteConfig.bulkTransactional
+
+      if (useTransactional) {
+        new TransactionalBulkWriter(
+          container,
+          cosmosTargetContainerConfig,
+          partitionKeyDefinition,
+          cosmosWriteConfig,
+          diagnosticsConfig,
+          getOutputMetricsPublisher(),
+          commitAttempt.getAndIncrement())
+      } else {
+        new BulkWriter(
+          container,
+          cosmosTargetContainerConfig,
+          partitionKeyDefinition,
+          cosmosWriteConfig,
+          diagnosticsConfig,
+          getOutputMetricsPublisher(),
+          commitAttempt.getAndIncrement())
+      }
     } else {
       new PointWriter(
         container,
