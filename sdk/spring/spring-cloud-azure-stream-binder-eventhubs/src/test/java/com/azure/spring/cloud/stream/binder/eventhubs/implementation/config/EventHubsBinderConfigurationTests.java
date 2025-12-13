@@ -6,6 +6,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs.implementation.config;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
@@ -38,7 +39,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -295,28 +295,23 @@ public class EventHubsBinderConfigurationTests {
                 "spring.cloud.azure.eventhubs.credential.token-credential-bean-name=customTokenCredential"
             )
             .run(context -> {
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
                 TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
+                AzureEventHubsProperties props = context.getBean(AzureEventHubsProperties.class);
+                EventHubsProducerFactoryCustomizer customizer = context.getBean(EventHubsProducerFactoryCustomizer.class);
 
-                // Verify that the properties contain the correct credential bean name
-                AzureEventHubsProperties eventHubsProperties = context.getBean(AzureEventHubsProperties.class);
-                assertThat(eventHubsProperties).isNotNull();
-                assertThat(eventHubsProperties.getCredential()).isNotNull();
-                assertThat(eventHubsProperties.getCredential().getTokenCredentialBeanName())
-                    .as("The token-credential-bean-name property should be set to customTokenCredential")
-                    .isEqualTo("customTokenCredential");
+                // Create producer factory and apply customizer
+                DefaultEventHubsNamespaceProducerFactory producerFactory = new DefaultEventHubsNamespaceProducerFactory(
+                    context.getBean(NamespaceProperties.class));
+                customizer.customize(producerFactory);
 
-                // Verify the EventHubsProducerFactoryCustomizer is configured and can apply credential settings
-                assertThat(context).hasSingleBean(EventHubsProducerFactoryCustomizer.class);
-                EventHubsProducerFactoryCustomizer producerFactoryCustomizer =
-                    context.getBean(EventHubsProducerFactoryCustomizer.class);
-                assertThat(producerFactoryCustomizer).isNotNull();
+                // Validate credential resolution - without ApplicationContext propagation fix,
+                // tokenCredentialBeanName would be silently ignored
+                assertThat(resolveCredential(producerFactory, props))
+                    .isSameAs(customCredential);
 
-                // Verify it's the default customizer with token credential resolver
-                assertThat(producerFactoryCustomizer)
-                    .isInstanceOf(EventHubsBinderConfiguration.DefaultProducerFactoryCustomizer.class);
+                // Validate runtime producer creation
+                EventHubProducerAsyncClient producer = producerFactory.createProducer("test-eventhub");
+                producer.close();
             });
     }
 
@@ -333,59 +328,40 @@ public class EventHubsBinderConfigurationTests {
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubsMessageChannelBinder.class);
                 EventHubsMessageChannelBinder binder = context.getBean(EventHubsMessageChannelBinder.class);
-
                 TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                AzureEventHubsProperties eventHubsProperties = context.getBean(AzureEventHubsProperties.class);
+                AzureEventHubsProperties props = context.getBean(AzureEventHubsProperties.class);
 
-                // Test Producer Factory
-                // Verify that credential resolver is properly configured in the producer factory created by binder
+                // Get producer factory from binder
                 EventHubsTemplate eventHubsTemplate = ReflectionTestUtils.invokeMethod(binder, "getEventHubTemplate");
-                assertThat(eventHubsTemplate).isNotNull();
+                DefaultEventHubsNamespaceProducerFactory producerFactory =
+                    (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
 
-                DefaultEventHubsNamespaceProducerFactory producerFactory = (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
-                assertThat(producerFactory).isNotNull();
-
-                // Use reflection to access the tokenCredentialResolver field in producer factory
-                Field producerResolverField = producerFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                producerResolverField.setAccessible(true);
-                Object producerResolver = producerResolverField.get(producerFactory);
-                assertThat(producerResolver)
-                    .as("TokenCredentialResolver should be configured in the binder's producer factory")
-                    .isNotNull();
-
-                // Verify that producer resolver can resolve the custom credential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> typedProducerResolver =
-                    (AzureCredentialResolver<TokenCredential>) producerResolver;
-                TokenCredential producerResolvedCredential = typedProducerResolver.resolve(eventHubsProperties);
-                assertThat(producerResolvedCredential)
-                    .as("The resolved credential in binder's producer factory should be the customTokenCredential bean")
-                    .isSameAs(customCredential);
-
-                // Test Processor Factory
-                // Get the ProcessorFactory through reflection (it's created lazily in getProcessorFactory)
+                // Get processor factory from binder
                 Object processorFactory = ReflectionTestUtils.invokeMethod(binder, "getProcessorFactory");
-                assertThat(processorFactory).isNotNull();
 
-                // Use reflection to access the tokenCredentialResolver field in processor factory
-                Field processorResolverField = processorFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                processorResolverField.setAccessible(true);
-                Object processorResolver = processorResolverField.get(processorFactory);
-                assertThat(processorResolver)
-                    .as("TokenCredentialResolver should be configured in the binder's processor factory")
-                    .isNotNull();
-
-                // Verify that processor resolver can resolve the custom credential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> typedProcessorResolver =
-                    (AzureCredentialResolver<TokenCredential>) processorResolver;
-                TokenCredential processorResolvedCredential = typedProcessorResolver.resolve(eventHubsProperties);
-                assertThat(processorResolvedCredential)
-                    .as("The resolved credential in binder's processor factory should be the customTokenCredential bean")
+                // Validate credential resolution for both factories
+                assertThat(resolveCredential(producerFactory, props))
                     .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, props))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                EventHubProducerAsyncClient producer = producerFactory.createProducer("test-eventhub");
+                producer.close();
             });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureEventHubsProperties properties) {
+        try {
+            java.lang.reflect.Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+            field.setAccessible(true);
+            AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+            return resolver.resolve(properties);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Configuration

@@ -13,14 +13,17 @@ import com.azure.spring.cloud.resourcemanager.implementation.provisioning.Servic
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder;
+import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.implementation.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
+import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -273,28 +276,21 @@ class ServiceBusBinderConfigurationTests {
                 "spring.cloud.azure.servicebus.credential.token-credential-bean-name=customTokenCredential"
             )
             .run(context -> {
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
                 TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
-
-                // Verify that the properties contain the correct credential bean name
                 AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(serviceBusProperties).isNotNull();
-                assertThat(serviceBusProperties.getCredential()).isNotNull();
+
                 assertThat(serviceBusProperties.getCredential().getTokenCredentialBeanName())
-                    .as("The token-credential-bean-name property should be set to customTokenCredential")
                     .isEqualTo("customTokenCredential");
 
-                // Verify the ServiceBusProducerFactoryCustomizer is configured and can apply credential settings
-                assertThat(context).hasSingleBean(ServiceBusProducerFactoryCustomizer.class);
-                ServiceBusProducerFactoryCustomizer producerFactoryCustomizer =
-                    context.getBean(ServiceBusProducerFactoryCustomizer.class);
-                assertThat(producerFactoryCustomizer).isNotNull();
+                ServiceBusProducerFactoryCustomizer customizer = context.getBean(ServiceBusProducerFactoryCustomizer.class);
+                DefaultServiceBusNamespaceProducerFactory producerFactory =
+                    new DefaultServiceBusNamespaceProducerFactory(context.getBean(NamespaceProperties.class));
+                customizer.customize(producerFactory);
 
-                // Verify it's the default customizer with token credential resolver
-                assertThat(producerFactoryCustomizer)
-                    .isInstanceOf(ServiceBusBinderConfiguration.DefaultProducerFactoryCustomizer.class);
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                producerFactory.createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
             });
     }
 
@@ -309,69 +305,33 @@ class ServiceBusBinderConfigurationTests {
                 "spring.cloud.azure.servicebus.credential.token-credential-bean-name=customTokenCredential"
             )
             .run(context -> {
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
                 TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
-
-                // Verify that the binder is created
-                assertThat(context).hasSingleBean(ServiceBusMessageChannelBinder.class);
+                AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
                 ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
-                assertThat(binder).isNotNull();
 
-                // Test Producer Factory
-                // Get the ServiceBusTemplate through reflection (it's created lazily in getServiceBusTemplate)
                 Object serviceBusTemplate = ReflectionTestUtils.invokeMethod(binder, "getServiceBusTemplate");
-                assertThat(serviceBusTemplate).isNotNull();
-
-                // Get the producer factory from the template
                 Field producerFactoryField = serviceBusTemplate.getClass().getDeclaredField("producerFactory");
                 producerFactoryField.setAccessible(true);
                 Object producerFactory = producerFactoryField.get(serviceBusTemplate);
-                assertThat(producerFactory).isInstanceOf(DefaultServiceBusNamespaceProducerFactory.class);
 
-                // Verify tokenCredentialResolver is configured in the producer factory created by binder
-                Field producerTokenCredentialResolverField =
-                    producerFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                producerTokenCredentialResolverField.setAccessible(true);
-                Object producerTokenCredentialResolver = producerTokenCredentialResolverField.get(producerFactory);
-                assertThat(producerTokenCredentialResolver)
-                    .as("TokenCredentialResolver should be configured in the binder's producer factory")
-                    .isNotNull();
-
-                // Verify it resolves to the custom credential
-                AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> producerResolver =
-                    (AzureCredentialResolver<TokenCredential>) producerTokenCredentialResolver;
-                TokenCredential producerResolvedCredential = producerResolver.resolve(serviceBusProperties);
-                assertThat(producerResolvedCredential)
-                    .as("The resolved credential in binder's producer factory should be the customTokenCredential bean")
-                    .isSameAs(customCredential);
-
-                // Test Processor Factory
-                // Get the ProcessorFactory through reflection (it's created lazily in getProcessorFactory)
                 Object processorFactory = ReflectionTestUtils.invokeMethod(binder, "getProcessorFactory");
-                assertThat(processorFactory).isNotNull();
+                Assertions.assertNotNull(processorFactory);
 
-                // Verify tokenCredentialResolver is configured in the processor factory created by binder
-                Field processorTokenCredentialResolverField =
-                    processorFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                processorTokenCredentialResolverField.setAccessible(true);
-                Object processorTokenCredentialResolver = processorTokenCredentialResolverField.get(processorFactory);
-                assertThat(processorTokenCredentialResolver)
-                    .as("TokenCredentialResolver should be configured in the binder's processor factory")
-                    .isNotNull();
-
-                // Verify it resolves to the custom credential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> processorResolver =
-                    (AzureCredentialResolver<TokenCredential>) processorTokenCredentialResolver;
-                TokenCredential processorResolvedCredential = processorResolver.resolve(serviceBusProperties);
-                assertThat(processorResolvedCredential)
-                    .as("The resolved credential in binder's processor factory should be the customTokenCredential bean")
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
                     .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                ((ServiceBusProducerFactory) producerFactory).createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
             });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureServiceBusProperties properties) throws Exception {
+        Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+        field.setAccessible(true);
+        AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+        return resolver.resolve(properties);
     }
 
     @Configuration
