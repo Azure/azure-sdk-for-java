@@ -547,6 +547,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 
 unreleased_com.azure:azure-data-appconfiguration;1.9.0-beta.1
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
+unreleased_com.azure:azure-core-test;1.27.0-beta.14
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
