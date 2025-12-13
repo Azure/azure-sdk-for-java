@@ -3,22 +3,22 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ClientRegistrationCondition;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtBearerGrantRequestParametersConverter;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtClientAuthenticationParametersConverter;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOAuth2ClientAuthenticationJwkResolver;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOidcIdTokenDecoderFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.OAuth2ClientAuthenticationJwkResolver;
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadJwtBearerGrantRequestEntityConverter;
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadAzureDelegatedOAuth2AuthorizedClientProvider;
-import com.azure.spring.cloud.autoconfigure.implementation.aad.security.AadOidcIdTokenDecoderFactory;
-import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadProfileProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -27,16 +27,15 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultJwtBearerTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.OAuth2ClientCredentialsGrantRequestEntityConverter;
-import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequestEntityConverter;
+import org.springframework.security.oauth2.client.endpoint.RestClientClientCredentialsTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientJwtBearerTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.RestClientRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
+import org.springframework.web.client.RestClient;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
@@ -102,35 +101,30 @@ class AadOAuth2ClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @SuppressWarnings({"deprecation", "removal"})
     JwtBearerOAuth2AuthorizedClientProvider azureAdJwtBearerProvider(
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
-        DefaultJwtBearerTokenResponseClient client = new DefaultJwtBearerTokenResponseClient();
-        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
-        AadJwtBearerGrantRequestEntityConverter converter = new AadJwtBearerGrantRequestEntityConverter();
+        RestClientJwtBearerTokenResponseClient client = new RestClientJwtBearerTokenResponseClient();
+        client.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
+        client.addParametersConverter(new AadJwtBearerGrantRequestParametersConverter());
         if (resolver != null) {
-            converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
+            client.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
         }
-        client.setRequestEntityConverter(converter);
         provider.setAccessTokenResponseClient(client);
         return provider;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @SuppressWarnings({"deprecation", "removal"})
     RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
-        DefaultRefreshTokenTokenResponseClient client = new DefaultRefreshTokenTokenResponseClient();
-        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientRefreshTokenTokenResponseClient client = new RestClientRefreshTokenTokenResponseClient();
+        client.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         if (resolver != null) {
-            OAuth2RefreshTokenGrantRequestEntityConverter converter = new OAuth2RefreshTokenGrantRequestEntityConverter();
-            converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-            client.setRequestEntityConverter(converter);
+            client.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
         }
         provider.setAccessTokenResponseClient(client);
         return provider;
@@ -145,17 +139,13 @@ class AadOAuth2ClientConfiguration {
         return new AadOidcIdTokenDecoderFactory(endpoints.getJwkSetEndpoint(), createRestTemplate(restTemplateBuilder));
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
             OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
             OAuth2ClientAuthenticationJwkResolver resolver) {
-        DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
-        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientClientCredentialsTokenResponseClient client = new RestClientClientCredentialsTokenResponseClient();
+        client.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         if (resolver != null) {
-            OAuth2ClientCredentialsGrantRequestEntityConverter converter =
-                    new OAuth2ClientCredentialsGrantRequestEntityConverter();
-            converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-            client.setRequestEntityConverter(converter);
+            client.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
         }
         builder.accessTokenResponseClient(client);
     }

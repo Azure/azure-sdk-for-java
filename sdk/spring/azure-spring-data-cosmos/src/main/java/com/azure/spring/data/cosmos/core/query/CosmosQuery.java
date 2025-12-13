@@ -17,6 +17,7 @@ import java.util.Optional;
 /**
  * Class for cosmos query
  */
+@SuppressWarnings("deprecation")
 public class CosmosQuery {
 
     private final Criteria criteria;

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static com.azure.spring.cloud.core.implementation.connectionstring.ConnectionStringSegments.ENDPOINT;
 
 
+@SuppressWarnings("deprecation")
 class ConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionString.class);

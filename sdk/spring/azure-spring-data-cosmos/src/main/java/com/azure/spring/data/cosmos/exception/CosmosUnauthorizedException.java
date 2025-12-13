@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Unauthorized Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosUnauthorizedException extends CosmosAccessException {
 
     /**

@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.endpoint.RestClientAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.client.RestClient;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
@@ -74,10 +75,9 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * Initialize the SecurityBuilder.
      *
      * @param http the http
-     * @throws Exception failed to initialize SecurityBuilder
      */
     @Override
-    public void init(HttpSecurity http) throws Exception {
+    public void init(HttpSecurity http) {
         // @formatter:off
         http.logout(logout -> logout.logoutSuccessHandler(handler))
             .oauth2Login(oauth2 -> oauth2
@@ -92,14 +92,13 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      *
      * @return the access token response client
      */
-    @SuppressWarnings({"deprecation", "removal"})
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         if (accessTokenResponseClient != null) {
             return accessTokenResponseClient;
         }
-        DefaultAuthorizationCodeTokenResponseClient client = new DefaultAuthorizationCodeTokenResponseClient();
-        client.setRequestEntityConverter(new AadB2cOAuth2AuthorizationCodeGrantRequestEntityConverter());
-        client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
+        RestClientAuthorizationCodeTokenResponseClient client = new  RestClientAuthorizationCodeTokenResponseClient();
+        client.addHeadersConverter(new AadB2cOAuth2AuthorizationCodeGrantRequestHeadersConverter());
+        client.setRestClient(RestClient.create(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder)));
         return client;
     }
 }
