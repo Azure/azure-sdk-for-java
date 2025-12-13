@@ -12,24 +12,24 @@ public final class WorkloadNetworkDhcpServerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpServer model = BinaryData.fromString(
-            "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"ovqfzge\",\"leaseTime\":4588468813568796443,\"displayName\":\"uljltduceamtmcz\",\"segments\":[\"ejwcwwqiok\"],\"provisioningState\":\"Deleting\",\"revision\":6715076788595047640}")
+            "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"zeyqxtjjfzqlqhyc\",\"leaseTime\":5723107305457726776,\"displayName\":\"gxdbeesmie\",\"segments\":[\"ra\",\"iaa\",\"iuagydwqfbylyrfg\"],\"provisioningState\":\"Succeeded\",\"revision\":8406838682358606000}")
             .toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("uljltduceamtmcz", model.displayName());
-        Assertions.assertEquals(6715076788595047640L, model.revision());
-        Assertions.assertEquals("ovqfzge", model.serverAddress());
-        Assertions.assertEquals(4588468813568796443L, model.leaseTime());
+        Assertions.assertEquals("gxdbeesmie", model.displayName());
+        Assertions.assertEquals(8406838682358606000L, model.revision());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.serverAddress());
+        Assertions.assertEquals(5723107305457726776L, model.leaseTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpServer model = new WorkloadNetworkDhcpServer().withDisplayName("uljltduceamtmcz")
-            .withRevision(6715076788595047640L)
-            .withServerAddress("ovqfzge")
-            .withLeaseTime(4588468813568796443L);
+        WorkloadNetworkDhcpServer model = new WorkloadNetworkDhcpServer().withDisplayName("gxdbeesmie")
+            .withRevision(8406838682358606000L)
+            .withServerAddress("zeyqxtjjfzqlqhyc")
+            .withLeaseTime(5723107305457726776L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("uljltduceamtmcz", model.displayName());
-        Assertions.assertEquals(6715076788595047640L, model.revision());
-        Assertions.assertEquals("ovqfzge", model.serverAddress());
-        Assertions.assertEquals(4588468813568796443L, model.leaseTime());
+        Assertions.assertEquals("gxdbeesmie", model.displayName());
+        Assertions.assertEquals(8406838682358606000L, model.revision());
+        Assertions.assertEquals("zeyqxtjjfzqlqhyc", model.serverAddress());
+        Assertions.assertEquals(5723107305457726776L, model.leaseTime());
     }
 }
