@@ -19,16 +19,16 @@
 ```java
 import com.azure.resourcemanager.resourceconnector.models.AppliancePropertiesInfrastructureConfig;
 import com.azure.resourcemanager.resourceconnector.models.Distro;
+import com.azure.resourcemanager.resourceconnector.models.NetworkProfile;
 import com.azure.resourcemanager.resourceconnector.models.Provider;
+import com.azure.resourcemanager.resourceconnector.models.ProxyConfiguration;
 
 /**
  * Samples for Appliances CreateOrUpdate.
  */
 public final class AppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesCreate_Update.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesCreate_Update.json
      */
     /**
      * Sample code: Create/Update Appliance.
@@ -45,6 +45,28 @@ public final class AppliancesCreateOrUpdateSamples {
             .withInfrastructureConfig(new AppliancePropertiesInfrastructureConfig().withProvider(Provider.VMWARE))
             .create();
     }
+
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AppliancesUpdateProxy.json
+     */
+    /**
+     * Sample code: Update Appliance Proxy Configuration.
+     * 
+     * @param manager Entry point to ResourceConnectorManager.
+     */
+    public static void updateApplianceProxyConfiguration(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
+        manager.appliances()
+            .define("appliance01")
+            .withRegion("West US")
+            .withExistingResourceGroup("testresourcegroup")
+            .withDistro(Distro.AKSEDGE)
+            .withInfrastructureConfig(new AppliancePropertiesInfrastructureConfig().withProvider(Provider.VMWARE))
+            .withPublicKey("xxxxxxxx")
+            .withNetworkProfile(
+                new NetworkProfile().withProxyConfiguration(new ProxyConfiguration().withVersion("latest")))
+            .create();
+    }
 }
 ```
 
@@ -56,9 +78,7 @@ public final class AppliancesCreateOrUpdateSamples {
  */
 public final class AppliancesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesDelete.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesDelete.json
      */
     /**
      * Sample code: Delete Appliance.
@@ -79,9 +99,7 @@ public final class AppliancesDeleteSamples {
  */
 public final class AppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesGet.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesGet.json
      */
     /**
      * Sample code: Get Appliance.
@@ -103,9 +121,7 @@ public final class AppliancesGetByResourceGroupSamples {
  */
 public final class AppliancesGetTelemetryConfigSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * TelemetryConfig.json
+     * x-ms-original-file: 2025-03-01-preview/TelemetryConfig.json
      */
     /**
      * Sample code: GetTelemetryConfig Appliance.
@@ -127,9 +143,7 @@ public final class AppliancesGetTelemetryConfigSamples {
  */
 public final class AppliancesGetUpgradeGraphSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * UpgradeGraph.json
+     * x-ms-original-file: 2025-03-01-preview/UpgradeGraph.json
      */
     /**
      * Sample code: Get Appliance Upgrade Graph.
@@ -153,9 +167,7 @@ public final class AppliancesGetUpgradeGraphSamples {
  */
 public final class AppliancesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesListBySubscription.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesListBySubscription.json
      */
     /**
      * Sample code: List Appliances by subscription.
@@ -177,9 +189,7 @@ public final class AppliancesListSamples {
  */
 public final class AppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesListByResourceGroup.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesListByResourceGroup.json
      */
     /**
      * Sample code: List Appliances by resource group.
@@ -201,9 +211,7 @@ public final class AppliancesListByResourceGroupSamples {
  */
 public final class AppliancesListClusterUserCredentialSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesListClusterUserCredential.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesListClusterUserCredential.json
      */
     /**
      * Sample code: ListClusterUserCredentialAppliance.
@@ -227,9 +235,7 @@ public final class AppliancesListClusterUserCredentialSamples {
  */
 public final class AppliancesListKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesListKeys.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesListKeys.json
      */
     /**
      * Sample code: ListKeys Appliance.
@@ -251,9 +257,7 @@ public final class AppliancesListKeysSamples {
  */
 public final class AppliancesListOperationsSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesListOperations.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesListOperations.json
      */
     /**
      * Sample code: List Appliances operations.
@@ -279,9 +283,7 @@ import java.util.Map;
  */
 public final class AppliancesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/
-     * AppliancesPatch.json
+     * x-ms-original-file: 2025-03-01-preview/AppliancesPatch.json
      */
     /**
      * Sample code: Update Appliance.
