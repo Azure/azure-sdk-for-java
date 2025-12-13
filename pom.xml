@@ -66,6 +66,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contoso</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
