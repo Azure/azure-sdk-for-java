@@ -19,6 +19,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -212,6 +213,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     // test contains a data-plane call
     @DoNotRecord(skipInPlayback = true)
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     public void testBeginCreateWithFileShareVolume() {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
