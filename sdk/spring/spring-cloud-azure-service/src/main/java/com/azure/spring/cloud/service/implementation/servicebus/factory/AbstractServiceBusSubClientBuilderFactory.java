@@ -38,7 +38,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     private ServiceBusClientBuilder serviceBusClientBuilder;
     private final boolean shareServiceBusClientBuilder;
-    private ServiceBusClientBuilderFactory serviceBusClientBuilderFactory;
+    private final ServiceBusClientBuilderFactory serviceBusClientBuilderFactory;
 
     /**
      * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with the properties and the collection of
@@ -112,36 +112,33 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, ProxyOptions> consumeProxyOptions() {
         return (builder, proxy) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().proxyOptions(proxy);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected BiConsumer<T, AmqpTransportType> consumeAmqpTransportType() {
         return (builder, t) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().transportType(t);
-            }
+            // In non-shared mode, configuration is applied to serviceBusClientBuilderFactory
+            // which will be used when getServiceBusClientBuilder() is called
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions() {
         return (builder, retry) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().retryOptions(retry);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
         return (builder, client) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().clientOptions(client);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
@@ -174,35 +171,31 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {
         return (builder, configuration) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().configuration(configuration);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, credential) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().credential(credential);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
         return (builder, connectionString) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                getServiceBusClientBuilder().connectionString(connectionString);
-            }
+            // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+            // Skip direct configuration here to avoid duplicate calls
         };
     }
 
     @Override
     protected void configureService(T builder) {
-        if (!isShareServiceBusClientBuilder()) {
-            getServiceBusClientBuilder().fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
-        }
+        // In non-shared mode, configuration is applied by serviceBusClientBuilderFactory
+        // Skip direct configuration here to avoid duplicate calls
     }
 
     protected ServiceBusClientBuilder getServiceBusClientBuilder() {
