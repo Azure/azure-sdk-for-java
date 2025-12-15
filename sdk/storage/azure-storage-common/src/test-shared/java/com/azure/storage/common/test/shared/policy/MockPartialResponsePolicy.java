@@ -23,9 +23,26 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     static final HttpHeaderName RANGE_HEADER = HttpHeaderName.RANGE;
     private int tries;
     private final List<String> rangeHeaders = new ArrayList<>();
+    private final int maxBytesPerResponse;  // Maximum bytes to return before simulating timeout
 
+    /**
+     * Creates a MockPartialResponsePolicy that simulates network interruptions.
+     * 
+     * @param tries Number of times to simulate interruptions (0 = no interruptions)
+     */
     public MockPartialResponsePolicy(int tries) {
+        this(tries, 560);  // Default: return up to 560 bytes before interrupting (enough for 1 segment + header)
+    }
+
+    /**
+     * Creates a MockPartialResponsePolicy with configurable interruption behavior.
+     * 
+     * @param tries Number of times to simulate interruptions (0 = no interruptions)
+     * @param maxBytesPerResponse Maximum bytes to return in each interrupted response
+     */
+    public MockPartialResponsePolicy(int tries, int maxBytesPerResponse) {
         this.tries = tries;
+        this.maxBytesPerResponse = maxBytesPerResponse;
     }
 
     @Override
@@ -51,11 +68,53 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
-                //  Simulate partial response by taking only the first buffer from the stream and immediately
-                // throwing an error to simulate a network interruption. This tests smart retry behavior.
-                Flux<ByteBuffer> interruptedBody = response.getBody().take(1).concatWith(Flux.error(new IOException("Simulated timeout")));
+                // Simulate partial response by limiting the amount of data returned from the stream
+                // before throwing an IOException to simulate a network interruption.
+                // This tests smart retry behavior where downloads should resume from the last
+                // complete segment boundary after each interruption.
+                Flux<ByteBuffer> interruptedBody = limitAndInterruptStream(response.getBody(), maxBytesPerResponse);
                 return Mono.just(new MockDownloadHttpResponse(response, 206, interruptedBody));
             }
+        });
+    }
+
+    /**
+     * Limits a stream to return at most maxBytes before throwing an IOException.
+     */
+    private Flux<ByteBuffer> limitAndInterruptStream(Flux<ByteBuffer> body, int maxBytes) {
+        return Flux.defer(() -> {
+            final int[] bytesEmitted = new int[] {0};
+            return body.concatMap(buffer -> {
+                int remaining = maxBytes - bytesEmitted[0];
+                if (remaining <= 0) {
+                    // Already emitted enough bytes, throw error now
+                    return Flux.error(new IOException("Simulated timeout"));
+                }
+                
+                int bytesToEmit = Math.min(buffer.remaining(), remaining);
+                if (bytesToEmit < buffer.remaining()) {
+                    // Need to slice the buffer
+                    ByteBuffer limited = ByteBuffer.allocate(bytesToEmit);
+                    int originalLimit = buffer.limit();
+                    buffer.limit(buffer.position() + bytesToEmit);
+                    limited.put(buffer);
+                    buffer.limit(originalLimit);
+                    limited.flip();
+                    bytesEmitted[0] += bytesToEmit;
+                    // Emit the limited buffer, then error
+                    return Flux.just(limited).concatWith(Flux.error(new IOException("Simulated timeout")));
+                } else {
+                    // Emit the full buffer and continue
+                    bytesEmitted[0] += bytesToEmit;
+                    if (bytesEmitted[0] >= maxBytes) {
+                        // Reached the limit, emit this buffer then error
+                        return Flux.just(buffer).concatWith(Flux.error(new IOException("Simulated timeout")));
+                    }
+                    return Flux.just(buffer);
+                }
+            });
+        });
+    }
         });
     }
 
