@@ -22,6 +22,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     static final HttpHeaderName X_MS_RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
     static final HttpHeaderName RANGE_HEADER = HttpHeaderName.RANGE;
     private int tries;
+    private int triesUsed = 0;  // Track how many interruptions have occurred
     private final List<String> rangeHeaders = new ArrayList<>();
     private final int maxBytesPerResponse;  // Maximum bytes to return before simulating timeout
 
@@ -31,7 +32,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
      * @param tries Number of times to simulate interruptions (0 = no interruptions)
      */
     public MockPartialResponsePolicy(int tries) {
-        this(tries, 560);  // Default: return up to 560 bytes before interrupting (enough for 1 segment + header)
+        this(tries, 200);  // Default: return 200 bytes for subsequent interruptions (enables 3 interrupts with 1KB data)
     }
 
     /**
@@ -68,10 +69,25 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
+                this.triesUsed++;
+                
+                // Use variable byte limits per interruption to properly test smart retry:
+                // - First interruption: Return enough to complete at least one segment (for smart retry testing)
+                // - Subsequent interruptions: Return smaller amounts to exercise multiple retries
+                int byteLimitForThisRequest;
+                if (triesUsed == 1) {
+                    // First interruption: ensure first segment completes (543 bytes total for segment 1)
+                    // Return 560 bytes to be safe
+                    byteLimitForThisRequest = Math.max(maxBytesPerResponse, 560);
+                } else {
+                    // Subsequent interruptions: use configured limit (default 270 bytes)
+                    byteLimitForThisRequest = maxBytesPerResponse;
+                }
+                
                 // Don't use collectList() as it would consume the entire stream.
                 // Instead, manipulate the Flux directly to limit bytes before throwing error.
                 // This works correctly whether the body is encoded or decoded.
-                Flux<ByteBuffer> limitedBody = limitStreamToBytes(response.getBody(), maxBytesPerResponse);
+                Flux<ByteBuffer> limitedBody = limitStreamToBytes(response.getBody(), byteLimitForThisRequest);
                 return Mono.just(new MockDownloadHttpResponse(response, 206, limitedBody));
             }
         });
