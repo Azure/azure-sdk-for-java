@@ -105,7 +105,7 @@ public final class CosmosVectorIndexSpec {
      * @return the SpatialSpec.
      */
     public CosmosVectorIndexSpec setQuantizerType(QuantizerType quantizerType) {
-        if (quantizerType != null) {
+        if (validateIndexType(IndexProperty.QUANTIZER_TYPE) && quantizerType != null) {
             this.quantizerType = quantizerType;
             this.jsonSerializable.set(Constants.Properties.QUANTIZER_TYPE, quantizerType);
         } else {
@@ -223,7 +223,9 @@ public final class CosmosVectorIndexSpec {
 
     private Boolean validateIndexType(IndexProperty indexProperty) {
         String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) || (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEYS))) {
+        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) ||
+            (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEYS)) ||
+            (indexProperty.equals(IndexProperty.QUANTIZER_TYPE))) {
             return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }
