@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import java.util.HashMap;
@@ -18,21 +17,20 @@ public final class SolutionConfigurationUpdateTests {
         SolutionConfigurationUpdate model = BinaryData.fromString(
             "{\"properties\":{\"solutionType\":\"v\",\"solutionSettings\":{\"pfhyhl\":\"unqecanoae\",\"atuokthfuiu\":\"rpmopjmc\",\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\"}},\"id\":\"twhrdxwzywqsm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"}")
             .toObject(SolutionConfigurationUpdate.class);
-        Assertions.assertEquals("v", model.properties().solutionType());
+        Assertions.assertEquals("v", model.solutionType());
         Assertions.assertEquals("odsfcpkvxodpuozm",
-            model.properties().solutionSettings().additionalProperties().get("zydagfuaxbezyiuo"));
+            model.solutionSettings().additionalProperties().get("zydagfuaxbezyiuo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionConfigurationUpdate model = new SolutionConfigurationUpdate()
-            .withProperties(new SolutionConfigurationPropertiesUpdate().withSolutionType("v")
-                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
-                    mapOf("zydagfuaxbezyiuo", "odsfcpkvxodpuozm", "atuokthfuiu", "rpmopjmc", "pfhyhl", "unqecanoae"))));
+        SolutionConfigurationUpdate model = new SolutionConfigurationUpdate().withSolutionType("v")
+            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
+                mapOf("zydagfuaxbezyiuo", "odsfcpkvxodpuozm", "atuokthfuiu", "rpmopjmc", "pfhyhl", "unqecanoae")));
         model = BinaryData.fromObject(model).toObject(SolutionConfigurationUpdate.class);
-        Assertions.assertEquals("v", model.properties().solutionType());
+        Assertions.assertEquals("v", model.solutionType());
         Assertions.assertEquals("odsfcpkvxodpuozm",
-            model.properties().solutionSettings().additionalProperties().get("zydagfuaxbezyiuo"));
+            model.solutionSettings().additionalProperties().get("zydagfuaxbezyiuo"));
     }
 
     // Use "Map.of" if available

@@ -599,7 +599,6 @@ public final class PublicCloudConnectorsTestPermissionsSamples {
 ```java
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
-import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -624,8 +623,7 @@ public final class PublicCloudConnectorsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withProperties(new PublicCloudConnectorPropertiesUpdate()
-                .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("zrbtd"))))
+            .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("zrbtd")))
             .apply();
     }
 
@@ -951,7 +949,6 @@ public final class SolutionConfigurationsSyncNowSamples {
 
 ```java
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfiguration;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import java.util.HashMap;
 import java.util.Map;
@@ -974,8 +971,8 @@ public final class SolutionConfigurationsUpdateSamples {
             .getWithResponse("ymuj", "dxt", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new SolutionConfigurationPropertiesUpdate().withSolutionType("myzljlstvmgkp")
-                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf())))
+            .withSolutionType("myzljlstvmgkp")
+            .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf()))
             .apply();
     }
 

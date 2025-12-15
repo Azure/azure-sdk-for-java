@@ -6,7 +6,6 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
-import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,18 +19,18 @@ public final class PublicCloudConnectorUpdateTests {
             "{\"properties\":{\"awsCloudProfile\":{\"excludedAccounts\":[\"jxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"]}},\"tags\":{\"qajzyulpkudjkr\":\"btoqcjmkljavbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"hhbcsglummajtjao\",\"name\":\"xobnbdxkqpxok\",\"type\":\"jionpimexgstxgc\"}")
             .toObject(PublicCloudConnectorUpdate.class);
         Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("jxvsnbyxqabn", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("jxvsnbyxqabn", model.awsCloudProfile().excludedAccounts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicCloudConnectorUpdate model = new PublicCloudConnectorUpdate()
             .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
-            .withProperties(new PublicCloudConnectorPropertiesUpdate().withAwsCloudProfile(
-                new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("jxvsnbyxqabn", "ocpcy", "hurzafblj"))));
+            .withAwsCloudProfile(
+                new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("jxvsnbyxqabn", "ocpcy", "hurzafblj")));
         model = BinaryData.fromObject(model).toObject(PublicCloudConnectorUpdate.class);
         Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("jxvsnbyxqabn", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("jxvsnbyxqabn", model.awsCloudProfile().excludedAccounts().get(0));
     }
 
     // Use "Map.of" if available

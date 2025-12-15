@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import java.util.HashMap;
 import java.util.Map;
