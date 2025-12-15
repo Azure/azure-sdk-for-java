@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelInner model = BinaryData.fromString(
-            "{\"display\":{\"description\":\"pxebmnzbt\"},\"modelName\":\"jpglkfgohdne\",\"targetType\":\"lfphsdyhtozfikd\"}")
+        UsageModelInner model = BinaryData
+            .fromString(
+                "{\"display\":{\"description\":\"zxctobgb\"},\"modelName\":\"moizpos\",\"targetType\":\"grcfb\"}")
             .toObject(UsageModelInner.class);
-        Assertions.assertEquals("pxebmnzbt", model.display().description());
-        Assertions.assertEquals("jpglkfgohdne", model.modelName());
-        Assertions.assertEquals("lfphsdyhtozfikd", model.targetType());
+        Assertions.assertEquals("zxctobgb", model.display().description());
+        Assertions.assertEquals("moizpos", model.modelName());
+        Assertions.assertEquals("grcfb", model.targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageModelInner model = new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("pxebmnzbt"))
-            .withModelName("jpglkfgohdne")
-            .withTargetType("lfphsdyhtozfikd");
+        UsageModelInner model = new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("zxctobgb"))
+            .withModelName("moizpos")
+            .withTargetType("grcfb");
         model = BinaryData.fromObject(model).toObject(UsageModelInner.class);
-        Assertions.assertEquals("pxebmnzbt", model.display().description());
-        Assertions.assertEquals("jpglkfgohdne", model.modelName());
-        Assertions.assertEquals("lfphsdyhtozfikd", model.targetType());
+        Assertions.assertEquals("zxctobgb", model.display().description());
+        Assertions.assertEquals("moizpos", model.modelName());
+        Assertions.assertEquals("grcfb", model.targetType());
     }
 }

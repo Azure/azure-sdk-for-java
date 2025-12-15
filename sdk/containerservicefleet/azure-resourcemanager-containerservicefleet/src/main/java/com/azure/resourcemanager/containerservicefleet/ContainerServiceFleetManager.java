@@ -28,16 +28,20 @@ import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFl
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfileOperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetManagedNamespacesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.GatesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfiles;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaces;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
+import com.azure.resourcemanager.containerservicefleet.models.Gates;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -58,6 +62,10 @@ public final class ContainerServiceFleetManager {
     private Fleets fleets;
 
     private FleetMembers fleetMembers;
+
+    private FleetManagedNamespaces fleetManagedNamespaces;
+
+    private Gates gates;
 
     private UpdateRuns updateRuns;
 
@@ -317,6 +325,31 @@ public final class ContainerServiceFleetManager {
             this.fleetMembers = new FleetMembersImpl(clientObject.getFleetMembers(), this);
         }
         return fleetMembers;
+    }
+
+    /**
+     * Gets the resource collection API of FleetManagedNamespaces. It manages FleetManagedNamespace.
+     * 
+     * @return Resource collection API of FleetManagedNamespaces.
+     */
+    public FleetManagedNamespaces fleetManagedNamespaces() {
+        if (this.fleetManagedNamespaces == null) {
+            this.fleetManagedNamespaces
+                = new FleetManagedNamespacesImpl(clientObject.getFleetManagedNamespaces(), this);
+        }
+        return fleetManagedNamespaces;
+    }
+
+    /**
+     * Gets the resource collection API of Gates.
+     * 
+     * @return Resource collection API of Gates.
+     */
+    public Gates gates() {
+        if (this.gates == null) {
+            this.gates = new GatesImpl(clientObject.getGates(), this);
+        }
+        return gates;
     }
 
     /**

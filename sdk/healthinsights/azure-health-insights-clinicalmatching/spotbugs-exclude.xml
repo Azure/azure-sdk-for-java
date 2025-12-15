@@ -2,33 +2,4 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.health.insights.clinicalmatching.models.AreaGeometry" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrialMetadata" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrialRegistryFilter" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrials" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.PatientInfo" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.PatientRecord" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherData" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherInference" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherPatientResult" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherResult" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherResults" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.health.insights.clinicalmatching.ClinicalMatchingClientBuilder" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.AreaGeometry" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrialMetadata" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrialRegistryFilter" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.ClinicalTrials" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.PatientInfo" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.PatientRecord" />
-      <Class name="com.azure.health.insights.clinicalmatching.models.TrialMatcherData" />
-    </Or>
-  </Match>
 </FindBugsFilter>

@@ -3,17 +3,17 @@
 
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.List;
+
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePatternType;
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRangeType;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
-
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.util.List;
 
 public class RecurrenceEvaluator {
     /**

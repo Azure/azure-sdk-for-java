@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0 (2025-07-08)
 
 - Azure Resource Manager Hardware Security Modules client library for Java. This package contains Microsoft Azure SDK for Hardware Security Modules Management SDK. The Azure management API provides a RESTful set of web services that interact with Hardware Security Modules. Package api-version 2025-03-31. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

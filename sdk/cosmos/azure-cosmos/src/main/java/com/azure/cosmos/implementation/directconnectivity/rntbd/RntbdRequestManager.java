@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -83,7 +84,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClie
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 
@@ -234,7 +234,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             } else {
 
                 final IllegalStateException error = new IllegalStateException(
-                    lenientFormat("expected message of %s, not %s: %s",
+                    String.format("expected message of %s, not %s: %s",
                         RntbdResponse.class,
                         message.getClass(),
                         message));
@@ -427,8 +427,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     if (logger.isDebugEnabled()) {
                         logger.debug("SslHandshake completed, adding idleStateHandler");
                     }
-
-                    context.pipeline().addAfter(
+                    // in tls 1.3 it is possible several completion events are fired, so
+                    // we need to check if the handler already exists
+                    if (context.pipeline().get(IdleStateHandler.class.toString()) == null) {
+                        context.pipeline().addAfter(
                             SslHandler.class.toString(),
                             IdleStateHandler.class.toString(),
                             new IdleStateHandler(
@@ -436,6 +438,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                                 this.idleConnectionTimerResolutionInNanos,
                                 0,
                                 TimeUnit.NANOSECONDS));
+                    }
                 } else {
                     // Even if we do not capture here, the channel will still be closed properly,
                     // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
@@ -676,7 +679,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
-        final IllegalStateException error = new IllegalStateException(lenientFormat("message of %s: %s",
+        final IllegalStateException error = new IllegalStateException(String.format("message of %s: %s",
                 message.getClass(),
                 message));
 
@@ -916,7 +919,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             phrase = "closed exceptionally";
         }
 
-        final String message = lenientFormat("%s %s with %s pending requests", context, phrase, count);
+        final String message = String.format("%s %s with %s pending requests", context, phrase, count);
         final Exception cause;
 
         if (throwable instanceof ClosedChannelException) {
@@ -1079,6 +1082,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
                             cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            break;
+                        case SubStatusCodes.LEASE_NOT_FOUND:
+                            cause = new LeaseNotFoundException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
                             GoneException goneExceptionFromService =

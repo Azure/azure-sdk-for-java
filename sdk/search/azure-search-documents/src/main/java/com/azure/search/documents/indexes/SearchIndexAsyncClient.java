@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -26,7 +27,9 @@ import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
+import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -62,7 +65,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p>
  *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
- *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ *     independently of search indexes. Once uploaded, you can point any searchable field to the synonym map
+ *     (one per field).
  * </p>
  *
  * <p>
@@ -664,7 +668,7 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<String> listIndexNames() {
         try {
             return new PagedFlux<>(() -> withContext(context -> this.listIndexesWithResponse("name", context))
-                .map(MappingUtils::mappingPagingSearchIndexNames));
+                .map(MappingUtils::mapPagedSearchIndexNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -852,7 +856,7 @@ public final class SearchIndexAsyncClient {
         return restClient.getIndexes()
             .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingTokenInfo);
+            .map(MappingUtils::mapPagedTokenInfos);
     }
 
     /**
@@ -999,7 +1003,7 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<SynonymMap> listSynonymMaps() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse(null, context))
-                .map(MappingUtils::mappingPagingSynonymMap));
+                .map(MappingUtils::mapPagedSynonymMaps));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1025,7 +1029,7 @@ public final class SearchIndexAsyncClient {
     public PagedFlux<String> listSynonymMapNames() {
         try {
             return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse("name", context))
-                .map(MappingUtils::mappingPagingSynonymMapNames));
+                .map(MappingUtils::mapPagedSynonymMapNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1269,37 +1273,304 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
+     * Creates a new Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public Mono<SearchAlias> createAlias(SearchAlias alias) {
+        return createAliasWithResponse(alias).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias) {
+        return withContext(context -> createAliasWithResponse(alias, context));
+    }
+
+    Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias, Context context) {
+        try {
+            return restClient.getAliases().createWithResponseAsync(alias, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates or updates an Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias&#40;
+     *         new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
+     *     .flatMap&#40;searchAlias -&gt; &#123;
+     *         System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *             searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     *             Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
+     *     &#125;&#41;.subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @return the created or updated alias.
+     */
+    public Mono<SearchAlias> createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAliasWithResponse(alias, false).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates or updates an Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *         new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false&#41;
+     *     .flatMap&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     *         return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
+     *                 .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
+     *     &#125;&#41;.subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service
+     * @return the created or updated alias.
+     */
+    public Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged) {
+        if (alias == null) {
+            return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
+        }
+
+        return withContext(
+            context -> createOrUpdateAliasWithResponse(alias, onlyIfUnchanged ? alias.getETag() : null, context));
+    }
+
+    Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias, String eTag, Context context) {
+        try {
+            return restClient.getAliases()
+                .createOrUpdateWithResponseAsync(alias.getName(), alias, eTag, null, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Gets the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;
+     *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public Mono<SearchAlias> getAlias(String aliasName) {
+        return getAliasWithResponse(aliasName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public Mono<Response<SearchAlias>> getAliasWithResponse(String aliasName) {
+        return withContext(context -> getAliasWithResponse(aliasName, context));
+    }
+
+    Mono<Response<SearchAlias>> getAliasWithResponse(String aliasName, Context context) {
+        try {
+            return restClient.getAliases().getWithResponseAsync(aliasName, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Deletes the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;
+     *     .subscribe&#40;ignored -&gt; System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
+     *
+     * @param aliasName name of the alias to delete.
+     * @return a reactive response indicating deletion has completed.
+     */
+    public Mono<Void> deleteAlias(String aliasName) {
+        return withContext(context -> deleteAliasWithResponse(aliasName, null, context)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the Azure AI Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;
+     *     .flatMap&#40;searchAlias -&gt; SEARCH_INDEX_ASYNC_CLIENT.deleteAliasWithResponse&#40;searchAlias, true&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
+     *
+     * @param alias the alias to delete.
+     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service
+     * @return a reactive response indicating deletion has completed.
+     */
+    public Mono<Response<Void>> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged) {
+        if (alias == null) {
+            return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
+        }
+
+        return withContext(
+            context -> deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context));
+    }
+
+    Mono<Response<Void>> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
+        try {
+            return restClient.getAliases().deleteWithResponseAsync(aliasName, eTag, null, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists all aliases in the Azure AI Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
+     * <pre>
+     * SEARCH_INDEX_ASYNC_CLIENT.listAliases&#40;&#41;
+     *     .doOnNext&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedFlux<SearchAlias> listAliases() {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> restClient.getAliases().listSinglePageAsync(null, context)));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Creates a new agent.
-     * 
-     * @param knowledgeAgent The definition of the agent to create.
+     *
+     * @param knowledgeBase The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).map(Response::getValue);
+    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createKnowledgeBaseWithResponse(knowledgeBase).map(Response::getValue);
     }
 
     /**
      * Creates a new agent.
-     * 
-     * @param knowledgeAgent The definition of the agent to create.
+     *
+     * @param knowledgeBase The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent) {
-        return withContext(context -> createKnowledgeAgentWithResponse(knowledgeAgent, context));
+    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase) {
+        return withContext(context -> createKnowledgeBaseWithResponse(knowledgeBase, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
+    Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase, Context context) {
         try {
-            return restClient.getKnowledgeAgents()
-                .createWithResponseAsync(knowledgeAgent, null, context)
+            return restClient.getKnowledgeBases()
+                .createWithResponseAsync(knowledgeBase, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1308,51 +1579,43 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     *
+     * @param knowledgeBase The definition of the agent to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> createOrUpdateKnowledgeAgent(String agentName, KnowledgeAgent knowledgeAgent,
-        String ifMatch, String ifNoneMatch) {
-        return createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch, ifNoneMatch, Context.NONE)
-            .map(Response::getValue);
+    public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, null).map(Response::getValue);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
-     * 
-     * @param agentName The name of the agent to create or update.
-     * @param knowledgeAgent The definition of the agent to create or update.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     *
+     * @param knowledgeBase The definition of the agent to create or update.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> createOrUpdateKnowledgeAgentWithResponse(agentName, knowledgeAgent, ifMatch,
-            ifNoneMatch, context));
+    public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        MatchConditions matchConditions) {
+        return withContext(context -> createOrUpdateKnowledgeBaseWithResponse(knowledgeBase, matchConditions, context));
     }
 
-    Mono<Response<KnowledgeAgent>> createOrUpdateKnowledgeAgentWithResponse(String agentName,
-        KnowledgeAgent knowledgeAgent, String ifMatch, String ifNoneMatch, Context context) {
+    Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        MatchConditions matchConditions, Context context) {
         try {
-            return restClient.getKnowledgeAgents()
-                .createOrUpdateWithResponseAsync(agentName, knowledgeAgent, ifMatch, null, null, context)
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeBases()
+                .createOrUpdateWithResponseAsync(knowledgeBase.getName(), knowledgeBase, ifMatch, ifNoneMatch, null,
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1361,37 +1624,36 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Retrieves an agent definition.
-     * 
-     * @param agentName The name of the agent to retrieve.
+     *
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeAgent> getKnowledgeAgent(String agentName) {
-        return getKnowledgeAgentWithResponse(agentName, Context.NONE).map(Response::getValue);
-
+    public Mono<KnowledgeBase> getKnowledgeBase(String knowledgeBaseName) {
+        return getKnowledgeBaseWithResponse(knowledgeBaseName).map(Response::getValue);
     }
 
     /**
      * Retrieves an agent definition.
-     * 
-     * @param agentName The name of the agent to retrieve.
+     *
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeAgent>> getKnowledgeAgentWithResponse(String agentName) {
-        return withContext(context -> getKnowledgeAgentWithResponse(agentName, context));
+    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String knowledgeBaseName) {
+        return withContext(context -> getKnowledgeBaseWithResponse(knowledgeBaseName, context));
     }
 
-    Mono<Response<KnowledgeAgent>> getKnowledgeAgentWithResponse(String agentName, Context context) {
+    Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String knowledgeBaseName, Context context) {
         try {
-            return restClient.getKnowledgeAgents()
-                .getWithResponseAsync(agentName, null, context)
+            return restClient.getKnowledgeBases()
+                .getWithResponseAsync(knowledgeBaseName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1399,17 +1661,17 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all agents available for a search service.
-     * 
+     * Lists all knowledgebases available for a search service.
+     *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KnowledgeAgent> listKnowledgeAgents() {
+    public PagedFlux<KnowledgeBase> listKnowledgeBases() {
         try {
-            return restClient.getKnowledgeAgents().listAsync(null, Context.NONE);
+            return restClient.getKnowledgeBases().listAsync(null, Context.NONE);
         } catch (RuntimeException ex) {
             RuntimeException mappedException = (RuntimeException) MappingUtils.exceptionMapper(ex);
             return pagedFluxError(LOGGER, mappedException);
@@ -1418,50 +1680,229 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Deletes an existing agent.
-     * 
-     * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     *
+     * @param knowledgeBaseName The name of the agent to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeAgent(String agentName, String ifMatch, String ifNoneMatch) {
-        return deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, Context.NONE)
-            .flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteKnowledgeBase(String knowledgeBaseName) {
+        return deleteKnowledgeBaseWithResponse(knowledgeBaseName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an existing agent.
-     * 
-     * @param agentName The name of the agent to delete.
-     * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     * matches this value.
-     * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     * server does not match this value.
+     *
+     * @param knowledgeBaseName The name of the agent to delete.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch) {
-        return withContext(context -> deleteKnowledgeAgentWithResponse(agentName, ifMatch, ifNoneMatch, context));
+    public Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String knowledgeBaseName,
+        MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeBaseWithResponse(knowledgeBaseName, matchConditions, context));
     }
 
-    Mono<Response<Void>> deleteKnowledgeAgentWithResponse(String agentName, String ifMatch, String ifNoneMatch,
+    Mono<Response<Void>> deleteKnowledgeBaseWithResponse(String knowledgeBaseName, MatchConditions matchConditions,
         Context context) {
         try {
-            return restClient.getKnowledgeAgents()
-                .deleteWithResponseAsync(agentName, ifMatch, ifNoneMatch, null, context)
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeBases()
+                .deleteWithResponseAsync(knowledgeBaseName, ifMatch, ifNoneMatch, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
 
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> createKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createKnowledgeSourceWithResponse(knowledgeSource).map(Response::getValue);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce a {@link Response} containing the created knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource) {
+        return withContext(context -> createKnowledgeSourceWithResponse(knowledgeSource, context));
+    }
+
+    Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        Context context) {
+        try {
+            return restClient.getKnowledgeSources()
+                .createWithResponseAsync(knowledgeSource, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, null).map(Response::getValue);
+    }
+
+    /**
+     * Creates or updates a knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that produces a {@link Response} containing the created or updated knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions) {
+        return withContext(
+            context -> createOrUpdateKnowledgeSourceWithResponse(knowledgeSource, matchConditions, context));
+    }
+
+    Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions, Context context) {
+        try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeSources()
+                .createOrUpdateWithResponseAsync(knowledgeSource.getName(), knowledgeSource, ifMatch, ifNoneMatch, null,
+                    context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Retrieves a knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSource> getKnowledgeSource(String sourceName) {
+        return getKnowledgeSourceWithResponse(sourceName).map(Response::getValue);
+    }
+
+    /**
+     * Retrieves a knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that will produce a {@link Response} containing the retrieved knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String sourceName) {
+        return withContext(context -> getKnowledgeSourceWithResponse(sourceName, context));
+    }
+
+    Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String sourceName, Context context) {
+        try {
+            return restClient.getKnowledgeSources()
+                .getWithResponseAsync(sourceName, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link PagedFlux} of knowledge source.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KnowledgeSource> listKnowledgeSources() {
+        try {
+            return restClient.getKnowledgeSources().listAsync(null, Context.NONE);
+        } catch (RuntimeException ex) {
+            RuntimeException mappedException = (RuntimeException) MappingUtils.exceptionMapper(ex);
+            return pagedFluxError(LOGGER, mappedException);
+        }
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes successfully if the knowledge source was deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteKnowledgeSource(String sourceName) {
+        return deleteKnowledgeSourceWithResponse(sourceName, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param sourceName The name of the knowledge source to delete.
+     * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
+     * conditions will be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that produces a {@link Response} if the knowledge source was deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteKnowledgeSourceWithResponse(String sourceName, MatchConditions matchConditions) {
+        return withContext(context -> deleteKnowledgeSourceWithResponse(sourceName, matchConditions, context));
+    }
+
+    Mono<Response<Void>> deleteKnowledgeSourceWithResponse(String sourceName, MatchConditions matchConditions,
+        Context context) {
+        try {
+            String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
+            String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
+            return restClient.getKnowledgeSources()
+                .deleteWithResponseAsync(sourceName, ifMatch, ifNoneMatch, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 }

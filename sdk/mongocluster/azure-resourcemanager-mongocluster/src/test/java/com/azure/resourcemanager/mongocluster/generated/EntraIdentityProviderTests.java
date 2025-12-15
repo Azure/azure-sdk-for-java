@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EntraIdentityProviderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntraIdentityProvider model = BinaryData
-            .fromString("{\"type\":\"MicrosoftEntraID\",\"properties\":{\"principalType\":\"servicePrincipal\"}}")
-            .toObject(EntraIdentityProvider.class);
-        Assertions.assertEquals(EntraPrincipalType.SERVICE_PRINCIPAL, model.properties().principalType());
+        EntraIdentityProvider model
+            = BinaryData.fromString("{\"type\":\"MicrosoftEntraID\",\"properties\":{\"principalType\":\"user\"}}")
+                .toObject(EntraIdentityProvider.class);
+        Assertions.assertEquals(EntraPrincipalType.USER, model.properties().principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntraIdentityProvider model = new EntraIdentityProvider().withProperties(
-            new EntraIdentityProviderProperties().withPrincipalType(EntraPrincipalType.SERVICE_PRINCIPAL));
+        EntraIdentityProvider model = new EntraIdentityProvider()
+            .withProperties(new EntraIdentityProviderProperties().withPrincipalType(EntraPrincipalType.USER));
         model = BinaryData.fromObject(model).toObject(EntraIdentityProvider.class);
-        Assertions.assertEquals(EntraPrincipalType.SERVICE_PRINCIPAL, model.properties().principalType());
+        Assertions.assertEquals(EntraPrincipalType.USER, model.properties().principalType());
     }
 }

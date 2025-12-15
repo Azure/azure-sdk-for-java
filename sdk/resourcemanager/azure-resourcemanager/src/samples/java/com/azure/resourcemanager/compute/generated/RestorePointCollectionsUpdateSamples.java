@@ -15,7 +15,7 @@ import java.util.Map;
 public final class RestorePointCollectionsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
@@ -31,13 +31,13 @@ public final class RestorePointCollectionsUpdateSamples {
             .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate()
                 .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                com.azure.core.util.Context.NONE);
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withInstantAccess(true), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**

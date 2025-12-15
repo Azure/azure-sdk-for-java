@@ -15,35 +15,34 @@ public final class ManagedPrivateEndpointModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateLinkResourceId\":\"iwkuofos\",\"privateLinkResourceRegion\":\"hsauuimjmvxied\",\"groupIds\":[\"idyjrrfbyaosvexc\",\"onpc\"],\"requestMessage\":\"ocohslkevleg\",\"connectionState\":{\"status\":\"Disconnected\",\"description\":\"hfmvfaxkffe\"},\"privateLinkServiceUrl\":\"th\",\"privateLinkServicePrivateIP\":\"m\"},\"location\":\"yvshxmz\",\"tags\":{\"nspydptkoenkoukn\":\"zoggigrxwburvjxx\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"},\"id\":\"ntypmrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}")
+            "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"privateLinkResourceId\":\"ltrpmopj\",\"privateLinkResourceRegion\":\"matuok\",\"groupIds\":[\"uiuaodsfcpkvxodp\"],\"requestMessage\":\"zmyzydagf\",\"connectionState\":{\"status\":\"Pending\",\"description\":\"zyiuokk\"},\"privateLinkServiceUrl\":\"hrdxwzywqsmbs\",\"privateLinkServicePrivateIP\":\"exim\"},\"location\":\"yocf\",\"tags\":{\"mddystkiiux\":\"s\",\"o\":\"qyud\"},\"id\":\"rq\",\"name\":\"b\",\"type\":\"oczvy\"}")
             .toObject(ManagedPrivateEndpointModelInner.class);
-        Assertions.assertEquals("yvshxmz", model.location());
-        Assertions.assertEquals("zoggigrxwburvjxx", model.tags().get("nspydptkoenkoukn"));
-        Assertions.assertEquals("iwkuofos", model.privateLinkResourceId());
-        Assertions.assertEquals("hsauuimjmvxied", model.privateLinkResourceRegion());
-        Assertions.assertEquals("idyjrrfbyaosvexc", model.groupIds().get(0));
-        Assertions.assertEquals("ocohslkevleg", model.requestMessage());
-        Assertions.assertEquals("th", model.privateLinkServiceUrl());
+        Assertions.assertEquals("yocf", model.location());
+        Assertions.assertEquals("s", model.tags().get("mddystkiiux"));
+        Assertions.assertEquals("ltrpmopj", model.privateLinkResourceId());
+        Assertions.assertEquals("matuok", model.privateLinkResourceRegion());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.groupIds().get(0));
+        Assertions.assertEquals("zmyzydagf", model.requestMessage());
+        Assertions.assertEquals("hrdxwzywqsmbs", model.privateLinkServiceUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointModelInner model = new ManagedPrivateEndpointModelInner().withLocation("yvshxmz")
-            .withTags(
-                mapOf("nspydptkoenkoukn", "zoggigrxwburvjxx", "ngkpocipazy", "udwtiukbl", "gukgjnpiucgygevq", "o"))
-            .withPrivateLinkResourceId("iwkuofos")
-            .withPrivateLinkResourceRegion("hsauuimjmvxied")
-            .withGroupIds(Arrays.asList("idyjrrfbyaosvexc", "onpc"))
-            .withRequestMessage("ocohslkevleg")
-            .withPrivateLinkServiceUrl("th");
+        ManagedPrivateEndpointModelInner model = new ManagedPrivateEndpointModelInner().withLocation("yocf")
+            .withTags(mapOf("mddystkiiux", "s", "o", "qyud"))
+            .withPrivateLinkResourceId("ltrpmopj")
+            .withPrivateLinkResourceRegion("matuok")
+            .withGroupIds(Arrays.asList("uiuaodsfcpkvxodp"))
+            .withRequestMessage("zmyzydagf")
+            .withPrivateLinkServiceUrl("hrdxwzywqsmbs");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointModelInner.class);
-        Assertions.assertEquals("yvshxmz", model.location());
-        Assertions.assertEquals("zoggigrxwburvjxx", model.tags().get("nspydptkoenkoukn"));
-        Assertions.assertEquals("iwkuofos", model.privateLinkResourceId());
-        Assertions.assertEquals("hsauuimjmvxied", model.privateLinkResourceRegion());
-        Assertions.assertEquals("idyjrrfbyaosvexc", model.groupIds().get(0));
-        Assertions.assertEquals("ocohslkevleg", model.requestMessage());
-        Assertions.assertEquals("th", model.privateLinkServiceUrl());
+        Assertions.assertEquals("yocf", model.location());
+        Assertions.assertEquals("s", model.tags().get("mddystkiiux"));
+        Assertions.assertEquals("ltrpmopj", model.privateLinkResourceId());
+        Assertions.assertEquals("matuok", model.privateLinkResourceRegion());
+        Assertions.assertEquals("uiuaodsfcpkvxodp", model.groupIds().get(0));
+        Assertions.assertEquals("zmyzydagf", model.requestMessage());
+        Assertions.assertEquals("hrdxwzywqsmbs", model.privateLinkServiceUrl());
     }
 
     // Use "Map.of" if available

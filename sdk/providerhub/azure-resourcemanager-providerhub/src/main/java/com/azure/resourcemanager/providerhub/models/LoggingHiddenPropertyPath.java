@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public class LoggingHiddenPropertyPath implements JsonSerializable<LoggingHiddenPropertyPath> {
     /*
-     * The hiddenPathsOnRequest property.
+     * The hidden paths on request.
      */
     private List<String> hiddenPathsOnRequest;
 
     /*
-     * The hiddenPathsOnResponse property.
+     * The hidden paths on response.
      */
     private List<String> hiddenPathsOnResponse;
 
@@ -34,7 +34,7 @@ public class LoggingHiddenPropertyPath implements JsonSerializable<LoggingHidden
     }
 
     /**
-     * Get the hiddenPathsOnRequest property: The hiddenPathsOnRequest property.
+     * Get the hiddenPathsOnRequest property: The hidden paths on request.
      * 
      * @return the hiddenPathsOnRequest value.
      */
@@ -43,7 +43,7 @@ public class LoggingHiddenPropertyPath implements JsonSerializable<LoggingHidden
     }
 
     /**
-     * Set the hiddenPathsOnRequest property: The hiddenPathsOnRequest property.
+     * Set the hiddenPathsOnRequest property: The hidden paths on request.
      * 
      * @param hiddenPathsOnRequest the hiddenPathsOnRequest value to set.
      * @return the LoggingHiddenPropertyPath object itself.
@@ -54,7 +54,7 @@ public class LoggingHiddenPropertyPath implements JsonSerializable<LoggingHidden
     }
 
     /**
-     * Get the hiddenPathsOnResponse property: The hiddenPathsOnResponse property.
+     * Get the hiddenPathsOnResponse property: The hidden paths on response.
      * 
      * @return the hiddenPathsOnResponse value.
      */
@@ -63,7 +63,7 @@ public class LoggingHiddenPropertyPath implements JsonSerializable<LoggingHidden
     }
 
     /**
-     * Set the hiddenPathsOnResponse property: The hiddenPathsOnResponse property.
+     * Set the hiddenPathsOnResponse property: The hidden paths on response.
      * 
      * @param hiddenPathsOnResponse the hiddenPathsOnResponse value to set.
      * @return the LoggingHiddenPropertyPath object itself.

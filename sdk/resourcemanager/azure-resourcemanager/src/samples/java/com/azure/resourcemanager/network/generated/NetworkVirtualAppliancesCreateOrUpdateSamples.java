@@ -12,6 +12,9 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NicTypeInRequest;
+import com.azure.resourcemanager.network.models.NvaInVnetSubnetReferenceProperties;
+import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
+import com.azure.resourcemanager.network.models.NvaNicType;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceIpConfiguration;
@@ -28,7 +31,126 @@ import java.util.Map;
  */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * NetworkVirtualApplianceVnetAdditionalPublicPut.json
+     */
+    /**
+     * Sample code: Create NVA in VNet with PrivateNic, PublicNic &amp; AdditionalPublicNic.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNVAInVNetWithPrivateNicPublicNicAdditionalPublicNic(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .createOrUpdate("rg1", "nva", new NetworkVirtualApplianceInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN")
+                    .withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("latest"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
+                    .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withType(Arrays.asList(NvaNicType.PRIVATE_NIC))
+                    .withName("dataInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet2"))
+                        .withType(Arrays.asList(NvaNicType.PUBLIC_NIC))
+                        .withName("managementInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet3"))
+                        .withType(Arrays.asList(NvaNicType.ADDITIONAL_PUBLIC_NIC))
+                        .withName("myAdditionalPublicInterface"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * NetworkVirtualApplianceVnetNetworkProfilePut.json
+     */
+    /**
+     * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic, including NetworkProfile.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNVAInVNetWithPrivateNicPublicNicIncludingNetworkProfile(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .createOrUpdate("rg1", "nva", new NetworkVirtualApplianceInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN")
+                    .withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("latest"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withNetworkProfile(
+                    new NetworkVirtualAppliancePropertiesFormatNetworkProfile()
+                        .withNetworkInterfaceConfigurations(
+                            Arrays
+                                .asList(
+                                    new VirtualApplianceNetworkInterfaceConfiguration()
+                                        .withNicType(NicTypeInRequest.PUBLIC_NIC)
+                                        .withProperties(
+                                            new VirtualApplianceNetworkInterfaceConfigurationProperties()
+                                                .withIpConfigurations(Arrays.asList(
+                                                    new VirtualApplianceIpConfiguration()
+                                                        .withName("myPrimaryPublicIpConfig")
+                                                        .withProperties(new VirtualApplianceIpConfigurationProperties()
+                                                            .withPrimary(true)),
+                                                    new VirtualApplianceIpConfiguration()
+                                                        .withName("myNonPrimaryPublicIpConfig")
+                                                        .withProperties(new VirtualApplianceIpConfigurationProperties()
+                                                            .withPrimary(false))))),
+                                    new VirtualApplianceNetworkInterfaceConfiguration()
+                                        .withNicType(NicTypeInRequest.PRIVATE_NIC)
+                                        .withProperties(new VirtualApplianceNetworkInterfaceConfigurationProperties()
+                                            .withIpConfigurations(Arrays.asList(
+                                                new VirtualApplianceIpConfiguration()
+                                                    .withName("myPrimaryPrivateIpConfig")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
+                                                        .withPrimary(true)),
+                                                new VirtualApplianceIpConfiguration()
+                                                    .withName("myNonPrimaryPrivateIpConfig")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
+                                                        .withPrimary(false))))))))
+                .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
+                    .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withType(Arrays.asList(NvaNicType.PRIVATE_NIC))
+                    .withName("dataInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet2"))
+                        .withType(Arrays.asList(NvaNicType.PUBLIC_NIC))
+                        .withName("managementInterface"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * NetworkVirtualApplianceSaaSPut.json
      */
     /**
@@ -51,8 +173,140 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+     */
+    /**
+     * Sample code: Create NVA in VNet with PrivateNic, PublicNic &amp; AdditionalPrivateNic.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNVAInVNetWithPrivateNicPublicNicAdditionalPrivateNic(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .createOrUpdate("rg1", "nva", new NetworkVirtualApplianceInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN")
+                    .withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("latest"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
+                    .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withType(Arrays.asList(NvaNicType.PRIVATE_NIC))
+                    .withName("dataInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet2"))
+                        .withType(Arrays.asList(NvaNicType.PUBLIC_NIC))
+                        .withName("managementInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet3"))
+                        .withType(Arrays.asList(NvaNicType.ADDITIONAL_PRIVATE_NIC))
+                        .withName("myAdditionalInterface"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * NetworkVirtualApplianceVnetIngressPut.json
+     */
+    /**
+     * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic, including Internet-Ingress.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNVAInVNetWithPrivateNicPublicNicIncludingInternetIngress(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .createOrUpdate("rg1", "nva", new NetworkVirtualApplianceInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN")
+                    .withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("latest"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withInternetIngressPublicIps(Arrays.asList(new InternetIngressPublicIpsProperties().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/slbip")))
+                .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
+                    .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withType(Arrays.asList(NvaNicType.PRIVATE_NIC))
+                    .withName("dataInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet2"))
+                        .withType(Arrays.asList(NvaNicType.PUBLIC_NIC))
+                        .withName("managementInterface"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * NetworkVirtualApplianceVnetBasicPut.json
+     */
+    /**
+     * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createNVAInVNetWithPrivateNicPublicNic(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .createOrUpdate("rg1", "nva", new NetworkVirtualApplianceInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN")
+                    .withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("latest"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
+                    .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withType(Arrays.asList(NvaNicType.PRIVATE_NIC))
+                    .withName("dataInterface"),
+                    new NvaInterfaceConfigurationsProperties()
+                        .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
+                            "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet2"))
+                        .withType(Arrays.asList(NvaNicType.PUBLIC_NIC))
+                        .withName("managementInterface"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkVirtualAppliancePut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualAppliancePut.
      * json
      */
     /**

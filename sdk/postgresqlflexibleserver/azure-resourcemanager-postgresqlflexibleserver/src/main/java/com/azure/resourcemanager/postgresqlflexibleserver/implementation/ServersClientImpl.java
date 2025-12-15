@@ -38,8 +38,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForUpdate;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -73,13 +73,13 @@ public final class ServersClientImpl implements ServersClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientServers")
     public interface ServersService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @BodyParam("application/json") ServerInner parameters, @HeaderParam("Accept") String accept,
@@ -87,9 +87,9 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
-        @ExpectedResponses({ 200, 201, 202 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> createSync(@HostParam("$host") String endpoint,
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @BodyParam("application/json") ServerInner parameters, @HeaderParam("Accept") String accept,
@@ -102,7 +102,7 @@ public final class ServersClientImpl implements ServersClient {
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @BodyParam("application/json") ServerForUpdate parameters, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ServerForPatch parameters, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -112,12 +112,12 @@ public final class ServersClientImpl implements ServersClient {
         Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @BodyParam("application/json") ServerForUpdate parameters, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ServerForPatch parameters, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -126,7 +126,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -155,7 +155,7 @@ public final class ServersClientImpl implements ServersClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+        Mono<Response<ServerList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -164,7 +164,7 @@ public final class ServersClientImpl implements ServersClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+        Response<ServerList> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -173,7 +173,7 @@ public final class ServersClientImpl implements ServersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<ServerList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -181,13 +181,12 @@ public final class ServersClientImpl implements ServersClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/flexibleServers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerListResult> listSync(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<ServerList> listSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/restart")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -197,7 +196,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/restart")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> restartSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -207,7 +206,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/start")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -216,7 +215,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/start")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> startSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -225,7 +224,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/stop")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -234,7 +233,7 @@ public final class ServersClientImpl implements ServersClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/stop")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> stopSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -245,7 +244,7 @@ public final class ServersClientImpl implements ServersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerListResult>> listByResourceGroupNext(
+        Mono<Response<ServerList>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -253,22 +252,22 @@ public final class ServersClientImpl implements ServersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerListResult> listByResourceGroupNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<ServerList> listByResourceGroupNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<ServerList>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ServerList> listBySubscriptionNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -277,14 +276,14 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         ServerInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -308,7 +307,7 @@ public final class ServersClientImpl implements ServersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -318,14 +317,14 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response}.
+     * @return properties of a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         ServerInner parameters) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -352,7 +351,7 @@ public final class ServersClientImpl implements ServersClient {
             parameters.validate();
         }
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, Context.NONE);
     }
 
@@ -361,16 +360,16 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response}.
+     * @return properties of a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName, ServerInner parameters,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        ServerInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -396,7 +395,7 @@ public final class ServersClientImpl implements ServersClient {
             parameters.validate();
         }
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, serverName, parameters, accept, context);
     }
 
@@ -405,16 +404,17 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a server.
+     * @return the {@link PollerFlux} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(String resourceGroupName,
+    public PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String serverName, ServerInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, serverName, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, parameters);
         return this.client.<ServerInner, ServerInner>getLroResult(mono, this.client.getHttpPipeline(),
             ServerInner.class, ServerInner.class, this.client.getContext());
     }
@@ -424,16 +424,16 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
-        ServerInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, serverName, parameters);
+    public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, ServerInner parameters) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, serverName, parameters);
         return this.client.<ServerInner, ServerInner>getLroResult(response, ServerInner.class, ServerInner.class,
             Context.NONE);
     }
@@ -443,17 +443,17 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
-        ServerInner parameters, Context context) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, serverName, parameters, context);
+    public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, ServerInner parameters, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, serverName, parameters, context);
         return this.client.<ServerInner, ServerInner>getLroResult(response, ServerInner.class, ServerInner.class,
             context);
     }
@@ -463,15 +463,15 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server on successful completion of {@link Mono}.
+     * @return properties of a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerInner> createAsync(String resourceGroupName, String serverName, ServerInner parameters) {
-        return beginCreateAsync(resourceGroupName, serverName, parameters).last()
+    public Mono<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -480,15 +480,15 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerInner create(String resourceGroupName, String serverName, ServerInner parameters) {
-        return beginCreate(resourceGroupName, serverName, parameters).getFinalResult();
+    public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters) {
+        return beginCreateOrUpdate(resourceGroupName, serverName, parameters).getFinalResult();
     }
 
     /**
@@ -496,33 +496,34 @@ public final class ServersClientImpl implements ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerInner create(String resourceGroupName, String serverName, ServerInner parameters, Context context) {
-        return beginCreate(resourceGroupName, serverName, parameters, context).getFinalResult();
+    public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters,
+        Context context) {
+        return beginCreateOrUpdate(resourceGroupName, serverName, parameters, context).getFinalResult();
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
-        ServerForUpdate parameters) {
+        ServerForPatch parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -551,20 +552,20 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response}.
+     * @return properties of a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
-        ServerForUpdate parameters) {
+        ServerForPatch parameters) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -595,21 +596,21 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response}.
+     * @return properties of a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
-        ServerForUpdate parameters, Context context) {
+        ServerForPatch parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -640,122 +641,121 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a server.
+     * @return the {@link PollerFlux} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(String resourceGroupName,
-        String serverName, ServerForUpdate parameters) {
+        String serverName, ServerForPatch parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serverName, parameters);
         return this.client.<ServerInner, ServerInner>getLroResult(mono, this.client.getHttpPipeline(),
             ServerInner.class, ServerInner.class, this.client.getContext());
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
-        ServerForUpdate parameters) {
+        ServerForPatch parameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, serverName, parameters);
         return this.client.<ServerInner, ServerInner>getLroResult(response, ServerInner.class, ServerInner.class,
             Context.NONE);
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
-        ServerForUpdate parameters, Context context) {
+        ServerForPatch parameters, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, serverName, parameters, context);
         return this.client.<ServerInner, ServerInner>getLroResult(response, ServerInner.class, ServerInner.class,
             context);
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server on successful completion of {@link Mono}.
+     * @return properties of a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForUpdate parameters) {
+    public Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForPatch parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerInner update(String resourceGroupName, String serverName, ServerForUpdate parameters) {
+    public ServerInner update(String resourceGroupName, String serverName, ServerForPatch parameters) {
         return beginUpdate(resourceGroupName, serverName, parameters).getFinalResult();
     }
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerInner update(String resourceGroupName, String serverName, ServerForUpdate parameters,
-        Context context) {
+    public ServerInner update(String resourceGroupName, String serverName, ServerForPatch parameters, Context context) {
         return beginUpdate(resourceGroupName, serverName, parameters, context).getFinalResult();
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -789,7 +789,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -824,7 +824,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -860,7 +860,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -877,7 +877,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -893,7 +893,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -911,7 +911,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -926,7 +926,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -940,7 +940,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -955,14 +955,15 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about an existing server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -990,14 +991,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server on successful completion of {@link Mono}.
+     * @return information about an existing server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
@@ -1006,7 +1007,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1014,7 +1015,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response}.
+     * @return information about an existing server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName,
@@ -1043,14 +1044,14 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about an existing server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
@@ -1058,7 +1059,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1090,7 +1091,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1105,7 +1106,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1130,14 +1131,14 @@ public final class ServersClientImpl implements ServersClient {
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<ServerList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1163,14 +1164,14 @@ public final class ServersClientImpl implements ServersClient {
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+        Response<ServerList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1185,7 +1186,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -1201,7 +1202,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1227,7 +1228,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1235,11 +1236,12 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1258,14 +1260,14 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<ServerList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1286,14 +1288,14 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+        Response<ServerList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1301,11 +1303,11 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1315,15 +1317,16 @@ public final class ServersClientImpl implements ServersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1358,11 +1361,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1398,11 +1401,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1439,11 +1442,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1458,7 +1461,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1476,11 +1479,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1494,7 +1497,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1511,11 +1514,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1530,11 +1533,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1547,7 +1550,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1564,7 +1567,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1579,11 +1582,11 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1595,7 +1598,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1629,7 +1632,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1664,7 +1667,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1700,7 +1703,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1717,7 +1720,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1733,7 +1736,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1750,7 +1753,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1765,7 +1768,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -1779,7 +1782,7 @@ public final class ServersClientImpl implements ServersClient {
     }
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -2040,7 +2043,7 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res
+        Response<ServerList> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -2068,7 +2071,7 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res
+        Response<ServerList> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -2084,7 +2087,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return a list of servers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ServerInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2093,7 +2096,9 @@ public final class ServersClientImpl implements ServersClient {
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2109,7 +2114,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return a list of servers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerInner> listNextSinglePage(String nextLink) {
+    private PagedResponse<ServerInner> listBySubscriptionNextSinglePage(String nextLink) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -2120,8 +2125,8 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<ServerList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -2137,7 +2142,7 @@ public final class ServersClientImpl implements ServersClient {
      * @return a list of servers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ServerInner> listNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<ServerInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -2148,7 +2153,8 @@ public final class ServersClientImpl implements ServersClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<ServerList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

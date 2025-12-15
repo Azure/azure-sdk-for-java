@@ -65,7 +65,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientProjectCapabilityHosts")
     public interface ProjectCapabilityHostsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}")
@@ -115,8 +115,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("projectName") String projectName, @PathParam("capabilityHostName") String capabilityHostname,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CapabilityHostInner body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CapabilityHostInner capabilityHost, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}")
@@ -126,8 +127,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("projectName") String projectName, @PathParam("capabilityHostName") String capabilityHostname,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") CapabilityHostInner body,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CapabilityHostInner capabilityHost, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -520,7 +522,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -529,7 +531,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String accountName, String projectName, String capabilityHostname, CapabilityHostInner body) {
+        String accountName, String projectName, String capabilityHostname, CapabilityHostInner capabilityHost) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -552,16 +554,16 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             return Mono
                 .error(new IllegalArgumentException("Parameter capabilityHostname is required and cannot be null."));
         }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        if (capabilityHost == null) {
+            return Mono.error(new IllegalArgumentException("Parameter capabilityHost is required and cannot be null."));
         } else {
-            body.validate();
+            capabilityHost.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, projectName, capabilityHostname, this.client.getApiVersion(), body,
-                accept, context))
+                resourceGroupName, accountName, projectName, capabilityHostname, this.client.getApiVersion(),
+                capabilityHost, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -572,7 +574,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,7 +582,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
-        String projectName, String capabilityHostname, CapabilityHostInner body) {
+        String projectName, String capabilityHostname, CapabilityHostInner capabilityHost) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -607,14 +609,16 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capabilityHostname is required and cannot be null."));
         }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        if (capabilityHost == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter capabilityHost is required and cannot be null."));
         } else {
-            body.validate();
+            capabilityHost.validate();
         }
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, projectName, capabilityHostname, this.client.getApiVersion(), body, accept, Context.NONE);
+            accountName, projectName, capabilityHostname, this.client.getApiVersion(), capabilityHost, accept,
+            Context.NONE);
     }
 
     /**
@@ -624,7 +628,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -633,7 +637,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
-        String projectName, String capabilityHostname, CapabilityHostInner body, Context context) {
+        String projectName, String capabilityHostname, CapabilityHostInner capabilityHost, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -660,14 +664,15 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter capabilityHostname is required and cannot be null."));
         }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        if (capabilityHost == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter capabilityHost is required and cannot be null."));
         } else {
-            body.validate();
+            capabilityHost.validate();
         }
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, projectName, capabilityHostname, this.client.getApiVersion(), body, accept, context);
+            accountName, projectName, capabilityHostname, this.client.getApiVersion(), capabilityHost, accept, context);
     }
 
     /**
@@ -677,7 +682,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -686,9 +691,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, String projectName, String capabilityHostname,
-        CapabilityHostInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, projectName, capabilityHostname, body);
+        CapabilityHostInner capabilityHost) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            projectName, capabilityHostname, capabilityHost);
         return this.client.<CapabilityHostInner, CapabilityHostInner>getLroResult(mono, this.client.getHttpPipeline(),
             CapabilityHostInner.class, CapabilityHostInner.class, this.client.getContext());
     }
@@ -700,7 +705,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -709,9 +714,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String capabilityHostname,
-        CapabilityHostInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, projectName, capabilityHostname, body);
+        CapabilityHostInner capabilityHost) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName, projectName,
+            capabilityHostname, capabilityHost);
         return this.client.<CapabilityHostInner, CapabilityHostInner>getLroResult(response, CapabilityHostInner.class,
             CapabilityHostInner.class, Context.NONE);
     }
@@ -723,7 +728,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -733,9 +738,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapabilityHostInner>, CapabilityHostInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String projectName, String capabilityHostname,
-        CapabilityHostInner body, Context context) {
+        CapabilityHostInner capabilityHost, Context context) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, accountName, projectName,
-            capabilityHostname, body, context);
+            capabilityHostname, capabilityHost, context);
         return this.client.<CapabilityHostInner, CapabilityHostInner>getLroResult(response, CapabilityHostInner.class,
             CapabilityHostInner.class, context);
     }
@@ -747,7 +752,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,8 +760,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CapabilityHostInner> createOrUpdateAsync(String resourceGroupName, String accountName,
-        String projectName, String capabilityHostname, CapabilityHostInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, projectName, capabilityHostname, body).last()
+        String projectName, String capabilityHostname, CapabilityHostInner capabilityHost) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, projectName, capabilityHostname, capabilityHost)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -767,7 +773,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,8 +781,8 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, body)
+        String capabilityHostname, CapabilityHostInner capabilityHost) {
+        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, capabilityHost)
             .getFinalResult();
     }
 
@@ -787,7 +793,7 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      * @param accountName The name of Cognitive Services account.
      * @param projectName The name of Cognitive Services account's project.
      * @param capabilityHostname The name of the capability host associated with the Cognitive Services Resource.
-     * @param body CapabilityHost definition.
+     * @param capabilityHost CapabilityHost definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -796,9 +802,9 @@ public final class ProjectCapabilityHostsClientImpl implements ProjectCapability
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityHostInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
-        String capabilityHostname, CapabilityHostInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, body, context)
-            .getFinalResult();
+        String capabilityHostname, CapabilityHostInner capabilityHost, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, capabilityHostname, capabilityHost,
+            context).getFinalResult();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProjectCapabilityHostsClientImpl.class);

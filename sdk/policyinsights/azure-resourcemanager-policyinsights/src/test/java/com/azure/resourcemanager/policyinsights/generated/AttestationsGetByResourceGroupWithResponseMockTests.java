@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Attestation;
@@ -22,27 +22,27 @@ public final class AttestationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"szfqbokndwpppqw\",\"policyDefinitionReferenceId\":\"oevzzufytdxmly\",\"complianceState\":\"Unknown\",\"expiresOn\":\"2021-06-04T19:17:10Z\",\"owner\":\"pbkrbuogg\",\"comments\":\"ltlcuhaizijva\",\"evidence\":[{\"description\":\"ohlpsftqkr\",\"sourceUri\":\"hvbvvcpwtqsus\"},{\"description\":\"hmz\",\"sourceUri\":\"ffetevrnt\"},{\"description\":\"nwacycsy\",\"sourceUri\":\"ctkhfh\"},{\"description\":\"atvcsxr\",\"sourceUri\":\"nmizhv\"}],\"provisioningState\":\"hqqwcubl\",\"lastComplianceStateChangeAt\":\"2021-11-13T20:19:27Z\",\"assessmentDate\":\"2021-10-20T20:06:40Z\",\"metadata\":\"dataobzgott\"},\"id\":\"sadzighmmtb\",\"name\":\"dvucfvvra\",\"type\":\"beurdeewl\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"wofxxdplrel\",\"policyDefinitionReferenceId\":\"vga\",\"complianceState\":\"NonCompliant\",\"expiresOn\":\"2021-03-17T20:01:53Z\",\"owner\":\"lbpxrhrfjenrazwe\",\"comments\":\"ktlhqash\",\"evidence\":[{\"description\":\"jixy\",\"sourceUri\":\"ecigzzdwjta\"},{\"description\":\"vvtdpcbpzf\",\"sourceUri\":\"csaugbrhfiwltkfy\"},{\"description\":\"ntethklxw\",\"sourceUri\":\"vasyyhgqok\"},{\"description\":\"msrkixyxxhwrlq\",\"sourceUri\":\"aqsy\"}],\"provisioningState\":\"pzzbrwn\",\"lastComplianceStateChangeAt\":\"2021-11-26T19:47:01Z\",\"assessmentDate\":\"2021-09-17T06:25:17Z\",\"metadata\":\"dataagysokl\"},\"id\":\"ksybvrrbnhylsb\",\"name\":\"ujcy\",\"type\":\"yllm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Attestation response = manager.attestations()
-            .getByResourceGroupWithResponse("hjaozvbwfcn", "hbpoelhscmyhrhj", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("a", "jttwykoxv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("szfqbokndwpppqw", response.policyAssignmentId());
-        Assertions.assertEquals("oevzzufytdxmly", response.policyDefinitionReferenceId());
-        Assertions.assertEquals(ComplianceState.UNKNOWN, response.complianceState());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T19:17:10Z"), response.expiresOn());
-        Assertions.assertEquals("pbkrbuogg", response.owner());
-        Assertions.assertEquals("ltlcuhaizijva", response.comments());
-        Assertions.assertEquals("ohlpsftqkr", response.evidence().get(0).description());
-        Assertions.assertEquals("hvbvvcpwtqsus", response.evidence().get(0).sourceUri());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T20:06:40Z"), response.assessmentDate());
+        Assertions.assertEquals("wofxxdplrel", response.policyAssignmentId());
+        Assertions.assertEquals("vga", response.policyDefinitionReferenceId());
+        Assertions.assertEquals(ComplianceState.NON_COMPLIANT, response.complianceState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T20:01:53Z"), response.expiresOn());
+        Assertions.assertEquals("lbpxrhrfjenrazwe", response.owner());
+        Assertions.assertEquals("ktlhqash", response.comments());
+        Assertions.assertEquals("jixy", response.evidence().get(0).description());
+        Assertions.assertEquals("ecigzzdwjta", response.evidence().get(0).sourceUri());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T06:25:17Z"), response.assessmentDate());
     }
 }

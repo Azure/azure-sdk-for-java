@@ -25,6 +25,11 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     private CertificateProvisioningState provisioningState;
 
     /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
+
+    /*
      * Properties for a certificate stored in a Key Vault.
      */
     private CertificateKeyVaultProperties certificateKeyVaultProperties;
@@ -92,6 +97,15 @@ public final class CertificateProperties implements JsonSerializable<Certificate
      */
     public CertificateProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -268,6 +282,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
                 if ("provisioningState".equals(fieldName)) {
                     deserializedCertificateProperties.provisioningState
                         = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedCertificateProperties.deploymentErrors = reader.getString();
                 } else if ("certificateKeyVaultProperties".equals(fieldName)) {
                     deserializedCertificateProperties.certificateKeyVaultProperties
                         = CertificateKeyVaultProperties.fromJson(reader);

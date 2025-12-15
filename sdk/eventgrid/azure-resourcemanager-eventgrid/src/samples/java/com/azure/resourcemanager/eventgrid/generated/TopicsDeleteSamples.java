@@ -10,7 +10,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class TopicsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2025-02-15/examples/Topics_Delete.json
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_Delete.
+     * json
      */
     /**
      * Sample code: Topics_Delete.
@@ -18,6 +19,6 @@ public final class TopicsDeleteSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topics().delete("examplerg", "exampletopic", com.azure.core.util.Context.NONE);
+        manager.topics().delete("examplerg1", "exampletopic1", com.azure.core.util.Context.NONE);
     }
 }

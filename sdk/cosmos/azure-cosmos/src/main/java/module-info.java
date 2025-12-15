@@ -39,7 +39,6 @@ module com.azure.cosmos {
     exports com.azure.cosmos.implementation.apachecommons.lang to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.guava25.base to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.guava25.collect to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
-    exports com.azure.cosmos.implementation.guava27 to com.azure.cosmos.encryption, com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     exports com.azure.cosmos.implementation.directconnectivity to com.azure.cosmos.encryption, com.azure.cosmos.test;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging, com.fasterxml.jackson.module.afterburner;
 
@@ -69,7 +68,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.clienttelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.throughputControl.controller.group.global to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.throughputControl.sdk.controller.group.global to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.perPartitionCircuitBreaker to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.perPartitionAutomaticFailover to com.fasterxml.jackson.databind;
 
@@ -79,6 +78,10 @@ module com.azure.cosmos {
     exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test;
     opens com.azure.cosmos to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
     opens com.azure.cosmos.models to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
+    opens com.azure.cosmos.implementation.throughputControl.sdk to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.throughputControl.sdk.config to com.fasterxml.jackson.databind;
+
+    exports com.azure.cosmos.implementation.interceptor to com.azure.cosmos.test;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;

@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.datamigration.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
+import com.azure.resourcemanager.datamigration.models.AzureActiveDirectoryApp;
 import com.azure.resourcemanager.datamigration.models.ConnectionInfo;
 import com.azure.resourcemanager.datamigration.models.DatabaseInfo;
 import com.azure.resourcemanager.datamigration.models.Project;
@@ -48,8 +50,20 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProjectSourcePlatform sourcePlatform() {
         return this.innerModel().sourcePlatform();
+    }
+
+    public AzureActiveDirectoryApp azureAuthenticationInfo() {
+        return this.innerModel().azureAuthenticationInfo();
     }
 
     public ProjectTargetPlatform targetPlatform() {
@@ -194,8 +208,18 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
         return this;
     }
 
+    public ProjectImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
+        return this;
+    }
+
     public ProjectImpl withSourcePlatform(ProjectSourcePlatform sourcePlatform) {
         this.innerModel().withSourcePlatform(sourcePlatform);
+        return this;
+    }
+
+    public ProjectImpl withAzureAuthenticationInfo(AzureActiveDirectoryApp azureAuthenticationInfo) {
+        this.innerModel().withAzureAuthenticationInfo(azureAuthenticationInfo);
         return this;
     }
 

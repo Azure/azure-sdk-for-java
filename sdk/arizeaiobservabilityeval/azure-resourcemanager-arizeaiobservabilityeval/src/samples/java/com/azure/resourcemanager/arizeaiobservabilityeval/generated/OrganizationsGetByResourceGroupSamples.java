@@ -19,6 +19,6 @@ public final class OrganizationsGetByResourceGroupSamples {
     public static void organizationsGetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.arizeaiobservabilityeval.ArizeAIObservabilityEvalManager manager) {
         manager.organizations()
-            .getByResourceGroupWithResponse("rgopenapi", "test-organization-1", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("yashika-rg-arize", "test-org-1", com.azure.core.util.Context.NONE);
     }
 }

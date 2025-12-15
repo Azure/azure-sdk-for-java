@@ -12,16 +12,15 @@ public final class ComponentExpressionEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComponentExpressionEvaluationDetails model = BinaryData.fromString(
-            "{\"result\":\"ybmrqbrjbbmp\",\"expression\":\"lvykfrex\",\"expressionKind\":\"s\",\"path\":\"wjksghudgzhxo\",\"expressionValue\":\"dataggsvoujkxibdaf\",\"targetValue\":\"datakmdyomkxfbvfbh\",\"operator\":\"i\"}")
+            "{\"result\":\"bl\",\"expression\":\"xltbsjuscvsf\",\"expressionKind\":\"gctmgxuupbezq\",\"path\":\"ydrtc\",\"expressionValue\":\"datakdqkkyihzt\",\"targetValue\":\"dataqm\",\"operator\":\"zgwldoychillcec\"}")
             .toObject(ComponentExpressionEvaluationDetails.class);
-        Assertions.assertEquals("ybmrqbrjbbmp", model.result());
+        Assertions.assertEquals("bl", model.result());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentExpressionEvaluationDetails model
-            = new ComponentExpressionEvaluationDetails().withResult("ybmrqbrjbbmp");
+        ComponentExpressionEvaluationDetails model = new ComponentExpressionEvaluationDetails().withResult("bl");
         model = BinaryData.fromObject(model).toObject(ComponentExpressionEvaluationDetails.class);
-        Assertions.assertEquals("ybmrqbrjbbmp", model.result());
+        Assertions.assertEquals("bl", model.result());
     }
 }

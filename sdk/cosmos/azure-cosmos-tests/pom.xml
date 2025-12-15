@@ -100,12 +100,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.73.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.77.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -143,6 +143,12 @@ Licensed under the MIT License.
       <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
@@ -151,7 +157,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -175,7 +181,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.41</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -201,13 +207,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -230,9 +236,15 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
+          <systemPropertyVariables>
+            <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+            <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+            <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+            <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+          </systemPropertyVariables>
           <includes>
             <include>%regex[.*]</include>
           </includes>
@@ -241,7 +253,12 @@ Licensed under the MIT License.
               <name>surefire.testng.verbose</name>
               <value>2</value>
             </property>
+            <property>
+              <name>listener</name>
+              <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+            </property>
           </properties>
+          <skipTests>true</skipTests>
         </configuration>
       </plugin>
 
@@ -270,7 +287,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -281,7 +298,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -300,19 +317,25 @@ Licensed under the MIT License.
       <!-- unit test -->
       <id>unit</id>
       <properties>
-        <env>default</env>
+
         <test.groups>unit</test.groups>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <build>
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -329,11 +352,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -350,11 +379,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -371,11 +406,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/cfp-split-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -392,11 +433,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/query-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -413,11 +460,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/long-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -434,11 +487,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -455,11 +514,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -476,11 +541,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-read-all-read-many-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -497,11 +568,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-direct-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -518,11 +595,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/circuit-breaker-misc-gateway-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -539,11 +622,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/flaky-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -560,11 +649,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fi-multi-master-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -581,11 +676,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/multi-region-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -603,11 +704,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/examples-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
             <executions>
               <execution>
@@ -632,11 +739,44 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>long-emulator</id>
+      <properties>
+        <test.groups>long-emulator</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/long-emulator-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -653,11 +793,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/emulator-vnext-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -674,11 +820,17 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/e2e-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -695,11 +847,92 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/thinclient-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- thin client integration tests, requires thin client endpoint and key -->
+      <id>fi-thinclient-multi-region</id>
+      <properties>
+        <test.groups>fi-thinclient-multi-region</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fi-thinclient-multi-region-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- thin client integration tests, requires thin client endpoint and key -->
+      <id>fi-thinclient-multi-master</id>
+      <properties>
+        <test.groups>fi-thinclient-multi-master</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/fi-thinclient-multi-master-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- tests which target a multi-region strong Cosmos DB account -->
+      <id>multi-region-strong</id>
+      <properties>
+        <test.groups>multi-region-strong</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/multi-region-strong.xml</suiteXmlFile>
+              </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OrphanedUserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrphanedUserInfo model = BinaryData.fromString("{\"name\":\"kpoc\",\"databaseName\":\"azyxoegukg\"}")
+        OrphanedUserInfo model = BinaryData.fromString("{\"name\":\"pmvmemfnczdwvv\",\"databaseName\":\"lxlllchpo\"}")
             .toObject(OrphanedUserInfo.class);
-        Assertions.assertEquals("kpoc", model.name());
-        Assertions.assertEquals("azyxoegukg", model.databaseName());
+        Assertions.assertEquals("pmvmemfnczdwvv", model.name());
+        Assertions.assertEquals("lxlllchpo", model.databaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrphanedUserInfo model = new OrphanedUserInfo().withName("kpoc").withDatabaseName("azyxoegukg");
+        OrphanedUserInfo model = new OrphanedUserInfo().withName("pmvmemfnczdwvv").withDatabaseName("lxlllchpo");
         model = BinaryData.fromObject(model).toObject(OrphanedUserInfo.class);
-        Assertions.assertEquals("kpoc", model.name());
-        Assertions.assertEquals("azyxoegukg", model.databaseName());
+        Assertions.assertEquals("pmvmemfnczdwvv", model.name());
+        Assertions.assertEquals("lxlllchpo", model.databaseName());
     }
 }

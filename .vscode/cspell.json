@@ -98,12 +98,15 @@
     "sdk/containerregistry/azure-containers-containerregistry/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
+    "sdk/cosmos/azure-cosmos-spark_3/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-5/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
+    "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
@@ -140,6 +143,7 @@
     "sdk/mixedreality/azure-mixedreality-authentication/**",
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
+    "sdk/monitor/azure-monitor-query-logs/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
     "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
@@ -230,6 +234,7 @@
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
+    "CSDL",
     "Cyclomatic",
     "branchcoverage",
     "cacerts",
@@ -284,10 +289,12 @@
     "Esto",
     "etag",
     "euap",
+    "evals",
     "eventhub",
     "eventhubs",
     "failondeprecatedstatus",
     "FHIR",
+    "FOURX",
     "filereports",
     "gapra",
     "gltf",
@@ -308,6 +315,7 @@
     "includable",
     "includables",
     "idnum",
+    "inpainting",
     "insights",
     "intellij",
     "Intellij",
@@ -396,6 +404,7 @@
     "SERIALVERSIONID",
     "servicebus",
     "sftdl",
+    "SIXX",
     "skus",
     "snomed",
     "sonatype",
@@ -421,6 +430,7 @@
     "vmware",
     "vnet",
     "VNET",
+    "vnext",
     "westcentralus",
     "westus",
     "WINDOWSVMIMAGE",
@@ -856,6 +866,16 @@
         "OTEL",
         "ubinary",
         "UBINARY"
+      ]
+    },
+	{
+      "filename": "/sdk/ai/azure-ai-voicelive/**",
+      "words": [
+        "Dexec",
+        "viseme",
+        "VISEME",
+        "webrtc",
+        "WEBRTC"
       ]
     },
     {
@@ -1471,6 +1491,20 @@
         "momo",
         "RESOURCEID"
 
+      ]
+    },
+    {
+      "filename": "sdk/tools/linting-extensions/**",
+      "words": [
+        "elist",
+        "slist"
+      ]
+    },
+    {
+      "filename": "sdk/monitor/azure-monitor-query-metrics/**",
+      "words": [
+        "msdocs",
+        "Milli"
       ]
     }
   ],

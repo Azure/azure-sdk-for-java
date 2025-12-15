@@ -13,7 +13,7 @@ public final class AuthPlatformTests {
     public void testDeserialize() throws Exception {
         AuthPlatform model
             = BinaryData.fromString("{\"enabled\":true,\"runtimeVersion\":\"bpzvgn\"}").toObject(AuthPlatform.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals("bpzvgn", model.runtimeVersion());
     }
 
@@ -21,7 +21,7 @@ public final class AuthPlatformTests {
     public void testSerialize() throws Exception {
         AuthPlatform model = new AuthPlatform().withEnabled(true).withRuntimeVersion("bpzvgn");
         model = BinaryData.fromObject(model).toObject(AuthPlatform.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals("bpzvgn", model.runtimeVersion());
     }
 }

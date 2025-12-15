@@ -13,33 +13,33 @@ public final class OperationDetailInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDetailInner model = BinaryData.fromString(
-            "{\"name\":\"sdbccxjmonfdgnwn\",\"isDataAction\":false,\"display\":{\"provider\":\"w\",\"resource\":\"tvuqjctzenkeifzz\",\"operation\":\"kdasvflyhbxcudch\",\"description\":\"srboldforobw\"},\"origin\":\"vizbfhfo\"}")
+            "{\"name\":\"enxpmyyefr\",\"isDataAction\":true,\"display\":{\"provider\":\"qqs\",\"resource\":\"waoqvmmb\",\"operation\":\"qfr\",\"description\":\"lkzmegnitgvkxl\"},\"origin\":\"qdrfegcealzxwhc\"}")
             .toObject(OperationDetailInner.class);
-        Assertions.assertEquals("sdbccxjmonfdgnwn", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("w", model.display().provider());
-        Assertions.assertEquals("tvuqjctzenkeifzz", model.display().resource());
-        Assertions.assertEquals("kdasvflyhbxcudch", model.display().operation());
-        Assertions.assertEquals("srboldforobw", model.display().description());
-        Assertions.assertEquals("vizbfhfo", model.origin());
+        Assertions.assertEquals("enxpmyyefr", model.name());
+        Assertions.assertTrue(model.isDataAction());
+        Assertions.assertEquals("qqs", model.display().provider());
+        Assertions.assertEquals("waoqvmmb", model.display().resource());
+        Assertions.assertEquals("qfr", model.display().operation());
+        Assertions.assertEquals("lkzmegnitgvkxl", model.display().description());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.origin());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDetailInner model = new OperationDetailInner().withName("sdbccxjmonfdgnwn")
-            .withIsDataAction(false)
-            .withDisplay(new OperationDisplay().withProvider("w")
-                .withResource("tvuqjctzenkeifzz")
-                .withOperation("kdasvflyhbxcudch")
-                .withDescription("srboldforobw"))
-            .withOrigin("vizbfhfo");
+        OperationDetailInner model = new OperationDetailInner().withName("enxpmyyefr")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDisplay().withProvider("qqs")
+                .withResource("waoqvmmb")
+                .withOperation("qfr")
+                .withDescription("lkzmegnitgvkxl"))
+            .withOrigin("qdrfegcealzxwhc");
         model = BinaryData.fromObject(model).toObject(OperationDetailInner.class);
-        Assertions.assertEquals("sdbccxjmonfdgnwn", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("w", model.display().provider());
-        Assertions.assertEquals("tvuqjctzenkeifzz", model.display().resource());
-        Assertions.assertEquals("kdasvflyhbxcudch", model.display().operation());
-        Assertions.assertEquals("srboldforobw", model.display().description());
-        Assertions.assertEquals("vizbfhfo", model.origin());
+        Assertions.assertEquals("enxpmyyefr", model.name());
+        Assertions.assertTrue(model.isDataAction());
+        Assertions.assertEquals("qqs", model.display().provider());
+        Assertions.assertEquals("waoqvmmb", model.display().resource());
+        Assertions.assertEquals("qfr", model.display().operation());
+        Assertions.assertEquals("lkzmegnitgvkxl", model.display().description());
+        Assertions.assertEquals("qdrfegcealzxwhc", model.origin());
     }
 }

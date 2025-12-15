@@ -10,15 +10,15 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ServersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerDelete.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersDelete.json
      */
     /**
-     * Sample code: ServerDelete.
+     * Sample code: Delete or drop an existing server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().delete("testrg", "testserver", com.azure.core.util.Context.NONE);
+    public static void
+        deleteOrDropAnExistingServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().delete("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

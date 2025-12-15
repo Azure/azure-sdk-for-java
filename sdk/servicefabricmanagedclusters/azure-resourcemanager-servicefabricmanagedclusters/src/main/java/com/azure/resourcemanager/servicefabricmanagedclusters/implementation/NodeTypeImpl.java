@@ -340,6 +340,10 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         return this.innerModel().zoneBalance();
     }
 
+    public Boolean isOutboundOnly() {
+        return this.innerModel().isOutboundOnly();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -479,21 +483,22 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         serviceManager.nodeTypes().start(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
-    public void startFaultSimulation(FaultSimulationContentWrapper parameters) {
-        serviceManager.nodeTypes().startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters) {
+        return serviceManager.nodeTypes()
+            .startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
     }
 
-    public void startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
-        serviceManager.nodeTypes()
+    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
+        return serviceManager.nodeTypes()
             .startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
-    public void stopFaultSimulation(FaultSimulationIdContent parameters) {
-        serviceManager.nodeTypes().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
+    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters) {
+        return serviceManager.nodeTypes().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
     }
 
-    public void stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
-        serviceManager.nodeTypes()
+    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
+        return serviceManager.nodeTypes()
             .stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
@@ -788,6 +793,11 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withZoneBalance(Boolean zoneBalance) {
         this.innerModel().withZoneBalance(zoneBalance);
+        return this;
+    }
+
+    public NodeTypeImpl withIsOutboundOnly(Boolean isOutboundOnly) {
+        this.innerModel().withIsOutboundOnly(isOutboundOnly);
         return this;
     }
 

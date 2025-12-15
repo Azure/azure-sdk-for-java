@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SubscriptionNotificationOperation.
+ * The action.
  */
 public final class SubscriptionNotificationOperation extends ExpandableStringEnum<SubscriptionNotificationOperation> {
     /**

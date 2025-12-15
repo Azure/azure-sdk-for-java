@@ -80,6 +80,17 @@ jobs:
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
 
+    # Only run CG and codeql on internal build job
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      templateContext:
+        sdl:
+          componentgovernance:
+            enabled: true
+          codeql:
+            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            compiled:
+              enabled: true
+
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
@@ -135,11 +146,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
@@ -148,6 +163,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -168,10 +184,16 @@ jobs:
               -ServiceDirectory ${{parameters.ServiceDirectory}}
               -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
               -AddDevVersion
+              -artifactList @('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Select-Object -ExpandProperty name)
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -249,13 +271,17 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.ReleaseArtifacts}}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
@@ -327,11 +353,15 @@ jobs:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -374,26 +404,6 @@ jobs:
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
-
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: UseNode@1
         inputs:

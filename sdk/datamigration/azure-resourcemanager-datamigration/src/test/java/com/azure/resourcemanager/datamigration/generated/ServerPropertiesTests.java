@@ -11,7 +11,7 @@ public final class ServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerProperties model = BinaryData.fromString(
-            "{\"serverPlatform\":\"tcxsenhwlrs\",\"serverName\":\"rzpwvlqdqgbiq\",\"serverVersion\":\"ihkaetcktvfc\",\"serverEdition\":\"fsnkymuctq\",\"serverOperatingSystemVersion\":\"fbebrjcxer\",\"serverDatabaseCount\":1002767653}")
+            "{\"serverPlatform\":\"azwu\",\"serverName\":\"yqvnjobfe\",\"serverVersion\":\"ldiuhzzgqlm\",\"serverEdition\":\"ewzgiud\",\"serverOperatingSystemVersion\":\"xpqh\",\"serverDatabaseCount\":1451117706}")
             .toObject(ServerProperties.class);
     }
 

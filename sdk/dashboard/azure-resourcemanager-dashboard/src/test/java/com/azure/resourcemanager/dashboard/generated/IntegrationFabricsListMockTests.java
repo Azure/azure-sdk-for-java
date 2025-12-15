@@ -22,7 +22,7 @@ public final class IntegrationFabricsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"targetResourceId\":\"lxkvu\",\"dataSourceResourceId\":\"hzovawjvzunlut\",\"scenarios\":[\"prnxipeil\"]},\"location\":\"zuaejxd\",\"tags\":{\"dzumveekg\":\"skzbb\",\"bsjyofdx\":\"wozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\",\"targetResourceId\":\"ck\",\"dataSourceResourceId\":\"lhrxsbkyvpyc\",\"scenarios\":[\"z\",\"p\",\"kafkuwbcrnwbm\"]},\"location\":\"hseyvju\",\"tags\":{\"kdeemaofmxagkvtm\":\"slhs\",\"ahaquh\":\"lmqkrhahvlj\",\"aex\":\"dhmdua\"},\"id\":\"pvfadmwsrcr\",\"name\":\"vxpvgomz\",\"type\":\"fmisg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class IntegrationFabricsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IntegrationFabric> response
-            = manager.integrationFabrics().list("nmefqsgzvahapj", "zhpvgqzcjrvxd", com.azure.core.util.Context.NONE);
+            = manager.integrationFabrics().list("udxytlmoyrx", "wfudwpzntxhdzhl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zuaejxd", response.iterator().next().location());
-        Assertions.assertEquals("skzbb", response.iterator().next().tags().get("dzumveekg"));
-        Assertions.assertEquals("lxkvu", response.iterator().next().properties().targetResourceId());
-        Assertions.assertEquals("hzovawjvzunlut", response.iterator().next().properties().dataSourceResourceId());
-        Assertions.assertEquals("prnxipeil", response.iterator().next().properties().scenarios().get(0));
+        Assertions.assertEquals("hseyvju", response.iterator().next().location());
+        Assertions.assertEquals("slhs", response.iterator().next().tags().get("kdeemaofmxagkvtm"));
+        Assertions.assertEquals("ck", response.iterator().next().properties().targetResourceId());
+        Assertions.assertEquals("lhrxsbkyvpyc", response.iterator().next().properties().dataSourceResourceId());
+        Assertions.assertEquals("z", response.iterator().next().properties().scenarios().get(0));
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class DaprComponentsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * DaprComponents_Get_SecretStoreComponent.json
      */
     /**
@@ -24,8 +24,8 @@ public final class DaprComponentsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_Get_Secrets.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * DaprComponents_Get_Secrets.json
      */
     /**
      * Sample code: Get Dapr Component with secrets.

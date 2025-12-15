@@ -11,7 +11,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncTaskOutput model = BinaryData
-            .fromString("{\"resultType\":\"MigrateMySqlAzureDbForMySqlSyncTaskOutput\",\"id\":\"iknsorgjh\"}")
+            .fromString("{\"resultType\":\"MigrateMySqlAzureDbForMySqlSyncTaskOutput\",\"id\":\"rpfbcunezz\"}")
             .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutput.class);
     }
 

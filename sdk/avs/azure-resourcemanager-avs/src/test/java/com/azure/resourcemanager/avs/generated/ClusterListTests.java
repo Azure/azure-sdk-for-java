@@ -13,16 +13,16 @@ public final class ClusterListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterSize\":181665784,\"provisioningState\":\"Deleting\",\"clusterId\":1393923794,\"hosts\":[\"sub\",\"gjb\",\"rxbpyb\",\"rfbjf\"],\"vsanDatastoreName\":\"w\"},\"sku\":{\"name\":\"sotftpvj\",\"tier\":\"Premium\",\"size\":\"ilzznfqqnvwp\",\"family\":\"taruoujmkcj\",\"capacity\":1589023977},\"id\":\"tjrybnwjewgdr\",\"name\":\"ervnaenqpehi\",\"type\":\"doy\"},{\"properties\":{\"clusterSize\":1627840881,\"provisioningState\":\"Failed\",\"clusterId\":1092081926,\"hosts\":[\"dslgnayqigynduh\",\"vhqlkthumaqo\",\"bgycduiertgccym\",\"aolps\"],\"vsanDatastoreName\":\"qlfmmdnbb\"},\"sku\":{\"name\":\"lzpswiydm\",\"tier\":\"Free\",\"size\":\"zdxss\",\"family\":\"bzmnvdfznud\",\"capacity\":1568683744},\"id\":\"xzb\",\"name\":\"cblylpstdbhhxsr\",\"type\":\"dzu\"},{\"properties\":{\"clusterSize\":223200807,\"provisioningState\":\"Canceled\",\"clusterId\":42562338,\"hosts\":[\"vfiwjmygtdss\",\"s\",\"tmweriofzpyq\"],\"vsanDatastoreName\":\"mwabnetshhszhedp\"},\"sku\":{\"name\":\"vwiwubmwmbesld\",\"tier\":\"Basic\",\"size\":\"tppjflcx\",\"family\":\"aokonzmnsik\",\"capacity\":1013346228},\"id\":\"ze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}],\"nextLink\":\"ur\"}")
+            "{\"value\":[{\"properties\":{\"clusterSize\":1904217797,\"provisioningState\":\"Updating\",\"clusterId\":183676503,\"hosts\":[\"o\",\"usivye\",\"cciqihnhungbwjz\"],\"vsanDatastoreName\":\"fygxgispemvtzfk\"},\"sku\":{\"name\":\"fublj\",\"tier\":\"Premium\",\"size\":\"eofjaeqjh\",\"family\":\"b\",\"capacity\":91789189},\"id\":\"smjqulngsntnbyb\",\"name\":\"zgcwrw\",\"type\":\"lxxwrljdouskc\"},{\"properties\":{\"clusterSize\":1685957957,\"provisioningState\":\"Deleting\",\"clusterId\":1066142513,\"hosts\":[\"wtnhxbnjbiksqr\"],\"vsanDatastoreName\":\"ssainqpjwnzll\"},\"sku\":{\"name\":\"fmppe\",\"tier\":\"Basic\",\"size\":\"gxsabkyq\",\"family\":\"ujitcjcz\",\"capacity\":1089417783},\"id\":\"ndhkrw\",\"name\":\"d\",\"type\":\"ppdsbdkvwrwj\"},{\"properties\":{\"clusterSize\":905142721,\"provisioningState\":\"Updating\",\"clusterId\":1294203653,\"hosts\":[\"ltmrldh\",\"gjzzdatqxhocdg\",\"ablgphuticndvk\",\"ozwyiftyhxhuro\"],\"vsanDatastoreName\":\"tyxolniwpwc\"},\"sku\":{\"name\":\"kjfkg\",\"tier\":\"Free\",\"size\":\"klryplwck\",\"family\":\"syyp\",\"capacity\":1760160330},\"id\":\"sgcbac\",\"name\":\"hejkotynqgou\",\"type\":\"zndlikwy\"}],\"nextLink\":\"gfgibm\"}")
             .toObject(ClusterList.class);
-        Assertions.assertEquals("sotftpvj", model.value().get(0).sku().name());
+        Assertions.assertEquals("fublj", model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
-        Assertions.assertEquals("ilzznfqqnvwp", model.value().get(0).sku().size());
-        Assertions.assertEquals("taruoujmkcj", model.value().get(0).sku().family());
-        Assertions.assertEquals(1589023977, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(181665784, model.value().get(0).clusterSize());
-        Assertions.assertEquals("sub", model.value().get(0).hosts().get(0));
-        Assertions.assertEquals("w", model.value().get(0).vsanDatastoreName());
-        Assertions.assertEquals("ur", model.nextLink());
+        Assertions.assertEquals("eofjaeqjh", model.value().get(0).sku().size());
+        Assertions.assertEquals("b", model.value().get(0).sku().family());
+        Assertions.assertEquals(91789189, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(1904217797, model.value().get(0).clusterSize());
+        Assertions.assertEquals("o", model.value().get(0).hosts().get(0));
+        Assertions.assertEquals("fygxgispemvtzfk", model.value().get(0).vsanDatastoreName());
+        Assertions.assertEquals("gfgibm", model.nextLink());
     }
 }

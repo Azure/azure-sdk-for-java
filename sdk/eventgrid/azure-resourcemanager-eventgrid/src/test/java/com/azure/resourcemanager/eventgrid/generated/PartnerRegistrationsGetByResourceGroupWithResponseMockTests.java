@@ -22,7 +22,7 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"partnerRegistrationImmutableId\":\"a0589025-9668-4905-9275-dd44dde492cc\"},\"location\":\"hnysvlpyeu\",\"tags\":{\"hyqqegatxgr\":\"pdixqbolxv\"},\"id\":\"nmginmt\",\"name\":\"dixchwkib\",\"type\":\"gjymncjcagairwc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"b0df1bff-fd49-4454-8c10-96b8e84f438d\"},\"location\":\"ifleimixlmd\",\"tags\":{\"rjuqbpxtokl\":\"cehfgsm\",\"rcltungbsoljckm\":\"mtznpaxwfqtyyqi\",\"zbkuckgkdsksw\":\"i\",\"woykdnonaaxwm\":\"iiqqcqikclsmalns\"},\"id\":\"zrujlqcwnyn\",\"name\":\"lei\",\"type\":\"bcbgv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerRegistration response = manager.partnerRegistrations()
-            .getByResourceGroupWithResponse("bhlenntrvrkpsab", "u", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dtullygtavczcxdf", "eapyfmlxrlj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hnysvlpyeu", response.location());
-        Assertions.assertEquals("pdixqbolxv", response.tags().get("hyqqegatxgr"));
-        Assertions.assertEquals(UUID.fromString("a0589025-9668-4905-9275-dd44dde492cc"),
+        Assertions.assertEquals("ifleimixlmd", response.location());
+        Assertions.assertEquals("cehfgsm", response.tags().get("rjuqbpxtokl"));
+        Assertions.assertEquals(UUID.fromString("b0df1bff-fd49-4454-8c10-96b8e84f438d"),
             response.partnerRegistrationImmutableId());
     }
 }

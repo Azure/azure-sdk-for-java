@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -33,6 +35,16 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
      * Connection information for source PostgreSQL
      */
     private PostgreSqlConnectionInfo sourceConnectionInfo;
+
+    /*
+     * encrypted key for secure fields
+     */
+    private String encryptedKeyForSecureFields;
+
+    /*
+     * Migration start time
+     */
+    private OffsetDateTime startedOn;
 
     /**
      * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput class.
@@ -104,6 +116,36 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
     }
 
     /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput object itself.
+     */
+    public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
+        withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
+     * Get the startedOn property: Migration start time.
+     * 
+     * @return the startedOn value.
+     */
+    public OffsetDateTime startedOn() {
+        return this.startedOn;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -145,6 +187,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
         jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeStringField("encryptedKeyForSecureFields", this.encryptedKeyForSecureFields);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,6 +220,12 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput
                 } else if ("sourceConnectionInfo".equals(fieldName)) {
                     deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.sourceConnectionInfo
                         = PostgreSqlConnectionInfo.fromJson(reader);
+                } else if ("encryptedKeyForSecureFields".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.encryptedKeyForSecureFields
+                        = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskInput.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

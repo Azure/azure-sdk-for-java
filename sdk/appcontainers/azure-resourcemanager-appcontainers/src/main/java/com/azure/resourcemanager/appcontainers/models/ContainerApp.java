@@ -76,6 +76,14 @@ public interface ContainerApp {
     String managedBy();
 
     /**
+     * Gets the kind property: Metadata to represent the container app kind, representing if a container app is
+     * workflowapp or functionapp.
+     * 
+     * @return the kind value.
+     */
+    Kind kind();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -256,8 +264,9 @@ public interface ContainerApp {
          * The stage of the ContainerApp definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithIdentity, DefinitionStages.WithManagedBy, DefinitionStages.WithManagedEnvironmentId,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithIdentity,
+            DefinitionStages.WithManagedBy, DefinitionStages.WithKind, DefinitionStages.WithManagedEnvironmentId,
             DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
             DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
@@ -333,6 +342,21 @@ public interface ContainerApp {
              * @return the next definition stage.
              */
             WithCreate withManagedBy(String managedBy);
+        }
+
+        /**
+         * The stage of the ContainerApp definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: Metadata to represent the container app kind, representing if a container
+             * app is workflowapp or functionapp..
+             * 
+             * @param kind Metadata to represent the container app kind, representing if a container app is workflowapp
+             * or functionapp.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(Kind kind);
         }
 
         /**
@@ -554,8 +578,7 @@ public interface ContainerApp {
      * @param customHostname Custom hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis along with {@link Response}.
      */
@@ -565,8 +588,7 @@ public interface ContainerApp {
     /**
      * Analyzes a custom hostname for a Container App.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis.
      */
@@ -577,8 +599,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource along with {@link Response}.
      */
@@ -587,8 +608,7 @@ public interface ContainerApp {
     /**
      * List secrets for a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource.
      */
@@ -599,8 +619,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
      * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -611,8 +630,7 @@ public interface ContainerApp {
     /**
      * Get auth token for a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
      * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,8 +641,7 @@ public interface ContainerApp {
     /**
      * Start a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -635,8 +652,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -645,8 +661,7 @@ public interface ContainerApp {
     /**
      * Stop a container app.
      * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -657,8 +672,7 @@ public interface ContainerApp {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */

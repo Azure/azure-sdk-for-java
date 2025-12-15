@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for LoggingDetails.
+ * The detail level.
  */
 public final class LoggingDetails extends ExpandableStringEnum<LoggingDetails> {
     /**

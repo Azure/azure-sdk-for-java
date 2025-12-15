@@ -498,4 +498,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             return doc.getSelfLink();
         }
     }
+
+    @Override
+    void shutdown() {
+        if (this.client != null) {
+            this.client.close();
+        }
+
+        super.shutdown();
+    }
 }

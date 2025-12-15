@@ -13,14 +13,14 @@ public final class PrivateEndpointConnectionResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"zuckyfi\",\"rfidfvzwdz\",\"htymw\",\"sdkf\"],\"privateEndpoint\":{\"id\":\"xmnteiwaop\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jcmmxdcufufsrp\",\"actionsRequired\":\"zidnsezcxtbzsgfy\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ewmdw\",\"name\":\"jeiachboosfl\",\"type\":\"ro\"}],\"nextLink\":\"qpteeh\"}")
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"hijco\",\"jctbza\",\"s\",\"sycbkbfk\"],\"privateEndpoint\":{\"id\":\"dkexxppofm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"fjpgddtocjjxhvp\",\"actionsRequired\":\"uexhdzx\"},\"provisioningState\":\"Failed\"},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"}],\"nextLink\":\"twnpzaoqvuhrhcf\"}")
             .toObject(PrivateEndpointConnectionResourceListResult.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jcmmxdcufufsrp",
+        Assertions.assertEquals("fjpgddtocjjxhvp",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zidnsezcxtbzsgfy",
+        Assertions.assertEquals("uexhdzx",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("qpteeh", model.nextLink());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.nextLink());
     }
 }

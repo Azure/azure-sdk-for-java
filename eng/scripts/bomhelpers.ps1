@@ -44,7 +44,7 @@ function UpdateDependencyOfClientSDK() {
 # Get all azure com client artifacts from Maven.
 function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
   $groupPath = $GroupId -replace '\.', '/'
-  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath"
+  $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/$groupPath" -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
   return $azureComArtifactIds | Where-Object { ($_ -like "azure-*") -and !($_ -like "azure-spring") }
 }
@@ -53,7 +53,7 @@ function GetAllAzComClientArtifactsFromMaven($GroupId = "com.azure") {
 function GetVersionInfoForAnArtifactId([String]$GroupId = "com.azure", [String]$ArtifactId) {
   $groupPath = $GroupId -replace '\.', '/'
   $mavenMetadataUrl = "https://repo1.maven.org/maven2/$groupPath/$($ArtifactId)/maven-metadata.xml"
-  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl
+  $webResponseObj = Invoke-WebRequest -Uri $mavenMetadataUrl -UserAgent "azure-sdk-for-java" -Headers @{ "Content-signal" = "search=yes,ai-train=no" }
   $versions = ([xml]$webResponseObj.Content).metadata.versioning.versions.version
   $semVersions = $versions | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
   $sortedVersions = [AzureEngSemanticVersion]::SortVersions($semVersions)
@@ -303,9 +303,9 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     Write-Output "PatchVersion is: $patchVersion"
   }
 
-  $releaseTag = "$($artifactId)_$($releaseVersion)"
+  $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
   if (!$currentPomFileVersion -or !$artifactDirPath -or !$changelogPath) {
-    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName)
+    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName -GroupId $GroupId)
     $artifactDirPath = $pkgProperties.DirectoryPath
     $currentPomFileVersion = $pkgProperties.Version
     $changelogPath = $pkgProperties.ChangeLogPath
@@ -323,8 +323,18 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     $cmdOutput = git fetch $RemoteName $releaseTag
 
     if ($LASTEXITCODE -ne 0) {
-      LogError "Could not restore the tags for release tag $releaseTag"
-      exit $LASTEXITCODE
+      # Fall back to old tag format: <artifactId>_<version>
+      $oldReleaseTag = "$($artifactId)_$($releaseVersion)"
+      Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
+      Write-Host "git fetch $RemoteName $oldReleaseTag"
+      $cmdOutput = git fetch $RemoteName $oldReleaseTag
+      
+      if ($LASTEXITCODE -ne 0) {
+        LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
+        exit $LASTEXITCODE
+      }
+      
+      $releaseTag = $oldReleaseTag
     }
 
     Write-Host "git restore --source $releaseTag -W -S $artifactDirPath"

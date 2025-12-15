@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 
 /**
  * The options for creating a p2p call.
@@ -39,6 +40,11 @@ public final class CreateCallOptions {
      * Transcription Configuration.
      */
     private TranscriptionOptions transcriptionOptions;
+
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
+     */
+    private MicrosoftTeamsAppIdentifier teamsAppSource;
 
     /**
      * Constructor
@@ -144,6 +150,26 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @return the teamsAppSource value.
+     */
+    public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
+        return this.teamsAppSource;
+    }
+
+    /**
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     *
+     * @param teamsAppSource the teamsAppSource value to set.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {
+        this.teamsAppSource = teamsAppSource;
         return this;
     }
 }

@@ -21,6 +21,52 @@ import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParamet
  */
 public interface EventSubscriptionsClient {
     /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String scope,
+        String eventSubscriptionName, Context context);
+
+    /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName);
+
+    /**
      * Get an event subscription.
      * 
      * Get properties of an event subscription.
@@ -795,50 +841,4 @@ public interface EventSubscriptionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
         String topicName, String filter, Integer top, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String scope,
-        String eventSubscriptionName, Context context);
-
-    /**
-     * Get delivery attributes for an event subscription.
-     * 
-     * Get all delivery attributes for an event subscription.
-     * 
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for a resource, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName);
 }

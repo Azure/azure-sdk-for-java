@@ -476,6 +476,14 @@ public interface NodeType {
     Boolean zoneBalance();
 
     /**
+     * Gets the isOutboundOnly property: Specifies the node type should be configured for only outbound traffic and not
+     * inbound traffic.
+     * 
+     * @return the isOutboundOnly value.
+     */
+    Boolean isOutboundOnly();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -546,7 +554,7 @@ public interface NodeType {
             DefinitionStages.WithNatGatewayId, DefinitionStages.WithNatConfigurations, DefinitionStages.WithVmImagePlan,
             DefinitionStages.WithServiceArtifactReferenceId, DefinitionStages.WithDscpConfigurationId,
             DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
-            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance {
+            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly {
             /**
              * Executes the create request.
              * 
@@ -1368,6 +1376,21 @@ public interface NodeType {
              */
             WithCreate withZoneBalance(Boolean zoneBalance);
         }
+
+        /**
+         * The stage of the NodeType definition allowing to specify isOutboundOnly.
+         */
+        interface WithIsOutboundOnly {
+            /**
+             * Specifies the isOutboundOnly property: Specifies the node type should be configured for only outbound
+             * traffic and not inbound traffic..
+             * 
+             * @param isOutboundOnly Specifies the node type should be configured for only outbound traffic and not
+             * inbound traffic.
+             * @return the next definition stage.
+             */
+            WithCreate withIsOutboundOnly(Boolean isOutboundOnly);
+        }
     }
 
     /**
@@ -1588,8 +1611,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(FaultSimulationContentWrapper parameters);
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters);
 
     /**
      * Starts a fault simulation on the node type.
@@ -1599,8 +1623,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(FaultSimulationContentWrapper parameters, Context context);
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context);
 
     /**
      * Stops a fault simulation on the node type.
@@ -1609,8 +1634,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(FaultSimulationIdContent parameters);
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters);
 
     /**
      * Stops a fault simulation on the node type.
@@ -1620,8 +1646,9 @@ public interface NodeType {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(FaultSimulationIdContent parameters, Context context);
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context);
 
     /**
      * Gets a fault simulation by the simulationId.

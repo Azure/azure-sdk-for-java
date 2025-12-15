@@ -14,7 +14,7 @@ import java.util.Map;
 public final class RouteFiltersUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/RouteFilterUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.

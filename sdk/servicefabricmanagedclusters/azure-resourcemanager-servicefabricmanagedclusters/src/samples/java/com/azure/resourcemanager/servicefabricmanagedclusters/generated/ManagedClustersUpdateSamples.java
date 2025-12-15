@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/ManagedClusterPatchOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedClusterPatchOperation_example.json
      */
     /**
      * Sample code: Patch a managed cluster.

@@ -12,17 +12,18 @@ public final class ExtensionTopicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionTopicInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"omkxf\",\"systemTopic\":\"fbhdy\"},\"id\":\"hpwpgddeimawzovg\",\"name\":\"kumuikjcjca\",\"type\":\"tbw\"}")
+            "{\"properties\":{\"description\":\"icdsiwd\",\"systemTopic\":\"mpzhzzwvywrgyngy\"},\"id\":\"rpxncaki\",\"name\":\"aondjrkclamgg\",\"type\":\"vlmfej\"}")
             .toObject(ExtensionTopicInner.class);
-        Assertions.assertEquals("omkxf", model.description());
-        Assertions.assertEquals("fbhdy", model.systemTopic());
+        Assertions.assertEquals("icdsiwd", model.description());
+        Assertions.assertEquals("mpzhzzwvywrgyngy", model.systemTopic());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionTopicInner model = new ExtensionTopicInner().withDescription("omkxf").withSystemTopic("fbhdy");
+        ExtensionTopicInner model
+            = new ExtensionTopicInner().withDescription("icdsiwd").withSystemTopic("mpzhzzwvywrgyngy");
         model = BinaryData.fromObject(model).toObject(ExtensionTopicInner.class);
-        Assertions.assertEquals("omkxf", model.description());
-        Assertions.assertEquals("fbhdy", model.systemTopic());
+        Assertions.assertEquals("icdsiwd", model.description());
+        Assertions.assertEquals("mpzhzzwvywrgyngy", model.systemTopic());
     }
 }

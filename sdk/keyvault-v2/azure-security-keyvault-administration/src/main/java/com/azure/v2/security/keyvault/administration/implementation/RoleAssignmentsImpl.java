@@ -12,7 +12,6 @@ import com.azure.v2.security.keyvault.administration.implementation.models.RoleA
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.RestProxy;
 import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
@@ -27,6 +26,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -49,7 +49,7 @@ public final class RoleAssignmentsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
-        this.service = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline());
+        this.service = RoleAssignmentsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
 
@@ -66,7 +66,7 @@ public final class RoleAssignmentsImpl {
      * The interface defining all the services for KeyVaultAdministrationClientRoleAssignments to be used by the proxy
      * service to perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
+    @ServiceInterface(name = "KeyVaultAdministrationClientRoleAssignments", host = "{vaultBaseUrl}")
     public interface RoleAssignmentsService {
         static RoleAssignmentsService getNewInstance(HttpPipeline pipeline) {
             try {
@@ -149,21 +149,6 @@ public final class RoleAssignmentsImpl {
     }
 
     /**
-     * Deletes a role assignment.
-     * 
-     * @param scope The scope of the role assignment to delete.
-     * @param roleAssignmentName The name of the role assignment to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment delete(String scope, String roleAssignmentName) {
-        return deleteWithResponse(scope, roleAssignmentName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Creates a role assignment.
      * 
      * @param scope The scope of the role assignment to create.
@@ -182,22 +167,6 @@ public final class RoleAssignmentsImpl {
         final String accept = "application/json";
         return service.create(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
             roleAssignmentName, contentType, accept, parameters, requestContext);
-    }
-
-    /**
-     * Creates a role assignment.
-     * 
-     * @param scope The scope of the role assignment to create.
-     * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Parameters for the role assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment create(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
-        return createWithResponse(scope, roleAssignmentName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -220,21 +189,6 @@ public final class RoleAssignmentsImpl {
     }
 
     /**
-     * Get the specified role assignment.
-     * 
-     * @param scope The scope of the role assignment.
-     * @param roleAssignmentName The name of the role assignment to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignment get(String scope, String roleAssignmentName) {
-        return getWithResponse(scope, roleAssignmentName, RequestContext.none()).getValue();
-    }
-
-    /**
      * Gets role assignments for a scope.
      * 
      * @param scope The scope of the role assignments.
@@ -252,7 +206,7 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -275,7 +229,7 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -292,8 +246,33 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope, String filter) {
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listForScopeSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
     }
 
     /**
@@ -308,8 +287,33 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope) {
         final String filter = null;
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listForScopeSinglePage(scope, filter);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink));
     }
 
     /**
@@ -328,8 +332,33 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignment> listForScope(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter, requestContext),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestContextForNextPage));
+        return new PagedIterable<>((pagingOptions) -> {
+            if (pagingOptions.getOffset() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "offset")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageSize() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageSize")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getPageIndex() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "pageIndex")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            if (pagingOptions.getContinuationToken() != null) {
+                throw LOGGER.throwableAtError()
+                    .addKeyValue("propertyName", "continuationToken")
+                    .addKeyValue("methodName", "listForScope")
+                    .log("Not a supported paging option in this API", IllegalArgumentException::new);
+            }
+            return listForScopeSinglePage(scope, filter, requestContext);
+        }, (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -347,7 +376,7 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignmentListResult> res
             = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
 
     /**
@@ -366,6 +395,8 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignmentListResult> res
             = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
-            null, res.getValue().getNextLink(), null, null, null);
+            null, res.getValue().getNextLink() != null ? res.getValue().getNextLink() : null, null, null, null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentsImpl.class);
 }

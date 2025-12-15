@@ -26,7 +26,7 @@ public final class ServicesListByApplicationsMockTests {
     @Test
     public void testListByApplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"bu\",\"serviceTypeName\":\"qwyxebeybpm\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"tffyaqit\",\"placementConstraints\":\"heioqa\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"eufuqyrxpdlcgql\"}],\"serviceLoadMetrics\":[{\"name\":\"mjqfrddgamquhio\",\"weight\":\"High\",\"primaryDefaultLoad\":2131162818,\"secondaryDefaultLoad\":364566844,\"defaultLoad\":1776992890},{\"name\":\"disyirnxz\",\"weight\":\"Medium\",\"primaryDefaultLoad\":394290556,\"secondaryDefaultLoad\":1167405678,\"defaultLoad\":994025187},{\"name\":\"ujrtrhqvwr\",\"weight\":\"Zero\",\"primaryDefaultLoad\":589242227,\"secondaryDefaultLoad\":1550567255,\"defaultLoad\":1309315594}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Medium\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"cvjtszcofiz\":\"yw\",\"gbjkvreljeamur\":\"htd\",\"xlpm\":\"zmlovuanash\"},\"location\":\"rbdkelvidiz\",\"id\":\"sdbccxjmonfdgnwn\",\"name\":\"ypuuwwltvuqjctze\",\"type\":\"keifzzhmkdasv\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"bwwpgdakchzy\",\"serviceTypeName\":\"lixqnrkcxkjibn\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"uxswqrntvl\",\"placementConstraints\":\"jpsttexoq\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"yyufmhruncuw\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"spkcdqzh\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"tddunqnd\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"pchrqbn\"}],\"serviceLoadMetrics\":[{\"name\":\"cgegydcwbo\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1792979212,\"secondaryDefaultLoad\":1073196572,\"defaultLoad\":1101777200},{\"name\":\"ihrraiouaub\",\"weight\":\"Medium\",\"primaryDefaultLoad\":434775558,\"secondaryDefaultLoad\":1702747573,\"defaultLoad\":465765494},{\"name\":\"oj\",\"weight\":\"High\",\"primaryDefaultLoad\":1614609688,\"secondaryDefaultLoad\":2143335427,\"defaultLoad\":1851238843},{\"name\":\"asccbiui\",\"weight\":\"Low\",\"primaryDefaultLoad\":26585986,\"secondaryDefaultLoad\":162687194,\"defaultLoad\":7799986}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Medium\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"mdxotngfdgu\":\"dvruzslzojhpctf\",\"i\":\"eyzihgrky\"},\"location\":\"bsnmfpph\",\"id\":\"eevy\",\"name\":\"yhsgz\",\"type\":\"czbgomfgbeg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,29 +36,29 @@ public final class ServicesListByApplicationsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ServiceResource> response = manager.services()
-            .listByApplications("tad", "jaeukmrsieekpn", "zaapmudqmeqwi", com.azure.core.util.Context.NONE);
+            .listByApplications("uurutlwexxwlalni", "xzsrzpge", "q", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("heioqa", response.iterator().next().properties().placementConstraints());
+        Assertions.assertEquals("jpsttexoq", response.iterator().next().properties().placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY,
             response.iterator().next().properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("eufuqyrxpdlcgql",
+        Assertions.assertEquals("yyufmhruncuw",
             response.iterator().next().properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("mjqfrddgamquhio",
+        Assertions.assertEquals("cgegydcwbo",
             response.iterator().next().properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH,
+        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO,
             response.iterator().next().properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(2131162818,
+        Assertions.assertEquals(1792979212,
             response.iterator().next().properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(364566844,
+        Assertions.assertEquals(1073196572,
             response.iterator().next().properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1776992890,
+        Assertions.assertEquals(1101777200,
             response.iterator().next().properties().serviceLoadMetrics().get(0).defaultLoad());
         Assertions.assertEquals(MoveCost.MEDIUM, response.iterator().next().properties().defaultMoveCost());
-        Assertions.assertEquals("qwyxebeybpm", response.iterator().next().properties().serviceTypeName());
-        Assertions.assertEquals(ServicePackageActivationMode.EXCLUSIVE_PROCESS,
+        Assertions.assertEquals("lixqnrkcxkjibn", response.iterator().next().properties().serviceTypeName());
+        Assertions.assertEquals(ServicePackageActivationMode.SHARED_PROCESS,
             response.iterator().next().properties().servicePackageActivationMode());
-        Assertions.assertEquals("tffyaqit", response.iterator().next().properties().serviceDnsName());
-        Assertions.assertEquals("yw", response.iterator().next().tags().get("cvjtszcofiz"));
-        Assertions.assertEquals("rbdkelvidiz", response.iterator().next().location());
+        Assertions.assertEquals("uxswqrntvl", response.iterator().next().properties().serviceDnsName());
+        Assertions.assertEquals("dvruzslzojhpctf", response.iterator().next().tags().get("mdxotngfdgu"));
+        Assertions.assertEquals("bsnmfpph", response.iterator().next().location());
     }
 }

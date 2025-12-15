@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.containerservicefleet.models.GateConfiguration;
+import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
 import java.util.Arrays;
@@ -14,21 +16,45 @@ public final class UpdateStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateStage model = BinaryData.fromString(
-            "{\"name\":\"qkwpyeicxmqc\",\"groups\":[{\"name\":\"vhkhixu\"}],\"afterStageWaitInSeconds\":1713707644}")
+            "{\"name\":\"mgucna\",\"groups\":[{\"name\":\"eoellwptfdygp\",\"beforeGates\":[{\"displayName\":\"ac\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"qrhhu\",\"type\":\"Approval\"}]}],\"afterStageWaitInSeconds\":284689658,\"beforeGates\":[{\"displayName\":\"eqx\",\"type\":\"Approval\"}],\"afterGates\":[{\"displayName\":\"hzxct\",\"type\":\"Approval\"},{\"displayName\":\"bkdmo\",\"type\":\"Approval\"},{\"displayName\":\"ostmgrcf\",\"type\":\"Approval\"}]}")
             .toObject(UpdateStage.class);
-        Assertions.assertEquals("qkwpyeicxmqc", model.name());
-        Assertions.assertEquals("vhkhixu", model.groups().get(0).name());
-        Assertions.assertEquals(1713707644, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("mgucna", model.name());
+        Assertions.assertEquals("eoellwptfdygp", model.groups().get(0).name());
+        Assertions.assertEquals("ac", model.groups().get(0).beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.groups().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals("qrhhu", model.groups().get(0).afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.groups().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(284689658, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("eqx", model.beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.beforeGates().get(0).type());
+        Assertions.assertEquals("hzxct", model.afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.afterGates().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateStage model = new UpdateStage().withName("qkwpyeicxmqc")
-            .withGroups(Arrays.asList(new UpdateGroup().withName("vhkhixu")))
-            .withAfterStageWaitInSeconds(1713707644);
+        UpdateStage model = new UpdateStage().withName("mgucna")
+            .withGroups(Arrays.asList(new UpdateGroup().withName("eoellwptfdygp")
+                .withBeforeGates(
+                    Arrays.asList(new GateConfiguration().withDisplayName("ac").withType(GateType.APPROVAL)))
+                .withAfterGates(
+                    Arrays.asList(new GateConfiguration().withDisplayName("qrhhu").withType(GateType.APPROVAL)))))
+            .withAfterStageWaitInSeconds(284689658)
+            .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("eqx").withType(GateType.APPROVAL)))
+            .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("hzxct").withType(GateType.APPROVAL),
+                new GateConfiguration().withDisplayName("bkdmo").withType(GateType.APPROVAL),
+                new GateConfiguration().withDisplayName("ostmgrcf").withType(GateType.APPROVAL)));
         model = BinaryData.fromObject(model).toObject(UpdateStage.class);
-        Assertions.assertEquals("qkwpyeicxmqc", model.name());
-        Assertions.assertEquals("vhkhixu", model.groups().get(0).name());
-        Assertions.assertEquals(1713707644, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("mgucna", model.name());
+        Assertions.assertEquals("eoellwptfdygp", model.groups().get(0).name());
+        Assertions.assertEquals("ac", model.groups().get(0).beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.groups().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals("qrhhu", model.groups().get(0).afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.groups().get(0).afterGates().get(0).type());
+        Assertions.assertEquals(284689658, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("eqx", model.beforeGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.beforeGates().get(0).type());
+        Assertions.assertEquals("hzxct", model.afterGates().get(0).displayName());
+        Assertions.assertEquals(GateType.APPROVAL, model.afterGates().get(0).type());
     }
 }

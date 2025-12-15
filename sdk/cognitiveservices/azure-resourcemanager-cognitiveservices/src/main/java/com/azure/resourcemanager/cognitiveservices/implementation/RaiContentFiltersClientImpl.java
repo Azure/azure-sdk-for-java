@@ -61,7 +61,7 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CognitiveServicesMan")
+    @ServiceInterface(name = "CognitiveServicesManagementClientRaiContentFilters")
     public interface RaiContentFiltersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/raiContentFilters")

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsStopExecutionSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Stop_Execution.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_Stop_Execution.json
      */
     /**
      * Sample code: Terminate a Container Apps Job.

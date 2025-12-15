@@ -21,7 +21,7 @@ public final class DomainTopicEventSubscriptionsGetDeliveryAttributesWithRespons
     @Test
     public void testGetDeliveryAttributesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"dwzqauxzanhmkvfr\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kudrbcpftx\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qyemebu\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ucmci\"}]}";
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"lnthbbnkgzukwdrn\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"jthfceyjnc\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"lfuyfjbpfiddhlr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class DomainTopicEventSubscriptionsGetDeliveryAttributesWithRespons
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeliveryAttributeListResult response = manager.domainTopicEventSubscriptions()
-            .getDeliveryAttributesWithResponse("utmdpvozg", "qjbknl", "clctzey", "wmn",
+            .getDeliveryAttributesWithResponse("wcco", "dxku", "mkczynuhhoqe", "shavljqkx",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dwzqauxzanhmkvfr", response.value().get(0).name());
+        Assertions.assertEquals("lnthbbnkgzukwdrn", response.value().get(0).name());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.Action;
+import com.azure.resourcemanager.appcontainers.models.ActiveRevisionsMode;
 import com.azure.resourcemanager.appcontainers.models.Affinity;
 import com.azure.resourcemanager.appcontainers.models.AppProtocol;
 import com.azure.resourcemanager.appcontainers.models.BindingType;
@@ -19,6 +20,8 @@ import com.azure.resourcemanager.appcontainers.models.CorsPolicy;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import com.azure.resourcemanager.appcontainers.models.CustomScaleRule;
 import com.azure.resourcemanager.appcontainers.models.Dapr;
+import com.azure.resourcemanager.appcontainers.models.DaprAppHealth;
+import com.azure.resourcemanager.appcontainers.models.EnvironmentVar;
 import com.azure.resourcemanager.appcontainers.models.IdentitySettings;
 import com.azure.resourcemanager.appcontainers.models.IdentitySettingsLifeCycle;
 import com.azure.resourcemanager.appcontainers.models.Ingress;
@@ -28,6 +31,7 @@ import com.azure.resourcemanager.appcontainers.models.IngressStickySessions;
 import com.azure.resourcemanager.appcontainers.models.IngressTransportMethod;
 import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentityType;
@@ -55,8 +59,39 @@ import java.util.Map;
  */
 public final class ContainerAppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerApps_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ContainerApps_Kind_WorkflowApp_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or Update WorkflowApp Kind.
+     * 
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void
+        createOrUpdateWorkflowAppKind(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerApps()
+            .define("testcontainerAppKind")
+            .withRegion("East Us")
+            .withExistingResourceGroup("rg")
+            .withManagedBy(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Web/sites/testcontainerAppKind")
+            .withKind(Kind.WORKFLOWAPP)
+            .withManagedEnvironmentId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/testmanagedenv3")
+            .withConfiguration(new Configuration().withActiveRevisionsMode(ActiveRevisionsMode.SINGLE)
+                .withIngress(new Ingress().withExternal(true).withTargetPort(443).withAllowInsecure(false)))
+            .withTemplate(new Template()
+                .withContainers(Arrays.asList(new Container().withImage("default/logicapps-base:latest")
+                    .withName("logicapps-container")
+                    .withResources(new ContainerResources().withCpu(1.0D).withMemory("2.0Gi"))))
+                .withScale(
+                    new Scale().withMinReplicas(1).withMaxReplicas(30).withCooldownPeriod(350).withPollingInterval(35)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ContainerApps_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App.
@@ -126,7 +161,14 @@ public final class ContainerAppsCreateOrUpdateSamples {
                         .withHttpReadBufferSize(30)
                         .withHttpMaxRequestSize(10)
                         .withLogLevel(LogLevel.DEBUG)
-                        .withEnableApiLogging(true))
+                        .withEnableApiLogging(true)
+                        .withAppHealth(new DaprAppHealth()
+                            .withEnabled(true)
+                            .withPath("/health")
+                            .withProbeIntervalSeconds(3)
+                            .withProbeTimeoutMilliseconds(1000)
+                            .withThreshold(3))
+                        .withMaxConcurrency(10))
                     .withRuntime(new Runtime().withJava(new RuntimeJava().withEnableMetrics(true)))
                     .withMaxInactiveRevisions(10)
                     .withService(new Service().withType("redis"))
@@ -192,9 +234,8 @@ public final class ContainerAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ContainerApps_TcpApp_CreateOrUpdate.
-     * json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ContainerApps_TcpApp_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Tcp App.
@@ -232,7 +273,43 @@ public final class ContainerAppsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ContainerApps_Kind_FunctionApp_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or Update FunctionApp Kind.
+     * 
+     * @param manager Entry point to ContainerAppsApiManager.
+     */
+    public static void
+        createOrUpdateFunctionAppKind(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerApps()
+            .define("testcontainerAppFunctionKind")
+            .withRegion("East Us")
+            .withExistingResourceGroup("rg")
+            .withManagedBy(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Web/sites/testcontainerAppFunctionKind")
+            .withKind(Kind.FUNCTIONAPP)
+            .withManagedEnvironmentId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/managedEnvironments/testmanagedenv3")
+            .withConfiguration(new Configuration().withActiveRevisionsMode(ActiveRevisionsMode.SINGLE)
+                .withIngress(new Ingress().withExternal(true).withTargetPort(80).withAllowInsecure(false)))
+            .withTemplate(new Template().withContainers(Arrays.asList(new Container()
+                .withImage("mcr.microsoft.com/azure-functions/dotnet:4")
+                .withName("function-app-container")
+                .withEnv(Arrays.asList(new EnvironmentVar().withName("AzureWebJobsStorage")
+                    .withValue(
+                        "DefaultEndpointsProtocol=https;AccountName=mystorageaccount;AccountKey=mykey;EndpointSuffix=core.windows.net"),
+                    new EnvironmentVar().withName("FUNCTIONS_WORKER_RUNTIME").withValue("dotnet"),
+                    new EnvironmentVar().withName("WEBSITES_ENABLE_APP_SERVICE_STORAGE").withValue("false")))
+                .withResources(new ContainerResources().withCpu(0.5D).withMemory("1.0Gi"))))
+                .withScale(
+                    new Scale().withMinReplicas(0).withMaxReplicas(10).withCooldownPeriod(300).withPollingInterval(30)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ContainerApps_ManagedBy_CreateOrUpdate.json
      */
     /**

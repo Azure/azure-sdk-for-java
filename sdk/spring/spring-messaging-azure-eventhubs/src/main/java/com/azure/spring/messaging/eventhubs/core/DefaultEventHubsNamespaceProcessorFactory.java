@@ -25,6 +25,7 @@ import com.azure.spring.messaging.eventhubs.implementation.properties.merger.Pro
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -55,6 +56,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEventHubsNamespaceProcessorFactory.class);
 
     private final List<Listener> listeners = new ArrayList<>();
+    private ApplicationContext applicationContext;
     private final NamespaceProperties namespaceProperties;
     private final CheckpointStore checkpointStore;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
@@ -167,6 +169,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
             factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            factory.setApplicationContext(this.applicationContext);
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventProcessorClientBuilder builder = factory.build();
@@ -244,6 +247,14 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     private String getCustomizerKey(String eventHub, String consumerGroup) {
         return eventHub + "_" + consumerGroup;
+    }
+
+    /**
+     * Set the application context.
+     * @param applicationContext the application context.
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
 }

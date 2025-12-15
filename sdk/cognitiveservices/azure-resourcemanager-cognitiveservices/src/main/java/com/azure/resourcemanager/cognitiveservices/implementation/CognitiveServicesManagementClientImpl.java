@@ -46,10 +46,12 @@ import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesCl
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectCapabilityHostsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ProjectsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.QuotaTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiContentFiltersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiTopicsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
@@ -404,6 +406,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The RaiTopicsClient object to access its operations.
+     */
+    private final RaiTopicsClient raiTopics;
+
+    /**
+     * Gets the RaiTopicsClient object to access its operations.
+     * 
+     * @return the RaiTopicsClient object.
+     */
+    public RaiTopicsClient getRaiTopics() {
+        return this.raiTopics;
+    }
+
+    /**
      * The RaiContentFiltersClient object to access its operations.
      */
     private final RaiContentFiltersClient raiContentFilters;
@@ -516,6 +532,20 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The QuotaTiersClient object to access its operations.
+     */
+    private final QuotaTiersClient quotaTiers;
+
+    /**
+     * Gets the QuotaTiersClient object to access its operations.
+     * 
+     * @return the QuotaTiersClient object.
+     */
+    public QuotaTiersClient getQuotaTiers() {
+        return this.quotaTiers;
+    }
+
+    /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -532,7 +562,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-09-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
@@ -551,6 +581,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.raiPolicies = new RaiPoliciesClientImpl(this);
         this.raiBlocklists = new RaiBlocklistsClientImpl(this);
         this.raiBlocklistItems = new RaiBlocklistItemsClientImpl(this);
+        this.raiTopics = new RaiTopicsClientImpl(this);
         this.raiContentFilters = new RaiContentFiltersClientImpl(this);
         this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
         this.defenderForAISettings = new DefenderForAISettingsClientImpl(this);
@@ -559,6 +590,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.projectConnections = new ProjectConnectionsClientImpl(this);
         this.accountCapabilityHosts = new AccountCapabilityHostsClientImpl(this);
         this.projectCapabilityHosts = new ProjectCapabilityHostsClientImpl(this);
+        this.quotaTiers = new QuotaTiersClientImpl(this);
     }
 
     /**

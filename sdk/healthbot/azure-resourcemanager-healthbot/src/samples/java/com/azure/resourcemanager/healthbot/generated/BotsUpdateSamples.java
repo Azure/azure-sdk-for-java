@@ -14,7 +14,7 @@ import com.azure.resourcemanager.healthbot.models.SkuName;
 public final class BotsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2020-12-08/examples/ResourceUpdatePatch.json
+     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ResourceUpdatePatch.json
      */
     /**
      * Sample code: BotUpdate.

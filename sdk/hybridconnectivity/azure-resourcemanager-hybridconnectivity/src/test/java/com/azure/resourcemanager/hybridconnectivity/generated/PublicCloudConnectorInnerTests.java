@@ -24,7 +24,7 @@ public final class PublicCloudConnectorInnerTests {
         Assertions.assertEquals("bngui", model.tags().get("nwui"));
         Assertions.assertEquals("lgbquxig", model.properties().awsCloudProfile().accountId());
         Assertions.assertEquals("gzjaoyfhrtxilne", model.properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(model.properties().awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, model.properties().hostType());
     }
 
@@ -43,7 +43,7 @@ public final class PublicCloudConnectorInnerTests {
         Assertions.assertEquals("bngui", model.tags().get("nwui"));
         Assertions.assertEquals("lgbquxig", model.properties().awsCloudProfile().accountId());
         Assertions.assertEquals("gzjaoyfhrtxilne", model.properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(false, model.properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertFalse(model.properties().awsCloudProfile().isOrganizationalAccount());
         Assertions.assertEquals(HostType.AWS, model.properties().hostType());
     }
 

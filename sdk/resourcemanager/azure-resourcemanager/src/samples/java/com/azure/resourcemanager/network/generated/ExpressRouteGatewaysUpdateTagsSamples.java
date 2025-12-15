@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ExpressRouteGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ExpressRouteGatewayUpdateTags
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/ExpressRouteGatewayUpdateTags
      * .json
      */
     /**

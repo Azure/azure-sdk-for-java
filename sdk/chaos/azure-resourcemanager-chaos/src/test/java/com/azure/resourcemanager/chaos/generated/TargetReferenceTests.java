@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetReference model = BinaryData.fromString("{\"type\":\"ChaosTarget\",\"id\":\"dqytbciqfouflmm\"}")
+        TargetReference model = BinaryData.fromString("{\"type\":\"ChaosTarget\",\"id\":\"uujqgidokgjljyo\"}")
             .toObject(TargetReference.class);
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.type());
-        Assertions.assertEquals("dqytbciqfouflmm", model.id());
+        Assertions.assertEquals("uujqgidokgjljyo", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetReference model
-            = new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("dqytbciqfouflmm");
+            = new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId("uujqgidokgjljyo");
         model = BinaryData.fromObject(model).toObject(TargetReference.class);
         Assertions.assertEquals(TargetReferenceType.CHAOS_TARGET, model.type());
-        Assertions.assertEquals("dqytbciqfouflmm", model.id());
+        Assertions.assertEquals("uujqgidokgjljyo", model.id());
     }
 }

@@ -27,7 +27,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.computeschedule.fluent.ComputeScheduleMgmtClient;
+import com.azure.resourcemanager.computeschedule.fluent.OccurrenceExtensionsClient;
+import com.azure.resourcemanager.computeschedule.fluent.OccurrencesClient;
 import com.azure.resourcemanager.computeschedule.fluent.OperationsClient;
+import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionExtensionsClient;
 import com.azure.resourcemanager.computeschedule.fluent.ScheduledActionsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -156,6 +159,48 @@ public final class ComputeScheduleMgmtClientImpl implements ComputeScheduleMgmtC
     }
 
     /**
+     * The ScheduledActionExtensionsClient object to access its operations.
+     */
+    private final ScheduledActionExtensionsClient scheduledActionExtensions;
+
+    /**
+     * Gets the ScheduledActionExtensionsClient object to access its operations.
+     * 
+     * @return the ScheduledActionExtensionsClient object.
+     */
+    public ScheduledActionExtensionsClient getScheduledActionExtensions() {
+        return this.scheduledActionExtensions;
+    }
+
+    /**
+     * The OccurrencesClient object to access its operations.
+     */
+    private final OccurrencesClient occurrences;
+
+    /**
+     * Gets the OccurrencesClient object to access its operations.
+     * 
+     * @return the OccurrencesClient object.
+     */
+    public OccurrencesClient getOccurrences() {
+        return this.occurrences;
+    }
+
+    /**
+     * The OccurrenceExtensionsClient object to access its operations.
+     */
+    private final OccurrenceExtensionsClient occurrenceExtensions;
+
+    /**
+     * Gets the OccurrenceExtensionsClient object to access its operations.
+     * 
+     * @return the OccurrenceExtensionsClient object.
+     */
+    public OccurrenceExtensionsClient getOccurrenceExtensions() {
+        return this.occurrenceExtensions;
+    }
+
+    /**
      * Initializes an instance of ComputeScheduleMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -172,9 +217,12 @@ public final class ComputeScheduleMgmtClientImpl implements ComputeScheduleMgmtC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01";
+        this.apiVersion = "2025-04-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.scheduledActions = new ScheduledActionsClientImpl(this);
+        this.scheduledActionExtensions = new ScheduledActionExtensionsClientImpl(this);
+        this.occurrences = new OccurrencesClientImpl(this);
+        this.occurrenceExtensions = new OccurrenceExtensionsClientImpl(this);
     }
 
     /**

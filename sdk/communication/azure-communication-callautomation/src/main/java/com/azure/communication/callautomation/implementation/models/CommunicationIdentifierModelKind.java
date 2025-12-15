@@ -43,6 +43,12 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_APP = fromString("microsoftTeamsApp");
 
     /**
+     * Static value teamsExtensionUser for CommunicationIdentifierModelKind.
+     */
+    @Generated
+    public static final CommunicationIdentifierModelKind TEAMS_EXTENSION_USER = fromString("teamsExtensionUser");
+
+    /**
      * Creates a new instance of CommunicationIdentifierModelKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

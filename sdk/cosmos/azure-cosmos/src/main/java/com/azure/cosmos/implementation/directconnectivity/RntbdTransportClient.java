@@ -69,7 +69,6 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRepo
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
 public class RntbdTransportClient extends TransportClient {
@@ -209,7 +208,7 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
     }
 
@@ -344,7 +343,7 @@ public class RntbdTransportClient extends TransportClient {
                 }
 
                 error = new GoneException(
-                    lenientFormat("an unexpected %s occurred: %s", unexpectedError),
+                    String.format("an unexpected %s occurred: %s", unexpectedError.getClass(), unexpectedError),
                     address,
                     error instanceof Exception ? (Exception) error : new RuntimeException(error),
                     HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
@@ -422,7 +421,7 @@ public class RntbdTransportClient extends TransportClient {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            String message = lenientFormat("%s is closed", this);
+            String message = String.format("%s is closed", this);
             ClosedClientTransportException transportException
                 = new ClosedClientTransportException(message, null);
             throw new InternalServerErrorException(message, transportException, HttpConstants.SubStatusCodes.CLOSED_CLIENT);
@@ -887,7 +886,7 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         public String toDiagnosticsString() {
-            return lenientFormat("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
+            return String.format("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
                 connectTimeout,
                 tcpNetworkRequestTimeout,
                 idleChannelTimeout,

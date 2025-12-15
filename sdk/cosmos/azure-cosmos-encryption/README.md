@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.21.0</version>
+  <version>2.25.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,10 +43,10 @@ A few important properties are defined at the level of the container, among them
 
 ## Examples
 The following section provides several code snippets covering some of the most common Cosmos Encryption API tasks, including:
-* [Create Cosmos Encryption Client](#create-cosmos-encryption-client "Create Cosmos Encryption Client")
-* [Create Cosmos Encryption Database](#create-cosmos-encryption-database "Create Encryption Database")
-* [Create Encryption Container](#create-cosmos-encryption-container "Create Encryption Container")
-* [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Create Cosmos Encryption Client](#create-cosmos-encryption-client)
+* [Create Cosmos Encryption Database](#create-cosmos-encryption-database)
+* [Create Encryption Container](#create-cosmos-encryption-container)
+* [CRUD operation on Items](#crud-operation-on-items)
 
 ### Create Cosmos Encryption Client
 
@@ -225,6 +225,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos/encryption/
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
-
-
-

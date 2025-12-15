@@ -37,7 +37,7 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'io.clientcore:clientcore-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3-5', 'com.azure.cosmos.spark:azure-cosmos-spark_3', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
 parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
@@ -186,6 +186,9 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     if set_skip_linting_projects:
         skip_linting_projects = []
         for maven_identifier in sorted([p.identifier for p in source_projects]):
+            # Don't skip linting for parent POMs or linting-extensions.
+            if maven_identifier in parent_pom_identifiers or maven_identifier == 'io.clientcore:linting-extensions':
+                continue
             if not project_uses_client_parent(projects.get(maven_identifier), projects):
                 skip_linting_projects.append('!' + maven_identifier)
         print('setting env variable {} = {}'.format(set_skip_linting_projects, skip_linting_projects))
@@ -256,12 +259,11 @@ def create_project_for_pom(pom_path: str, artifacts_list_identifiers: list, arti
     directory_path = module_path[:module_path.rindex('/')]
     parent_pom = get_parent_pom(tree_root)
 
-    # If this is one of the parent POMs, retain it as a project.
-    if project_identifier in parent_pom_identifiers:
-        return Project(project_identifier, directory_path, module_path, parent_pom)
-
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in artifacts_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
+    if not project_identifier in artifacts_list_identifiers \
+        and not is_spring_child_pom(tree_root) \
+        and not (parent_pom in valid_parents or project_identifier in parent_pom_identifiers) \
+        and not project_identifier == 'io.clientcore:linting-extensions': # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -300,11 +302,24 @@ def resolve_dependent_project(pom_identifier: str, dependent_modules: Set[str], 
 # Function which resolves the dependencies of the project.
 def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[str], projects: Dict[str, Project]):
     if pom_identifier in projects:
-        for dependency in projects[pom_identifier].dependencies:
+        project = projects[pom_identifier]
+
+        # Add the dependencies for the project.
+        for dependency in project.dependencies:
             # Only continue if the project's dependencies haven't already been resolved.
             if not dependency in dependency_modules:
                 dependency_modules.add(dependency)
                 dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
+
+        # Add the dependencies of the parent POM.
+        # These are added since From Source the parent POMs are also built.
+        if project.parent_pom is not None and project.parent_pom in projects:
+            parent_project = projects[project.parent_pom]
+            for dependency in parent_project.dependencies:
+                # Only continue if the parent's dependencies haven't already been resolved.
+                if not dependency in dependency_modules:
+                    dependency_modules.add(dependency)
+                    dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
 
     return dependency_modules
 

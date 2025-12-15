@@ -6,8 +6,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusRequest;
@@ -22,23 +22,23 @@ import reactor.core.publisher.Mono;
 public final class MonitorsGetMetricStatusWithResponseMockTests {
     @Test
     public void testGetMetricStatusWithResponse() throws Exception {
-        String responseStr = "{\"azureResourceIds\":[\"duhavhqlkt\",\"umaq\",\"lbg\",\"cdui\"]}";
+        String responseStr = "{\"azureResourceIds\":[\"iwubmwmbesldnk\",\"wtppjflcxogaoko\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        MetricsStatusResponse response
-            = manager.monitors()
-                .getMetricStatusWithResponse("jervnaenqpehi", "doy",
-                    new MetricsStatusRequest().withAzureResourceIds(Arrays.asList("fthnzdn", "sl"))
-                        .withUserEmail("nayqi"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        MetricsStatusResponse response = manager.monitors()
+            .getMetricStatusWithResponse("zbn", "blylpstdbh",
+                new MetricsStatusRequest()
+                    .withAzureResourceIds(Arrays.asList("rzdzucerscdnt", "evfiwjmygt", "sslswtmweriof", "pyqs"))
+                    .withUserEmail("mwabnetshhszhedp"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("duhavhqlkt", response.azureResourceIds().get(0));
+        Assertions.assertEquals("iwubmwmbesldnk", response.azureResourceIds().get(0));
     }
 }

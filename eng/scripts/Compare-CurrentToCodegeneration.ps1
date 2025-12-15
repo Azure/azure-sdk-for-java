@@ -37,6 +37,7 @@ param(
 )
 
 $sdkFolder = Join-Path -Path $PSScriptRoot ".." ".." "sdk"
+$tspClientFolder = Join-Path -Path $PSScriptRoot ".." ".." "eng" "common" "tsp-client"
 
 class GenerationInformation {
   # The directory where the library is located. Used for logging and validation.
@@ -73,6 +74,12 @@ function Find-GenerationInformation {
   }
 
   if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
+    if ($LibraryFolder.Contains("-v2")) {
+      # Skip v2 libraries for TypeSpec regeneration as they are not supported.
+      Write-Host "Skipping TypeSpec regeneration for v2 library: $LibraryFolder"
+      return
+    }
+
     # Search for 'tsp-location.yaml' script in the specified service directory.
     Get-ChildItem -Path $path -Filter "tsp-location.yaml" -Recurse | ForEach-Object {
       $GenerationInformations.Add([GenerationInformation]::new($path, $_, 'TypeSpec')) | Out-Null
@@ -127,7 +134,7 @@ if ($RegenerationType -eq 'Swagger' -or $RegenerationType -eq 'All') {
 }
 
 if ($RegenerationType -eq 'TypeSpec' -or $RegenerationType -eq 'All') {
-  $output = (& npm install -g @azure-tools/typespec-client-generator-cli 2>&1)
+  $output = (& npm --prefix "$tspClientFolder" ci 2>&1)
   if ($LASTEXITCODE -ne 0) {
     Write-Error "Error installing @azure-tools/typespec-client-generator-cli`n$output"
     exit 1
@@ -162,7 +169,7 @@ $generateScript = {
     Push-Location $directory
     try {
       try {
-        $generateOutput = (& tsp-client update 2>&1)
+        $generateOutput = (& npx --no --prefix "$using:tspClientFolder" tsp-client update 2>&1)
         if ($LastExitCode -ne 0) {
           Write-Host "$separatorBar`nError running TypeSpec regeneration in directory $directory`n$([String]::Join("`n", $generateOutput))`n$separatorBar"
           throw
@@ -182,10 +189,10 @@ $generateScript = {
     } finally {
       Pop-Location
     }
-    
+
     # prevent warning related to EOL differences which triggers an exception for some reason
     (& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "$directory/*.java" ":(exclude)**/src/test/**" ":
-  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**" ":(exclude)**/src/main/**/resourcemanager/**/*Manager.java") | Out-Null
+  (exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**") | Out-Null
 
     if ($LastExitCode -ne 0) {
       $status = (git status -s "$directory" | Out-String)

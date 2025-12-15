@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface VirtualNetworkSubnetUsages {
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
@@ -20,20 +20,20 @@ public interface VirtualNetworkSubnetUsages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
+     * @return virtual network subnet usage data along with {@link Response}.
      */
-    Response<VirtualNetworkSubnetUsageResult> executeWithResponse(String locationName,
+    Response<VirtualNetworkSubnetUsageModel> listWithResponse(String locationName,
         VirtualNetworkSubnetUsageParameter parameters, Context context);
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id.
+     * @return virtual network subnet usage data.
      */
-    VirtualNetworkSubnetUsageResult execute(String locationName, VirtualNetworkSubnetUsageParameter parameters);
+    VirtualNetworkSubnetUsageModel list(String locationName, VirtualNetworkSubnetUsageParameter parameters);
 }

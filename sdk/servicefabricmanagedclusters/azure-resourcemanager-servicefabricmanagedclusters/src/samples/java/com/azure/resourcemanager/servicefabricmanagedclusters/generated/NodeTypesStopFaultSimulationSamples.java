@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
  */
 public final class NodeTypesStopFaultSimulationSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
+     * x-ms-original-file: 2025-10-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
      */
     /**
      * Sample code: Stop Node Type Fault Simulation.

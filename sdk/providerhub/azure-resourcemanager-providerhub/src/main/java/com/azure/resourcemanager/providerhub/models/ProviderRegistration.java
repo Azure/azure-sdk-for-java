@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationInner;
 
 /**
@@ -37,6 +38,21 @@ public interface ProviderRegistration {
      * @return the properties value.
      */
     ProviderRegistrationProperties properties();
+
+    /**
+     * Gets the kind property: Provider registration kind. This Metadata is also used by portal/tooling/etc to render
+     * different UX experiences for resources of the same type.
+     * 
+     * @return the kind value.
+     */
+    ProviderRegistrationKind kind();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.ProviderRegistrationInner object.

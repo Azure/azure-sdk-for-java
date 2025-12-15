@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Storage type for the server. Allowed values are Premium_LRS, PremiumV2_LRS, and UltraSSD_LRS. Default is Premium_LRS
- * if not specified.
+ * Type of storage assigned to a server. Allowed values are Premium_LRS, PremiumV2_LRS, or UltraSSD_LRS. If not
+ * specified, it defaults to Premium_LRS.
  */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /**

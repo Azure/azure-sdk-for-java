@@ -17,12 +17,12 @@ import java.io.IOException;
 @Fluent
 public final class AuthorizationActionMapping implements JsonSerializable<AuthorizationActionMapping> {
     /*
-     * The original property.
+     * The original action name.
      */
     private String original;
 
     /*
-     * The desired property.
+     * The desired action name.
      */
     private String desired;
 
@@ -33,7 +33,7 @@ public final class AuthorizationActionMapping implements JsonSerializable<Author
     }
 
     /**
-     * Get the original property: The original property.
+     * Get the original property: The original action name.
      * 
      * @return the original value.
      */
@@ -42,7 +42,7 @@ public final class AuthorizationActionMapping implements JsonSerializable<Author
     }
 
     /**
-     * Set the original property: The original property.
+     * Set the original property: The original action name.
      * 
      * @param original the original value to set.
      * @return the AuthorizationActionMapping object itself.
@@ -53,7 +53,7 @@ public final class AuthorizationActionMapping implements JsonSerializable<Author
     }
 
     /**
-     * Get the desired property: The desired property.
+     * Get the desired property: The desired action name.
      * 
      * @return the desired value.
      */
@@ -62,7 +62,7 @@ public final class AuthorizationActionMapping implements JsonSerializable<Author
     }
 
     /**
-     * Set the desired property: The desired property.
+     * Set the desired property: The desired action name.
      * 
      * @param desired the desired value to set.
      * @return the AuthorizationActionMapping object itself.

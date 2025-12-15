@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class ManagedDashboardsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Delete.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Delete.json
      */
     /**
      * Sample code: Dashboard_Delete.

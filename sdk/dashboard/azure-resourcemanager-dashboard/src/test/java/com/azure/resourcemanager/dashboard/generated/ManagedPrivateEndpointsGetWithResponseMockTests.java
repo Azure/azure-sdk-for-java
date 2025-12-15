@@ -21,7 +21,7 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateLinkResourceId\":\"puvks\",\"privateLinkResourceRegion\":\"lsa\",\"groupIds\":[\"n\"],\"requestMessage\":\"ynl\",\"connectionState\":{\"status\":\"Disconnected\",\"description\":\"pxodlqiyntorzih\"},\"privateLinkServiceUrl\":\"osjswsr\",\"privateLinkServicePrivateIP\":\"lyzrpzbchckqqzqi\"},\"location\":\"iysui\",\"tags\":{\"yhwitsmypyynpcdp\":\"nkedyatrwyhqmib\",\"nsorgjhxbldt\":\"mnzgmwznmabi\",\"kotl\":\"wwrlkdmtncv\",\"gsyocogj\":\"xdy\"},\"id\":\"tdtbnnhadooc\",\"name\":\"kvci\",\"type\":\"hnvpamqgxq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"privateLinkResourceId\":\"hsd\",\"privateLinkResourceRegion\":\"t\",\"groupIds\":[\"ikdowwquuvx\",\"xclvit\",\"hqzonosggbhcoh\"],\"requestMessage\":\"dsjnka\",\"connectionState\":{\"status\":\"Rejected\",\"description\":\"iswac\"},\"privateLinkServiceUrl\":\"gdkz\",\"privateLinkServicePrivateIP\":\"wkfvhqcrailvp\"},\"location\":\"pfuflrw\",\"tags\":{\"gafcnihgwqapnedg\":\"dlxyjrxs\",\"cvdrhvoodsot\":\"bcvkcvqvpkeq\",\"wmgxcxrsl\":\"obzdopcjwvnhdl\",\"rpkhjwn\":\"mutwuoe\"},\"id\":\"yqsluic\",\"name\":\"dggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedPrivateEndpointModel response = manager.managedPrivateEndpoints()
-            .getWithResponse("wlquuijfqkace", "iipfpubj", "bwwift", com.azure.core.util.Context.NONE)
+            .getWithResponse("xe", "mnzb", "bhjpglkfgohdne", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iysui", response.location());
-        Assertions.assertEquals("nkedyatrwyhqmib", response.tags().get("yhwitsmypyynpcdp"));
-        Assertions.assertEquals("puvks", response.privateLinkResourceId());
-        Assertions.assertEquals("lsa", response.privateLinkResourceRegion());
-        Assertions.assertEquals("n", response.groupIds().get(0));
-        Assertions.assertEquals("ynl", response.requestMessage());
-        Assertions.assertEquals("osjswsr", response.privateLinkServiceUrl());
+        Assertions.assertEquals("pfuflrw", response.location());
+        Assertions.assertEquals("dlxyjrxs", response.tags().get("gafcnihgwqapnedg"));
+        Assertions.assertEquals("hsd", response.privateLinkResourceId());
+        Assertions.assertEquals("t", response.privateLinkResourceRegion());
+        Assertions.assertEquals("ikdowwquuvx", response.groupIds().get(0));
+        Assertions.assertEquals("dsjnka", response.requestMessage());
+        Assertions.assertEquals("gdkz", response.privateLinkServiceUrl());
     }
 }

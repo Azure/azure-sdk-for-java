@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure.cosmos.spark</groupId>
-    <artifactId>azure-cosmos-spark_3_2-12</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;current} -->
-    <relativePath>../azure-cosmos-spark_3_2-12</relativePath>
+    <artifactId>azure-cosmos-spark_3</artifactId>
+    <version>0.0.1-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3;current} -->
+    <relativePath>../azure-cosmos-spark_3</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-4_2-12</artifactId>
-  <version>4.38.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;current} -->
+  <version>4.43.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-4_2-12</url>
   <name>OLTP Spark 3.4 Connector for Azure Cosmos DB SQL API</name>
@@ -49,7 +49,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>add-sources</id>
@@ -59,7 +59,7 @@
             </goals>
             <configuration>
               <sources>
-                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/main/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3/src/main/scala</source>
                 <source>${basedir}/src/main/scala</source>
               </sources>
             </configuration>
@@ -72,7 +72,7 @@
             </goals>
             <configuration>
               <sources>
-                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/test/scala</source>
+                <source>${basedir}/../azure-cosmos-spark_3/src/test/scala</source>
                 <source>${basedir}/src/test/scala</source>
               </sources>
             </configuration>
@@ -85,7 +85,7 @@
             </goals>
             <configuration>
               <resources>
-                <resource><directory>${basedir}/../azure-cosmos-spark_3_2-12/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3/src/main/resources</directory></resource>
                 <resource><directory>${basedir}/src/main/resources</directory></resource>
               </resources>
             </configuration>
@@ -95,14 +95,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
       </plugin>
     </plugins>
   </build>
   <profiles>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>sparkE2E_3-4</id>
+      <id>spark-e2e_3-4</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
@@ -116,8 +116,14 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
               <includes>
                 <include>**/*.*</include>
                 <include>**/*Test.*</include>
@@ -125,6 +131,16 @@
                 <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
+              <properties>
+                <property>
+                  <name>surefire.testng.verbose</name>
+                  <value>2</value>
+                </property>
+                <property>
+                  <name>listener</name>
+                  <value>com.azure.cosmos.CosmosNettyLeakDetectorFactory</value>
+                </property>
+              </properties>
             </configuration>
           </plugin>
           <plugin>
@@ -164,10 +180,6 @@
           <groupId>org.slf4j</groupId>
           <artifactId>*</artifactId>
         </exclusion>
-        <exclusion>
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
       </exclusions>
       <scope>provided</scope>
     </dependency>
@@ -182,10 +194,6 @@
         </exclusion>
         <exclusion>
           <groupId>org.slf4j</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.logging.log4j</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>

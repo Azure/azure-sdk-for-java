@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.5.0-beta.1 (Unreleased)
+### 2.8.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,36 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.7.0 (2025-12-09)
+
+#### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 2.6.1 (2025-11-18)
+
+#### Bugs Fixed
+* Fixed duplicate processing in `CosmosSourceConnector` when task rebalance(pause/resume) happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
+
+### 2.6.0 (2025-10-21)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
+
+### 2.5.1 (2025-08-22)
+
+#### Bugs Fixed
+* Fixed an issue where `CosmosSourceConnector` got stuck when restart - See [PR 46378](https://github.com/Azure/azure-sdk-for-java/pull/46378)
+* Fixed `BadRequestException` in `CosmosSourceConnector` when using `azure.cosmos.source.containers.includeAll=true` - See [PR 46389](https://github.com/Azure/azure-sdk-for-java/pull/46389)
+* Fixed `NullPointerException` in `CosmosSourceConnector` when using `azure.cosmos.source.changeFeed.mode=AllVersionsAndDeletes` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+* Fixed warning logs for `java.lang.NoClassDefFoundError: io/micrometer/observation/ObservationHandler` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+
+#### Other Changes
+* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregrated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+
+### 2.5.0 (2025-07-31)
+
+#### Other Changes
+* Added more logs in `CosmosSourceTask` and `CosmosSinkTask` - See [PR 46224](https://github.com/Azure/azure-sdk-for-java/pull/46224)
 
 ### 2.4.0 (2025-06-24)
 

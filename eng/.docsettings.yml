@@ -31,7 +31,6 @@ required_readme_sections:
   - ^Next steps$
   - ^Contributing$
 known_presence_issues:
-  - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
@@ -48,7 +47,6 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-extensions/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-test/CHANGELOG.md', '#2847']
-  - ['sdk/mediaservices/microsoft-azure-media/CHANGELOG.md', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
@@ -81,6 +79,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3-4_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-5_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/README.md', '#3113']
+  - ['sdk/cosmos/fabric-cosmos-spark-auth_3/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']

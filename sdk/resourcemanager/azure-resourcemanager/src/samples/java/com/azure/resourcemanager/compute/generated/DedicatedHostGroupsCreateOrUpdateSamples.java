@@ -16,7 +16,7 @@ import java.util.Map;
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
@@ -40,7 +40,7 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-11-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
      */
     /**

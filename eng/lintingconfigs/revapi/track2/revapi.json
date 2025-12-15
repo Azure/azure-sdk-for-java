@@ -1,0 +1,778 @@
+[
+  {
+    "extension": "revapi.java",
+    "configuration": {
+      "missing-classes": {
+        "behavior": "ignore",
+        "ignoreMissingAnnotations": false
+      },
+      "matchOverloads": true
+    }
+  },
+  {
+    "extension": "revapi.versions",
+    "configuration": {
+      "enabled": true,
+      "semantic0": false,
+      "versionIncreaseAllows": {
+        "major": {
+          "severity": "BREAKING"
+        },
+        "minor": {
+          "severity": "NON_BREAKING"
+        },
+        "patch": {
+          "severity": "EQUIVALENT"
+        }
+      },
+      "onAllowed": {
+        "remove": true,
+        "attachments": {
+          "breaksVersioningRules": "false"
+        }
+      },
+      "onDisallowed": {
+        "criticality": "error",
+        "attachments": {
+          "breaksVersioningRules": "true"
+        }
+      },
+      "passThroughDifferences": [
+        "java.class.nonPublicPartOfAPI"
+      ]
+    }
+  },
+  {
+    "extension": "allowed-external-apis",
+    "configuration": {
+      "enabled": true,
+      "allowedPrefixes": {
+        "com.azure.": [
+          "communication.common.",
+          "core.",
+          "cosmos.",
+          "data.appconfiguration.",
+          "data.schemaregistry.",
+          "identity.",
+          "json.",
+          "messaging.eventgrid.",
+          "messaging.eventhub.",
+          "messaging.servicebus.",
+          "perf.test.core.",
+          "resourcemanager.",
+          "security.keyvault.",
+          "spring.cloud.appconfiguration.config.",
+          "spring.cloud.feature.",
+          "storage.",
+          "xml."
+        ],
+        "com.mysql.cj.": [],
+        "io.": [
+          "clientcore.",
+          "cloudevents.",
+          "opentelemetry."
+        ],
+        "org.": [
+          "json.",
+          "postgresql.",
+          "reactivestreams.",
+          "springframework.util.ErrorHandler"
+        ],
+        "redis.clients.jedis": []
+      }
+    }
+  },
+  {
+    "extension": "ignored-jackson-databind-removal",
+    "configuration": {
+      "enabled": true,
+      "ignoredPackages": {
+        "com.azure.ai.": [
+          "contentsafety.models",
+          "formrecognizer.documentanalysis.models",
+          "formrecognizer.documentanalysis.administration.models",
+          "formrecognizer.models",
+          "formrecognizer.training.models",
+          "metricsadvisor.models",
+          "metricsadvisor.administration.models",
+          "textanalytics.models",
+          "translation.text.models"
+        ],
+        "com.azure.communication.": [
+          "callautomation.models",
+          "chat.models",
+          "email.models",
+          "identity.models",
+          "jobrouter.models",
+          "messages.models",
+          "phonenumbers.models",
+          "room.models"
+        ],
+        "com.azure.compute.batch.models": [],
+        "com.azure.containers.containerregistry.models": [],
+        "com.azure.data.tables.models": [],
+        "com.azure.developer.devcenters.models": [],
+        "com.azure.digitaltwins.core": [],
+        "com.azure.messaging.": [
+          "eventgrid.systemevents",
+          "servicebus.administration.models",
+          "servicebus.models",
+          "webpubsub.client.models",
+          "webpubsub.models"
+        ],
+        "com.azure.monitor.query.models": [],
+        "com.azure.search.documents.": [
+          "models",
+          "indexes.models"
+        ],
+        "com.azure.security.": [
+          "attestation.models",
+          "keyvault.administration.models",
+          "keyvault.certificates.models",
+          "keyvault.keys.models",
+          "keyvault.keys.cryptography.models",
+          "keyvault.secrets.models"
+        ],
+        "com.azure.storage.": [
+          "blob.models",
+          "blob.options",
+          "file.datalake.models",
+          "file.share.models",
+          "queue.models"
+        ]
+      }
+    }
+  },
+  {
+    "extension": "ignored-transitive-changes",
+    "configuration": {
+      "enabled": true,
+      "ignoredNewArchives": [
+        "com.azure:azure-core:",
+        "com.azure:azure-json:",
+        "com.azure:azure-xml:",
+        "com.mysql:mysql-connector-j:"
+      ]
+    }
+  },
+  {
+    "extension": "class-and-package-tree-filter-provider",
+    "configuration": {
+      "ignoredClasses": {
+        "com.azure.": [
+          "core.util.Configuration",
+          "cosmos.BridgeInternal",
+          "cosmos.CosmosBridgeInternal",
+          "cosmos.models.ModelBridgeInternal",
+          "cosmos.util.UtilBridgeInternal",
+          "spring.cloud.config.AppConfigurationBootstrapConfiguration",
+          "spring.cloud.config.AppConfigurationRefresh",
+          "spring.cloud.config.properties.AppConfigurationProviderProperties",
+          "spring.cloud.config.web.AppConfigurationEndpoint",
+          "spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEvent"
+        ]
+      },
+      "ignoredPackages": {
+        "com.": [
+          "azure.data.cosmos",
+          "fasterxml.jackson",
+          "google.gson",
+          "microsoft.azure",
+          "numbusds"
+        ],
+        "io.": [
+          "micrometer",
+          "netty",
+          "vertx"
+        ],
+        "javax.": [
+          "jms",
+          "servlet"
+        ],
+        "kotlin": [],
+        "okhttp3": [],
+        "okio": [],
+        "org.": [
+          "apache.avro",
+          "apache.commons",
+          "apache.qpid",
+          "junit",
+          "reactivestreams",
+          "slf4j",
+          "springframework"
+        ],
+        "reactor.": [
+          "core",
+          "netty",
+          "util"
+        ]
+      },
+      "ignoredPackagesPatterns": [
+        "com\\.azure\\..*(implementation|samples).*",
+        "com\\.azure\\.resourcemanager\\..*(fluent)(\\..*)?$"
+      ]
+    }
+  },
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": {
+            "matcher": "regex",
+            "match": "(class|interface) com\\.azure\\.keyvault\\.jca\\.(com|org)\\..*"
+          },
+          "justification": "skip check for third party files."
+        },
+        {
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": {
+            "matcher": "regex",
+            "match": "(class|enum|interface) org\\.conscrypt\\..*"
+          },
+          "justification": "skip check for third party files."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform\\.|appservice\\.|authorization\\.|cdn\\.|compute\\.|containerinstance\\.|containerregistry\\.|containerservice\\.|cosmos\\.|dns\\.|eventhubs\\.|keyvault\\.|monitor\\.|msi\\.|network\\.|privatedns\\.|redis\\.|resources\\.|search\\.|servicebus\\.|sql\\.|storage\\.|trafficmanager\\.).*"
+          },
+          "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": {
+            "matcher": "regex",
+            "match": "method <T> (reactor\\.core\\.publisher\\.Mono<)?T>? com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(Reactive)?CosmosOperations::patch\\(java\\.lang\\.Object, com\\.azure\\.cosmos\\.models\\.PartitionKey, java\\.lang\\.Class<T>, com\\.azure\\.cosmos\\.models\\.CosmosPatchOperations(, com\\.azure\\.cosmos\\.models\\.CosmosPatchItemRequestOptions)?\\)"
+          },
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": {
+            "matcher": "regex",
+            "match": "method <S extends T> (reactor\\.core\\.publisher\\.Mono<)?S>? com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.(Reactive)?CosmosRepository<T, ID extends java\\.io\\.Serializable>::save\\(ID, com\\.azure\\.cosmos\\.models\\.PartitionKey, java\\.lang\\.Class<S>, com\\.azure\\.cosmos\\.models\\.CosmosPatchOperations(, com\\.azure\\.cosmos\\.models\\.CosmosPatchItemRequestOptions)?\\)"
+          },
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> void com.azure.spring.data.cosmos.core.CosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> java.lang.Iterable<S> com.azure.spring.data.cosmos.core.CosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method reactor.core.publisher.Mono<java.lang.Long> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged)",
+          "old": ".*",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "justification": "These are SDK metadata annotations and don't affect runtime behavior."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
+          "code": "java.annotation.removed",
+          "new": {
+            "matcher": "regex",
+            "match": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*"
+          },
+          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::get(Password|RemoteUrl|Username)\\(\\)"
+          },
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::set(Password|RemoteUrl|Username)\\(java\\.lang\\.String\\)"
+          },
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
+          "justification" : "Remove deprecated method"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*"
+          },
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.(Connection|ConnectionPool)"
+          },
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": {
+            "matcher": "regex",
+            "match": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.(ServiceBusTopicProperties|ServiceBusQueueProperties)"
+          },
+          "justification": "Provides new queue level properties."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": {
+            "matcher": "regex",
+            "match": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)"
+          },
+          "justification": "Support new properties."
+        },
+        {
+          "regex": true,
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter <T> reactor\\.core\\.publisher\\.Mono<T> com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(ReactiveCosmosOperations|ReactiveCosmosTemplate)::insert\\(java\\.lang\\.String, ===java\\.lang\\.Object===, com\\.azure\\.cosmos\\.models\\.PartitionKey\\)",
+          "new": "parameter <T> reactor\\.core\\.publisher\\.Mono<T> com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(ReactiveCosmosOperations|ReactiveCosmosTemplate)::insert\\(java\\.lang\\.String, ===T===, com\\.azure\\.cosmos\\.models\\.PartitionKey\\)",
+          "parameterIndex": "1",
+          "justification": "To support mono method chaining, without explicit typecast for upper bounded generics"
+        },
+        {
+          "code": "java.method.returnTypeChangedCovariantly",
+          "new": {
+            "matcher": "regex",
+            "match": "method com.azure.search.documents.indexes.models.(CognitiveServicesAccountKey|ConditionalSkill|CustomEntityLookupSkill|DefaultCognitiveServicesAccount|DistanceScoringFunction|DocumentExtractionSkill|EntityRecognitionSkill|FreshnessScoringFunction|ImageAnalysisSkill|KeyPhraseExtractionSkill|LanguageDetectionSkill|MagnitudeScoringFunction|MergeSkill|OcrSkill|SentimentSkill|ShaperSkill|SplitSkill|TagScoringFunction|TextTranslationSkill|WebApiSkill) .*"
+          },
+          "justification": "Proper support for fluent setters in subtypes."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": {
+            "matcher": "regex",
+            "match": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)"
+          },
+          "justification": "Skip customized getters on class when serialization and deserialization."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
+          "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "new": "field com.azure.cosmos.models.PartitionKind.MULTI_HASH",
+          "justification": "removing beta tags on PartitionKind MultiHash for hierarchical partitioning GA"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.addedToInterface",
+          "new": "method java.lang.String com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.AzureEnvironmentOptions::getServiceBusDomainName()",
+          "justification": "support configuration of Service Bus domain name."
+        },
+        {
+          "code": "java.field.constantValueChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.messaging\\.eventgrid\\.SystemEventNames\\.(API_MANAGEMENT_API_CREATED|API_MANAGEMENT_API_DELETED|API_MANAGEMENT_API_RELEASE_CREATED|API_MANAGEMENT_API_RELEASE_DELETED|API_MANAGEMENT_API_RELEASE_UPDATED|API_MANAGEMENT_API_UPDATED|SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER)"
+          },
+          "justification": "Previous constant value had a typo and was never functional."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "code": "java.field.constantValueChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.spring\\.cloud\\.feature\\.management\\.filters\\.TargetingFilter\\.(USERS|GROUPS)"
+          },
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
+          "justification": "Remove this because AZURE_GERMANY is deprecated."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "code": "java.class.externalClassExposedInAPI",
+          "new": {
+            "matcher": "regex",
+            "match": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)"
+          },
+          "justification": "Support new properties."
+        },
+        {
+          "regex": true,
+          "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
+          "new": ".* com.azure.security.attestation.*attestTpm.*"
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedMetaData",
+          "justification": "Fixes a bug to deserialize the conflictResolutionTimestamp Instant object."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
+          "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method java.lang.String com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider.TokenCredentialOptions::getTokenCredentialBeanName()",
+          "justification": "Support to configure token credential bean name."
+        },
+        {
+          "code": "java.annotation.added",
+          "old": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
+        },
+        {
+          "code": "java.annotation.added",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Adding missing Jackson annotations to Job Router models."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
+        },
+        {
+          "code": "java\\.annotation\\.attributeValueChanged",
+          "old": {
+            "matcher": "regex",
+            "match": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*"
+          },
+          "justification": "Fix incorrect json attributes."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeTypeParametersChanged|returnTypeChanged)",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Accept and return Router models rather than BinaryData."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
+          "justification": "Another version of Schema Registry API released."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)"
+          },
+          "justification": "Additional schema formats are supported by Schema Registry."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded|removed)",
+          "old": ".*? com\\.azure\\.resourcemanager\\..*\\.models.*",
+          "justification": "Migration to azure-json."
+        },
+        {
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\..*\\.models.*::validate\\(\\)"
+          },
+          "justification": "Do not include client-side validation for SDK generated from TypeSpec."
+        },
+        {
+          "code": "java.method.returnTypeErasureChanged",
+          "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
+          "new": "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
+          "justification": "Override flags this as a potential binary breaking change, but it isn't."
+        },
+        {
+          "code": "java.method.returnTypeErasureChanged",
+          "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
+          "new": "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
+          "justification": "Override flags this as a potential binary breaking change, but it isn't."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
+          "new": "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
+          "justification": "Breaking change in Search 03-01-2025 preview."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method <T> reactor.core.publisher.Mono<com.azure.core.http.rest.Response<T>> com.azure.search.documents.SearchAsyncClient::getDocumentWithResponse(java.lang.String, java.lang.Class<T>, java.util.List<java.lang.String>, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method reactor.core.publisher.Mono<com.azure.search.documents.util.SearchPagedResponse> com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(java.lang.String, com.azure.search.documents.models.SearchOptions, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedResponse com.azure.search.documents.SearchClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method com.azure.search.documents.util.SearchPagedFlux com.azure.search.documents.SearchAsyncClient::search(com.azure.search.documents.implementation.models.SearchRequest, java.lang.String, com.azure.core.util.Context)",
+          "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Double com.azure.search.documents.util.SearchPagedResponse::getCoverage()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.util.Map<java.lang.String, java.util.List<com.azure.search.documents.models.FacetResult>> com.azure.search.documents.util.SearchPagedResponse::getFacets()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "code": "java.method.varargOverloadsOnlyDifferInVarargParameter",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
+          }
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "justification": "Not a break, same method exists on its parent class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
+          "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AlertSeverity com.azure.resourcemanager.monitor.models.AlertSeverity::fromLong(long)",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "new": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "superClass": "com.azure.core.util.ExpandableStringEnum<com.azure.resourcemanager.monitor.models.AlertSeverity>",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
+          "justification": "The property is a constant, and hence not settable."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*Resource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.keyvault.models.ProxyResourceWithoutSystemData",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
+          "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.ApplicationGatewayWafRuleSensitivityTypes.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        }
+      ]
+    }
+  }
+]

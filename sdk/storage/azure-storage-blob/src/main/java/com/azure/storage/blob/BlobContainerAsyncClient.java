@@ -50,6 +50,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -164,8 +165,7 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String -->
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
@@ -184,8 +184,7 @@ public final class BlobContainerAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String-String -->
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
@@ -198,8 +197,7 @@ public final class BlobContainerAsyncClient {
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
-     * pass in the url encoded version of the blob name.
+     * @param blobName A {@code String} representing the name of the blob. This should not be encoded.
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
@@ -223,7 +221,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**
@@ -1172,9 +1170,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
@@ -1301,7 +1300,8 @@ public final class BlobContainerAsyncClient {
                     // Note that this prefers the value passed to .byPage(int) over the value on the options
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
+                        .setDetails(options.getDetails())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;
@@ -1337,9 +1337,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedAzResiliencyStatusesGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/managedAzResiliencyStatusGet_example.json
+     * x-ms-original-file: 2025-10-01-preview/managedAzResiliencyStatusGet_example.json
      */
     /**
      * Sample code: Az Resiliency status of Base Resources.

@@ -8,14 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The HA mode for the server.
+ * Modes of high availability supported for this compute.
  */
 public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailabilityMode> {
-    /**
-     * Static value Disabled for HighAvailabilityMode.
-     */
-    public static final HighAvailabilityMode DISABLED = fromString("Disabled");
-
     /**
      * Static value ZoneRedundant for HighAvailabilityMode.
      */

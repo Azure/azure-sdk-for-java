@@ -92,6 +92,8 @@ public class EventSubscriptionDestination implements JsonSerializable<EventSubsc
                     return ServiceBusTopicEventSubscriptionDestination.fromJson(readerToUse.reset());
                 } else if ("AzureFunction".equals(discriminatorValue)) {
                     return AzureFunctionEventSubscriptionDestination.fromJson(readerToUse.reset());
+                } else if ("PartnerDestination".equals(discriminatorValue)) {
+                    return PartnerEventSubscriptionDestination.fromJson(readerToUse.reset());
                 } else if ("MonitorAlert".equals(discriminatorValue)) {
                     return MonitorAlertEventSubscriptionDestination.fromJson(readerToUse.reset());
                 } else if ("NamespaceTopic".equals(discriminatorValue)) {

@@ -10,15 +10,15 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ServersStartSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerStart.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersStart.json
      */
     /**
-     * Sample code: ServerStart.
+     * Sample code: Start a stopped server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverStart(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().start("testrg", "testserver", com.azure.core.util.Context.NONE);
+    public static void
+        startAStoppedServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().start("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

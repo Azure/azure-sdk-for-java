@@ -48,6 +48,7 @@ import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -1140,4 +1141,63 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         //cleanup
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
+
+    @Test
+    public void directoryExistsHandlesParentNotFound() {
+        ShareAsyncClient shareClient = shareBuilderHelper(shareName).buildAsyncClient();
+        ShareDirectoryAsyncClient directoryClient = shareClient.getDirectoryClient("fakeDir");
+        ShareDirectoryAsyncClient subDirectoryClient = directoryClient.getSubdirectoryClient(generatePathName());
+
+        StepVerifier.create(subDirectoryClient.existsWithResponse()).assertNext(r -> {
+            assertFalse(r.getValue());
+            assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(), r.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
+        }).verifyComplete();
+    }
+
+    /* PULLED FROM RELEASE
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createDirectoryFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareDirectoryCreateOptions options
+            = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
+    
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+    
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(options)).assertNext(r -> {
+            HttpHeader retrievedHeader = r.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+            if (filePropertySemantics != null) {
+                assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+            } else {
+                assertNull(retrievedHeader);
+            }
+        }).verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createDirectoryIfNotExistsFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareDirectoryCreateOptions options
+            = new ShareDirectoryCreateOptions().setFilePropertySemantics(filePropertySemantics);
+    
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+    
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(options)).assertNext(r -> {
+            HttpHeader retrievedHeader = r.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+            if (filePropertySemantics != null) {
+                assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+            } else {
+                assertNull(retrievedHeader);
+            }
+        }).verifyComplete();
+    } */
 }

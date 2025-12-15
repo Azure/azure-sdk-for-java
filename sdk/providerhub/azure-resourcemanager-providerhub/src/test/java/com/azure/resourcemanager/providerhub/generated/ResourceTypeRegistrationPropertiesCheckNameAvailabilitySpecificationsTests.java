@@ -13,10 +13,10 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model = BinaryData.fromString(
-            "{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"shsfwxosowzxcu\",\"i\",\"jooxdjebw\"]}")
+            "{\"enableDefaultValidation\":true,\"resourceTypesWithCustomValidation\":[\"ivfsnk\",\"m\",\"ctq\",\"jf\"]}")
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
-        Assertions.assertEquals(true, model.enableDefaultValidation());
-        Assertions.assertEquals("shsfwxosowzxcu", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertTrue(model.enableDefaultValidation());
+        Assertions.assertEquals("ivfsnk", model.resourceTypesWithCustomValidation().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -24,10 +24,10 @@ public final class ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecif
         ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications model
             = new ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications()
                 .withEnableDefaultValidation(true)
-                .withResourceTypesWithCustomValidation(Arrays.asList("shsfwxosowzxcu", "i", "jooxdjebw"));
+                .withResourceTypesWithCustomValidation(Arrays.asList("ivfsnk", "m", "ctq", "jf"));
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications.class);
-        Assertions.assertEquals(true, model.enableDefaultValidation());
-        Assertions.assertEquals("shsfwxosowzxcu", model.resourceTypesWithCustomValidation().get(0));
+        Assertions.assertTrue(model.enableDefaultValidation());
+        Assertions.assertEquals("ivfsnk", model.resourceTypesWithCustomValidation().get(0));
     }
 }

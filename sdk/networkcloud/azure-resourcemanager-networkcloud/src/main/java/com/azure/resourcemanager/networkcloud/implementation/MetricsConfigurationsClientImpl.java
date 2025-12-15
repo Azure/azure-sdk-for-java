@@ -82,6 +82,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         Mono<Response<ClusterMetricsConfigurationList>> listByCluster(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -91,6 +92,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         Response<ClusterMetricsConfigurationList> listByClusterSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -207,6 +209,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -215,7 +220,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterSinglePageAsync(String resourceGroupName,
-        String clusterName) {
+        String clusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -234,10 +239,32 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCluster(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, top, skipToken, accept, context))
             .<PagedResponse<ClusterMetricsConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List metrics configurations of the cluster.
+     * 
+     * Get a list of metrics configurations for the provided cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of metrics configurations for the provided cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(String resourceGroupName, String clusterName,
+        Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skipToken),
+            nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -255,7 +282,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterMetricsConfigurationInner> listByClusterAsync(String resourceGroupName,
         String clusterName) {
-        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, top, skipToken),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
@@ -266,6 +295,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,7 +305,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterSinglePage(String resourceGroupName,
-        String clusterName) {
+        String clusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -295,7 +327,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         final String accept = "application/json";
         Response<ClusterMetricsConfigurationList> res
             = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -307,6 +339,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,7 +350,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterSinglePage(String resourceGroupName,
-        String clusterName, Context context) {
+        String clusterName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -337,7 +372,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
         final String accept = "application/json";
         Response<ClusterMetricsConfigurationList> res
             = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -357,7 +392,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken),
             nextLink -> listByClusterNextSinglePage(nextLink));
     }
 
@@ -368,6 +405,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,8 +417,9 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
-        Context context) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, context),
+        Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(
+            () -> listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken, context),
             nextLink -> listByClusterNextSinglePage(nextLink, context));
     }
 
@@ -1722,14 +1763,16 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     }
 
     /**
+     * List metrics configurations of the cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfigurationList represents a list of metrics configuration of the cluster along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of metrics configurations for the provided cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterMetricsConfigurationInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -1749,14 +1792,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     }
 
     /**
+     * List metrics configurations of the cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfigurationList represents a list of metrics configuration of the cluster along with
-     * {@link PagedResponse}.
+     * @return a list of metrics configurations for the provided cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterNextSinglePage(String nextLink) {
@@ -1777,6 +1821,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     }
 
     /**
+     * List metrics configurations of the cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1784,8 +1830,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfigurationList represents a list of metrics configuration of the cluster along with
-     * {@link PagedResponse}.
+     * @return a list of metrics configurations for the provided cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterNextSinglePage(String nextLink,

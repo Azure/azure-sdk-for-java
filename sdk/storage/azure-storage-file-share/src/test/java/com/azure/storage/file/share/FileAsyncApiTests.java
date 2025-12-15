@@ -87,9 +87,11 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -275,8 +277,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             }))
             .then(shareServiceAsyncClient.deleteShare(shareName))).verifyComplete();
 
-        file.delete();
-        outFile.delete();
+        assertTrue(file.delete());
+        assertTrue(outFile.delete());
     }
 
     @Test
@@ -497,16 +499,13 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void uploadFileDoesNotExist() {
-        File uploadFile = new File(testFolder.getPath() + "/fakefile.txt");
+        File uploadFile = new File(testFolder.getPath() + "/fakeFile.txt");
 
         if (uploadFile.exists()) {
             assertTrue(uploadFile.delete());
         }
         StepVerifier.create(primaryFileAsyncClient.uploadFromFile(uploadFile.getPath()))
             .verifyErrorSatisfies(it -> assertInstanceOf(NoSuchFileException.class, it.getCause()));
-
-        // cleanup
-        uploadFile.delete();
     }
 
     @Test
@@ -526,7 +525,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(FileAlreadyExistsException.class, it.getCause()));
 
         // cleanup
-        downloadFile.delete();
+        assertTrue(downloadFile.delete());
     }
 
     @Test
@@ -551,7 +550,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         scanner.close();
 
         // cleanup
-        downloadFile.delete();
+        assertTrue(downloadFile.delete());
     }
 
     @Test
@@ -604,7 +603,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
 
         // cleanup
-        downloadFile.delete();
+        assertTrue(downloadFile.delete());
     }
 
     @Test
@@ -623,7 +622,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyError(ShareStorageException.class);
 
         // cleanup
-        downloadFile.delete();
+        assertTrue(downloadFile.delete());
     }
 
     @Test
@@ -762,7 +761,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
+                assertEquals(401, e.getStatusCode());
                 assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
                 assertTrue(e.getServiceMessage()
                     .contains(
@@ -788,7 +787,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         destFile.beginCopy(sourceUri, new ShareFileCopyOptions(), null))))
             .verifyErrorSatisfies(error -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, error);
-                assertTrue(e.getStatusCode() == 403);
+                assertEquals(403, e.getStatusCode());
                 assertTrue(e.getServiceMessage().contains("AuthorizationPermissionMismatch"));
                 assertTrue(e.getServiceMessage()
                     .contains("This request is not authorized to perform this operation using this permission."));
@@ -798,8 +797,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void uploadRangeFromURLOAuth() {
-        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsyncSharedKey(
-            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceAsyncClient oAuthServiceClient
+            = getOAuthServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryAsyncClient dirClient
             = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(generatePathName());
 
@@ -850,7 +849,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 return FluxUtil.collectBytesInByteBufferStream(r.getValue());
             })).assertNext(bytes -> {
                 //u
-                assertEquals(bytes[0], 117);
+                assertEquals(117, bytes[0]);
             }).verifyComplete();
     }
 
@@ -1708,6 +1707,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .block();
 
         //setup options
+        assertNotNull(previousSnapshot);
+        assertNotNull(destFile);
         ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
         options.setRenameIncluded(renameSupport);
 
@@ -1900,6 +1901,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(create).assertNext(r -> {
             ShareFileInfo response = r.getValue();
+            assertNotNull(response.getPosixProperties());
             assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
             assertEquals("345", response.getPosixProperties().getOwner());
             assertEquals("123", response.getPosixProperties().getGroup());
@@ -1926,6 +1928,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(create).assertNext(r -> {
             ShareFileInfo response = r.getValue();
+            assertNotNull(response.getPosixProperties());
             assertEquals("345", response.getPosixProperties().getOwner());
             assertEquals("123", response.getPosixProperties().getGroup());
             assertEquals("7777", response.getPosixProperties().getFileMode());
@@ -1951,6 +1954,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(create).assertNext(r -> {
             ShareFileProperties response = r.getValue();
 
+            assertNotNull(response.getPosixProperties());
             assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
             assertEquals("0", response.getPosixProperties().getOwner());
             assertEquals("0", response.getPosixProperties().getGroup());
@@ -2010,6 +2014,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         } else if (modeAndOwnerCopyMode == ModeCopyMode.SOURCE) {
                             options.setModeCopyMode(ModeCopyMode.SOURCE);
                             options.setOwnerCopyMode(OwnerCopyMode.SOURCE);
+                            assertNotNull(sourceProperties.getPosixProperties());
                             owner = sourceProperties.getPosixProperties().getOwner();
                             group = sourceProperties.getPosixProperties().getGroup();
                             mode = sourceProperties.getPosixProperties().getFileMode();
@@ -2028,6 +2033,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             });
 
         StepVerifier.create(setup).assertNext(r -> {
+            assertNotNull(r.getT1().getPosixProperties());
             assertEquals(r.getT2(), r.getT1().getPosixProperties().getOwner());
             assertEquals(r.getT3(), r.getT1().getPosixProperties().getGroup());
             assertEquals(r.getT4(), r.getT1().getPosixProperties().getFileMode());
@@ -2055,6 +2061,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                     .setRequestConditions(new ShareRequestConditions().setLeaseId(lease));
                 return hardLink.createHardLinkWithResponse(options).flatMap(res -> {
                     ShareFileInfo info = res.getValue();
+                    assertNotNull(info.getPosixProperties());
                     assertEquals(NfsFileType.REGULAR, info.getPosixProperties().getFileType());
                     assertEquals("0", info.getPosixProperties().getOwner());
                     assertEquals("0", info.getPosixProperties().getGroup());
@@ -2105,7 +2112,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
             // Act & Assert
             return source.create(1024).then(symlink.createSymbolicLinkWithResponse(options)).flatMap(response -> {
-                assertEquals(NfsFileType.SYM_LINK, response.getValue().getPosixProperties().getFileType());
+                assertEquals(NfsFileType.SYM_LINK,
+                    Objects.requireNonNull(response.getValue().getPosixProperties()).getFileType());
                 assertEquals(owner, response.getValue().getPosixProperties().getOwner());
                 assertEquals(group, response.getValue().getPosixProperties().getGroup());
                 assertEquals(fileCreatedOn, response.getValue().getSmbProperties().getFileCreationTime());
@@ -2198,4 +2206,155 @@ public class FileAsyncApiTests extends FileShareTestBase {
         oauthServiceClient.deleteShare(shareName).block();
     }
 
+    @Test
+    public void fileExistsHandlesParentNotFound() {
+        ShareDirectoryAsyncClient directoryClient = shareAsyncClient.getDirectoryClient("fakeDir");
+        ShareFileAsyncClient fileClient = directoryClient.getFileClient(generatePathName());
+
+        StepVerifier.create(fileClient.existsWithResponse()).assertNext(r -> {
+            assertFalse(r.getValue());
+            assertEquals(ShareErrorCode.PARENT_NOT_FOUND.getValue(), r.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
+        }).verifyComplete();
+    }
+
+    /* PULLED FROM RELEASE
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
+    public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
+        ShareFileCreateOptions options
+            = new ShareFileCreateOptions(Constants.KB).setFilePropertySemantics(filePropertySemantics);
+    
+        // For Create File and Directory with FilePropertySemantics == Restore,
+        // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
+        if (filePropertySemantics == FilePropertySemantics.RESTORE) {
+            options.setFilePermission(FILE_PERMISSION);
+        }
+    
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(r -> {
+            HttpHeader retrievedHeader = r.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
+            if (filePropertySemantics != null) {
+                assertEquals(filePropertySemantics.toString(), retrievedHeader.getValue());
+            } else {
+                assertNull(retrievedHeader);
+            }
+        }).verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithBinaryData() {
+        ShareFileCreateOptions options
+            = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
+    
+        StepVerifier
+            .create(primaryFileAsyncClient.createWithResponse(options)
+                .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
+            .assertNext(bytes -> assertArrayEquals(DATA.getDefaultBytes(), bytes))
+            .verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithBinaryDataFail() {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
+    
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(options))
+            .verifyError(ShareStorageException.class);
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithBinaryDataPartiallyEmpty() {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    
+        StepVerifier
+            .create(primaryFileAsyncClient.createWithResponse(options)
+                .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
+            // When the max file size is larger than the data size, the rest of the file is zeroed out.
+            // We only check the part we wrote to here, which is why we use copyOfRange.
+            .assertNext(bytes -> assertArrayEquals(DATA.getDefaultBytes(),
+                Arrays.copyOfRange(bytes, 0, DATA.getDefaultDataSize())))
+            .verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithLargeBinaryData() {
+        byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
+        BinaryData data = BinaryData.fromBytes(randomByteArray);
+    
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
+    
+        StepVerifier
+            .create(primaryFileAsyncClient.createWithResponse(options)
+                .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
+            .assertNext(bytes -> assertArrayEquals(randomByteArray, bytes))
+            .verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithLargeBinaryDataBackedByFlux() {
+        ByteBuffer randomByteBuffer = getRandomByteBuffer(Constants.MB * 4);
+    
+        Mono<byte[]> response
+            = BinaryData.fromFlux(Flux.just(randomByteBuffer), Constants.MB * 4L, false).flatMap(data -> {
+                ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
+                return primaryFileAsyncClient.createWithResponse(options)
+                    .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download()));
+            });
+    
+        StepVerifier.create(response)
+            .assertNext(bytes -> assertArrayEquals(randomByteBuffer.array(), bytes))
+            .verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithLargeBinaryDataPartiallyEmpty() {
+        byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
+        BinaryData data = BinaryData.fromBytes(randomByteArray);
+    
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
+    
+        StepVerifier
+            .create(primaryFileAsyncClient.createWithResponse(options)
+                .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
+            .assertNext(bytes -> assertArrayEquals(randomByteArray, Arrays.copyOfRange(bytes, 0, Constants.MB * 4)))
+            .verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
+    
+        MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+        byte[] expectedMd5 = md5Digest.digest(DATA.getDefaultText().getBytes());
+    
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(response -> {
+            String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
+            byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
+            assertArrayEquals(expectedMd5, decodedContentMd5);
+        }).verifyComplete();
+    }
+    
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
+        byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
+        BinaryData data = BinaryData.fromBytes(randomByteArray);
+    
+        ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
+    
+        MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+        byte[] expectedMd5 = md5Digest.digest(randomByteArray);
+    
+        StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(response -> {
+            String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
+            byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
+            assertArrayEquals(expectedMd5, decodedContentMd5);
+        }).verifyComplete();
+    } */
 }

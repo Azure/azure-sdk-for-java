@@ -9,21 +9,26 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ManagedEnvironmentImpl
     implements ManagedEnvironment, ManagedEnvironment.Definition, ManagedEnvironment.Update {
@@ -139,6 +144,25 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration() {
         return this.innerModel().peerTrafficConfiguration();
+    }
+
+    public IngressConfiguration ingressConfiguration() {
+        return this.innerModel().ingressConfiguration();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     public Region region() {
@@ -326,6 +350,16 @@ public final class ManagedEnvironmentImpl
     public ManagedEnvironmentImpl
         withPeerTrafficConfiguration(ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration) {
         this.innerModel().withPeerTrafficConfiguration(peerTrafficConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        this.innerModel().withIngressConfiguration(ingressConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 }

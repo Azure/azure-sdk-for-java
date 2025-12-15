@@ -19,17 +19,17 @@ import java.util.List;
 @Fluent
 public final class ResourceProviderCapabilities implements JsonSerializable<ResourceProviderCapabilities> {
     /*
-     * The quotaId property.
+     * The quota id.
      */
     private String quotaId;
 
     /*
-     * The effect property.
+     * The effect.
      */
     private ResourceProviderCapabilitiesEffect effect;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
@@ -40,7 +40,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Get the quotaId property: The quotaId property.
+     * Get the quotaId property: The quota id.
      * 
      * @return the quotaId value.
      */
@@ -49,7 +49,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Set the quotaId property: The quotaId property.
+     * Set the quotaId property: The quota id.
      * 
      * @param quotaId the quotaId value to set.
      * @return the ResourceProviderCapabilities object itself.
@@ -60,7 +60,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Get the effect property: The effect property.
+     * Get the effect property: The effect.
      * 
      * @return the effect value.
      */
@@ -69,7 +69,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Set the effect property: The effect property.
+     * Set the effect property: The effect.
      * 
      * @param effect the effect value to set.
      * @return the ResourceProviderCapabilities object itself.
@@ -80,7 +80,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -89,7 +89,7 @@ public final class ResourceProviderCapabilities implements JsonSerializable<Reso
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceProviderCapabilities object itself.

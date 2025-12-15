@@ -10,12 +10,12 @@
 
   <modules>
       <module>microsoft-azure-eventhubs</module>
-      <module>microsoft-azure-eventhubs-eph</module>
       <module>azure-messaging-eventhubs</module>
       <module>azure-messaging-eventhubs-checkpointstore-blob</module>
       <module>azure-messaging-eventhubs-checkpointstore-jedis</module>
       <module>azure-messaging-eventhubs-stress</module>
       <module>azure-messaging-eventhubs-track2-perf</module>
+      <module>azure-resourcemanager-eventhubs</module>
   </modules>
 
 </project>

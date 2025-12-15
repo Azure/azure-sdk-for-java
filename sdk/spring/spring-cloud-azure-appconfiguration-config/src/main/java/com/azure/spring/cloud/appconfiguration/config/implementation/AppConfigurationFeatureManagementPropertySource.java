@@ -2,7 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.util.List;
+
 import org.springframework.core.env.EnumerablePropertySource;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -12,12 +17,13 @@ import org.springframework.core.env.EnumerablePropertySource;
  * </p>
  */
 class AppConfigurationFeatureManagementPropertySource extends EnumerablePropertySource<FeatureFlagClient> {
-
     private final FeatureFlagClient featureFlagLoader;
 
-    private static final String FEATURE_MANAGEMENT_KEY = "feature_management";
+    private static final String FEATURE_MANAGEMENT_KEY = "feature-management";
 
-    private static final String FEATURE_FLAG_KEY = FEATURE_MANAGEMENT_KEY + ".feature_flags";
+    private static final ObjectMapper MAPPER = JsonMapper.builder().build();
+
+    private static final String FEATURE_FLAG_KEY = FEATURE_MANAGEMENT_KEY + ".feature-flags";
 
     AppConfigurationFeatureManagementPropertySource(FeatureFlagClient featureFlagLoader) {
         super(FEATURE_MANAGEMENT_KEY, featureFlagLoader);
@@ -26,14 +32,17 @@ class AppConfigurationFeatureManagementPropertySource extends EnumerableProperty
 
     @Override
     public String[] getPropertyNames() {
-        String[] names = { FEATURE_FLAG_KEY };
-        return names;
+        if (featureFlagLoader != null && featureFlagLoader.getFeatureFlags() != null 
+            && !featureFlagLoader.getFeatureFlags().isEmpty()) {
+            return new String[] { FEATURE_FLAG_KEY };
+        }
+        return new String[0];
     }
 
     @Override
     public Object getProperty(String name) {
         if (FEATURE_FLAG_KEY.equals(name)) {
-            return featureFlagLoader.getProperties();
+            return MAPPER.convertValue(featureFlagLoader.getFeatureFlags(), List.class);
         }
         return null;
     }

@@ -17,19 +17,21 @@ public final class UserInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"mcoo\",\"role\":\"dbOwner\"}]},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"dcsi\",\"role\":\"root\"},{\"db\":\"nnaamdectehfiqsc\",\"role\":\"root\"},{\"db\":\"ypvhezrkg\",\"role\":\"root\"}]},\"id\":\"jrefovgmkqsle\",\"name\":\"yvxyqjp\",\"type\":\"cattpngjcrcczsq\"}")
             .toObject(UserInner.class);
-        Assertions.assertEquals("mcoo", model.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.properties().roles().get(0).role());
+        Assertions.assertEquals("dcsi", model.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserInner model
             = new UserInner().withProperties(new UserProperties().withIdentityProvider(new IdentityProvider())
-                .withRoles(Arrays.asList(new DatabaseRole().withDb("mcoo").withRole(UserRole.DATABASE_OWNER))));
+                .withRoles(Arrays.asList(new DatabaseRole().withDb("dcsi").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("nnaamdectehfiqsc").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("ypvhezrkg").withRole(UserRole.ROOT))));
         model = BinaryData.fromObject(model).toObject(UserInner.class);
-        Assertions.assertEquals("mcoo", model.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, model.properties().roles().get(0).role());
+        Assertions.assertEquals("dcsi", model.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
     }
 }

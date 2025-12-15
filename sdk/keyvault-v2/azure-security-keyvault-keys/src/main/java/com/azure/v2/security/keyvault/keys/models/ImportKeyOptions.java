@@ -3,12 +3,15 @@
 
 package com.azure.v2.security.keyvault.keys.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+
 import java.time.OffsetDateTime;
 
 /**
  * Represents the configurable options to import a key.
  */
-//@Fluent
+@Metadata(properties = { MetadataProperties.FLUENT })
 public class ImportKeyOptions extends KeyProperties {
     /**
      * The JSON Web Key to import.

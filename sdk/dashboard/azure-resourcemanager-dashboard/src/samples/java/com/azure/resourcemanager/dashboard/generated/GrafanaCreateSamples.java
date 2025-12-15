@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public final class GrafanaCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Create.json
+     * x-ms-original-file: 2025-08-01/Grafana_Create.json
      */
     /**
      * Sample code: Grafana_Create.
@@ -43,10 +43,9 @@ public final class GrafanaCreateSamples {
     public static void grafanaCreate(com.azure.resourcemanager.dashboard.DashboardManager manager) {
         manager.grafanas()
             .define("myWorkspace")
-            .withRegion("West US")
             .withExistingResourceGroup("myResourceGroup")
+            .withRegion("West US")
             .withTags(mapOf("Environment", "Dev"))
-            .withSku(new ResourceSku().withName("Standard"))
             .withProperties(new ManagedGrafanaProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withZoneRedundancy(ZoneRedundancy.ENABLED)
                 .withApiKey(ApiKey.ENABLED)
@@ -71,6 +70,7 @@ public final class GrafanaCreateSamples {
                     .withUnifiedAlertingScreenshots(new UnifiedAlertingScreenshots().withCaptureEnabled(false)))
                 .withGrafanaPlugins(mapOf("sample-plugin-id", new GrafanaPlugin()))
                 .withGrafanaMajorVersion("9"))
+            .withSku(new ResourceSku().withName("Standard"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }

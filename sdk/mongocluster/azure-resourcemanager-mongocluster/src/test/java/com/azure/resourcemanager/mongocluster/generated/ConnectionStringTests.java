@@ -11,7 +11,7 @@ public final class ConnectionStringTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionString model
-            = BinaryData.fromString("{\"connectionString\":\"hocdgeab\",\"description\":\"phut\",\"name\":\"ndv\"}")
+            = BinaryData.fromString("{\"connectionString\":\"sezcxtb\",\"description\":\"gfycc\",\"name\":\"ewmdw\"}")
                 .toObject(ConnectionString.class);
     }
 }

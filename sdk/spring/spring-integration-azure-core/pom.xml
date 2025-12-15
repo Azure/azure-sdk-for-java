@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-integration-azure-core</artifactId>
-  <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+  <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
 
   <name>Spring Integration Azure Core</name>
   <description>Spring Integration Azure Core</description>
@@ -43,12 +43,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
-      <version>5.23.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
+      <version>6.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>6.5.0</version> <!-- {x-version-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>6.5.1</version> <!-- {x-version-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -71,19 +71,19 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.8</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.27.3</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
+      <version>3.27.4</version> <!-- {x-version-update;springboot3_org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -141,7 +141,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[6.5.0]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[6.5.1]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

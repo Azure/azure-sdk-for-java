@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,6 +23,11 @@ public class AzureEntityResource extends ProxyResource {
      * Resource Etag.
      */
     private String etag;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -61,6 +67,26 @@ public class AzureEntityResource extends ProxyResource {
      */
     AzureEntityResource withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the AzureEntityResource object itself.
+     */
+    AzureEntityResource withSystemData(SystemData systemData) {
+        this.systemData = systemData;
         return this;
     }
 
@@ -135,6 +161,8 @@ public class AzureEntityResource extends ProxyResource {
                     deserializedAzureEntityResource.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedAzureEntityResource.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAzureEntityResource.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

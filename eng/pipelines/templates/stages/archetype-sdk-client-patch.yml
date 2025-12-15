@@ -61,8 +61,10 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: UsePythonVersion@0
@@ -104,20 +106,23 @@ extends:
             # generate_from_source_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
+                $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
+                  | ConvertFrom-Json `
+                  | Select-Object -ExpandProperty name)
                 foreach($ServiceDir in $ServiceDirs.Split(',')) {
-                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 `
+                    -ServiceDirectory $ServiceDir `
+                    -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo `
+                    -artifactList $ArtifactList
                 }
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
 
-            # Why is this necessary? Normal build and release jobs don't install reporting tools prior to building however
-            # they're still able to find the build tools through the root aggregate pom file. The ClientFromSourcePom only
-            # contains what is necessary for the list of libraries and needs to have them installed explicitly otherwise the
-            # checkstyle plugin will fail to find com.azure:sdk-build-tools which is a dependency. It does this in spite of
-            # the fact that we're not running actually running checkstyle, it loads it to skip it...well done.
-            - template: ../steps/install-reporting-tools.yml
-              parameters:
-                JdkVersion: ${{ parameters.JavaBuildVersion }}
+            - ${{if ne(parameters.SDKType, 'data')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+                  ForRelease: true
 
             - task: Maven@4
               displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
@@ -212,8 +217,10 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: PythonScript@0
@@ -290,20 +297,6 @@ extends:
               parameters:
                 SourceDirectory: $(Build.SourcesDirectory)
                 BasePathLength: 38
-
-            # Verify changelog, the way it currently works would require a complete overhaul in order to be able to deal
-            # with multiple artifacts and multiple service directories. Even ignoring this, there's still the fact that each
-            # artifact's metadata can cause this step to be skipped, so we still need to loop over this.
-            - ${{if ne(parameters.SDKType, 'data')}}:
-              - ${{ each artifact in parameters.Artifacts }}:
-                - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                    parameters:
-                      PackageName: ${{artifact.name}}
-                      ServiceName: ${{artifact.ServiceDirectory}}
-                      # Note: For the patch release pipeline there's no point in verifying the non-release changelog since
-                      # the only time this pipeline should run is for a patch release.
-                      ForRelease: true
 
             - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 

@@ -25,7 +25,7 @@ public final class VirtualMachineScaleSetDataDiskTests {
         Assertions.assertEquals("hcbonqvpkvlr", model.name());
         Assertions.assertEquals(1945684802, model.lun());
         Assertions.assertEquals(CachingTypes.NONE, model.caching());
-        Assertions.assertEquals(false, model.writeAcceleratorEnabled());
+        Assertions.assertFalse(model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.ATTACH, model.createOption());
         Assertions.assertEquals(625674029, model.diskSizeGB());
         Assertions.assertEquals(StorageAccountTypes.PREMIUM_LRS, model.managedDisk().storageAccountType());
@@ -60,7 +60,7 @@ public final class VirtualMachineScaleSetDataDiskTests {
         Assertions.assertEquals("hcbonqvpkvlr", model.name());
         Assertions.assertEquals(1945684802, model.lun());
         Assertions.assertEquals(CachingTypes.NONE, model.caching());
-        Assertions.assertEquals(false, model.writeAcceleratorEnabled());
+        Assertions.assertFalse(model.writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.ATTACH, model.createOption());
         Assertions.assertEquals(625674029, model.diskSizeGB());
         Assertions.assertEquals(StorageAccountTypes.PREMIUM_LRS, model.managedDisk().storageAccountType());

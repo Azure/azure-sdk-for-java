@@ -22,7 +22,7 @@ public final class UsersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"ca\",\"role\":\"dbOwner\"},{\"db\":\"z\",\"role\":\"dbOwner\"},{\"db\":\"zka\",\"role\":\"dbOwner\"},{\"db\":\"uwbc\",\"role\":\"dbOwner\"}]},\"id\":\"bmehh\",\"name\":\"eyvjusrtslhspkde\",\"type\":\"maofmxagkv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"wsrtjriplrbpbe\",\"role\":\"root\"}]},\"id\":\"hfgblc\",\"name\":\"wxzvlvqhjkb\",\"type\":\"gibtnm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class UsersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         User response = manager.users()
-            .getWithResponse("wfudwpzntxhdzhl", "qj", "hckfrlhrx", com.azure.core.util.Context.NONE)
+            .getWithResponse("ow", "wpr", "qlveualupjmkh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ca", response.properties().roles().get(0).db());
-        Assertions.assertEquals(UserRole.DATABASE_OWNER, response.properties().roles().get(0).role());
+        Assertions.assertEquals("wsrtjriplrbpbe", response.properties().roles().get(0).db());
+        Assertions.assertEquals(UserRole.ROOT, response.properties().roles().get(0).role());
     }
 }

@@ -6,19 +6,23 @@ package com.azure.resourcemanager.dashboard.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dashboard.models.ResourceSku;
+import com.azure.resourcemanager.dashboard.models.Size;
 import org.junit.jupiter.api.Assertions;
 
 public final class ResourceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSku model = BinaryData.fromString("{\"name\":\"wpyeicxmqciwqvh\"}").toObject(ResourceSku.class);
-        Assertions.assertEquals("wpyeicxmqciwqvh", model.name());
+        ResourceSku model
+            = BinaryData.fromString("{\"name\":\"oqfbowskanyk\",\"size\":\"X2\"}").toObject(ResourceSku.class);
+        Assertions.assertEquals("oqfbowskanyk", model.name());
+        Assertions.assertEquals(Size.X2, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSku model = new ResourceSku().withName("wpyeicxmqciwqvh");
+        ResourceSku model = new ResourceSku().withName("oqfbowskanyk").withSize(Size.X2);
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("wpyeicxmqciwqvh", model.name());
+        Assertions.assertEquals("oqfbowskanyk", model.name());
+        Assertions.assertEquals(Size.X2, model.size());
     }
 }

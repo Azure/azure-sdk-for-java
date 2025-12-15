@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The LinkedOperationRule model.
@@ -18,14 +19,19 @@ import java.io.IOException;
 @Fluent
 public final class LinkedOperationRule implements JsonSerializable<LinkedOperationRule> {
     /*
-     * The linkedOperation property.
+     * The linked operation.
      */
     private LinkedOperation linkedOperation;
 
     /*
-     * The linkedAction property.
+     * The linked action.
      */
     private LinkedAction linkedAction;
+
+    /*
+     * Depends on types.
+     */
+    private List<String> dependsOnTypes;
 
     /**
      * Creates an instance of LinkedOperationRule class.
@@ -34,7 +40,7 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
     }
 
     /**
-     * Get the linkedOperation property: The linkedOperation property.
+     * Get the linkedOperation property: The linked operation.
      * 
      * @return the linkedOperation value.
      */
@@ -43,7 +49,7 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
     }
 
     /**
-     * Set the linkedOperation property: The linkedOperation property.
+     * Set the linkedOperation property: The linked operation.
      * 
      * @param linkedOperation the linkedOperation value to set.
      * @return the LinkedOperationRule object itself.
@@ -54,7 +60,7 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
     }
 
     /**
-     * Get the linkedAction property: The linkedAction property.
+     * Get the linkedAction property: The linked action.
      * 
      * @return the linkedAction value.
      */
@@ -63,13 +69,33 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
     }
 
     /**
-     * Set the linkedAction property: The linkedAction property.
+     * Set the linkedAction property: The linked action.
      * 
      * @param linkedAction the linkedAction value to set.
      * @return the LinkedOperationRule object itself.
      */
     public LinkedOperationRule withLinkedAction(LinkedAction linkedAction) {
         this.linkedAction = linkedAction;
+        return this;
+    }
+
+    /**
+     * Get the dependsOnTypes property: Depends on types.
+     * 
+     * @return the dependsOnTypes value.
+     */
+    public List<String> dependsOnTypes() {
+        return this.dependsOnTypes;
+    }
+
+    /**
+     * Set the dependsOnTypes property: Depends on types.
+     * 
+     * @param dependsOnTypes the dependsOnTypes value to set.
+     * @return the LinkedOperationRule object itself.
+     */
+    public LinkedOperationRule withDependsOnTypes(List<String> dependsOnTypes) {
+        this.dependsOnTypes = dependsOnTypes;
         return this;
     }
 
@@ -102,6 +128,8 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
         jsonWriter.writeStringField("linkedOperation",
             this.linkedOperation == null ? null : this.linkedOperation.toString());
         jsonWriter.writeStringField("linkedAction", this.linkedAction == null ? null : this.linkedAction.toString());
+        jsonWriter.writeArrayField("dependsOnTypes", this.dependsOnTypes,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -125,6 +153,9 @@ public final class LinkedOperationRule implements JsonSerializable<LinkedOperati
                     deserializedLinkedOperationRule.linkedOperation = LinkedOperation.fromString(reader.getString());
                 } else if ("linkedAction".equals(fieldName)) {
                     deserializedLinkedOperationRule.linkedAction = LinkedAction.fromString(reader.getString());
+                } else if ("dependsOnTypes".equals(fieldName)) {
+                    List<String> dependsOnTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLinkedOperationRule.dependsOnTypes = dependsOnTypes;
                 } else {
                     reader.skipChildren();
                 }

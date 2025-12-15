@@ -1,10 +1,11 @@
 {
     "servers": {
-        "azure-sdk-java-mcp": {
+        "azure-sdk-mcp": {
             "type": "stdio",
-            "command": "pwsh",      
+            "command": "pwsh",
             "args": [
-                "${workspaceFolder}/eng/tools/mcp/azure-sdk-java-mcp/azure-sdk-java-mcp.ps1"
+                "${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1",
+                "-Run"
             ]
         }
     }

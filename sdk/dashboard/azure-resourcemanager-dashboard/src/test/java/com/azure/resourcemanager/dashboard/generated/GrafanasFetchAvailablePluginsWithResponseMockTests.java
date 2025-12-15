@@ -21,7 +21,7 @@ public final class GrafanasFetchAvailablePluginsWithResponseMockTests {
     @Test
     public void testFetchAvailablePluginsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"pluginId\":\"oenwashr\",\"name\":\"tkcnqxwb\"},{\"pluginId\":\"kulpiujwaasi\",\"name\":\"i\"},{\"pluginId\":\"byuqerpqlp\",\"name\":\"cciuqgbdbutau\"}],\"nextLink\":\"btkuwhh\"}";
+            = "{\"value\":[{\"pluginId\":\"tppjflcx\",\"name\":\"aokonzmnsik\",\"type\":\"kqze\",\"author\":\"kdltfzxmhhvhg\"},{\"pluginId\":\"eodkwobda\",\"name\":\"tibqdxbxwakb\",\"type\":\"qxn\",\"author\":\"kzgxhurip\"}],\"nextLink\":\"podxunkb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class GrafanasFetchAvailablePluginsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GrafanaAvailablePluginListResponse response = manager.grafanas()
-            .fetchAvailablePluginsWithResponse("mhrkwofyyvoqacp", "expbtg", com.azure.core.util.Context.NONE)
+            .fetchAvailablePluginsWithResponse("mwabnetshhszhedp", "vwiwubmwmbesld", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("btkuwhh", response.nextLink());
+        Assertions.assertEquals("podxunkb", response.nextLink());
     }
 }

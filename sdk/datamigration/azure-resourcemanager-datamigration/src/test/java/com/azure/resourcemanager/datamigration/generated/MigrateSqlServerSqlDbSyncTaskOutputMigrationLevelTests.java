@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel model = BinaryData.fromString(
-            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-04-20T09:20:24Z\",\"endedOn\":\"2021-11-21T11:52:27Z\",\"sourceServerVersion\":\"jzhpjbibgjmfx\",\"sourceServer\":\"vfcluyovwxnbkfe\",\"targetServerVersion\":\"xscyhwzdgirujbz\",\"targetServer\":\"mvzzbtdcqvp\",\"databaseCount\":1622829877,\"id\":\"jviylwdshfs\"}")
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-02-19T13:46:30Z\",\"endedOn\":\"2021-06-27T17:10:34Z\",\"sourceServerVersion\":\"pjrtws\",\"sourceServer\":\"vv\",\"targetServerVersion\":\"c\",\"targetServer\":\"vtrrmhwrbfdpyflu\",\"databaseCount\":2023214586,\"id\":\"glrocuy\"}")
             .toObject(MigrateSqlServerSqlDbSyncTaskOutputMigrationLevel.class);
     }
 

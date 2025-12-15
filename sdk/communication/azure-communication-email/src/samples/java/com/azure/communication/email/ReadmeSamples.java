@@ -12,7 +12,10 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.io.File;
+import java.nio.file.Files;
 
 public class ReadmeSamples {
 
@@ -141,15 +144,16 @@ public class ReadmeSamples {
         // END: readme-sample-sendEmailWithAttachment
     }
 
-    public void sendEmailWithInlineAttachment() {
+    public void sendEmailWithInlineAttachment() throws IOException {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithInlineAttachment
-        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+        byte[] pngContent = Files.readAllBytes(new File("./inline-attachment.png").toPath());
+        byte[] pngEncodedContent = Base64.getEncoder().encodeToString(pngContent).getBytes();
         EmailAttachment attachment = new EmailAttachment(
-            "inlineimage.jpg",
-            "image/jpeg",
-            attachmentContent
+            "inline-attachment.png",
+            "image/png",
+            BinaryData.fromBytes(pngEncodedContent)
         ).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage()
@@ -164,26 +168,5 @@ public class ReadmeSamples {
 
         System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailWithInlineAttachment
-    }
-
-    public void beginSendFromExistingOperationId() {
-        EmailClient emailClient = createEmailClientWithConnectionString();
-
-        // BEGIN: readme-sample-beginSendFromExistingOperationId
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress("<sender-email-address>")
-            .setToRecipients("<recipient-email-address>")
-            .setSubject("test subject")
-            .setBodyPlainText("test message");
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
-        PollResponse<EmailSendResult> response = poller.waitForCompletion();
-        String operationId = response.getValue().getId();
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller2 = emailClient.beginSend(operationId);
-        PollResponse<EmailSendResult> response2 = poller2.waitForCompletion();
-
-        System.out.println("Status: " + response2.getValue().getStatus());
-        // END: readme-sample-beginSendFromExistingOperationId
     }
 }

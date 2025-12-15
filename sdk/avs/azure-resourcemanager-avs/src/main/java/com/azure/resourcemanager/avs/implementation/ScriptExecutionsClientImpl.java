@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
@@ -139,7 +138,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ScriptExecutionInner scriptExecution, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -147,10 +146,9 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("scriptExecutionName") String scriptExecutionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scriptExecutionName") String scriptExecutionName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -158,8 +156,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
-            @PathParam("scriptExecutionName") String scriptExecutionName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scriptExecutionName") String scriptExecutionName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions/{scriptExecutionName}/getExecutionLogs")
@@ -212,22 +209,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptExecutionInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -265,24 +246,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptExecutionsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
@@ -304,24 +267,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listSinglePage(String resourceGroupName, String privateCloudName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptExecutionsList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context);
@@ -377,26 +322,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptExecutionInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept, context))
@@ -436,28 +361,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptExecutionInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, privateCloudName, scriptExecutionName, accept, context);
@@ -495,32 +398,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateCloudName, String scriptExecutionName, ScriptExecutionInner scriptExecution) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        if (scriptExecution == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptExecution is required and cannot be null."));
-        } else {
-            scriptExecution.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -545,34 +422,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, ScriptExecutionInner scriptExecution) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        if (scriptExecution == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecution is required and cannot be null."));
-        } else {
-            scriptExecution.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -596,34 +445,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, ScriptExecutionInner scriptExecution, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        if (scriptExecution == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecution is required and cannot be null."));
-        } else {
-            scriptExecution.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -771,29 +592,9 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept, context))
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -811,32 +612,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept,
-            Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
     /**
@@ -854,31 +631,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String scriptExecutionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 
     /**
@@ -1004,26 +758,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptExecutionInner>> getExecutionLogsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getExecutionLogs(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1069,28 +803,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     public Response<ScriptExecutionInner> getExecutionLogsWithResponse(String resourceGroupName,
         String privateCloudName, String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (scriptExecutionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scriptExecutionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getExecutionLogsSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, scriptExecutionName, accept,
@@ -1128,13 +840,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptExecutionInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ScriptExecutionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1153,15 +858,6 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptExecutionsList> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1181,20 +877,9 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ScriptExecutionInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ScriptExecutionsList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionsClientImpl.class);
 }

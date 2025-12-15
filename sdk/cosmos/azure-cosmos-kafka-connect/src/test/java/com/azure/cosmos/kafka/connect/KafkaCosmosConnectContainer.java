@@ -172,13 +172,41 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
         try {
             kafkaConnectClient.deleteConnector(name);
-            logger.info("Deleting container {} succeeded.", name);
+            logger.info("Deleting connector {} succeeded.", name);
         } catch (Exception exception) {
             if (exception instanceof ResourceNotFoundException) {
                 logger.info("Connector {} not found");
             }
 
             logger.warn("Failed to delete connector {}", name);
+        }
+    }
+
+    public void pauseConnector(String name) {
+        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
+        try {
+            kafkaConnectClient.pauseConnector(name);
+            logger.info("Pause connector {} succeeded.", name);
+        } catch (Exception exception) {
+            if (exception instanceof ResourceNotFoundException) {
+                logger.info("Connector {} not found");
+            }
+
+            logger.warn("Failed to pause connector {}", name);
+        }
+    }
+
+    public void resumeConnector(String name) {
+        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
+        try {
+            kafkaConnectClient.resumeConnector(name);
+            logger.info("Resume connector {} succeeded.", name);
+        } catch (Exception exception) {
+            if (exception instanceof ResourceNotFoundException) {
+                logger.info("Connector {} not found");
+            }
+
+            logger.warn("Failed to Resume connector {}", name);
         }
     }
 

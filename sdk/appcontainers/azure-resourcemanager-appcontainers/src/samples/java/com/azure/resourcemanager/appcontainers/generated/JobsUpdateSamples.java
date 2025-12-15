@@ -24,7 +24,8 @@ import java.util.Arrays;
  */
 public final class JobsUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Job_Patch.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_Patch.json
      */
     /**
      * Sample code: Patch Container Apps Job.

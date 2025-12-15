@@ -17,7 +17,7 @@ import java.util.Map;
 public final class ClusterManagersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * ClusterManagers_Create.json
      */
     /**
@@ -44,7 +44,7 @@ public final class ClusterManagersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
      * ClusterManagers_Create_Uami.json
      */
     /**

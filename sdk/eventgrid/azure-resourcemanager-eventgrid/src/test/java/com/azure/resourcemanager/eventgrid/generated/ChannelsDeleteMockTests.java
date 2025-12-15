@@ -27,7 +27,7 @@ public final class ChannelsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.channels().delete("iciijqpkzfbojx", "mcsmyqwixvcp", "nkwywzwofa", com.azure.core.util.Context.NONE);
+        manager.channels().delete("xwjongzse", "qqrsil", "chskxxka", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,278 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2025-10-24)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CustomTopicConfig` was added
+
+* `models.UpgradeAvailabilityStatus` was added
+
+* `models.RaiTopic` was added
+
+* `models.ReplacementConfig` was added
+
+* `models.TierUpgradePolicy` was added
+
+* `models.RaiTopicResult` was added
+
+* `models.RaiTopics` was added
+
+* `models.QuotaTier$DefinitionStages` was added
+
+* `models.QuotaTierUpgradeEligibilityInfo` was added
+
+* `models.QuotaTiers` was added
+
+* `models.RaiTopicConfig` was added
+
+* `models.RaiTopic$DefinitionStages` was added
+
+* `models.DeprecationStatus` was added
+
+* `models.RaiTopic$Definition` was added
+
+* `models.RaiTopic$Update` was added
+
+* `models.QuotaTier` was added
+
+* `models.QuotaTier$Definition` was added
+
+* `models.RaiTopicProperties` was added
+
+* `models.QuotaTier$UpdateStages` was added
+
+* `models.QuotaTierListResult` was added
+
+* `models.QuotaTier$Update` was added
+
+* `models.QuotaTierProperties` was added
+
+* `models.RaiTopic$UpdateStages` was added
+
+#### `models.AccountModel` was modified
+
+* `modelCatalogAssetId()` was added
+* `replacementConfig()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `quotaTiers()` was added
+* `raiTopics()` was added
+
+#### `models.RaiPolicyProperties` was modified
+
+* `customTopics()` was added
+* `withCustomTopics(java.util.List)` was added
+
+#### `models.ModelDeprecationInfo` was modified
+
+* `withDeprecationStatus(models.DeprecationStatus)` was added
+* `deprecationStatus()` was added
+
+#### `models.AzureEntityResource` was modified
+
+* `systemData()` was added
+
+#### `models.CapabilityHost` was modified
+
+* `systemData()` was added
+
+#### `models.ConnectionPropertiesV2BasicResource` was modified
+
+* `systemData()` was added
+
+#### `models.RaiContentFilter` was modified
+
+* `systemData()` was added
+
+#### `models.AccountProperties` was modified
+
+* `withStoredCompletionsDisabled(java.lang.Boolean)` was added
+* `storedCompletionsDisabled()` was added
+
+#### `models.NetworkSecurityPerimeterConfiguration` was modified
+
+* `systemData()` was added
+
+#### `models.ModelCapacityListResultValueItem` was modified
+
+* `systemData()` was added
+
+## 1.3.0 (2025-09-16)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NetworkInjections` was removed
+
+#### `models.AccountProperties` was modified
+
+* `models.NetworkInjections networkInjections()` -> `java.util.List networkInjections()`
+* `withNetworkInjections(models.NetworkInjections)` was removed
+
+### Features Added
+
+* `models.NetworkInjection` was added
+
+#### `models.AccountProperties` was modified
+
+* `withNetworkInjections(java.util.List)` was added
+
+## 1.2.0 (2025-07-21)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ProjectListResult` was added
+
+* `models.Project$Update` was added
+
+* `models.ConnectionOAuth2` was added
+
+* `models.CapabilityHost$Update` was added
+
+* `models.ConnectionServicePrincipal` was added
+
+* `models.ConnectionSharedAccessSignature` was added
+
+* `models.CapabilityHost$UpdateStages` was added
+
+* `models.CapabilityHost` was added
+
+* `models.ResourceBase` was added
+
+* `models.ConnectionPropertiesV2BasicResource` was added
+
+* `models.ServicePrincipalAuthTypeConnectionProperties` was added
+
+* `models.CapabilityHost$Definition` was added
+
+* `models.CapabilityHostKind` was added
+
+* `models.CapabilityHostProperties` was added
+
+* `models.Project$UpdateStages` was added
+
+* `models.ConnectionPropertiesV2` was added
+
+* `models.ConnectionAccessKey` was added
+
+* `models.CustomKeysConnectionProperties` was added
+
+* `models.ProjectConnections` was added
+
+* `models.AccountConnections` was added
+
+* `models.ConnectionAuthType` was added
+
+* `models.ManagedPERequirement` was added
+
+* `models.Project$Definition` was added
+
+* `models.PatAuthTypeConnectionProperties` was added
+
+* `models.ConnectionPropertiesV2BasicResource$Definition` was added
+
+* `models.NoneAuthTypeConnectionProperties` was added
+
+* `models.AccountKeyAuthTypeConnectionProperties` was added
+
+* `models.AccessKeyAuthTypeConnectionProperties` was added
+
+* `models.ConnectionApiKey` was added
+
+* `models.AccountCapabilityHosts` was added
+
+* `models.ManagedPEStatus` was added
+
+* `models.ConnectionUpdateContent` was added
+
+* `models.ConnectionManagedIdentity` was added
+
+* `models.ConnectionPropertiesV2BasicResource$Update` was added
+
+* `models.CapabilityHostProvisioningState` was added
+
+* `models.CustomKeys` was added
+
+* `models.ManagedIdentityAuthTypeConnectionProperties` was added
+
+* `models.ProjectProperties` was added
+
+* `models.ConnectionCategory` was added
+
+* `models.ProjectCapabilityHosts` was added
+
+* `models.Projects` was added
+
+* `models.Project` was added
+
+* `models.OAuth2AuthTypeConnectionProperties` was added
+
+* `models.ApiKeyAuthConnectionProperties` was added
+
+* `models.Project$DefinitionStages` was added
+
+* `models.ConnectionAccountKey` was added
+
+* `models.NetworkInjections` was added
+
+* `models.SasAuthTypeConnectionProperties` was added
+
+* `models.UsernamePasswordAuthTypeConnectionProperties` was added
+
+* `models.CapabilityHost$DefinitionStages` was added
+
+* `models.ConnectionPropertiesV2BasicResourceArmPaginatedResult` was added
+
+* `models.ConnectionGroup` was added
+
+* `models.AadAuthTypeConnectionProperties` was added
+
+* `models.ConnectionUsernamePassword` was added
+
+* `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was added
+
+* `models.ConnectionPropertiesV2BasicResource$UpdateStages` was added
+
+* `models.ConnectionPersonalAccessToken` was added
+
+* `models.ScenarioType` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `projectConnections()` was added
+* `projects()` was added
+* `projectCapabilityHosts()` was added
+* `accountCapabilityHosts()` was added
+* `accountConnections()` was added
+
+#### `models.AccountProperties` was modified
+
+* `withDefaultProject(java.lang.String)` was added
+* `associatedProjects()` was added
+* `networkInjections()` was added
+* `withAssociatedProjects(java.util.List)` was added
+* `defaultProject()` was added
+* `withNetworkInjections(models.NetworkInjections)` was added
+* `allowProjectManagement()` was added
+* `withAllowProjectManagement(java.lang.Boolean)` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `spilloverDeploymentName()` was added
+* `withSpilloverDeploymentName(java.lang.String)` was added
 
 ## 1.2.0-beta.1 (2025-05-22)
 

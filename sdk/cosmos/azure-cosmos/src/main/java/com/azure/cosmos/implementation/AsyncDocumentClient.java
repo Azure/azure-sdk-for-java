@@ -15,13 +15,15 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.sdk.config.SDKThroughputControlGroupInternal;
+import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -329,6 +331,7 @@ public interface AsyncDocumentClient {
                     isPerPartitionAutomaticFailoverEnabled);
 
             client.init(state, null);
+
             return client;
         }
 
@@ -770,7 +773,8 @@ public interface AsyncDocumentClient {
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         DocumentCollection collection,
         CosmosChangeFeedRequestOptions requestOptions,
-        Class<T> classOfT);
+        Class<T> classOfT,
+        DiagnosticsClientContext diagnosticsClientContext);
 
     /**
      * Query for documents change feed in a document collection.
@@ -778,13 +782,13 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collection    the parent document collection.
+     * @param collectionLink the link to the parent document collection.
      * @param state the change feed operation state.
      * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(
-        DocumentCollection collection,
+        String collectionLink,
         ChangeFeedOperationState state,
         Class<T> classOfT);
 
@@ -932,12 +936,14 @@ public interface AsyncDocumentClient {
      * @param serverBatchRequest           the batch request with the content and flags.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
+     * @param disableStaledResourceExceptionHandling the flag for disabling staled resource exception handling. For bulk executor, the exception should bubbled up so to be retried correctly.
      * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
     Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
                                                   ServerBatchRequest serverBatchRequest,
                                                   RequestOptions options,
-                                                  boolean disableAutomaticIdGeneration);
+                                                  boolean disableAutomaticIdGeneration,
+                                                  boolean disableStaledResourceExceptionHandling);
 
     /**
      * Creates a trigger.
@@ -1628,11 +1634,18 @@ public interface AsyncDocumentClient {
     CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer);
 
     /**
-     * Enable throughput control group.
+     * Enable sdk throughput control group.
      *
      * @param group the throughput control group.
      */
-    void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
+    void enableSDKThroughputControlGroup(SDKThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
+
+    /***
+     * Enable server throughput control group.
+     *
+     * @param group the server throughput control group.
+     */
+    void enableServerThroughputControlGroup(ServerThroughputControlGroup group);
 
     /**
      * Submits open connection tasks and warms up caches for replicas for containers specified by
@@ -1667,5 +1680,7 @@ public interface AsyncDocumentClient {
      */
     void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
-    public String getMasterKeyOrResourceToken();
+    String getMasterKeyOrResourceToken();
+
+    void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor);
 }

@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClustersClient;
@@ -139,25 +138,23 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CloudHsmClusterPatchParameters body, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudHsmClusterName") String cloudHsmClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudHsmClusterName") String cloudHsmClusterName, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudHsmClusterName") String cloudHsmClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("cloudHsmClusterName") String cloudHsmClusterName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters")
@@ -320,22 +317,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudHsmClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -375,24 +356,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudHsmClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudHsmClusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, context);
@@ -430,27 +393,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, CloudHsmClusterInner body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -475,29 +417,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterInner body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -521,29 +440,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterInner body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -686,27 +582,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, CloudHsmClusterPatchParameters body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -731,29 +606,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterPatchParameters body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -777,29 +629,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterPatchParameters body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -938,26 +767,9 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -974,27 +786,8 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudHsmClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     /**
@@ -1012,27 +805,8 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudHsmClusterName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, context);
     }
 
     /**
@@ -1152,18 +926,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudHsmClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1221,20 +983,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
         String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1258,20 +1006,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
         String skiptoken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1328,14 +1062,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudHsmClusterInner>> listSinglePageAsync(String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1385,16 +1111,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listSinglePage(String skiptoken) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), skiptoken, accept, Context.NONE);
@@ -1414,16 +1130,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listSinglePage(String skiptoken, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), skiptoken, accept, context);
@@ -1477,25 +1183,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateBackupPropertiesWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateBackupProperties(this.client.getEndpoint(),
@@ -1520,27 +1207,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateBackupPropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.validateBackupPropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
@@ -1564,27 +1230,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateBackupPropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.validateBackupPropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
@@ -1800,25 +1445,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.backup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1842,27 +1468,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> backupWithResponse(String resourceGroupName, String cloudHsmClusterName,
         BackupRequestProperties backupRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.backupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
@@ -1885,27 +1490,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> backupWithResponse(String resourceGroupName, String cloudHsmClusterName,
         BackupRequestProperties backupRequestProperties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (backupRequestProperties != null) {
-            backupRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.backupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
@@ -2106,25 +1690,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateRestorePropertiesWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties != null) {
-            restoreRequestProperties.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateRestoreProperties(this.client.getEndpoint(),
@@ -2148,27 +1713,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateRestorePropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties != null) {
-            restoreRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.validateRestorePropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, restoreRequestProperties,
@@ -2191,27 +1735,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateRestorePropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties != null) {
-            restoreRequestProperties.validate();
-        }
         final String accept = "application/json";
         return service.validateRestorePropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, restoreRequestProperties,
@@ -2418,28 +1941,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter restoreRequestProperties is required and cannot be null."));
-        } else {
-            restoreRequestProperties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2464,31 +1965,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter restoreRequestProperties is required and cannot be null."));
-        } else {
-            restoreRequestProperties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2512,31 +1988,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (restoreRequestProperties == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Parameter restoreRequestProperties is required and cannot be null."));
-        } else {
-            restoreRequestProperties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2676,13 +2127,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudHsmClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2703,15 +2147,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2731,15 +2166,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2759,13 +2185,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudHsmClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2786,15 +2205,6 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2814,21 +2224,10 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<CloudHsmClusterListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClustersClientImpl.class);
 }

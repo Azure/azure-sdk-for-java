@@ -8,7 +8,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>annotation-processor</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
 
   <name>Client Core Compile-Time Annotation Processor</name>
   <description>The client-core annotation processor for introducing compile-time code generation for libraries based on client core</description>
@@ -96,8 +96,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <revapi.skip>true</revapi.skip>
 
     <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
@@ -108,25 +106,25 @@
     <dependency>
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
-      <version>3.26.2</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
+      <version>3.27.0</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.11</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
     </dependency>
 
     <!-- Unit Test -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -142,12 +140,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.github.javaparser:javaparser-core:[3.26.2]</include> <!-- {x-include-update;com.github.javaparser:javaparser-core;external_dependency} -->
+                <include>com.github.javaparser:javaparser-core:[3.27.0]</include> <!-- {x-include-update;com.github.javaparser:javaparser-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

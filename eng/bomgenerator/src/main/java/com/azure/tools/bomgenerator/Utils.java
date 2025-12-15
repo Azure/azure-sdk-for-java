@@ -152,6 +152,8 @@ public class Utils {
                 .uri(URI.create(url))
                 .GET()
                 .header("accept", "application/xml")
+                .header("Content-signal", "search=yes,ai-train=no")
+                .header("User-Agent", "azure-sdk-for-java")
                 .timeout(Duration.ofMillis(5000))
                 .build();
 

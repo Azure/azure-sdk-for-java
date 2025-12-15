@@ -99,6 +99,20 @@ public interface DaprComponent {
     List<String> scopes();
 
     /**
+     * Gets the provisioningState property: Provisioning state of the Dapr Component.
+     * 
+     * @return the provisioningState value.
+     */
+    DaprComponentProvisioningState provisioningState();
+
+    /**
+     * Gets the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    String deploymentErrors();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.

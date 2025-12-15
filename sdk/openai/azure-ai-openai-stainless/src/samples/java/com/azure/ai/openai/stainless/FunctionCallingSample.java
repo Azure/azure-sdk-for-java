@@ -3,28 +3,34 @@
 
 package com.azure.ai.openai.stainless;
 
-import static com.openai.core.ObjectMappers.jsonMapper;
-
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.core.JsonObject;
-import com.openai.core.JsonValue;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
-import com.openai.models.FunctionDefinition;
-import com.openai.models.FunctionParameters;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.chat.completions.ChatCompletionMessageFunctionToolCall;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
-import com.openai.models.chat.completions.ChatCompletionTool;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+
+// Tool class for SDK quality evaluation
+@JsonClassDescription("Gets the quality of the given SDK.")
+class GetSdkQuality {
+    @JsonPropertyDescription("The name of the SDK.")
+    public String name;
+
+    public String execute() {
+        return name.contains("OpenAI") ? "Excellent quality and robust implementation!" : "Unknown quality";
+    }
+}
 
 public final class FunctionCallingSample {
     private FunctionCallingSample() {}
@@ -50,19 +56,7 @@ public final class FunctionCallingSample {
         ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                 .model(ChatModel.GPT_4O)
                 .maxCompletionTokens(2048)
-                .addTool(ChatCompletionTool.builder()
-                        .function(FunctionDefinition.builder()
-                                .name("get-sdk-quality")
-                                .description("Gets the quality of the given SDK.")
-                                .parameters(FunctionParameters.builder()
-                                        .putAdditionalProperty("type", JsonValue.from("object"))
-                                        .putAdditionalProperty("properties", JsonValue.from(
-                                            Collections.singletonMap("name", Collections.singletonMap("type", "string"))))
-                                        .putAdditionalProperty("required", JsonValue.from(Collections.singletonList("name")))
-                                        .putAdditionalProperty("additionalProperties", JsonValue.from(false))
-                                        .build())
-                                .build())
-                        .build())
+                .addTool(GetSdkQuality.class)
                 .addUserMessage("How good are the following SDKs: OpenAI Java SDK, Unknown Company SDK")
                 .build();
 
@@ -77,26 +71,18 @@ public final class FunctionCallingSample {
                         return Stream.empty();
                     }
                 })
-                .forEach(toolCall -> System.out.println(callFunction(toolCall.function())));
+                .forEach(toolCall -> {
+                    Object result = callFunction(toolCall.asFunction().function());
+                    System.out.println(result);
+                });
     }
 
-    private static String callFunction(ChatCompletionMessageToolCall.Function function) {
-        if (!function.name().equals("get-sdk-quality")) {
-            throw new IllegalArgumentException("Unknown function: " + function.name());
+    private static Object callFunction(ChatCompletionMessageFunctionToolCall.Function function) {
+        switch (function.name()) {
+            case "GetSdkQuality":
+                return function.arguments(GetSdkQuality.class).execute();
+            default:
+                throw new IllegalArgumentException("Unknown function: " + function.name());
         }
-
-        JsonValue arguments;
-        try {
-            arguments = JsonValue.from(jsonMapper().readTree(function.arguments()));
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Bad function arguments", e);
-        }
-
-        String sdkName = ((JsonObject) arguments).values().get("name").asStringOrThrow();
-        if (sdkName.contains("OpenAI")) {
-            return sdkName + ": It's robust and polished!";
-        }
-
-        return sdkName + ": *shrug*";
     }
 }

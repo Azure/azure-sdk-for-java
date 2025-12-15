@@ -43,16 +43,12 @@ extends:
               parameters:
                 JobType: 'Reporting'
 
-            # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-            # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
             # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
             - task: Maven@4
               displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
               inputs:
                 mavenPomFile: pom.xml
-                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,!com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,!com.azure.cosmos.kafka:azure-cosmos-kafka-connect,!com.microsoft.azure:azure-batch,!com.microsoft.azure:azure-media'
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,!com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,!com.azure.cosmos.kafka:azure-cosmos-kafka-connect,!com.microsoft.azure:azure-batch'
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: $(JavaBuildVersion)
@@ -64,7 +60,7 @@ extends:
               displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
               inputs:
                 mavenPomFile: pom.xml
-                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,com.azure.cosmos.kafka:azure-cosmos-kafka-connect,com.microsoft.azure:azure-batch,com.microsoft.azure:azure-media'
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,com.azure.cosmos.kafka:azure-cosmos-kafka-connect,com.microsoft.azure:azure-batch'
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: $(FallbackJavaBuildVersion)
@@ -117,8 +113,8 @@ extends:
 
             - pwsh: |
                 Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
-                Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-                Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+                Copy-Item eng/code-quality-reports/index.html $(Build.ArtifactStagingDirectory)
+                Copy-Item eng/code-quality-reports/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
                 Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
                 ls -R $(Build.ArtifactStagingDirectory)/staging
               displayName: 'Copy reports to artifact staging'

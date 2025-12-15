@@ -11,7 +11,7 @@ public final class ConnectToSourceSqlServerTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourceSqlServerTaskOutput model
-            = BinaryData.fromString("{\"resultType\":\"ConnectToSourceSqlServerTaskOutput\",\"id\":\"nxytxh\"}")
+            = BinaryData.fromString("{\"resultType\":\"ConnectToSourceSqlServerTaskOutput\",\"id\":\"rkjpvdwxfzwii\"}")
                 .toObject(ConnectToSourceSqlServerTaskOutput.class);
     }
 

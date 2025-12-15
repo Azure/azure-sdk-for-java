@@ -360,6 +360,8 @@ service
 <details>
 <summary> cognitiveservices </summary>
 
+* [package-2025-06-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-2025-06-01)
+    * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-cognitiveservices/1.2.0)
 * [package-preview-2025-04-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-preview-2025-04-01-preview)
     * [1.2.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-cognitiveservices/1.2.0-beta.1)
 * [package-2024-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cognitiveservices/resource-manager#tag-package-2024-10)
@@ -946,6 +948,8 @@ service
 <details>
 <summary> eventgrid </summary>
 
+* [package-2025-04-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager#tag-package-2025-04-preview)
+    * [1.3.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-eventgrid/1.3.0-beta.1)
 * [package-2025-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager#tag-package-2025-02)
     * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-eventgrid/1.2.0)
 * [package-2024-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager#tag-package-2024-06-preview)
@@ -1065,20 +1069,10 @@ service
 
 <br/>
 <details>
-<summary> hdinsight-containers </summary>
-
-* [package-preview-2024-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2024-05)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.3)
-* [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2023-11)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.2)
-* [package-2023-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-2023-06-preview)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> healthbot </summary>
 
+* [package-2025-05-25](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthbot/resource-manager#tag-package-2025-05-25)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthbot/1.1.0)
 * [package-2020-12-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthbot/resource-manager#tag-package-2020-12-08)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthbot/1.0.0)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-healthbot/1.0.0-beta.3)
@@ -1601,6 +1595,8 @@ service
 <details>
 <summary> netapp </summary>
 
+* [package-2025-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2025-03-01)
+    * [1.8.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.8.0)
 * [package-2025-01-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2025-01-01-preview)
     * [1.8.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.8.0-beta.1)
 * [package-2025-01-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2025-01-01)
@@ -2123,6 +2119,7 @@ service
 <summary> resources-deploymentstacks </summary>
 
 * [package-2024-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Resources/deploymentStacks#tag-package-2024-03)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resources-deploymentstacks/1.0.0)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resources-deploymentstacks/1.0.0-beta.1)
 </details>
 

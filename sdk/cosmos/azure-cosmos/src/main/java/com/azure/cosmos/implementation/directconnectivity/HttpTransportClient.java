@@ -253,7 +253,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
     }
 
