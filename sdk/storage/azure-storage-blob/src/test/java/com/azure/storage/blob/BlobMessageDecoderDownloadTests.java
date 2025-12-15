@@ -518,7 +518,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
 
         // Create a policy that will simulate 1 network interruption at a specific position
         // Interrupt after first segment completes to test smart retry from segment boundary
-        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1);
+        // Use 1200 bytes to ensure at least one 1KB segment completes
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1, 1200);
 
         // Upload the encoded data
         bc.upload(input, null, true).block();
@@ -562,7 +563,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         Flux<ByteBuffer> input = Flux.just(encodedData);
 
         // Create a policy that will simulate 3 network interruptions
-        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(3);
+        // Use 800 bytes for subsequent interruptions to get 3 interrupts with 4KB data + 1KB segments
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(3, 800);
 
         // Upload the encoded data
         bc.upload(input, null, true).block();
@@ -667,7 +669,8 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
         Flux<ByteBuffer> input = Flux.just(encodedData);
 
         // Create a policy with 2 interruptions to test multi-step decode after retries
-        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(2);
+        // Use 1000 bytes to get 2 interruptions with 4KB data + 1KB segments
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(2, 1000);
 
         // Upload the encoded data
         bc.upload(input, null, true).block();
