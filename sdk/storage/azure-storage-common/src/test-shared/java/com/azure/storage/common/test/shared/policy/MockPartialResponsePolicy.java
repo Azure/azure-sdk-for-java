@@ -51,22 +51,10 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
-                return response.getBody().collectList().flatMap(bodyBuffers -> {
-                    if (bodyBuffers.isEmpty()) {
-                        // If no body was returned, don't attempt to slice a partial response. Simply propagate
-                        // the original response to avoid test failures when the service unexpectedly returns an
-                        // empty body (for example, after a retry on the underlying transport).
-                        return Mono.just(response);
-                    }
-                    ByteBuffer firstBuffer = bodyBuffers.get(0);
-                    byte firstByte = firstBuffer.get();
-
-                    // Simulate partial response by returning the first byte only from the requested range and timeout
-                    return Mono.just(new MockDownloadHttpResponse(response, 206,
-                            Flux.just(ByteBuffer.wrap(new byte[] { firstByte }))
-                                    .concatWith(Flux.error(new IOException("Simulated timeout")))
-                    ));
-                });
+                //  Simulate partial response by taking only the first buffer from the stream and immediately
+                // throwing an error to simulate a network interruption. This tests smart retry behavior.
+                Flux<ByteBuffer> interruptedBody = response.getBody().take(1).concatWith(Flux.error(new IOException("Simulated timeout")));
+                return Mono.just(new MockDownloadHttpResponse(response, 206, interruptedBody));
             }
         });
     }
