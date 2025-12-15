@@ -289,11 +289,11 @@ public class VectorIndexTest extends TestSuiteBase {
         // Validate Vector Indexes Serialization
         String actualVectorIndexesJSON = simpleObjectMapper.writeValueAsString(expectedVectorIndexes);
         String expectedVectorIndexesJSON = getVectorIndexesAsString();
-        assertThat(expectedVectorIndexesJSON).isEqualTo(actualVectorIndexesJSON);
+        assertThat(actualVectorIndexesJSON).isEqualTo(expectedVectorIndexesJSON);
 
         // Validate Vector Indexes Deserialization
         List<CosmosVectorIndexSpec> actualVectorIndexes = Arrays.asList(simpleObjectMapper.readValue(actualVectorIndexesJSON, CosmosVectorIndexSpec[].class));
-        validateVectorIndexes(expectedVectorIndexes, actualVectorIndexes);
+        validateVectorIndexes(actualVectorIndexes, expectedVectorIndexes);
     }
 
     private void validateCollectionProperties(CosmosContainerProperties collectionDefinition, CosmosContainerProperties collectionProperties) {
@@ -303,7 +303,7 @@ public class VectorIndexTest extends TestSuiteBase {
             collectionDefinition.getVectorEmbeddingPolicy());
 
         assertThat(collectionProperties.getIndexingPolicy().getVectorIndexes()).isNotNull();
-        validateVectorIndexes(collectionDefinition.getIndexingPolicy().getVectorIndexes(), collectionProperties.getIndexingPolicy().getVectorIndexes());
+        validateVectorIndexes(collectionProperties.getIndexingPolicy().getVectorIndexes(), collectionDefinition.getIndexingPolicy().getVectorIndexes());
     }
 
     private void validateVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy actual, CosmosVectorEmbeddingPolicy expected) {
@@ -318,78 +318,79 @@ public class VectorIndexTest extends TestSuiteBase {
         }
     }
 
-    private void validateVectorIndexes(List<CosmosVectorIndexSpec> expected, List<CosmosVectorIndexSpec> actual) {
-        assertThat(expected).hasSameSizeAs(actual);
-        for (int i = 0; i < expected.size(); i++) {
-            assertThat(expected.get(i).getPath()).isEqualTo(actual.get(i).getPath());
-            assertThat(expected.get(i).getType()).isEqualTo(actual.get(i).getType());
-            if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
-                Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
-                assertThat(expected.get(i).getQuantizerType()).isEqualTo(actual.get(i).getQuantizerType());
-                assertThat(expected.get(i).getQuantizationSizeInBytes()).isEqualTo(actual.get(i).getQuantizationSizeInBytes());
-                assertThat(expected.get(i).getVectorIndexShardKeys()).isEqualTo(actual.get(i).getVectorIndexShardKeys());
+    private void validateVectorIndexes(List<CosmosVectorIndexSpec> actual, List<CosmosVectorIndexSpec> expected) {
+        assertThat(actual).hasSameSizeAs(expected);
+        for (int i = 0; i < actual.size(); i++) {
+            assertThat(actual.get(i).getPath()).isEqualTo(expected.get(i).getPath());
+            assertThat(actual.get(i).getType()).isEqualTo(expected.get(i).getType());
+            if (Objects.equals(actual.get(i).getType(), CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
+                Objects.equals(actual.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
+                assertThat(actual.get(i).getQuantizerType()).isEqualTo(expected.get(i).getQuantizerType());
+                assertThat(actual.get(i).getQuantizationSizeInBytes()).isEqualTo(expected.get(i).getQuantizationSizeInBytes());
+                assertThat(actual.get(i).getVectorIndexShardKeys()).isEqualTo(expected.get(i).getVectorIndexShardKeys());
             }
-            if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
-                assertThat(expected.get(i).getIndexingSearchListSize()).isEqualTo(actual.get(i).getIndexingSearchListSize());
+            if (Objects.equals(actual.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
+                assertThat(actual.get(i).getIndexingSearchListSize()).isEqualTo(expected.get(i).getIndexingSearchListSize());
             }
 
         }
     }
 
     private List<CosmosVectorIndexSpec> populateVectorIndexes() {
-        CosmosVectorIndexSpec cosmosVectorIndexSpec1 = new CosmosVectorIndexSpec();
-        cosmosVectorIndexSpec1.setPath("/vector1");
-        cosmosVectorIndexSpec1.setType(CosmosVectorIndexType.FLAT.toString());
+        CosmosVectorIndexSpec cosmosVectorIndexSpec1 = new CosmosVectorIndexSpec()
+            .setPath("/vector1")
+            .setType(CosmosVectorIndexType.FLAT.toString());
 
-        CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec();
-        cosmosVectorIndexSpec2.setPath("/vector2");
-        cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
-        cosmosVectorIndexSpec2.setQuantizerType(QuantizerType.product);
-        cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
-        cosmosVectorIndexSpec2.setVectorIndexShardKeys(Arrays.asList("/zipCode"));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec()
+            .setPath("/vector2")
+            .setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString())
+            .setQuantizerType(QuantizerType.product)
+            .setQuantizationSizeInBytes(2)
+            .setVectorIndexShardKeys(Arrays.asList("/zipCode"));
 
-        CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
-        cosmosVectorIndexSpec3.setPath("/vector3");
-        cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
-        cosmosVectorIndexSpec3.setQuantizerType(QuantizerType.product);
-        cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
-        cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
-        cosmosVectorIndexSpec3.setVectorIndexShardKeys(Arrays.asList("/country/city"));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec()
+            .setPath("/vector3")
+            .setType(CosmosVectorIndexType.DISK_ANN.toString())
+            .setQuantizerType(QuantizerType.product)
+            .setQuantizationSizeInBytes(2)
+            .setIndexingSearchListSize(30)
+            .setVectorIndexShardKeys(Arrays.asList("/country/city"));
 
-        CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec();
-        cosmosVectorIndexSpec4.setPath("/vector4");
-        cosmosVectorIndexSpec4.setType(CosmosVectorIndexType.DISK_ANN.toString());
-        cosmosVectorIndexSpec4.setQuantizerType(QuantizerType.spherical);
-        cosmosVectorIndexSpec4.setIndexingSearchListSize(30);
-        cosmosVectorIndexSpec4.setVectorIndexShardKeys(Arrays.asList("/country/city"));
+        CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec()
+            .setPath("/vector4")
+            .setType(CosmosVectorIndexType.DISK_ANN.toString())
+            .setQuantizerType(QuantizerType.spherical)
+            .setIndexingSearchListSize(30)
+            .setVectorIndexShardKeys(Arrays.asList("/country/city"));
 
         return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3, cosmosVectorIndexSpec4);
     }
 
     private List<CosmosVectorEmbedding> populateEmbeddings() {
-        CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding();
-        embedding1.setPath("/vector1");
-        embedding1.setDataType(CosmosVectorDataType.INT8);
-        embedding1.setEmbeddingDimensions(3);
-        embedding1.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
+        CosmosVectorEmbedding embedding1 = new CosmosVectorEmbedding()
+            .setPath("/vector1")
+            .setDataType(CosmosVectorDataType.INT8)
+            .setEmbeddingDimensions(3)
+            .setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
 
-        CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding();
-        embedding2.setPath("/vector2");
-        embedding2.setDataType(CosmosVectorDataType.FLOAT32);
-        embedding2.setEmbeddingDimensions(3);
-        embedding2.setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
+        CosmosVectorEmbedding embedding2 = new CosmosVectorEmbedding()
+            .setPath("/vector2")
+            .setDataType(CosmosVectorDataType.FLOAT32)
+            .setEmbeddingDimensions(3)
+            .setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
 
-        CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding();
-        embedding3.setPath("/vector3");
-        embedding3.setDataType(CosmosVectorDataType.UINT8);
-        embedding3.setEmbeddingDimensions(3);
-        embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
+        CosmosVectorEmbedding embedding3 = new CosmosVectorEmbedding()
+            .setPath("/vector3")
+            .setDataType(CosmosVectorDataType.UINT8)
+            .setEmbeddingDimensions(3)
+            .setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
 
-        CosmosVectorEmbedding embedding4 = new CosmosVectorEmbedding();
-        embedding4.setPath("/vector4");
-        embedding4.setDataType(CosmosVectorDataType.UINT8);
-        embedding4.setEmbeddingDimensions(3);
-        embedding4.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
+        CosmosVectorEmbedding embedding4 = new CosmosVectorEmbedding()
+            .setPath("/vector4")
+            .setDataType(CosmosVectorDataType.UINT8)
+            .setEmbeddingDimensions(3)
+            .setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
+
         return Arrays.asList(embedding1, embedding2, embedding3, embedding4);
     }
 
