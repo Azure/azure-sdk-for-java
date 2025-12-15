@@ -80,29 +80,26 @@ public class VectorIndexTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT*10000)
     public void shouldCreateVectorEmbeddingPolicy() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
+        ArrayList<String> paths = new ArrayList<>(List.of("/mypk"));
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition()
+            .setPaths(paths);
 
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
         ExcludedPath excludedPath = new ExcludedPath("/*");
-        indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
-
         IncludedPath includedPath1 = new IncludedPath("/name/?");
         IncludedPath includedPath2 = new IncludedPath("/description/?");
-        indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        indexingPolicy.setVectorIndexes(populateVectorIndexes());
+        IndexingPolicy indexingPolicy = new IndexingPolicy()
+            .setIndexingMode(IndexingMode.CONSISTENT)
+            .setExcludedPaths(Collections.singletonList(excludedPath))
+            .setIncludedPaths(ImmutableList.of(includedPath1, includedPath2))
+            .setVectorIndexes(populateVectorIndexes());
 
-        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy();
-        cosmosVectorEmbeddingPolicy.setCosmosVectorEmbeddings(populateEmbeddings());
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy()
+            .setCosmosVectorEmbeddings(populateEmbeddings());
 
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef)
+            .setIndexingPolicy(indexingPolicy)
+            .setVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy);
 
         database.createContainer(collectionDefinition).block();
         CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
