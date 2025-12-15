@@ -87,7 +87,7 @@ public final class CosmosVectorIndexSpec {
     }
 
     /**
-     * Gets quantizer type.
+     * Gets the quantizer type.
      *
      * @return the quantizer type.
      */
@@ -99,10 +99,10 @@ public final class CosmosVectorIndexSpec {
     }
 
     /**
-     * Set quantizer type.
+     * Set the quantizer type.
      *
      * @param quantizerType The quantizer type
-     * @return the SpatialSpec.
+     * @return the CosmosVectorIndexSpec.
      */
     public CosmosVectorIndexSpec setQuantizerType(QuantizerType quantizerType) {
         if (validateIndexType(IndexProperty.QUANTIZER_TYPE) && quantizerType != null) {
@@ -110,6 +110,7 @@ public final class CosmosVectorIndexSpec {
             this.jsonSerializable.set(Constants.Properties.QUANTIZER_TYPE, quantizerType);
         } else {
             this.quantizerType = null;
+            this.jsonSerializable.remove(Constants.Properties.QUANTIZER_TYPE);
         }
         return this;
     }

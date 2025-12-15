@@ -341,14 +341,14 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec()
             .setPath("/vector2")
             .setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString())
-            .setQuantizerType(QuantizerType.product)
+            .setQuantizerType(QuantizerType.PRODUCT)
             .setQuantizationSizeInBytes(2)
             .setVectorIndexShardKeys(Arrays.asList("/zipCode"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec()
             .setPath("/vector3")
             .setType(CosmosVectorIndexType.DISK_ANN.toString())
-            .setQuantizerType(QuantizerType.product)
+            .setQuantizerType(QuantizerType.PRODUCT)
             .setQuantizationSizeInBytes(2)
             .setIndexingSearchListSize(30)
             .setVectorIndexShardKeys(Arrays.asList("/country/city"));
@@ -356,7 +356,7 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec()
             .setPath("/vector4")
             .setType(CosmosVectorIndexType.DISK_ANN.toString())
-            .setQuantizerType(QuantizerType.spherical)
+            .setQuantizerType(QuantizerType.SPHERICAL)
             .setIndexingSearchListSize(30)
             .setVectorIndexShardKeys(Arrays.asList("/country/city"));
 

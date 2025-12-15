@@ -3,19 +3,21 @@
 
 package com.azure.cosmos.models;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
- * Defines the quantizer type of vector index path specification in the Azure Cosmos DB service.
+ * Defines quantizer types for vector index specifications in the Azure Cosmos DB service.
  */
 public enum QuantizerType {
     /**
-     * Represent a product quantizer type.
+     * Represents a product quantizer type.
      */
-    product("product"),
+    PRODUCT("product"),
 
     /**
-     * Represent a spherical quantizer type.
+     * Represents a spherical quantizer type.
      */
-    spherical("spherical");
+    SPHERICAL("spherical");
 
 
     QuantizerType(String overWireValue) {
@@ -24,6 +26,7 @@ public enum QuantizerType {
 
     private final String overWireValue;
 
+    @JsonValue
     @Override
     public String toString() {
         return this.overWireValue;
