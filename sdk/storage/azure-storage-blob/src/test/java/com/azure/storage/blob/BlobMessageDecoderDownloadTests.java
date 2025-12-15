@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 
@@ -283,6 +285,83 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
             assertTrue(rangeHeader.startsWith("bytes="),
                 "Retry request " + i + " should have a range header: " + rangeHeader);
         }
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationSmartRetryVariousSizes() throws IOException {
+        int[] dataSizes = new int[] { Constants.KB, 1500, 3 * Constants.KB + 128 };
+        int[] segmentSizes = new int[] { 512, 700, 1024 };
+
+        for (int i = 0; i < dataSizes.length; i++) {
+            byte[] randomData = getRandomByteArray(dataSizes[i]);
+            int segmentSize = segmentSizes[i % segmentSizes.length];
+
+            StructuredMessageEncoder encoder
+                = new StructuredMessageEncoder(randomData.length, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+            ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+            Flux<ByteBuffer> input = Flux.just(encodedData);
+
+            // Create a policy that will simulate 2 network interruptions for each run
+            MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(2);
+
+            // Upload the encoded data
+            bc.upload(input, null, true).block();
+
+            // Create a download client with both the mock policy AND the decoder policy
+            StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+            BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+                bc.getBlobUrl(), mockPolicy, decoderPolicy);
+
+            DownloadContentValidationOptions validationOptions
+                = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+            DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+            StepVerifier.create(downloadClient
+                .downloadStreamWithResponse((BlobRange) null, retryOptions, (BlobRequestConditions) null, false,
+                    validationOptions)
+                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
+                    TestUtils.assertArraysEqual(r, randomData);
+                }).verifyComplete();
+
+            assertEquals(0, mockPolicy.getTriesRemaining());
+            List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+            assertTrue(rangeHeaders.size() > 0, "Expected range headers for retries");
+            assertTrue(rangeHeaders.get(0).startsWith("bytes=0-"), "First request should start from offset 0");
+        }
+    }
+
+    @Test
+    public void downloadStreamWithResponseContentValidationSmartRetrySync() throws IOException {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, 512, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+        bc.upload(input, null, true).block();
+
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(3);
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobClient downloadClient = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
+            mockPolicy, decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Context ctx = new Context(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+            .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, validationOptions);
+
+        downloadClient.downloadStreamWithResponse(out, null, retryOptions, null, false, null, ctx);
+
+        TestUtils.assertArraysEqual(out.toByteArray(), randomData);
+
+        assertEquals(0, mockPolicy.getTriesRemaining());
+        List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+        assertTrue(rangeHeaders.size() > 0, "Expected range headers for retries");
+        assertTrue(rangeHeaders.get(0).startsWith("bytes=0-"), "First request should start from offset 0");
     }
 
     @Test
