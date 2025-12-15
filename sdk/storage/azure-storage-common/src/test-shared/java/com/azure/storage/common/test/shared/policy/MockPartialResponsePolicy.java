@@ -115,8 +115,6 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
             });
         });
     }
-        });
-    }
 
     public int getTriesRemaining() {
         return tries;
