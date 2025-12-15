@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -94,29 +93,6 @@ public final class Error implements JsonSerializable<Error> {
     public InnerError innererror() {
         return this.innererror;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (code() == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property code in model Error"));
-        }
-        if (message() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property message in model Error"));
-        }
-        if (details() != null) {
-            details().forEach(e -> e.validate());
-        }
-        if (innererror() != null) {
-            innererror().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Error.class);
 
     /**
      * {@inheritDoc}

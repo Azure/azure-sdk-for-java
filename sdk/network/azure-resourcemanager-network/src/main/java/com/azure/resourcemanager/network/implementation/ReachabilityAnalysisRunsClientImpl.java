@@ -68,7 +68,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientReachabilityAnalysisRuns")
     public interface ReachabilityAnalysisRunsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}/reachabilityAnalysisRuns")
@@ -168,7 +168,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -220,7 +220,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -387,7 +387,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -434,7 +434,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -545,7 +545,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
@@ -601,7 +601,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         } else {
             body.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -708,7 +708,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -756,7 +756,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -924,13 +924,15 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
     }
 
     /**
+     * Gets list of Reachability Analysis Runs.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Reachability Analysis Run along with {@link PagedResponse} on successful completion of
+     * @return list of Reachability Analysis Runs along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -950,6 +952,8 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
     }
 
     /**
+     * Gets list of Reachability Analysis Runs.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -957,7 +961,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Reachability Analysis Run along with {@link PagedResponse} on successful completion of
+     * @return list of Reachability Analysis Runs along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

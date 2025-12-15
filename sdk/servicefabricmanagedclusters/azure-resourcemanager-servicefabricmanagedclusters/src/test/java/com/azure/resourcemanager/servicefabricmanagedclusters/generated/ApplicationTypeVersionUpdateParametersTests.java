@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeVersionUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeVersionUpdateParameters model = BinaryData.fromString("{\"tags\":{\"ukgri\":\"krbm\"}}")
+        ApplicationTypeVersionUpdateParameters model = BinaryData.fromString("{\"tags\":{\"ecivyh\":\"cwwfvovbvme\"}}")
             .toObject(ApplicationTypeVersionUpdateParameters.class);
-        Assertions.assertEquals("krbm", model.tags().get("ukgri"));
+        Assertions.assertEquals("cwwfvovbvme", model.tags().get("ecivyh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationTypeVersionUpdateParameters model
-            = new ApplicationTypeVersionUpdateParameters().withTags(mapOf("ukgri", "krbm"));
+            = new ApplicationTypeVersionUpdateParameters().withTags(mapOf("ecivyh", "cwwfvovbvme"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionUpdateParameters.class);
-        Assertions.assertEquals("krbm", model.tags().get("ukgri"));
+        Assertions.assertEquals("cwwfvovbvme", model.tags().get("ecivyh"));
     }
 
     // Use "Map.of" if available

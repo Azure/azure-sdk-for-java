@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -300,43 +299,6 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         this.zoneAllocationPolicy = zoneAllocationPolicy;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (spotPriorityProfile() != null) {
-            spotPriorityProfile().validate();
-        }
-        if (regularPriorityProfile() != null) {
-            regularPriorityProfile().validate();
-        }
-        if (vmSizesProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property vmSizesProfile in model FleetProperties"));
-        } else {
-            vmSizesProfile().forEach(e -> e.validate());
-        }
-        if (vmAttributes() != null) {
-            vmAttributes().validate();
-        }
-        if (additionalLocationsProfile() != null) {
-            additionalLocationsProfile().validate();
-        }
-        if (computeProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property computeProfile in model FleetProperties"));
-        } else {
-            computeProfile().validate();
-        }
-        if (zoneAllocationPolicy() != null) {
-            zoneAllocationPolicy().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FleetProperties.class);
 
     /**
      * {@inheritDoc}

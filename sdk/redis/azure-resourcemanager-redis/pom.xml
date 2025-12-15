@@ -61,7 +61,7 @@
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-resources</artifactId>
-        <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+        <version>2.53.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
@@ -78,13 +78,13 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-http-netty</artifactId>
-        <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+        <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-storage</artifactId>
-        <version>2.53.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+        <version>2.55.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>

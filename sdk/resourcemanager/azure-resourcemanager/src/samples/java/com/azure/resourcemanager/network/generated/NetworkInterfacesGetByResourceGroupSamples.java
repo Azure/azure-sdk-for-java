@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkInterfacesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkInterfaceGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkInterfaceGet.json
      */
     /**
      * Sample code: Get network interface.

@@ -60,7 +60,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientLoadBalancerProbes")
     public interface LoadBalancerProbesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes")
@@ -118,7 +118,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -158,7 +158,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -265,7 +265,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -307,7 +307,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, loadBalancerName, probeName, apiVersion,
@@ -372,8 +372,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListProbe API service call along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all the load balancer probes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listNextSinglePageAsync(String nextLink) {
@@ -399,8 +398,7 @@ public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListProbe API service call along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all the load balancer probes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProbeInner>> listNextSinglePageAsync(String nextLink, Context context) {

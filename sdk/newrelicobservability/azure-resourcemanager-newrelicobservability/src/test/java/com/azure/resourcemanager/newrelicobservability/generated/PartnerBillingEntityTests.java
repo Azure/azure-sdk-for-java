@@ -12,18 +12,18 @@ public final class PartnerBillingEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerBillingEntity model
-            = BinaryData.fromString("{\"organizationId\":\"dnvowg\",\"organizationName\":\"jugwdkcglhsl\"}")
+            = BinaryData.fromString("{\"organizationId\":\"a\",\"organizationName\":\"uhrzayvvt\"}")
                 .toObject(PartnerBillingEntity.class);
-        Assertions.assertEquals("dnvowg", model.organizationId());
-        Assertions.assertEquals("jugwdkcglhsl", model.organizationName());
+        Assertions.assertEquals("a", model.organizationId());
+        Assertions.assertEquals("uhrzayvvt", model.organizationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerBillingEntity model
-            = new PartnerBillingEntity().withOrganizationId("dnvowg").withOrganizationName("jugwdkcglhsl");
+            = new PartnerBillingEntity().withOrganizationId("a").withOrganizationName("uhrzayvvt");
         model = BinaryData.fromObject(model).toObject(PartnerBillingEntity.class);
-        Assertions.assertEquals("dnvowg", model.organizationId());
-        Assertions.assertEquals("jugwdkcglhsl", model.organizationName());
+        Assertions.assertEquals("a", model.organizationId());
+        Assertions.assertEquals("uhrzayvvt", model.organizationName());
     }
 }

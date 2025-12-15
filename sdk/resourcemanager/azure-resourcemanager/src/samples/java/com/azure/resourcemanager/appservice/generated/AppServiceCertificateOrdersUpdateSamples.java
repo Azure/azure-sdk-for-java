@@ -16,8 +16,8 @@ import java.util.Map;
 public final class AppServiceCertificateOrdersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
-     * UpdateAppServiceCertificateOrder.json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/UpdateAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Update Certificate order.

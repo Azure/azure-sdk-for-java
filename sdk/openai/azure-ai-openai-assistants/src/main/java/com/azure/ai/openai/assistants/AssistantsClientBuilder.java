@@ -4,7 +4,6 @@
 package com.azure.ai.openai.assistants;
 
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.useAzureOpenAIService;
-
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
 import com.azure.core.annotation.Generated;

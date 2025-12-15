@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ServicesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"tgzgta\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"tsdyds\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class ServicesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NameAvailabilityResponse response = manager.services()
-            .checkNameAvailabilityWithResponse("ohrvmz",
-                new NameAvailabilityRequest().withName("razadivznllaslks").withType("jqjpv"),
+            .checkNameAvailabilityWithResponse("jymgqbgcxhn",
+                new NameAvailabilityRequest().withName("gzxlermkmerghski").withType("npupkcbkfuk"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(NameCheckFailureReason.INVALID, response.reason());
-        Assertions.assertEquals("tgzgta", response.message());
+        Assertions.assertEquals("tsdyds", response.message());
     }
 }

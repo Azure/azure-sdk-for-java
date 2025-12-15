@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +37,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @Disabled("Azure Playground subscription will add additional EMSI(s), invalidating the assertions.")
     public void canCreateUpdateVirtualMachineWithEMSI() {
         // LiveOnly because "test timing out after latest test proxy update"
         // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
@@ -91,7 +92,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withSsh(sshPublicKey())
             .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -282,7 +283,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -349,7 +350,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @Disabled("Azure Playground subscription will additional EMSI(s), invalidating the assertions.")
     public void canUpdateVirtualMachineWithEMSIAndLMSI() throws Exception {
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
@@ -367,7 +368,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

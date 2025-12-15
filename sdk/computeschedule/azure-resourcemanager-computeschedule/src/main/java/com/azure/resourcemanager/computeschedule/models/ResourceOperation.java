@@ -79,17 +79,6 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operation() != null) {
-            operation().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

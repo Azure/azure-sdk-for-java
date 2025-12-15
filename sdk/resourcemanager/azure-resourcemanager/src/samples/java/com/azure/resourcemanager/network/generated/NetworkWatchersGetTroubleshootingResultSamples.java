@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.QueryTroubleshootingParameters;
  */
 public final class NetworkWatchersGetTroubleshootingResultSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * NetworkWatcherTroubleshootResultQuery.json
      */
     /**

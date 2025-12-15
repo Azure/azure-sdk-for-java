@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient
 import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
@@ -174,6 +175,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The ManagedNamespacesClient object to access its operations.
+     */
+    private final ManagedNamespacesClient managedNamespaces;
+
+    /**
+     * Gets the ManagedNamespacesClient object to access its operations.
+     * 
+     * @return the ManagedNamespacesClient object.
+     */
+    public ManagedNamespacesClient getManagedNamespaces() {
+        return this.managedNamespaces;
+    }
+
+    /**
      * The AgentPoolsClient object to access its operations.
      */
     private final AgentPoolsClient agentPools;
@@ -309,6 +324,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.operations = new OperationsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
+        this.managedNamespaces = new ManagedNamespacesClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);

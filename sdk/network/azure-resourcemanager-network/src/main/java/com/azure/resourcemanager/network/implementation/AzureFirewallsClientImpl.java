@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallPacketCaptureResponseInner;
 import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
 import com.azure.resourcemanager.network.models.AzureFirewallListResult;
 import com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters;
@@ -77,7 +78,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientAzureFirewalls")
     public interface AzureFirewallsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}")
@@ -155,6 +156,17 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}/packetCaptureOperation")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> packetCaptureOperation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureFirewallName") String azureFirewallName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") FirewallPacketCaptureParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -199,7 +211,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, azureFirewallName,
@@ -237,7 +249,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -404,7 +416,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -442,7 +454,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -532,7 +544,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -576,7 +588,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -767,7 +779,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, azureFirewallName,
@@ -811,7 +823,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -990,7 +1002,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1026,7 +1038,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1114,7 +1126,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1144,7 +1156,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1235,7 +1247,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLearnedPrefixes(this.client.getEndpoint(), resourceGroupName,
@@ -1274,7 +1286,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listLearnedPrefixes(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -1455,7 +1467,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.packetCapture(this.client.getEndpoint(), resourceGroupName,
@@ -1499,7 +1511,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.packetCapture(this.client.getEndpoint(), resourceGroupName, azureFirewallName, apiVersion,
@@ -1654,6 +1666,252 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
     }
 
     /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> packetCaptureOperationWithResponseAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureFirewallName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.packetCaptureOperation(this.client.getEndpoint(), resourceGroupName,
+                azureFirewallName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> packetCaptureOperationWithResponseAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (azureFirewallName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.packetCaptureOperation(this.client.getEndpoint(), resourceGroupName, azureFirewallName,
+            apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperationAsync(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = packetCaptureOperationWithResponseAsync(resourceGroupName, azureFirewallName, parameters);
+        return this.client
+            .<AzureFirewallPacketCaptureResponseInner, AzureFirewallPacketCaptureResponseInner>getLroResult(mono,
+                this.client.getHttpPipeline(), AzureFirewallPacketCaptureResponseInner.class,
+                AzureFirewallPacketCaptureResponseInner.class, this.client.getContext());
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperationAsync(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = packetCaptureOperationWithResponseAsync(resourceGroupName, azureFirewallName, parameters, context);
+        return this.client
+            .<AzureFirewallPacketCaptureResponseInner, AzureFirewallPacketCaptureResponseInner>getLroResult(mono,
+                this.client.getHttpPipeline(), AzureFirewallPacketCaptureResponseInner.class,
+                AzureFirewallPacketCaptureResponseInner.class, context);
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperation(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters) {
+        return this.beginPacketCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperation(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters, Context context) {
+        return this.beginPacketCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AzureFirewallPacketCaptureResponseInner> packetCaptureOperationAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters) {
+        return beginPacketCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AzureFirewallPacketCaptureResponseInner> packetCaptureOperationAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters, Context context) {
+        return beginPacketCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters) {
+        return packetCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters).block();
+    }
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters, Context context) {
+        return packetCaptureOperationAsync(resourceGroupName, azureFirewallName, parameters, context).block();
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1713,8 +1971,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the Azure Firewalls in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1741,8 +1999,8 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return all the Azure Firewalls in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink, Context context) {

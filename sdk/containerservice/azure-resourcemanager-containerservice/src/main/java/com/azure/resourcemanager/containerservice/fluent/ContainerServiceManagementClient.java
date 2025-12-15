@@ -76,6 +76,13 @@ public interface ContainerServiceManagementClient {
     MaintenanceConfigurationsClient getMaintenanceConfigurations();
 
     /**
+     * Gets the ManagedNamespacesClient object to access its operations.
+     * 
+     * @return the ManagedNamespacesClient object.
+     */
+    ManagedNamespacesClient getManagedNamespaces();
+
+    /**
      * Gets the AgentPoolsClient object to access its operations.
      * 
      * @return the AgentPoolsClient object.

@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dependencymap.fluent.DiscoverySourcesClient;
@@ -199,24 +198,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiscoverySourceResourceInner>> getWithResponseAsync(String resourceGroupName, String mapName,
         String sourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -256,28 +237,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoverySourceResourceInner> getWithResponse(String resourceGroupName, String mapName,
         String sourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, mapName, sourceName, accept, context);
@@ -314,29 +273,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String mapName,
         String sourceName, DiscoverySourceResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -361,34 +297,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -412,34 +320,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -583,29 +463,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String mapName,
         String sourceName, DiscoverySourceResourceTagsUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -630,34 +487,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -681,34 +510,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -850,24 +651,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mapName,
         String sourceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, context))
@@ -887,28 +670,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, String sourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, Context.NONE);
     }
@@ -928,28 +689,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, String sourceName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
-        if (sourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sourceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, context);
     }
@@ -1071,21 +810,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoverySourceResourceInner>>
         listByMapsResourceSinglePageAsync(String resourceGroupName, String mapName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByMapsResource(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1124,24 +848,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceSinglePage(String resourceGroupName,
         String mapName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoverySourceResourceListResult> res
             = service.listByMapsResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1164,24 +870,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceSinglePage(String resourceGroupName,
         String mapName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mapName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mapName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoverySourceResourceListResult> res = service.listByMapsResourceSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, mapName, accept, context);
@@ -1237,13 +925,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiscoverySourceResourceInner>> listByMapsResourceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1264,15 +945,6 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoverySourceResourceListResult> res
             = service.listByMapsResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1293,21 +965,10 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DiscoverySourceResourceListResult> res
             = service.listByMapsResourceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DiscoverySourcesClientImpl.class);
 }

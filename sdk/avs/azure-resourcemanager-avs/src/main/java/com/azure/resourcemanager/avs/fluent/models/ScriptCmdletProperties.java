@@ -98,17 +98,6 @@ public final class ScriptCmdletProperties implements JsonSerializable<ScriptCmdl
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

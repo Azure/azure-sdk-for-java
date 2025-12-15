@@ -12,17 +12,17 @@ public final class ProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"displayName\":\"ysi\",\"description\":\"gqcwdhohsdtmc\",\"endpoints\":{\"mcmuapc\":\"ufcohdxbz\",\"zinkfkbgbzbowxeq\":\"hdbevwqqxeyskon\"},\"isDefault\":true}")
+            "{\"provisioningState\":\"Failed\",\"displayName\":\"sqo\",\"description\":\"fikayiansharujtj\",\"endpoints\":{\"vwkpqh\":\"fzyjqt\"},\"isDefault\":false}")
             .toObject(ProjectProperties.class);
-        Assertions.assertEquals("ysi", model.displayName());
-        Assertions.assertEquals("gqcwdhohsdtmc", model.description());
+        Assertions.assertEquals("sqo", model.displayName());
+        Assertions.assertEquals("fikayiansharujtj", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectProperties model = new ProjectProperties().withDisplayName("ysi").withDescription("gqcwdhohsdtmc");
+        ProjectProperties model = new ProjectProperties().withDisplayName("sqo").withDescription("fikayiansharujtj");
         model = BinaryData.fromObject(model).toObject(ProjectProperties.class);
-        Assertions.assertEquals("ysi", model.displayName());
-        Assertions.assertEquals("gqcwdhohsdtmc", model.description());
+        Assertions.assertEquals("sqo", model.displayName());
+        Assertions.assertEquals("fikayiansharujtj", model.description());
     }
 }

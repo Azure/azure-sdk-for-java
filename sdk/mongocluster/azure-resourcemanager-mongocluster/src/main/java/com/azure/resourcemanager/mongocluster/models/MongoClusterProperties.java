@@ -485,53 +485,6 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (replicaParameters() != null) {
-            replicaParameters().validate();
-        }
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (replica() != null) {
-            replica().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -35,8 +36,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
@@ -56,18 +55,15 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends DocumentClientTest {
-
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
+public abstract class TestSuiteBase extends DocumentClientTest {
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 12000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -88,6 +84,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
                 ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -129,7 +126,9 @@ public class TestSuiteBase extends DocumentClientTest {
                 OperationType.Query,
                 new CosmosQueryRequestOptions(),
                 client);
-            return client.queryDatabases(query, state);
+            return client
+                .queryDatabases(query, state)
+                .doFinally(signal -> safeClose(state));
         }
 
         @Override
@@ -145,7 +144,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
-    public static void beforeSuite() {
+    public void beforeSuite() {
         logger.info("beforeSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
@@ -161,16 +160,9 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
-    }
-
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "split", "query", "cfp-split", "long-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public static void afterSuite() {
+    public void afterSuite() {
         logger.info("afterSuite Started");
         AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
         try {
@@ -187,128 +179,128 @@ public class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> paths = collection.getPartitionKey().getPaths();
 
-            CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(TestConfigurations.HOST)
-                .buildAsyncClient();
-            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            options.setMaxDegreeOfParallelism(-1);
-            QueryFeedOperationState state = new QueryFeedOperationState(
-                cosmosClient,
-                "truncateCollection",
-                collection.getSelfLink(),
-                collection.getId(),
-                ResourceType.Document,
-                OperationType.Query,
-                null,
-                options,
-                new CosmosPagedFluxOptions()
-            );
+                .buildAsyncClient()) {
+                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                options.setMaxDegreeOfParallelism(-1);
+                QueryFeedOperationState state = new QueryFeedOperationState(
+                    cosmosClient,
+                    "truncateCollection",
+                    collection.getSelfLink(),
+                    collection.getId(),
+                    ResourceType.Document,
+                    OperationType.Query,
+                    null,
+                    options,
+                    new CosmosPagedFluxOptions()
+                );
 
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
+                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-            logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
+                logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
-                              .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.getResults()))
-                    .flatMap(doc -> {
-                        RequestOptions requestOptions = new RequestOptions();
+                houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
+                                  .publishOn(Schedulers.parallel())
+                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
+                                  .flatMap(doc -> {
+                                      RequestOptions requestOptions = new RequestOptions();
 
-                        if (paths != null && !paths.isEmpty()) {
-                            List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = doc.getObjectByPath(pkPath);
-                            if (propertyValue == null) {
-                                propertyValue = Undefined.value();
-                            }
+                                      if (paths != null && !paths.isEmpty()) {
+                                          List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                                          Object propertyValue = doc.getObjectByPath(pkPath);
+                                          if (propertyValue == null) {
+                                              propertyValue = Undefined.value();
+                                          }
 
-                            requestOptions.setPartitionKey(new PartitionKey(propertyValue));
-                        }
+                                          requestOptions.setPartitionKey(new PartitionKey(propertyValue));
+                                      }
 
-                        return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
-                    }).then().block();
+                                      return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
+                                  }).then().block();
 
-            logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
+                logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 
-            state = new QueryFeedOperationState(
-                cosmosClient,
-                "truncateTriggers",
-                collection.getSelfLink(),
-                collection.getId(),
-                ResourceType.Document,
-                OperationType.Query,
-                null,
-                options,
-                new CosmosPagedFluxOptions()
-            );
-            houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", state)
-                              .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.getResults()))
-                    .flatMap(trigger -> {
-                        RequestOptions requestOptions = new RequestOptions();
+                state = new QueryFeedOperationState(
+                    cosmosClient,
+                    "truncateTriggers",
+                    collection.getSelfLink(),
+                    collection.getId(),
+                    ResourceType.Document,
+                    OperationType.Query,
+                    null,
+                    options,
+                    new CosmosPagedFluxOptions()
+                );
+                houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", state)
+                                  .publishOn(Schedulers.parallel())
+                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
+                                  .flatMap(trigger -> {
+                                      RequestOptions requestOptions = new RequestOptions();
 
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                    }
+                                      //                    if (paths != null && !paths.isEmpty()) {
+                                      //                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                                      //                    }
 
-                        return houseKeepingClient.deleteTrigger(trigger.getSelfLink(), requestOptions);
-                    }).then().block();
+                                      return houseKeepingClient.deleteTrigger(trigger.getSelfLink(), requestOptions);
+                                  }).then().block();
 
-            logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
+                logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
-            state = new QueryFeedOperationState(
-                cosmosClient,
-                "truncateStoredProcs",
-                collection.getSelfLink(),
-                collection.getId(),
-                ResourceType.Document,
-                OperationType.Query,
-                null,
-                options,
-                new CosmosPagedFluxOptions()
-            );
-            houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", state)
-                              .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.getResults()))
-                    .flatMap(storedProcedure -> {
-                        RequestOptions requestOptions = new RequestOptions();
+                state = new QueryFeedOperationState(
+                    cosmosClient,
+                    "truncateStoredProcs",
+                    collection.getSelfLink(),
+                    collection.getId(),
+                    ResourceType.Document,
+                    OperationType.Query,
+                    null,
+                    options,
+                    new CosmosPagedFluxOptions()
+                );
+                houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", state)
+                                  .publishOn(Schedulers.parallel())
+                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
+                                  .flatMap(storedProcedure -> {
+                                      RequestOptions requestOptions = new RequestOptions();
 
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                    }
+                                      //                    if (paths != null && !paths.isEmpty()) {
+                                      //                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                                      //                    }
 
-                        return houseKeepingClient.deleteStoredProcedure(storedProcedure.getSelfLink(), requestOptions);
-                    }).then().block();
+                                      return houseKeepingClient.deleteStoredProcedure(storedProcedure.getSelfLink(), requestOptions);
+                                  }).then().block();
 
-            logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
+                logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
 
-            state = new QueryFeedOperationState(
-                cosmosClient,
-                "truncateUserDefinedFunctions",
-                collection.getSelfLink(),
-                collection.getId(),
-                ResourceType.Document,
-                OperationType.Query,
-                null,
-                options,
-                new CosmosPagedFluxOptions()
-            );
-            houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", state)
-                              .publishOn(Schedulers.parallel())
-                    .flatMap(page -> Flux.fromIterable(page.getResults()))
-                    .flatMap(udf -> {
-                        RequestOptions requestOptions = new RequestOptions();
+                state = new QueryFeedOperationState(
+                    cosmosClient,
+                    "truncateUserDefinedFunctions",
+                    collection.getSelfLink(),
+                    collection.getId(),
+                    ResourceType.Document,
+                    OperationType.Query,
+                    null,
+                    options,
+                    new CosmosPagedFluxOptions()
+                );
+                houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", state)
+                                  .publishOn(Schedulers.parallel())
+                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
+                                  .flatMap(udf -> {
+                                      RequestOptions requestOptions = new RequestOptions();
 
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                    }
+                                      //                    if (paths != null && !paths.isEmpty()) {
+                                      //                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                                      //                    }
 
-                        return houseKeepingClient.deleteUserDefinedFunction(udf.getSelfLink(), requestOptions);
-                    }).then().block();
-
+                                      return houseKeepingClient.deleteUserDefinedFunction(udf.getSelfLink(), requestOptions);
+                                  }).then().block();
+            }
         } finally {
             houseKeepingClient.close();
         }
@@ -557,11 +549,15 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
-                                                               String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
-                .getResults();
-        if (!res.isEmpty()) {
-            deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
+        try {
+            List<DocumentCollection> res = client.queryCollections("dbs/" + databaseId,
+                                                     String.format("SELECT * FROM root r where r.id = '%s'", collectionId), state).single().block()
+                                                 .getResults();
+            if (!res.isEmpty()) {
+                deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -579,15 +575,19 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<Document> res = client
+        try {
+            List<Document> res = client
                 .queryDocuments(
                     TestUtils.getCollectionNameLink(databaseId, collectionId),
                     String.format("SELECT * FROM root r where r.id = '%s'", docId),
                     state,
                     Document.class)
                 .single().block().getResults();
-        if (!res.isEmpty()) {
-            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            if (!res.isEmpty()) {
+                deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk, TestUtils.getCollectionNameLink(databaseId, collectionId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -604,11 +604,16 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        List<User> res = client
+
+        try {
+            List<User> res = client
                 .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), state)
                 .single().block().getResults();
-        if (!res.isEmpty()) {
-            deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
+            if (!res.isEmpty()) {
+                deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
+            }
+        } finally {
+            safeClose(state);
         }
     }
 
@@ -643,7 +648,8 @@ public class TestSuiteBase extends DocumentClientTest {
             new CosmosQueryRequestOptions(),
             client
         );
-        return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
+        try {
+            return client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), state).flatMap(p -> Flux.fromIterable(p.getResults())).switchIfEmpty(
                 Flux.defer(() -> {
 
                     Database databaseDefinition = new Database();
@@ -651,7 +657,10 @@ public class TestSuiteBase extends DocumentClientTest {
 
                     return client.createDatabase(databaseDefinition, null).map(ResourceResponse::getResource);
                 })
-        ).single().block();
+            ).single().block();
+        } finally {
+            safeClose(state);
+        }
     }
 
     static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
@@ -677,14 +686,19 @@ public class TestSuiteBase extends DocumentClientTest {
                 new CosmosQueryRequestOptions(),
                 client
             );
-            List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
-                    .flatMap(p -> Flux.fromIterable(p.getResults()))
-                    .collectList()
-                    .single()
-                    .block();
 
-            for (DocumentCollection collection : collections) {
-                client.deleteCollection(collection.getSelfLink(), null).block().getResource();
+            try {
+                List<DocumentCollection> collections = client.readCollections(database.getSelfLink(), state)
+                                                             .flatMap(p -> Flux.fromIterable(p.getResults()))
+                                                             .collectList()
+                                                             .single()
+                                                             .block();
+
+                for (DocumentCollection collection : collections) {
+                    client.deleteCollection(collection.getSelfLink(), null).block().getResource();
+                }
+            } finally {
+                safeClose(state);
             }
         }
     }
@@ -716,6 +730,22 @@ public class TestSuiteBase extends DocumentClientTest {
                     e.printStackTrace();
                 }
             }).start();
+        }
+    }
+
+    static protected void safeClose(QueryFeedOperationState state) {
+        if (state != null) {
+            safeClose(state.getClient());
+        }
+    }
+
+    static protected void safeClose(CosmosAsyncClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

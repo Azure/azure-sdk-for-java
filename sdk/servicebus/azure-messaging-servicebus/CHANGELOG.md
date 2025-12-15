@@ -10,6 +10,26 @@
 
 ### Other Changes
 
+## 7.17.16 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-amqp` from `2.11.1` to version `2.11.2`.
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+
+## 7.17.15 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+- Upgraded `azure-core-amqp` from `2.11.0` to version `2.11.1`.
+
 ## 7.17.14 (2025-08-21)
 
 ### Other Changes
@@ -19,7 +39,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-amqp` from `2.10.2` to version `2.11.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-
 
 ## 7.17.13 (2025-07-24)
 
@@ -68,7 +87,6 @@
 - Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
 - Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
-
 
 ## 7.17.8 (2025-01-09)
 
@@ -220,8 +238,6 @@
 
 ### Bugs Fixed
 
-### Other Changes
-
 ## 7.15.2 (2024-03-11)
 
 ### Other Changes
@@ -362,7 +378,6 @@
 - Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
 
 - Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
-
 
 ### Other Changes
 
@@ -914,5 +929,4 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 - Receive messages from an Azure Service Bus Queue or Subscriber.
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
-
 

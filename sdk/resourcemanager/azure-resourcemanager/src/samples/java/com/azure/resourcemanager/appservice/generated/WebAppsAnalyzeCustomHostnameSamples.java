@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsAnalyzeCustomHostnameSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/AnalyzeCustomHostName.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/AnalyzeCustomHostName.json
      */
     /**
      * Sample code: Analyze custom hostname for webapp.

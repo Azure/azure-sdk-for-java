@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * defaultColumnValue.
+ * Represents a default column value.
  */
 @Fluent
 public final class MicrosoftGraphDefaultColumnValue implements JsonSerializable<MicrosoftGraphDefaultColumnValue> {

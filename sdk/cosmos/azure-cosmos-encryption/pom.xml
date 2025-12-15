@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+  <version>2.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
   <name>Encryption Plugin for Azure Cosmos DB SDK</name>
   <description>This Package contains Encryption Plugin for Microsoft Azure Cosmos SDK</description>
   <packaging>jar</packaging>
@@ -49,6 +49,8 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.util=ALL-UNNAMED
       --add-opens com.azure.cosmos.encryption/com.azure.cosmos.encryption.models=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+      --add-modules java.management
+      --add-reads com.azure.cosmos.encryption=java.management
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>
@@ -59,13 +61,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.75.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.77.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.10.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.10.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -82,7 +84,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.17.0</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -176,7 +178,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.11</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -217,6 +219,12 @@ Licensed under the MIT License.
         <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
+          <systemPropertyVariables>
+            <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+            <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+            <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+            <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+          </systemPropertyVariables>
           <includes>
             <include>%regex[.*]</include>
           </includes>
@@ -224,6 +232,10 @@ Licensed under the MIT License.
             <property>
               <name>surefire.testng.verbose</name>
               <value>2</value>
+            </property>
+            <property>
+              <name>listener</name>
+              <value>com.azure.cosmos.encryption.CosmosNettyLeakDetectorFactory</value>
             </property>
           </properties>
           <skipTests>true</skipTests>
@@ -263,6 +275,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/unit-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>
@@ -284,7 +302,12 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/encryption-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-
+              <systemPropertyVariables>
+                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
+                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
+                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
+                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
+              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

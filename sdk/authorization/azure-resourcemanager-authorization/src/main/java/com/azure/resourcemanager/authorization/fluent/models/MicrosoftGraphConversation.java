@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * conversation.
+ * Represents a conversation.
  */
 @Fluent
 public final class MicrosoftGraphConversation extends MicrosoftGraphEntity {

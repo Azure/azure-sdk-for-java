@@ -73,7 +73,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientIpGroups")
     public interface IpGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}")
@@ -175,7 +175,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -214,7 +214,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -307,7 +307,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -350,7 +350,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -539,7 +539,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateGroups(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -582,7 +582,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateGroups(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -667,7 +667,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -704,7 +704,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -865,7 +865,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -901,7 +901,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -988,7 +988,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1017,7 +1017,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1085,8 +1085,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all IpGroups in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1114,8 +1114,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all IpGroups in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1140,8 +1140,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all IpGroups in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1167,8 +1166,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListIpGroups API service call along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return all IpGroups in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {

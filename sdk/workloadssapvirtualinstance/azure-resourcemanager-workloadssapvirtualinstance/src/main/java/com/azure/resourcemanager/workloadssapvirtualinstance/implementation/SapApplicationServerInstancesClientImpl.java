@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapApplicationServerInstancesClient;
@@ -260,26 +259,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapApplicationServerInstanceInner>> getWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -323,28 +302,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapApplicationServerInstanceInner> getWithResponse(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, sapVirtualInstanceName, applicationInstanceName, accept, context);
@@ -385,31 +342,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, SapApplicationServerInstanceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -435,34 +367,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, SapApplicationServerInstanceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -487,34 +391,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, SapApplicationServerInstanceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -670,31 +546,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapApplicationServerInstanceInner>> updateWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, UpdateSapApplicationInstanceRequest properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -740,34 +591,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     public Response<SapApplicationServerInstanceInner> updateWithResponse(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, UpdateSapApplicationInstanceRequest properties,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -809,26 +632,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, applicationInstanceName,
@@ -851,28 +654,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, applicationInstanceName,
             Context.NONE);
@@ -894,28 +675,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, applicationInstanceName,
             context);
@@ -1050,22 +809,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listSinglePageAsync(String resourceGroupName,
         String sapVirtualInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1106,24 +849,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapApplicationServerInstanceInner> listSinglePage(String resourceGroupName,
         String sapVirtualInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SAPApplicationServerInstanceListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -1146,24 +871,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapApplicationServerInstanceInner> listSinglePage(String resourceGroupName,
         String sapVirtualInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SAPApplicationServerInstanceListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -1224,29 +931,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, StartRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1270,31 +954,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StartRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, applicationInstanceName, accept,
@@ -1317,31 +976,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StartRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, applicationInstanceName, accept,
@@ -1548,29 +1182,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, StopRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1594,31 +1205,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StopRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, sapVirtualInstanceName, applicationInstanceName, accept, body, Context.NONE);
@@ -1640,31 +1226,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StopRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        if (applicationInstanceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter applicationInstanceName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, sapVirtualInstanceName, applicationInstanceName, accept, body, context);
@@ -1867,13 +1428,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapApplicationServerInstanceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SapApplicationServerInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -1892,15 +1446,6 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapApplicationServerInstanceInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SAPApplicationServerInstanceListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1920,21 +1465,10 @@ public final class SapApplicationServerInstancesClientImpl implements SapApplica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SapApplicationServerInstanceInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SAPApplicationServerInstanceListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SapApplicationServerInstancesClientImpl.class);
 }

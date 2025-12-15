@@ -27,12 +27,12 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
+     * @return firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
@@ -43,12 +43,12 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a server firewall rule.
+     * @return the {@link PollerFlux} for polling of firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -59,12 +59,12 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server firewall rule.
+     * @return the {@link SyncPoller} for polling of firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
@@ -75,13 +75,13 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server firewall rule.
+     * @return the {@link SyncPoller} for polling of firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
@@ -92,12 +92,12 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule on successful completion of {@link Mono}.
+     * @return firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName, String firewallRuleName,
@@ -108,12 +108,12 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
@@ -124,24 +124,24 @@ public interface FirewallRulesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @param parameters The required parameters for creating or updating a firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
+     * @param parameters Parameters required for creating or updating a firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
         FirewallRuleInner parameters, Context context);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,11 +152,11 @@ public interface FirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -167,11 +167,11 @@ public interface FirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -182,11 +182,11 @@ public interface FirewallRulesClient {
         String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -198,11 +198,11 @@ public interface FirewallRulesClient {
         Context context);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -212,11 +212,11 @@ public interface FirewallRulesClient {
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,11 +225,11 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a PostgreSQL server firewall rule.
+     * Deletes an existing firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -239,92 +239,93 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a firewall rule in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about a firewall rule in a server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String firewallRuleName);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a firewall rule in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule on successful completion of {@link Mono}.
+     * @return information about a firewall rule in a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FirewallRuleInner> getAsync(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a firewall rule in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule along with {@link Response}.
+     * @return information about a firewall rule in a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String serverName, String firewallRuleName,
         Context context);
 
     /**
-     * List all the firewall rules in a given server.
+     * Gets information about a firewall rule in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
+     * @param firewallRuleName Name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return information about a firewall rule in a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallRuleInner get(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * Lists information about all firewall rules in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules as paginated response with {@link PagedFlux}.
+     * @return list of firewall rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<FirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * Lists information about all firewall rules in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
+     * @return list of firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the firewall rules in a given PostgreSQL server.
+     * Lists information about all firewall rules in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -332,7 +333,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of firewall rules as paginated response with {@link PagedIterable}.
+     * @return list of firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName, Context context);

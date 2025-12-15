@@ -379,7 +379,10 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         }
 
         ScheduledThreadPoolExecutor executorService = new ScheduledThreadPoolExecutor(THREAD_POOL_SIZE, threadFactory);
-        executorService.setKeepAliveTime(THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS);
+        if (THREAD_POOL_KEEP_ALIVE_MILLIS > 0) {
+            executorService.setKeepAliveTime(THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS);
+            executorService.allowCoreThreadTimeOut(true);
+        }
         Thread shutdownThread = ImplUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
         ImplUtils.addShutdownHookSafely(shutdownThread);
 

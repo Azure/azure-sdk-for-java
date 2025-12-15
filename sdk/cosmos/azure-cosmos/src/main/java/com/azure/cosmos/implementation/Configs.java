@@ -19,6 +19,8 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -328,6 +330,17 @@ public class Configs {
     private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = "COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
     private static final String HTTP_CONNECTION_WITHOUT_TLS_ALLOWED_VARIABLE = "COSMOS_HTTP_CONNECTION_WITHOUT_TLS_ALLOWED";
 
+    // Config to indicate whether hostname validation for TLS connections to the Cosmos DB endpoints
+    // (Gateway and Backend) should be disabled
+    // By default Netty 4.1 is not enabling hostname validation - this is not ideal form security perspective
+    // because it makes man-in-the-middle attacks easier. It only impacts direct mode connections because
+    // connections to the Gateway always use ReactorNetty (which enables hostname validation). So all HTTP connections
+    // are fine - RNTBD is what is in scope for the configs below.
+    // By default, the Cosmos DB SDK enables hostname validation for RNTBD as well.
+    private static final boolean DEFAULT_HOSTNAME_VALIDATION_DISABLED = false;
+    private static final String HOSTNAME_VALIDATION_DISABLED = "COSMOS.HOSTNAME_VALIDATION_DISABLED";
+    private static final String HOSTNAME_VALIDATION_DISABLED_VARIABLE = "COSMOS_HOSTNAME_VALIDATION_DISABLED";
+
     // Config to indicate whether disable server certificate validation for emulator
     // Please note that this config should only during development or test, please do not use in prod env
     private static final boolean DEFAULT_EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED = false;
@@ -360,6 +373,10 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    private static final boolean DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = false;
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED = "COSMOS.IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+    private static final String IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE = "COSMOS_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED";
+
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "applicationinsights.connection.string";
     public static final String APPLICATIONINSIGHTS_CONNECTION_STRING_VARIABLE = "APPLICATIONINSIGHTS_CONNECTION_STRING";
 
@@ -369,6 +386,13 @@ public class Configs {
     public static final String OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME_VARIABLE = "COSMOS_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME";
 
     public static final String DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME = "All";
+
+    // TODO @fabianm - Make test changes to enable leak detection from CI pipeline tests
+    private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
+    private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
+
+    private static final Object lockObject = new Object();
+    private static Boolean cachedIsHostnameValidationDisabled = null;
 
     public static int getCPUCnt() {
         return CPU_CNT;
@@ -383,6 +407,8 @@ public class Configs {
 
             if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
+            } else if (!isHostnameValidationDisabled()) {
+                sslContextBuilder.endpointIdentificationAlgorithm("HTTPS");
             }
 
             if (http2Enabled) {
@@ -397,6 +423,7 @@ public class Configs {
                         )
                     );
             }
+
             return sslContextBuilder.build();
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
@@ -486,6 +513,15 @@ public class Configs {
         }
 
         return DEFAULT_THINCLIENT_ENABLED;
+    }
+
+    public static boolean isClientLeakDetectionEnabled() {
+        String valueFromSystemProperty = System.getProperty(CLIENT_LEAK_DETECTION_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        return DEFAULT_CLIENT_LEAK_DETECTION_ENABLED;
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
@@ -938,14 +974,6 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
-    public static String isPerPartitionAutomaticFailoverEnabled() {
-        return System.getProperty(
-            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
-                DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED));
-    }
-
     public static boolean isSessionTokenFalseProgressMergeEnabled() {
         String isSessionTokenFalseProgressMergeDisabledAsString =
             System.getProperty(
@@ -1184,6 +1212,38 @@ public class Configs {
         return Boolean.parseBoolean(certVerificationDisabledConfig);
     }
 
+    private static boolean isHostnameValidationDisabledCore() {
+        String hostNameVerificationDisabledConfig = System.getProperty(
+            HOSTNAME_VALIDATION_DISABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HOSTNAME_VALIDATION_DISABLED_VARIABLE)),
+                String.valueOf(DEFAULT_HOSTNAME_VALIDATION_DISABLED)));
+
+        return Boolean.parseBoolean(hostNameVerificationDisabledConfig);
+    }
+
+    public static void resetIsHostnameValidationDisabledForTests() {
+        synchronized (lockObject) {
+            cachedIsHostnameValidationDisabled = null;
+        }
+    }
+
+    private static boolean isHostnameValidationDisabled() {
+        Boolean isHostnameValidationSnapshot = cachedIsHostnameValidationDisabled;
+        if (isHostnameValidationSnapshot != null) {
+            return isHostnameValidationSnapshot;
+        }
+
+        synchronized (lockObject) {
+            isHostnameValidationSnapshot = cachedIsHostnameValidationDisabled;
+            if (isHostnameValidationSnapshot != null) {
+                return isHostnameValidationSnapshot;
+            }
+
+            return cachedIsHostnameValidationDisabled = isHostnameValidationDisabledCore();
+        }
+    }
+
     public static String getEmulatorHost() {
         return System.getProperty(
             EMULATOR_HOST,
@@ -1239,5 +1299,15 @@ public class Configs {
         }
 
         return AttributeNamingScheme.parse(DEFAULT_OTEL_SPAN_ATTRIBUTE_NAMING_SCHEME);
+    }
+
+    public static boolean isNonParseableDocumentLoggingEnabled() {
+        String isNonParseableDocumentLoggingEnabledAsString = System.getProperty(
+            IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_IS_NON_PARSEABLE_DOCUMENT_LOGGING_ENABLED)));
+
+        return Boolean.parseBoolean(isNonParseableDocumentLoggingEnabledAsString);
     }
 }

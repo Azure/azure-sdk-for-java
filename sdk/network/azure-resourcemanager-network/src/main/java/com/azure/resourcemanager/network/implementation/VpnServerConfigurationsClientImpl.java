@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnServerConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.models.RadiusAuthServerListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
 import com.azure.resourcemanager.network.models.ListVpnServerConfigurationsResult;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -74,7 +76,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientVpnServerConfigurations")
     public interface VpnServerConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
@@ -138,6 +140,16 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/listRadiusSecrets")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecrets(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vpnServerConfigurationName") String vpnServerConfigurationName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -183,7 +195,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -222,7 +234,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -314,7 +326,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -361,7 +373,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -568,7 +580,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -614,7 +626,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -705,7 +717,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -743,7 +755,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -908,7 +920,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -944,7 +956,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1034,7 +1046,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1064,7 +1076,7 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1125,6 +1137,132 @@ public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnServerConfigurationName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName,
+                vpnServerConfigurationName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RadiusAuthServerListResultInner>> listRadiusSecretsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnServerConfigurationName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2025-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listRadiusSecrets(this.client.getEndpoint(), resourceGroupName, vpnServerConfigurationName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RadiusAuthServerListResultInner> listRadiusSecretsAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
+        return listRadiusSecretsWithResponseAsync(resourceGroupName, vpnServerConfigurationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RadiusAuthServerListResultInner> listRadiusSecretsWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
+        return listRadiusSecretsWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context).block();
+    }
+
+    /**
+     * List all Radius servers with respective radius secrets from VpnServerConfiguration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vpnServerConfigurationName The name of the VpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Radius servers with respective radius secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RadiusAuthServerListResultInner listRadiusSecrets(String resourceGroupName,
+        String vpnServerConfigurationName) {
+        return listRadiusSecretsWithResponse(resourceGroupName, vpnServerConfigurationName, Context.NONE).getValue();
     }
 
     /**

@@ -60,7 +60,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientDeletedWebApps")
     public interface DeletedWebAppsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites")
@@ -122,10 +122,11 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<DeletedSiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -152,11 +153,10 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -246,10 +246,11 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), location,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DeletedSiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -280,11 +281,12 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocation(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .listByLocation(this.client.getEndpoint(), location, this.client.getSubscriptionId(), apiVersion, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -386,10 +388,11 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDeletedWebAppByLocation(this.client.getEndpoint(), location,
-                deletedSiteId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                deletedSiteId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -423,10 +426,11 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDeletedWebAppByLocation(this.client.getEndpoint(), location, deletedSiteId,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -484,6 +488,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -509,6 +515,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -535,6 +543,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
+     * Get all deleted apps for a subscription at location
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -561,6 +571,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
+     * Get all deleted apps for a subscription at location
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

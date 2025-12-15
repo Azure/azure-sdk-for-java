@@ -191,17 +191,6 @@ public final class Certificate implements JsonSerializable<Certificate> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerRevocation() != null) {
-            innerRevocation().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

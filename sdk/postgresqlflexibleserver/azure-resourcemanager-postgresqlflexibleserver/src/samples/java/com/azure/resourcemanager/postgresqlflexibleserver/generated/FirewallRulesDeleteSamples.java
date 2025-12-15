@@ -10,16 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class FirewallRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * FirewallRuleDelete.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * FirewallRulesDelete.json
      */
     /**
-     * Sample code: FirewallRuleDelete.
+     * Sample code: Delete an existing firewall rule.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        firewallRuleDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.firewallRules().delete("testrg", "testserver", "rule1", com.azure.core.util.Context.NONE);
+        deleteAnExistingFirewallRule(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.firewallRules()
+            .delete("exampleresourcegroup", "exampleserver", "examplefirewallrule", com.azure.core.util.Context.NONE);
     }
 }

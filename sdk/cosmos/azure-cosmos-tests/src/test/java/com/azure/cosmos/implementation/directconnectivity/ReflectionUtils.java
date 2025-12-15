@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -248,6 +249,14 @@ public class ReflectionUtils {
         return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
     }
 
+    public static DatabaseAccountManagerInternal getGlobalEndpointManagerOwner(GlobalEndpointManager globalEndpointManager) {
+        return get(DatabaseAccountManagerInternal.class, globalEndpointManager, "owner");
+    }
+
+    public static void setGlobalEndpointManagerOwner(GlobalEndpointManager globalEndpointManager, DatabaseAccountManagerInternal newOwner) {
+        set(globalEndpointManager, newOwner, "owner");
+    }
+
     public static void setThinProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "thinProxy");
     }
@@ -300,12 +309,25 @@ public class ReflectionUtils {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
 
+    public static StoreReader getStoreReader(ConsistencyWriter consistencyWriter) {
+        return get(StoreReader.class, consistencyWriter, "storeReader");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }
 
     public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
         set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(CosmosClient client, TransportClient transportClient) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        set(storeClient, transportClient, "transportClient");
+        ReplicatedResourceClient replicatedResClient = getReplicatedResourceClient(storeClient);
+        ConsistencyWriter writer = getConsistencyWriter(replicatedResClient);
+        set(replicatedResClient, transportClient, "transportClient");
+        set(writer, transportClient, "transportClient");
     }
 
     public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {

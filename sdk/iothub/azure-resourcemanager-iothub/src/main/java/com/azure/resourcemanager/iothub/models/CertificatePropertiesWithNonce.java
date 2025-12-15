@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.iothub.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 /**
  * The description of an X509 CA Certificate including the challenge nonce issued for the Proof-Of-Possession flow.
  */
-@Immutable
+@Fluent
 public final class CertificatePropertiesWithNonce implements JsonSerializable<CertificatePropertiesWithNonce> {
     /*
      * The certificate's subject name.
@@ -57,6 +57,11 @@ public final class CertificatePropertiesWithNonce implements JsonSerializable<Ce
      * The certificate content
      */
     private String certificate;
+
+    /*
+     * The reference to policy stored in Azure Device Registry (ADR).
+     */
+    private String policyResourceId;
 
     /**
      * Creates an instance of CertificatePropertiesWithNonce class.
@@ -146,6 +151,26 @@ public final class CertificatePropertiesWithNonce implements JsonSerializable<Ce
     }
 
     /**
+     * Get the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * 
+     * @return the policyResourceId value.
+     */
+    public String policyResourceId() {
+        return this.policyResourceId;
+    }
+
+    /**
+     * Set the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * 
+     * @param policyResourceId the policyResourceId value to set.
+     * @return the CertificatePropertiesWithNonce object itself.
+     */
+    public CertificatePropertiesWithNonce withPolicyResourceId(String policyResourceId) {
+        this.policyResourceId = policyResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -159,6 +184,7 @@ public final class CertificatePropertiesWithNonce implements JsonSerializable<Ce
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyResourceId", this.policyResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -197,6 +223,8 @@ public final class CertificatePropertiesWithNonce implements JsonSerializable<Ce
                     deserializedCertificatePropertiesWithNonce.verificationCode = reader.getString();
                 } else if ("certificate".equals(fieldName)) {
                     deserializedCertificatePropertiesWithNonce.certificate = reader.getString();
+                } else if ("policyResourceId".equals(fieldName)) {
+                    deserializedCertificatePropertiesWithNonce.policyResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

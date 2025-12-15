@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISettingSt
 public final class DefenderForAISettingsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/
      * UpdateDefenderForAISetting.json
      */
     /**

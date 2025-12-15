@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.40.0-beta.1 (Unreleased)
+### 4.43.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,25 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.42.0 (2025-12-09)
+
+#### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 4.41.0 (2025-10-21)
+
+#### Features Added
+* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [47034](https://github.com/Azure/azure-sdk-for-java/pull/47034)
+* Added support to optionally omit info about spark environment and/or machine-info for driver/executors from `UserAgent` header via new config `spark.cosmos.userAgent.format` (allowed values are `SparkEnvAndWorkers` (default value), `OnlySparkEnv` and `NoSparkEnv`.  - See [47047](https://github.com/Azure/azure-sdk-for-java/pull/47047) 
+
+### 4.40.0 (2025-09-27)
+
+#### Features Added
+* Added support for feed range cache refresh interval config. - See [46759](https://github.com/Azure/azure-sdk-for-java/pull/46759)
+
+#### Other Changes
+* Added improvement to reduce partition planning time for large containers. - See [46727](https://github.com/Azure/azure-sdk-for-java/pull/46727)
 
 ### 4.39.0 (2025-09-05)
 

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storagecache.generated;
 public final class AmlFilesystemsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/amlFilesystems_Get.
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/amlFilesystems_Get.
      * json
      */
     /**

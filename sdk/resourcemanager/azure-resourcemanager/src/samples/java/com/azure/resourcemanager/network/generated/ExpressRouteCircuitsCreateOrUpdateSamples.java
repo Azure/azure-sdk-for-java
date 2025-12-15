@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/ExpressRouteCircuitCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/ExpressRouteCircuitCreate.
      * json
      */
     /**
@@ -47,7 +47,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**

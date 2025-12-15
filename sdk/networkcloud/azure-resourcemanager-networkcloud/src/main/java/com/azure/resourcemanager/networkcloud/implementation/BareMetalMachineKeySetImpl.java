@@ -101,6 +101,10 @@ public final class BareMetalMachineKeySetImpl
         return this.innerModel().privilegeLevel();
     }
 
+    public String privilegeLevelName() {
+        return this.innerModel().privilegeLevelName();
+    }
+
     public BareMetalMachineKeySetProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -305,6 +309,11 @@ public final class BareMetalMachineKeySetImpl
 
     public BareMetalMachineKeySetImpl withOsGroupName(String osGroupName) {
         this.innerModel().withOsGroupName(osGroupName);
+        return this;
+    }
+
+    public BareMetalMachineKeySetImpl withPrivilegeLevelName(String privilegeLevelName) {
+        this.innerModel().withPrivilegeLevelName(privilegeLevelName);
         return this;
     }
 

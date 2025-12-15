@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,27 +63,6 @@ public final class ResourceStatus implements JsonSerializable<ResourceStatus> {
     public Error error() {
         return this.error;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (resourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resourceId in model ResourceStatus"));
-        }
-        if (status() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property status in model ResourceStatus"));
-        }
-        if (error() != null) {
-            error().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceStatus.class);
 
     /**
      * {@inheritDoc}

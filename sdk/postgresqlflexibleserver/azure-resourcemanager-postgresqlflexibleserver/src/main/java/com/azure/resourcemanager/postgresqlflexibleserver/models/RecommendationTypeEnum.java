@@ -27,6 +27,11 @@ public final class RecommendationTypeEnum extends ExpandableStringEnum<Recommend
     public static final RecommendationTypeEnum RE_INDEX = fromString("ReIndex");
 
     /**
+     * Static value AnalyzeTable for RecommendationTypeEnum.
+     */
+    public static final RecommendationTypeEnum ANALYZE_TABLE = fromString("AnalyzeTable");
+
+    /**
      * Creates a new instance of RecommendationTypeEnum value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

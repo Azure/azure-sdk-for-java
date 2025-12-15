@@ -60,7 +60,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkManagementCli")
+    @ServiceInterface(name = "NetworkManagementClientLoadBalancerNetworkInterfaces")
     public interface LoadBalancerNetworkInterfacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/networkInterfaces")
@@ -110,7 +110,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, loadBalancerName,
@@ -151,7 +151,7 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-07-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -234,8 +234,8 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return associated load balancer network interfaces along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceInner>> listNextSinglePageAsync(String nextLink) {
@@ -261,8 +261,8 @@ public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalanc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListNetworkInterface API service call along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return associated load balancer network interfaces along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceInner>> listNextSinglePageAsync(String nextLink, Context context) {

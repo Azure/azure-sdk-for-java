@@ -19,7 +19,7 @@ import java.util.Map;
 public final class FlowLogsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-07-01/examples/NetworkWatcherFlowLogCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkWatcherFlowLogCreate.
      * json
      */
     /**
@@ -42,6 +42,7 @@ public final class FlowLogsCreateOrUpdateSamples {
                 .withStorageId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
                 .withEnabledFilteringCriteria("srcIP=158.255.7.8 || dstPort=56891")
+                .withRecordTypes("B,E")
                 .withEnabled(true)
                 .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
                 com.azure.core.util.Context.NONE);

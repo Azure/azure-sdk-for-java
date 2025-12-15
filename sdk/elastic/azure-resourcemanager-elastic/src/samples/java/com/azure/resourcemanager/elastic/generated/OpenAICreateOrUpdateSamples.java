@@ -10,7 +10,7 @@ package com.azure.resourcemanager.elastic.generated;
 public final class OpenAICreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/OpenAI_CreateOrUpdate.json
+     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2025-06-01/examples/OpenAI_CreateOrUpdate.json
      */
     /**
      * Sample code: OpenAI_CreateOrUpdate.

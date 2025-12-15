@@ -51,17 +51,6 @@ public final class NetworkProfileUpdate implements JsonSerializable<NetworkProfi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (networkInterfaces() != null) {
-            networkInterfaces().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

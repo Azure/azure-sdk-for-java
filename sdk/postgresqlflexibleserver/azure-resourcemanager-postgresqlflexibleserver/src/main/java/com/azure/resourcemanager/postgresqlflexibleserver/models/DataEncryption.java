@@ -17,39 +17,47 @@ import java.io.IOException;
 @Fluent
 public final class DataEncryption implements JsonSerializable<DataEncryption> {
     /*
-     * URI for the key in keyvault for data encryption of the primary server.
+     * URI of the key in Azure Key Vault used for data encryption of the primary storage associated to a server.
      */
     private String primaryKeyUri;
 
     /*
-     * Resource Id for the User assigned identity to be used for data encryption of the primary server.
+     * Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of
+     * the primary storage associated to a server.
      */
     private String primaryUserAssignedIdentityId;
 
     /*
-     * URI for the key in keyvault for data encryption for geo-backup of server.
+     * Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of
+     * the geographically redundant storage associated to a server that is configured to support geographically
+     * redundant backups.
      */
     private String geoBackupKeyUri;
 
     /*
-     * Resource Id for the User assigned identity to be used for data encryption for geo-backup of server.
+     * Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of
+     * the geographically redundant storage associated to a server that is configured to support geographically
+     * redundant backups.
      */
     private String geoBackupUserAssignedIdentityId;
 
     /*
-     * Data encryption type to depict if it is System Managed vs Azure Key vault.
+     * Data encryption type used by a server.
      */
-    private ArmServerKeyType type;
+    private DataEncryptionType type;
 
     /*
-     * Primary encryption key status for Data encryption enabled server.
+     * Status of key used by a server configured with data encryption based on customer managed key, to encrypt the
+     * primary storage associated to the server.
      */
-    private KeyStatusEnum primaryEncryptionKeyStatus;
+    private EncryptionKeyStatus primaryEncryptionKeyStatus;
 
     /*
-     * Geo-backup encryption key status for Data encryption enabled server.
+     * Status of key used by a server configured with data encryption based on customer managed key, to encrypt the
+     * geographically redundant storage associated to the server when it is configured to support geographically
+     * redundant backups.
      */
-    private KeyStatusEnum geoBackupEncryptionKeyStatus;
+    private EncryptionKeyStatus geoBackupEncryptionKeyStatus;
 
     /**
      * Creates an instance of DataEncryption class.
@@ -58,7 +66,8 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Get the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
+     * Get the primaryKeyUri property: URI of the key in Azure Key Vault used for data encryption of the primary storage
+     * associated to a server.
      * 
      * @return the primaryKeyUri value.
      */
@@ -67,7 +76,8 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Set the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
+     * Set the primaryKeyUri property: URI of the key in Azure Key Vault used for data encryption of the primary storage
+     * associated to a server.
      * 
      * @param primaryKeyUri the primaryKeyUri value to set.
      * @return the DataEncryption object itself.
@@ -78,8 +88,8 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Get the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
-     * encryption of the primary server.
+     * Get the primaryUserAssignedIdentityId property: Identifier of the user assigned managed identity used to access
+     * the key in Azure Key Vault for data encryption of the primary storage associated to a server.
      * 
      * @return the primaryUserAssignedIdentityId value.
      */
@@ -88,8 +98,8 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Set the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
-     * encryption of the primary server.
+     * Set the primaryUserAssignedIdentityId property: Identifier of the user assigned managed identity used to access
+     * the key in Azure Key Vault for data encryption of the primary storage associated to a server.
      * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
@@ -100,7 +110,9 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Get the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
+     * Get the geoBackupKeyUri property: Identifier of the user assigned managed identity used to access the key in
+     * Azure Key Vault for data encryption of the geographically redundant storage associated to a server that is
+     * configured to support geographically redundant backups.
      * 
      * @return the geoBackupKeyUri value.
      */
@@ -109,7 +121,9 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Set the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
+     * Set the geoBackupKeyUri property: Identifier of the user assigned managed identity used to access the key in
+     * Azure Key Vault for data encryption of the geographically redundant storage associated to a server that is
+     * configured to support geographically redundant backups.
      * 
      * @param geoBackupKeyUri the geoBackupKeyUri value to set.
      * @return the DataEncryption object itself.
@@ -120,8 +134,9 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Get the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
-     * encryption for geo-backup of server.
+     * Get the geoBackupUserAssignedIdentityId property: Identifier of the user assigned managed identity used to access
+     * the key in Azure Key Vault for data encryption of the geographically redundant storage associated to a server
+     * that is configured to support geographically redundant backups.
      * 
      * @return the geoBackupUserAssignedIdentityId value.
      */
@@ -130,8 +145,9 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Set the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
-     * encryption for geo-backup of server.
+     * Set the geoBackupUserAssignedIdentityId property: Identifier of the user assigned managed identity used to access
+     * the key in Azure Key Vault for data encryption of the geographically redundant storage associated to a server
+     * that is configured to support geographically redundant backups.
      * 
      * @param geoBackupUserAssignedIdentityId the geoBackupUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
@@ -142,63 +158,67 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
     }
 
     /**
-     * Get the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
+     * Get the type property: Data encryption type used by a server.
      * 
      * @return the type value.
      */
-    public ArmServerKeyType type() {
+    public DataEncryptionType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
+     * Set the type property: Data encryption type used by a server.
      * 
      * @param type the type value to set.
      * @return the DataEncryption object itself.
      */
-    public DataEncryption withType(ArmServerKeyType type) {
+    public DataEncryption withType(DataEncryptionType type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
+     * Get the primaryEncryptionKeyStatus property: Status of key used by a server configured with data encryption based
+     * on customer managed key, to encrypt the primary storage associated to the server.
      * 
      * @return the primaryEncryptionKeyStatus value.
      */
-    public KeyStatusEnum primaryEncryptionKeyStatus() {
+    public EncryptionKeyStatus primaryEncryptionKeyStatus() {
         return this.primaryEncryptionKeyStatus;
     }
 
     /**
-     * Set the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
+     * Set the primaryEncryptionKeyStatus property: Status of key used by a server configured with data encryption based
+     * on customer managed key, to encrypt the primary storage associated to the server.
      * 
      * @param primaryEncryptionKeyStatus the primaryEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
-    public DataEncryption withPrimaryEncryptionKeyStatus(KeyStatusEnum primaryEncryptionKeyStatus) {
+    public DataEncryption withPrimaryEncryptionKeyStatus(EncryptionKeyStatus primaryEncryptionKeyStatus) {
         this.primaryEncryptionKeyStatus = primaryEncryptionKeyStatus;
         return this;
     }
 
     /**
-     * Get the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
-     * server.
+     * Get the geoBackupEncryptionKeyStatus property: Status of key used by a server configured with data encryption
+     * based on customer managed key, to encrypt the geographically redundant storage associated to the server when it
+     * is configured to support geographically redundant backups.
      * 
      * @return the geoBackupEncryptionKeyStatus value.
      */
-    public KeyStatusEnum geoBackupEncryptionKeyStatus() {
+    public EncryptionKeyStatus geoBackupEncryptionKeyStatus() {
         return this.geoBackupEncryptionKeyStatus;
     }
 
     /**
-     * Set the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
-     * server.
+     * Set the geoBackupEncryptionKeyStatus property: Status of key used by a server configured with data encryption
+     * based on customer managed key, to encrypt the geographically redundant storage associated to the server when it
+     * is configured to support geographically redundant backups.
      * 
      * @param geoBackupEncryptionKeyStatus the geoBackupEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
-    public DataEncryption withGeoBackupEncryptionKeyStatus(KeyStatusEnum geoBackupEncryptionKeyStatus) {
+    public DataEncryption withGeoBackupEncryptionKeyStatus(EncryptionKeyStatus geoBackupEncryptionKeyStatus) {
         this.geoBackupEncryptionKeyStatus = geoBackupEncryptionKeyStatus;
         return this;
     }
@@ -253,13 +273,13 @@ public final class DataEncryption implements JsonSerializable<DataEncryption> {
                 } else if ("geoBackupUserAssignedIdentityId".equals(fieldName)) {
                     deserializedDataEncryption.geoBackupUserAssignedIdentityId = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedDataEncryption.type = ArmServerKeyType.fromString(reader.getString());
+                    deserializedDataEncryption.type = DataEncryptionType.fromString(reader.getString());
                 } else if ("primaryEncryptionKeyStatus".equals(fieldName)) {
                     deserializedDataEncryption.primaryEncryptionKeyStatus
-                        = KeyStatusEnum.fromString(reader.getString());
+                        = EncryptionKeyStatus.fromString(reader.getString());
                 } else if ("geoBackupEncryptionKeyStatus".equals(fieldName)) {
                     deserializedDataEncryption.geoBackupEncryptionKeyStatus
-                        = KeyStatusEnum.fromString(reader.getString());
+                        = EncryptionKeyStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

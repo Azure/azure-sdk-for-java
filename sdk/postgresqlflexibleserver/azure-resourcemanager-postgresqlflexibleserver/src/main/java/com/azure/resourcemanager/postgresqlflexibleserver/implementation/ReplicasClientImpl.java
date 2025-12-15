@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,13 +60,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientReplicas")
     public interface ReplicasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/replicas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerListResult>> listByServer(@HostParam("$host") String endpoint,
+        Mono<Response<ServerList>> listByServer(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
@@ -75,14 +75,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/replicas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServerListResult> listByServerSync(@HostParam("$host") String endpoint,
+        Response<ServerList> listByServerSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -118,7 +118,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -133,7 +133,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -163,15 +163,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
+        Response<ServerList> res = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             null, null);
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -203,15 +202,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
                 .log(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ServerListResult> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
+        Response<ServerList> res = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             null, null);
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -226,7 +224,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     }
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
