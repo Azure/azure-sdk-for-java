@@ -3,6 +3,7 @@
 ### 4.77.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the `QuantizerType` to the vectorIndexSpec: `product`/`spherical`. - [PR 47566](https://github.com/Azure/azure-sdk-for-java/pull/47566)
 
 #### Breaking Changes
 
