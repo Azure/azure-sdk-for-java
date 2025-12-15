@@ -43,7 +43,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void useDefaultPoolConnection(String pricingTier) {
+    void useDefaultNativeConnection(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier
