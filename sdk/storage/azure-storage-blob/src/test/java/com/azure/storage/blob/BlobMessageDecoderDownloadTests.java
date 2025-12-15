@@ -467,4 +467,231 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
                 "Request " + i + " should have a valid range header, but was: " + rangeHeader);
         }
     }
+
+    @Test
+    public void uninterruptedStreamWithStructuredMessageDecoding() throws IOException {
+        // Test: Verify that structured message decoding works correctly without any interruptions
+        // This mirrors the .NET test: UninterruptedStream
+        byte[] randomData = getRandomByteArray(4 * Constants.KB);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, Constants.KB, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Upload the encoded data
+        bc.upload(input, null, true).block();
+
+        // Create a download client with decoder policy but NO mock interruption policy
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient
+            = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(), decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+
+        // Download with validation - should succeed without any interruptions
+        StepVerifier
+            .create(
+                downloadClient
+                    .downloadStreamWithResponse((BlobRange) null, null, (BlobRequestConditions) null, false,
+                        validationOptions)
+                    .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+            .assertNext(result -> {
+                // Verify the decoded data matches the original
+                TestUtils.assertArraysEqual(result, randomData);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void interruptWithDataIntact() throws IOException {
+        // Test: Verify that data remains intact after a single interruption and retry
+        // This mirrors the .NET test: Interrupt_DataIntact with single interrupt
+        final int segmentSize = Constants.KB;
+        byte[] randomData = getRandomByteArray(4 * segmentSize);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create a policy that will simulate 1 network interruption at a specific position
+        // Interrupt after first segment completes to test smart retry from segment boundary
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1);
+
+        // Upload the encoded data
+        bc.upload(input, null, true).block();
+
+        // Create download client with mock interruption and decoder policies
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        // Download with validation - should succeed despite the interruption
+        StepVerifier.create(downloadClient
+            .downloadStreamWithResponse((BlobRange) null, retryOptions, (BlobRequestConditions) null, false,
+                validationOptions)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
+                // Verify the decoded data matches the original exactly
+                TestUtils.assertArraysEqual(result, randomData);
+            }).verifyComplete();
+
+        // Verify that exactly 1 interruption was used (retry occurred)
+        assertEquals(0, mockPolicy.getTriesRemaining());
+
+        // Verify that retry used appropriate range header
+        List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+        assertTrue(rangeHeaders.size() >= 2, "Expected at least 2 requests (initial + 1 retry)");
+    }
+
+    @Test
+    public void interruptMultipleTimesWithDataIntact() throws IOException {
+        // Test: Verify that data remains intact after multiple interruptions and retries
+        // This mirrors the .NET test: Interrupt_DataIntact with multiple interrupts
+        final int segmentSize = Constants.KB;
+        byte[] randomData = getRandomByteArray(4 * segmentSize);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create a policy that will simulate 3 network interruptions
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(3);
+
+        // Upload the encoded data
+        bc.upload(input, null, true).block();
+
+        // Create download client with mock interruption and decoder policies
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(10);
+
+        // Download with validation - should succeed despite multiple interruptions
+        StepVerifier.create(downloadClient
+            .downloadStreamWithResponse((BlobRange) null, retryOptions, (BlobRequestConditions) null, false,
+                validationOptions)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
+                // Verify the decoded data matches the original exactly
+                TestUtils.assertArraysEqual(result, randomData);
+            }).verifyComplete();
+
+        // Verify that all 3 interruptions were used
+        assertEquals(0, mockPolicy.getTriesRemaining());
+
+        // Verify that retries used appropriate range headers (initial + 3 retries = 4 requests)
+        List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+        assertTrue(rangeHeaders.size() >= 4, "Expected at least 4 requests (initial + 3 retries)");
+    }
+
+    @Test
+    public void interruptAndVerifyProperRewind() throws IOException {
+        // Test: Verify that interruption causes proper rewind to last complete segment boundary
+        // This mirrors the .NET test: Interrupt_AppropriateRewind
+        final int segmentSize = 512;
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create a policy that will simulate 1 interruption
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(1);
+
+        // Upload the encoded data
+        bc.upload(input, null, true).block();
+
+        // Create download client with mock interruption and decoder policies
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        // Download with validation
+        StepVerifier.create(downloadClient
+            .downloadStreamWithResponse((BlobRange) null, retryOptions, (BlobRequestConditions) null, false,
+                validationOptions)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
+                // Verify the decoded data matches the original
+                TestUtils.assertArraysEqual(result, randomData);
+            }).verifyComplete();
+
+        // Verify retry occurred
+        assertEquals(0, mockPolicy.getTriesRemaining());
+
+        // Verify the retry started from a segment boundary (not from 0)
+        List<String> rangeHeaders = mockPolicy.getRangeHeaders();
+        assertTrue(rangeHeaders.size() >= 2, "Expected at least 2 requests");
+
+        // First request should start from 0
+        assertTrue(rangeHeaders.get(0).startsWith("bytes=0-") || rangeHeaders.get(0).startsWith("bytes=0"),
+            "First request should start from offset 0");
+
+        // Second request (retry) should start from a non-zero offset (segment boundary)
+        // With 512-byte segments and proper encoding, first segment completes at ~543 bytes
+        if (rangeHeaders.size() > 1) {
+            String retryRange = rangeHeaders.get(1);
+            assertTrue(retryRange.startsWith("bytes="), "Retry request should have a range header");
+            // Extract the start offset from "bytes=X-Y" or "bytes=X"
+            String offsetStr = retryRange.substring(6).split("-")[0];
+            long retryOffset = Long.parseLong(offsetStr);
+            assertTrue(retryOffset > 0,
+                "Retry should start from non-zero offset (segment boundary), but was: " + retryOffset);
+        }
+    }
+
+    @Test
+    public void interruptAndVerifyProperDecode() throws IOException {
+        // Test: Verify that after interruption and retry, decoding continues correctly
+        // This mirrors the .NET test: Interrupt_ProperDecode
+        final int segmentSize = Constants.KB;
+        final int dataSize = 4 * segmentSize;
+        byte[] randomData = getRandomByteArray(dataSize);
+        StructuredMessageEncoder encoder
+            = new StructuredMessageEncoder(randomData.length, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
+        ByteBuffer encodedData = encoder.encode(ByteBuffer.wrap(randomData));
+
+        Flux<ByteBuffer> input = Flux.just(encodedData);
+
+        // Create a policy with 2 interruptions to test multi-step decode after retries
+        MockPartialResponsePolicy mockPolicy = new MockPartialResponsePolicy(2);
+
+        // Upload the encoded data
+        bc.upload(input, null, true).block();
+
+        // Create download client with mock interruption and decoder policies
+        StorageContentValidationDecoderPolicy decoderPolicy = new StorageContentValidationDecoderPolicy();
+        BlobAsyncClient downloadClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), mockPolicy, decoderPolicy);
+
+        DownloadContentValidationOptions validationOptions
+            = new DownloadContentValidationOptions().setStructuredMessageValidationEnabled(true);
+        DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(10);
+
+        // Download with validation - decoder must properly handle state across retries
+        StepVerifier.create(downloadClient
+            .downloadStreamWithResponse((BlobRange) null, retryOptions, (BlobRequestConditions) null, false,
+                validationOptions)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(result -> {
+                // Verify every byte is correctly decoded despite multiple interruptions
+                assertEquals(dataSize, result.length, "Decoded data should have exactly " + dataSize + " bytes");
+                TestUtils.assertArraysEqual(result, randomData);
+            }).verifyComplete();
+
+        // Verify both interruptions were used
+        assertEquals(0, mockPolicy.getTriesRemaining());
+    }
 }
