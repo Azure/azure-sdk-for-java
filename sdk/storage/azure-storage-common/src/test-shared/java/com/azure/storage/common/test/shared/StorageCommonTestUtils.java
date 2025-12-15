@@ -7,6 +7,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -27,6 +29,7 @@ import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
@@ -40,7 +43,10 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
@@ -392,6 +398,25 @@ public final class StorageCommonTestUtils {
             builder.addLast(new AzurePowerShellCredentialBuilder().build());
 
             return builder.build();
+        }
+    }
+
+    public static class CaptureAllRequestsHttpClient implements HttpClient {
+        private final List<HttpRequest> capturedRequests = new ArrayList<>();
+        private final HttpClient inner;
+
+        public CaptureAllRequestsHttpClient(HttpClient inner) {
+            this.inner = inner;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            capturedRequests.add(request);
+            return inner.send(request);
+        }
+
+        public List<HttpRequest> getCapturedRequests() {
+            return Collections.unmodifiableList(capturedRequests);
         }
     }
 

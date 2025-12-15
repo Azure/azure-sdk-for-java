@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -41,6 +42,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -61,6 +63,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -695,16 +701,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 ? new BlobImmutabilityPolicy()
                 : options.getImmutabilityPolicy();
             final Boolean legalHold = options.isLegalHold();
+            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+                ? StorageChecksumAlgorithm.NONE
+                : options.getStorageChecksumAlgorithm();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction
                 = (stream) -> uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata,
-                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
+                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold, storageChecksumAlgorithm);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction
                 = (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
-                    headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
+                    headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold,
+                    storageChecksumAlgorithm);
 
             Flux<ByteBuffer> data = options.getDataFlux();
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
@@ -721,7 +731,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold) {
+        Boolean legalHold, StorageChecksumAlgorithm storageChecksumAlgorithm) {
 
         /*
          * Note that there is no need to buffer here as the flux returned by the size gate in this case is created
@@ -745,6 +755,16 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
                         Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext()));
                 }
+                if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+                    String contentValidationContextValue;
+                    if (options.getLength() <= STATIC_MAXIMUM_ENCODED_DATA_LENGTH) {
+                        contentValidationContextValue = USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+                    } else {
+                        contentValidationContextValue = USE_STRUCTURED_MESSAGE_CONTEXT;
+                    }
+                    responseMono = responseMono.contextWrite(FluxUtil
+                        .toReactorContext(new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationContextValue)));
+                }
                 return responseMono;
             });
     }
@@ -753,7 +773,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
-        Boolean legalHold) {
+        Boolean legalHold, StorageChecksumAlgorithm storageChecksumAlgorithm) {
         // TODO: Sample/api reference
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
@@ -788,10 +808,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                             .setHttpRequestProgressReporter(progressReporter.createChild())
                             .getContext()));
                     }
+                    if (storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+                        responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
+                            new Context(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT)));
+                    }
                     return responseMono;
                 })
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
-                    .map(x -> blockId);
+                    .map(x -> {
+                        //                        String headerV = x.getHeaders().getValue("test_context_key");
+                        //                        if (Objects.equals(headerV, "-1")) {
+                        //                            System.out.println("does not have context key");
+                        //                        } else {
+                        //                            System.out.println("has context key: " + headerV);
+                        //                        }
+                        return blockId;
+                    });
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .collect(Collectors.toList())
             .flatMap(ids -> blockBlobAsyncClient

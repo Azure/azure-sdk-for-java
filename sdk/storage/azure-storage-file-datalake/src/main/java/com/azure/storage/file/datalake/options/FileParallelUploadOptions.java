@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
@@ -31,6 +32,7 @@ public class FileParallelUploadOptions {
     private String umask;
     private DataLakeRequestConditions requestConditions;
     private String encryptionContext;
+    private StorageChecksumAlgorithm storageChecksumAlgorithm;
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
@@ -292,6 +294,26 @@ public class FileParallelUploadOptions {
      */
     public FileParallelUploadOptions setEncryptionContext(String encryptionContext) {
         this.encryptionContext = encryptionContext;
+        return this;
+    }
+
+    /**
+     * temp
+     *
+     * @return temp.
+     */
+    public StorageChecksumAlgorithm getStorageChecksumAlgorithm() {
+        return storageChecksumAlgorithm;
+    }
+
+    /**
+     * temp
+     *
+     * @param storageChecksumAlgorithm temp.
+     * @return temp.
+     */
+    public FileParallelUploadOptions setStorageChecksumAlgorithm(StorageChecksumAlgorithm storageChecksumAlgorithm) {
+        this.storageChecksumAlgorithm = storageChecksumAlgorithm;
         return this;
     }
 

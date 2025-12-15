@@ -35,6 +35,7 @@ import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.common.implementation.structuredmessage.StorageChecksumAlgorithm;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -116,6 +117,10 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.Constants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import static com.azure.storage.common.implementation.Constants.USE_CRC64_CHECKSUM_HEADER_CONTEXT;
+import static com.azure.storage.common.implementation.Constants.USE_STRUCTURED_MESSAGE_CONTEXT;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.STATIC_MAXIMUM_ENCODED_DATA_LENGTH;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -2136,24 +2141,18 @@ public class ShareFileAsyncClient {
             final ParallelTransferOptions validatedParallelTransferOptions
                 = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
+            final StorageChecksumAlgorithm storageChecksumAlgorithm = options.getStorageChecksumAlgorithm() == null
+                ? StorageChecksumAlgorithm.NONE
+                : options.getStorageChecksumAlgorithm();
 
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks
                 = (stream) -> uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions,
-                    validatedRequestConditions, context);
+                    validatedRequestConditions, context, storageChecksumAlgorithm);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) -> {
-                ProgressListener progressListener = validatedParallelTransferOptions.getProgressListener();
-                Context uploadContext = context;
-                if (progressListener != null) {
-                    uploadContext = Contexts.with(context)
-                        .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progressListener))
-                        .getContext();
-                }
-                return uploadRangeWithResponse(
-                    new ShareFileUploadRangeOptions(stream, length).setOffset(options.getOffset())
-                        .setRequestConditions(validatedRequestConditions),
-                    uploadContext);
-            };
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull
+                = (stream, length) -> uploadFullMethod(stream, validatedOffset, length,
+                    validatedParallelTransferOptions.getProgressListener(), validatedRequestConditions, context,
+                    storageChecksumAlgorithm);
 
             Flux<ByteBuffer> data = options.getDataFlux();
             data = UploadUtils.extractByteBuffer(data, options.getLength(),
@@ -2165,8 +2164,28 @@ public class ShareFileAsyncClient {
         }
     }
 
+    Mono<Response<ShareFileUploadInfo>> uploadFullMethod(Flux<ByteBuffer> data, long offset, long length,
+        ProgressListener progressListener, ShareRequestConditions requestConditions, Context context,
+        StorageChecksumAlgorithm storageChecksumAlgorithm) {
+
+        Context uploadContext = context;
+        if (progressListener != null) {
+            uploadContext = Contexts.with(context)
+                .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progressListener))
+                .getContext();
+        }
+        if (storageChecksumAlgorithm != null
+            && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+            uploadContext = uploadContext.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT);
+        }
+        return uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(data, length).setOffset(offset).setRequestConditions(requestConditions),
+            uploadContext);
+    }
+
     Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, long offset,
-        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
+        ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context,
+        StorageChecksumAlgorithm storageChecksumAlgorithm) {
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea
@@ -2212,6 +2231,11 @@ public class ShareFileAsyncClient {
                     uploadContext = Contexts.with(context)
                         .setHttpRequestProgressReporter(progressReporter.createChild())
                         .getContext();
+                }
+                if (storageChecksumAlgorithm != null
+                    && storageChecksumAlgorithm.resolveAuto() == StorageChecksumAlgorithm.CRC64) {
+                    uploadContext
+                        = uploadContext.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, USE_STRUCTURED_MESSAGE_CONTEXT);
                 }
                 return uploadRangeWithResponse(
                     new ShareFileUploadRangeOptions(bufferAggregator.asFlux(), currentBufferLength)

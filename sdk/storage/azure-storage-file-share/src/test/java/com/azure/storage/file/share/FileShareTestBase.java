@@ -164,11 +164,11 @@ public class FileShareTestBase extends TestProxyTestBase {
         return testResourceNamer.randomName(prefix + entityNo, 63);
     }
 
-    byte[] getRandomByteArray(int size) {
+    protected byte[] getRandomByteArray(int size) {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
-    ByteBuffer getRandomByteBuffer(int size) {
+    protected ByteBuffer getRandomByteBuffer(int size) {
         return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
     }
 
