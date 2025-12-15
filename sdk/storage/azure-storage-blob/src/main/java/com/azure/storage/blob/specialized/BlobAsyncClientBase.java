@@ -114,6 +114,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
@@ -1318,6 +1319,18 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
+                AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef
+                    = new AtomicReference<>();
+                if (contentValidationOptions != null
+                    && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                    Object decoderStateObj
+                        = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                            .orElse(null);
+                    if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
+                        decoderStateRef.set((StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj);
+                    }
+                }
+
                 // The resume function takes throwable and offset at the destination.
                 // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
@@ -1326,18 +1339,28 @@ public class BlobAsyncClientBase {
                     }
 
                     long newCount = finalCount - offset;
+                    StorageContentValidationDecoderPolicy.DecoderState decoderState = null;
+                    long expectedEncodedLength = finalCount;
+                    long encodedProgress = offset;
 
-                    /*
-                     * It's possible that the network stream will throw an error after emitting all data but before
-                     * completing. Issuing a retry at this stage would leave the download in a bad state with
-                     * incorrect count and offset values. Because we have read the intended amount of data, we can
-                     * ignore the error at the end of the stream.
-                     */
-                    if (newCount == 0) {
-                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network "
-                            + "but before stream signaled completion. Returning success as all data was downloaded. "
-                            + "Exception message: " + throwable.getMessage());
-                        return Mono.empty();
+                    if (contentValidationOptions != null
+                        && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                        decoderState = decoderStateRef.get();
+
+                        if (decoderState == null) {
+                            Object decoderStateObj
+                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
+                                    .orElse(null);
+
+                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
+                                decoderState = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+                            }
+                        }
+
+                        if (decoderState != null) {
+                            expectedEncodedLength = decoderState.getExpectedContentLength();
+                            encodedProgress = decoderState.getTotalEncodedBytesProcessed();
+                        }
                     }
 
                     try {
@@ -1349,53 +1372,38 @@ public class BlobAsyncClientBase {
                         // based on the encoded bytes processed, not the decoded bytes
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            // Get the decoder state to determine how many encoded bytes were processed
-                            Object decoderStateObj
-                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                                    .orElse(null);
+                            long retryStartOffset = -1;
 
-                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
-                                StorageContentValidationDecoderPolicy.DecoderState decoderState
-                                    = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+                            // First try to use decoder state (authoritative)
+                            if (decoderState != null) {
+                                // Always rewind decoder to last validated boundary before retrying.
+                                retryStartOffset = decoderState.resetForRetry();
 
-                                // Use getRetryOffset() to get the correct offset for retry
-                                // This accounts for pending bytes that have been received but not yet consumed
-                                long encodedOffset = decoderState.getRetryOffset();
-                                long remainingCount = finalCount - encodedOffset;
-                                retryRange = new BlobRange(initialOffset + encodedOffset, remainingCount);
-
-                                LOGGER.info(
-                                    "Structured message smart retry: resuming from offset {} (initial={}, encoded={})",
-                                    initialOffset + encodedOffset, initialOffset, encodedOffset);
-
-                                // Preserve the decoder state for the retry
                                 retryContext = retryContext
                                     .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                            } else {
-                                // No decoder state available, try to parse retry offset from exception message
-                                // The exception message contains RETRY-START-OFFSET=<number> token
-                                long retryStartOffset = StorageContentValidationDecoderPolicy
-                                    .parseRetryStartOffset(throwable.getMessage());
-                                if (retryStartOffset >= 0) {
-                                    long remainingCount = finalCount - retryStartOffset;
-                                    // Validate remainingCount to avoid negative values
-                                    if (remainingCount <= 0) {
-                                        LOGGER.warning("Retry offset {} exceeds finalCount {}, using fallback",
-                                            retryStartOffset, finalCount);
-                                        retryRange = new BlobRange(initialOffset + offset, newCount);
-                                    } else {
-                                        retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
-
-                                        LOGGER.info(
-                                            "Structured message smart retry from exception: resuming from offset {} "
-                                                + "(initial={}, parsed={})",
-                                            initialOffset + retryStartOffset, initialOffset, retryStartOffset);
-                                    }
-                                } else {
-                                    // Fallback to normal retry logic if no offset found
-                                    retryRange = new BlobRange(initialOffset + offset, newCount);
-                                }
+                                decoderStateRef.set(decoderState);
                             }
+
+                            // If no decoder state or no retry offset from state, fall back to parsed token or offset.
+                            if (retryStartOffset < 0) {
+                                retryStartOffset = StorageContentValidationDecoderPolicy
+                                    .parseRetryStartOffset(throwable.getMessage());
+                            }
+                            if (retryStartOffset < 0) {
+                                retryStartOffset = offset;
+                            }
+
+                            long remainingCount = expectedEncodedLength - retryStartOffset;
+                            if (remainingCount < 0) {
+                                remainingCount = expectedEncodedLength - offset;
+                                retryStartOffset = offset;
+                            }
+
+                            retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
+
+                            LOGGER.info(
+                                "Structured message smart retry: resuming from offset {} (initial={}, encoded={}, remaining={})",
+                                initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount);
                         } else {
                             // For non-structured downloads, use smart retry from the interrupted offset
                             retryRange = new BlobRange(initialOffset + offset, newCount);
@@ -1410,6 +1418,7 @@ public class BlobAsyncClientBase {
                 // Structured message decoding is now handled by StructuredMessageDecoderPolicy
                 return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
             });
+
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,

@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MockPartialResponsePolicy implements HttpPipelinePolicy {
-    static final HttpHeaderName RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
+    static final HttpHeaderName X_MS_RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
+    static final HttpHeaderName RANGE_HEADER = HttpHeaderName.RANGE;
     private int tries;
     private final List<String> rangeHeaders = new ArrayList<>();
 
@@ -31,10 +32,19 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process().flatMap(response -> {
             HttpHeader rangeHttpHeader = response.getRequest().getHeaders().get(RANGE_HEADER);
-            String rangeHeader = rangeHttpHeader == null ? null : rangeHttpHeader.getValue();
+            HttpHeader xMsRangeHttpHeader = response.getRequest().getHeaders().get(X_MS_RANGE_HEADER);
 
-            if (rangeHeader != null && rangeHeader.startsWith("bytes=")) {
-                rangeHeaders.add(rangeHeader);
+            if (rangeHttpHeader != null && rangeHttpHeader.getValue().startsWith("bytes=")) {
+                rangeHeaders.add(rangeHttpHeader.getValue());
+            }
+
+            if (xMsRangeHttpHeader != null && xMsRangeHttpHeader.getValue().startsWith("bytes=")) {
+                String xMsRangeValue = xMsRangeHttpHeader.getValue();
+
+                // Avoid recording the same value twice if both Range and x-ms-range were set to the same string
+                if (rangeHttpHeader == null || !xMsRangeValue.equals(rangeHttpHeader.getValue())) {
+                    rangeHeaders.add(xMsRangeValue);
+                }
             }
 
             if ((response.getRequest().getHttpMethod() != HttpMethod.GET) || this.tries == 0) {
@@ -42,6 +52,12 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
             } else {
                 this.tries -= 1;
                 return response.getBody().collectList().flatMap(bodyBuffers -> {
+                    if (bodyBuffers.isEmpty()) {
+                        // If no body was returned, don't attempt to slice a partial response. Simply propagate
+                        // the original response to avoid test failures when the service unexpectedly returns an
+                        // empty body (for example, after a retry on the underlying transport).
+                        return Mono.just(response);
+                    }
                     ByteBuffer firstBuffer = bodyBuffers.get(0);
                     byte firstByte = firstBuffer.get();
 

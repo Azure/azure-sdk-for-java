@@ -333,6 +333,20 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Gets the number of encoded bytes that have been seen but not yet fully
+     * processed by the decoder (pending bytes).
+     *
+     * <p>This is used by smart-retry logic to determine the absolute encoded
+     * offset that a retry request should start from while still preserving
+     * the decoder's buffered state.</p>
+     *
+     * @return The number of pending encoded bytes buffered by the decoder.
+     */
+    public int getPendingEncodedByteCount() {
+        return pendingBytes.size();
+    }
+
+    /**
      * Reads the message header if we have enough bytes.
      *
      * @param buffer The buffer to read from.
@@ -611,6 +625,13 @@ public class StructuredMessageDecoder {
 
             // Step 2: Process segments
             while (messageOffset < messageLength) {
+                // If all segments are done, proceed to message footer before attempting any new segment header.
+                if (currentSegmentNumber == numSegments && currentSegmentContentOffset == currentSegmentContentLength) {
+                    if (!tryReadMessageFooter(buffer)) {
+                        break;
+                    }
+                }
+
                 // Read segment header if needed
                 if (currentSegmentContentOffset == currentSegmentContentLength) {
                     if (!tryReadSegmentHeader(buffer)) {
