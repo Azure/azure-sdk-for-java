@@ -8,6 +8,7 @@
 
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.3.3.
+- Upgrade `azure-servicebus-jms` to 2.1.0.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
