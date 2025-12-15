@@ -8,6 +8,7 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
+import com.azure.resourcemanager.containerservice.models.AutoScaleProfile;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
@@ -34,8 +35,8 @@ import java.util.Map;
 public final class AgentPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_EnableFIPS.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_EnableFIPS.json
      */
     /**
      * Sample code: Create Agent Pool with FIPS enabled OS.
@@ -58,8 +59,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPools_Update.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPools_Update.json
      */
     /**
      * Sample code: Update Agent Pool.
@@ -87,8 +88,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_GPUMIG.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Agent Pool with GPUMIG.
@@ -127,8 +128,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_WindowsOSSKU.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_WindowsOSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with Windows OSSKU.
@@ -151,8 +152,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_DedicatedHostGroup.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Agent Pool with Dedicated Host Group.
@@ -175,8 +176,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_Update.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Agent Pool.
@@ -204,8 +205,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_WindowsDisableOutboundNAT.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_WindowsDisableOutboundNAT.json
      */
     /**
      * Sample code: Create Windows Agent Pool with disabling OutboundNAT.
@@ -230,8 +231,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPools_Start.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPools_Start.json
      */
     /**
      * Sample code: Start Agent Pool.
@@ -250,8 +251,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_Spot.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_Spot.json
      */
     /**
      * Sample code: Create Spot Agent Pool.
@@ -278,8 +279,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_Ephemeral.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_Ephemeral.json
      */
     /**
      * Sample code: Create Agent Pool with Ephemeral OS Disk.
@@ -303,8 +304,33 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_EnableEncryptionAtHost.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsAssociate_CRG.json
+     */
+    /**
+     * Sample code: Associate Agent Pool with Capacity Reservation Group.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        associateAgentPoolWithCapacityReservationGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate("rg1", "clustername1", "agentpool1", new AgentPoolInner().withCount(3)
+                .withVmSize("Standard_DS2_v2")
+                .withOsType(OSType.LINUX)
+                .withOrchestratorVersion("")
+                .withCapacityReservationGroupId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Agent Pool with EncryptionAtHost enabled.
@@ -328,8 +354,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_EnableUltraSSD.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Agent Pool with UltraSSD enabled.
@@ -352,8 +378,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_WasmWasi.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_WasmWasi.json
      */
     /**
      * Sample code: Create Agent Pool with Krustlet and the WASI runtime.
@@ -379,8 +405,36 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_Snapshot.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
+     */
+    /**
+     * Sample code: Create Agent Pool with VirtualMachines pool type with autoscaling enabled.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .createOrUpdate("rg1", "clustername1", "agentpool1",
+                new AgentPoolInner().withOsType(OSType.LINUX)
+                    .withTypePropertiesType(AgentPoolType.VIRTUAL_MACHINES)
+                    .withOrchestratorVersion("1.29.0")
+                    .withTags(mapOf("name1", "val1"))
+                    .withNodeLabels(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withNodeTaints(Arrays.asList("Key1=Value1:NoSchedule"))
+                    .withVirtualMachinesProfile(new VirtualMachinesProfile().withScale(new ScaleProfile().withAutoscale(
+                        new AutoScaleProfile().withSize("Standard_D2_v2").withMinCount(1).withMaxCount(5)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_Snapshot.json
      */
     /**
      * Sample code: Create Agent Pool using an agent pool snapshot.
@@ -398,14 +452,14 @@ public final class AgentPoolsCreateOrUpdateSamples {
                 .withOrchestratorVersion("")
                 .withEnableFips(true)
                 .withCreationData(new CreationData().withSourceResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1")),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/snapshots/snapshot1")),
                 null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_PPG.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_PPG.json
      */
     /**
      * Sample code: Create Agent Pool with PPG.
@@ -428,8 +482,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_CustomNodeConfig.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_CustomNodeConfig.json
      */
     /**
      * Sample code: Create Agent Pool with KubeletConfig and LinuxOSConfig.
@@ -468,8 +522,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPools_Stop.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPools_Stop.json
      */
     /**
      * Sample code: Stop Agent Pool.
@@ -488,8 +542,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_MessageOfTheDay.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_MessageOfTheDay.json
      */
     /**
      * Sample code: Create Agent Pool with Message of the Day.
@@ -514,33 +568,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_CRG.json
-     */
-    /**
-     * Sample code: Create Agent Pool with Capacity Reservation Group.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAgentPoolWithCapacityReservationGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getAgentPools()
-            .createOrUpdate("rg1", "clustername1", "agentpool1", new AgentPoolInner().withCount(3)
-                .withVmSize("Standard_DS2_v2")
-                .withOsType(OSType.LINUX)
-                .withOrchestratorVersion("")
-                .withCapacityReservationGroupId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.Compute/CapacityReservationGroups/crg1"),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_OSSKU.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_OSSKU.json
      */
     /**
      * Sample code: Create Agent Pool with OSSKU.
@@ -579,8 +608,8 @@ public final class AgentPoolsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * AgentPoolsCreate_TypeVirtualMachines.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/AgentPoolsCreate_TypeVirtualMachines.json
      */
     /**
      * Sample code: Create Agent Pool with VirtualMachines pool type.

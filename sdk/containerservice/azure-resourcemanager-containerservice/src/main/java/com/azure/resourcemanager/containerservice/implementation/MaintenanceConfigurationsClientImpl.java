@@ -141,7 +141,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagedCluster(this.client.getEndpoint(), apiVersion,
@@ -181,7 +181,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,7 +297,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -340,7 +340,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -442,7 +442,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, resourceName, configName, parameters, accept, context))
@@ -490,7 +490,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -593,7 +593,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -635,7 +635,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-10-01";
+        final String apiVersion = "2025-10-02-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
