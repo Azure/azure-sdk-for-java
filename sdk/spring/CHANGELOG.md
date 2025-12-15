@@ -17,6 +17,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - 2 `TokenCredential` bean found in AzureServiceBusMessagingAutoConfiguration. [#47470](https://github.com/Azure/azure-sdk-for-java/pull/47470)
 - `spring.cloud.azure.eventhubs.credential.token-credential-bean-name` not take effect in AzureEventHubsMessagingAutoConfiguration. [#47470](https://github.com/Azure/azure-sdk-for-java/pull/47470)
+- Fix bug: 'token-credential-bean-name' not work in spring-cloud-azure-stream-binder. [#47557](https://github.com/Azure/azure-sdk-for-java/pull/47557)
 
 ### Spring Cloud Azure Appconfiguration Config
 This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
