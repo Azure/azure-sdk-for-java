@@ -79,8 +79,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
             .withAgentPoolVirtualMachineCount(1)
             .withOSDiskSizeInGB(30)
-            // https://learn.microsoft.com/en-us/azure/aks/concepts-storage#default-os-disk-sizing
-            .withOSDiskType(OSDiskType.MANAGED)
+            .withOSDiskType(OSDiskType.EPHEMERAL)
             .withKubeletDiskType(KubeletDiskType.TEMPORARY)
             .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
@@ -111,7 +110,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_F4S_V2, agentPool.vmSize());
         Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
-        Assertions.assertEquals(OSDiskType.MANAGED, agentPool.osDiskType());
+        Assertions.assertEquals(OSDiskType.EPHEMERAL, agentPool.osDiskType());
         Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
         Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
         Assertions.assertEquals(Collections.singletonMap("pool.name", agentPoolName), agentPool.tags());
