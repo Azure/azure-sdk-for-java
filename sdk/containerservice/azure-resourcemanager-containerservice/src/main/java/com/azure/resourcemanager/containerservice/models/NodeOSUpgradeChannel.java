@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Node OS Upgrade Channel. Manner in which the OS on your nodes is updated. The default is NodeImage.
+ * Manner in which the OS on your nodes is updated. The default is Unmanaged, but may change to either NodeImage or
+ * SecurityPatch at GA.
  */
 public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgradeChannel> {
     /**
@@ -22,14 +23,14 @@ public final class NodeOSUpgradeChannel extends ExpandableStringEnum<NodeOSUpgra
     public static final NodeOSUpgradeChannel UNMANAGED = fromString("Unmanaged");
 
     /**
-     * Static value NodeImage for NodeOSUpgradeChannel.
-     */
-    public static final NodeOSUpgradeChannel NODE_IMAGE = fromString("NodeImage");
-
-    /**
      * Static value SecurityPatch for NodeOSUpgradeChannel.
      */
     public static final NodeOSUpgradeChannel SECURITY_PATCH = fromString("SecurityPatch");
+
+    /**
+     * Static value NodeImage for NodeOSUpgradeChannel.
+     */
+    public static final NodeOSUpgradeChannel NODE_IMAGE = fromString("NodeImage");
 
     /**
      * Creates a new instance of NodeOSUpgradeChannel value.

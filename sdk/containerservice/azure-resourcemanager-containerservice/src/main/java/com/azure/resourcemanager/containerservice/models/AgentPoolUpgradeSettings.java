@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Settings for upgrading an agentpool.
+ * Settings for rolling upgrade on an agentpool.
  */
 @Fluent
 public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoolUpgradeSettings> {
@@ -33,6 +33,16 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
      */
     private String maxUnavailable;
+
+    /*
+     * The maximum number or percentage of extra nodes that are allowed to be blocked in the agent pool during an
+     * upgrade when undrainable node behavior is Cordon. This can either be set to an integer (e.g. '5') or a percentage
+     * (e.g. '50%'). If a percentage is specified, it is the percentage of the total agent pool size at the time of the
+     * upgrade. For percentages, fractional nodes are rounded up. If not specified, the default is maxSurge. This must
+     * always be greater than or equal to maxSurge. For more information, including best practices, see:
+     * https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
+     */
+    private String maxBlockedNodes;
 
     /*
      * The drain timeout for a node. The amount of time (in minutes) to wait on eviction of pods and graceful
@@ -113,6 +123,36 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
      */
     public AgentPoolUpgradeSettings withMaxUnavailable(String maxUnavailable) {
         this.maxUnavailable = maxUnavailable;
+        return this;
+    }
+
+    /**
+     * Get the maxBlockedNodes property: The maximum number or percentage of extra nodes that are allowed to be blocked
+     * in the agent pool during an upgrade when undrainable node behavior is Cordon. This can either be set to an
+     * integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total
+     * agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified,
+     * the default is maxSurge. This must always be greater than or equal to maxSurge. For more information, including
+     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * 
+     * @return the maxBlockedNodes value.
+     */
+    public String maxBlockedNodes() {
+        return this.maxBlockedNodes;
+    }
+
+    /**
+     * Set the maxBlockedNodes property: The maximum number or percentage of extra nodes that are allowed to be blocked
+     * in the agent pool during an upgrade when undrainable node behavior is Cordon. This can either be set to an
+     * integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage of the total
+     * agent pool size at the time of the upgrade. For percentages, fractional nodes are rounded up. If not specified,
+     * the default is maxSurge. This must always be greater than or equal to maxSurge. For more information, including
+     * best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster.
+     * 
+     * @param maxBlockedNodes the maxBlockedNodes value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withMaxBlockedNodes(String maxBlockedNodes) {
+        this.maxBlockedNodes = maxBlockedNodes;
         return this;
     }
 
@@ -206,6 +246,7 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("maxSurge", this.maxSurge);
         jsonWriter.writeStringField("maxUnavailable", this.maxUnavailable);
+        jsonWriter.writeStringField("maxBlockedNodes", this.maxBlockedNodes);
         jsonWriter.writeNumberField("drainTimeoutInMinutes", this.drainTimeoutInMinutes);
         jsonWriter.writeNumberField("nodeSoakDurationInMinutes", this.nodeSoakDurationInMinutes);
         jsonWriter.writeStringField("undrainableNodeBehavior",
@@ -232,6 +273,8 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
                     deserializedAgentPoolUpgradeSettings.maxSurge = reader.getString();
                 } else if ("maxUnavailable".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.maxUnavailable = reader.getString();
+                } else if ("maxBlockedNodes".equals(fieldName)) {
+                    deserializedAgentPoolUpgradeSettings.maxBlockedNodes = reader.getString();
                 } else if ("drainTimeoutInMinutes".equals(fieldName)) {
                     deserializedAgentPoolUpgradeSettings.drainTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
                 } else if ("nodeSoakDurationInMinutes".equals(fieldName)) {
