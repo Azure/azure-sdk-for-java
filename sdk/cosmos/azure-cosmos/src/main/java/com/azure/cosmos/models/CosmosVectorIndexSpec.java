@@ -26,6 +26,8 @@ public final class CosmosVectorIndexSpec {
     private Integer indexingSearchListSize;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> vectorIndexShardKeys;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private QuantizerType quantizerType;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -81,6 +83,34 @@ public final class CosmosVectorIndexSpec {
         this.type = type;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
 
+        return this;
+    }
+
+    /**
+     * Gets quantizer type.
+     *
+     * @return the quantizer type.
+     */
+    public QuantizerType getQuantizerType() {
+        if (this.quantizerType == null) {
+            this.quantizerType = this.jsonSerializable.getObject(Constants.Properties.QUANTIZER_TYPE, QuantizerType.class);
+        }
+        return this.quantizerType;
+    }
+
+    /**
+     * Set quantizer type.
+     *
+     * @param quantizerType The quantizer type
+     * @return the SpatialSpec.
+     */
+    public CosmosVectorIndexSpec setQuantizerType(QuantizerType quantizerType) {
+        if (quantizerType != null) {
+            this.quantizerType = quantizerType;
+            this.jsonSerializable.set(Constants.Properties.QUANTIZER_TYPE, quantizerType);
+        } else {
+            this.quantizerType = null;
+        }
         return this;
     }
 

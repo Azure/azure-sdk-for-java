@@ -26,6 +26,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.CosmosVectorIndexSpec;
 import com.azure.cosmos.models.CosmosVectorIndexType;
+import com.azure.cosmos.models.QuantizerType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -279,6 +280,22 @@ public class VectorIndexTest extends TestSuiteBase {
         validateVectorEmbeddingPolicy(cosmosVectorEmbeddingPolicy, expectedCosmosVectorEmbeddingPolicy);
     }
 
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void shouldValidateVectorIndexesSerializationAndDeserialization() throws JsonProcessingException {
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        indexingPolicy.setVectorIndexes(populateVectorIndexes());
+        List<CosmosVectorIndexSpec> expectedVectorIndexes = indexingPolicy.getVectorIndexes();
+
+        // Validate Vector Indexes Serialization
+        String actualVectorIndexesJSON = simpleObjectMapper.writeValueAsString(expectedVectorIndexes);
+        String expectedVectorIndexesJSON = getVectorIndexesAsString();
+        assertThat(expectedVectorIndexesJSON).isEqualTo(actualVectorIndexesJSON);
+
+        // Validate Vector Indexes Deserialization
+        List<CosmosVectorIndexSpec> actualVectorIndexes = Arrays.asList(simpleObjectMapper.readValue(actualVectorIndexesJSON, CosmosVectorIndexSpec[].class));
+        validateVectorIndexes(expectedVectorIndexes, actualVectorIndexes);
+    }
+
     private void validateCollectionProperties(CosmosContainerProperties collectionDefinition, CosmosContainerProperties collectionProperties) {
         assertThat(collectionProperties.getVectorEmbeddingPolicy()).isNotNull();
         assertThat(collectionProperties.getVectorEmbeddingPolicy().getVectorEmbeddings()).isNotNull();
@@ -301,13 +318,14 @@ public class VectorIndexTest extends TestSuiteBase {
         }
     }
 
-    private void validateVectorIndexes(List<CosmosVectorIndexSpec> actual, List<CosmosVectorIndexSpec> expected) {
+    private void validateVectorIndexes(List<CosmosVectorIndexSpec> expected, List<CosmosVectorIndexSpec> actual) {
         assertThat(expected).hasSameSizeAs(actual);
         for (int i = 0; i < expected.size(); i++) {
             assertThat(expected.get(i).getPath()).isEqualTo(actual.get(i).getPath());
             assertThat(expected.get(i).getType()).isEqualTo(actual.get(i).getType());
             if (Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 Objects.equals(expected.get(i).getType(), CosmosVectorIndexType.DISK_ANN.toString())) {
+                assertThat(expected.get(i).getQuantizerType()).isEqualTo(actual.get(i).getQuantizerType());
                 assertThat(expected.get(i).getQuantizationSizeInBytes()).isEqualTo(actual.get(i).getQuantizationSizeInBytes());
                 assertThat(expected.get(i).getVectorIndexShardKeys()).isEqualTo(actual.get(i).getVectorIndexShardKeys());
             }
@@ -326,17 +344,26 @@ public class VectorIndexTest extends TestSuiteBase {
         CosmosVectorIndexSpec cosmosVectorIndexSpec2 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec2.setPath("/vector2");
         cosmosVectorIndexSpec2.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
+        cosmosVectorIndexSpec2.setQuantizerType(QuantizerType.product);
         cosmosVectorIndexSpec2.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec2.setVectorIndexShardKeys(Arrays.asList("/zipCode"));
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec3 = new CosmosVectorIndexSpec();
         cosmosVectorIndexSpec3.setPath("/vector3");
         cosmosVectorIndexSpec3.setType(CosmosVectorIndexType.DISK_ANN.toString());
+        cosmosVectorIndexSpec3.setQuantizerType(QuantizerType.product);
         cosmosVectorIndexSpec3.setQuantizationSizeInBytes(2);
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
         cosmosVectorIndexSpec3.setVectorIndexShardKeys(Arrays.asList("/country/city"));
 
-        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
+        CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec();
+        cosmosVectorIndexSpec4.setPath("/vector4");
+        cosmosVectorIndexSpec4.setType(CosmosVectorIndexType.DISK_ANN.toString());
+        cosmosVectorIndexSpec4.setQuantizerType(QuantizerType.spherical);
+        cosmosVectorIndexSpec4.setIndexingSearchListSize(30);
+        cosmosVectorIndexSpec4.setVectorIndexShardKeys(Arrays.asList("/country/city"));
+
+        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3, cosmosVectorIndexSpec4);
     }
 
     private List<CosmosVectorEmbedding> populateEmbeddings() {
@@ -357,14 +384,30 @@ public class VectorIndexTest extends TestSuiteBase {
         embedding3.setDataType(CosmosVectorDataType.UINT8);
         embedding3.setEmbeddingDimensions(3);
         embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
-        return Arrays.asList(embedding1, embedding2, embedding3);
+
+        CosmosVectorEmbedding embedding4 = new CosmosVectorEmbedding();
+        embedding4.setPath("/vector4");
+        embedding4.setDataType(CosmosVectorDataType.UINT8);
+        embedding4.setEmbeddingDimensions(3);
+        embedding4.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
+        return Arrays.asList(embedding1, embedding2, embedding3, embedding4);
     }
 
     private String getVectorEmbeddingPolicyAsString() {
         return "{\"vectorEmbeddings\":[" +
             "{\"path\":\"/vector1\",\"dataType\":\"int8\",\"dimensions\":3,\"distanceFunction\":\"cosine\"}," +
             "{\"path\":\"/vector2\",\"dataType\":\"float32\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}," +
-            "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
+            "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}," +
+            "{\"path\":\"/vector4\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
             "]}";
+    }
+
+    private String getVectorIndexesAsString() {
+        return "[" +
+            "{\"type\":\"flat\",\"path\":\"/vector1\"}," +
+            "{\"type\":\"quantizedFlat\",\"vectorIndexShardKeys\":[\"/zipCode\"],\"quantizerType\":\"product\",\"path\":\"/vector2\",\"quantizationByteSize\":2}," +
+            "{\"type\":\"diskANN\",\"indexingSearchListSize\":30,\"vectorIndexShardKeys\":[\"/country/city\"],\"quantizerType\":\"product\",\"path\":\"/vector3\",\"quantizationByteSize\":2}," +
+            "{\"type\":\"diskANN\",\"indexingSearchListSize\":30,\"vectorIndexShardKeys\":[\"/country/city\"],\"quantizerType\":\"spherical\",\"path\":\"/vector4\"}" +
+        "]";
     }
 }
