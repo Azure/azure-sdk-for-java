@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.messaging.servicebus.core.ServiceBusConsumerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -150,42 +152,34 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
-
-                // Verify that the properties contain the correct credential bean name
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
                 AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(serviceBusProperties).isNotNull();
-                assertThat(serviceBusProperties.getCredential()).isNotNull();
+
                 assertThat(serviceBusProperties.getCredential().getTokenCredentialBeanName())
-                    .as("The token-credential-bean-name property should be set to customTokenCredential")
                     .isEqualTo("customTokenCredential");
 
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
-                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
-
-                // Verify the ServiceBusProducerFactory has the tokenCredentialResolver configured
-                assertThat(context).hasSingleBean(ServiceBusProducerFactory.class);
                 ServiceBusProducerFactory producerFactory = context.getBean(ServiceBusProducerFactory.class);
-                assertThat(producerFactory).isNotNull();
+                ServiceBusProcessorFactory processorFactory = context.getBean(ServiceBusProcessorFactory.class);
+                ServiceBusConsumerFactory consumerFactory = context.getBean(ServiceBusConsumerFactory.class);
 
-                // Verify tokenCredentialResolver resolves to the custom credential
-                Field tokenCredentialResolverField =
-                    producerFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                tokenCredentialResolverField.setAccessible(true);
-                Object tokenCredentialResolver = tokenCredentialResolverField.get(producerFactory);
-                assertThat(tokenCredentialResolver)
-                    .as("TokenCredentialResolver should be configured").isNotNull();
-
-                // Cast to AzureCredentialResolver and invoke resolve() to verify it returns customTokenCredential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> resolver =
-                    (AzureCredentialResolver<TokenCredential>) tokenCredentialResolver;
-                TokenCredential resolvedCredential = resolver.resolve(serviceBusProperties);
-                assertThat(resolvedCredential)
-                    .as("The resolved credential should be the customTokenCredential bean")
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
                     .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+                assertThat(resolveCredential(consumerFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                producerFactory.createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
             });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureServiceBusProperties properties) throws Exception {
+        Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+        field.setAccessible(true);
+        AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+        return resolver.resolve(properties);
     }
 
     @Configuration
