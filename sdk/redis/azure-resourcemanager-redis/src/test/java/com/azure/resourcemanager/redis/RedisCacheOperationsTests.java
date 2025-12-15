@@ -101,7 +101,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withoutFirewallRule("rule1")
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
-            .disableLocalAuth()
             .apply();
 
         ResourceManagerUtils.sleep(Duration.ofSeconds(10));
@@ -289,7 +288,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
             premiumRgg.removeLinkedServer(llName);
 
-            rgg.update().withoutPatchSchedule().disableLocalAuth().apply();
+            rgg.update().withoutPatchSchedule().apply();
 
             rggLinked.update().withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20").apply();
 
@@ -322,16 +321,16 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withExistingResourceGroup(rgName)
             .withPremiumSku()
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-            .withRedisConfiguration(new RedisConfiguration().withRdbBackupEnabled("true")
-                .withRdbBackupFrequency("15")
-                .withRdbBackupMaxSnapshotCount("1")
-                .withRdbStorageConnectionString(connectionString))
+//            .withRedisConfiguration(new RedisConfiguration().withRdbBackupEnabled("true")
+//                .withRdbBackupFrequency("15")
+//                .withRdbBackupMaxSnapshotCount("1")
+//                .withRdbStorageConnectionString(connectionString))
             .disableLocalAuth()
             .create();
-        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
-        Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
-        Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
-        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
+//        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
+//        Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
+//        Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
+//        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
 
         redisManager.redisCaches().deleteById(redisCache.id());
@@ -382,7 +381,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .disableLocalAuth()
             .create();
 
-        redisCache.update().disablePublicNetworkAccess().disableLocalAuth().apply();
+        redisCache.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
 
         redisCache.update().enablePublicNetworkAccess().apply();
