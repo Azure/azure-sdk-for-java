@@ -13,22 +13,13 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBaseProperties;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecycleAction;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateProperties;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousMaintenanceScheduleType;
-import com.azure.resourcemanager.oracledatabase.models.CustomerContact;
-import com.azure.resourcemanager.oracledatabase.models.DatabaseEditionType;
 import com.azure.resourcemanager.oracledatabase.models.DisasterRecoveryConfigurationDetails;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
-import com.azure.resourcemanager.oracledatabase.models.LicenseModel;
-import com.azure.resourcemanager.oracledatabase.models.LongTermBackUpScheduleDetails;
-import com.azure.resourcemanager.oracledatabase.models.OpenModeType;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
-import com.azure.resourcemanager.oracledatabase.models.PermissionLevelType;
 import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
-import com.azure.resourcemanager.oracledatabase.models.RoleType;
-import com.azure.resourcemanager.oracledatabase.models.ScheduledOperationsTypeUpdate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class AutonomousDatabaseImpl
@@ -252,121 +243,8 @@ public final class AutonomousDatabaseImpl
         return this;
     }
 
-    public AutonomousDatabaseImpl withAdminPassword(String adminPassword) {
-        this.updateProperties.withAdminPassword(adminPassword);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl
-        withAutonomousMaintenanceScheduleType(AutonomousMaintenanceScheduleType autonomousMaintenanceScheduleType) {
-        this.updateProperties.withAutonomousMaintenanceScheduleType(autonomousMaintenanceScheduleType);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withComputeCount(Double computeCount) {
-        this.updateProperties.withComputeCount(computeCount);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withCpuCoreCount(Integer cpuCoreCount) {
-        this.updateProperties.withCpuCoreCount(cpuCoreCount);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withCustomerContacts(List<CustomerContact> customerContacts) {
-        this.updateProperties.withCustomerContacts(customerContacts);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withDataStorageSizeInTbs(Integer dataStorageSizeInTbs) {
-        this.updateProperties.withDataStorageSizeInTbs(dataStorageSizeInTbs);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withDataStorageSizeInGbs(Integer dataStorageSizeInGbs) {
-        this.updateProperties.withDataStorageSizeInGbs(dataStorageSizeInGbs);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withDisplayName(String displayName) {
-        this.updateProperties.withDisplayName(displayName);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withIsAutoScalingEnabled(Boolean isAutoScalingEnabled) {
-        this.updateProperties.withIsAutoScalingEnabled(isAutoScalingEnabled);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withIsAutoScalingForStorageEnabled(Boolean isAutoScalingForStorageEnabled) {
-        this.updateProperties.withIsAutoScalingForStorageEnabled(isAutoScalingForStorageEnabled);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withPeerDbId(String peerDbId) {
-        this.updateProperties.withPeerDbId(peerDbId);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withIsLocalDataGuardEnabled(Boolean isLocalDataGuardEnabled) {
-        this.updateProperties.withIsLocalDataGuardEnabled(isLocalDataGuardEnabled);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withIsMtlsConnectionRequired(Boolean isMtlsConnectionRequired) {
-        this.updateProperties.withIsMtlsConnectionRequired(isMtlsConnectionRequired);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withLicenseModel(LicenseModel licenseModel) {
-        this.updateProperties.withLicenseModel(licenseModel);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl
-        withScheduledOperationsList(List<ScheduledOperationsTypeUpdate> scheduledOperationsList) {
-        this.updateProperties.withScheduledOperationsList(scheduledOperationsList);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withDatabaseEdition(DatabaseEditionType databaseEdition) {
-        this.updateProperties.withDatabaseEdition(databaseEdition);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
-        this.updateProperties.withLongTermBackupSchedule(longTermBackupSchedule);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl
-        withLocalAdgAutoFailoverMaxDataLossLimit(Integer localAdgAutoFailoverMaxDataLossLimit) {
-        this.updateProperties.withLocalAdgAutoFailoverMaxDataLossLimit(localAdgAutoFailoverMaxDataLossLimit);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withOpenMode(OpenModeType openMode) {
-        this.updateProperties.withOpenMode(openMode);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withPermissionLevel(PermissionLevelType permissionLevel) {
-        this.updateProperties.withPermissionLevel(permissionLevel);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withRole(RoleType role) {
-        this.updateProperties.withRole(role);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withBackupRetentionPeriodInDays(Integer backupRetentionPeriodInDays) {
-        this.updateProperties.withBackupRetentionPeriodInDays(backupRetentionPeriodInDays);
-        return this;
-    }
-
-    public AutonomousDatabaseImpl withWhitelistedIps(List<String> whitelistedIps) {
-        this.updateProperties.withWhitelistedIps(whitelistedIps);
+    public AutonomousDatabaseImpl withProperties(AutonomousDatabaseUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 

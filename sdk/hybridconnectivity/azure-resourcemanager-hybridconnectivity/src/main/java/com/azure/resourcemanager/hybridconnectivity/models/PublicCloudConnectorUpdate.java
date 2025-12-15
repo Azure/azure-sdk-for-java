@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorPropertiesUpdate;
 import java.io.IOException;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public final class PublicCloudConnectorUpdate extends TrackedResourceUpdate {
     /*
      * The resource-specific properties for this resource.
      */
-    private PublicCloudConnectorPropertiesUpdate innerProperties;
+    private PublicCloudConnectorPropertiesUpdate properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -50,12 +49,23 @@ public final class PublicCloudConnectorUpdate extends TrackedResourceUpdate {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private PublicCloudConnectorPropertiesUpdate innerProperties() {
-        return this.innerProperties;
+    public PublicCloudConnectorPropertiesUpdate properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the PublicCloudConnectorUpdate object itself.
+     */
+    public PublicCloudConnectorUpdate withProperties(PublicCloudConnectorPropertiesUpdate properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -108,36 +118,13 @@ public final class PublicCloudConnectorUpdate extends TrackedResourceUpdate {
     }
 
     /**
-     * Get the awsCloudProfile property: Cloud profile for AWS.
-     * 
-     * @return the awsCloudProfile value.
-     */
-    public AwsCloudProfileUpdate awsCloudProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().awsCloudProfile();
-    }
-
-    /**
-     * Set the awsCloudProfile property: Cloud profile for AWS.
-     * 
-     * @param awsCloudProfile the awsCloudProfile value to set.
-     * @return the PublicCloudConnectorUpdate object itself.
-     */
-    public PublicCloudConnectorUpdate withAwsCloudProfile(AwsCloudProfileUpdate awsCloudProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PublicCloudConnectorPropertiesUpdate();
-        }
-        this.innerProperties().withAwsCloudProfile(awsCloudProfile);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -169,7 +156,7 @@ public final class PublicCloudConnectorUpdate extends TrackedResourceUpdate {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedPublicCloudConnectorUpdate.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPublicCloudConnectorUpdate.innerProperties
+                    deserializedPublicCloudConnectorUpdate.properties
                         = PublicCloudConnectorPropertiesUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();

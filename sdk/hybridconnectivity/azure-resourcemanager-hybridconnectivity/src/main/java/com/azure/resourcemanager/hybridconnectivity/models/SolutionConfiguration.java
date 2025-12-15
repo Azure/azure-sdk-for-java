@@ -128,7 +128,7 @@ public interface SolutionConfiguration {
     /**
      * The template for SolutionConfiguration update.
      */
-    interface Update extends UpdateStages.WithSolutionType, UpdateStages.WithSolutionSettings {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -150,29 +150,16 @@ public interface SolutionConfiguration {
      */
     interface UpdateStages {
         /**
-         * The stage of the SolutionConfiguration update allowing to specify solutionType.
+         * The stage of the SolutionConfiguration update allowing to specify properties.
          */
-        interface WithSolutionType {
+        interface WithProperties {
             /**
-             * Specifies the solutionType property: The type of the solution.
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param solutionType The type of the solution.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withSolutionType(String solutionType);
-        }
-
-        /**
-         * The stage of the SolutionConfiguration update allowing to specify solutionSettings.
-         */
-        interface WithSolutionSettings {
-            /**
-             * Specifies the solutionSettings property: Solution settings.
-             * 
-             * @param solutionSettings Solution settings.
-             * @return the next definition stage.
-             */
-            Update withSolutionSettings(SolutionSettings solutionSettings);
+            Update withProperties(SolutionConfigurationPropertiesUpdate properties);
         }
     }
 

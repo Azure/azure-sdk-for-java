@@ -200,7 +200,7 @@ public interface PublicCloudConnector {
     /**
      * The template for PublicCloudConnector update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAwsCloudProfile {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -235,16 +235,16 @@ public interface PublicCloudConnector {
         }
 
         /**
-         * The stage of the PublicCloudConnector update allowing to specify awsCloudProfile.
+         * The stage of the PublicCloudConnector update allowing to specify properties.
          */
-        interface WithAwsCloudProfile {
+        interface WithProperties {
             /**
-             * Specifies the awsCloudProfile property: Cloud profile for AWS..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param awsCloudProfile Cloud profile for AWS.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withAwsCloudProfile(AwsCloudProfileUpdate awsCloudProfile);
+            Update withProperties(PublicCloudConnectorPropertiesUpdate properties);
         }
     }
 

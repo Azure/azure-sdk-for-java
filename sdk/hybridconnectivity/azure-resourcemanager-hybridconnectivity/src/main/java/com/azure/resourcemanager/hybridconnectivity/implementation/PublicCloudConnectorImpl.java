@@ -8,10 +8,10 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
-import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.util.Collections;
 import java.util.Map;
@@ -186,8 +186,8 @@ public final class PublicCloudConnectorImpl
         return this;
     }
 
-    public PublicCloudConnectorImpl withAwsCloudProfile(AwsCloudProfileUpdate awsCloudProfile) {
-        this.updateProperties.withAwsCloudProfile(awsCloudProfile);
+    public PublicCloudConnectorImpl withProperties(PublicCloudConnectorPropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 

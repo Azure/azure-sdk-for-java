@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateProperties;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousMaintenanceScheduleType;
 import com.azure.resourcemanager.oracledatabase.models.CustomerContact;
 import com.azure.resourcemanager.oracledatabase.models.DatabaseEditionType;
@@ -57,37 +58,37 @@ public final class AutonomousDatabasesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key9827", "fakeTokenPlaceholder"))
-            .withAdminPassword("<a-password-goes-here>")
-            .withAutonomousMaintenanceScheduleType(AutonomousMaintenanceScheduleType.EARLY)
-            .withComputeCount(56.1D)
-            .withCpuCoreCount(45)
-            .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("dummyemail@microsoft.com")))
-            .withDataStorageSizeInTbs(133)
-            .withDataStorageSizeInGbs(175271)
-            .withDisplayName("lrdrjpyyvufnxdzpwvlkmfukpstrjftdxcejcxtnqhxqbhvtzeiokllnspotsqeggddxkjjtf")
-            .withIsAutoScalingEnabled(true)
-            .withIsAutoScalingForStorageEnabled(true)
-            .withPeerDbId("qmpfwtvpfvbgmulethqznsyyjlpxmyfqfanrymzqsgraavtmlqqbexpzguyqybngoupbshlzpxv")
-            .withIsLocalDataGuardEnabled(true)
-            .withIsMtlsConnectionRequired(true)
-            .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
-            .withScheduledOperationsList(Arrays.asList(
-                new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.MONDAY))
+            .withProperties(new AutonomousDatabaseUpdateProperties().withAdminPassword("fakeTokenPlaceholder")
+                .withAutonomousMaintenanceScheduleType(AutonomousMaintenanceScheduleType.EARLY)
+                .withComputeCount(56.1D)
+                .withCpuCoreCount(45)
+                .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("dummyemail@microsoft.com")))
+                .withDataStorageSizeInTbs(133)
+                .withDataStorageSizeInGbs(175271)
+                .withDisplayName("lrdrjpyyvufnxdzpwvlkmfukpstrjftdxcejcxtnqhxqbhvtzeiokllnspotsqeggddxkjjtf")
+                .withIsAutoScalingEnabled(true)
+                .withIsAutoScalingForStorageEnabled(true)
+                .withPeerDbId("qmpfwtvpfvbgmulethqznsyyjlpxmyfqfanrymzqsgraavtmlqqbexpzguyqybngoupbshlzpxv")
+                .withIsLocalDataGuardEnabled(true)
+                .withIsMtlsConnectionRequired(true)
+                .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
+                .withScheduledOperationsList(Arrays.asList(new ScheduledOperationsTypeUpdate()
+                    .withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.MONDAY))
                     .withScheduledStartTime("lwwvkazgmfremfwhckfb")
                     .withScheduledStopTime("hjwagzxijpiaogulmnmbuqakpqxhkjvaypjqnvbvtjddc")))
-            .withDatabaseEdition(DatabaseEditionType.STANDARD_EDITION)
-            .withLongTermBackupSchedule(
-                new LongTermBackUpScheduleDetails().withRepeatCadence(RepeatCadenceType.ONE_TIME)
-                    .withTimeOfBackup(OffsetDateTime.parse("2025-08-01T04:32:58.715Z"))
-                    .withRetentionPeriodInDays(188)
-                    .withIsDisabled(true))
-            .withLocalAdgAutoFailoverMaxDataLossLimit(212)
-            .withOpenMode(OpenModeType.READ_ONLY)
-            .withPermissionLevel(PermissionLevelType.RESTRICTED)
-            .withRole(RoleType.PRIMARY)
-            .withBackupRetentionPeriodInDays(12)
-            .withWhitelistedIps(Arrays.asList(
-                "kfierlppwurtqrhfxwgfgrnqtmvraignzwsddwmpdijeveuevuoejfmbjvpnlrmmdflilxcwkkzvdofctsdjfxrrrwctihhnchtrouauesqbmlcqhzwnppnhrtitecenlfyshassvajukbwxudhlwixkvkgsessvshcwmleoqujeemwenhwlsccbcjnnviugzgylsxkssalqoicatcvkahogdvweymhdxboyqwhaxuzlmrdbvgbnnetobkbwygcsflzanwknlybvvzgjzjirpfrksbxwgllgfxwdflcisvxpkjecpgdaxccqkzxofedkrawvhzeabmunpykwd"))
+                .withDatabaseEdition(DatabaseEditionType.STANDARD_EDITION)
+                .withLongTermBackupSchedule(
+                    new LongTermBackUpScheduleDetails().withRepeatCadence(RepeatCadenceType.ONE_TIME)
+                        .withTimeOfBackup(OffsetDateTime.parse("2025-08-01T04:32:58.715Z"))
+                        .withRetentionPeriodInDays(188)
+                        .withIsDisabled(true))
+                .withLocalAdgAutoFailoverMaxDataLossLimit(212)
+                .withOpenMode(OpenModeType.READ_ONLY)
+                .withPermissionLevel(PermissionLevelType.RESTRICTED)
+                .withRole(RoleType.PRIMARY)
+                .withBackupRetentionPeriodInDays(12)
+                .withWhitelistedIps(Arrays.asList(
+                    "kfierlppwurtqrhfxwgfgrnqtmvraignzwsddwmpdijeveuevuoejfmbjvpnlrmmdflilxcwkkzvdofctsdjfxrrrwctihhnchtrouauesqbmlcqhzwnppnhrtitecenlfyshassvajukbwxudhlwixkvkgsessvshcwmleoqujeemwenhwlsccbcjnnviugzgylsxkssalqoicatcvkahogdvweymhdxboyqwhaxuzlmrdbvgbnnetobkbwygcsflzanwknlybvvzgjzjirpfrksbxwgllgfxwdflcisvxpkjecpgdaxccqkzxofedkrawvhzeabmunpykwd")))
             .apply();
     }
 

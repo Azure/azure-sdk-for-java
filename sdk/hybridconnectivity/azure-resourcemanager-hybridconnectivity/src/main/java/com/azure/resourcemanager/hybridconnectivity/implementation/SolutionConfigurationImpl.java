@@ -10,8 +10,8 @@ import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfig
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfiguration;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
-import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 
 public final class SolutionConfigurationImpl
     implements SolutionConfiguration, SolutionConfiguration.Definition, SolutionConfiguration.Update {
@@ -143,13 +143,8 @@ public final class SolutionConfigurationImpl
         return this;
     }
 
-    public SolutionConfigurationImpl withSolutionType(String solutionType) {
-        this.updateProperties.withSolutionType(solutionType);
-        return this;
-    }
-
-    public SolutionConfigurationImpl withSolutionSettings(SolutionSettings solutionSettings) {
-        this.updateProperties.withSolutionSettings(solutionSettings);
+    public SolutionConfigurationImpl withProperties(SolutionConfigurationPropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

@@ -10,7 +10,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationPropertiesUpdate;
 import java.io.IOException;
 
 /**
@@ -21,7 +20,7 @@ public final class SolutionConfigurationUpdate extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    private SolutionConfigurationPropertiesUpdate innerProperties;
+    private SolutionConfigurationPropertiesUpdate properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -50,12 +49,23 @@ public final class SolutionConfigurationUpdate extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private SolutionConfigurationPropertiesUpdate innerProperties() {
-        return this.innerProperties;
+    public SolutionConfigurationPropertiesUpdate properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the SolutionConfigurationUpdate object itself.
+     */
+    public SolutionConfigurationUpdate withProperties(SolutionConfigurationPropertiesUpdate properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -98,58 +108,12 @@ public final class SolutionConfigurationUpdate extends ProxyResource {
     }
 
     /**
-     * Get the solutionType property: The type of the solution.
-     * 
-     * @return the solutionType value.
-     */
-    public String solutionType() {
-        return this.innerProperties() == null ? null : this.innerProperties().solutionType();
-    }
-
-    /**
-     * Set the solutionType property: The type of the solution.
-     * 
-     * @param solutionType the solutionType value to set.
-     * @return the SolutionConfigurationUpdate object itself.
-     */
-    public SolutionConfigurationUpdate withSolutionType(String solutionType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SolutionConfigurationPropertiesUpdate();
-        }
-        this.innerProperties().withSolutionType(solutionType);
-        return this;
-    }
-
-    /**
-     * Get the solutionSettings property: Solution settings.
-     * 
-     * @return the solutionSettings value.
-     */
-    public SolutionSettings solutionSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().solutionSettings();
-    }
-
-    /**
-     * Set the solutionSettings property: Solution settings.
-     * 
-     * @param solutionSettings the solutionSettings value to set.
-     * @return the SolutionConfigurationUpdate object itself.
-     */
-    public SolutionConfigurationUpdate withSolutionSettings(SolutionSettings solutionSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SolutionConfigurationPropertiesUpdate();
-        }
-        this.innerProperties().withSolutionSettings(solutionSettings);
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -176,7 +140,7 @@ public final class SolutionConfigurationUpdate extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedSolutionConfigurationUpdate.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedSolutionConfigurationUpdate.innerProperties
+                    deserializedSolutionConfigurationUpdate.properties
                         = SolutionConfigurationPropertiesUpdate.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSolutionConfigurationUpdate.systemData = SystemData.fromJson(reader);

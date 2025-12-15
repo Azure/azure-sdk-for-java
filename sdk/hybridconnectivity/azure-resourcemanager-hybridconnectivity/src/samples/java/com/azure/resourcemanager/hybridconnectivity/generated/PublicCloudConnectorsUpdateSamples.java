@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,8 @@ public final class PublicCloudConnectorsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf())
-            .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("zrbtd")))
+            .withProperties(new PublicCloudConnectorPropertiesUpdate()
+                .withAwsCloudProfile(new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("zrbtd"))))
             .apply();
     }
 

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
