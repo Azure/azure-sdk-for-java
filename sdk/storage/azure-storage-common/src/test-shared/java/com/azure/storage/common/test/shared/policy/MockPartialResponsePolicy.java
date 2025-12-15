@@ -68,55 +68,58 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
-                // Collect the body to be able to slice it properly
-                return response.getBody().collectList().flatMap(bodyBuffers -> {
-                    if (bodyBuffers.isEmpty()) {
-                        // If no body was returned, don't attempt to slice a partial response
-                        return Mono.just(response);
+                // Don't use collectList() as it would consume the entire stream.
+                // Instead, manipulate the Flux directly to limit bytes before throwing error.
+                // This works correctly whether the body is encoded or decoded.
+                Flux<ByteBuffer> limitedBody = limitStreamToBytes(response.getBody(), maxBytesPerResponse);
+                return Mono.just(new MockDownloadHttpResponse(response, 206, limitedBody));
+            }
+        });
+    }
+
+    /**
+     * Limits a Flux of ByteBuffers to emit at most maxBytes before throwing an IOException.
+     * This works on the stream directly without collecting all buffers, allowing it to work
+     * correctly whether the stream contains encoded or decoded data.
+     */
+    private Flux<ByteBuffer> limitStreamToBytes(Flux<ByteBuffer> body, int maxBytes) {
+        return Flux.defer(() -> {
+            final long[] bytesEmitted = new long[]{0};
+            return body.concatMap(buffer -> {
+                if (buffer == null || !buffer.hasRemaining()) {
+                    return Flux.just(buffer);
+                }
+                
+                long remaining = maxBytes - bytesEmitted[0];
+                if (remaining <= 0) {
+                    // Already emitted enough, throw error immediately
+                    return Flux.error(new IOException("Simulated timeout"));
+                }
+                
+                int bufferSize = buffer.remaining();
+                if (bufferSize <= remaining) {
+                    // Emit the entire buffer
+                    bytesEmitted[0] += bufferSize;
+                    if (bytesEmitted[0] >= maxBytes) {
+                        // Hit the limit, emit this buffer then error
+                        return Flux.just(buffer).concatWith(Flux.error(new IOException("Simulated timeout")));
                     }
+                    return Flux.just(buffer);
+                } else {
+                    // Buffer is larger than remaining, need to slice it
+                    int bytesToEmit = (int) remaining;
+                    ByteBuffer slice = buffer.duplicate();
+                    slice.limit(slice.position() + bytesToEmit);
                     
-                    // Calculate total bytes available
-                    int totalBytes = bodyBuffers.stream().mapToInt(ByteBuffer::remaining).sum();
-                    
-                    // Determine how many bytes to return (limited by maxBytesPerResponse)
-                    int bytesToReturn = Math.min(totalBytes, maxBytesPerResponse);
-                    
-                    if (bytesToReturn >= totalBytes) {
-                        // Return all data and still throw error to simulate interruption during next chunk
-                        return Mono.just(new MockDownloadHttpResponse(response, 206,
-                            Flux.fromIterable(bodyBuffers)
-                                .concatWith(Flux.error(new IOException("Simulated timeout")))));
-                    }
-                    
-                    // Create a new buffer with limited bytes
-                    ByteBuffer limited = ByteBuffer.allocate(bytesToReturn);
-                    int bytesCollected = 0;
-                    
-                    for (ByteBuffer buffer : bodyBuffers) {
-                        int bufferRemaining = buffer.remaining();
-                        int bytesNeeded = bytesToReturn - bytesCollected;
-                        
-                        if (bufferRemaining <= bytesNeeded) {
-                            // Take the entire buffer
-                            limited.put(buffer);
-                            bytesCollected += bufferRemaining;
-                        } else {
-                            // Take only part of this buffer
-                            ByteBuffer slice = buffer.duplicate();
-                            slice.limit(slice.position() + bytesNeeded);
-                            limited.put(slice);
-                            bytesCollected += bytesNeeded;
-                            break;
-                        }
-                    }
-                    
+                    ByteBuffer limited = ByteBuffer.allocate(bytesToEmit);
+                    limited.put(slice);
                     limited.flip();
                     
-                    // Return the limited buffer and simulate timeout
-                    return Mono.just(new MockDownloadHttpResponse(response, 206,
-                        Flux.just(limited).concatWith(Flux.error(new IOException("Simulated timeout")))));
-                });
-            }
+                    bytesEmitted[0] += bytesToEmit;
+                    // Emit the limited buffer then error
+                    return Flux.just(limited).concatWith(Flux.error(new IOException("Simulated timeout")));
+                }
+            });
         });
     }
 
