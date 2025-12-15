@@ -107,13 +107,25 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         BufferStagingArea stagingArea
             = new BufferStagingArea(STATIC_MAXIMUM_ENCODED_DATA_LENGTH, STATIC_MAXIMUM_ENCODED_DATA_LENGTH);
 
-        Flux<ByteBuffer> encodedBody = context.getHttpRequest()
-            .getBody()
-            .flatMapSequential(stagingArea::write, 1, 1)
-            .concatWith(Flux.defer(stagingArea::flush))
-            .concatMap(bufferAggregator -> bufferAggregator.asFlux().concatMap(structuredMessageEncoder::encode));
+        // reactive stream backpressure will not correctly propagate without limitRate
+        //        Flux<ByteBuffer> encodedBody = Flux.from(context.getHttpRequest().getBody())
+        //            .limitRate(1)  // force one-at-a-time from source
+        //            .flatMapSequential(stagingArea::write, 1, 1)
+        //            .concatWith(Flux.defer(stagingArea::flush))
+        //            .concatMap(bufferAggregator -> bufferAggregator.asFlux().concatMap(structuredMessageEncoder::encode));
 
-        // Set the encoded body
+//        Flux<ByteBuffer> encodedBody = context.getHttpRequest()
+//            .getBody()
+//            .concatMap(buffer -> splitLargeBuffer(buffer, STATIC_MAXIMUM_ENCODED_DATA_LENGTH))
+//            .limitRate(1)
+//            .concatMap(structuredMessageEncoder::encode, 1);
+
+//        Flux<ByteBuffer> encodedBody = context.getHttpRequest()
+//            .getBody()
+//            .flatMapSequential(stagingArea::write, 1, 1)
+//            .concatWith(Flux.defer(stagingArea::flush))
+//            .concatMap(bufferAggregator -> bufferAggregator.asFlux().concatMap(structuredMessageEncoder::encode));
+
         context.getHttpRequest().setBody(encodedBody);
 
         context.getHttpRequest()
@@ -125,6 +137,31 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest()
             .setHeader(STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(unencodedContentLength));
         //return structuredMessageEncoder.getMessageCRC64();
+    }
+
+    private Flux<ByteBuffer> splitLargeBuffer(ByteBuffer buffer, int maxChunkSize) {
+        // For small buffers, copy to ensure no retention of larger upstream buffers
+        if (buffer.remaining() <= maxChunkSize) {
+            byte[] copy = new byte[buffer.remaining()];
+            buffer.get(copy);
+            return Flux.just(ByteBuffer.wrap(copy));
+        }
+
+        return Flux.generate(buffer::duplicate, (buf, sink) -> {
+            if (!buf.hasRemaining()) {
+                sink.complete();
+                return buf;
+            }
+
+            int chunkSize = Math.min(buf.remaining(), maxChunkSize);
+
+            // Copy data instead of slicing to avoid retaining original buffer
+            byte[] chunkData = new byte[chunkSize];
+            buf.get(chunkData);
+
+            sink.next(ByteBuffer.wrap(chunkData));
+            return buf;
+        });
     }
 
 }
