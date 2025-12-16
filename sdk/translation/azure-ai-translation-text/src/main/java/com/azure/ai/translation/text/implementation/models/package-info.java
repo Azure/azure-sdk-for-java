@@ -21,4 +21,4 @@
  * supported for text translation and transliteration.
  * <!-- end generated doc -->
  */
-package com.azure.ai.translation.text.models;
+package com.azure.ai.translation.text.implementation.models;
