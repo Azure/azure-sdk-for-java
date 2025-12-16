@@ -15,8 +15,8 @@ import java.util.Map;
 public final class SnapshotsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * SnapshotsCreate.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.

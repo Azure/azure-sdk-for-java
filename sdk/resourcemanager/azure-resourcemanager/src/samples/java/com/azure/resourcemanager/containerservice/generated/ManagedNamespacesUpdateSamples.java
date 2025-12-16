@@ -14,8 +14,8 @@ import java.util.Map;
 public final class ManagedNamespacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
-     * ManagedNamespacesUpdateTags.json
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/preview/2025-10-02-preview/
+     * examples/ManagedNamespacesUpdateTags.json
      */
     /**
      * Sample code: Update Managed Namespace Tags.
