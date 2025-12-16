@@ -1,14 +1,12 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.3.1 (2025-12-16)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Please note, this package has been deprecated and will no longer be maintained after 09-30-2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 09-30-2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## 1.3.0 (2024-12-23)
 
