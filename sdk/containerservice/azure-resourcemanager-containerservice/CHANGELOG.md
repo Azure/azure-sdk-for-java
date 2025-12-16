@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2025-10-01-preview`.
+- Updated `api-version` to `2025-10-02-preview`.
 
 ## 2.57.0 (2025-12-15)
 
