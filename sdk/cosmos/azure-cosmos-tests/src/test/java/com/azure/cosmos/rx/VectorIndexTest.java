@@ -80,7 +80,7 @@ public class VectorIndexTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT*10000)
     public void shouldCreateVectorEmbeddingPolicy() {
-        ArrayList<String> paths = new ArrayList<>(List.of("/mypk"));
+        ArrayList<String> paths = new ArrayList<>(Arrays.asList("/mypk"));
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition()
             .setPaths(paths);
 
