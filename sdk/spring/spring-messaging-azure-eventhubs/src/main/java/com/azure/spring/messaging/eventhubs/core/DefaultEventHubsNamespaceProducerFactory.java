@@ -15,6 +15,7 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import static com.azure.spring.messaging.implementation.config.AzureMessagingBoo
 public final class DefaultEventHubsNamespaceProducerFactory implements EventHubsProducerFactory, DisposableBean {
 
     private final List<Listener> listeners = new ArrayList<>();
+    private ApplicationContext applicationContext;
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
@@ -83,6 +85,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setDefaultTokenCredential(this.defaultCredential);
+            factory.setApplicationContext(this.applicationContext);
             EventHubClientBuilder builder = factory.build();
             customizeBuilder(eventHub, builder);
             EventHubProducerAsyncClient producerClient = builder.buildAsyncProducerClient();
@@ -162,6 +165,14 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
         this.customizers.forEach(customizer -> customizer.customize(builder));
         this.dedicatedCustomizers.getOrDefault(eventHub, new ArrayList<>())
                                  .forEach(customizer -> customizer.customize(builder));
+    }
+
+    /**
+     * Set the application context.
+     * @param applicationContext the application context.
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
 }

@@ -3,9 +3,12 @@
 
 package com.azure.ai.translation.text;
 
+import java.util.Arrays;
+
 import com.azure.ai.translation.text.models.TextType;
-import com.azure.ai.translation.text.models.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
+import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -32,15 +35,15 @@ public class TranslateNoTranslate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("en")
-            .setSourceLanguage("cs")
-            .setTextType(TextType.HTML);
+        TranslateInputItem input = new TranslateInputItem(
+            "<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", 
+            Arrays.asList(new TranslationTarget("en"))
+        ).setLanguage("cs").setTextType(TextType.HTML);
 
-        TranslatedTextItem translation = client.translate("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", translateOptions);
+        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }
