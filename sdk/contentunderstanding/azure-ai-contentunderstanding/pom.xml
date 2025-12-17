@@ -85,8 +85,8 @@
             <!-- Include standard test naming conventions -->
             <include>**/*Test.java</include>
             <include>**/*Tests.java</include>
-            <!-- Include Sample files as tests (they extend ContentUnderstandingClientTestBase) -->
-            <include>**/Sample*.java</include>
+            <!-- Include Sample files from generated package only (exclude samples package standalone examples) -->
+            <include>**/generated/Sample*.java</include>
           </includes>
         </configuration>
       </plugin>
