@@ -56,7 +56,7 @@
       io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
 
-    <netty.version>4.1.127.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    <netty.version>4.2.9.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
   </properties>
 
   <dependencies>
@@ -203,12 +203,6 @@
       <groupId>org.conscrypt</groupId>
       <artifactId>conscrypt-openjdk-uber</artifactId>
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

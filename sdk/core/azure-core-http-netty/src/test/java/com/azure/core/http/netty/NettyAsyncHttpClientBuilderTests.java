@@ -14,8 +14,6 @@ import com.azure.core.util.ConfigurationSource;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-import io.netty.channel.nio.NioEventLoop;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.codec.http.cookie.DefaultCookie;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.proxy.HttpProxyHandler;
@@ -521,17 +519,20 @@ public class NettyAsyncHttpClientBuilderTests {
      * sending and receiving requests and responses.
      */
     @Test
+    @SuppressWarnings("deprecation")
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
         HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) -> {
             // Validate that the EventLoop being used is a NioEventLoop.
-            NioEventLoop eventLoop = (NioEventLoop) connection.channel().eventLoop();
+            io.netty.channel.nio.NioEventLoop eventLoop
+                = (io.netty.channel.nio.NioEventLoop) connection.channel().eventLoop();
             assertNotNull(eventLoop);
 
             assertEquals(expectedThreadName, eventLoop.threadProperties().name());
         });
 
-        NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
+        io.netty.channel.nio.NioEventLoopGroup eventLoopGroup
+            = new io.netty.channel.nio.NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
 
         NettyAsyncHttpClient nettyClient
             = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient).eventLoopGroup(eventLoopGroup)

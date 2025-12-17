@@ -18,7 +18,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
@@ -151,7 +150,7 @@ public class NettyAsyncHttpClientBuilder {
      *     .wiretap&#40;TcpClient.class.getName&#40;&#41;, LogLevel.INFO&#41;;
      * &#47;&#47; Create an HttpClient based on above reactor-netty client and configure EventLoop count.
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;baseHttpClient&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;5&#41;&#41;
+     *     .eventLoopGroup&#40;new io.netty.channel.nio.NioEventLoopGroup&#40;5&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.from-existing-http-client -->
@@ -383,12 +382,12 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
+     * @param nioEventLoopGroup The {@link io.netty.channel.nio.NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
      * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      */
     @Deprecated
-    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(io.netty.channel.nio.NioEventLoopGroup nioEventLoopGroup) {
         this.eventLoopGroup = nioEventLoopGroup;
         return this;
     }
@@ -402,7 +401,7 @@ public class NettyAsyncHttpClientBuilder {
      * <pre>
      * int threadCount = 5;
      * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
-     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;threadCount&#41;&#41;
+     *     .eventLoopGroup&#40;new io.netty.channel.nio.NioEventLoopGroup&#40;threadCount&#41;&#41;
      *     .build&#40;&#41;;
      * </pre>
      * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->

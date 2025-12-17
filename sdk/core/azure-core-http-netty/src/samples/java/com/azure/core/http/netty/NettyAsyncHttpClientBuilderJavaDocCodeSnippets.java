@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.logging.LogLevel;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.TcpClient;
@@ -35,11 +34,12 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
     /**
      * Code snippet for creating http client with fixed thread pool.
      */
+    @SuppressWarnings("deprecation")
     public void fixedThreadPoolSample() {
         // BEGIN: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
         int threadCount = 5;
         HttpClient client = new NettyAsyncHttpClientBuilder()
-            .eventLoopGroup(new NioEventLoopGroup(threadCount))
+            .eventLoopGroup(new io.netty.channel.nio.NioEventLoopGroup(threadCount))
             .build();
         // END: com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup
     }
@@ -80,6 +80,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
      * Code snippet for creating a new http client based on an existing reactor netty HttpClient.
      * The existing client is configured for netty level logging.
      */
+    @SuppressWarnings("deprecation")
     public void fromExistingReactorNettyClient() {
         // BEGIN: com.azure.core.http.netty.from-existing-http-client
         // Creates a reactor-netty client with netty logging enabled.
@@ -87,7 +88,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
             .wiretap(TcpClient.class.getName(), LogLevel.INFO);
         // Create an HttpClient based on above reactor-netty client and configure EventLoop count.
         HttpClient client = new NettyAsyncHttpClientBuilder(baseHttpClient)
-            .eventLoopGroup(new NioEventLoopGroup(5))
+            .eventLoopGroup(new io.netty.channel.nio.NioEventLoopGroup(5))
             .build();
         // END: com.azure.core.http.netty.from-existing-http-client
     }

@@ -64,7 +64,7 @@
     <spotbugs.skip>false</spotbugs.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
 
-    <netty.version>4.1.127.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    <netty.version>4.2.9.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     <netty-tcnative.version>2.0.74.Final</netty-tcnative.version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
   </properties>
 
