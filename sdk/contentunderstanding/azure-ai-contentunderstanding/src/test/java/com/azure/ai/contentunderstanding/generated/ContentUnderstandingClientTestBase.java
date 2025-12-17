@@ -32,11 +32,17 @@ class ContentUnderstandingClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        ContentUnderstandingClientBuilder contentUnderstandingClientbuilder = new ContentUnderstandingClientBuilder()
-            .endpoint(
-                Configuration.getGlobalConfiguration().get("AZURE_CONTENT_UNDERSTANDING_ENDPOINT", "https://localhost"))
-            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        String endpoint
+            = Configuration.getGlobalConfiguration().get("AZURE_CONTENT_UNDERSTANDING_ENDPOINT", "https://localhost");
+        // Strip trailing slash to prevent double-slash in URLs
+        if (endpoint.endsWith("/")) {
+            endpoint = endpoint.substring(0, endpoint.length() - 1);
+        }
+
+        ContentUnderstandingClientBuilder contentUnderstandingClientbuilder
+            = new ContentUnderstandingClientBuilder().endpoint(endpoint)
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             contentUnderstandingClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
