@@ -15,7 +15,7 @@ import java.io.IOException;
  * The AAD Profile.
  */
 @Immutable
-public final class AADProfileProperties implements JsonSerializable<AADProfileProperties> {
+public final class AadProfileProperties implements JsonSerializable<AadProfileProperties> {
     /*
      * The arc ingress gateway server app id.
      */
@@ -27,9 +27,9 @@ public final class AADProfileProperties implements JsonSerializable<AADProfilePr
     private String tenantId;
 
     /**
-     * Creates an instance of AADProfileProperties class.
+     * Creates an instance of AadProfileProperties class.
      */
-    private AADProfileProperties() {
+    private AadProfileProperties() {
     }
 
     /**
@@ -62,31 +62,31 @@ public final class AADProfileProperties implements JsonSerializable<AADProfilePr
     }
 
     /**
-     * Reads an instance of AADProfileProperties from the JsonReader.
+     * Reads an instance of AadProfileProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AADProfileProperties if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AadProfileProperties if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AADProfileProperties.
+     * @throws IOException If an error occurs while reading the AadProfileProperties.
      */
-    public static AADProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static AadProfileProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AADProfileProperties deserializedAADProfileProperties = new AADProfileProperties();
+            AadProfileProperties deserializedAadProfileProperties = new AadProfileProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("serverId".equals(fieldName)) {
-                    deserializedAADProfileProperties.serverId = reader.getString();
+                    deserializedAadProfileProperties.serverId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedAADProfileProperties.tenantId = reader.getString();
+                    deserializedAadProfileProperties.tenantId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAADProfileProperties;
+            return deserializedAadProfileProperties;
         });
     }
 }

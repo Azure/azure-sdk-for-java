@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridconnectivity.fluent.models.AADProfileProperties;
+import com.azure.resourcemanager.hybridconnectivity.fluent.models.AadProfileProperties;
 import org.junit.jupiter.api.Assertions;
 
-public final class AADProfilePropertiesTests {
+public final class AadProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AADProfileProperties model = BinaryData.fromString("{\"serverId\":\"qtrgqjbpfzfsinzg\",\"tenantId\":\"f\"}")
-            .toObject(AADProfileProperties.class);
+        AadProfileProperties model = BinaryData.fromString("{\"serverId\":\"qtrgqjbpfzfsinzg\",\"tenantId\":\"f\"}")
+            .toObject(AadProfileProperties.class);
         Assertions.assertEquals("qtrgqjbpfzfsinzg", model.serverId());
         Assertions.assertEquals("f", model.tenantId());
     }

@@ -24,7 +24,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
     /*
      * The AAD Profile
      */
-    private AADProfileProperties innerAadProfile;
+    private AadProfileProperties innerAadProfile;
 
     /**
      * Creates an instance of IngressProfileProperties class.
@@ -46,7 +46,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
      * 
      * @return the innerAadProfile value.
      */
-    private AADProfileProperties innerAadProfile() {
+    private AadProfileProperties innerAadProfile() {
         return this.innerAadProfile;
     }
 
@@ -98,7 +98,7 @@ public final class IngressProfileProperties implements JsonSerializable<IngressP
                 if ("hostname".equals(fieldName)) {
                     deserializedIngressProfileProperties.hostname = reader.getString();
                 } else if ("aadProfile".equals(fieldName)) {
-                    deserializedIngressProfileProperties.innerAadProfile = AADProfileProperties.fromJson(reader);
+                    deserializedIngressProfileProperties.innerAadProfile = AadProfileProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
