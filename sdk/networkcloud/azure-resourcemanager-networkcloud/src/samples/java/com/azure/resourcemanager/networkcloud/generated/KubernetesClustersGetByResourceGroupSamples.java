@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class KubernetesClustersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * KubernetesClusters_Get.json
      */
     /**

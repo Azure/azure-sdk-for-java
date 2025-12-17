@@ -17,7 +17,7 @@ public final class CommandOutputSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandOutputSettings model = BinaryData.fromString(
-            "{\"associatedIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"etaebu\"},\"containerUrl\":\"vdmovsmzlxwabm\",\"overrides\":[{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"rvtp\"},\"commandOutputType\":\"StorageRunReadCommands\",\"containerUrl\":\"mqlgk\"},{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"oaongbjc\"},\"commandOutputType\":\"BareMetalMachineRunReadCommands\",\"containerUrl\":\"i\"}]}")
+            "{\"associatedIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"etaebu\"},\"containerUrl\":\"vdmovsmzlxwabm\",\"overrides\":[{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"rvtp\"},\"commandOutputType\":\"StorageRunReadCommands\",\"containerUrl\":\"mqlgk\"},{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"oaongbjc\"},\"commandOutputType\":\"BareMetalMachineRunDataExtractsRestricted\",\"containerUrl\":\"i\"}]}")
             .toObject(CommandOutputSettings.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
@@ -49,7 +49,7 @@ public final class CommandOutputSettingsTests {
                     .withAssociatedIdentity(new IdentitySelector()
                         .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
                         .withUserAssignedIdentityResourceId("oaongbjc"))
-                    .withCommandOutputType(CommandOutputType.BARE_METAL_MACHINE_RUN_READ_COMMANDS)
+                    .withCommandOutputType(CommandOutputType.BARE_METAL_MACHINE_RUN_DATA_EXTRACTS_RESTRICTED)
                     .withContainerUrl("i")));
         model = BinaryData.fromObject(model).toObject(CommandOutputSettings.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,

@@ -1,14 +1,313 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.1.0 (2025-12-17)
 
-### Features Added
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package tag package-2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BareMetalMachineKeySets` was modified
 
-### Other Changes
+* `listByCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Racks` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.StorageAppliances` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.Clusters` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.MetricsConfigurations` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Volumes` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.KubernetesClusters` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.KubernetesClusterFeatures` was modified
+
+* `listByKubernetesCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Consoles` was modified
+
+* `listByVirtualMachine(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.L3Networks` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.CloudServicesNetworks` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.ClusterManagers` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.AgentPools` was modified
+
+* `listByKubernetesCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.BmcKeySets` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.BareMetalMachines` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.VirtualMachines` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.TrunkedNetworks` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.L2Networks` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was removed
+* `list(com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.VirtualMachineAssignRelayParameters` was added
+
+* `models.CloudServicesNetworkStorageStatus` was added
+
+* `models.ActionStateStatus` was added
+
+* `models.CommandOutputType` was added
+
+* `models.StepStateStatus` was added
+
+* `models.RelayType` was added
+
+* `models.CloudServicesNetworkStorageOptionsPatch` was added
+
+* `models.ActionState` was added
+
+* `models.CommandOutputOverride` was added
+
+* `models.CloudServicesNetworkStorageStatusStatus` was added
+
+* `models.BareMetalMachineReplaceSafeguardMode` was added
+
+* `models.StepState` was added
+
+* `models.BareMetalMachineReplaceStoragePolicy` was added
+
+* `models.StorageApplianceRunReadCommandsParameters` was added
+
+* `models.CertificateInfo` was added
+
+* `models.CloudServicesNetworkStorageMode` was added
+
+* `models.StorageApplianceCommandSpecification` was added
+
+* `models.CloudServicesNetworkStorageOptions` was added
+
+#### `models.VirtualMachinePatchParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+#### `models.BareMetalMachine` was modified
+
+* `runDataExtractsRestricted(models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)` was added
+* `actionStates()` was added
+* `caCertificate()` was added
+* `runDataExtractsRestricted(models.BareMetalMachineRunDataExtractsParameters)` was added
+
+#### `models.BareMetalMachineKeySets` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Racks` was modified
+
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.StorageAppliances` was modified
+
+* `runReadCommands(java.lang.String,java.lang.String,models.StorageApplianceRunReadCommandsParameters)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `runReadCommands(java.lang.String,java.lang.String,models.StorageApplianceRunReadCommandsParameters,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Cluster` was modified
+
+* `actionStates()` was added
+
+#### `models.Clusters` was modified
+
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachineKeySet$Definition` was modified
+
+* `withPrivilegeLevelName(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `allocatedSizeMiB()` was added
+* `storageApplianceId()` was added
+
+#### `models.BareMetalMachineReplaceParameters` was modified
+
+* `withSafeguardMode(models.BareMetalMachineReplaceSafeguardMode)` was added
+* `safeguardMode()` was added
+* `storagePolicy()` was added
+* `withStoragePolicy(models.BareMetalMachineReplaceStoragePolicy)` was added
+
+#### `models.StorageAppliance` was modified
+
+* `runReadCommands(models.StorageApplianceRunReadCommandsParameters,com.azure.core.util.Context)` was added
+* `runReadCommands(models.StorageApplianceRunReadCommandsParameters)` was added
+* `caCertificate()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withStorageApplianceId(java.lang.String)` was added
+
+#### `models.CloudServicesNetworkPatchParameters` was modified
+
+* `withStorageOptions(models.CloudServicesNetworkStorageOptionsPatch)` was added
+* `storageOptions()` was added
+
+#### `models.MetricsConfigurations` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Volumes` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusters` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.KubernetesClusterFeatures` was modified
+
+* `listByKubernetesCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Consoles` was modified
+
+* `listByVirtualMachine(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CloudServicesNetwork` was modified
+
+* `storageOptions()` was added
+* `storageStatus()` was added
+
+#### `models.L3Networks` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.VirtualMachine$Definition` was modified
+
+* `withNetworkDataContent(java.lang.String)` was added
+* `withUserDataContent(java.lang.String)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.VirtualMachine$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.CloudServicesNetworks` was modified
+
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ClusterManagers` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AgentPools` was modified
+
+* `listByKubernetesCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.VirtualMachine` was modified
+
+* `assignRelay()` was added
+* `userDataContent()` was added
+* `networkDataContent()` was added
+* `assignRelay(models.VirtualMachineAssignRelayParameters,com.azure.core.util.Context)` was added
+* `identity()` was added
+
+#### `models.SecretArchiveReference` was modified
+
+* `keyVaultUri()` was added
+
+#### `models.CommandOutputSettings` was modified
+
+* `withOverrides(java.util.List)` was added
+* `overrides()` was added
+
+#### `models.CloudServicesNetwork$Definition` was modified
+
+* `withStorageOptions(models.CloudServicesNetworkStorageOptions)` was added
+
+#### `models.BmcKeySets` was modified
+
+* `listByCluster(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachines` was modified
+
+* `runDataExtractsRestricted(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters)` was added
+* `runDataExtractsRestricted(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.VirtualMachines` was modified
+
+* `assignRelay(java.lang.String,java.lang.String)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `assignRelay(java.lang.String,java.lang.String,models.VirtualMachineAssignRelayParameters,com.azure.core.util.Context)` was added
+
+#### `models.BareMetalMachineKeySet` was modified
+
+* `privilegeLevelName()` was added
+
+#### `models.TrunkedNetworks` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CloudServicesNetwork$Update` was modified
+
+* `withStorageOptions(models.CloudServicesNetworkStorageOptionsPatch)` was added
+
+#### `models.L2Networks` was modified
+
+* `listByResourceGroup(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 2.1.0-beta.1 (2025-11-18)
 
