@@ -350,7 +350,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
-    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
+    ReleaseTag     = "$($groupId)+$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -551,7 +551,7 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   # -ll option says "only update README and CHANGELOG entries for libraries that are on the list"
   python "$EngDir/versioning/update_versions.py" --library-list $fullLibraryName
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
+  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate -GroupId $GroupId
 }
 
 function GetExistingPackageVersions ($PackageName, $GroupId=$null)

@@ -166,8 +166,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Get the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
-     * service principal to be used by the cluster during Arc Appliance installation.
+     * Get the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -176,8 +176,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Set the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
-     * service principal to be used by the cluster during Arc Appliance installation.
+     * Set the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchParameters object itself.

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,12 +30,6 @@ public final class GetSupportedLanguagesResult implements JsonSerializable<GetSu
      */
     @Generated
     private Map<String, TransliterationLanguage> transliteration;
-
-    /*
-     * Languages that support dictionary API.
-     */
-    @Generated
-    private Map<String, SourceDictionaryLanguage> dictionary;
 
     /**
      * Creates an instance of GetSupportedLanguagesResult class.
@@ -64,26 +59,12 @@ public final class GetSupportedLanguagesResult implements JsonSerializable<GetSu
     }
 
     /**
-     * Get the dictionary property: Languages that support dictionary API.
-     *
-     * @return the dictionary value.
-     */
-    @Generated
-    public Map<String, SourceDictionaryLanguage> getDictionary() {
-        return this.dictionary;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("translation", this.translation, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("transliteration", this.transliteration,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("dictionary", this.dictionary, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -110,15 +91,30 @@ public final class GetSupportedLanguagesResult implements JsonSerializable<GetSu
                     Map<String, TransliterationLanguage> transliteration
                         = reader.readMap(reader1 -> TransliterationLanguage.fromJson(reader1));
                     deserializedGetSupportedLanguagesResult.transliteration = transliteration;
-                } else if ("dictionary".equals(fieldName)) {
-                    Map<String, SourceDictionaryLanguage> dictionary
-                        = reader.readMap(reader1 -> SourceDictionaryLanguage.fromJson(reader1));
-                    deserializedGetSupportedLanguagesResult.dictionary = dictionary;
+                } else if ("models".equals(fieldName)) {
+                    List<String> models = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGetSupportedLanguagesResult.models = models;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedGetSupportedLanguagesResult;
         });
+    }
+
+    /*
+     * LLM models supported.
+     */
+    @Generated
+    private List<String> models;
+
+    /**
+     * Get the models property: LLM models supported.
+     *
+     * @return the models value.
+     */
+    @Generated
+    public List<String> getModels() {
+        return this.models;
     }
 }

@@ -22,11 +22,6 @@ public final class AgentPoolSshAccess extends ExpandableStringEnum<AgentPoolSshA
     public static final AgentPoolSshAccess DISABLED = fromString("Disabled");
 
     /**
-     * Static value EntraId for AgentPoolSshAccess.
-     */
-    public static final AgentPoolSshAccess ENTRA_ID = fromString("EntraId");
-
-    /**
      * Creates a new instance of AgentPoolSshAccess value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

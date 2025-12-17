@@ -67,7 +67,7 @@
     "com.azure.resourcemanager.hybridconnectivity.fluent.SolutionTypesClient.getByResourceGroupWithResponse": "Microsoft.HybridConnectivity.SolutionTypes.get",
     "com.azure.resourcemanager.hybridconnectivity.fluent.SolutionTypesClient.list": "Microsoft.HybridConnectivity.SolutionTypes.listBySubscription",
     "com.azure.resourcemanager.hybridconnectivity.fluent.SolutionTypesClient.listByResourceGroup": "Microsoft.HybridConnectivity.SolutionTypes.listByResourceGroup",
-    "com.azure.resourcemanager.hybridconnectivity.fluent.models.AADProfileProperties": "Microsoft.HybridConnectivity.AADProfileProperties",
+    "com.azure.resourcemanager.hybridconnectivity.fluent.models.AadProfileProperties": "Microsoft.HybridConnectivity.AADProfileProperties",
     "com.azure.resourcemanager.hybridconnectivity.fluent.models.EndpointAccessResourceInner": "Microsoft.HybridConnectivity.EndpointAccessResource",
     "com.azure.resourcemanager.hybridconnectivity.fluent.models.EndpointResourceInner": "Microsoft.HybridConnectivity.EndpointResource",
     "com.azure.resourcemanager.hybridconnectivity.fluent.models.GenerateAwsTemplateResponseInner": "Microsoft.HybridConnectivity.GenerateAwsTemplateResponse",

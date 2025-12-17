@@ -17,7 +17,7 @@ public final class ClusterManagerPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterManagerPatchParameters model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"2d949141-43f1-4f72-adb4-ad01a1261abf\",\"tenantId\":\"35f5490c-0b66-40a4-acce-f6f98a415c98\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"owxwcomli\":{\"principalId\":\"097825b1-8f97-456c-96f6-4df251eda453\",\"clientId\":\"9553b9d2-124e-4e87-bdb6-aa82eace3e9b\"}}},\"tags\":{\"yfdvlvhbwrnfxtgd\":\"wvczcswkacve\"}}")
+            "{\"identity\":{\"principalId\":\"9f83432b-3baf-4421-9892-eb01530118af\",\"tenantId\":\"f5b47c06-63a3-4b79-ab45-f1976ba25ab7\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"owxwcomli\":{\"principalId\":\"54f461e1-6499-4c3f-b38a-0aef8d5f2e38\",\"clientId\":\"bacf6124-9455-44f4-a608-c74ddd77ed00\"}}},\"tags\":{\"yfdvlvhbwrnfxtgd\":\"wvczcswkacve\"}}")
             .toObject(ClusterManagerPatchParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("wvczcswkacve", model.tags().get("yfdvlvhbwrnfxtgd"));

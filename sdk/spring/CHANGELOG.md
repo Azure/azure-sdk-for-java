@@ -5,6 +5,10 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+
+- Change default connection factory of JMS listener container to native Service Bus connection factory. [#47413](https://github.com/Azure/azure-sdk-for-java/issues/47413)
+
 #### Bugs Fixed
 
 - 2 `TokenCredential` bean found in AzureServiceBusMessagingAutoConfiguration. [#47470](https://github.com/Azure/azure-sdk-for-java/pull/47470)
