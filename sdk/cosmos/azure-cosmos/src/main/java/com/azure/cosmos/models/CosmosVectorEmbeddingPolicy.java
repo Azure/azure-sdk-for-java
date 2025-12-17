@@ -44,12 +44,11 @@ public final class CosmosVectorEmbeddingPolicy {
      *
      * @param cosmosVectorEmbeddings paths for embeddings along with path-specific settings for the item.
      */
-    public CosmosVectorEmbeddingPolicy setCosmosVectorEmbeddings(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
+    public void setCosmosVectorEmbeddings(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
         cosmosVectorEmbeddings.forEach(embedding -> {
             checkNotNull(embedding, "Null values are not allowed in cosmosVectorEmbeddings list.");
         });
         this.cosmosVectorEmbeddings = cosmosVectorEmbeddings;
-        return this;
     }
 
 }

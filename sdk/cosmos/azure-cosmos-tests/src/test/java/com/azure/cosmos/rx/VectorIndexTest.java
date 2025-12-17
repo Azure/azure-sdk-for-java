@@ -94,8 +94,8 @@ public class VectorIndexTest extends TestSuiteBase {
             .setIncludedPaths(ImmutableList.of(includedPath1, includedPath2))
             .setVectorIndexes(populateVectorIndexes());
 
-        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy()
-            .setCosmosVectorEmbeddings(populateEmbeddings());
+        CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy = new CosmosVectorEmbeddingPolicy();
+        cosmosVectorEmbeddingPolicy.setCosmosVectorEmbeddings(populateEmbeddings());
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef)
             .setIndexingPolicy(indexingPolicy)
