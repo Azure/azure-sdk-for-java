@@ -24,9 +24,14 @@ public class MockDownloadHttpResponse extends HttpResponse {
     private final Flux<ByteBuffer> body;
 
     public MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
+        this(response, statusCode, response.getHeaders(), body);
+    }
+
+    public MockDownloadHttpResponse(HttpResponse response, int statusCode, HttpHeaders headers,
+        Flux<ByteBuffer> body) {
         super(response.getRequest());
         this.statusCode = statusCode;
-        this.headers = response.getHeaders();
+        this.headers = headers;
         this.body = body;
     }
 

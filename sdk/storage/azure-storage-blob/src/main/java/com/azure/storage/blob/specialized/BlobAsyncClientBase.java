@@ -1290,11 +1290,14 @@ public class BlobAsyncClientBase {
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
+        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef = new AtomicReference<>();
+
         // Add structured message decoding context if enabled
         final Context firstRangeContext;
         if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
             firstRangeContext = initialContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
-                .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions);
+                .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions)
+                .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY, decoderStateRef);
         } else {
             firstRangeContext = initialContext;
         }
@@ -1319,18 +1322,6 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef
-                    = new AtomicReference<>();
-                if (contentValidationOptions != null
-                    && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                    Object decoderStateObj
-                        = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                            .orElse(null);
-                    if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
-                        decoderStateRef.set((StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj);
-                    }
-                }
-
                 // The resume function takes throwable and offset at the destination.
                 // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
@@ -1342,6 +1333,8 @@ public class BlobAsyncClientBase {
                     StorageContentValidationDecoderPolicy.DecoderState decoderState = null;
                     long expectedEncodedLength = finalCount;
                     long encodedProgress = offset;
+                    long retryStartOffset = -1;
+                    boolean noBytesEmitted = offset == 0;
 
                     if (contentValidationOptions != null
                         && contentValidationOptions.isStructuredMessageValidationEnabled()) {
@@ -1357,10 +1350,35 @@ public class BlobAsyncClientBase {
                             }
                         }
 
+                        // If the decoder has already finalized, discard it and restart from the beginning.
+                        if (decoderState != null && decoderState.isFinalized()) {
+                            decoderState = null;
+                        }
+
                         if (decoderState != null) {
                             expectedEncodedLength = decoderState.getExpectedContentLength();
                             encodedProgress = decoderState.getTotalEncodedBytesProcessed();
+
+                            long boundaryDecoded = decoderState.getDecodedBytesAtLastCompleteSegment();
+                            if (offset < boundaryDecoded || noBytesEmitted) {
+                                // We haven't emitted the bytes represented by this decoder boundary; restart clean.
+                                decoderState = null;
+                            } else {
+                                long bytesToSkip = Math.max(0, offset - boundaryDecoded);
+                                decoderState.setDecodedBytesToSkip(bytesToSkip);
+
+                                // Always rewind decoder to last validated boundary before retrying.
+                                retryStartOffset = decoderState.resetForRetry();
+                            }
                         }
+                    }
+
+                    if (decoderState == null) {
+                        // No decoder state available (likely failed before policy captured it) or no bytes emitted;
+                        // restart from beginning to avoid skipping data.
+                        retryStartOffset = noBytesEmitted ? 0 : -1;
+                        encodedProgress = noBytesEmitted ? 0 : encodedProgress;
+                        decoderStateRef.set(null);
                     }
 
                     try {
@@ -1372,25 +1390,23 @@ public class BlobAsyncClientBase {
                         // based on the encoded bytes processed, not the decoded bytes
                         if (contentValidationOptions != null
                             && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-                            long retryStartOffset = -1;
-
-                            // First try to use decoder state (authoritative)
-                            if (decoderState != null) {
-                                // Always rewind decoder to last validated boundary before retrying.
-                                retryStartOffset = decoderState.resetForRetry();
-
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                                decoderStateRef.set(decoderState);
-                            }
-
                             // If no decoder state or no retry offset from state, fall back to parsed token or offset.
-                            if (retryStartOffset < 0) {
+                            if (retryStartOffset < 0 && !noBytesEmitted) {
                                 retryStartOffset = StorageContentValidationDecoderPolicy
                                     .parseRetryStartOffset(throwable.getMessage());
                             }
                             if (retryStartOffset < 0) {
-                                retryStartOffset = offset;
+                                retryStartOffset = noBytesEmitted ? 0 : offset;
+                            }
+
+                            if (decoderState != null) {
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
+                                decoderStateRef.set(decoderState);
+                            } else {
+                                // Ensure we don't carry a stale decoder state into a full restart.
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, null);
                             }
 
                             long remainingCount = expectedEncodedLength - retryStartOffset;

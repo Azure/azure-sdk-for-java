@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.DownloadContentValidationOptions;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +41,7 @@ import java.util.regex.Pattern;
  */
 public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationDecoderPolicy.class);
+    private static final String EXPECTED_LENGTH_CONTEXT_KEY = "azStructuredMsgExpectedLength";
 
     /**
      * Machine-readable token pattern for extracting retry start offset from exception messages.
@@ -51,6 +54,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * Creates a new instance of {@link StorageContentValidationDecoderPolicy}.
      */
     public StorageContentValidationDecoderPolicy() {
+    }
+
+    @Override
+    public HttpPipelinePosition getPipelinePosition() {
+        // Run on every retry so the state stored in the call context is available across attempts.
+        return HttpPipelinePosition.PER_RETRY;
     }
 
     /**
@@ -130,8 +139,30 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             Long contentLength = getContentLength(httpResponse.getHeaders());
 
             if (contentLength != null && contentLength > 0 && validationOptions != null) {
+                // Preserve the original encoded length across retries; range responses may advertise smaller lengths.
+                long expectedLength = context.getData(EXPECTED_LENGTH_CONTEXT_KEY)
+                    .filter(Long.class::isInstance)
+                    .map(Long.class::cast)
+                    .orElse(contentLength);
+
+                // Cache for subsequent retries.
+                context.setData(EXPECTED_LENGTH_CONTEXT_KEY, expectedLength);
+
+                AtomicReference<DecoderState> decoderStateHolder = null;
+                Object decoderStateHolderObj
+                    = context.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY).orElse(null);
+                if (decoderStateHolderObj instanceof AtomicReference) {
+                    @SuppressWarnings("unchecked")
+                    AtomicReference<DecoderState> tmp = (AtomicReference<DecoderState>) decoderStateHolderObj;
+                    decoderStateHolder = tmp;
+                }
+
                 // Get or create decoder with state tracking
-                DecoderState decoderState = getOrCreateDecoderState(context, contentLength);
+                DecoderState decoderState = getOrCreateDecoderState(context, expectedLength);
+
+                if (decoderStateHolder != null) {
+                    decoderStateHolder.set(decoderState);
+                }
 
                 // Decode using the stateful decoder
                 Flux<ByteBuffer> decodedStream = decodeStream(httpResponse.getBody(), decoderState);
@@ -197,32 +228,31 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 switch (result.getStatus()) {
                     case SUCCESS:
                     case NEED_MORE_BYTES:
+                        // Update counters but defer emitting payload until we have a fully validated message.
+                        updateProgress(state);
+                        return Flux.empty();
+
                     case COMPLETED:
-                        // All three cases update counters and return any decoded payload
-                        // SUCCESS and NEED_MORE_BYTES: partial decode, more data expected
-                        // COMPLETED: decode finished successfully
+                        updateProgress(state);
+                        ByteBuffer decodedPayload = result.getDecodedPayload();
+                        if (decodedPayload != null && decodedPayload.hasRemaining()) {
+                            long skip = state.decodedBytesToSkip.get();
+                            if (skip > 0) {
+                                if (skip >= decodedPayload.remaining()) {
+                                    state.decodedBytesToSkip.addAndGet(-decodedPayload.remaining());
+                                    decodedPayload = null;
+                                } else {
+                                    int skipCount = (int) skip;
+                                    decodedPayload.position(decodedPayload.position() + skipCount);
+                                    decodedPayload = decodedPayload.slice();
+                                    state.decodedBytesToSkip.addAndGet(-skipCount);
+                                }
+                            }
 
-                        long currentLastCompleteSegment = state.decoder.getLastCompleteSegmentStart();
-
-                        // Only update decodedBytesAtLastCompleteSegment when lastCompleteSegmentStart changes
-                        // This indicates that a segment boundary was just crossed
-                        if (state.lastCompleteSegmentStart != currentLastCompleteSegment) {
-                            state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
-                            state.lastCompleteSegmentStart = currentLastCompleteSegment;
-
-                            LOGGER.atInfo()
-                                .addKeyValue("newSegmentBoundary", currentLastCompleteSegment)
-                                .addKeyValue("decodedBytesAtBoundary", state.decodedBytesAtLastCompleteSegment)
-                                .log("Segment boundary crossed, updated decoded bytes snapshot");
-                        }
-
-                        long encodedProgress
-                            = state.decoder.getMessageOffset() + state.decoder.getPendingEncodedByteCount();
-                        state.totalEncodedBytesProcessed.set(encodedProgress);
-                        state.totalBytesDecoded.set(state.decoder.getTotalDecodedPayloadBytes());
-
-                        if (result.getDecodedPayload() != null && result.getDecodedPayload().hasRemaining()) {
-                            return Flux.just(result.getDecodedPayload());
+                            if (decodedPayload != null && decodedPayload.hasRemaining()) {
+                                state.totalBytesDecoded.addAndGet(decodedPayload.remaining());
+                                return Flux.just(decodedPayload);
+                            }
                         }
                         return Flux.empty();
 
@@ -240,10 +270,15 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 return Flux.error(createRetryableException(state, e.getMessage(), e));
             }
         }).onErrorResume(throwable -> {
-            // If we've already completed decoding, ignore any downstream errors (mirror .NET behavior).
+            // If decoding already completed and we emitted payload, suppress late downstream errors (mirror .NET).
+            // If no payload was emitted, surface the error so the retriable download can resume properly.
             if (state.decoder.isComplete()) {
-                LOGGER.atInfo().log("Decoder complete; suppressing downstream error and completing successfully");
-                return Flux.empty();
+                if (state.totalBytesDecoded.get() > 0) {
+                    LOGGER.atInfo().log("Decoder complete; suppressing downstream error and completing successfully");
+                    return Flux.empty();
+                } else {
+                    LOGGER.atInfo().log("Decoder complete with no emitted payload; propagating error to retry");
+                }
             }
             // Wrap any error with retry offset information
             if (throwable instanceof IOException) {
@@ -276,6 +311,29 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     }
 
     /**
+     * Updates progress counters based on the current decoder state and logs when a new validated segment boundary is
+     * crossed. This keeps encoded progress in sync with the decoder while deferring payload emission until the entire
+     * message is validated.
+     */
+    private void updateProgress(DecoderState state) {
+        long currentLastCompleteSegment = state.decoder.getLastCompleteSegmentStart();
+
+        // Only update decodedBytesAtLastCompleteSegment when the boundary changes (new segment validated).
+        if (state.lastCompleteSegmentStart != currentLastCompleteSegment) {
+            state.decodedBytesAtLastCompleteSegment = state.decoder.getTotalDecodedPayloadBytes();
+            state.lastCompleteSegmentStart = currentLastCompleteSegment;
+
+            LOGGER.atInfo()
+                .addKeyValue("newSegmentBoundary", currentLastCompleteSegment)
+                .addKeyValue("decodedBytesAtBoundary", state.decodedBytesAtLastCompleteSegment)
+                .log("Segment boundary crossed, updated decoded bytes snapshot");
+        }
+
+        long encodedProgress = state.decoder.getMessageOffset() + state.decoder.getPendingEncodedByteCount();
+        state.totalEncodedBytesProcessed.set(encodedProgress);
+    }
+
+    /**
      * Creates an IOException with the retry start offset encoded in the message.
      *
      * @param state The decoder state.
@@ -295,8 +353,8 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * @return An IOException with retry offset information.
      */
     private IOException createRetryableException(DecoderState state, String message, Throwable cause) {
-        long retryOffset = state.getRetryOffset();
-        long decodedSoFar = state.decoder.getTotalDecodedPayloadBytes();
+        long retryOffset = state.prepareForRetry();
+        long decodedSoFar = state.totalBytesDecoded.get();
         long expectedLength = state.decoder.getMessageLength();
 
         // Check if the exception message already has decoder offset information
@@ -362,6 +420,24 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
      * @return The content length or null if not present.
      */
     private Long getContentLength(HttpHeaders headers) {
+        // Prefer the total length from Content-Range (if present) so retries use the full encoded length
+        // even when the current response is partial.
+        String contentRange = headers.getValue(HttpHeaderName.CONTENT_RANGE);
+        if (contentRange != null) {
+            // Format: bytes start-end/total
+            int slash = contentRange.indexOf('/');
+            if (slash > -1 && slash + 1 < contentRange.length()) {
+                String totalPart = contentRange.substring(slash + 1).trim();
+                if (!"*".equals(totalPart)) {
+                    try {
+                        return Long.parseLong(totalPart);
+                    } catch (NumberFormatException e) {
+                        LOGGER.warning("Invalid content range total length in response headers: " + contentRange);
+                    }
+                }
+            }
+        }
+
         String contentLengthStr = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLengthStr != null) {
             try {
@@ -405,10 +481,23 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
     public static class DecoderState {
         private final StructuredMessageDecoder decoder;
         private final long expectedContentLength;
+        /**
+         * Tracks how many decoded bytes have actually been emitted to the caller (excludes bytes skipped during
+         * fast-forward on retry).
+         */
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
+        /**
+         * Snapshot of decoded bytes emitted at the last fully validated segment boundary. Used to correlate the encoded
+         * retry offset with the decoded offset that RetriableDownloadFlux tracks.
+         */
         private long decodedBytesAtLastCompleteSegment;
         private long lastCompleteSegmentStart; // Tracks the last value to detect changes
+        /**
+         * Number of decoded bytes that should be skipped on the next retry to fast-forward to the caller's decoded
+         * offset. This mirrors the .NET StructuredMessageDecodingRetriableStream behavior.
+         */
+        private final AtomicLong decodedBytesToSkip = new AtomicLong(0);
 
         /**
          * Creates a new decoder state.
@@ -494,15 +583,14 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
 
             decoder.resetToLastCompleteSegment();
 
-            // Align counters to the boundary we will resume from so subsequent progress tracking is consistent.
-            long boundaryDecodedBytes = decodedBytesAtLastCompleteSegment;
-            totalBytesDecoded.set(boundaryDecodedBytes);
+            // Align encoded counters to the boundary we will resume from so subsequent progress tracking is consistent.
             totalEncodedBytesProcessed.set(decoder.getMessageOffset() + decoder.getPendingEncodedByteCount());
+            decodedBytesToSkip.set(0);
 
             LOGGER.atInfo()
                 .addKeyValue("retryOffset", retryOffset)
                 .addKeyValue("decoderOffset", decoder.getMessageOffset())
-                .addKeyValue("decodedBytesAtBoundary", boundaryDecodedBytes)
+                .addKeyValue("decodedBytesAtBoundary", decodedBytesAtLastCompleteSegment)
                 .log("Prepared decoder state for smart retry");
 
             return retryOffset;
@@ -525,6 +613,16 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          */
         public long getDecodedBytesAtLastCompleteSegment() {
             return decodedBytesAtLastCompleteSegment;
+        }
+
+        /**
+         * Sets how many decoded bytes should be skipped when resuming after a retry. This lets the decoder fast-forward
+         * within the current segment to align with the decoded offset already emitted to the user before the failure.
+         *
+         * @param bytesToSkip decoded bytes to drop from the next decoded payloads.
+         */
+        public void setDecodedBytesToSkip(long bytesToSkip) {
+            decodedBytesToSkip.set(Math.max(0, bytesToSkip));
         }
     }
 

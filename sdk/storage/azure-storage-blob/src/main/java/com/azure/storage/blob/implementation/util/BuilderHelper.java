@@ -141,7 +141,12 @@ public final class BuilderHelper {
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        policies.add(new StorageContentValidationDecoderPolicy());
+        // Only add the structured message decoder once; allow callers to inject their own for ordering with test
+        // policies (e.g., fault injection before decoding).
+        boolean hasDecoder = policies.stream().anyMatch(p -> p instanceof StorageContentValidationDecoderPolicy);
+        if (!hasDecoder) {
+            policies.add(new StorageContentValidationDecoderPolicy());
+        }
 
         policies.add(getResponseValidationPolicy());
 
