@@ -228,13 +228,24 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                 switch (result.getStatus()) {
                     case SUCCESS:
                     case NEED_MORE_BYTES:
-                        // Update counters but defer emitting payload until we have a fully validated message.
+                        // Accumulate partial decoded bytes; emit only when the full message is validated.
+                        ByteBuffer partial = result.getDecodedPayload();
+                        if (partial != null && partial.hasRemaining()) {
+                            state.appendPartial(partial);
+                        }
                         updateProgress(state);
                         return Flux.empty();
 
                     case COMPLETED:
-                        updateProgress(state);
+                        // Append any final bytes from this chunk, then emit the full accumulated payload.
                         ByteBuffer decodedPayload = result.getDecodedPayload();
+                        if (decodedPayload != null && decodedPayload.hasRemaining()) {
+                            state.appendPartial(decodedPayload);
+                        }
+
+                        decodedPayload = state.drainPartial();
+                        updateProgress(state);
+
                         if (decodedPayload != null && decodedPayload.hasRemaining()) {
                             long skip = state.decodedBytesToSkip.get();
                             if (skip > 0) {
@@ -250,6 +261,12 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
                             }
 
                             if (decodedPayload != null && decodedPayload.hasRemaining()) {
+                                // Return a defensive copy to avoid any inadvertent position/limit side effects.
+                                ByteBuffer copy = ByteBuffer.allocate(decodedPayload.remaining());
+                                copy.put(decodedPayload.duplicate());
+                                copy.flip();
+                                decodedPayload = copy;
+
                                 state.totalBytesDecoded.addAndGet(decodedPayload.remaining());
                                 return Flux.just(decodedPayload);
                             }
@@ -487,6 +504,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          */
         private final AtomicLong totalBytesDecoded;
         private final AtomicLong totalEncodedBytesProcessed;
+        private final java.io.ByteArrayOutputStream accumulatedDecoded = new java.io.ByteArrayOutputStream();
         /**
          * Snapshot of decoded bytes emitted at the last fully validated segment boundary. Used to correlate the encoded
          * retry offset with the decoded offset that RetriableDownloadFlux tracks.
@@ -582,6 +600,7 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
             long retryOffset = decoder.getRetryStartOffset();
 
             decoder.resetToLastCompleteSegment();
+            accumulatedDecoded.reset();
 
             // Align encoded counters to the boundary we will resume from so subsequent progress tracking is consistent.
             totalEncodedBytesProcessed.set(decoder.getMessageOffset() + decoder.getPendingEncodedByteCount());
@@ -623,6 +642,31 @@ public class StorageContentValidationDecoderPolicy implements HttpPipelinePolicy
          */
         public void setDecodedBytesToSkip(long bytesToSkip) {
             decodedBytesToSkip.set(Math.max(0, bytesToSkip));
+        }
+
+        /**
+         * @param decoded Append decoded bytes produced so far in the current decode attempt.
+         *
+         */
+        public void appendPartial(ByteBuffer decoded) {
+            if (decoded == null || !decoded.hasRemaining()) {
+                return;
+            }
+            ByteBuffer copy = decoded.asReadOnlyBuffer();
+            byte[] data = new byte[copy.remaining()];
+            copy.get(data);
+            accumulatedDecoded.write(data, 0, data.length);
+        }
+
+        /**
+         * Drains and returns all accumulated decoded bytes for this message.
+         *
+         * @return ByteBuffer containing all decoded bytes or null if none accumulated.
+         */
+        public ByteBuffer drainPartial() {
+            byte[] data = accumulatedDecoded.toByteArray();
+            accumulatedDecoded.reset();
+            return data.length == 0 ? null : ByteBuffer.wrap(data);
         }
     }
 

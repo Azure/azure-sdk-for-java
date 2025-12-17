@@ -1329,15 +1329,20 @@ public class BlobAsyncClientBase {
                         return Mono.error(throwable);
                     }
 
-                    long newCount = finalCount - offset;
+                    // For structured message decoding, treat downstream offset as 0 to avoid carrying stale skip/offset
+                    // state across retries. Structured downloads always require the whole encoded message.
+                    boolean structuredDecode = contentValidationOptions != null
+                        && contentValidationOptions.isStructuredMessageValidationEnabled();
+                    long emittedOffset = structuredDecode ? 0 : offset;
+
+                    long newCount = finalCount - emittedOffset;
                     StorageContentValidationDecoderPolicy.DecoderState decoderState = null;
                     long expectedEncodedLength = finalCount;
-                    long encodedProgress = offset;
+                    long encodedProgress = emittedOffset;
                     long retryStartOffset = -1;
-                    boolean noBytesEmitted = offset == 0;
+                    boolean noBytesEmitted = emittedOffset == 0;
 
-                    if (contentValidationOptions != null
-                        && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                    if (structuredDecode) {
                         decoderState = decoderStateRef.get();
 
                         if (decoderState == null) {
@@ -1356,20 +1361,22 @@ public class BlobAsyncClientBase {
                         }
 
                         if (decoderState != null) {
+                            if (noBytesEmitted) {
+                                // No decoded bytes reached the caller; discard this state and restart cleanly.
+                                decoderState = null;
+                            }
+                        }
+
+                        if (decoderState != null) {
                             expectedEncodedLength = decoderState.getExpectedContentLength();
                             encodedProgress = decoderState.getTotalEncodedBytesProcessed();
 
                             long boundaryDecoded = decoderState.getDecodedBytesAtLastCompleteSegment();
-                            if (offset < boundaryDecoded || noBytesEmitted) {
-                                // We haven't emitted the bytes represented by this decoder boundary; restart clean.
-                                decoderState = null;
-                            } else {
-                                long bytesToSkip = Math.max(0, offset - boundaryDecoded);
-                                decoderState.setDecodedBytesToSkip(bytesToSkip);
+                            long bytesToSkip = emittedOffset <= boundaryDecoded ? 0 : emittedOffset - boundaryDecoded;
+                            decoderState.setDecodedBytesToSkip(bytesToSkip);
 
-                                // Always rewind decoder to last validated boundary before retrying.
-                                retryStartOffset = decoderState.resetForRetry();
-                            }
+                            // Always rewind decoder to last validated boundary before retrying.
+                            retryStartOffset = decoderState.resetForRetry();
                         }
                     }
 
@@ -1388,15 +1395,14 @@ public class BlobAsyncClientBase {
 
                         // If structured message decoding is enabled, we need to calculate the retry offset
                         // based on the encoded bytes processed, not the decoded bytes
-                        if (contentValidationOptions != null
-                            && contentValidationOptions.isStructuredMessageValidationEnabled()) {
+                        if (structuredDecode) {
                             // If no decoder state or no retry offset from state, fall back to parsed token or offset.
                             if (retryStartOffset < 0 && !noBytesEmitted) {
                                 retryStartOffset = StorageContentValidationDecoderPolicy
                                     .parseRetryStartOffset(throwable.getMessage());
                             }
                             if (retryStartOffset < 0) {
-                                retryStartOffset = noBytesEmitted ? 0 : offset;
+                                retryStartOffset = noBytesEmitted ? 0 : emittedOffset;
                             }
 
                             if (decoderState != null) {
