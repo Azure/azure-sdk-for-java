@@ -749,7 +749,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public RedisCacheImpl disableLocalAuth() {
-        this.innerModel().withDisableAccessKeyAuthentication(true);
+        if (isInCreateMode()) {
+            createParameters.withDisableAccessKeyAuthentication(true);
+        } else {
+            updateParameters.withDisableAccessKeyAuthentication(true);
+        }
         return this;
     }
 

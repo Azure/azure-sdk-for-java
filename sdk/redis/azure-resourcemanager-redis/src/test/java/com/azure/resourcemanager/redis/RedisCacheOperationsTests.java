@@ -50,6 +50,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRegion(Region.ASIA_EAST)
             .withNewResourceGroup(rgName)
             .withBasicSku()
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth();
         Creatable<RedisCache> redisCacheDefinition2 = redisManager.redisCaches()
             .define(rrNameSecond)
@@ -58,6 +59,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withPremiumSku()
             .withShardCount(2)
             .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302))
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth();
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
             .define(rrNameThird)
@@ -67,6 +69,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withNonSslPort()
             .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
             .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40")
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth();
         // Server throws "The 'minimumTlsVersion' property is not yet supported." exception. Uncomment when fixed.
         // .withMinimumTlsVersion(TlsVersion.ONE_FULL_STOP_ONE);
@@ -117,7 +120,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         premiumCache.update().withoutRedisConfiguration().apply();
 
         Assertions.assertEquals(0, premiumCache.patchSchedules().size());
-        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).disableLocalAuth().apply();
+        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).apply();
 
         Assertions.assertEquals(2, premiumCache.patchSchedules().size());
         // Reboot
@@ -224,6 +227,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withNewResourceGroup(rgName)
             .withBasicSku()
             .withRedisVersion(redisVersion)
+            .withRedisConfiguration("aad-enabled", "true")
+            .disableLocalAuth()
             .create();
 
         assertSameVersion(RedisCache.RedisVersion.V4, redisCache.redisVersion());
@@ -256,6 +261,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withNonSslPort()
             .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
             .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40")
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth()
             .create();
 
@@ -264,6 +270,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgNameSecond)
             .withPremiumSku(2)
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth()
             .create();
 
@@ -325,6 +332,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 //                .withRdbBackupFrequency("15")
 //                .withRdbBackupMaxSnapshotCount("1")
 //                .withRdbStorageConnectionString(connectionString))
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth()
             .create();
 //        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
@@ -345,6 +353,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRedisConfiguration("aof-backup-enabled", "true")
             .withRedisConfiguration("aof-storage-connection-string-0", connectionString)
             .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
+            .withRedisConfiguration("aad-enabled", "true")
+            .disableLocalAuth()
             .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().aofBackupEnabled());
         if (!isPlaybackMode()) {
@@ -378,9 +388,11 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withRegion(Region.ASIA_EAST)
             .withNewResourceGroup(rgName)
             .withBasicSku()
+            .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth()
             .create();
 
+        Assertions.assertTrue(redisCache.localAuthDisabled());
         redisCache.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
 
