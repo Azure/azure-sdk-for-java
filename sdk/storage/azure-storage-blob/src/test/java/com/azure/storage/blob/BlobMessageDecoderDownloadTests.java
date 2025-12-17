@@ -80,10 +80,10 @@ public class BlobMessageDecoderDownloadTests extends BlobTestBase {
             .then(
                 bc.downloadStreamWithResponse(range, (DownloadRetryOptions) null, (BlobRequestConditions) null, false))
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue()))).assertNext(r -> {
-            assertNotNull(r);
-            // Should get exactly 512 bytes of encoded data
-            assertEquals(512, r.length);
-        }).verifyComplete();
+                assertNotNull(r);
+                // Should get exactly 512 bytes of encoded data
+                assertEquals(512, r.length);
+            }).verifyComplete();
     }
 
     @Test
