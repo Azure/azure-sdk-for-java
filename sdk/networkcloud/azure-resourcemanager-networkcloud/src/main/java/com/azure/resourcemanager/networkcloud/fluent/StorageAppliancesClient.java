@@ -122,8 +122,8 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -141,8 +141,8 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -166,8 +166,8 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -184,8 +184,8 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -207,8 +207,8 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -224,8 +224,8 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -246,8 +246,8 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -262,8 +262,8 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
