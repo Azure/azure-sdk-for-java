@@ -4,18 +4,13 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,35 +27,14 @@ import java.util.Map;
  * 3. Deleting the analyzer
  * 4. Verifying the analyzer no longer exists
  */
-public class Sample09_DeleteAnalyzer {
+public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testDeleteAnalyzerAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingDeleteAnalyzer
         // First, create a temporary analyzer to delete
-        String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
+        String analyzerId = testResourceNamer.randomName("analyzer_to_delete_", 50);
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
         ContentFieldDefinition titleDef = new ContentFieldDefinition();
@@ -89,21 +63,21 @@ public class Sample09_DeleteAnalyzer {
         models.put("embedding", "text-embedding-3-large");
         analyzer.setModels(models);
 
-        client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Temporary analyzer created: " + analyzerId);
 
         // Verify the analyzer exists
-        ContentAnalyzer retrievedAnalyzer = client.getAnalyzer(analyzerId);
+        ContentAnalyzer retrievedAnalyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
         System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
 
         // Delete the analyzer
-        client.deleteAnalyzer(analyzerId);
+        contentUnderstandingClient.deleteAnalyzer(analyzerId);
         System.out.println("Analyzer deleted successfully: " + analyzerId);
 
         // Verify the analyzer no longer exists
         boolean analyzerDeleted = false;
         try {
-            client.getAnalyzer(analyzerId);
+            contentUnderstandingClient.getAnalyzer(analyzerId);
         } catch (ResourceNotFoundException e) {
             analyzerDeleted = true;
             System.out.println("Confirmed: Analyzer no longer exists");
@@ -128,30 +102,15 @@ public class Sample09_DeleteAnalyzer {
 
     @Test
     public void testDeleteNonexistentAnalyzerAsync() {
-        // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
-        assertNotNull(client, "Client should be successfully created");
-
         // Try to delete a non-existent analyzer
-        String nonExistentId = "non_existent_analyzer_" + System.currentTimeMillis();
+        String nonExistentId = testResourceNamer.randomName("non_existent_analyzer_", 50);
 
         System.out.println("\nAttempting to delete non-existent analyzer: " + nonExistentId);
 
         // Note: The SDK allows deleting non-existent analyzers without throwing an exception
         // This is a valid behavior (idempotent delete operation)
         try {
-            client.deleteAnalyzer(nonExistentId);
+            contentUnderstandingClient.deleteAnalyzer(nonExistentId);
             System.out.println("Delete operation completed (idempotent - no error for non-existent resource)");
         } catch (ResourceNotFoundException e) {
             System.out.println("ResourceNotFoundException caught (alternative behavior): " + e.getMessage());

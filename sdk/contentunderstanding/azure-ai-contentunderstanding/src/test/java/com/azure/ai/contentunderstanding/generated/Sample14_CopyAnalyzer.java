@@ -4,19 +4,13 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -29,41 +23,18 @@ import static org.junit.jupiter.api.Assertions.*;
  * Sample demonstrates how to copy an analyzer within the same resource.
  * For cross-resource copying, see Sample15_GrantCopyAuth.
  */
-public class Sample14_CopyAnalyzer {
-
-    private ContentUnderstandingClient client;
-    private ContentUnderstandingAsyncClient asyncClient;
+public class Sample14_CopyAnalyzer extends ContentUnderstandingClientTestBase {
 
     /**
      * Synchronous sample for copying an analyzer.
      */
     @Test
     public void testCopyAnalyzer() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
-        System.out.println("✓ Client initialized successfully with endpoint: " + endpoint);
+        System.out.println("✓ Client initialized successfully");
 
         // Generate unique analyzer IDs for this test
-        String sourceAnalyzerId = "test_analyzer_source_" + UUID.randomUUID().toString().replace("-", "");
-        String targetAnalyzerId = "test_analyzer_target_" + UUID.randomUUID().toString().replace("-", "");
+        String sourceAnalyzerId = testResourceNamer.randomName("test_analyzer_source_", 50);
+        String targetAnalyzerId = testResourceNamer.randomName("test_analyzer_target_", 50);
 
         try {
             // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzer
@@ -110,14 +81,14 @@ public class Sample14_CopyAnalyzer {
 
             // Create source analyzer
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = client.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer, true);
+                = contentUnderstandingClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer, true);
             ContentAnalyzer sourceResult = createPoller.getFinalResult();
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Step 2: Copy the source analyzer to target
             // Note: This copies within the same resource
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                = client.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
+                = contentUnderstandingClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
             ContentAnalyzer copiedAnalyzer = copyPoller.getFinalResult();
             System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
             // END: com.azure.ai.contentunderstanding.copyAnalyzer
@@ -226,7 +197,7 @@ public class Sample14_CopyAnalyzer {
             System.out.println("    Models: " + sourceResult.getModels().size());
 
             // Get the source analyzer to verify retrieval
-            ContentAnalyzer sourceAnalyzerInfo = client.getAnalyzer(sourceAnalyzerId);
+            ContentAnalyzer sourceAnalyzerInfo = contentUnderstandingClient.getAnalyzer(sourceAnalyzerId);
 
             System.out.println("\n📋 Source Analyzer Retrieval Verification:");
             assertNotNull(sourceAnalyzerInfo, "Source analyzer info should not be null");
@@ -327,7 +298,7 @@ public class Sample14_CopyAnalyzer {
             }
 
             // Verify the copied analyzer via Get operation
-            ContentAnalyzer verifiedCopy = client.getAnalyzer(targetAnalyzerId);
+            ContentAnalyzer verifiedCopy = contentUnderstandingClient.getAnalyzer(targetAnalyzerId);
 
             System.out.println("\n📋 Copied Analyzer Retrieval Verification:");
             assertNotNull(verifiedCopy, "Retrieved copied analyzer should not be null");
@@ -364,131 +335,17 @@ public class Sample14_CopyAnalyzer {
         } finally {
             // Cleanup: Delete the analyzers
             try {
-                client.deleteAnalyzer(sourceAnalyzerId);
+                contentUnderstandingClient.deleteAnalyzer(sourceAnalyzerId);
                 System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
             } catch (Exception e) {
                 System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
             }
 
             try {
-                client.deleteAnalyzer(targetAnalyzerId);
+                contentUnderstandingClient.deleteAnalyzer(targetAnalyzerId);
                 System.out.println("Target analyzer deleted: " + targetAnalyzerId);
             } catch (Exception e) {
                 System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Asynchronous sample for copying an analyzer.
-     */
-    @Test
-    public void testCopyAnalyzerAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildAsyncClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the async client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            asyncClient = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildAsyncClient
-
-        // Verify async client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(asyncClient, "Async client should be successfully created");
-        System.out.println("✓ Async client initialized successfully with endpoint: " + endpoint);
-
-        // Generate unique analyzer IDs for this async test
-        String sourceAnalyzerId = "test_analyzer_source_async_" + UUID.randomUUID().toString().replace("-", "");
-        String targetAnalyzerId = "test_analyzer_target_async_" + UUID.randomUUID().toString().replace("-", "");
-
-        try {
-            // Create source analyzer
-            ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-            config.setEnableLayout(true);
-            config.setEnableOcr(true);
-
-            Map<String, ContentFieldDefinition> fields = new HashMap<>();
-            ContentFieldDefinition field = new ContentFieldDefinition();
-            field.setType(ContentFieldType.STRING);
-            field.setMethod(GenerationMethod.EXTRACT);
-            field.setDescription("Test field");
-            fields.put("test_field", field);
-
-            ContentFieldSchema fieldSchema = new ContentFieldSchema();
-            fieldSchema.setName("test_schema");
-            fieldSchema.setFields(fields);
-
-            ContentAnalyzer analyzer = new ContentAnalyzer();
-            analyzer.setBaseAnalyzerId("prebuilt-document");
-            analyzer.setDescription("Test analyzer for async copy");
-            analyzer.setConfig(config);
-            analyzer.setFieldSchema(fieldSchema);
-
-            // Set model configurations (required for custom analyzers)
-            Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
-            models.put("embedding", "text-embedding-3-large");
-            analyzer.setModels(models);
-
-            ContentAnalyzer sourceResult
-                = asyncClient.beginCreateAnalyzer(sourceAnalyzerId, analyzer, true).getSyncPoller().getFinalResult();
-            System.out.println("\n📋 Async Source Analyzer Creation:");
-            assertNotNull(sourceResult, "Source analyzer result should not be null");
-            assertEquals("prebuilt-document", sourceResult.getBaseAnalyzerId(), "Base analyzer should match");
-            assertEquals("Test analyzer for async copy", sourceResult.getDescription(), "Description should match");
-            System.out.println("  ✓ Source analyzer created: " + sourceAnalyzerId);
-            System.out.println("    Base: " + sourceResult.getBaseAnalyzerId());
-            System.out.println("    Fields: " + sourceResult.getFieldSchema().getFields().size());
-
-            // Copy analyzer asynchronously
-            ContentAnalyzer copiedAnalyzer
-                = asyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId).getSyncPoller().getFinalResult();
-
-            System.out.println("\n📋 Async Analyzer Copy Verification:");
-            assertNotNull(copiedAnalyzer, "Copied analyzer should not be null");
-            assertEquals(sourceResult.getBaseAnalyzerId(), copiedAnalyzer.getBaseAnalyzerId(),
-                "Base analyzer ID should match");
-            assertEquals(sourceResult.getDescription(), copiedAnalyzer.getDescription(), "Description should match");
-            assertEquals(sourceResult.getFieldSchema().getFields().size(),
-                copiedAnalyzer.getFieldSchema().getFields().size(), "Field count should match");
-            System.out.println("  ✓ Analyzer copied successfully to: " + targetAnalyzerId);
-            System.out.println("    Base: " + copiedAnalyzer.getBaseAnalyzerId());
-            System.out.println("    Description: " + copiedAnalyzer.getDescription());
-            System.out.println("    Fields: " + copiedAnalyzer.getFieldSchema().getFields().size());
-
-            // Verify field preservation
-            assertTrue(copiedAnalyzer.getFieldSchema().getFields().containsKey("test_field"),
-                "Copied analyzer should contain test_field");
-            ContentFieldDefinition copiedField = copiedAnalyzer.getFieldSchema().getFields().get("test_field");
-            assertEquals(ContentFieldType.STRING, copiedField.getType(), "Field type should be preserved");
-            assertEquals(GenerationMethod.EXTRACT, copiedField.getMethod(), "Field method should be preserved");
-            System.out.println("  ✓ Field 'test_field' preserved correctly");
-
-            // Verify models preservation
-            assertNotNull(copiedAnalyzer.getModels(), "Models should not be null");
-            assertTrue(copiedAnalyzer.getModels().size() >= 1, "Should have at least 1 model");
-            System.out.println("  ✓ Models preserved: " + copiedAnalyzer.getModels().size() + " model(s)");
-
-            System.out.println("\n✅ Async CopyAnalyzer test completed successfully");
-            System.out.println("    Source: " + sourceAnalyzerId);
-            System.out.println("    Target: " + targetAnalyzerId);
-
-        } finally {
-            // Cleanup
-            try {
-                asyncClient.deleteAnalyzer(sourceAnalyzerId).block();
-                asyncClient.deleteAnalyzer(targetAnalyzerId).block();
-            } catch (Exception e) {
-                // Ignore cleanup errors
             }
         }
     }

@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
@@ -13,11 +11,8 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.MediaContent;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -39,31 +34,10 @@ import java.util.Set;
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
  */
-public class Sample01_AnalyzeBinary {
+public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testAnalyzeBinaryAsync() throws IOException {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // Load the sample file
         String filePath = "src/test/resources/sample_invoice.pdf";
@@ -74,22 +48,12 @@ public class Sample01_AnalyzeBinary {
         boolean hasRealFile = Files.exists(path);
 
         // Check if sample file exists
-        if (!hasRealFile) {
-            System.out.println("⚠️ Sample file not found at " + filePath);
-            System.out.println("Creating a minimal test PDF for demonstration...");
-            // Create a minimal valid PDF for testing
-            String pdfContent
-                = "%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj 3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>>>endobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n0000000115 00000 n\ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n203\n%%EOF";
-            fileBytes = pdfContent.getBytes();
-        } else {
-            fileBytes = Files.readAllBytes(path);
-        }
-
+        fileBytes = Files.readAllBytes(path);
         binaryData = BinaryData.fromBytes(fileBytes);
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyzeBinary("prebuilt-documentSearch", "application/pdf", binaryData, null, null, null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
+            .beginAnalyzeBinary("prebuilt-documentSearch", "application/pdf", binaryData, null, null, null);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeBinaryAsync

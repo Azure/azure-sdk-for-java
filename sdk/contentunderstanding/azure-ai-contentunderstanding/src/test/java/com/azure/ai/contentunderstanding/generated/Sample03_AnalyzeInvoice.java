@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ArrayField;
@@ -17,10 +15,7 @@ import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.ai.contentunderstanding.models.StringField;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,31 +33,10 @@ import java.util.List;
  * 4. Accessing array fields (LineItems)
  * 5. Working with field confidence and source information
  */
-public class Sample03_AnalyzeInvoice {
+public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testAnalyzeInvoiceAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeInvoice
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
@@ -73,7 +47,7 @@ public class Sample03_AnalyzeInvoice {
         input.setUrl(invoiceUrl);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-invoice", null, null, Arrays.asList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", null, null, Arrays.asList(input), null);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeInvoice

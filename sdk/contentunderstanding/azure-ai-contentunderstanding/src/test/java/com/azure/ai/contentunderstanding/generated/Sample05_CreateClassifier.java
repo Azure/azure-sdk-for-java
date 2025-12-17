@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
@@ -13,10 +11,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +29,7 @@ import java.util.Map;
  * 2. Creating an analyzer specifically for classification tasks
  * 3. Using the Classify method for document type classification
  */
-public class Sample05_CreateClassifier {
+public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBase {
 
     private String createdAnalyzerId;
 
@@ -42,19 +37,7 @@ public class Sample05_CreateClassifier {
     public void cleanup() {
         if (createdAnalyzerId != null) {
             try {
-                String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-                String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-                ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-                ContentUnderstandingClient client;
-                if (key != null && !key.trim().isEmpty()) {
-                    client = builder.credential(new AzureKeyCredential(key)).buildClient();
-                } else {
-                    client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-                }
-
-                client.deleteAnalyzer(createdAnalyzerId);
+                contentUnderstandingClient.deleteAnalyzer(createdAnalyzerId);
                 System.out.println("Classifier analyzer '" + createdAnalyzerId + "' deleted successfully.");
             } catch (Exception e) {
                 // Ignore cleanup errors
@@ -64,31 +47,10 @@ public class Sample05_CreateClassifier {
 
     @Test
     public void testCreateClassifierAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingCreateClassifier
         // Generate a unique classifier analyzer ID
-        String analyzerId = "document_classifier_" + System.currentTimeMillis();
+        String analyzerId = testResourceNamer.randomName("document_classifier_", 50);
 
         // Define field schema with classification fields
         // Classifiers use the Classify method to categorize documents into predefined types
@@ -147,7 +109,7 @@ public class Sample05_CreateClassifier {
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, classifierAnalyzer, true);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifierAnalyzer, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Classifier analyzer '" + analyzerId + "' created successfully!");

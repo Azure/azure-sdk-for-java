@@ -4,14 +4,9 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -36,31 +31,10 @@ import java.time.format.DateTimeFormatter;
  * Note: For production use, prefer the object model approach (beginAnalyzeBinary with typed parameters)
  * which returns AnalyzeResult objects that are easier to work with.
  */
-public class Sample11_AnalyzeReturnRawJson {
+public class Sample11_AnalyzeReturnRawJson extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testAnalyzeReturnRawJsonAsync() throws IOException {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJson
         // Load local test file
@@ -77,7 +51,7 @@ public class Sample11_AnalyzeReturnRawJson {
         // Note: For production use, prefer the object model approach (beginAnalyze with typed parameters)
         // which returns AnalyzeResult objects that are easier to work with
         SyncPoller<BinaryData, BinaryData> operation
-            = client.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
+            = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
 
         BinaryData responseData = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeReturnRawJson

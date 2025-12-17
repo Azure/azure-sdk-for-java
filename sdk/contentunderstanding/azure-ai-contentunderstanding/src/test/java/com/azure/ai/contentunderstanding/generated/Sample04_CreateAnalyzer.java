@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
@@ -22,10 +20,7 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.StringField;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,7 +41,7 @@ import java.util.UUID;
  * 3. Creating a custom analyzer with configuration
  * 4. Using the custom analyzer to analyze documents
  */
-public class Sample04_CreateAnalyzer {
+public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase {
 
     private String createdAnalyzerId;
 
@@ -54,19 +49,7 @@ public class Sample04_CreateAnalyzer {
     public void cleanup() {
         if (createdAnalyzerId != null) {
             try {
-                String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-                String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-                ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-                ContentUnderstandingClient client;
-                if (key != null && !key.trim().isEmpty()) {
-                    client = builder.credential(new AzureKeyCredential(key)).buildClient();
-                } else {
-                    client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-                }
-
-                client.deleteAnalyzer(createdAnalyzerId);
+                contentUnderstandingClient.deleteAnalyzer(createdAnalyzerId);
                 System.out.println("Analyzer '" + createdAnalyzerId + "' deleted successfully.");
             } catch (Exception e) {
                 // Ignore cleanup errors
@@ -76,31 +59,10 @@ public class Sample04_CreateAnalyzer {
 
     @Test
     public void testCreateAnalyzerAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingCreateAnalyzer
         // Generate a unique analyzer ID
-        String analyzerId = "my_custom_analyzer_" + System.currentTimeMillis();
+        String analyzerId = testResourceNamer.randomName("my_custom_analyzer_", 50);
 
         // Define field schema with custom fields
         // This example demonstrates three extraction methods:
@@ -162,7 +124,7 @@ public class Sample04_CreateAnalyzer {
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
@@ -295,23 +257,8 @@ public class Sample04_CreateAnalyzer {
 
     @Test
     public void testUseCustomAnalyzerAsync() {
-        // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
-        assertNotNull(client, "Client should be successfully created");
-
         // First create an analyzer
-        String analyzerId = "test_analyzer_" + UUID.randomUUID().toString().replace("-", "");
+        String analyzerId = testResourceNamer.randomName("test_analyzer_", 50);
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
 
@@ -361,7 +308,7 @@ public class Sample04_CreateAnalyzer {
         models.put("embedding", "text-embedding-3-large");
         customAnalyzer.setModels(models);
 
-        client.beginCreateAnalyzer(analyzerId, customAnalyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true).getFinalResult();
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         try {
@@ -375,7 +322,7 @@ public class Sample04_CreateAnalyzer {
 
             // Analyze a document using the custom analyzer
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
-                = client.beginAnalyze(analyzerId, null, null, Arrays.asList(input), null);
+                = contentUnderstandingClient.beginAnalyze(analyzerId, null, null, Arrays.asList(input), null);
 
             AnalyzeResult analyzeResult = analyzeOperation.getFinalResult();
 

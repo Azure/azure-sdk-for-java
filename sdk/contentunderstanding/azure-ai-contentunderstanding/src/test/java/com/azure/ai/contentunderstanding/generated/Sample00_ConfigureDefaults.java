@@ -4,15 +4,10 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,35 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * 2. Updating default configuration
  * 3. Verifying the updated configuration
  */
-public class Sample00_ConfigureDefaults {
+public class Sample00_ConfigureDefaults extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testConfigureDefaults() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
-
         // Step 1: Get current defaults
         System.out.println("Getting current default configuration...");
-        ContentUnderstandingDefaults currentDefaults = client.getDefaults();
+        ContentUnderstandingDefaults currentDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Current defaults retrieved successfully.");
         System.out.println("Current configuration: " + currentDefaults);
 
@@ -64,7 +37,8 @@ public class Sample00_ConfigureDefaults {
         RequestOptions requestOptions = new RequestOptions();
 
         // Update defaults with the configuration
-        Response<BinaryData> updateResponse = client.updateDefaultsWithResponse(defaultsBody, requestOptions);
+        Response<BinaryData> updateResponse
+            = contentUnderstandingClient.updateDefaultsWithResponse(defaultsBody, requestOptions);
 
         if (updateResponse.getStatusCode() == 200 || updateResponse.getStatusCode() == 201) {
             System.out.println("Defaults updated successfully.");
@@ -75,7 +49,7 @@ public class Sample00_ConfigureDefaults {
 
         // Step 3: Verify the updated configuration
         System.out.println("\nVerifying updated configuration...");
-        ContentUnderstandingDefaults updatedDefaults = client.getDefaults();
+        ContentUnderstandingDefaults updatedDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Updated defaults verified successfully.");
         System.out.println("Updated configuration: " + updatedDefaults);
 

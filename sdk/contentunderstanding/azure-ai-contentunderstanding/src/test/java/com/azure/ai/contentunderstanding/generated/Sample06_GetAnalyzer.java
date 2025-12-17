@@ -4,12 +4,7 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,37 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * 3. Inspecting field schema definitions
  * 4. Getting prebuilt analyzer information
  */
-public class Sample06_GetAnalyzer {
+public class Sample06_GetAnalyzer extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testGetAnalyzerAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingGetAnalyzer
         // Get a prebuilt analyzer (these are always available)
         String analyzerId = "prebuilt-invoice";
 
-        ContentAnalyzer analyzer = client.getAnalyzer(analyzerId);
+        ContentAnalyzer analyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
 
         System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
         System.out.println(
@@ -147,25 +121,10 @@ public class Sample06_GetAnalyzer {
 
     @Test
     public void testGetAnalyzerNotFoundAsync() {
-        // Create the Content Understanding client
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
-        assertNotNull(client, "Client should be successfully created");
-
         // Test getting another prebuilt analyzer
         String analyzerId = "prebuilt-document";
 
-        ContentAnalyzer analyzer = client.getAnalyzer(analyzerId);
+        ContentAnalyzer analyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
 
         System.out.println("\nRetrieving prebuilt-document analyzer...");
         System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());

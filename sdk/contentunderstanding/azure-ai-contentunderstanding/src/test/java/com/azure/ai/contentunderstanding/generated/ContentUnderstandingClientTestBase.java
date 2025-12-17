@@ -21,10 +21,20 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 class ContentUnderstandingClientTestBase extends TestProxyTestBase {
     protected ContentUnderstandingClient contentUnderstandingClient;
 
+    // Sanitizer IDs to remove:
+    // - AZSDK2003, AZSDK2030: Replace Location/Operation-Location headers with "https://example.com"
+    //   which breaks LRO polling that relies on Operation-Location header URLs
+    // - AZSDK3423: Replaces $..source field with "Sanitized", breaking field source validation
+    // - AZSDK3430: Replaces $..id field with "Sanitized"
+    // - AZSDK3493: Replaces $..name field with "Sanitized", breaking fieldSchema.name validation
+    private static final String[] REMOVE_SANITIZER_ID
+        = { "AZSDK2003", "AZSDK2030", "AZSDK3423", "AZSDK3430", "AZSDK3493" };
+
     @Override
     protected void beforeTest() {
         ContentUnderstandingClientBuilder contentUnderstandingClientbuilder = new ContentUnderstandingClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .endpoint(
+                Configuration.getGlobalConfiguration().get("AZURE_CONTENT_UNDERSTANDING_ENDPOINT", "https://localhost"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -37,5 +47,9 @@ class ContentUnderstandingClientTestBase extends TestProxyTestBase {
         }
         contentUnderstandingClient = contentUnderstandingClientbuilder.buildClient();
 
+        // Remove sanitizers that break LRO polling by replacing entire URLs
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+        }
     }
 }

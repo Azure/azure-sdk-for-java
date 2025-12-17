@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
@@ -13,10 +11,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,28 +30,14 @@ import java.util.Map;
  * 3. Updating analyzer configuration
  * 4. Updating field schema
  */
-public class Sample08_UpdateAnalyzer {
+public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase {
 
     private String analyzerId;
-    private ContentUnderstandingClient client;
 
     @BeforeEach
     public void setup() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
-        assertNotNull(client, "Client should be successfully created");
-
         // Create an analyzer for testing
-        analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
+        analyzerId = testResourceNamer.randomName("update_test_analyzer_", 50);
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
         ContentFieldDefinition titleDef = new ContentFieldDefinition();
@@ -85,15 +66,15 @@ public class Sample08_UpdateAnalyzer {
         models.put("embedding", "text-embedding-3-large");
         analyzer.setModels(models);
 
-        client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
     }
 
     @AfterEach
     public void cleanup() {
-        if (analyzerId != null && client != null) {
+        if (analyzerId != null) {
             try {
-                client.deleteAnalyzer(analyzerId);
+                contentUnderstandingClient.deleteAnalyzer(analyzerId);
                 System.out.println("Test analyzer deleted: " + analyzerId);
             } catch (Exception e) {
                 // Ignore cleanup errors
@@ -105,7 +86,7 @@ public class Sample08_UpdateAnalyzer {
     public void testUpdateAnalyzerAsync() {
         // BEGIN:ContentUnderstandingUpdateAnalyzer
         // Get the current analyzer
-        ContentAnalyzer currentAnalyzer = client.getAnalyzer(analyzerId);
+        ContentAnalyzer currentAnalyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
         System.out.println("Current description: " + currentAnalyzer.getDescription());
 
         // Update the analyzer with new configuration
@@ -148,11 +129,11 @@ public class Sample08_UpdateAnalyzer {
 
         // Update the analyzer (delete and recreate with same ID)
         // Note: In production, you might want to use updateAnalyzerWithResponse for atomic updates
-        client.deleteAnalyzer(analyzerId);
+        contentUnderstandingClient.deleteAnalyzer(analyzerId);
         System.out.println("Existing analyzer deleted for update");
 
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, updatedAnalyzer, true);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, updatedAnalyzer, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer updated successfully!");

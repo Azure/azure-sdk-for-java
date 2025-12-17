@@ -4,18 +4,13 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -30,36 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Sample demonstrates how to retrieve result files (like keyframe images) from video analysis operations.
  */
-public class Sample12_GetResultFile {
-
-    private ContentUnderstandingClient client;
-    private ContentUnderstandingAsyncClient asyncClient;
+public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
 
     /**
      * Synchronous sample for getting result files from a completed analysis operation.
      */
     @Test
     public void testGetResultFile() throws IOException {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN: com.azure.ai.contentunderstanding.getResultFile
         // For video analysis, use a video URL to get keyframes
@@ -71,7 +43,8 @@ public class Sample12_GetResultFile {
         input.setUrl(videoUrl);
 
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = client.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", null, null,
+                Collections.singletonList(input), null);
 
         // Get the operation ID from the poller
         String operationId = poller.poll().getStatus().toString();
@@ -125,7 +98,8 @@ public class Sample12_GetResultFile {
             System.out.println("Getting result file: " + framePath);
 
             // Retrieve the keyframe image
-            Response<BinaryData> fileResponse = client.getResultFileWithResponse(operationId, framePath, null);
+            Response<BinaryData> fileResponse
+                = contentUnderstandingClient.getResultFileWithResponse(operationId, framePath, null);
             byte[] imageBytes = fileResponse.getValue().toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
@@ -211,7 +185,7 @@ public class Sample12_GetResultFile {
                 String middleFramePath = "keyframes/" + middleFrameTimeMs;
 
                 Response<BinaryData> middleFileResponse
-                    = client.getResultFileWithResponse(operationId, middleFramePath, null);
+                    = contentUnderstandingClient.getResultFileWithResponse(operationId, middleFramePath, null);
                 assertNotNull(middleFileResponse, "Middle keyframe response should not be null");
                 assertTrue(middleFileResponse.getValue().toBytes().length > 0, "Middle keyframe should have content");
                 System.out.println(
@@ -236,8 +210,9 @@ public class Sample12_GetResultFile {
             System.out.println("   1. Analyze video with prebuilt-videoSearch");
             System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
             System.out.println("   3. Retrieve keyframes using getResultFileWithResponse():");
-            System.out.println("      Response<BinaryData> response = client.getResultFileWithResponse(\"" + operationId
-                + "\", \"keyframes/1000\", null);");
+            System.out
+                .println("      Response<BinaryData> response = contentUnderstandingClient.getResultFileWithResponse(\""
+                    + operationId + "\", \"keyframes/1000\", null);");
             System.out.println("   4. Save or process the keyframe image");
 
             // Verify content type
@@ -254,88 +229,6 @@ public class Sample12_GetResultFile {
             assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
             System.out.println("Operation ID available for GetResultFile API: " + operationId);
         }
-    }
-
-    /**
-     * Asynchronous sample for getting result files from a completed analysis operation.
-     */
-    @Test
-    public void testGetResultFileAsync() throws IOException {
-        // BEGIN: com.azure.ai.contentunderstanding.buildAsyncClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the async client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            asyncClient = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildAsyncClient
-
-        // Verify async client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(asyncClient, "Async client should be successfully created");
-
-        // For video analysis
-        String videoUrl
-            = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
-
-        AnalyzeInput input = new AnalyzeInput();
-        input.setUrl(videoUrl);
-
-        // Start analysis
-        com.azure.core.util.polling.PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> pollerFlux
-            = asyncClient.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
-
-        AnalyzeResult result = pollerFlux.getSyncPoller().getFinalResult();
-        String operationId = pollerFlux.getSyncPoller().poll().getStatus().toString();
-        System.out.println("Operation ID: " + operationId);
-
-        assertNotNull(operationId, "Operation ID should not be null");
-        assertNotNull(result.getContents(), "Result should contain contents");
-
-        // Get keyframes if available
-        AudioVisualContent videoContent = null;
-        for (Object content : result.getContents()) {
-            if (content instanceof AudioVisualContent) {
-                videoContent = (AudioVisualContent) content;
-                break;
-            }
-        }
-
-        if (videoContent != null
-            && videoContent.getKeyFrameTimesMs() != null
-            && !videoContent.getKeyFrameTimesMs().isEmpty()) {
-            long firstFrameTimeMs = videoContent.getKeyFrameTimesMs().get(0);
-            String framePath = "keyframes/" + firstFrameTimeMs;
-
-            // Retrieve keyframe asynchronously
-            byte[] imageBytes = asyncClient.getResultFileWithResponse(operationId, framePath, null)
-                .map(response -> response.getValue().toBytes())
-                .block();
-
-            assertNotNull(imageBytes, "Image bytes should not be null");
-            assertTrue(imageBytes.length > 0, "Image should have content");
-            System.out.println(
-                "Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes) asynchronously");
-
-            // Save the image
-            Path outputDir = Paths.get("target", "sample_output");
-            Files.createDirectories(outputDir);
-            Path outputPath = outputDir.resolve("keyframe_async_" + firstFrameTimeMs + ".jpg");
-            Files.write(outputPath, imageBytes);
-
-            System.out.println("Keyframe image saved to: " + outputPath.toAbsolutePath());
-            assertTrue(Files.exists(outputPath), "Saved file should exist");
-        }
-
-        System.out.println("✅ Async GetResultFile test completed");
     }
 
     /**

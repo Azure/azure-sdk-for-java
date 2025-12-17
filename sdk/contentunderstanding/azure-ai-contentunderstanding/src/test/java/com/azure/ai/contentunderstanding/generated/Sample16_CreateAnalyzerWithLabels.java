@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ArrayField;
@@ -19,9 +17,7 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.ai.contentunderstanding.models.StringField;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -34,49 +30,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage.
- * 
+ *
  * Required environment variables:
  * - TRAINING_DATA_STORAGE_ACCOUNT: Azure Storage account name
  * - TRAINING_DATA_CONTAINER_NAME: Container name with training data
  * - TRAINING_DATA_SAS_URL: SAS URL for the container (optional, if not using managed identity)
- * 
+ *
  * Training data structure:
  * - Container should have labeled documents with .labels.json and .result.json files
  * - Example: receipt.pdf, receipt.pdf.labels.json, receipt.pdf.result.json
  */
-public class Sample16_CreateAnalyzerWithLabels {
-
-    private ContentUnderstandingClient client;
+public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClientTestBase {
 
     /**
      * Demonstrates creating an analyzer with labeled training data.
-     * 
+     *
      * This test demonstrates the API pattern without requiring actual training data setup.
      */
     @Test
     public void testCreateAnalyzerWithLabelsAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
 
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
-
-        String analyzerId = "test_receipt_analyzer_" + UUID.randomUUID().toString().replace("-", "");
+        String analyzerId = testResourceNamer.randomName("test_receipt_analyzer_", 50);
 
         try {
             // BEGIN: com.azure.ai.contentunderstanding.createAnalyzerWithLabels
@@ -172,7 +146,7 @@ public class Sample16_CreateAnalyzerWithLabels {
 
             // For demonstration without actual training data, create analyzer without knowledge sources
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = client.beginCreateAnalyzer(analyzerId, analyzer, true);
+                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true);
             ContentAnalyzer result = createPoller.getFinalResult();
 
             System.out.println("Analyzer created: " + analyzerId);
@@ -226,7 +200,7 @@ public class Sample16_CreateAnalyzerWithLabels {
         } finally {
             // Cleanup
             try {
-                client.deleteAnalyzer(analyzerId);
+                contentUnderstandingClient.deleteAnalyzer(analyzerId);
                 System.out.println("\nAnalyzer deleted: " + analyzerId);
             } catch (Exception e) {
                 System.out.println("Note: Failed to delete analyzer: " + e.getMessage());
@@ -236,14 +210,12 @@ public class Sample16_CreateAnalyzerWithLabels {
 
     /**
      * Demonstrates creating and using an analyzer with actual labeled training data.
-     * 
+     *
      * Requires environment variables:
      * - TRAINING_DATA_SAS_URL: SAS URL for Azure Blob Storage container with training data
      */
     @Test
     public void testCreateAnalyzerWithActualLabels() {
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
         String trainingDataSasUrl = System.getenv("TRAINING_DATA_SAS_URL");
 
         if (trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty()) {
@@ -256,11 +228,7 @@ public class Sample16_CreateAnalyzerWithLabels {
             return;
         }
 
-        client = new ContentUnderstandingClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
-        String analyzerId = "receipt_analyzer_with_training_" + UUID.randomUUID().toString().replace("-", "");
+        String analyzerId = testResourceNamer.randomName("receipt_analyzer_with_training_", 50);
         String trainingDataPath = System.getenv("TRAINING_DATA_PATH");
         if (trainingDataPath == null) {
             trainingDataPath = "training_data/";
@@ -299,7 +267,8 @@ public class Sample16_CreateAnalyzerWithLabels {
             analyzer.setFieldSchema(fieldSchema);
             analyzer.setKnowledgeSources(Collections.singletonList(knowledgeSource));
 
-            ContentAnalyzer result = client.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
+            ContentAnalyzer result
+                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
             System.out.println("Analyzer with training data created: " + analyzerId);
 
             // Test the analyzer with a sample document
@@ -309,8 +278,9 @@ public class Sample16_CreateAnalyzerWithLabels {
             AnalyzeInput input = new AnalyzeInput();
             input.setUrl(testDocUrl);
 
-            AnalyzeResult analyzeResult
-                = client.beginAnalyze(analyzerId, null, null, Collections.singletonList(input), null).getFinalResult();
+            AnalyzeResult analyzeResult = contentUnderstandingClient
+                .beginAnalyze(analyzerId, null, null, Collections.singletonList(input), null)
+                .getFinalResult();
 
             System.out.println("Analysis completed!");
             assertNotNull(analyzeResult);
@@ -341,7 +311,7 @@ public class Sample16_CreateAnalyzerWithLabels {
         } finally {
             // Cleanup
             try {
-                client.deleteAnalyzer(analyzerId);
+                contentUnderstandingClient.deleteAnalyzer(analyzerId);
                 System.out.println("Analyzer deleted: " + analyzerId);
             } catch (Exception e) {
                 // Ignore cleanup errors

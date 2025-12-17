@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentAnnotation;
@@ -14,11 +12,8 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentFigure;
 import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,31 +35,10 @@ import java.util.stream.Collectors;
  * 4. Extracting formulas from document pages
  * 5. Extracting annotations from documents
  */
-public class Sample10_AnalyzeConfigs {
+public class Sample10_AnalyzeConfigs extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testAnalyzeConfigsAsync() throws IOException {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
         // Load local test file
@@ -77,8 +51,8 @@ public class Sample10_AnalyzeConfigs {
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-documentSearch", null, null, java.util.Arrays.asList(input), null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
+            .beginAnalyze("prebuilt-documentSearch", null, null, java.util.Arrays.asList(input), null);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeWithConfigs

@@ -4,18 +4,11 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.StringField;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -26,36 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Sample demonstrates how to delete analysis results after they are no longer needed.
  */
-public class Sample13_DeleteResult {
-
-    private ContentUnderstandingClient client;
-    private ContentUnderstandingAsyncClient asyncClient;
+public class Sample13_DeleteResult extends ContentUnderstandingClientTestBase {
 
     /**
      * Synchronous sample for analyzing a document and then deleting the result.
      */
     @Test
     public void testDeleteResult() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN: com.azure.ai.contentunderstanding.deleteResult
         // Step 1: Analyze a document
@@ -66,7 +36,8 @@ public class Sample13_DeleteResult {
         input.setUrl(documentUrl);
 
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = client.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input),
+                null);
 
         // Wait for operation to complete to get a result ID
         System.out.println("Started analysis operation");
@@ -99,7 +70,7 @@ public class Sample13_DeleteResult {
         // Note: Use the result ID from the poller if available
         // For this sample, we demonstrate the API pattern
         System.out.println("Analysis result can be deleted using deleteResultWithResponse");
-        System.out.println("Example: client.deleteResultWithResponse(resultId, null)");
+        System.out.println("Example: contentUnderstandingClient.deleteResultWithResponse(resultId, null)");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
         // Verify operation
@@ -124,7 +95,7 @@ public class Sample13_DeleteResult {
 
         // API Pattern Demo
         System.out.println("\n🗑️ Result Deletion API Pattern:");
-        System.out.println("  client.deleteResultWithResponse(resultId, requestOptions)");
+        System.out.println("  contentUnderstandingClient.deleteResultWithResponse(resultId, requestOptions)");
         System.out.println("  Use the result ID from the analysis operation for cleanup");
 
         // Summary
@@ -132,61 +103,5 @@ public class Sample13_DeleteResult {
         System.out.println("  Analysis: Completed successfully");
         System.out.println("  Fields extracted: " + documentContent.getFields().size());
         System.out.println("  API: deleteResultWithResponse available for cleanup");
-    }
-
-    /**
-     * Asynchronous sample for analyzing a document and then deleting the result.
-     */
-    @Test
-    public void testDeleteResultAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildAsyncClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the async client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            asyncClient = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            asyncClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildAsyncClient
-
-        // Verify async client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(asyncClient, "Async client should be successfully created");
-
-        // Analyze document
-        String documentUrl
-            = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
-
-        AnalyzeInput input = new AnalyzeInput();
-        input.setUrl(documentUrl);
-
-        AnalyzeResult result
-            = asyncClient.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input), null)
-                .getSyncPoller()
-                .getFinalResult();
-
-        System.out.println("Analysis completed");
-        assertNotNull(result, "Result should not be null");
-        assertNotNull(result.getContents(), "Result should contain contents");
-
-        // Display results
-        if (result.getContents().size() > 0 && result.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent docContent = (DocumentContent) result.getContents().get(0);
-            System.out.println("Total fields extracted: " + docContent.getFields().size());
-        }
-
-        // Demonstrate async delete API pattern
-        System.out.println("\nAsync DeleteResult API:");
-        System.out.println("  asyncClient.deleteResultWithResponse(resultId, requestOptions)");
-        System.out.println("  Returns Mono<Response<Void>>");
-
-        System.out.println("✅ Async DeleteResult test completed");
     }
 }

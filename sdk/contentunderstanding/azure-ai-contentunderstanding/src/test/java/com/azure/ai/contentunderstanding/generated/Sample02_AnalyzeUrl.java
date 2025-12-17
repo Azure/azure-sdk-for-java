@@ -4,8 +4,6 @@
 
 package com.azure.ai.contentunderstanding.generated;
 
-import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
-import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
@@ -14,10 +12,7 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.MediaContent;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,31 +30,10 @@ import java.util.Set;
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
  */
-public class Sample02_AnalyzeUrl {
+public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testAnalyzeUrlAsync() {
-        // BEGIN: com.azure.ai.contentunderstanding.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-        // END: com.azure.ai.contentunderstanding.buildClient
-
-        // Verify client initialization
-        assertNotNull(endpoint, "CONTENTUNDERSTANDING_ENDPOINT environment variable should be set");
-        assertFalse(endpoint.trim().isEmpty(), "Endpoint should not be empty");
-        assertNotNull(client, "Client should be successfully created");
 
         // BEGIN:ContentUnderstandingAnalyzeUrlAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
@@ -69,8 +43,8 @@ public class Sample02_AnalyzeUrl {
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-documentSearch", null, null, Arrays.asList(input), null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
+            .beginAnalyze("prebuilt-documentSearch", null, null, Arrays.asList(input), null);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeUrlAsync
