@@ -111,6 +111,12 @@ public final class Constants {
     public static final String STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY
         = "azure-storage-structured-message-decoder-state";
 
+    /**
+     * Context key used to pass a mutable holder for decoder state so callers can observe decoder progress.
+     */
+    public static final String STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY
+        = "azure-storage-structured-message-decoder-state-ref";
+
     private Constants() {
     }
 
