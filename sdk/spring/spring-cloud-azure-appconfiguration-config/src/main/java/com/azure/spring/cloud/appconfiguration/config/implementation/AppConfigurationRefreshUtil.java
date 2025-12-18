@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
@@ -194,7 +193,14 @@ public class AppConfigurationRefreshUtil {
         throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
-            refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
+            
+            // Check collection monitoring first if configured
+            if (state.getCollectionWatchKeys() != null && !state.getCollectionWatchKeys().isEmpty()) {
+                refreshWithoutTimeCollectionMonitoring(client, state.getCollectionWatchKeys(), eventData, context);
+            } else {
+                // Fall back to traditional watch key monitoring
+                refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
+            }
 
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
@@ -222,6 +228,33 @@ public class AppConfigurationRefreshUtil {
                 if (eventData.getDoRefresh()) {
                     break;
                 }
+            }
+        }
+    }
+
+    /**
+     * Checks configuration collection monitoring for etag changes without time validation. This method immediately
+     * checks all collection monitoring selectors for changes regardless of refresh intervals.
+     *
+     * @param client the App Configuration client to use for checking
+     * @param collectionWatchKeys the list of collection monitoring configurations to watch for changes
+     * @param eventData the refresh event data to update if changes are detected
+     * @param context the operation context
+     * @throws AppConfigurationStatusException if there's an error during the refresh check
+     */
+    private static void refreshWithoutTimeCollectionMonitoring(AppConfigurationReplicaClient client,
+        List<CollectionMonitoring> collectionWatchKeys, RefreshEventData eventData, Context context)
+        throws AppConfigurationStatusException {
+        for (CollectionMonitoring collectionMonitoring : collectionWatchKeys) {
+            if (client.checkWatchKeys(collectionMonitoring.getSettingSelector(), context)) {
+                String eventDataInfo = collectionMonitoring.getSettingSelector().getKeyFilter();
+
+                // Only one refresh Event needs to be call to update all of the
+                // stores, not one for each.
+                LOGGER.info("Configuration Refresh Event triggered by collection monitoring: " + eventDataInfo);
+
+                eventData.setMessage(eventDataInfo);
+                return;
             }
         }
     }

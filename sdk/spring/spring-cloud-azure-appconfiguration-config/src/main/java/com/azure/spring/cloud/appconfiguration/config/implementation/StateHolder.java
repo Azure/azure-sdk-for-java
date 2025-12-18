@@ -82,6 +82,16 @@ final class StateHolder {
     /**
      * @param originEndpoint the stores origin endpoint
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
+     * @param collectionWatchKeys list of collection monitoring configurations that can trigger a refresh event
+     * @param duration refresh duration.
+     */
+    void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys, Duration duration) {
+        state.put(originEndpoint, new State(watchKeys, collectionWatchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+    }
+
+    /**
+     * @param originEndpoint the stores origin endpoint
+     * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
     void setStateFeatureFlag(String originEndpoint, List<CollectionMonitoring> watchKeys,

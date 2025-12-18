@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -161,13 +162,20 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         monitoring.getFeatureFlagRefreshInterval());
 
                     if (monitoring.isEnabled()) {
-                        // Setting new ETag values for Watch
-                        List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                            .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
-                                requestContext))
-                            .toList();
+                        // Check if refreshAll is enabled - if so, use collection monitoring
+                        if (Boolean.TRUE.equals(monitoring.getRefreshAll())) {
+                            // Use collection monitoring for refresh
+                            List<CollectionMonitoring> collectionMonitoringList = createCollectionMonitoring(currentClient);
+                            storeState.setState(resource.getEndpoint(), null, collectionMonitoringList, monitoring.getRefreshInterval());
+                        } else {
+                            // Use traditional watch key monitoring
+                            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+                                .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
+                                    requestContext))
+                                .toList();
 
-                        storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+                            storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+                        }
                     }
                     storeState.setLoadState(resource.getEndpoint(), true); // Success - configuration loaded, exit loop
                     lastException = null;
@@ -274,6 +282,40 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         return featureFlagWatchKeys;
+    }
+
+    /**
+     * Creates a list of collection monitoring for configuration settings from Azure App Configuration.
+     * This is used for collection-based refresh monitoring as an alternative to individual watch keys.
+     *
+     * @param client client for connecting to App Configuration
+     * @return a list of CollectionMonitoring for configuration settings
+     * @throws Exception creating collection monitoring failed
+     */
+    private List<CollectionMonitoring> createCollectionMonitoring(AppConfigurationReplicaClient client)
+        throws Exception {
+        List<CollectionMonitoring> collectionMonitoringList = new ArrayList<>();
+        List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
+        List<String> profiles = resource.getProfiles().getActive();
+
+        for (AppConfigurationKeyValueSelector selectedKeys : selects) {
+            // Skip snapshots - they don't support collection monitoring
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                continue;
+            }
+
+            // Create collection monitoring for each label
+            for (String label : selectedKeys.getLabelFilter(profiles)) {
+                SettingSelector settingSelector = new SettingSelector()
+                    .setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                    .setLabelFilter(label);
+                
+                CollectionMonitoring collectionMonitoring = client.collectionMonitoring(settingSelector, requestContext);
+                collectionMonitoringList.add(collectionMonitoring);
+            }
+        }
+
+        return collectionMonitoringList;
     }
 
     /**

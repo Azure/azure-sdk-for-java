@@ -136,9 +136,10 @@ public final class AppConfigurationStoreMonitoring {
     @PostConstruct
     void validateAndInit() {
         if (enabled) {
-           
-
-            Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
+            // Triggers are required unless refreshAll is enabled (which uses collection monitoring instead)
+            if (!Boolean.TRUE.equals(refreshAll)) {
+                Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled and refreshAll is not enabled.");
+            }
             for (AppConfigurationStoreTrigger trigger : triggers) {
                 trigger.validateAndInit();
             }

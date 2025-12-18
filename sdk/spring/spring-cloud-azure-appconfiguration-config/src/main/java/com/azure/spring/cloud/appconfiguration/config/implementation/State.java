@@ -6,10 +6,13 @@ import java.time.Instant;
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 
 class State {
 
     private final List<ConfigurationSetting> watchKeys;
+
+    private final List<CollectionMonitoring> collectionWatchKeys;
 
     private final Instant nextRefreshCheck;
 
@@ -21,6 +24,16 @@ class State {
 
     State(List<ConfigurationSetting> watchKeys, int refreshInterval, String originEndpoint) {
         this.watchKeys = watchKeys;
+        this.collectionWatchKeys = null;
+        this.refreshInterval = refreshInterval;
+        nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
+        this.originEndpoint = originEndpoint;
+        this.refreshAttempt = 1;
+    }
+
+    State(List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys, int refreshInterval, String originEndpoint) {
+        this.watchKeys = watchKeys;
+        this.collectionWatchKeys = collectionWatchKeys;
         this.refreshInterval = refreshInterval;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
         this.originEndpoint = originEndpoint;
@@ -29,6 +42,7 @@ class State {
 
     State(State oldState, Instant newRefresh) {
         this.watchKeys = oldState.getWatchKeys();
+        this.collectionWatchKeys = oldState.getCollectionWatchKeys();
         this.refreshInterval = oldState.getRefreshInterval();
         this.nextRefreshCheck = newRefresh;
         this.originEndpoint = oldState.getOriginEndpoint();
@@ -40,6 +54,13 @@ class State {
      */
     public List<ConfigurationSetting> getWatchKeys() {
         return watchKeys;
+    }
+
+    /**
+     * @return the collectionWatchKeys
+     */
+    public List<CollectionMonitoring> getCollectionWatchKeys() {
+        return collectionWatchKeys;
     }
 
     /**

@@ -150,6 +150,15 @@ class AppConfigurationReplicaClient {
         }
     }
 
+    /**
+     * Gets configuration settings using collection monitoring. This method retrieves all settings matching
+     * the selector and captures ETags for collection-based refresh monitoring.
+     * 
+     * @param settingSelector selector criteria for configuration settings
+     * @param context Azure SDK context for request correlation
+     * @return CollectionMonitoring containing the retrieved configuration settings and match conditions
+     * @throws HttpResponseException if the request fails
+     */
     CollectionMonitoring collectionMonitoring(SettingSelector settingSelector, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
@@ -157,8 +166,8 @@ class AppConfigurationReplicaClient {
             client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
                 checks.add(
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
-                for (ConfigurationSetting featureFlag : pagedResponse.getValue()) {
-                    configurationSettings.add(NormalizeNull.normalizeNullLabel(featureFlag));
+                for (ConfigurationSetting setting : pagedResponse.getValue()) {
+                    configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
                 }
             });
 
