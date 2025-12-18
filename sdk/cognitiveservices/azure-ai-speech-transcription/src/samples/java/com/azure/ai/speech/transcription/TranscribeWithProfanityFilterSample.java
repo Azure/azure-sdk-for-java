@@ -45,8 +45,7 @@ public class TranscribeWithProfanityFilterSample {
             // Load audio file
             String audioFilePath = "src/samples/assets/sample-profanity.wav";
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
-            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-                .setFilename(audioFilePath);
+            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Demonstrate different profanity filter modes
             ProfanityFilterMode[] modes = {

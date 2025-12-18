@@ -117,12 +117,12 @@ public class EnhancedModeSample {
         String filename
     ) throws Exception {
         // Create audio file details
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename(filename);
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure comprehensive LLM-enhanced mode settings
         // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setEnabled(true)
             .setTask("transcribe")
             .setPrompts(Arrays.asList(
                 "Output must be in lexical format."

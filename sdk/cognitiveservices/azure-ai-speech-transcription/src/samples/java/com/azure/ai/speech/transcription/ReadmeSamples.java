@@ -37,8 +37,7 @@ public final class ReadmeSamples {
             byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
             // Create audio file details
-            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-                .setFilename("audio.wav");
+            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Create transcription options
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
@@ -93,8 +92,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionclient.transcribe
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
@@ -119,8 +117,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
@@ -146,8 +143,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.advanced
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure advanced options
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -199,8 +195,7 @@ public final class ReadmeSamples {
             .buildClient();
 
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionresult.detailed
@@ -242,11 +237,11 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-enhancedModeBasic
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Enable enhanced mode for improved transcription quality with lexical format
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setEnabled(true)
             .setPrompts(java.util.Arrays.asList(
                 "Output must be in lexical format."
             ));
@@ -271,12 +266,12 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-enhancedModeWithPrompts
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Use prompts to guide transcription with domain-specific terminology
         // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setEnabled(true)
             .setPrompts(java.util.Arrays.asList(
                 "Output must be in lexical format.",
                 "Medical consultation discussing hypertension and diabetes",
@@ -304,11 +299,11 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-enhancedModeWithTranslation
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure enhanced mode to transcribe Spanish audio and translate to English
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setEnabled(true)
             .setTargetLanguage("en-US"); // Translate to English
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -343,37 +338,6 @@ public final class ReadmeSamples {
     }
 
     /**
-     * Sample for transcribing audio using AudioFileDetails constructor.
-     */
-    public void transcribeWithAudioFileDetails() throws Exception {
-        // BEGIN: readme-sample-transcribeWithAudioFileDetails
-        TranscriptionClient client = new TranscriptionClientBuilder()
-            .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
-            .credential(new KeyCredential("<your-api-key>"))
-            .buildClient();
-
-        // Read audio file
-        byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
-
-        // Create audio file details
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav")
-            .setContentType("audio/wav");
-
-        // Create transcription options with AudioFileDetails
-        TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-
-        // Transcribe audio
-        TranscriptionResult result = client.transcribe(options);
-
-        // Process results
-        result.getCombinedPhrases().forEach(phrase -> {
-            System.out.println(phrase.getText());
-        });
-        // END: readme-sample-transcribeWithAudioFileDetails
-    }
-
-    /**
      * Sample for multi-language transcription.
      */
     public void transcribeMultiLanguage() throws Exception {
@@ -385,8 +349,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.multilanguage
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure transcription WITHOUT specifying locales
         // This allows the service to auto-detect and transcribe multiple languages
@@ -413,10 +376,10 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+            .setEnabled(true)
             .setTask("transcribe")
             .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 
@@ -441,8 +404,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionoptions.phraselist
         byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("audio.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         PhraseListOptions phraseListOptions = new PhraseListOptions()
             .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))

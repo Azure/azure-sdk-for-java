@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for TranscriptionClient tests. Contains helper methods and common test infrastructure.
- * Supports both API Key (KeyCredential) and Azure AD (TokenCredential) authentication.
+ * Supports both API Key (KeyCredential) and Entra ID (TokenCredential) authentication.
  */
 class TranscriptionClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(TranscriptionClientTestBase.class);
@@ -99,7 +99,7 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             if (useKeyAuth) {
                 transcriptionClientBuilder.credential(new KeyCredential(key));
             } else {
-                // Use Azure AD authentication (TokenCredential)
+                // Use Entra ID authentication (TokenCredential)
                 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
                 transcriptionClientBuilder.credential(credential);
             }

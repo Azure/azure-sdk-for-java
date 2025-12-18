@@ -43,8 +43,7 @@ public class TranscribeWithPhraseListSample {
             // Load audio file
             String audioFilePath = "src/samples/assets/sample-audio.wav";
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
-            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-                .setFilename(audioFilePath);
+            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Create phrase list with custom terms
             // Add phrases that appear in your audio for better recognition

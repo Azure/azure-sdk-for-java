@@ -171,4 +171,16 @@ public final class EnhancedModeOptions implements JsonSerializable<EnhancedModeO
             return deserializedEnhancedModeOptions;
         });
     }
+
+    /**
+     * Set the enabled property: Enable enhanced mode for transcription. Must be set to true to use enhanced mode
+     * features.
+     *
+     * @param enabled the enabled value to set.
+     * @return the EnhancedModeOptions object itself.
+     */
+    public EnhancedModeOptions setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
 }

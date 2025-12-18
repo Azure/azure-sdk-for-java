@@ -51,8 +51,7 @@ public class TranscribeMultiLanguageSample {
             // Load audio file
             String audioFilePath = "src/samples/assets/sample-audio.wav";
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
-            AudioFileDetails fileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-                .setFilename(audioFilePath);
+            AudioFileDetails fileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Configure transcription WITHOUT specifying locales
             // This allows the service to auto-detect and transcribe multiple languages

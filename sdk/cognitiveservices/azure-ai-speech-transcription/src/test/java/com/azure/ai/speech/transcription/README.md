@@ -136,7 +136,7 @@ Tests for the asynchronous `TranscriptionAsyncClient` (16 tests), mirroring the 
 The tests support two authentication methods:
 
 1. **Key-based authentication** (default): Uses the API key from `SPEECH_API_KEY` environment variable
-2. **Token-based authentication**: Uses Azure Active Directory credentials via `DefaultAzureCredential`
+2. **Token-based authentication**: Uses Entra ID credentials via `DefaultAzureCredential`
 
 To test with token-based authentication, some tests use `createClient(false, true, sync)` where the first parameter is `false`.
 

@@ -1,6 +1,6 @@
 # Azure AI Speech Transcription client library for Java
 
-The Azure AI Speech Transcription client library provides a simple and efficient way to convert audio to text using Azure Cognitive Services. This library enables you to transcribe audio files with features like speaker diarization, profanity filtering, and phrase hints for improved accuracy.
+The Azure AI Speech Transcription client library provides a simple and efficient way to convert audio to text using Azure Cognitive Services. This library enables you to transcribe audio with features like speaker diarization, profanity filtering, and phrase hints for improved accuracy.
 
 ## Documentation
 
@@ -30,9 +30,9 @@ Various documentation is available to help you get started:
 ```
 [//]: # ({x-version-update-end})
 
-#### Optional: For Azure AD Authentication
+#### Optional: For Entra ID Authentication
 
-If you plan to use Azure AD authentication (recommended for production), also add the `azure-identity` dependency:
+If you plan to use Entra ID authentication (recommended for production), also add the `azure-identity` dependency:
 
 ```xml
 <dependency>
@@ -65,11 +65,9 @@ TranscriptionClient client = new TranscriptionClientBuilder()
     .buildClient();
 ```
 
-#### Option 2: Azure AD OAuth2 Authentication (Recommended for Production)
+#### Option 2: Entra ID OAuth2 Authentication (Recommended for Production)
 
-For production scenarios, it's recommended to use Azure Active Directory (Azure AD) authentication with managed identities or service principals. This provides better security and easier credential management.
-
-The OAuth2 scope for Azure Cognitive Services is: `https://cognitiveservices.azure.com/.default`
+For production scenarios, it's recommended to use Entra ID authentication with managed identities or service principals. This provides better security and easier credential management.
 
 ```java
 import com.azure.identity.DefaultAzureCredential;
@@ -84,12 +82,12 @@ TranscriptionClient client = new TranscriptionClientBuilder()
     .buildClient();
 ```
 
-**Note:** To use Azure AD authentication, you need to:
+**Note:** To use Entra ID authentication, you need to:
 1. Add the `azure-identity` dependency to your project
 2. Assign the appropriate role (e.g., "Cognitive Services User") to your managed identity or service principal
-3. Ensure your Cognitive Services resource has Azure AD authentication enabled
+3. Ensure your Cognitive Services resource has Entra ID authentication enabled
 
-For more information on Azure AD authentication, see:
+For more information on Entra ID authentication, see:
 - [Authenticate with Azure Identity](https://learn.microsoft.com/azure/developer/java/sdk/identity)
 - [Azure Cognitive Services authentication](https://learn.microsoft.com/azure/ai-services/authentication)
 
@@ -97,7 +95,7 @@ For more information on Azure AD authentication, see:
 
 ### TranscriptionClient
 
-The `TranscriptionClient` is the primary interface for interacting with the Speech Transcription service. It provides methods to transcribe audio files to text.
+The `TranscriptionClient` is the primary interface for interacting with the Speech Transcription service. It provides methods to transcribe audio to text.
 
 ### TranscriptionAsyncClient
 
@@ -105,7 +103,7 @@ The `TranscriptionAsyncClient` provides asynchronous methods for transcribing au
 
 ### Audio Formats
 
-The service supports various audio formats including WAV, MP3, OGG, and more. Audio files must be:
+The service supports various audio formats including WAV, MP3, OGG, and more. Audio must be:
 
 - Shorter than 2 hours in duration
 - Smaller than 250 MB in size
@@ -135,8 +133,7 @@ try {
     byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
     // Create audio file details
-    AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-        .setFilename("audio.wav");
+    AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
     // Create transcription options
     TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
@@ -176,36 +173,6 @@ result.getCombinedPhrases().forEach(phrase -> {
 });
 ```
 
-### Transcribe using AudioFileDetails constructor
-
-You can also create `TranscriptionOptions` directly with `AudioFileDetails`:
-
-```java readme-sample-transcribeWithAudioFileDetails
-TranscriptionClient client = new TranscriptionClientBuilder()
-    .endpoint("https://<your-resource-name>.cognitiveservices.azure.com/")
-    .credential(new KeyCredential("<your-api-key>"))
-    .buildClient();
-
-// Read audio file
-byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
-
-// Create audio file details
-AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-    .setFilename("audio.wav")
-    .setContentType("audio/wav");
-
-// Create transcription options with AudioFileDetails
-TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
-
-// Transcribe audio
-TranscriptionResult result = client.transcribe(options);
-
-// Process results
-result.getCombinedPhrases().forEach(phrase -> {
-    System.out.println(phrase.getText());
-});
-```
-
 ### Transcribe with multi-language support
 
 The service can automatically detect and transcribe multiple languages within the same audio file.
@@ -213,8 +180,7 @@ The service can automatically detect and transcribe multiple languages within th
 ```java com.azure.ai.speech.transcription.transcriptionoptions.multilanguage
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-    .setFilename("audio.wav");
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 // Configure transcription WITHOUT specifying locales
 // This allows the service to auto-detect and transcribe multiple languages
@@ -235,10 +201,10 @@ Enhanced mode provides advanced features to improve transcription accuracy with 
 ```java com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-    .setFilename("audio.wav");
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
+    .setEnabled(true)
     .setTask("transcribe")
     .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 
@@ -257,8 +223,7 @@ You can use a phrase list to improve recognition accuracy for specific terms.
 ```java com.azure.ai.speech.transcription.transcriptionoptions.phraselist
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
-AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-    .setFilename("audio.wav");
+AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 PhraseListOptions phraseListOptions = new PhraseListOptions()
     .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
@@ -299,7 +264,7 @@ You can enable logging to debug issues with the client library. The Azure client
 
 #### Authentication errors
 
-- Verify that your API key is correct and has not expired
+- Verify that your API key is correct
 - Ensure your endpoint URL matches your Azure resource region
 
 #### Audio format errors
