@@ -12,14 +12,14 @@ public final class WorkloadNetworkDnsZonesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDnsZonesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"talywjhhgdnhxms\",\"domain\":[\"omi\",\"ox\",\"gdufiqnd\"],\"dnsServerIps\":[\"zaofjchvcyy\",\"s\",\"gdotcubiipuipwo\",\"onmacjekniz\"],\"sourceIp\":\"qvci\",\"dnsServices\":1446313275004887164,\"provisioningState\":\"Building\",\"revision\":278724514924686542},\"id\":\"rilbywdx\",\"name\":\"miccwrwfscjfnyn\",\"type\":\"zqujizdvoqytiby\"}],\"nextLink\":\"bblgyavut\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"vi\",\"domain\":[\"wivkxo\",\"zunbixx\"],\"dnsServerIps\":[\"kvcpwpgclr\",\"ivtsoxfrkenxpm\"],\"sourceIp\":\"efrp\",\"dnsServices\":7054600289861372959,\"provisioningState\":\"Deleting\",\"revision\":1915674817878183369},\"id\":\"ao\",\"name\":\"vmm\",\"type\":\"npqfrtqlkzmeg\"},{\"properties\":{\"displayName\":\"gvkxlzyqdrfe\",\"domain\":[\"alzxwhcan\",\"ymo\",\"qhlwigdivbkbxgo\",\"fajuwas\"],\"dnsServerIps\":[\"aeyyg\",\"xakjsqzhzb\"],\"sourceIp\":\"kgimsidxasic\",\"dnsServices\":1821581039287836081,\"provisioningState\":\"Updating\",\"revision\":2308269052404267440},\"id\":\"mocwa\",\"name\":\"pqg\",\"type\":\"tjeaahhvjhh\"}],\"nextLink\":\"kzyb\"}")
             .toObject(WorkloadNetworkDnsZonesList.class);
-        Assertions.assertEquals("talywjhhgdnhxms", model.value().get(0).displayName());
-        Assertions.assertEquals("omi", model.value().get(0).domain().get(0));
-        Assertions.assertEquals("zaofjchvcyy", model.value().get(0).dnsServerIps().get(0));
-        Assertions.assertEquals("qvci", model.value().get(0).sourceIp());
-        Assertions.assertEquals(1446313275004887164L, model.value().get(0).dnsServices());
-        Assertions.assertEquals(278724514924686542L, model.value().get(0).revision());
-        Assertions.assertEquals("bblgyavut", model.nextLink());
+        Assertions.assertEquals("vi", model.value().get(0).displayName());
+        Assertions.assertEquals("wivkxo", model.value().get(0).domain().get(0));
+        Assertions.assertEquals("kvcpwpgclr", model.value().get(0).dnsServerIps().get(0));
+        Assertions.assertEquals("efrp", model.value().get(0).sourceIp());
+        Assertions.assertEquals(7054600289861372959L, model.value().get(0).dnsServices());
+        Assertions.assertEquals(1915674817878183369L, model.value().get(0).revision());
+        Assertions.assertEquals("kzyb", model.nextLink());
     }
 }
