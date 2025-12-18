@@ -241,7 +241,6 @@ public final class ReadmeSamples {
 
         // Enable enhanced mode for improved transcription quality with lexical format
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setEnabled(true)
             .setPrompts(java.util.Arrays.asList(
                 "Output must be in lexical format."
             ));
@@ -271,7 +270,6 @@ public final class ReadmeSamples {
         // Use prompts to guide transcription with domain-specific terminology
         // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setEnabled(true)
             .setPrompts(java.util.Arrays.asList(
                 "Output must be in lexical format.",
                 "Medical consultation discussing hypertension and diabetes",
@@ -303,7 +301,6 @@ public final class ReadmeSamples {
 
         // Configure enhanced mode to transcribe Spanish audio and translate to English
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setEnabled(true)
             .setTargetLanguage("en-US"); // Translate to English
 
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -379,7 +376,6 @@ public final class ReadmeSamples {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setEnabled(true)
             .setTask("transcribe")
             .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 

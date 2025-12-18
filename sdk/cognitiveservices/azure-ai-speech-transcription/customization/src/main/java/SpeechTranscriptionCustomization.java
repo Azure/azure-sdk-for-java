@@ -59,8 +59,8 @@ public class SpeechTranscriptionCustomization extends Customization {
             logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
             customizeDiarizationOptionsToJson(models);
 
-            // Customize EnhancedModeOptions to add setter for enabled property
-            logger.info("Customizing EnhancedModeOptions to add setEnabled() method");
+            // Customize EnhancedModeOptions constructor to auto-set enabled to true
+            logger.info("Customizing EnhancedModeOptions constructor to auto-set enabled to true");
             customizeEnhancedModeOptions(models);
 
             // Customize AudioFileDetails.getFilename() to auto-generate filename from contentType if not set
@@ -120,6 +120,34 @@ public class SpeechTranscriptionCustomization extends Customization {
     }
 
     /**
+     * Customize EnhancedModeOptions constructor to automatically set enabled property to true.
+     * This ensures enhanced mode is enabled when EnhancedModeOptions is instantiated.
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeEnhancedModeOptions(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("EnhancedModeOptions").customizeAst(ast -> {
+            ast.getClassByName("EnhancedModeOptions").ifPresent(clazz -> {
+                // Remove the @Generated no-arg constructor and replace with one that sets enabled = true
+                clazz.getConstructors()
+                    .stream()
+                    .filter(c -> c.getParameters().isEmpty())
+                    .findFirst()
+                    .ifPresent(constructor -> {
+                        // Remove @Generated annotation to prevent overwriting
+                        constructor.getAnnotationByName("Generated").ifPresent(com.github.javaparser.ast.Node::remove);
+                        // Set the constructor body to initialize enabled = true
+                        constructor.setBody(parseBlock("{ this.enabled = true; }"));
+                        // Add JavaDoc
+                        constructor.setJavadocComment(
+                            new Javadoc(parseText(
+                                "Creates an instance of EnhancedModeOptions class with enabled set to true.")));
+                    });
+            });
+        });
+    }
+
+    /**
      * Customize AudioFileDetails.getFilename() to auto-generate a filename from contentType if not explicitly set.
      * This allows developers to omit setFilename() and have the SDK automatically provide a sensible default.
      *
@@ -143,30 +171,6 @@ public class SpeechTranscriptionCustomization extends Customization {
                             + "If not explicitly set, a filename will be auto-generated from the contentType."))
                             .addBlockTag("return", "the filename value, or an auto-generated filename if not set."));
                 });
-            });
-        });
-    }
-
-    /**
-     * Customize the EnhancedModeOptions to add a setter for the enabled property.
-     * The enabled property must be explicitly set by users to enable enhanced mode features.
-     *
-     * @param packageCustomization the package customization
-     */
-    private void customizeEnhancedModeOptions(PackageCustomization packageCustomization) {
-        packageCustomization.getClass("EnhancedModeOptions").customizeAst(ast -> {
-            ast.getClassByName("EnhancedModeOptions").ifPresent(clazz -> {
-                // Add setEnabled method following the fluent pattern
-                com.github.javaparser.ast.body.MethodDeclaration setEnabledMethod
-                    = clazz.addMethod("setEnabled", Modifier.Keyword.PUBLIC);
-                setEnabledMethod.addParameter("Boolean", "enabled");
-                setEnabledMethod.setType("EnhancedModeOptions");
-                setEnabledMethod.setBody(parseBlock("{ this.enabled = enabled; return this; }"));
-                setEnabledMethod.setJavadocComment(
-                    new Javadoc(parseText(
-                        "Set the enabled property: Enable enhanced mode for transcription. Must be set to true to use enhanced mode features."))
-                            .addBlockTag("param", "enabled the enabled value to set.")
-                            .addBlockTag("return", "the EnhancedModeOptions object itself."));
             });
         });
     }

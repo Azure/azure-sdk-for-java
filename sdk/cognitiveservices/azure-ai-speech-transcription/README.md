@@ -204,7 +204,6 @@ byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-    .setEnabled(true)
     .setTask("transcribe")
     .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));
 

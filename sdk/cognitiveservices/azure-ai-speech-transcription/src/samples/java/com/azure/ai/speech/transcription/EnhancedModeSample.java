@@ -122,7 +122,6 @@ public class EnhancedModeSample {
         // Configure comprehensive LLM-enhanced mode settings
         // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
-            .setEnabled(true)
             .setTask("transcribe")
             .setPrompts(Arrays.asList(
                 "Output must be in lexical format."
