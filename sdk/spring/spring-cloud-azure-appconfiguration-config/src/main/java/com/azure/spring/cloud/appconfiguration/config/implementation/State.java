@@ -18,35 +18,36 @@ class State {
 
     private final String originEndpoint;
 
-    private Integer refreshAttempt;
+    private final int refreshAttempt;
 
     private final int refreshInterval;
 
     State(List<ConfigurationSetting> watchKeys, int refreshInterval, String originEndpoint) {
-        this.watchKeys = watchKeys;
-        this.collectionWatchKeys = null;
-        this.refreshInterval = refreshInterval;
-        nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
-        this.originEndpoint = originEndpoint;
-        this.refreshAttempt = 1;
+        this(watchKeys, null, refreshInterval, originEndpoint);
     }
 
     State(List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys, int refreshInterval, String originEndpoint) {
-        this.watchKeys = watchKeys;
-        this.collectionWatchKeys = collectionWatchKeys;
-        this.refreshInterval = refreshInterval;
-        nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
-        this.originEndpoint = originEndpoint;
-        this.refreshAttempt = 1;
+        this(watchKeys, collectionWatchKeys, refreshInterval, originEndpoint, Instant.now().plusSeconds(refreshInterval), 1);
     }
 
     State(State oldState, Instant newRefresh) {
-        this.watchKeys = oldState.getWatchKeys();
-        this.collectionWatchKeys = oldState.getCollectionWatchKeys();
-        this.refreshInterval = oldState.getRefreshInterval();
-        this.nextRefreshCheck = newRefresh;
-        this.originEndpoint = oldState.getOriginEndpoint();
-        this.refreshAttempt = oldState.getRefreshAttempt();
+        this(oldState, newRefresh, oldState.getRefreshAttempt());
+    }
+
+    State(State oldState, Instant newRefresh, int refreshAttempt) {
+        this(oldState.getWatchKeys(), oldState.getCollectionWatchKeys(), oldState.getRefreshInterval(),
+            oldState.getOriginEndpoint(), newRefresh, refreshAttempt);
+    }
+
+    // Primary constructor
+    private State(List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys,
+                  int refreshInterval, String originEndpoint, Instant nextRefreshCheck, int refreshAttempt) {
+        this.watchKeys = watchKeys;
+        this.collectionWatchKeys = collectionWatchKeys;
+        this.refreshInterval = refreshInterval;
+        this.nextRefreshCheck = nextRefreshCheck;
+        this.originEndpoint = originEndpoint;
+        this.refreshAttempt = refreshAttempt;
     }
 
     /**
@@ -80,15 +81,16 @@ class State {
     /**
      * @return the refreshAttempt
      */
-    public Integer getRefreshAttempt() {
+    public int getRefreshAttempt() {
         return refreshAttempt;
     }
 
     /**
-     * Adds 1 to the number of refresh attempts
+     * Creates a new State with an incremented refresh attempt count
+     * @return a new State instance with refreshAttempt incremented by 1
      */
-    public void incrementRefreshAttempt() {
-        this.refreshAttempt += 1;
+    public State withIncrementedRefreshAttempt() {
+        return new State(this, this.nextRefreshCheck, this.refreshAttempt + 1);
     }
 
     /**

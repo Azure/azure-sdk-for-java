@@ -170,14 +170,17 @@ final class StateHolder {
         }
 
         for (Entry<String, State> entry : state.entrySet()) {
-            State state = entry.getValue();
-            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), defaultMinBackoff);
+            State currentState = entry.getValue();
+            Instant newRefresh = getNextRefreshCheck(currentState.getNextRefreshCheck(),
+                currentState.getRefreshAttempt(), (long) currentState.getRefreshInterval(), defaultMinBackoff);
 
+            State updatedState;
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
-                state.incrementRefreshAttempt();
+                updatedState = currentState.withIncrementedRefreshAttempt();
+                updatedState = new State(updatedState, newRefresh);
+            } else {
+                updatedState = new State(currentState, newRefresh);
             }
-            State updatedState = new State(state, newRefresh);
             this.state.put(entry.getKey(), updatedState);
         }
     }
