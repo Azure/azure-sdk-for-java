@@ -41,11 +41,11 @@ public class TranscriptionClientJavaDocCodeSnippets {
     }
 
     /**
-     * Sample for creating a synchronous TranscriptionClient with Azure AD authentication.
+     * Sample for creating a synchronous TranscriptionClient with Entra ID authentication.
      */
     public void createClientWithTokenCredential() {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionclient.instantiation.tokencredential
-        // Use DefaultAzureCredential for Azure AD authentication
+        // Use DefaultAzureCredential for Entra ID authentication
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         TranscriptionClient client = new TranscriptionClientBuilder()
@@ -69,8 +69,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
 
         // Create audio file details
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Create transcription options using the AudioFileDetails constructor
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
@@ -98,8 +97,7 @@ public class TranscriptionClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionclient.transcribe.options
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure advanced transcription options
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)

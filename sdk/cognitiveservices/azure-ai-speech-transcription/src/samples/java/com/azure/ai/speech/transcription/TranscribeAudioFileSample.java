@@ -39,8 +39,7 @@ public class TranscribeAudioFileSample {
             byte[] audioData = Files.readAllBytes(Paths.get(audioFilePath));
 
             // Create audio file details
-            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-                .setFilename(audioFilePath);
+            AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
             // Transcribe
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);

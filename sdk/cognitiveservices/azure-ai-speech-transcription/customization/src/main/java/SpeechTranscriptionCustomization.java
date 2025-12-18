@@ -59,6 +59,14 @@ public class SpeechTranscriptionCustomization extends Customization {
             logger.info("Customizing TranscriptionDiarizationOptions.toJson()");
             customizeDiarizationOptionsToJson(models);
 
+            // Customize EnhancedModeOptions to add setter for enabled property
+            logger.info("Customizing EnhancedModeOptions to add setEnabled() method");
+            customizeEnhancedModeOptions(models);
+
+            // Customize AudioFileDetails.getFilename() to auto-generate filename from contentType if not set
+            logger.info("Customizing AudioFileDetails.getFilename() to auto-generate filename");
+            customizeAudioFileDetailsGetFilename(models);
+
             // Add AudioFileDetails field and constructors to TranscriptionOptions, make setAudioUrl private, remove no-arg constructor
             logger
                 .info("Customizing TranscriptionOptions to add AudioFileDetails support and remove no-arg constructor");
@@ -108,6 +116,58 @@ public class SpeechTranscriptionCustomization extends Customization {
                     method.setBody(parseBlock(
                         "{ jsonWriter.writeStartObject(); if (this.maxSpeakers != null) { jsonWriter.writeBooleanField(\"enabled\", true); jsonWriter.writeNumberField(\"maxSpeakers\", this.maxSpeakers); } return jsonWriter.writeEndObject(); }"));
                 }));
+        });
+    }
+
+    /**
+     * Customize AudioFileDetails.getFilename() to auto-generate a filename from contentType if not explicitly set.
+     * This allows developers to omit setFilename() and have the SDK automatically provide a sensible default.
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeAudioFileDetailsGetFilename(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("AudioFileDetails").customizeAst(ast -> {
+            ast.getClassByName("AudioFileDetails").ifPresent(clazz -> {
+                clazz.getMethodsByName("getFilename").forEach(method -> {
+                    method.setBody(parseBlock(
+                        "{ if (this.filename != null && !this.filename.isEmpty()) { return this.filename; } "
+                        + "if (\"audio/wav\".equalsIgnoreCase(this.contentType)) { return \"audio.wav\"; } "
+                        + "if (\"audio/mpeg\".equalsIgnoreCase(this.contentType) || \"audio/mp3\".equalsIgnoreCase(this.contentType)) { return \"audio.mp3\"; } "
+                        + "if (\"audio/ogg\".equalsIgnoreCase(this.contentType)) { return \"audio.ogg\"; } "
+                        + "if (\"audio/flac\".equalsIgnoreCase(this.contentType)) { return \"audio.flac\"; } "
+                        + "if (\"audio/webm\".equalsIgnoreCase(this.contentType)) { return \"audio.webm\"; } "
+                        + "if (\"audio/opus\".equalsIgnoreCase(this.contentType)) { return \"audio.opus\"; } "
+                        + "return \"audio\"; }"));
+                    method.setJavadocComment(
+                        new Javadoc(parseText("Get the filename property: The filename of the file. "
+                            + "If not explicitly set, a filename will be auto-generated from the contentType."))
+                            .addBlockTag("return", "the filename value, or an auto-generated filename if not set."));
+                });
+            });
+        });
+    }
+
+    /**
+     * Customize the EnhancedModeOptions to add a setter for the enabled property.
+     * The enabled property must be explicitly set by users to enable enhanced mode features.
+     *
+     * @param packageCustomization the package customization
+     */
+    private void customizeEnhancedModeOptions(PackageCustomization packageCustomization) {
+        packageCustomization.getClass("EnhancedModeOptions").customizeAst(ast -> {
+            ast.getClassByName("EnhancedModeOptions").ifPresent(clazz -> {
+                // Add setEnabled method following the fluent pattern
+                com.github.javaparser.ast.body.MethodDeclaration setEnabledMethod
+                    = clazz.addMethod("setEnabled", Modifier.Keyword.PUBLIC);
+                setEnabledMethod.addParameter("Boolean", "enabled");
+                setEnabledMethod.setType("EnhancedModeOptions");
+                setEnabledMethod.setBody(parseBlock("{ this.enabled = enabled; return this; }"));
+                setEnabledMethod.setJavadocComment(
+                    new Javadoc(parseText(
+                        "Set the enabled property: Enable enhanced mode for transcription. Must be set to true to use enhanced mode features."))
+                            .addBlockTag("param", "enabled the enabled value to set.")
+                            .addBlockTag("return", "the EnhancedModeOptions object itself."));
+            });
         });
     }
 

@@ -52,8 +52,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.subscribe
@@ -94,8 +93,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.block
@@ -120,8 +118,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.options
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
 
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure advanced transcription options
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -154,8 +151,7 @@ public class TranscriptionAsyncClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         byte[] audioData = Files.readAllBytes(Paths.get("sample.wav"));
-        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData))
-            .setFilename("sample.wav");
+        AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails);
 
         // BEGIN: com.azure.ai.speech.transcription.transcriptionasyncclient.transcribe.timeout

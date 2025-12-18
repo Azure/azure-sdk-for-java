@@ -52,13 +52,35 @@ public final class AudioFileDetails {
     }
 
     /**
-     * Get the filename property: The filename of the file.
+     * Get the filename property: The filename of the file. If not explicitly set, a filename will be auto-generated
+     * from the contentType.
      *
-     * @return the filename value.
+     * @return the filename value, or an auto-generated filename if not set.
      */
     @Generated
     public String getFilename() {
-        return this.filename;
+        if (this.filename != null && !this.filename.isEmpty()) {
+            return this.filename;
+        }
+        if ("audio/wav".equalsIgnoreCase(this.contentType)) {
+            return "audio.wav";
+        }
+        if ("audio/mpeg".equalsIgnoreCase(this.contentType) || "audio/mp3".equalsIgnoreCase(this.contentType)) {
+            return "audio.mp3";
+        }
+        if ("audio/ogg".equalsIgnoreCase(this.contentType)) {
+            return "audio.ogg";
+        }
+        if ("audio/flac".equalsIgnoreCase(this.contentType)) {
+            return "audio.flac";
+        }
+        if ("audio/webm".equalsIgnoreCase(this.contentType)) {
+            return "audio.webm";
+        }
+        if ("audio/opus".equalsIgnoreCase(this.contentType)) {
+            return "audio.opus";
+        }
+        return "audio";
     }
 
     /**

@@ -10,9 +10,9 @@ To run these samples, you need:
 2. **Azure AI Speech Service Resource**: Create one in the [Azure Portal](https://portal.azure.com)
 3. **Authentication**: Choose one of the following authentication methods:
 
-   ### Option 1: Azure AD Authentication (Recommended for Production)
-   
-   Set the endpoint and configure Azure AD credentials:
+### Option 1: Entra ID Authentication (Recommended for Production)
+
+   Set the endpoint and configure Entra ID credentials:
    
    ```bash
    set SPEECH_ENDPOINT=https://your-resource-name.cognitiveservices.azure.com/
@@ -32,7 +32,7 @@ To run these samples, you need:
        --scope /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.CognitiveServices/accounts/<speech-resource-name>
    ```
    
-   **Required dependency** for Azure AD authentication:
+   **Required dependency** for Entra ID authentication:
    
    ```xml
    <dependency>
@@ -64,7 +64,7 @@ To run these samples, you need:
        --scope /subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.CognitiveServices/accounts/<speech-resource-name>
    ```
    
-   **Required dependency** for Azure AD authentication:
+   **Required dependency** for Entra ID authentication:
    
    ```xml
    <dependency>
@@ -80,10 +80,10 @@ To run these samples, you need:
 
 All samples in this directory support **both authentication methods**:
 
-- **Azure AD (TokenCredential)**: Uses `DefaultAzureCredential` from azure-identity
+- **Entra ID (TokenCredential)**: Uses `DefaultAzureCredential` from azure-identity
 - **API Key (KeyCredential)**: Uses the `SPEECH_API_KEY` environment variable
 
-The samples will automatically detect which authentication method to use based on the environment variables you've set. If `SPEECH_API_KEY` is set, it will use API Key authentication; otherwise, it will attempt Azure AD authentication.
+The samples will automatically detect which authentication method to use based on the environment variables you've set. If `SPEECH_API_KEY` is set, it will use API Key authentication; otherwise, it will attempt Entra ID authentication.
 
 ## Available Samples
 

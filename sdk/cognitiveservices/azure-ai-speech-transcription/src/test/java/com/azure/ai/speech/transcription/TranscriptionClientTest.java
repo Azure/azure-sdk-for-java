@@ -170,6 +170,22 @@ class TranscriptionClientTest extends TranscriptionClientTestBase {
         doTranscription(methodName, sync, false, audioFile, options, null);
     }
 
+    @Test
+    public void testTranscribeSyncWithAudioUrl() {
+        createClient(true, true, sync);
+
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+
+        // Using a publicly accessible sample audio file from Azure samples
+        String audioUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-speech-sdk/master/sampledata/audiofiles/aboutSpeechSdk.wav";
+        TranscriptionOptions options = new TranscriptionOptions(audioUrl).setLocales(Arrays.asList("en-US"));
+
+        // For URL-based transcription, we don't pass the local audio file path
+        doTranscriptionWithUrl(methodName, sync, options);
+    }
+
     /***********************************************************************************
      *
      *                            ERROR HANDLING TESTS

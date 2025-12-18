@@ -46,7 +46,7 @@ public final class TranscriptionClient {
     /**
      * Transcribes the provided audio stream.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
