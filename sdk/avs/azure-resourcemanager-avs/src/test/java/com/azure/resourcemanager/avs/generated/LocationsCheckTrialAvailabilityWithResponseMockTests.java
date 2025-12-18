@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class LocationsCheckTrialAvailabilityWithResponseMockTests {
     @Test
     public void testCheckTrialAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"status\":\"TrialAvailable\",\"availableHosts\":597476008}";
+        String responseStr = "{\"status\":\"TrialUsed\",\"availableHosts\":27775403}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class LocationsCheckTrialAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Trial response = manager.locations()
-            .checkTrialAvailabilityWithResponse("tbxqmuluxlxq",
-                new Sku().withName("vnersbycucrw")
+            .checkTrialAvailabilityWithResponse("vkyylizrzbjpsf",
+                new Sku().withName("sfuztlvtmv")
                     .withTier(SkuTier.BASIC)
-                    .withSize("kzebrqbsm")
-                    .withFamily("ziqgfuh")
-                    .withCapacity(1603302916),
+                    .withSize("idqlvhu")
+                    .withFamily("veo")
+                    .withCapacity(2146524113),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

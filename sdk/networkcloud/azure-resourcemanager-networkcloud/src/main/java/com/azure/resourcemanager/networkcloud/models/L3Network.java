@@ -142,8 +142,7 @@ public interface L3Network {
 
     /**
      * Gets the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @return the ipv4ConnectedPrefix value.
      */
@@ -151,8 +150,7 @@ public interface L3Network {
 
     /**
      * Gets the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @return the ipv6ConnectedPrefix value.
      */
@@ -413,12 +411,10 @@ public interface L3Network {
         interface WithIpv4ConnectedPrefix {
             /**
              * Specifies the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required
-             * when the IP allocation type
-             * is IPV4 or DualStack..
+             * when the IP allocation type is IPV4 or DualStack..
              * 
              * @param ipv4ConnectedPrefix The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-             * allocation type
-             * is IPV4 or DualStack.
+             * allocation type is IPV4 or DualStack.
              * @return the next definition stage.
              */
             WithCreate withIpv4ConnectedPrefix(String ipv4ConnectedPrefix);
@@ -430,12 +426,10 @@ public interface L3Network {
         interface WithIpv6ConnectedPrefix {
             /**
              * Specifies the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required
-             * when the IP allocation type
-             * is IPV6 or DualStack..
+             * when the IP allocation type is IPV6 or DualStack..
              * 
              * @param ipv6ConnectedPrefix The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-             * allocation type
-             * is IPV6 or DualStack.
+             * allocation type is IPV6 or DualStack.
              * @return the next definition stage.
              */
             WithCreate withIpv6ConnectedPrefix(String ipv6ConnectedPrefix);

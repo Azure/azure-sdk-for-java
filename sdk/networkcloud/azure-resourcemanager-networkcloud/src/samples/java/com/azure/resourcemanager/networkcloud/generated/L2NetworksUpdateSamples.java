@@ -14,8 +14,8 @@ import java.util.Map;
 public final class L2NetworksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
-     * L2Networks_Patch.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/L2Networks_Patch.
+     * json
      */
     /**
      * Sample code: Patch L2 network.
