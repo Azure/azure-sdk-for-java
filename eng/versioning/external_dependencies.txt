@@ -360,6 +360,7 @@ springboot4_org.springframework.boot:spring-boot-restclient;4.0.0
 springboot4_org.springframework.boot:spring-boot-resttestclient;4.0.0
 springboot4_org.springframework.boot:spring-boot-security;4.0.0
 springboot4_org.springframework.boot:spring-boot-security-oauth2-client;4.0.0
+springboot4_org.springframework.boot:spring-boot-security-oauth2-resource-server;4.0.0
 springboot4_org.springframework.boot:spring-boot-starter-actuator;4.0.0
 springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;4.0.0
 springboot4_org.springframework.boot:spring-boot-starter-integration;4.0.0

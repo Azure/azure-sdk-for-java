@@ -103,6 +103,12 @@
       <artifactId>postgresql</artifactId>
       <version>42.7.8</version> <!-- {x-version-update;springboot4_org.postgresql:postgresql;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-jdbc</artifactId>
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>

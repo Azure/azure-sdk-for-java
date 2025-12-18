@@ -52,7 +52,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-health</artifactId>
       <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-health;external_dependency} -->
-      <optional>true</optional>
     </dependency>
 
     <!-- Azure SDKs-->
