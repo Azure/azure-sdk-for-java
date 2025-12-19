@@ -96,7 +96,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-jms</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework:spring-boot-jms;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.messaginghub</groupId>

@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-data-redis</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-boot-data-redis;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
     </dependency>
 
     <dependency>
