@@ -123,6 +123,21 @@ jobs:
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
+      - pwsh: |
+          $downloadUri = "https://download.java.net/java/early_access/jdk26/28/GPL/openjdk-26-ea+28_windows-x64_bin.zip"
+          $jdkZipName = "windows_java26_ea.zip"
+          $jdkUnzipName = "jdk-26"
+
+          Invoke-WebRequest -URI $downloadUri -OutFile $jdkZipName
+          Expand-Archive -Path $jdkZipName -Destination "jdk-temp"
+          Move-Item -Path (Join-Path -Path "jdk-temp" -ChildPath (Get-ChildItem "jdk-temp")[0].Name) -Destination $jdkUnzipName
+          $javaHome = (Convert-Path $jdkUnzipName)
+
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME_26_X64;]$javaHome"
+        displayName: Test Java 26 ea on Windows
+        condition: and(eq(variables['JavaTestVersion'], '1.26'), eq(variables['Agent.OS'], 'Windows'))
+
       - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
