@@ -129,21 +129,24 @@ private class ItemsWriterBuilder
 
     private def getPartitionKeyColumnNames(): Seq[String] = {
       try {
-        // Use loan pattern to ensure client is properly closed
-        using(createClientForPartitionKeyLookup()) { clientCacheItem =>
-          val container = ThroughputControlHelper.getContainer(
-            userConfigMap,
-            containerConfig,
-            clientCacheItem,
-            None
-          )
+        Loan(
+          List[Option[CosmosClientCacheItem]](
+            Some(createClientForPartitionKeyLookup())
+          ))
+          .to(clientCacheItems => {
+            val container = ThroughputControlHelper.getContainer(
+              userConfigMap,
+              containerConfig,
+              clientCacheItems(0).get,
+              None
+            )
 
-          // Simplified retrieval using SparkBridgeInternal directly
-          val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
-          val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+            // Simplified retrieval using SparkBridgeInternal directly
+            val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
+            val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-          extractPartitionKeyPaths(partitionKeyDefinition)
-        }
+            extractPartitionKeyPaths(partitionKeyDefinition)
+          })
       } catch {
         case ex: Exception =>
           log.logWarning(s"Failed to get partition key definition for transactional writes: ${ex.getMessage}")
@@ -176,15 +179,6 @@ private class ItemsWriterBuilder
       } else {
         log.logError("Partition key definition is null - this should not happen for modern containers")
         Seq.empty[String]
-      }
-    }
-
-    // Scala loan pattern to ensure resources are properly cleaned up
-    private def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B = {
-      try {
-        f(resource)
-      } finally {
-        if (resource != null) resource.close()
       }
     }
   }
