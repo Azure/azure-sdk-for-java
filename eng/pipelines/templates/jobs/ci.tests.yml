@@ -136,7 +136,7 @@ jobs:
           Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
           Write-Host "##vso[task.setvariable variable=JAVA_HOME_26_X64;]$javaHome"
         displayName: Test Java 26 ea on Windows
-        condition: and(eq(variables['JavaTestVersion'], '1.26'), eq(variables['Agent.OS'], 'Windows'))
+        condition: and(eq(variables['JavaTestVersion'], '1.26'), eq(variables['Agent.OS'], 'Windows_NT'))
 
       - ${{ parameters.PreBuildSteps }}
 
