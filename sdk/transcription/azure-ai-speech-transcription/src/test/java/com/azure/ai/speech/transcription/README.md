@@ -83,7 +83,7 @@ This mode uses previously recorded HTTP interactions instead of making real call
 
 ### Run All Tests
 
-From the `sdk/cognitiveservices/azure-ai-speech-transcription` directory:
+From the `sdk/transcription/azure-ai-speech-transcription` directory:
 
 ```bash
 mvn clean test

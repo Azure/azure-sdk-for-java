@@ -282,7 +282,7 @@ If you encounter issues:
 
 ## Next steps
 
-- Explore the [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cognitiveservices/azure-ai-speech-transcription/src/samples) for more examples
+- Explore the [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/transcription/azure-ai-speech-transcription/src/samples) for more examples
 - Learn more about [Azure Speech Service](https://learn.microsoft.com/azure/ai-services/speech-service/)
 - Review the [API reference documentation][docs] for detailed information about classes and methods
 
