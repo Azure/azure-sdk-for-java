@@ -170,6 +170,7 @@ public class FluxUtilTest {
     }
 
     @Test
+    @DisabledOnOs(value = OS.WINDOWS, disabledReason = "Fails when using Java 26 early access")
     public void testWriteFile() throws Exception {
         String toReplace = "test";
         String original = "hello there";
@@ -186,11 +187,12 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            assertArraysEqual(target.getBytes(StandardCharsets.UTF_8), outputStream);
         }
     }
 
     @Test
+    @DisabledOnOs(value = OS.WINDOWS, disabledReason = "Fails when using Java 26 early access")
     public void testWriteFileWithPosition() throws Exception {
         String toReplace = "test";
         String original = "hello there";
@@ -359,6 +361,7 @@ public class FluxUtilTest {
     }
 
     @Test
+    @DisabledOnOs(value = OS.WINDOWS, disabledReason = "Fails when using Java 26 early access")
     public void writingRetriableStreamThatFails() throws IOException {
         byte[] data = new byte[1024 * 1024];
         fillArray(data);
