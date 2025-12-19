@@ -11,5 +11,5 @@
 
   <modules>
       <module>azure-resourcemanager-cognitiveservices</module>
-  </modules>
+      </modules>
 </project>
