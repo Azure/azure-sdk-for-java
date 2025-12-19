@@ -123,6 +123,19 @@ jobs:
         parameters:
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
+      - pwsh: |
+          $downloadUri = "https://aka.ms/download-jdk/microsoft-jdk-25.0.1-windows-x64.zip"
+          $jdkZipName = "microsoft_jdk_25.zip"
+          $jdkUnzipName = "microsoft-jdk-25"
+          Invoke-WebRequest -URI $downloadUri -OutFile $jdkZipName
+          Expand-Archive -Path $jdkZipName -Destination "jdk-temp"
+          Move-Item -Path (Join-Path -Path "jdk-temp" -ChildPath (Get-ChildItem "jdk-temp")[0].Name) -Destination $jdkUnzipName
+          $javaHome = (Convert-Path $jdkUnzipName)
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME;]$javaHome"
+          Write-Host "##vso[task.setvariable variable=JAVA_HOME_25_X64;]$javaHome"
+        displayName: Install Microsoft JDK 25
+        condition: and(eq(variables['JavaTestVersion'], '1.25'), eq(variables['Agent.OS'], 'Windows_NT'))
+
       - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
