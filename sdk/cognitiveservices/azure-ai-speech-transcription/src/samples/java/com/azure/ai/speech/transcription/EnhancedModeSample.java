@@ -120,6 +120,7 @@ public class EnhancedModeSample {
         AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
         // Configure comprehensive LLM-enhanced mode settings
+        // Enhanced mode is automatically enabled when you create EnhancedModeOptions
         // Always include lexical format prompt for best results
         EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
             .setTask("transcribe")

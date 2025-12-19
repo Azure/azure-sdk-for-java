@@ -196,13 +196,14 @@ result.getPhrases().forEach(phrase -> {
 
 ### Transcribe with enhanced mode
 
-Enhanced mode provides advanced features to improve transcription accuracy with custom prompts.
+Enhanced mode provides advanced features to improve transcription accuracy with custom prompts. Enhanced mode is automatically enabled when you create an `EnhancedModeOptions` instance.
 
 ```java com.azure.ai.speech.transcription.transcriptionoptions.enhancedmode
 byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
+// Enhanced mode is automatically enabled
 EnhancedModeOptions enhancedMode = new EnhancedModeOptions()
     .setTask("transcribe")
     .setPrompts(java.util.Arrays.asList("Output must be in lexical format."));

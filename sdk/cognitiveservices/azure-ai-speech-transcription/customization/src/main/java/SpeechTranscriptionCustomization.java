@@ -120,8 +120,9 @@ public class SpeechTranscriptionCustomization extends Customization {
     }
 
     /**
-     * Customize EnhancedModeOptions constructor to automatically set enabled property to true.
-     * This ensures enhanced mode is enabled when EnhancedModeOptions is instantiated.
+     * Customize EnhancedModeOptions to hide the enabled property from the public API.
+     * The enabled property is automatically set to true in the constructor.
+     * Both isEnabled() getter and setEnabled() setter are removed from the public API.
      *
      * @param packageCustomization the package customization
      */
@@ -141,8 +142,14 @@ public class SpeechTranscriptionCustomization extends Customization {
                         // Add JavaDoc
                         constructor.setJavadocComment(
                             new Javadoc(parseText(
-                                "Creates an instance of EnhancedModeOptions class with enabled set to true.")));
+                                "Creates an instance of EnhancedModeOptions class with enhanced mode automatically enabled.")));
                     });
+                
+                // Remove isEnabled() getter to hide enabled from public API
+                clazz.getMethodsByName("isEnabled").forEach(method -> method.remove());
+                
+                // Remove ALL setEnabled() methods to hide enabled from public API
+                clazz.getMethodsByName("setEnabled").forEach(method -> method.remove());
             });
         });
     }
