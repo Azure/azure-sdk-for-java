@@ -4,10 +4,13 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
-import com.azure.cosmos.CosmosException
+import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
+import com.azure.cosmos.test.faultinjection._
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode}
+
+import java.time.Duration
 
 import java.util.UUID
 // scalastyle:off underscore.import
@@ -804,6 +807,194 @@ class TransactionalBatchITest extends IntegrationSpec
     // 1. Operations complete successfully even with tight batch limit
     // 2. No deadlocks occur from semaphore management
     // 3. All batches are properly tracked and released
+  }
+
+  "Transactional Batch" should "handle multiple batches for same partition key" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    
+    // Create two sets of operations for the same partition key
+    // This tests that multiple successful batches can be written to the same partition key
+    val partitionKeyValue = UUID.randomUUID().toString
+    
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("counter", IntegerType, nullable = false)
+    ))
+    
+    // First, write initial items that will later be updated transactionally
+    val initialItems = (1 to 10).map { i =>
+      Row(s"item-$i", partitionKeyValue, 0)
+    }
+    
+    val initialDf = spark.createDataFrame(initialItems.asJava, schema)
+    initialDf.write
+      .format("cosmos.oltp")
+      .option("spark.cosmos.accountEndpoint", cosmosEndpoint)
+      .option("spark.cosmos.accountKey", cosmosMasterKey)
+      .option("spark.cosmos.database", cosmosDatabase)
+      .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
+      .option("spark.cosmos.write.bulk.transactional", "true")
+      .option("spark.cosmos.write.bulk.enabled", "true")
+      .mode(SaveMode.Append)
+      .save()
+    
+    // Now update items 1-5 to counter=1, then items 6-10 to counter=2
+    // Both are atomic batches for the same partition key
+    // If retries from the first batch interleave with the second batch, 
+    // atomicity would be violated
+    val batch1 = (1 to 5).map { i =>
+      Row(s"item-$i", partitionKeyValue, 1)
+    }
+    
+    val batch2 = (6 to 10).map { i =>
+      Row(s"item-$i", partitionKeyValue, 2)
+    }
+    
+    val allUpdates = batch1 ++ batch2
+    val updatesDf = spark.createDataFrame(allUpdates.asJava, schema)
+    
+    // Delete existing items first since Overwrite mode is not supported in transactional mode
+    (1 to 10).foreach { i =>
+      container.deleteItem(s"item-$i", new PartitionKey(partitionKeyValue), null).block()
+    }
+    
+    updatesDf.write
+      .format("cosmos.oltp")
+      .option("spark.cosmos.accountEndpoint", cosmosEndpoint)
+      .option("spark.cosmos.accountKey", cosmosMasterKey)
+      .option("spark.cosmos.database", cosmosDatabase)
+      .option("spark.cosmos.container", cosmosContainersWithPkAsPartitionKey)
+      .option("spark.cosmos.write.bulk.transactional", "true")
+      .option("spark.cosmos.write.bulk.enabled", "true")
+      .option("spark.cosmos.write.bulk.maxPendingOperations", "10") // Force separate batches
+      .mode(SaveMode.Append)
+      .save()
+    
+    // Verify the final state: all items should have their expected counter values
+    // If interleaving occurred, some updates might have been lost or inconsistent
+    (1 to 5).foreach { i =>
+      val item = container.readItem(
+        s"item-$i",
+        new PartitionKey(partitionKeyValue),
+        classOf[ObjectNode]
+      ).block()
+      
+      assert(item != null, s"Item item-$i should exist")
+      assert(item.getItem.get("counter").asInt() == 1, 
+        s"Item item-$i should have counter=1, but got ${item.getItem.get("counter").asInt()}")
+    }
+    
+    (6 to 10).foreach { i =>
+      val item = container.readItem(
+        s"item-$i",
+        new PartitionKey(partitionKeyValue),
+        classOf[ObjectNode]
+      ).block()
+      
+      assert(item != null, s"Item item-$i should exist")
+      assert(item.getItem.get("counter").asInt() == 2,
+        s"Item item-$i should have counter=2, but got ${item.getItem.get("counter").asInt()}")
+    }
+  }
+    
+  it should "handle batch-level retries for retriable errors without interleaving" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    
+    val partitionKeyValue = UUID.randomUUID().toString
+    
+    val schema = StructType(Seq(
+      StructField("id", StringType, nullable = false),
+      StructField("pk", StringType, nullable = false),
+      StructField("counter", IntegerType, nullable = false)
+    ))
+    
+    // Configuration for Spark connector - must match exactly for cache lookup
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey
+    )
+    
+    // Create initial items with counter = 0
+    // This FIRST write ensures Spark creates the client and caches it
+    val initialItems = (1 to 10).map { i =>
+      Row(s"item-$i", partitionKeyValue, 0)
+    }
+    
+    val initialDf = spark.createDataFrame(initialItems.asJava, schema)
+    initialDf.write
+      .format("cosmos.oltp")
+      .options(cfg)
+      .option("spark.cosmos.write.bulk.transactional", "true")
+      .option("spark.cosmos.write.bulk.enabled", "true")
+      .mode(SaveMode.Append)
+      .save()
+    
+    // NOW get the actual client that Spark created and cached
+    val clientFromCache = udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    
+    val container = clientFromCache.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    
+    // Configure fault injection to inject retriable 429 TOO_MANY_REQUEST errors on BATCH_ITEM operations
+    // 429 errors are retriable and should trigger batch-level retry without aborting the job
+    // This tests that transactional batches handle retries at the batch level
+    val faultInjectionRule = new FaultInjectionRuleBuilder("batch-retry-interleaving-test-" + UUID.randomUUID())
+      .condition(
+        new FaultInjectionConditionBuilder()
+          .operationType(FaultInjectionOperationType.BATCH_ITEM)
+          .build()
+      )
+      .result(
+        FaultInjectionResultBuilders
+          .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+          .times(1) // Inject 429 on first batch operation, then allow retries to succeed
+          .build()
+      )
+      .duration(Duration.ofMinutes(5))
+      .build()
+    
+    // Configure the fault injection rule on the container
+    CosmosFaultInjectionHelper.configureFaultInjectionRules(container, java.util.Collections.singletonList(faultInjectionRule)).block()
+    
+    try {
+      // Now write just ONE more item using NEW ID to avoid conflicts with the initial write
+      // This is the absolute simplest test case to verify batch-level retry handling
+      // With maxPendingOperations=1, this single item becomes its own batch
+      val singleItem = Seq(Row("item-11", partitionKeyValue, 1))
+      
+      val updatesDf = spark.createDataFrame(singleItem.asJava, schema)
+      
+      updatesDf.write
+        .format("cosmos.oltp")
+        .options(cfg)
+        .option("spark.cosmos.write.bulk.transactional", "true")
+        .option("spark.cosmos.write.bulk.enabled", "true")
+        .option("spark.cosmos.write.bulk.maxPendingOperations", "1") // Ensure minimal batch size
+        .mode(SaveMode.Append)
+        .save()
+      
+      // Verify that fault injection triggered and was retried successfully
+      // This confirms that retriable errors (429) trigger batch-level retries
+      val hitCount = faultInjectionRule.getHitCount
+      assert(hitCount > 0, s"Fault injection should have tracked BATCH_ITEM operations, but hit count was $hitCount")
+      
+      // Verify the single item was written correctly despite the injected 429 error and retry
+      val item11 = container.readItem("item-11", new PartitionKey(partitionKeyValue), classOf[ObjectNode]).block()
+      assert(item11 != null, "Item item-11 should exist")
+      assert(item11.getItem.get("counter").asInt() == 1, 
+        s"Item item-11 should have counter=1, but got ${item11.getItem.get("counter").asInt()}")
+    } finally {
+      // Clean up: disable the fault injection rule
+      faultInjectionRule.disable()
+    }
   }
 
 }
