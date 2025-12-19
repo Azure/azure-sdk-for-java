@@ -184,7 +184,6 @@
  *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  *     .processMessage&#40;processMessage&#41;
  *     .processError&#40;processError&#41;
- *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
  * &#47;&#47; Starts the processor in the background. Control returns immediately.
