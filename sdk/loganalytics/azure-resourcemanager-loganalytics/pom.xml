@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-loganalytics</artifactId>
-  <version>1.2.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-loganalytics;current} -->
+  <version>2.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-loganalytics;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for LogAnalytics Management</name>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
