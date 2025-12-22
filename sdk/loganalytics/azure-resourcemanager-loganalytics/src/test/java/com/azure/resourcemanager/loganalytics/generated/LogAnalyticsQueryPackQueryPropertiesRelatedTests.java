@@ -13,22 +13,22 @@ public final class LogAnalyticsQueryPackQueryPropertiesRelatedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQueryPropertiesRelated model = BinaryData.fromString(
-            "{\"categories\":[\"tthzrvqd\"],\"resourceTypes\":[\"hjybigehoqfbo\"],\"solutions\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]}")
+            "{\"categories\":[\"yqupedeojnabckh\",\"mtxpsiebtfh\",\"pesapskrdqmhjj\",\"htldwk\"],\"resourceTypes\":[\"uutkncw\",\"cwsvlxotog\",\"wrupqsxvnmicykvc\",\"o\"],\"solutions\":[\"lo\",\"notyfjfcnjbkcn\"]}")
             .toObject(LogAnalyticsQueryPackQueryPropertiesRelated.class);
-        Assertions.assertEquals("tthzrvqd", model.categories().get(0));
-        Assertions.assertEquals("hjybigehoqfbo", model.resourceTypes().get(0));
-        Assertions.assertEquals("anyktzlcuiywg", model.solutions().get(0));
+        Assertions.assertEquals("yqupedeojnabckh", model.categories().get(0));
+        Assertions.assertEquals("uutkncw", model.resourceTypes().get(0));
+        Assertions.assertEquals("lo", model.solutions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryPropertiesRelated model
-            = new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("tthzrvqd"))
-                .withResourceTypes(Arrays.asList("hjybigehoqfbo"))
-                .withSolutions(Arrays.asList("anyktzlcuiywg", "ywgndrv", "nhzgpphrcgyn", "ocpecfvmmco"));
+        LogAnalyticsQueryPackQueryPropertiesRelated model = new LogAnalyticsQueryPackQueryPropertiesRelated()
+            .withCategories(Arrays.asList("yqupedeojnabckh", "mtxpsiebtfh", "pesapskrdqmhjj", "htldwk"))
+            .withResourceTypes(Arrays.asList("uutkncw", "cwsvlxotog", "wrupqsxvnmicykvc", "o"))
+            .withSolutions(Arrays.asList("lo", "notyfjfcnjbkcn"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQueryPropertiesRelated.class);
-        Assertions.assertEquals("tthzrvqd", model.categories().get(0));
-        Assertions.assertEquals("hjybigehoqfbo", model.resourceTypes().get(0));
-        Assertions.assertEquals("anyktzlcuiywg", model.solutions().get(0));
+        Assertions.assertEquals("yqupedeojnabckh", model.categories().get(0));
+        Assertions.assertEquals("uutkncw", model.resourceTypes().get(0));
+        Assertions.assertEquals("lo", model.solutions().get(0));
     }
 }

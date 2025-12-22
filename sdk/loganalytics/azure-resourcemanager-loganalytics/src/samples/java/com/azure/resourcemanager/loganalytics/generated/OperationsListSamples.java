@@ -10,8 +10,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * OperationsListByTenant.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.

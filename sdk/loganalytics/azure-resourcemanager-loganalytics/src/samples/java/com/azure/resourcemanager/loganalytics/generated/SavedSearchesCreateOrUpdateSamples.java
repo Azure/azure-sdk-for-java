@@ -13,8 +13,8 @@ import java.util.Arrays;
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesSavedSearchesCreateOrUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.

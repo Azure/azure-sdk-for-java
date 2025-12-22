@@ -13,33 +13,33 @@ public final class DataExportPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataExportProperties model = BinaryData.fromString(
-            "{\"dataExportId\":\"svexcsonpclhoco\",\"tableNames\":[\"lkevle\",\"gz\"],\"destination\":{\"resourceId\":\"u\",\"type\":\"EventHub\",\"metaData\":{\"eventHubName\":\"axkffei\"}},\"enable\":false,\"createdDate\":\"vmezy\",\"lastModifiedDate\":\"hxmzsbbzoggig\"}")
+            "{\"dataExportId\":\"qduujitcjczdz\",\"tableNames\":[\"ndhkrw\",\"d\",\"ppdsbdkvwrwj\"],\"destination\":{\"resourceId\":\"usnhutje\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"dhugjzzdatqxhocd\"}},\"enable\":true,\"createdDate\":\"lgphu\",\"lastModifiedDate\":\"cndvkaozwyiftyhx\"}")
             .toObject(DataExportProperties.class);
-        Assertions.assertEquals("svexcsonpclhoco", model.dataExportId());
-        Assertions.assertEquals("lkevle", model.tableNames().get(0));
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals("vmezy", model.createdDate());
-        Assertions.assertEquals("hxmzsbbzoggig", model.lastModifiedDate());
-        Assertions.assertEquals("u", model.resourceId());
-        Assertions.assertEquals("axkffei", model.eventHubName());
+        Assertions.assertEquals("qduujitcjczdz", model.dataExportId());
+        Assertions.assertEquals("ndhkrw", model.tableNames().get(0));
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("lgphu", model.createdDate());
+        Assertions.assertEquals("cndvkaozwyiftyhx", model.lastModifiedDate());
+        Assertions.assertEquals("usnhutje", model.resourceId());
+        Assertions.assertEquals("dhugjzzdatqxhocd", model.eventHubName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportProperties model = new DataExportProperties().withDataExportId("svexcsonpclhoco")
-            .withTableNames(Arrays.asList("lkevle", "gz"))
-            .withEnable(false)
-            .withCreatedDate("vmezy")
-            .withLastModifiedDate("hxmzsbbzoggig")
-            .withResourceId("u")
-            .withEventHubName("axkffei");
+        DataExportProperties model = new DataExportProperties().withDataExportId("qduujitcjczdz")
+            .withTableNames(Arrays.asList("ndhkrw", "d", "ppdsbdkvwrwj"))
+            .withEnable(true)
+            .withCreatedDate("lgphu")
+            .withLastModifiedDate("cndvkaozwyiftyhx")
+            .withResourceId("usnhutje")
+            .withEventHubName("dhugjzzdatqxhocd");
         model = BinaryData.fromObject(model).toObject(DataExportProperties.class);
-        Assertions.assertEquals("svexcsonpclhoco", model.dataExportId());
-        Assertions.assertEquals("lkevle", model.tableNames().get(0));
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals("vmezy", model.createdDate());
-        Assertions.assertEquals("hxmzsbbzoggig", model.lastModifiedDate());
-        Assertions.assertEquals("u", model.resourceId());
-        Assertions.assertEquals("axkffei", model.eventHubName());
+        Assertions.assertEquals("qduujitcjczdz", model.dataExportId());
+        Assertions.assertEquals("ndhkrw", model.tableNames().get(0));
+        Assertions.assertTrue(model.enable());
+        Assertions.assertEquals("lgphu", model.createdDate());
+        Assertions.assertEquals("cndvkaozwyiftyhx", model.lastModifiedDate());
+        Assertions.assertEquals("usnhutje", model.resourceId());
+        Assertions.assertEquals("dhugjzzdatqxhocd", model.eventHubName());
     }
 }

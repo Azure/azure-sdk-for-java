@@ -16,17 +16,18 @@ public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Identity model = BinaryData.fromString(
-            "{\"principalId\":\"yl\",\"tenantId\":\"ool\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"urdoi\":{\"principalId\":\"iwkkbn\",\"clientId\":\"rywvtylbfpn\"}}}")
+            "{\"principalId\":\"e\",\"tenantId\":\"lfg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"duvwpklvxwmygd\":{\"principalId\":\"kwdlenrdsutujba\",\"clientId\":\"juohminyflnorw\"},\"bjcrxgibbdaxco\":{\"principalId\":\"gpqch\",\"clientId\":\"zepn\"}}}")
             .toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model = new Identity().withType(IdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("urdoi", new UserIdentityProperties()));
+        Identity model = new Identity().withType(IdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("duvwpklvxwmygd", new UserIdentityProperties(), "bjcrxgibbdaxco", new UserIdentityProperties()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

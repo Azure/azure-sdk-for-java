@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,9 +14,12 @@ import com.azure.resourcemanager.loganalytics.models.PrivateLinkScopedResource;
 import com.azure.resourcemanager.loganalytics.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceEntityStatus;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceFailoverProperties;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
+import com.azure.resourcemanager.loganalytics.models.WorkspaceReplicationProperties;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -52,12 +56,12 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     /*
      * Workspace creation date.
      */
-    private String createdDate;
+    private OffsetDateTime createdDate;
 
     /*
      * Workspace modification date.
      */
-    private String modifiedDate;
+    private OffsetDateTime modifiedDate;
 
     /*
      * The network access type for accessing Log Analytics ingestion.
@@ -90,6 +94,16 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      * dataCollectionRules/{dcrName}.
      */
     private String defaultDataCollectionRuleResourceId;
+
+    /*
+     * workspace replication properties.
+     */
+    private WorkspaceReplicationProperties replication;
+
+    /*
+     * workspace failover properties.
+     */
+    private WorkspaceFailoverProperties failover;
 
     /**
      * Creates an instance of WorkspaceProperties class.
@@ -182,7 +196,7 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      * 
      * @return the createdDate value.
      */
-    public String createdDate() {
+    public OffsetDateTime createdDate() {
         return this.createdDate;
     }
 
@@ -191,7 +205,7 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
      * 
      * @return the modifiedDate value.
      */
-    public String modifiedDate() {
+    public OffsetDateTime modifiedDate() {
         return this.modifiedDate;
     }
 
@@ -310,6 +324,46 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
     }
 
     /**
+     * Get the replication property: workspace replication properties.
+     * 
+     * @return the replication value.
+     */
+    public WorkspaceReplicationProperties replication() {
+        return this.replication;
+    }
+
+    /**
+     * Set the replication property: workspace replication properties.
+     * 
+     * @param replication the replication value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withReplication(WorkspaceReplicationProperties replication) {
+        this.replication = replication;
+        return this;
+    }
+
+    /**
+     * Get the failover property: workspace failover properties.
+     * 
+     * @return the failover value.
+     */
+    public WorkspaceFailoverProperties failover() {
+        return this.failover;
+    }
+
+    /**
+     * Set the failover property: workspace failover properties.
+     * 
+     * @param failover the failover value to set.
+     * @return the WorkspaceProperties object itself.
+     */
+    public WorkspaceProperties withFailover(WorkspaceFailoverProperties failover) {
+        this.failover = failover;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -326,6 +380,12 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
         }
         if (features() != null) {
             features().validate();
+        }
+        if (replication() != null) {
+            replication().validate();
+        }
+        if (failover() != null) {
+            failover().validate();
         }
     }
 
@@ -345,6 +405,8 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
         jsonWriter.writeBooleanField("forceCmkForQuery", this.forceCmkForQuery);
         jsonWriter.writeJsonField("features", this.features);
         jsonWriter.writeStringField("defaultDataCollectionRuleResourceId", this.defaultDataCollectionRuleResourceId);
+        jsonWriter.writeJsonField("replication", this.replication);
+        jsonWriter.writeJsonField("failover", this.failover);
         return jsonWriter.writeEndObject();
     }
 
@@ -375,9 +437,11 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
                 } else if ("workspaceCapping".equals(fieldName)) {
                     deserializedWorkspaceProperties.workspaceCapping = WorkspaceCapping.fromJson(reader);
                 } else if ("createdDate".equals(fieldName)) {
-                    deserializedWorkspaceProperties.createdDate = reader.getString();
+                    deserializedWorkspaceProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modifiedDate".equals(fieldName)) {
-                    deserializedWorkspaceProperties.modifiedDate = reader.getString();
+                    deserializedWorkspaceProperties.modifiedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("publicNetworkAccessForIngestion".equals(fieldName)) {
                     deserializedWorkspaceProperties.publicNetworkAccessForIngestion
                         = PublicNetworkAccessType.fromString(reader.getString());
@@ -394,6 +458,10 @@ public final class WorkspaceProperties implements JsonSerializable<WorkspaceProp
                     deserializedWorkspaceProperties.features = WorkspaceFeatures.fromJson(reader);
                 } else if ("defaultDataCollectionRuleResourceId".equals(fieldName)) {
                     deserializedWorkspaceProperties.defaultDataCollectionRuleResourceId = reader.getString();
+                } else if ("replication".equals(fieldName)) {
+                    deserializedWorkspaceProperties.replication = WorkspaceReplicationProperties.fromJson(reader);
+                } else if ("failover".equals(fieldName)) {
+                    deserializedWorkspaceProperties.failover = WorkspaceFailoverProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

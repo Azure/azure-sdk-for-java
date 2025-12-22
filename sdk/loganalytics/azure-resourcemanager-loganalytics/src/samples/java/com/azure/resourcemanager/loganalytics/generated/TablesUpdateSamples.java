@@ -16,8 +16,8 @@ import java.util.Arrays;
 public final class TablesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesUpsert.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.

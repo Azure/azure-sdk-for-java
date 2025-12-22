@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.Operation;
@@ -22,21 +22,21 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"xkykxdssjp\",\"display\":{\"provider\":\"ucfx\",\"resource\":\"kkflrmymyincqlhr\",\"operation\":\"wslmiiiovgqcg\",\"description\":\"ugqkctotiowlxteq\"}}]}";
+            = "{\"value\":[{\"name\":\"rxhtvso\",\"display\":{\"provider\":\"wntsjgqrsxy\",\"resource\":\"uuuybnchrsziz\",\"operation\":\"uelyetndn\",\"description\":\"qyggagfl\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xkykxdssjp", response.iterator().next().name());
-        Assertions.assertEquals("ucfx", response.iterator().next().display().provider());
-        Assertions.assertEquals("kkflrmymyincqlhr", response.iterator().next().display().resource());
-        Assertions.assertEquals("wslmiiiovgqcg", response.iterator().next().display().operation());
-        Assertions.assertEquals("ugqkctotiowlxteq", response.iterator().next().display().description());
+        Assertions.assertEquals("rxhtvso", response.iterator().next().name());
+        Assertions.assertEquals("wntsjgqrsxy", response.iterator().next().display().provider());
+        Assertions.assertEquals("uuuybnchrsziz", response.iterator().next().display().resource());
+        Assertions.assertEquals("uelyetndn", response.iterator().next().display().operation());
+        Assertions.assertEquals("qyggagfl", response.iterator().next().display().description());
     }
 }

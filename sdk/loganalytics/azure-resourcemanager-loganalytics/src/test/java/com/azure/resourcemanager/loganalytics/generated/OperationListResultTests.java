@@ -15,28 +15,38 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"xzfe\",\"display\":{\"provider\":\"ppriol\",\"resource\":\"rjaltolmncw\",\"operation\":\"bqwcsdbnwdcf\",\"description\":\"cqdpfuv\"}}],\"nextLink\":\"sbjjc\"}")
+            "{\"value\":[{\"name\":\"bezy\",\"display\":{\"provider\":\"kktwhrdxw\",\"resource\":\"wqsmbsur\",\"operation\":\"imoryocfsfksym\",\"description\":\"ys\"}},{\"name\":\"i\",\"display\":{\"provider\":\"hqyudxorrqnbpoc\",\"resource\":\"yifqrvkdvjsllrmv\",\"operation\":\"f\",\"description\":\"t\"}},{\"name\":\"n\",\"display\":{\"provider\":\"exxbczwtr\",\"resource\":\"iqzbq\",\"operation\":\"sovmyokacspkwl\",\"description\":\"dobpxjmflbvvn\"}}],\"nextLink\":\"rkcciwwzjuqk\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("xzfe", model.value().get(0).name());
-        Assertions.assertEquals("ppriol", model.value().get(0).display().provider());
-        Assertions.assertEquals("rjaltolmncw", model.value().get(0).display().resource());
-        Assertions.assertEquals("bqwcsdbnwdcf", model.value().get(0).display().operation());
-        Assertions.assertEquals("cqdpfuv", model.value().get(0).display().description());
+        Assertions.assertEquals("bezy", model.value().get(0).name());
+        Assertions.assertEquals("kktwhrdxw", model.value().get(0).display().provider());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).display().resource());
+        Assertions.assertEquals("imoryocfsfksym", model.value().get(0).display().operation());
+        Assertions.assertEquals("ys", model.value().get(0).display().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model
-            = new OperationListResult().withValue(Arrays.asList(new OperationInner().withName("xzfe")
-                .withDisplay(new OperationDisplay().withProvider("ppriol")
-                    .withResource("rjaltolmncw")
-                    .withOperation("bqwcsdbnwdcf")
-                    .withDescription("cqdpfuv"))));
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationInner().withName("bezy")
+                .withDisplay(new OperationDisplay().withProvider("kktwhrdxw")
+                    .withResource("wqsmbsur")
+                    .withOperation("imoryocfsfksym")
+                    .withDescription("ys")),
+            new OperationInner().withName("i")
+                .withDisplay(new OperationDisplay().withProvider("hqyudxorrqnbpoc")
+                    .withResource("yifqrvkdvjsllrmv")
+                    .withOperation("f")
+                    .withDescription("t")),
+            new OperationInner().withName("n")
+                .withDisplay(new OperationDisplay().withProvider("exxbczwtr")
+                    .withResource("iqzbq")
+                    .withOperation("sovmyokacspkwl")
+                    .withDescription("dobpxjmflbvvn"))));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("xzfe", model.value().get(0).name());
-        Assertions.assertEquals("ppriol", model.value().get(0).display().provider());
-        Assertions.assertEquals("rjaltolmncw", model.value().get(0).display().resource());
-        Assertions.assertEquals("bqwcsdbnwdcf", model.value().get(0).display().operation());
-        Assertions.assertEquals("cqdpfuv", model.value().get(0).display().description());
+        Assertions.assertEquals("bezy", model.value().get(0).name());
+        Assertions.assertEquals("kktwhrdxw", model.value().get(0).display().provider());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).display().resource());
+        Assertions.assertEquals("imoryocfsfksym", model.value().get(0).display().operation());
+        Assertions.assertEquals("ys", model.value().get(0).display().description());
     }
 }
