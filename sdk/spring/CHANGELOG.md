@@ -1,4 +1,18 @@
 # Release History
+
+## 7.0.0-beta.1 (2025-12-23)
+- This release is compatible with Spring Boot 4.0.0.
+- This release is compatible with Spring Cloud 2025.1.0.
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.3.
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#700-beta1-2025-12-23) for more details.
+
 # (Unreleased)
 Upgrade Spring Boot dependencies version to 4.0.0 and Spring Cloud dependencies version to 2025.1.0
 

@@ -17,7 +17,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-actuator</artifactId>
-  <version>6.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+  <version>7.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-      <version>6.2.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+      <version>7.0.0-beta.1</version><!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
       <optional>true</optional>
     </dependency>
     <!-- For Testing -->

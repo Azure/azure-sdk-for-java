@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>6.1.0</version>
+    <version>7.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
