@@ -18,6 +18,7 @@ import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
@@ -28,10 +29,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -451,6 +450,19 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.endpoint", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.operationType.default",
+                KafkaCosmosPatchOperationType.SET.getName(),
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.property.configs",
+                Strings.Emtpy,
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.filter",
+                Strings.Emtpy,
+                true),
+            new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.maxRetryCount", 10, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.key", Strings.Emtpy, true, true),
