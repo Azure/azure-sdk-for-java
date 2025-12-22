@@ -18,14 +18,10 @@ import java.util.Map;
 public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer.ValidationConfigurationCustomizer,setIgnoreRegistrationFailure,";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2 = "org.springframework.boot.autoconfigure.web.client.RestClientSsl";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3 = "org.springframework.boot.autoconfigure.ldap.PropertiesLdapConnectionDetails";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_4 = "org.springframework.boot.autoconfigure.http.client.HttpClientProperties";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_5 = "org.springframework.boot.autoconfigure.http.codec.HttpCodecsProperties";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0 = "org.springframework.boot.autoconfigure.preinitialize.BackgroundPreinitializer";
+
     /**
-     * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1, 3.2, 3.3, 3.4, 3.5]. Update this value if needed.
+     * Versions supported by Spring Cloud Azure, for present is [4.0]. Update this value if needed.
      */
     private final Map<String, String> supportedVersions = new HashMap<>();
 
@@ -47,12 +43,7 @@ public class AzureSpringBootVersionVerifier {
      * Init default supported Spring Boot Version compatibility check meta data.
      */
     private void initDefaultSupportedBootVersionCheckMeta() {
-        supportedVersions.put("3.0", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0);
-        supportedVersions.put("3.1", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1);
-        supportedVersions.put("3.2", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2);
-        supportedVersions.put("3.3", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3);
-        supportedVersions.put("3.4", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_4);
-        supportedVersions.put("3.5", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_5);
+        supportedVersions.put("4.0", SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_4_0);
     }
 
     /**

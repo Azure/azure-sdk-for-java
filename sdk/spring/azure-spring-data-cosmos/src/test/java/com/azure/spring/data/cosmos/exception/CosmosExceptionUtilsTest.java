@@ -133,6 +133,7 @@ public class CosmosExceptionUtilsTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testRequestEntityTooLargeException() {
         CosmosException cosmosException = BridgeInternal.createCosmosException(HttpStatus.PAYLOAD_TOO_LARGE.value(), "Request Entity Too Large Exception");
         assertThrows(CosmosRequestEntityTooLargeException.class, () -> {

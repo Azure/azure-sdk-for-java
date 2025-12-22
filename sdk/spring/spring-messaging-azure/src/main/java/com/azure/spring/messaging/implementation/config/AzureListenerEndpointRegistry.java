@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see MessageListenerContainer
  * @see MessageListenerContainerFactory
  */
+@SuppressWarnings("deprecation")
 public class AzureListenerEndpointRegistry
     implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
 

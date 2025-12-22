@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 
 import java.util.Collections;

@@ -26,6 +26,7 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
 /**
  * Base class for generating sql query
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractQueryGenerator {
 
     private static String tableName = "";

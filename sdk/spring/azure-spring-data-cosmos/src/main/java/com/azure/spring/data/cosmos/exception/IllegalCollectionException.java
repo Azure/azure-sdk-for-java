@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 /**
  * General exception for illegal collection of cosmos db
  */
+@SuppressWarnings("deprecation")
 public class IllegalCollectionException extends DataAccessException {
 
     /**

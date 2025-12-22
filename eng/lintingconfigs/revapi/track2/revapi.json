@@ -341,6 +341,36 @@
           "justification" : "Remove deprecated method"
         },
         {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
+          "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
           "code": "java.method.numberOfParametersChanged",
           "old": {
             "matcher": "regex",

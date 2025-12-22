@@ -16,9 +16,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
-import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
+import org.springframework.boot.jms.autoconfigure.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.jms.autoconfigure.JmsAutoConfiguration;
+import org.springframework.boot.jms.autoconfigure.JmsProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -230,7 +230,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
                 "spring.jms.listener.session.acknowledge-mode=client",
-                "spring.jms.listener.concurrency=2",
+                "spring.jms.listener.minConcurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING
@@ -271,7 +271,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.listener.autoStartup=false",
                 "spring.jms.listener.session.acknowledge-mode=client",
-                "spring.jms.listener.concurrency=2",
+                "spring.jms.listener.minConcurrency=2",
                 "spring.jms.listener.receiveTimeout=2s",
                 "spring.jms.listener.maxConcurrency=10",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,

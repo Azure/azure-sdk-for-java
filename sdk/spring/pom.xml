@@ -70,8 +70,8 @@
         <module>spring-cloud-azure-feature-management-web</module>
         <module>spring-cloud-azure-starter-appconfiguration-config</module>
         <module>azure-spring-data-cosmos</module>
-        <module>spring-cloud-azure-starter-monitor</module>
-        <module>spring-cloud-azure-starter-monitor-test</module>
+<!--        <module>spring-cloud-azure-starter-monitor</module>-->
+<!--        <module>spring-cloud-azure-starter-monitor-test</module>-->
       </modules>
     </profile>
 

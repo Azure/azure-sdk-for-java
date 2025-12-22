@@ -37,6 +37,7 @@ import static com.azure.spring.messaging.implementation.config.AzureMessagingBoo
  * take advantage.
  * </p>
  */
+@SuppressWarnings("deprecation")
 public final class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
 
     private final List<Listener> listeners = new ArrayList<>();

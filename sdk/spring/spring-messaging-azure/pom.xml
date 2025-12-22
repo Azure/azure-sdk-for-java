@@ -46,24 +46,24 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-messaging;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.2.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.retry</groupId>
       <artifactId>spring-retry</artifactId>
-      <version>2.0.12</version> <!-- {x-version-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
+      <version>2.0.12</version> <!-- {x-version-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>3.5.3</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.15.3</version> <!-- {x-version-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot4_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -92,14 +92,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.5.5</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- Add mockito-core 4.11.0 to work with Java 21 -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.17.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <version>5.20.0</version> <!-- {x-version-update;springboot4_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -107,13 +107,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.17.8</version> <!-- {x-version-update;springboot4_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -123,7 +123,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.14.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <executions>
           <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
           <execution>
@@ -154,16 +154,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.15.3]</include> <!-- {x-include-update;springboot3_io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[3.5.3]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-commons;external_dependency} -->
-                <include>org.springframework:spring-messaging:[6.2.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-messaging;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.2.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot3_org.springframework.retry:spring-retry;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.16.0]</include> <!-- {x-include-update;springboot4_io.micrometer:micrometer-core;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework:spring-messaging:[7.0.1]</include> <!-- {x-include-update;springboot4_org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-tx:[7.0.1]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -172,7 +172,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
