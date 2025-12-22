@@ -450,18 +450,6 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.enabled", false, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.account.endpoint", Strings.Emtpy, true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.operationType.default",
-                KafkaCosmosPatchOperationType.SET.getName(),
-                true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.property.configs",
-                Strings.Emtpy,
-                true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.filter",
-                Strings.Emtpy,
-                true),
             new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.maxRetryCount", 10, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.account.tenantId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.throughputControl.auth.type", CosmosAuthType.MASTER_KEY.getName(), true),
@@ -487,6 +475,19 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 "azure.cosmos.sink.write.strategy",
                 ItemWriteStrategy.ITEM_OVERWRITE.getName(),
                 true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.operationType.default",
+                KafkaCosmosPatchOperationType.SET.getName(),
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.property.configs",
+                Strings.Emtpy,
+                true),
+            new KafkaCosmosConfigEntry<String>(
+                "azure.cosmos.sink.write.patch.filter",
+                Strings.Emtpy,
+                true),
+            new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.maxRetryCount", 10, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.database.name", null, false),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.containers.topicMap", null, false),
             new KafkaCosmosConfigEntry<String>(
