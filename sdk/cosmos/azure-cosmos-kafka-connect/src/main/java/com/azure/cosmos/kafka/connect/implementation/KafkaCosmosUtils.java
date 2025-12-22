@@ -42,7 +42,7 @@ public class KafkaCosmosUtils {
                         }
                         return super.resolveClass(desc);
                     }
-            }) {
+                }) {
                 return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 LOGGER.warn("Failed to deserialize cosmos client metadata cache snapshot");
