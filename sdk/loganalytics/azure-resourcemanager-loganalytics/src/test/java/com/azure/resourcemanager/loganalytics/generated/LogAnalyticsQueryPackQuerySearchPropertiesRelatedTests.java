@@ -13,22 +13,22 @@ public final class LogAnalyticsQueryPackQuerySearchPropertiesRelatedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchPropertiesRelated model = BinaryData.fromString(
-            "{\"categories\":[\"owgujjugwdkcglhs\"],\"resourceTypes\":[\"jdyggdtji\"],\"solutions\":[\"kuofqweykhme\"]}")
+            "{\"categories\":[\"vt\"],\"resourceTypes\":[\"mqkrhahvljuahaqu\",\"c\",\"hmdua\"],\"solutions\":[\"xqpvfadmw\"]}")
             .toObject(LogAnalyticsQueryPackQuerySearchPropertiesRelated.class);
-        Assertions.assertEquals("owgujjugwdkcglhs", model.categories().get(0));
-        Assertions.assertEquals("jdyggdtji", model.resourceTypes().get(0));
-        Assertions.assertEquals("kuofqweykhme", model.solutions().get(0));
+        Assertions.assertEquals("vt", model.categories().get(0));
+        Assertions.assertEquals("mqkrhahvljuahaqu", model.resourceTypes().get(0));
+        Assertions.assertEquals("xqpvfadmw", model.solutions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogAnalyticsQueryPackQuerySearchPropertiesRelated model
-            = new LogAnalyticsQueryPackQuerySearchPropertiesRelated().withCategories(Arrays.asList("owgujjugwdkcglhs"))
-                .withResourceTypes(Arrays.asList("jdyggdtji"))
-                .withSolutions(Arrays.asList("kuofqweykhme"));
+            = new LogAnalyticsQueryPackQuerySearchPropertiesRelated().withCategories(Arrays.asList("vt"))
+                .withResourceTypes(Arrays.asList("mqkrhahvljuahaqu", "c", "hmdua"))
+                .withSolutions(Arrays.asList("xqpvfadmw"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQuerySearchPropertiesRelated.class);
-        Assertions.assertEquals("owgujjugwdkcglhs", model.categories().get(0));
-        Assertions.assertEquals("jdyggdtji", model.resourceTypes().get(0));
-        Assertions.assertEquals("kuofqweykhme", model.solutions().get(0));
+        Assertions.assertEquals("vt", model.categories().get(0));
+        Assertions.assertEquals("mqkrhahvljuahaqu", model.resourceTypes().get(0));
+        Assertions.assertEquals("xqpvfadmw", model.solutions().get(0));
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
@@ -21,8 +20,8 @@ import java.util.Map;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
@@ -39,8 +38,7 @@ public final class ClustersUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
                     new UserAssignedIdentity())))
-            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(1000L).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .withKeyVaultProperties(new KeyVaultProperties().withKeyVaultUri("fakeTokenPlaceholder")
                 .withKeyName("fakeTokenPlaceholder")
                 .withKeyVersion("fakeTokenPlaceholder")

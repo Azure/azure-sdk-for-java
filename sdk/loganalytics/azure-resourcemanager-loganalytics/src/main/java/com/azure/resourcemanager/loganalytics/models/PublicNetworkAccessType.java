@@ -22,6 +22,11 @@ public final class PublicNetworkAccessType extends ExpandableStringEnum<PublicNe
     public static final PublicNetworkAccessType DISABLED = fromString("Disabled");
 
     /**
+     * Static value SecuredByPerimeter for PublicNetworkAccessType.
+     */
+    public static final PublicNetworkAccessType SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
      * Creates a new instance of PublicNetworkAccessType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

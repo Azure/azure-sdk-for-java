@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
@@ -23,20 +23,20 @@ public final class DataSourcesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":\"datalfwyfwlwxjwetn\",\"etag\":\"ihclafzv\",\"kind\":\"WindowsPerformanceCounter\",\"tags\":{\"tcmwqkchc\":\"trsqqw\"},\"id\":\"waxfewzjkj\",\"name\":\"xfdeqvhpsyl\",\"type\":\"ksh\"}]}";
+            = "{\"value\":[{\"properties\":\"dataqtobaxkjeyt\",\"etag\":\"lbfjkwr\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"njqhdenxa\":\"qbhsyrq\"},\"id\":\"l\",\"name\":\"pakdkifmjnnawt\",\"type\":\"abpxuc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataSource> response = manager.dataSources()
-            .listByWorkspace("ostbzbkiwb", "qnyophzfyls", "crpfbcunez", "cez", com.azure.core.util.Context.NONE);
+            .listByWorkspace("mhyreeudz", "av", "pdqmjxlyyzglgouw", "lmjjyuo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ihclafzv", response.iterator().next().etag());
-        Assertions.assertEquals(DataSourceKind.WINDOWS_PERFORMANCE_COUNTER, response.iterator().next().kind());
-        Assertions.assertEquals("trsqqw", response.iterator().next().tags().get("tcmwqkchc"));
+        Assertions.assertEquals("lbfjkwr", response.iterator().next().etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, response.iterator().next().kind());
+        Assertions.assertEquals("qbhsyrq", response.iterator().next().tags().get("njqhdenxa"));
     }
 }

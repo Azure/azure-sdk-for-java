@@ -14,19 +14,19 @@ public final class LogAnalyticsQueryPackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackInner model = BinaryData.fromString(
-            "{\"properties\":{\"queryPackId\":\"ijbpzvgnwzsymgl\",\"timeCreated\":\"2021-09-05T16:59:27Z\",\"timeModified\":\"2021-02-27T08:20:44Z\",\"provisioningState\":\"ohdbihanufh\"},\"location\":\"cbjy\",\"tags\":{\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
+            "{\"properties\":{\"queryPackId\":\"vlvqhjkbegi\",\"timeCreated\":\"2021-03-26T15:32:51Z\",\"timeModified\":\"2021-02-11T17:20:18Z\",\"provisioningState\":\"ebwwaloayqc\"},\"location\":\"rtzju\",\"tags\":{\"txon\":\"yzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\"},\"id\":\"bycnojvkn\",\"name\":\"e\",\"type\":\"qsgzvahapj\"}")
             .toObject(LogAnalyticsQueryPackInner.class);
-        Assertions.assertEquals("cbjy", model.location());
-        Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));
+        Assertions.assertEquals("rtzju", model.location());
+        Assertions.assertEquals("yzm", model.tags().get("txon"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackInner model
-            = new LogAnalyticsQueryPackInner().withLocation("cbjy").withTags(mapOf("xwczbyscnp", "ithxqhabifpi"));
+        LogAnalyticsQueryPackInner model = new LogAnalyticsQueryPackInner().withLocation("rtzju")
+            .withTags(mapOf("txon", "yzm", "rknftguvriuhprwm", "mtsavjcbpwxqp", "bexrmcq", "yvxqtayriwwroy"));
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackInner.class);
-        Assertions.assertEquals("cbjy", model.location());
-        Assertions.assertEquals("ithxqhabifpi", model.tags().get("xwczbyscnp"));
+        Assertions.assertEquals("rtzju", model.location());
+        Assertions.assertEquals("yzm", model.tags().get("txon"));
     }
 
     // Use "Map.of" if available

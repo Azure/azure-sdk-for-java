@@ -13,9 +13,11 @@ import com.azure.resourcemanager.loganalytics.models.CapacityReservationProperti
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
 import com.azure.resourcemanager.loganalytics.models.ClusterPatch;
+import com.azure.resourcemanager.loganalytics.models.ClusterReplicationProperties;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
 import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentity;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -82,11 +84,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().keyVaultProperties();
     }
 
-    public String lastModifiedDate() {
+    public OffsetDateTime lastModifiedDate() {
         return this.innerModel().lastModifiedDate();
     }
 
-    public String createdDate() {
+    public OffsetDateTime createdDate() {
         return this.innerModel().createdDate();
     }
 
@@ -101,6 +103,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public CapacityReservationProperties capacityReservationProperties() {
         return this.innerModel().capacityReservationProperties();
+    }
+
+    public ClusterReplicationProperties replication() {
+        return this.innerModel().replication();
     }
 
     public Region region() {
@@ -276,7 +282,12 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
+    public ClusterImpl withReplication(ClusterReplicationProperties replication) {
+        this.innerModel().withReplication(replication);
+        return this;
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.UsageMetric;
@@ -22,25 +22,25 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"gtuhxuicbu\",\"localizedValue\":\"mr\"},\"unit\":\"njlx\",\"currentValue\":33.720955848019294,\"limit\":33.504071266925294,\"nextResetTime\":\"2021-07-24T18:32:54Z\",\"quotaPeriod\":\"baqehgpdoh\"}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"yshtuwgmev\",\"localizedValue\":\"fpwzyifrkgwltx\"},\"unit\":\"ipxgzdy\",\"currentValue\":99.77270946016633,\"limit\":29.475698926269988,\"nextResetTime\":\"2021-07-01T11:25:11Z\",\"quotaPeriod\":\"avkjog\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageMetric> response
-            = manager.usages().list("vuwkasiziesfuugh", "uqfecj", com.azure.core.util.Context.NONE);
+            = manager.usages().list("hmx", "fdsajred", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gtuhxuicbu", response.iterator().next().name().value());
-        Assertions.assertEquals("mr", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("njlx", response.iterator().next().unit());
-        Assertions.assertEquals(33.720955848019294D, response.iterator().next().currentValue());
-        Assertions.assertEquals(33.504071266925294D, response.iterator().next().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T18:32:54Z"),
+        Assertions.assertEquals("yshtuwgmev", response.iterator().next().name().value());
+        Assertions.assertEquals("fpwzyifrkgwltx", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("ipxgzdy", response.iterator().next().unit());
+        Assertions.assertEquals(99.77270946016633D, response.iterator().next().currentValue());
+        Assertions.assertEquals(29.475698926269988D, response.iterator().next().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T11:25:11Z"),
             response.iterator().next().nextResetTime());
-        Assertions.assertEquals("baqehgpdoh", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals("avkjog", response.iterator().next().quotaPeriod());
     }
 }

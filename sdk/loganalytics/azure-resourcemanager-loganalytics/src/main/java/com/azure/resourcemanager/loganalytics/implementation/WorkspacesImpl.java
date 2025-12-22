@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.WorkspacesClient;
+import com.azure.resourcemanager.loganalytics.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.loganalytics.models.NetworkSecurityPerimeterConfiguration;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.loganalytics.models.Workspaces;
 
@@ -74,6 +76,72 @@ public final class WorkspacesImpl implements Workspaces {
         } else {
             return null;
         }
+    }
+
+    public void failover(String resourceGroupName, String location, String workspaceName) {
+        this.serviceClient().failover(resourceGroupName, location, workspaceName);
+    }
+
+    public void failover(String resourceGroupName, String location, String workspaceName, Context context) {
+        this.serviceClient().failover(resourceGroupName, location, workspaceName, context);
+    }
+
+    public void failback(String resourceGroupName, String workspaceName) {
+        this.serviceClient().failback(resourceGroupName, workspaceName);
+    }
+
+    public void failback(String resourceGroupName, String workspaceName, Context context) {
+        this.serviceClient().failback(resourceGroupName, workspaceName, context);
+    }
+
+    public PagedIterable<NetworkSecurityPerimeterConfiguration> listNsp(String resourceGroupName,
+        String workspaceName) {
+        PagedIterable<NetworkSecurityPerimeterConfigurationInner> inner
+            = this.serviceClient().listNsp(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<NetworkSecurityPerimeterConfiguration> listNsp(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<NetworkSecurityPerimeterConfigurationInner> inner
+            = this.serviceClient().listNsp(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
+    }
+
+    public Response<NetworkSecurityPerimeterConfiguration> getNspWithResponse(String resourceGroupName,
+        String workspaceName, String networkSecurityPerimeterConfigurationName, Context context) {
+        Response<NetworkSecurityPerimeterConfigurationInner> inner = this.serviceClient()
+            .getNspWithResponse(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NetworkSecurityPerimeterConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NetworkSecurityPerimeterConfiguration getNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        NetworkSecurityPerimeterConfigurationInner inner
+            = this.serviceClient().getNsp(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName);
+        if (inner != null) {
+            return new NetworkSecurityPerimeterConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void reconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName) {
+        this.serviceClient().reconcileNsp(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName);
+    }
+
+    public void reconcileNsp(String resourceGroupName, String workspaceName,
+        String networkSecurityPerimeterConfigurationName, Context context) {
+        this.serviceClient()
+            .reconcileNsp(resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, context);
     }
 
     public Workspace getById(String id) {

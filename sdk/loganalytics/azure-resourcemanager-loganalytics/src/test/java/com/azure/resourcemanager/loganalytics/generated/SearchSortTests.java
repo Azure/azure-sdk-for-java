@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchSortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchSort model = BinaryData.fromString("{\"name\":\"kl\",\"order\":\"desc\"}").toObject(SearchSort.class);
-        Assertions.assertEquals("kl", model.name());
+        SearchSort model = BinaryData.fromString("{\"name\":\"ondjmq\",\"order\":\"desc\"}").toObject(SearchSort.class);
+        Assertions.assertEquals("ondjmq", model.name());
         Assertions.assertEquals(SearchSortEnum.DESC, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchSort model = new SearchSort().withName("kl").withOrder(SearchSortEnum.DESC);
+        SearchSort model = new SearchSort().withName("ondjmq").withOrder(SearchSortEnum.DESC);
         model = BinaryData.fromObject(model).toObject(SearchSort.class);
-        Assertions.assertEquals("kl", model.name());
+        Assertions.assertEquals("ondjmq", model.name());
         Assertions.assertEquals(SearchSortEnum.DESC, model.order());
     }
 }
