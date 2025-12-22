@@ -47,6 +47,12 @@ class AzureAppConfigDataLocationResolverTest {
     @Mock
     BindResult<String> validResult;
 
+    @Mock
+    BindResult<Boolean> enabledTrueResult;
+
+    @Mock
+    BindResult<Boolean> enabledFalseResult;
+
     private static final String PREFIX = "azureAppConfiguration:";
     private static final String INVALID_PREFIX = "someOtherPrefix:";
 
@@ -80,6 +86,9 @@ class AzureAppConfigDataLocationResolverTest {
         ConfigDataLocation location = ConfigDataLocation.of(PREFIX);
 
         when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledTrueResult);
+        when(enabledTrueResult.orElse(true)).thenReturn(true);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].endpoint", String.class))
             .thenReturn(validResult);
         when(validResult.orElse("")).thenReturn("https://test.config.io");
@@ -95,6 +104,9 @@ class AzureAppConfigDataLocationResolverTest {
         ConfigDataLocation location = ConfigDataLocation.of("azureAppConfiguration:");
         
         when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledTrueResult);
+        when(enabledTrueResult.orElse(true)).thenReturn(true);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].endpoint", String.class))
             .thenReturn(emptyResult);
         when(emptyResult.orElse("")).thenReturn("");
@@ -109,10 +121,27 @@ class AzureAppConfigDataLocationResolverTest {
     }
 
     @Test
+    void testIsResolvableWhenAppConfigurationIsDisabled() {
+        ConfigDataLocation location = ConfigDataLocation.of("azureAppConfiguration:");
+        
+        when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledFalseResult);
+        when(enabledFalseResult.orElse(true)).thenReturn(false);
+
+        boolean result = resolver.isResolvable(mockContext, location);
+
+        assertFalse(result, "Resolver should reject locations when App Configuration is disabled");
+    }
+
+    @Test
     void testIsResolvableWithValidEndpointsConfiguration() {
         ConfigDataLocation location = ConfigDataLocation.of("azureAppConfiguration:");
         
         when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledTrueResult);
+        when(enabledTrueResult.orElse(true)).thenReturn(true);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].endpoint", String.class))
             .thenReturn(emptyResult);
         when(emptyResult.orElse("")).thenReturn("");
@@ -134,6 +163,9 @@ class AzureAppConfigDataLocationResolverTest {
         ConfigDataLocation location = ConfigDataLocation.of("azureAppConfiguration:");
         
         when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledTrueResult);
+        when(enabledTrueResult.orElse(true)).thenReturn(true);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].endpoint", String.class))
             .thenReturn(emptyResult);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].connection-string", String.class))
@@ -156,6 +188,9 @@ class AzureAppConfigDataLocationResolverTest {
         ConfigDataLocation location = ConfigDataLocation.of("azureAppConfiguration:");
         
         when(mockContext.getBinder()).thenReturn(mockBinder);
+        when(mockBinder.bind("spring.cloud.azure.appconfiguration.enabled", Boolean.class))
+            .thenReturn(enabledTrueResult);
+        when(enabledTrueResult.orElse(true)).thenReturn(true);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].endpoint", String.class))
             .thenReturn(emptyResult);
         when(mockBinder.bind("spring.cloud.azure.appconfiguration.stores[0].connection-string", String.class))
