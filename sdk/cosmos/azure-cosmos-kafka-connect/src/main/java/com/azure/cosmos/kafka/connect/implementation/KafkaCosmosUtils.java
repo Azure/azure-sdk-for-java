@@ -17,10 +17,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.Set;
 
 public class KafkaCosmosUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosUtils.class);
-    private static final String ALLOWED_CLASSES = "CosmosClientMetadataCachesSnapshot";
+    private static final Set<String> ALLOWED_CLASSES = new HashSet<>();
+    static {
+        ALLOWED_CLASSES.add(CosmosClientMetadataCachesSnapshot.class.getName());
+    }
 
     public static CosmosClientMetadataCachesSnapshot getCosmosClientMetadataFromString(String metadataCacheString) {
         if (StringUtils.isNotEmpty(metadataCacheString)) {
