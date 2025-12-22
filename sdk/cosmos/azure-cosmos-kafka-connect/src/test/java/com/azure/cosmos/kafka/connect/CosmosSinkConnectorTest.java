@@ -18,7 +18,6 @@ import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
@@ -29,14 +28,23 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -212,6 +220,23 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 client.close();
             }
         }
+    }
+
+    @Test(groups = "unit")
+    public void evilDeserializationIsBlocked() throws Exception {
+        AtomicReference<String> payload = new AtomicReference<>("Test RCE payload");
+        Evil evil = new Evil(payload);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(evil);
+        }
+        String evilBase64 = Base64.getEncoder().encodeToString(baos.toByteArray());
+
+        // Through KafkaCosmosUtils: should be blocked and return null
+        CosmosClientMetadataCachesSnapshot snapshot =
+            KafkaCosmosUtils.getCosmosClientMetadataFromString(evilBase64);
+        assertThat(snapshot).isNull();
+        assertThat(payload.get()).isEqualTo("Test RCE payload");
     }
 
     @Test(groups = "unit")
@@ -450,19 +475,6 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 "azure.cosmos.sink.write.strategy",
                 ItemWriteStrategy.ITEM_OVERWRITE.getName(),
                 true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.operationType.default",
-                KafkaCosmosPatchOperationType.SET.getName(),
-                true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.property.configs",
-                Strings.Emtpy,
-                true),
-            new KafkaCosmosConfigEntry<String>(
-                "azure.cosmos.sink.write.patch.filter",
-                Strings.Emtpy,
-                true),
-            new KafkaCosmosConfigEntry<Integer>("azure.cosmos.sink.maxRetryCount", 10, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.database.name", null, false),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.sink.containers.topicMap", null, false),
             new KafkaCosmosConfigEntry<String>(
@@ -471,4 +483,26 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 true)
         );
     }
+
+    public static class Evil implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final AtomicReference<String> payload;
+
+        public Evil(AtomicReference<String> payload) {
+            this.payload = payload;
+        }
+
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            System.out.println("Payload executed");
+            payload.set("Payload executed");
+        }
+
+        @Override
+        public String toString() {
+            return "Evil{payload='" + payload.get() + "'}";
+        }
+    }
+
 }

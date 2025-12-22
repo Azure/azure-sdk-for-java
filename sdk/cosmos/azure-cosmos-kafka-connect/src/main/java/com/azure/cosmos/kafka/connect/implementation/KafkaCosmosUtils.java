@@ -12,20 +12,31 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.util.Base64;
 
 public class KafkaCosmosUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosUtils.class);
+    private static final String ALLOWED_CLASSES = "CosmosClientMetadataCachesSnapshot";
 
     public static CosmosClientMetadataCachesSnapshot getCosmosClientMetadataFromString(String metadataCacheString) {
         if (StringUtils.isNotEmpty(metadataCacheString)) {
             byte[] inputByteArray = Base64.getDecoder().decode(metadataCacheString);
             try (ObjectInputStream objectInputStream =
-                     new ObjectInputStream(new ByteArrayInputStream(inputByteArray))) {
-
-                return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
+                     new ObjectInputStream(new ByteArrayInputStream(inputByteArray)) {
+                @Override
+                protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+                    // Whitelist only allowed classes to prevent rce from arbitrary classes
+                    if (!ALLOWED_CLASSES.contains(desc.getName())) {
+                        throw new InvalidClassException("Unauthorized deserialization attempt", desc.getName());
+                    }
+                    return super.resolveClass(desc);
+                }
+            }){
+            return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 LOGGER.warn("Failed to deserialize cosmos client metadata cache snapshot");
                 return null;
