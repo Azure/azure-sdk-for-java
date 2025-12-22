@@ -25,6 +25,7 @@ public class KafkaCosmosUtils {
     private static final Set<String> ALLOWED_CLASSES = new HashSet<>();
     static {
         ALLOWED_CLASSES.add(CosmosClientMetadataCachesSnapshot.class.getName());
+        ALLOWED_CLASSES.add(byte[].class.getName());
     }
 
     public static CosmosClientMetadataCachesSnapshot getCosmosClientMetadataFromString(String metadataCacheString) {
@@ -32,16 +33,17 @@ public class KafkaCosmosUtils {
             byte[] inputByteArray = Base64.getDecoder().decode(metadataCacheString);
             try (ObjectInputStream objectInputStream =
                      new ObjectInputStream(new ByteArrayInputStream(inputByteArray)) {
-                @Override
-                protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-                    // Whitelist only allowed classes to prevent rce from arbitrary classes
-                    if (!ALLOWED_CLASSES.contains(desc.getName())) {
-                        throw new InvalidClassException("Unauthorized deserialization attempt", desc.getName());
+                    @Override
+                    protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+                        // Whitelist only allowed classes to prevent rce from arbitrary classes
+                        if (!ALLOWED_CLASSES.contains(desc.getName())) {
+                            LOGGER.error(desc.getName());
+                            throw new InvalidClassException("Unauthorized deserialization attempt", desc.getName());
+                        }
+                        return super.resolveClass(desc);
                     }
-                    return super.resolveClass(desc);
-                }
-            }){
-            return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
+            }) {
+                return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 LOGGER.warn("Failed to deserialize cosmos client metadata cache snapshot");
                 return null;
