@@ -17,67 +17,42 @@ public final class LogAnalyticsQueryPackQueryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogAnalyticsQueryPackQueryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"id\":\"yhuybbkpod\",\"displayName\":\"po\",\"timeCreated\":\"2021-05-29T14:24:22Z\",\"timeModified\":\"2021-09-25T10:25:19Z\",\"author\":\"amiheognarxz\",\"description\":\"heotusiv\",\"body\":\"evcciqihnhun\",\"related\":{\"categories\":[\"zrnf\",\"gxg\"],\"resourceTypes\":[\"emv\",\"zfkufubljofx\",\"eofjaeqjh\",\"jbasvmsmjqulngs\"],\"solutions\":[\"bybkzgcwrwclxx\",\"rljdouskcqv\",\"ocrcjdk\",\"tnhxbn\"]},\"tags\":{\"yqduujit\":[\"sqrglssainq\",\"jwnzlljfmp\",\"eebvmgxsab\"],\"nhutjeltmrldhugj\":[\"czdzev\",\"dhkrwpdappdsbdk\",\"wrwjfeu\"]},\"properties\":\"datadatqxhocdgeabl\"},\"id\":\"huticndvkao\",\"name\":\"yiftyhxhuro\",\"type\":\"tyxolniwpwc\"},{\"properties\":{\"id\":\"kgiawxklryplwck\",\"displayName\":\"asy\",\"timeCreated\":\"2021-10-21T22:29:11Z\",\"timeModified\":\"2021-07-26T02:42:45Z\",\"author\":\"sgcbac\",\"description\":\"ejk\",\"body\":\"tynqgoul\",\"related\":{\"categories\":[\"i\",\"wyqkgfgibm\",\"dgak\"],\"resourceTypes\":[\"rxybz\"],\"solutions\":[\"dqytbciqfouflmm\"]},\"tags\":{\"spwgcuertumkdosv\":[\"modmglougpb\",\"wtmutduq\",\"ta\"]},\"properties\":\"datahbmdgbbjfdd\"},\"id\":\"bmbexppbhtqqro\",\"name\":\"p\",\"type\":\"s\"},{\"properties\":{\"id\":\"qux\",\"displayName\":\"gjyjgzjaoyfhrtxi\",\"timeCreated\":\"2021-04-23T04:18:15Z\",\"timeModified\":\"2021-08-05T02:52:01Z\",\"author\":\"jysvl\",\"description\":\"uvfqawrlyxwj\",\"body\":\"cpr\",\"related\":{\"categories\":[\"xgjvtbv\"],\"resourceTypes\":[\"szdnr\",\"jq\"],\"solutions\":[\"muouqfp\",\"wzwbnguitn\",\"uizga\",\"x\"]},\"tags\":{\"idf\":[\"uckyf\",\"hr\"],\"pvkmijcmmxdcuf\":[\"wdzuhtymwisd\",\"fthwxmnteiwa\"],\"dwzjeiach\":[\"srp\",\"mzidnsezcxtb\",\"sgfyccsnew\"],\"pyqr\":[\"osfln\",\"osfqpteehzzv\"]},\"properties\":\"dataz\"},\"id\":\"pvswjdkirso\",\"name\":\"qxhcrmn\",\"type\":\"jtckwhdso\"}],\"nextLink\":\"yip\"}")
+            "{\"value\":[{\"properties\":{\"id\":\"nvudwtiukb\",\"displayName\":\"dng\",\"timeCreated\":\"2021-01-23T10:58:05Z\",\"timeModified\":\"2021-05-04T07:17:38Z\",\"author\":\"azyxoegukg\",\"description\":\"piu\",\"body\":\"gygev\",\"related\":{\"categories\":[\"yp\",\"rbpizc\",\"r\",\"j\"],\"resourceTypes\":[\"ydnfyhxdeoejz\"],\"solutions\":[\"ifsjttgzfbishcb\"]},\"tags\":{\"kix\":[\"deyeamdphagalpbu\",\"wgipwhono\",\"kgshwa\"],\"ttmrywnuzoqf\":[\"injep\"],\"oqqnwvlryav\":[\"yqzrnkcqvyxlw\",\"zlsico\"],\"szfkbe\":[\"heun\",\"mqhgyxzkonocuk\",\"klyaxuconu\"]},\"properties\":\"dataewrmjmwvvjektc\"},\"id\":\"enhwlrs\",\"name\":\"frzpwvlqdqgb\",\"type\":\"qylihkaetckt\"}],\"nextLink\":\"civfsnkymuctq\"}")
             .toObject(LogAnalyticsQueryPackQueryListResult.class);
-        Assertions.assertEquals("po", model.value().get(0).displayName());
-        Assertions.assertEquals("heotusiv", model.value().get(0).description());
-        Assertions.assertEquals("evcciqihnhun", model.value().get(0).body());
-        Assertions.assertEquals("zrnf", model.value().get(0).related().categories().get(0));
-        Assertions.assertEquals("emv", model.value().get(0).related().resourceTypes().get(0));
-        Assertions.assertEquals("bybkzgcwrwclxx", model.value().get(0).related().solutions().get(0));
-        Assertions.assertEquals("sqrglssainq", model.value().get(0).tags().get("yqduujit").get(0));
-        Assertions.assertEquals("yip", model.nextLink());
+        Assertions.assertEquals("dng", model.value().get(0).displayName());
+        Assertions.assertEquals("piu", model.value().get(0).description());
+        Assertions.assertEquals("gygev", model.value().get(0).body());
+        Assertions.assertEquals("yp", model.value().get(0).related().categories().get(0));
+        Assertions.assertEquals("ydnfyhxdeoejz", model.value().get(0).related().resourceTypes().get(0));
+        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).related().solutions().get(0));
+        Assertions.assertEquals("deyeamdphagalpbu", model.value().get(0).tags().get("kix").get(0));
+        Assertions.assertEquals("civfsnkymuctq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogAnalyticsQueryPackQueryListResult model
-            = new LogAnalyticsQueryPackQueryListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LogAnalyticsQueryPackQueryInner().withDisplayName("po")
-                                .withDescription("heotusiv")
-                                .withBody("evcciqihnhun")
-                                .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
-                                    .withCategories(Arrays.asList("zrnf", "gxg"))
-                                    .withResourceTypes(
-                                        Arrays.asList("emv", "zfkufubljofx", "eofjaeqjh", "jbasvmsmjqulngs"))
-                                    .withSolutions(Arrays.asList("bybkzgcwrwclxx", "rljdouskcqv", "ocrcjdk", "tnhxbn")))
-                                .withTags(mapOf("yqduujit", Arrays.asList("sqrglssainq", "jwnzlljfmp", "eebvmgxsab"),
-                                    "nhutjeltmrldhugj", Arrays.asList("czdzev", "dhkrwpdappdsbdk", "wrwjfeu")))
-                                .withProperties("datadatqxhocdgeabl"),
-                            new LogAnalyticsQueryPackQueryInner().withDisplayName("asy")
-                                .withDescription("ejk")
-                                .withBody("tynqgoul")
-                                .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
-                                    .withCategories(Arrays.asList("i", "wyqkgfgibm", "dgak"))
-                                    .withResourceTypes(Arrays.asList("rxybz"))
-                                    .withSolutions(Arrays.asList("dqytbciqfouflmm")))
-                                .withTags(mapOf("spwgcuertumkdosv", Arrays.asList("modmglougpb", "wtmutduq", "ta")))
-                                .withProperties("datahbmdgbbjfdd"),
-                            new LogAnalyticsQueryPackQueryInner().withDisplayName("gjyjgzjaoyfhrtxi")
-                                .withDescription("uvfqawrlyxwj")
-                                .withBody("cpr")
-                                .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
-                                    .withCategories(Arrays.asList("xgjvtbv"))
-                                    .withResourceTypes(Arrays.asList("szdnr", "jq"))
-                                    .withSolutions(Arrays.asList("muouqfp", "wzwbnguitn", "uizga", "x")))
-                                .withTags(mapOf("idf", Arrays.asList("uckyf", "hr"), "pvkmijcmmxdcuf",
-                                    Arrays.asList("wdzuhtymwisd", "fthwxmnteiwa"), "dwzjeiach",
-                                    Arrays.asList("srp", "mzidnsezcxtb", "sgfyccsnew"), "pyqr",
-                                    Arrays.asList("osfln", "osfqpteehzzv")))
-                                .withProperties("dataz")))
-                .withNextLink("yip");
+        LogAnalyticsQueryPackQueryListResult model = new LogAnalyticsQueryPackQueryListResult()
+            .withValue(Arrays.asList(new LogAnalyticsQueryPackQueryInner().withDisplayName("dng")
+                .withDescription("piu")
+                .withBody("gygev")
+                .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
+                    .withCategories(Arrays.asList("yp", "rbpizc", "r", "j"))
+                    .withResourceTypes(Arrays.asList("ydnfyhxdeoejz"))
+                    .withSolutions(Arrays.asList("ifsjttgzfbishcb")))
+                .withTags(mapOf("kix", Arrays.asList("deyeamdphagalpbu", "wgipwhono", "kgshwa"), "ttmrywnuzoqf",
+                    Arrays.asList("injep"), "oqqnwvlryav", Arrays.asList("yqzrnkcqvyxlw", "zlsico"), "szfkbe",
+                    Arrays.asList("heun", "mqhgyxzkonocuk", "klyaxuconu")))
+                .withProperties("dataewrmjmwvvjektc")))
+            .withNextLink("civfsnkymuctq");
         model = BinaryData.fromObject(model).toObject(LogAnalyticsQueryPackQueryListResult.class);
-        Assertions.assertEquals("po", model.value().get(0).displayName());
-        Assertions.assertEquals("heotusiv", model.value().get(0).description());
-        Assertions.assertEquals("evcciqihnhun", model.value().get(0).body());
-        Assertions.assertEquals("zrnf", model.value().get(0).related().categories().get(0));
-        Assertions.assertEquals("emv", model.value().get(0).related().resourceTypes().get(0));
-        Assertions.assertEquals("bybkzgcwrwclxx", model.value().get(0).related().solutions().get(0));
-        Assertions.assertEquals("sqrglssainq", model.value().get(0).tags().get("yqduujit").get(0));
-        Assertions.assertEquals("yip", model.nextLink());
+        Assertions.assertEquals("dng", model.value().get(0).displayName());
+        Assertions.assertEquals("piu", model.value().get(0).description());
+        Assertions.assertEquals("gygev", model.value().get(0).body());
+        Assertions.assertEquals("yp", model.value().get(0).related().categories().get(0));
+        Assertions.assertEquals("ydnfyhxdeoejz", model.value().get(0).related().resourceTypes().get(0));
+        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).related().solutions().get(0));
+        Assertions.assertEquals("deyeamdphagalpbu", model.value().get(0).tags().get("kix").get(0));
+        Assertions.assertEquals("civfsnkymuctq", model.nextLink());
     }
 
     // Use "Map.of" if available

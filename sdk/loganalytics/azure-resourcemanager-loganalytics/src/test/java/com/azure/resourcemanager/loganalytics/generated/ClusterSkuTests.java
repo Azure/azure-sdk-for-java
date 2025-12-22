@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
 import org.junit.jupiter.api.Assertions;
@@ -13,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterSku model
-            = BinaryData.fromString("{\"capacity\":2000,\"name\":\"CapacityReservation\"}").toObject(ClusterSku.class);
-        Assertions.assertEquals(Capacity.TWO_ZERO_ZERO_ZERO, model.capacity());
+        ClusterSku model = BinaryData.fromString("{\"capacity\":4121879659269768466,\"name\":\"CapacityReservation\"}")
+            .toObject(ClusterSku.class);
+        Assertions.assertEquals(4121879659269768466L, model.capacity());
         Assertions.assertEquals(ClusterSkuNameEnum.CAPACITY_RESERVATION, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterSku model = new ClusterSku().withCapacity(Capacity.TWO_ZERO_ZERO_ZERO)
-            .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION);
+        ClusterSku model
+            = new ClusterSku().withCapacity(4121879659269768466L).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION);
         model = BinaryData.fromObject(model).toObject(ClusterSku.class);
-        Assertions.assertEquals(Capacity.TWO_ZERO_ZERO_ZERO, model.capacity());
+        Assertions.assertEquals(4121879659269768466L, model.capacity());
         Assertions.assertEquals(ClusterSkuNameEnum.CAPACITY_RESERVATION, model.name());
     }
 }

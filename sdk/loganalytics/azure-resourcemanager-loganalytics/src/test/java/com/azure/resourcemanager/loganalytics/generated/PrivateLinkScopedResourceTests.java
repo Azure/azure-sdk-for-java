@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkScopedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkScopedResource model
-            = BinaryData.fromString("{\"resourceId\":\"iakp\",\"scopeId\":\"qqmtedltmmji\"}")
-                .toObject(PrivateLinkScopedResource.class);
-        Assertions.assertEquals("iakp", model.resourceId());
-        Assertions.assertEquals("qqmtedltmmji", model.scopeId());
+        PrivateLinkScopedResource model = BinaryData.fromString("{\"resourceId\":\"bar\",\"scopeId\":\"uayjkqa\"}")
+            .toObject(PrivateLinkScopedResource.class);
+        Assertions.assertEquals("bar", model.resourceId());
+        Assertions.assertEquals("uayjkqa", model.scopeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkScopedResource model
-            = new PrivateLinkScopedResource().withResourceId("iakp").withScopeId("qqmtedltmmji");
+        PrivateLinkScopedResource model = new PrivateLinkScopedResource().withResourceId("bar").withScopeId("uayjkqa");
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopedResource.class);
-        Assertions.assertEquals("iakp", model.resourceId());
-        Assertions.assertEquals("qqmtedltmmji", model.scopeId());
+        Assertions.assertEquals("bar", model.resourceId());
+        Assertions.assertEquals("uayjkqa", model.scopeId());
     }
 }

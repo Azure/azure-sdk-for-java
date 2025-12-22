@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.OperationalInsightsManagementClient;
 import com.azure.resourcemanager.loganalytics.implementation.AvailableServiceTiersImpl;
@@ -43,6 +44,7 @@ import com.azure.resourcemanager.loganalytics.implementation.SavedSearchesImpl;
 import com.azure.resourcemanager.loganalytics.implementation.SchemasImpl;
 import com.azure.resourcemanager.loganalytics.implementation.SharedKeysOperationsImpl;
 import com.azure.resourcemanager.loganalytics.implementation.StorageInsightConfigsImpl;
+import com.azure.resourcemanager.loganalytics.implementation.SummaryLogsOperationsImpl;
 import com.azure.resourcemanager.loganalytics.implementation.TablesImpl;
 import com.azure.resourcemanager.loganalytics.implementation.UsagesImpl;
 import com.azure.resourcemanager.loganalytics.implementation.WorkspacePurgesImpl;
@@ -65,6 +67,7 @@ import com.azure.resourcemanager.loganalytics.models.SavedSearches;
 import com.azure.resourcemanager.loganalytics.models.Schemas;
 import com.azure.resourcemanager.loganalytics.models.SharedKeysOperations;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightConfigs;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsOperations;
 import com.azure.resourcemanager.loganalytics.models.Tables;
 import com.azure.resourcemanager.loganalytics.models.Usages;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurges;
@@ -73,6 +76,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -81,13 +85,15 @@ import java.util.stream.Collectors;
  * Operational Insights Client.
  */
 public final class LogAnalyticsManager {
-    private QueryPacks queryPacks;
+    private AvailableServiceTiers availableServiceTiers;
 
-    private Queries queries;
+    private Clusters clusters;
 
     private DataExports dataExports;
 
     private DataSources dataSources;
+
+    private Gateways gateways;
 
     private IntelligencePacks intelligencePacks;
 
@@ -97,33 +103,33 @@ public final class LogAnalyticsManager {
 
     private ManagementGroups managementGroups;
 
+    private Operations operations;
+
     private OperationStatuses operationStatuses;
 
-    private SharedKeysOperations sharedKeysOperations;
+    private Queries queries;
 
-    private Usages usages;
-
-    private StorageInsightConfigs storageInsightConfigs;
+    private QueryPacks queryPacks;
 
     private SavedSearches savedSearches;
 
-    private AvailableServiceTiers availableServiceTiers;
-
-    private Gateways gateways;
-
     private Schemas schemas;
 
+    private SharedKeysOperations sharedKeysOperations;
+
+    private StorageInsightConfigs storageInsightConfigs;
+
+    private Tables tables;
+
+    private Usages usages;
+
     private WorkspacePurges workspacePurges;
-
-    private Clusters clusters;
-
-    private Operations operations;
 
     private Workspaces workspaces;
 
     private DeletedWorkspaces deletedWorkspaces;
 
-    private Tables tables;
+    private SummaryLogsOperations summaryLogsOperations;
 
     private final OperationalInsightsManagementClient clientObject;
 
@@ -177,6 +183,9 @@ public final class LogAnalyticsManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-loganalytics.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -284,12 +293,14 @@ public final class LogAnalyticsManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.loganalytics")
                 .append("/")
-                .append("1.1.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -336,27 +347,27 @@ public final class LogAnalyticsManager {
     }
 
     /**
-     * Gets the resource collection API of QueryPacks. It manages LogAnalyticsQueryPack.
+     * Gets the resource collection API of AvailableServiceTiers.
      * 
-     * @return Resource collection API of QueryPacks.
+     * @return Resource collection API of AvailableServiceTiers.
      */
-    public QueryPacks queryPacks() {
-        if (this.queryPacks == null) {
-            this.queryPacks = new QueryPacksImpl(clientObject.getQueryPacks(), this);
+    public AvailableServiceTiers availableServiceTiers() {
+        if (this.availableServiceTiers == null) {
+            this.availableServiceTiers = new AvailableServiceTiersImpl(clientObject.getAvailableServiceTiers(), this);
         }
-        return queryPacks;
+        return availableServiceTiers;
     }
 
     /**
-     * Gets the resource collection API of Queries. It manages LogAnalyticsQueryPackQuery.
+     * Gets the resource collection API of Clusters. It manages Cluster.
      * 
-     * @return Resource collection API of Queries.
+     * @return Resource collection API of Clusters.
      */
-    public Queries queries() {
-        if (this.queries == null) {
-            this.queries = new QueriesImpl(clientObject.getQueries(), this);
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
         }
-        return queries;
+        return clusters;
     }
 
     /**
@@ -381,6 +392,18 @@ public final class LogAnalyticsManager {
             this.dataSources = new DataSourcesImpl(clientObject.getDataSources(), this);
         }
         return dataSources;
+    }
+
+    /**
+     * Gets the resource collection API of Gateways.
+     * 
+     * @return Resource collection API of Gateways.
+     */
+    public Gateways gateways() {
+        if (this.gateways == null) {
+            this.gateways = new GatewaysImpl(clientObject.getGateways(), this);
+        }
+        return gateways;
     }
 
     /**
@@ -432,6 +455,18 @@ public final class LogAnalyticsManager {
     }
 
     /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
      * Gets the resource collection API of OperationStatuses.
      * 
      * @return Resource collection API of OperationStatuses.
@@ -444,39 +479,27 @@ public final class LogAnalyticsManager {
     }
 
     /**
-     * Gets the resource collection API of SharedKeysOperations.
+     * Gets the resource collection API of Queries. It manages LogAnalyticsQueryPackQuery.
      * 
-     * @return Resource collection API of SharedKeysOperations.
+     * @return Resource collection API of Queries.
      */
-    public SharedKeysOperations sharedKeysOperations() {
-        if (this.sharedKeysOperations == null) {
-            this.sharedKeysOperations = new SharedKeysOperationsImpl(clientObject.getSharedKeysOperations(), this);
+    public Queries queries() {
+        if (this.queries == null) {
+            this.queries = new QueriesImpl(clientObject.getQueries(), this);
         }
-        return sharedKeysOperations;
+        return queries;
     }
 
     /**
-     * Gets the resource collection API of Usages.
+     * Gets the resource collection API of QueryPacks. It manages LogAnalyticsQueryPack.
      * 
-     * @return Resource collection API of Usages.
+     * @return Resource collection API of QueryPacks.
      */
-    public Usages usages() {
-        if (this.usages == null) {
-            this.usages = new UsagesImpl(clientObject.getUsages(), this);
+    public QueryPacks queryPacks() {
+        if (this.queryPacks == null) {
+            this.queryPacks = new QueryPacksImpl(clientObject.getQueryPacks(), this);
         }
-        return usages;
-    }
-
-    /**
-     * Gets the resource collection API of StorageInsightConfigs. It manages StorageInsight.
-     * 
-     * @return Resource collection API of StorageInsightConfigs.
-     */
-    public StorageInsightConfigs storageInsightConfigs() {
-        if (this.storageInsightConfigs == null) {
-            this.storageInsightConfigs = new StorageInsightConfigsImpl(clientObject.getStorageInsightConfigs(), this);
-        }
-        return storageInsightConfigs;
+        return queryPacks;
     }
 
     /**
@@ -492,30 +515,6 @@ public final class LogAnalyticsManager {
     }
 
     /**
-     * Gets the resource collection API of AvailableServiceTiers.
-     * 
-     * @return Resource collection API of AvailableServiceTiers.
-     */
-    public AvailableServiceTiers availableServiceTiers() {
-        if (this.availableServiceTiers == null) {
-            this.availableServiceTiers = new AvailableServiceTiersImpl(clientObject.getAvailableServiceTiers(), this);
-        }
-        return availableServiceTiers;
-    }
-
-    /**
-     * Gets the resource collection API of Gateways.
-     * 
-     * @return Resource collection API of Gateways.
-     */
-    public Gateways gateways() {
-        if (this.gateways == null) {
-            this.gateways = new GatewaysImpl(clientObject.getGateways(), this);
-        }
-        return gateways;
-    }
-
-    /**
      * Gets the resource collection API of Schemas.
      * 
      * @return Resource collection API of Schemas.
@@ -528,6 +527,54 @@ public final class LogAnalyticsManager {
     }
 
     /**
+     * Gets the resource collection API of SharedKeysOperations.
+     * 
+     * @return Resource collection API of SharedKeysOperations.
+     */
+    public SharedKeysOperations sharedKeysOperations() {
+        if (this.sharedKeysOperations == null) {
+            this.sharedKeysOperations = new SharedKeysOperationsImpl(clientObject.getSharedKeysOperations(), this);
+        }
+        return sharedKeysOperations;
+    }
+
+    /**
+     * Gets the resource collection API of StorageInsightConfigs. It manages StorageInsight.
+     * 
+     * @return Resource collection API of StorageInsightConfigs.
+     */
+    public StorageInsightConfigs storageInsightConfigs() {
+        if (this.storageInsightConfigs == null) {
+            this.storageInsightConfigs = new StorageInsightConfigsImpl(clientObject.getStorageInsightConfigs(), this);
+        }
+        return storageInsightConfigs;
+    }
+
+    /**
+     * Gets the resource collection API of Tables. It manages Table.
+     * 
+     * @return Resource collection API of Tables.
+     */
+    public Tables tables() {
+        if (this.tables == null) {
+            this.tables = new TablesImpl(clientObject.getTables(), this);
+        }
+        return tables;
+    }
+
+    /**
+     * Gets the resource collection API of Usages.
+     * 
+     * @return Resource collection API of Usages.
+     */
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(clientObject.getUsages(), this);
+        }
+        return usages;
+    }
+
+    /**
      * Gets the resource collection API of WorkspacePurges.
      * 
      * @return Resource collection API of WorkspacePurges.
@@ -537,30 +584,6 @@ public final class LogAnalyticsManager {
             this.workspacePurges = new WorkspacePurgesImpl(clientObject.getWorkspacePurges(), this);
         }
         return workspacePurges;
-    }
-
-    /**
-     * Gets the resource collection API of Clusters. It manages Cluster.
-     * 
-     * @return Resource collection API of Clusters.
-     */
-    public Clusters clusters() {
-        if (this.clusters == null) {
-            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
-        }
-        return clusters;
-    }
-
-    /**
-     * Gets the resource collection API of Operations.
-     * 
-     * @return Resource collection API of Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
     }
 
     /**
@@ -588,15 +611,15 @@ public final class LogAnalyticsManager {
     }
 
     /**
-     * Gets the resource collection API of Tables. It manages Table.
+     * Gets the resource collection API of SummaryLogsOperations. It manages SummaryLogs.
      * 
-     * @return Resource collection API of Tables.
+     * @return Resource collection API of SummaryLogsOperations.
      */
-    public Tables tables() {
-        if (this.tables == null) {
-            this.tables = new TablesImpl(clientObject.getTables(), this);
+    public SummaryLogsOperations summaryLogsOperations() {
+        if (this.summaryLogsOperations == null) {
+            this.summaryLogsOperations = new SummaryLogsOperationsImpl(clientObject.getSummaryLogsOperations(), this);
         }
-        return tables;
+        return summaryLogsOperations;
     }
 
     /**

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LinkedService;
@@ -23,21 +23,21 @@ public final class LinkedServicesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceId\":\"njle\",\"writeAccessResourceId\":\"xsmrpddouifamow\",\"provisioningState\":\"Deleting\"},\"tags\":{\"tmaaj\":\"knlqwzdvpiwhxqsz\",\"bmzyospsps\":\"uhuxylrjvmtyg\",\"fkyjpmspbpssdfpp\":\"c\"},\"id\":\"ogtieyujtvczkcny\",\"name\":\"rxmunjdxvgln\",\"type\":\"vxlx\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceId\":\"cgwgcloxoebqinji\",\"writeAccessResourceId\":\"wjfuj\",\"provisioningState\":\"Deleting\"},\"tags\":{\"filkmkkholv\":\"bahhpzpofoiyjw\",\"ukyefchnmnahmnxh\":\"ndviauogphuartvt\",\"fifhxwrsnew\":\"xjqirwrweoox\",\"sycxhxzgaz\":\"ozqvbubqmam\"},\"id\":\"taboidvmf\",\"name\":\"hppubowsepdfgkmt\",\"type\":\"herngb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LinkedService> response
-            = manager.linkedServices().listByWorkspace("jhvsujztczyt", "jtwhauunf", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByWorkspace("xxgewpk", "vqylkmqpzoyhl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("knlqwzdvpiwhxqsz", response.iterator().next().tags().get("tmaaj"));
-        Assertions.assertEquals("njle", response.iterator().next().resourceId());
-        Assertions.assertEquals("xsmrpddouifamow", response.iterator().next().writeAccessResourceId());
+        Assertions.assertEquals("bahhpzpofoiyjw", response.iterator().next().tags().get("filkmkkholv"));
+        Assertions.assertEquals("cgwgcloxoebqinji", response.iterator().next().resourceId());
+        Assertions.assertEquals("wjfuj", response.iterator().next().writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.DELETING, response.iterator().next().provisioningState());
     }
 }

@@ -126,8 +126,8 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -144,8 +144,8 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -168,8 +168,8 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -186,8 +186,8 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -209,8 +209,8 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -226,8 +226,8 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -248,8 +248,8 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -264,8 +264,8 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.

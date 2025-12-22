@@ -4,73 +4,58 @@
 
 package com.azure.resourcemanager.loganalytics.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * The type of identity that creates/modifies resources.
+ * Type of managed service identity.
  */
-public final class IdentityType extends ExpandableStringEnum<IdentityType> {
+public enum IdentityType {
     /**
-     * Static value user for IdentityType.
+     * Enum value SystemAssigned.
      */
-    public static final IdentityType USER = fromString("user");
+    SYSTEM_ASSIGNED("SystemAssigned"),
 
     /**
-     * Static value application for IdentityType.
+     * Enum value UserAssigned.
      */
-    public static final IdentityType APPLICATION = fromString("application");
+    USER_ASSIGNED("UserAssigned"),
 
     /**
-     * Static value managedIdentity for IdentityType.
+     * Enum value None.
      */
-    public static final IdentityType MANAGED_IDENTITY = fromString("managedIdentity");
+    NONE("None");
 
     /**
-     * Static value key for IdentityType.
+     * The actual serialized value for a IdentityType instance.
      */
-    public static final IdentityType KEY = fromString("key");
+    private final String value;
 
-    /**
-     * Static value SystemAssigned for IdentityType.
-     */
-    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
-
-    /**
-     * Static value UserAssigned for IdentityType.
-     */
-    public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
-
-    /**
-     * Static value None for IdentityType.
-     */
-    public static final IdentityType NONE = fromString("None");
-
-    /**
-     * Creates a new instance of IdentityType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public IdentityType() {
+    IdentityType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a IdentityType from its string representation.
+     * Parses a serialized value to a IdentityType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding IdentityType.
+     * @param value the serialized value to parse.
+     * @return the parsed IdentityType object, or null if unable to parse.
      */
-    public static IdentityType fromString(String name) {
-        return fromString(name, IdentityType.class);
+    public static IdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        IdentityType[] items = IdentityType.values();
+        for (IdentityType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known IdentityType values.
-     * 
-     * @return known IdentityType values.
+     * {@inheritDoc}
      */
-    public static Collection<IdentityType> values() {
-        return values(IdentityType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

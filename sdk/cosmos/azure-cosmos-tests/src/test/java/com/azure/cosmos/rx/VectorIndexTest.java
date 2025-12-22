@@ -355,12 +355,18 @@ public class VectorIndexTest extends TestSuiteBase {
 
         CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec()
             .setPath("/vector4")
+            .setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString())
+            .setQuantizerType(QuantizerType.PRODUCT)
+            .setQuantizationSizeInBytes(2)
+            .setVectorIndexShardKeys(Arrays.asList("/zipCode"));
+
+        CosmosVectorIndexSpec cosmosVectorIndexSpec5 = new CosmosVectorIndexSpec()
+            .setPath("/vector5")
             .setType(CosmosVectorIndexType.DISK_ANN.toString())
             .setQuantizerType(QuantizerType.SPHERICAL)
-            .setIndexingSearchListSize(30)
-            .setVectorIndexShardKeys(Arrays.asList("/country/city"));
+            .setIndexingSearchListSize(30);
 
-        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3, cosmosVectorIndexSpec4);
+        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3, cosmosVectorIndexSpec4, cosmosVectorIndexSpec5);
     }
 
     private List<CosmosVectorEmbedding> populateEmbeddings() {
@@ -384,11 +390,17 @@ public class VectorIndexTest extends TestSuiteBase {
 
         CosmosVectorEmbedding embedding4 = new CosmosVectorEmbedding()
             .setPath("/vector4")
+            .setDataType(CosmosVectorDataType.FLOAT16)
+            .setEmbeddingDimensions(3)
+            .setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
+
+        CosmosVectorEmbedding embedding5 = new CosmosVectorEmbedding()
+            .setPath("/vector5")
             .setDataType(CosmosVectorDataType.UINT8)
             .setEmbeddingDimensions(3)
             .setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
 
-        return Arrays.asList(embedding1, embedding2, embedding3, embedding4);
+        return Arrays.asList(embedding1, embedding2, embedding3, embedding4, embedding5);
     }
 
     private String getVectorEmbeddingPolicyAsString() {
@@ -396,7 +408,8 @@ public class VectorIndexTest extends TestSuiteBase {
             "{\"path\":\"/vector1\",\"dataType\":\"int8\",\"dimensions\":3,\"distanceFunction\":\"cosine\"}," +
             "{\"path\":\"/vector2\",\"dataType\":\"float32\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}," +
             "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}," +
-            "{\"path\":\"/vector4\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
+            "{\"path\":\"/vector4\",\"dataType\":\"float16\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}," +
+            "{\"path\":\"/vector5\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
             "]}";
     }
 

@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceFeatures;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,29 +16,33 @@ public final class WorkspaceFeaturesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceFeatures model = BinaryData.fromString(
-            "{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"wau\",\"disableLocalAuth\":false,\"\":{\"pevzhfst\":\"datagupkvipmdscwxq\",\"pelmcuvhixbjxyf\":\"datatxhojujb\"}}")
+            "{\"enableDataExport\":true,\"immediatePurgeDataOn30Days\":true,\"enableLogAccessUsingOnlyResourcePermissions\":true,\"clusterResourceId\":\"jcbhern\",\"disableLocalAuth\":false,\"unifiedSentinelBillingOnly\":false,\"associations\":[\"cv\"],\"ehwagoh\":\"datawr\",\"xtdr\":\"datauffkmrqemvvh\",\"znmwcp\":\"datafutacoebjvewzc\"}")
             .toObject(WorkspaceFeatures.class);
-        Assertions.assertEquals(false, model.enableDataExport());
-        Assertions.assertEquals(false, model.immediatePurgeDataOn30Days());
-        Assertions.assertEquals(true, model.enableLogAccessUsingOnlyResourcePermissions());
-        Assertions.assertEquals("wau", model.clusterResourceId());
-        Assertions.assertEquals(false, model.disableLocalAuth());
+        Assertions.assertTrue(model.enableDataExport());
+        Assertions.assertTrue(model.immediatePurgeDataOn30Days());
+        Assertions.assertTrue(model.enableLogAccessUsingOnlyResourcePermissions());
+        Assertions.assertEquals("jcbhern", model.clusterResourceId());
+        Assertions.assertFalse(model.disableLocalAuth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceFeatures model = new WorkspaceFeatures().withEnableDataExport(false)
-            .withImmediatePurgeDataOn30Days(false)
+        WorkspaceFeatures model = new WorkspaceFeatures().withEnableDataExport(true)
+            .withImmediatePurgeDataOn30Days(true)
             .withEnableLogAccessUsingOnlyResourcePermissions(true)
-            .withClusterResourceId("wau")
+            .withClusterResourceId("jcbhern")
             .withDisableLocalAuth(false)
-            .withAdditionalProperties(mapOf());
+            .withAdditionalProperties(mapOf("associations",
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize("[\"cv\"]", Object.class, SerializerEncoding.JSON),
+                "xtdr", "datauffkmrqemvvh", "ehwagoh", "datawr", "znmwcp", "datafutacoebjvewzc",
+                "unifiedSentinelBillingOnly", false));
         model = BinaryData.fromObject(model).toObject(WorkspaceFeatures.class);
-        Assertions.assertEquals(false, model.enableDataExport());
-        Assertions.assertEquals(false, model.immediatePurgeDataOn30Days());
-        Assertions.assertEquals(true, model.enableLogAccessUsingOnlyResourcePermissions());
-        Assertions.assertEquals("wau", model.clusterResourceId());
-        Assertions.assertEquals(false, model.disableLocalAuth());
+        Assertions.assertTrue(model.enableDataExport());
+        Assertions.assertTrue(model.immediatePurgeDataOn30Days());
+        Assertions.assertTrue(model.enableLogAccessUsingOnlyResourcePermissions());
+        Assertions.assertEquals("jcbhern", model.clusterResourceId());
+        Assertions.assertFalse(model.disableLocalAuth());
     }
 
     // Use "Map.of" if available

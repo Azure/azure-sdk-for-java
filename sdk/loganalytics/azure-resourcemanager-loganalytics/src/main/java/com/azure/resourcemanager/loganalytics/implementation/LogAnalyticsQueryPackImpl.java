@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
@@ -42,6 +43,10 @@ public final class LogAnalyticsQueryPackImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String queryPackId() {
@@ -179,6 +184,6 @@ public final class LogAnalyticsQueryPackImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
