@@ -1,9 +1,9 @@
 > [!WARNING]  
-> [Spring Cloud Azure 4.19.0](https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0) is the final release in the 4.x series. We will continue to provide support for this version until June 2025. After June 2025 we will stop all support for Spring Cloud Azure 4.x
+> [Spring Cloud Azure 4.20.0](https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.20.0) is the final release in the 4.x series. We will continue to provide support for this version until June 2025. After June 2025 we will stop all support for Spring Cloud Azure 4.x
 
 
 > [!NOTE]  
-> Spring Cloud Azure 5.x now fully supports Spring Boot 3.3.0 and later versions, we strongly encourage you to upgrade. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
+> Spring Cloud Azure 5.x is fully aligned with Spring Boot 3.x, version 6.x supports Spring Boot 3.5.x, and version 7.x is designed for Spring Boot 4. To take advantage of the latest features, performance improvements, and security updates, we strongly recommend upgrading. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
 
 # Spring Cloud Azure
 
@@ -72,7 +72,7 @@ This module contains the auto-configuration code for Azure services.
 
 ### spring-cloud-azure-starters
 
-Spring Cloud Azure Starters are a set of convenient dependency descriptors to include in your application. It boosts your Spring Boot application developement with Azure services. For example, if you want to get started using Spring and Azure Cosmos DB for data persistence, include the `spring-cloud-azure-starter-cosmos` dependency in your project. 
+Spring Cloud Azure Starters are a set of convenient dependency descriptors to include in your application. It boosts your Spring Boot application development with Azure services. For example, if you want to get started using Spring and Azure Cosmos DB for data persistence, include the `spring-cloud-azure-starter-cosmos` dependency in your project. 
 
 The following application starters are provided by Spring Cloud Azure under the `com.azure.spring` group:
 
@@ -120,7 +120,7 @@ This provides auto-configuration for actuator endpoints based on the content of 
 
 Spring Integration Extension for Azure provides Spring Integration adapters for the various services provided by the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java/). Below is a list of supported adapters:
 
-- spring-integration-azure-eventhbus
+- spring-integration-azure-eventhubs
 - spring-integration-azure-servicebus
 - spring-integration-azure-storage-queue
 
@@ -225,6 +225,10 @@ You have to create a `custom.security file` in `src/main/resources` with the fol
 ```
 jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
 ```
+
+## Spring Boot 4 Support
+
+The source code of Spring Cloud Azure for Spring Boot 4.x can be found on the [feature/springcloudazure-7.x](https://github.com/Azure/azure-sdk-for-java/tree/feature/springcloudazure-7.x) branch.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

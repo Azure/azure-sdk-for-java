@@ -244,6 +244,7 @@ parameters:
   displayName: 'spring-cloud-azure-starter-appconfiguration-config'
   type: boolean
   default: true
+#  todo: add back when monitor support Spring Boot 4
 #- name: release_springcloudazurestartermonitor
 #  displayName: 'spring-cloud-azure-starter-monitor'
 #  type: boolean
@@ -603,6 +604,7 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangeLog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
+#        todo: add back when monitor support Spring Boot 4
 #      - name: spring-cloud-azure-starter-monitor
 #        groupId: com.azure.spring
 #        safeName: springcloudazurestartermonitor
