@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ContainerInstanceManagementTest extends ResourceManagerTestProxyTestBase {
     protected ContainerInstanceManager containerInstanceManager;
     protected String rgName = "";
+    protected StorageManager storageManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
@@ -37,6 +39,7 @@ public class ContainerInstanceManagementTest extends ResourceManagerTestProxyTes
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         containerInstanceManager = buildManager(ContainerInstanceManager.class, httpPipeline, profile);
+        storageManager = buildManager(StorageManager.class, httpPipeline, profile);
         setInternalContext(internalContext, containerInstanceManager);
     }
 
