@@ -209,11 +209,12 @@
         <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+<!--      todo: add back when monitor support Spring Boot 4-->
+<!--      <dependency>-->
+<!--        <groupId>com.azure.spring</groupId>-->
+<!--        <artifactId>spring-cloud-azure-starter-monitor</artifactId>-->
+<!--        <version>${project.version}</version>-->
+<!--      </dependency>-->
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
