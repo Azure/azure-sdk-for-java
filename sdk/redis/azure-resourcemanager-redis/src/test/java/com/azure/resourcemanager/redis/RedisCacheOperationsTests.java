@@ -349,15 +349,17 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withPremiumSku()
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withRedisConfiguration("aof-backup-enabled", "true")
-            .withRedisConfiguration("aof-storage-connection-string-0", connectionString)
-            .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
+            .withRedisConfiguration("aof-storage-connection-string-0", storageAccount.endPoints().primary().blob())
+            //.withRedisConfiguration("aof-storage-connection-string-0", connectionString)
+            //.withRedisConfiguration("aof-storage-connection-string-1", connectionString)
+            .withRedisConfiguration("preferred-data-persistence-auth-method", "managedIdentity")
             .withRedisConfiguration("aad-enabled", "true")
             .disableLocalAuth()
             .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().aofBackupEnabled());
         if (!isPlaybackMode()) {
             Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
-            Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
+            //Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
         }
 
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
