@@ -250,6 +250,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
             .withPublicImageRegistryOnly()
             // definition step only allow creating one file share volume
             // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
+            // Azure Storage doesn't support SMB mounting of file share using managed identity
 //            .withEmptyDirectoryVolume("vol2")
             .defineVolume("vol1")
             .withExistingReadWriteAzureFileShare(shareName)
