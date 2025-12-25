@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.security.propert
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AadAuthorizationServerEndpointsTests {
 
@@ -49,8 +48,6 @@ class AadAuthorizationServerEndpointsTests {
     void getAuthorizationEndpoint() {
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(DEFAULT_BASE_URI, TENANT_ID);
         String authEndpoint = endpoints.getAuthorizationEndpoint();
-        assertTrue(authEndpoint.contains(TENANT_ID));
-        assertTrue(authEndpoint.contains("/oauth2/v2.0/authorize"));
         assertEquals(DEFAULT_BASE_URI + TENANT_ID + "/oauth2/v2.0/authorize", authEndpoint);
     }
 
@@ -58,8 +55,6 @@ class AadAuthorizationServerEndpointsTests {
     void getTokenEndpoint() {
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(DEFAULT_BASE_URI, TENANT_ID);
         String tokenEndpoint = endpoints.getTokenEndpoint();
-        assertTrue(tokenEndpoint.contains(TENANT_ID));
-        assertTrue(tokenEndpoint.contains("/oauth2/v2.0/token"));
         assertEquals(DEFAULT_BASE_URI + TENANT_ID + "/oauth2/v2.0/token", tokenEndpoint);
     }
 
@@ -67,8 +62,6 @@ class AadAuthorizationServerEndpointsTests {
     void getJwkSetEndpoint() {
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(DEFAULT_BASE_URI, TENANT_ID);
         String jwkSetEndpoint = endpoints.getJwkSetEndpoint();
-        assertTrue(jwkSetEndpoint.contains(TENANT_ID));
-        assertTrue(jwkSetEndpoint.contains("/discovery/v2.0/keys"));
         assertEquals(DEFAULT_BASE_URI + TENANT_ID + "/discovery/v2.0/keys", jwkSetEndpoint);
     }
 
@@ -76,8 +69,6 @@ class AadAuthorizationServerEndpointsTests {
     void getEndSessionEndpoint() {
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(DEFAULT_BASE_URI, TENANT_ID);
         String endSessionEndpoint = endpoints.getEndSessionEndpoint();
-        assertTrue(endSessionEndpoint.contains(TENANT_ID));
-        assertTrue(endSessionEndpoint.contains("/oauth2/v2.0/logout"));
         assertEquals(DEFAULT_BASE_URI + TENANT_ID + "/oauth2/v2.0/logout", endSessionEndpoint);
     }
 }
