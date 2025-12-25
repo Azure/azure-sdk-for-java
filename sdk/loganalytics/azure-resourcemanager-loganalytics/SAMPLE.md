@@ -111,6 +111,16 @@
 - [Get](#storageinsightconfigs_get)
 - [ListByWorkspace](#storageinsightconfigs_listbyworkspace)
 
+## SummaryLogsOperation
+
+- [CreateOrUpdate](#summarylogsoperation_createorupdate)
+- [Delete](#summarylogsoperation_delete)
+- [Get](#summarylogsoperation_get)
+- [ListByWorkspace](#summarylogsoperation_listbyworkspace)
+- [RetryBin](#summarylogsoperation_retrybin)
+- [Start](#summarylogsoperation_start)
+- [Stop](#summarylogsoperation_stop)
+
 ## Tables
 
 - [CancelSearch](#tables_cancelsearch)
@@ -134,9 +144,14 @@
 
 - [CreateOrUpdate](#workspaces_createorupdate)
 - [Delete](#workspaces_delete)
+- [Failback](#workspaces_failback)
+- [Failover](#workspaces_failover)
 - [GetByResourceGroup](#workspaces_getbyresourcegroup)
+- [GetNsp](#workspaces_getnsp)
 - [List](#workspaces_list)
 - [ListByResourceGroup](#workspaces_listbyresourcegroup)
+- [ListNsp](#workspaces_listnsp)
+- [ReconcileNsp](#workspaces_reconcilensp)
 - [Update](#workspaces_update)
 ### AvailableServiceTiers_ListByWorkspace
 
@@ -147,8 +162,8 @@
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesAvailableServiceTiers.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesAvailableServiceTiers.json
      */
     /**
      * Sample code: AvailableServiceTiers.
@@ -165,7 +180,6 @@ public final class AvailableServiceTiersListByWorkspaceSamples {
 ### Clusters_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
 import java.util.HashMap;
@@ -177,8 +191,8 @@ import java.util.Map;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
@@ -188,11 +202,10 @@ public final class ClustersCreateOrUpdateSamples {
     public static void clustersCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.clusters()
             .define("oiautorest6685")
-            .withRegion("australiasoutheast")
+            .withRegion("eastus")
             .withExistingResourceGroup("oiautorest6685")
             .withTags(mapOf("tag1", "val1"))
-            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(100L).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .create();
     }
 
@@ -219,8 +232,8 @@ public final class ClustersCreateOrUpdateSamples {
 public final class ClustersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersDelete.json
      */
     /**
      * Sample code: ClustersDelete.
@@ -242,8 +255,8 @@ public final class ClustersDeleteSamples {
 public final class ClustersGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersGet.json
      */
     /**
      * Sample code: ClustersGet.
@@ -266,8 +279,8 @@ public final class ClustersGetByResourceGroupSamples {
 public final class ClustersListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersSubscriptionList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersSubscriptionList.json
      */
     /**
      * Sample code: ClustersSubscriptionList.
@@ -289,8 +302,8 @@ public final class ClustersListSamples {
 public final class ClustersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersListByResourceGroup.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.
@@ -306,7 +319,6 @@ public final class ClustersListByResourceGroupSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
@@ -323,8 +335,8 @@ import java.util.Map;
 public final class ClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
@@ -341,8 +353,7 @@ public final class ClustersUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
                     new UserAssignedIdentity())))
-            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(1000L).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .withKeyVaultProperties(new KeyVaultProperties().withKeyVaultUri("fakeTokenPlaceholder")
                 .withKeyName("fakeTokenPlaceholder")
                 .withKeyVersion("fakeTokenPlaceholder")
@@ -375,8 +386,8 @@ import java.util.Arrays;
 public final class DataExportsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataExportCreateOrUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.
@@ -404,8 +415,8 @@ public final class DataExportsCreateOrUpdateSamples {
 public final class DataExportsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataExportDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.
@@ -428,8 +439,8 @@ public final class DataExportsDeleteSamples {
 public final class DataExportsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataExportGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataExportGet.json
      */
     /**
      * Sample code: DataExportGet.
@@ -451,8 +462,8 @@ public final class DataExportsGetSamples {
 public final class DataExportsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataExportListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataExportListByWorkspace.json
      */
     /**
      * Sample code: DataExportGet.
@@ -479,8 +490,8 @@ import java.io.IOException;
 public final class DataSourcesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataSourcesCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataSourcesCreate.json
      */
     /**
      * Sample code: DataSourcesCreate.
@@ -511,8 +522,8 @@ public final class DataSourcesCreateOrUpdateSamples {
 public final class DataSourcesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataSourcesDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.
@@ -535,8 +546,8 @@ public final class DataSourcesDeleteSamples {
 public final class DataSourcesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataSourcesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.
@@ -559,8 +570,8 @@ public final class DataSourcesGetSamples {
 public final class DataSourcesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataSourcesListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataSourcesListByWorkspace.json
      */
     /**
      * Sample code: DataSourcesListByWorkspace.
@@ -584,8 +595,8 @@ public final class DataSourcesListByWorkspaceSamples {
 public final class DeletedWorkspacesListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesSubscriptionList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -607,8 +618,8 @@ public final class DeletedWorkspacesListSamples {
 public final class DeletedWorkspacesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesListByResourceGroup.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -630,8 +641,8 @@ public final class DeletedWorkspacesListByResourceGroupSamples {
 public final class GatewaysDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesGatewaysDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesGatewaysDelete.json
      */
     /**
      * Sample code: DeleteGateways.
@@ -655,8 +666,8 @@ public final class GatewaysDeleteSamples {
 public final class IntelligencePacksDisableSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesDisableIntelligencePack.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesDisableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksDisable.
@@ -679,8 +690,8 @@ public final class IntelligencePacksDisableSamples {
 public final class IntelligencePacksEnableSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesEnableIntelligencePack.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesEnableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksEnable.
@@ -703,8 +714,8 @@ public final class IntelligencePacksEnableSamples {
 public final class IntelligencePacksListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesListIntelligencePacks.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesListIntelligencePacks.json
      */
     /**
      * Sample code: IntelligencePacksList.
@@ -726,8 +737,8 @@ public final class IntelligencePacksListSamples {
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedServicesCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedServicesCreate.json
      */
     /**
      * Sample code: LinkedServicesCreate.
@@ -754,8 +765,8 @@ public final class LinkedServicesCreateOrUpdateSamples {
 public final class LinkedServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedServicesDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedServicesDelete.json
      */
     /**
      * Sample code: LinkedServicesDelete.
@@ -777,8 +788,8 @@ public final class LinkedServicesDeleteSamples {
 public final class LinkedServicesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedServicesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.
@@ -800,8 +811,8 @@ public final class LinkedServicesGetSamples {
 public final class LinkedServicesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedServicesListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedServicesListByWorkspace.json
      */
     /**
      * Sample code: LinkedServicesListByWorkspace.
@@ -827,8 +838,8 @@ import java.util.Arrays;
 public final class LinkedStorageAccountsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedStorageAccountsCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedStorageAccountsCreate.json
      */
     /**
      * Sample code: LinkedStorageAccountsCreate.
@@ -858,8 +869,8 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 public final class LinkedStorageAccountsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedStorageAccountsDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: LinkedStorageAccountsDelete.
@@ -885,8 +896,8 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 public final class LinkedStorageAccountsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedStorageAccountsGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedStorageAccountsGet.json
      */
     /**
      * Sample code: LinkedStorageAccountsGet.
@@ -910,8 +921,8 @@ public final class LinkedStorageAccountsGetSamples {
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * LinkedStorageAccountsListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/LinkedStorageAccountsListByWorkspace.json
      */
     /**
      * Sample code: Gets list of linked storage accounts on a workspace.
@@ -935,8 +946,8 @@ public final class LinkedStorageAccountsListByWorkspaceSamples {
 public final class ManagementGroupsListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesListManagementGroups.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesListManagementGroups.json
      */
     /**
      * Sample code: WorkspacesListManagementGroups.
@@ -959,8 +970,8 @@ public final class ManagementGroupsListSamples {
 public final class OperationStatusesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * OperationStatusesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/OperationStatusesGet.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -983,8 +994,8 @@ public final class OperationStatusesGetSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * OperationsListByTenant.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.
@@ -1006,8 +1017,8 @@ public final class OperationsListSamples {
 public final class QueriesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesDelete.json
      */
     /**
      * Sample code: QueryDelete.
@@ -1031,8 +1042,8 @@ public final class QueriesDeleteSamples {
 public final class QueriesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesGet.json
      */
     /**
      * Sample code: QueryGet.
@@ -1056,8 +1067,8 @@ public final class QueriesGetSamples {
 public final class QueriesListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesList.json
      */
     /**
      * Sample code: QueryList.
@@ -1084,8 +1095,8 @@ import java.util.Map;
 public final class QueriesPutSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesPut.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesPut.json
      */
     /**
      * Sample code: QueryPut.
@@ -1134,8 +1145,8 @@ import java.util.Map;
 public final class QueriesSearchSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesSearch.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesSearch.json
      */
     /**
      * Sample code: QuerySearch.
@@ -1181,8 +1192,8 @@ import java.util.Map;
 public final class QueriesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackQueriesUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackQueriesUpdate.json
      */
     /**
      * Sample code: QueryPatch.
@@ -1230,8 +1241,8 @@ import java.util.Map;
 public final class QueryPacksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
@@ -1248,8 +1259,8 @@ public final class QueryPacksCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.
@@ -1292,8 +1303,8 @@ import java.util.Map;
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksCreateNoName.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
@@ -1308,8 +1319,8 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
 
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPackUpdateNoName.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.
@@ -1346,8 +1357,8 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
 public final class QueryPacksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.
@@ -1370,8 +1381,8 @@ public final class QueryPacksDeleteSamples {
 public final class QueryPacksGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksGet.json
      */
     /**
      * Sample code: QueryPackGet.
@@ -1394,8 +1405,8 @@ public final class QueryPacksGetByResourceGroupSamples {
 public final class QueryPacksListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksList.json
      */
     /**
      * Sample code: QueryPacksList.
@@ -1417,8 +1428,8 @@ public final class QueryPacksListSamples {
 public final class QueryPacksListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksListByResourceGroup.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksListByResourceGroup.json
      */
     /**
      * Sample code: QueryPackListByResourceGroup.
@@ -1445,8 +1456,8 @@ import java.util.Map;
 public final class QueryPacksUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
-     * QueryPacksUpdateTagsOnly.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/QueryPacksUpdateTagsOnly.json
      */
     /**
      * Sample code: QueryPackUpdateTagsOnly.
@@ -1486,8 +1497,8 @@ import java.util.Arrays;
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesSavedSearchesCreateOrUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.
@@ -1519,8 +1530,8 @@ public final class SavedSearchesCreateOrUpdateSamples {
 public final class SavedSearchesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesDeleteSavedSearches.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesDeleteSavedSearches.json
      */
     /**
      * Sample code: SavedSearchesDelete.
@@ -1544,8 +1555,8 @@ public final class SavedSearchesDeleteSamples {
 public final class SavedSearchesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesSavedSearchesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesSavedSearchesGet.json
      */
     /**
      * Sample code: SavedSearchesGet.
@@ -1569,8 +1580,8 @@ public final class SavedSearchesGetSamples {
 public final class SavedSearchesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * SavedSearchesListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SavedSearchesListByWorkspace.json
      */
     /**
      * Sample code: SavedSearchesList.
@@ -1592,8 +1603,8 @@ public final class SavedSearchesListByWorkspaceSamples {
 public final class SchemaGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * SavedSearchesGetSchema.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SavedSearchesGetSchema.json
      */
     /**
      * Sample code: WorkspacesGetSchema.
@@ -1615,8 +1626,8 @@ public final class SchemaGetSamples {
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesGetSharedKeys.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.
@@ -1638,8 +1649,8 @@ public final class SharedKeysOperationGetSharedKeysSamples {
 public final class SharedKeysOperationRegenerateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesRegenerateSharedKeys.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesRegenerateSharedKeys.json
      */
     /**
      * Sample code: RegenerateSharedKeys.
@@ -1664,8 +1675,8 @@ import java.util.Arrays;
 public final class StorageInsightConfigsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * StorageInsightsCreateOrUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/StorageInsightsCreateOrUpdate.json
      */
     /**
      * Sample code: StorageInsightsCreate.
@@ -1695,8 +1706,8 @@ public final class StorageInsightConfigsCreateOrUpdateSamples {
 public final class StorageInsightConfigsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * StorageInsightsDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/StorageInsightsDelete.json
      */
     /**
      * Sample code: StorageInsightsDelete.
@@ -1719,8 +1730,8 @@ public final class StorageInsightConfigsDeleteSamples {
 public final class StorageInsightConfigsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * StorageInsightsGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/StorageInsightsGet.json
      */
     /**
      * Sample code: StorageInsightsGet.
@@ -1743,8 +1754,8 @@ public final class StorageInsightConfigsGetSamples {
 public final class StorageInsightConfigsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * StorageInsightsListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/StorageInsightsListByWorkspace.json
      */
     /**
      * Sample code: StorageInsightsList.
@@ -1758,6 +1769,192 @@ public final class StorageInsightConfigsListByWorkspaceSamples {
 }
 ```
 
+### SummaryLogsOperation_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
+import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for SummaryLogsOperation CreateOrUpdate.
+ */
+public final class SummaryLogsOperationCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsUpsert.json
+     */
+    /**
+     * Sample code: SummaryLogsUpsert.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsUpsert(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .define("summarylogs1")
+            .withExistingWorkspace("oiautorest6685", "oiautorest6685")
+            .withRuleType(RuleTypeEnum.USER)
+            .withRuleDefinition(new RuleDefinition().withQuery("MyTable_CL")
+                .withBinSize(180)
+                .withBinDelay(10)
+                .withBinStartTime(OffsetDateTime.parse("2020-02-03T04:05:06Z")))
+            .create();
+    }
+}
+```
+
+### SummaryLogsOperation_Delete
+
+```java
+/**
+ * Samples for SummaryLogsOperation Delete.
+ */
+public final class SummaryLogsOperationDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsDelete.json
+     */
+    /**
+     * Sample code: SummaryLogsDelete.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .delete("oiautorest6685", "oiautorest6685", "summarylogs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SummaryLogsOperation_Get
+
+```java
+/**
+ * Samples for SummaryLogsOperation Get.
+ */
+public final class SummaryLogsOperationGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsGet.json
+     */
+    /**
+     * Sample code: SummaryLogsGet.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .getWithResponse("oiautorest6685", "oiautorest6685", "summarylogs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SummaryLogsOperation_ListByWorkspace
+
+```java
+/**
+ * Samples for SummaryLogsOperation ListByWorkspace.
+ */
+public final class SummaryLogsOperationListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsList.json
+     */
+    /**
+     * Sample code: SummaryLogsListByWorkspace.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .listByWorkspace("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SummaryLogsOperation_RetryBin
+
+```java
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsRetryBin;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsRetryBinProperties;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for SummaryLogsOperation RetryBin.
+ */
+public final class SummaryLogsOperationRetryBinSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsRetryBin.json
+     */
+    /**
+     * Sample code: SummaryLogsRetryBin.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsRetryBin(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .retryBin("oiautorest6685", "oiautorest6685", "summarylogs1",
+                new SummaryLogsRetryBin().withProperties(new SummaryLogsRetryBinProperties()
+                    .withRetryBinStartTime(OffsetDateTime.parse("2020-02-03T04:00:00Z"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SummaryLogsOperation_Start
+
+```java
+/**
+ * Samples for SummaryLogsOperation Start.
+ */
+public final class SummaryLogsOperationStartSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsStart.json
+     */
+    /**
+     * Sample code: SummaryLogsStart.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsStart(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .start("exampleresourcegroup", "exampleworkspace", "summarylogs3", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SummaryLogsOperation_Stop
+
+```java
+/**
+ * Samples for SummaryLogsOperation Stop.
+ */
+public final class SummaryLogsOperationStopSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/SummaryLogsStop.json
+     */
+    /**
+     * Sample code: SummaryLogsStop.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void summaryLogsStop(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.summaryLogsOperations()
+            .stopWithResponse("oiautorest6685", "oiautorest6685", "summarylogs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Tables_CancelSearch
 
 ```java
@@ -1767,8 +1964,8 @@ public final class StorageInsightConfigsListByWorkspaceSamples {
 public final class TablesCancelSearchSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesSearchCancel.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesSearchCancel.json
      */
     /**
      * Sample code: TablesSearchCancel.
@@ -1797,8 +1994,8 @@ import java.util.Arrays;
 public final class TablesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesUpsert.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -1827,8 +2024,8 @@ public final class TablesCreateOrUpdateSamples {
 public final class TablesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesDelete.json
      */
     /**
      * Sample code: TablesDelete.
@@ -1850,8 +2047,8 @@ public final class TablesDeleteSamples {
 public final class TablesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesGet.json
      */
     /**
      * Sample code: TablesGet.
@@ -1874,8 +2071,8 @@ public final class TablesGetSamples {
 public final class TablesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
@@ -1897,8 +2094,8 @@ public final class TablesListByWorkspaceSamples {
 public final class TablesMigrateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesMigrate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesMigrate.json
      */
     /**
      * Sample code: TablesMigrate.
@@ -1927,8 +2124,8 @@ import java.util.Arrays;
 public final class TablesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesUpsert.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
@@ -1958,8 +2155,8 @@ public final class TablesUpdateSamples {
 public final class UsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesListUsages.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesListUsages.json
      */
     /**
      * Sample code: UsagesList.
@@ -1981,8 +2178,8 @@ public final class UsagesListSamples {
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesPurgeOperation.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesPurgeOperation.json
      */
     /**
      * Sample code: WorkspacePurgeOperation.
@@ -2010,8 +2207,8 @@ import java.util.Arrays;
 public final class WorkspacePurgePurgeSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesPurgeResourceId.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesPurgeResourceId.json
      */
     /**
      * Sample code: WorkspacePurgeResourceId.
@@ -2030,8 +2227,8 @@ public final class WorkspacePurgePurgeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * WorkspacesPurge.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesPurge.json
      */
     /**
      * Sample code: WorkspacePurge.
@@ -2064,8 +2261,8 @@ import java.util.Map;
 public final class WorkspacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
@@ -2106,8 +2303,8 @@ public final class WorkspacesCreateOrUpdateSamples {
 public final class WorkspacesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesDelete.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesDelete.json
      */
     /**
      * Sample code: WorkspacesDelete.
@@ -2116,6 +2313,52 @@ public final class WorkspacesDeleteSamples {
      */
     public static void workspacesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.workspaces().delete("oiautorest6685", "oiautorest6685", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspaces_Failback
+
+```java
+/**
+ * Samples for Workspaces Failback.
+ */
+public final class WorkspacesFailbackSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesFailback.json
+     */
+    /**
+     * Sample code: WorkspacesFailover.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void workspacesFailover(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspaces().failback("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspaces_Failover
+
+```java
+/**
+ * Samples for Workspaces Failover.
+ */
+public final class WorkspacesFailoverSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesFailover.json
+     */
+    /**
+     * Sample code: WorkspacesFailover.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void workspacesFailover(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspaces().failover("oiautorest6685", "eastus", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2129,8 +2372,8 @@ public final class WorkspacesDeleteSamples {
 public final class WorkspacesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesGet.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesGet.json
      */
     /**
      * Sample code: WorkspaceGet.
@@ -2144,6 +2387,32 @@ public final class WorkspacesGetByResourceGroupSamples {
 }
 ```
 
+### Workspaces_GetNsp
+
+```java
+/**
+ * Samples for Workspaces GetNsp.
+ */
+public final class WorkspacesGetNspSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/NSPForWorkspaces_Get.json
+     */
+    /**
+     * Sample code: Get NSP config by name for Scheduled Query Rule.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void
+        getNSPConfigByNameForScheduledQueryRule(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspaces()
+            .getNspWithResponse("exampleRG", "someWorkspace", "somePerimeterConfiguration",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Workspaces_List
 
 ```java
@@ -2153,8 +2422,8 @@ public final class WorkspacesGetByResourceGroupSamples {
 public final class WorkspacesListSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesSubscriptionList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
@@ -2176,8 +2445,8 @@ public final class WorkspacesListSamples {
 public final class WorkspacesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesListByResourceGroup.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
@@ -2186,6 +2455,55 @@ public final class WorkspacesListByResourceGroupSamples {
      */
     public static void workspacesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.workspaces().listByResourceGroup("oiautorest6685", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspaces_ListNsp
+
+```java
+/**
+ * Samples for Workspaces ListNsp.
+ */
+public final class WorkspacesListNspSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/NSPForWorkspaces_List.json
+     */
+    /**
+     * Sample code: List NSP configs by Scheduled Query Rule.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void
+        listNSPConfigsByScheduledQueryRule(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspaces().listNsp("exampleRG", "someWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspaces_ReconcileNsp
+
+```java
+/**
+ * Samples for Workspaces ReconcileNsp.
+ */
+public final class WorkspacesReconcileNspSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/NSPForWorkspaces_Reconcile.json
+     */
+    /**
+     * Sample code: Reconcile NSP config for Scheduled Query Rule.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void
+        reconcileNSPConfigForScheduledQueryRule(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspaces()
+            .reconcileNsp("exampleRG", "someWorkspace", "somePerimeterConfiguration", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2204,8 +2522,8 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 public final class WorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesUpdate.json
      */
     /**
      * Sample code: WorkspacesPatch.

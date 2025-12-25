@@ -34,6 +34,12 @@ public final class CommandOutputType extends ExpandableStringEnum<CommandOutputT
     public static final CommandOutputType STORAGE_RUN_READ_COMMANDS = fromString("StorageRunReadCommands");
 
     /**
+     * Static value BareMetalMachineRunDataExtractsRestricted for CommandOutputType.
+     */
+    public static final CommandOutputType BARE_METAL_MACHINE_RUN_DATA_EXTRACTS_RESTRICTED
+        = fromString("BareMetalMachineRunDataExtractsRestricted");
+
+    /**
      * Creates a new instance of CommandOutputType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
