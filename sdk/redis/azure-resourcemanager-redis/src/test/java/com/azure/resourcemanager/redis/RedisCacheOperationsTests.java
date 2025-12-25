@@ -316,8 +316,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .disableSharedKeyAccess()
             .create();
 
-        String connectionString = ResourceManagerUtils.getStorageConnectionString(saName,
-            storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
+        // String connectionString = ResourceManagerUtils.getStorageConnectionString(saName,
+        //    storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
 
         // RDB
         RedisCache redisCache = redisManager.redisCaches()
@@ -326,17 +326,19 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withExistingResourceGroup(rgName)
             .withPremiumSku()
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-//            .withRedisConfiguration(new RedisConfiguration().withRdbBackupEnabled("true")
-//                .withRdbBackupFrequency("15")
-//                .withRdbBackupMaxSnapshotCount("1")
-//                .withRdbStorageConnectionString(connectionString))
-            .withRedisConfiguration("aad-enabled", "true")
+            .withRedisConfiguration(new RedisConfiguration()
+                .withRdbBackupEnabled("true")
+                .withRdbBackupFrequency("15")
+                .withRdbBackupMaxSnapshotCount("1")
+                .withRdbStorageConnectionString(storageAccount.endPoints().primary().blob())
+                .withPreferredDataPersistenceAuthMethod("managedIdentity")
+                .withAadEnabled("true"))
             .disableLocalAuth()
             .create();
-//        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
-//        Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
-//        Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
-//        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
+        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
+        Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
+        Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
+        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
 
         redisManager.redisCaches().deleteById(redisCache.id());
