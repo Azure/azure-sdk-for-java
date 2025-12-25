@@ -206,13 +206,13 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
         }
 
         /**
-         * The stage of Redis namespace definition allowing to disable local auth.
+         * The stage of Redis cache definition allowing to disable local auth.
          */
         interface WithLocalAuth {
             /**
-             * Disables SAS authentication for the Redis namespace.
+             * Disables SAS authentication for the Redis cache.
              *
-             * @return next stage of the Redis namespace definition
+             * @return next stage of the Redis cache definition
              */
             default WithCreate disableLocalAuth() {
                 throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
@@ -433,13 +433,13 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     interface UpdateStages {
 
         /**
-         * The stage of Redis namespace definition allowing to disable local auth.
+         * The stage of Redis cache definition allowing to disable local auth.
          */
         interface WithLocalAuth {
             /**
-             * Disables SAS authentication for the Redis namespace.
+             * Disables SAS authentication for the Redis cache.
              *
-             * @return next stage of the Redis namespace definition
+             * @return next stage of the Redis cache definition
              */
             default Update disableLocalAuth() {
                 throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
