@@ -7,7 +7,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 
-- Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47629](https://github.com/Azure/azure-sdk-for-java/issues/47629))
+- Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
