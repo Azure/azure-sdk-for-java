@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2025-12-22)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.57.0 (2025-11-25)
 
