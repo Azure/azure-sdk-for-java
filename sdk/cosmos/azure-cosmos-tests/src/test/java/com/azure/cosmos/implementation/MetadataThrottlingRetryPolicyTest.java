@@ -40,7 +40,7 @@ public class MetadataThrottlingRetryPolicyTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
 
-    @Factory(dataProvider = "simpleClientBuildersWithoutRetryOnThrottledRequests")
+    @Factory(dataProvider = "emulatorClientBuildersWithoutRetryOnThrottledRequests")
     public MetadataThrottlingRetryPolicyTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;

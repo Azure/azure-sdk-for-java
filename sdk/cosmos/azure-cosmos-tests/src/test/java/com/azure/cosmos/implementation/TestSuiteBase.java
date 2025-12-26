@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
@@ -36,7 +37,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
@@ -72,6 +72,7 @@ public abstract class TestSuiteBase extends DocumentClientTest {
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
+    private static final ImmutableList<ConnectionMode> connectionModes;
 
     protected int subscriberValidationTimeout = TIMEOUT;
     protected static Database SHARED_DATABASE;
@@ -92,6 +93,9 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
                                               ImmutableList.of(Protocol.TCP));
+        // Defaulting to Gateway if no connection mode is specified to maintain backward compatibility
+        connectionModes = ObjectUtils.defaultIfNull(immutableListOrNull(parseConnectionModes(TestConfigurations.CONNECTION_MODES)),
+            ImmutableList.of(ConnectionMode.GATEWAY));
         //  Object mapper configuration
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
@@ -830,6 +834,53 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
+    /**
+     * Returns CosmosClientBuilders for the static field connectionModes with the specified contentResponseOnWriteEnabled flag.
+     */
+    private static Object[][] emulatorClientBuildersWithContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+        List<Object[]> builders = new ArrayList<>();
+        for (ConnectionMode mode : connectionModes) {
+            switch (mode) {
+                case DIRECT:
+                    builders.add(new Object[]{createDirectRxDocumentClient(
+                        ConsistencyLevel.SESSION,
+                        Protocol.TCP,
+                        false,
+                        preferredLocations,
+                        contentResponseOnWriteEnabled
+                    )});
+                    break;
+                case GATEWAY:
+                    builders.add(new Object[]{createGatewayRxDocumentClient(
+                        ConsistencyLevel.SESSION,
+                        false,
+                        preferredLocations,
+                        contentResponseOnWriteEnabled
+                    )});
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported ConnectionMode: " + mode);
+            }
+        }
+        return builders.toArray(new Object[0][]);
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes with contentResponseOnWriteEnabled = true.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuilders() {
+        return emulatorClientBuildersWithContentResponseOnWriteEnabled(true);
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes with contentResponseOnWriteEnabled = false.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuildersContentResponseOnWriteEnabledFalse() {
+        return emulatorClientBuildersWithContentResponseOnWriteEnabled(false);
+    }
+
     @DataProvider
     public static Object[][] clientBuilders() {
         return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}};
@@ -883,6 +934,23 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         } catch (Exception e) {
             logger.error("INVALID configured test protocols [{}].", protocols);
             throw new IllegalStateException("INVALID configured test protocols " + protocols);
+        }
+    }
+
+    static List<ConnectionMode> parseConnectionModes(String connectionModes) {
+        if (StringUtils.isEmpty(connectionModes)) {
+            return null;
+        }
+        List<ConnectionMode> modeList = new ArrayList<>();
+        try {
+            List<String> modeStrings = objectMapper.readValue(connectionModes, new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {});
+            for (String mode : modeStrings) {
+                modeList.add(ConnectionMode.valueOf(com.azure.cosmos.implementation.guava25.base.CaseFormat.UPPER_CAMEL.to(com.azure.cosmos.implementation.guava25.base.CaseFormat.UPPER_UNDERSCORE, mode)));
+            }
+            return modeList;
+        } catch (Exception e) {
+            logger.error("INVALID configured test connectionModes [{}].", connectionModes);
+            throw new IllegalStateException("INVALID configured test connectionModes " + connectionModes);
         }
     }
 

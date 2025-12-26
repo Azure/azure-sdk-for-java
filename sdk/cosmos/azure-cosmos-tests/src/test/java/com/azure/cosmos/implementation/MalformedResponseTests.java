@@ -29,7 +29,7 @@ import static org.assertj.core.api.Fail.fail;
 @Ignore("MalformedResponseTests is only safe to run in isolation as it leverages Reflection to override the ObjectMapper instance responsible for deserialization.")
 public class MalformedResponseTests extends TestSuiteBase {
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public MalformedResponseTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

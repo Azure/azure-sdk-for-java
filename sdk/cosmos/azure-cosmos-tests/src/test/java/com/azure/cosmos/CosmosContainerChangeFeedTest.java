@@ -156,7 +156,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         };
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public CosmosContainerChangeFeedTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

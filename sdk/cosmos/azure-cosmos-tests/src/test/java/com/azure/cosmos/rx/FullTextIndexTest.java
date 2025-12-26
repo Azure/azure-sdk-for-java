@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
@@ -38,7 +39,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-@Ignore("TODO: Ignore these test cases until the public emulator with full text is released.")
 public class FullTextIndexTest extends TestSuiteBase{
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
@@ -55,16 +55,15 @@ public class FullTextIndexTest extends TestSuiteBase{
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
 
+    @Factory(dataProvider = "emulatorClientBuilders")
+    public FullTextIndexTest(CosmosClientBuilder cosmosClientBuilder) {
+        super(cosmosClientBuilder);
+    }
+
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_FullTextIndexTest() {
         // set up the client
-        client = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .directMode(DirectConnectionConfig.getDefaultConfig())
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .contentResponseOnWriteEnabled(true)
-            .buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

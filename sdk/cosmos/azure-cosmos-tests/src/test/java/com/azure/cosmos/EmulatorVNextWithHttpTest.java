@@ -35,7 +35,7 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
     private CosmosAsyncContainer createdContainer;
     private CosmosAsyncDatabase createdDatabase;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public EmulatorVNextWithHttpTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
