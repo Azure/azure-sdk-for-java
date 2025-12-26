@@ -40,7 +40,7 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator", "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
     public void before_EmulatorWithHttpTest() {
         this.client =
             getClientBuilder()
@@ -51,13 +51,13 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         this.createdContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
     }
 
-    @AfterClass(groups = { "emulator-vnext" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeClose(this.client);
     }
 
-    @Test(groups = { "emulator-vnext" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void createSameDatabaseTwice() {
         try {
             this.client.createDatabase(this.createdDatabase.getId()).block();
@@ -69,7 +69,7 @@ public class EmulatorVNextWithHttpTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator-vnext" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = 4 * TIMEOUT)
     public void documentCrud() {
         // Currently emulator vnext only support gateway mode and limited set of features
         // https://review.learn.microsoft.com/en-us/azure/cosmos-db/emulator-linux?branch=release-ignite-2024-cosmos-db#feature-support
