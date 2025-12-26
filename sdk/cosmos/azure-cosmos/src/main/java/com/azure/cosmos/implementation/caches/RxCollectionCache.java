@@ -93,7 +93,7 @@ public abstract class RxCollectionCache {
 
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                                if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
                                     BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
@@ -109,7 +109,7 @@ public abstract class RxCollectionCache {
 
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                                if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
                                     BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
@@ -135,7 +135,7 @@ public abstract class RxCollectionCache {
 
                         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                        if (ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                        if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
                             BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                         }
 
@@ -200,7 +200,9 @@ public abstract class RxCollectionCache {
         Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
             collectionResourceId,
             null,
-            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
+            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties).onErrorMap(throwable -> {
+                return throwable;
+            }));
         return async.map(Utils.ValueHolder::new);
     }
 
@@ -224,7 +226,9 @@ public abstract class RxCollectionCache {
             () -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
                     metaDataDiagnosticsContext, resourceFullName, properties);
-                return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
+                return collectionObs.onErrorMap(throwable -> {
+                    return throwable;
+                }).doOnSuccess(collection -> this.collectionInfoByIdCache.set(
                     collection.getResourceId(),
                     collection));
             });
@@ -246,7 +250,9 @@ public abstract class RxCollectionCache {
                     obsoleteValue,
                     () -> {
                         Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties);
-                        return collectionObs.doOnSuccess(collection -> {
+                        return collectionObs.onErrorMap(throwable -> {
+                            return throwable;
+                        }).doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });
                     }).then();
