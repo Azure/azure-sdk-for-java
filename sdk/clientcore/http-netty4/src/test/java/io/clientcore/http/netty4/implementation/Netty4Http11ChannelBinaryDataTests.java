@@ -6,12 +6,14 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.http.netty4.mocking.MockChannelHandlerContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.AbstractChannel;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelConfig;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelMetadata;
@@ -25,18 +27,17 @@ import io.netty.handler.codec.http.DefaultHttpContent;
 import io.netty.handler.codec.http.LastHttpContent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
@@ -49,11 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link Netty4ChannelBinaryData}.
@@ -259,35 +255,31 @@ public class Netty4Http11ChannelBinaryDataTests {
     public void closeAfterDrainingDisconnectsChannel() {
         TestMockChannel realChannel = new TestMockChannel();
         new DefaultEventLoop().register(realChannel);
-        Channel spiedChannel = spy(realChannel);
         Runnable cleanupTask = () -> {
-            spiedChannel.disconnect();
-            spiedChannel.close();
+            realChannel.disconnect();
+            realChannel.close();
         };
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), spiedChannel, 0L, false, cleanupTask);
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), realChannel, 0L, false, cleanupTask);
 
         binaryData.toBytes();
         binaryData.close();
 
-        verify(spiedChannel).disconnect();
-        verify(spiedChannel).close();
+        assertTrue(realChannel.disconnectCalled);
+        assertTrue(realChannel.closeCalled);
     }
 
     @Test
-    public void toObjectThrowsCoreExceptionOnSerializationError() throws IOException {
-        ObjectSerializer mockSerializer = Mockito.mock(ObjectSerializer.class);
-        when(mockSerializer.deserializeFromBytes(any(), any(Type.class)))
-            .thenThrow(new IOException("deserialization failed"));
-
+    public void toObjectThrowsCoreExceptionOnSerializationError() {
         TestMockChannel channel = new TestMockChannel();
         new DefaultEventLoop().register(channel);
 
         Netty4ChannelBinaryData binaryData
             = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), channel, 0L, false);
 
-        CoreException ex = assertThrows(CoreException.class, () -> binaryData.toObject(String.class, mockSerializer));
+        CoreException ex = assertThrows(CoreException.class,
+            () -> binaryData.toObject(String.class, new IOExceptionThrowingSerializer()));
         assertInstanceOf(IOException.class, ex.getCause());
     }
 
@@ -295,13 +287,12 @@ public class Netty4Http11ChannelBinaryDataTests {
     public void cleanupDoesNothingIfHandlerIsMissing() {
         TestMockChannel realChannel = new TestMockChannel();
         new DefaultEventLoop().register(realChannel);
-        Channel spiedChannel = spy(realChannel);
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), spiedChannel, 0L, false);
+            = new Netty4ChannelBinaryData(new ByteArrayOutputStream(), realChannel, 0L, false);
 
         binaryData.toBytes();
 
-        verify(spiedChannel, never()).close();
+        assertFalse(realChannel.closeCalled);
     }
 
     @Test
@@ -330,16 +321,15 @@ public class Netty4Http11ChannelBinaryDataTests {
 
         TestMockChannel realChannel = new TestMockChannel();
         new DefaultEventLoop().register(realChannel);
-        Channel spiedChannel = spy(realChannel);
 
         Netty4ChannelBinaryData binaryData
-            = new Netty4ChannelBinaryData(eagerContent, spiedChannel, (long) fullBody.length, false);
+            = new Netty4ChannelBinaryData(eagerContent, realChannel, (long) fullBody.length, false);
 
         byte[] result = binaryData.toBytes();
 
         assertArraysEqual(fullBody, result);
-        verify(spiedChannel, never()).read();
-        verify(spiedChannel, never()).config();
+        assertFalse(realChannel.configCalled);
+        assertFalse(realChannel.readCalled);
     }
 
     @Test
@@ -460,8 +450,10 @@ public class Netty4Http11ChannelBinaryDataTests {
     }
 
     private static class TestMockChannel extends AbstractChannel {
-        private final AtomicBoolean disconnectCalled = new AtomicBoolean(false);
-        private final AtomicBoolean closeCalled = new AtomicBoolean(false);
+        private volatile boolean configCalled = false;
+        private volatile boolean readCalled = false;
+        private volatile boolean disconnectCalled = false;
+        private volatile boolean closeCalled = false;
 
         protected TestMockChannel() {
             super(null);
@@ -498,12 +490,36 @@ public class Netty4Http11ChannelBinaryDataTests {
 
         @Override
         protected void doDisconnect() {
-            disconnectCalled.set(true);
+            disconnectCalled = true;
+        }
+
+        @Override
+        public ChannelFuture disconnect(ChannelPromise promise) {
+            disconnectCalled = true;
+            return super.disconnect(promise);
+        }
+
+        @Override
+        public ChannelFuture disconnect() {
+            disconnectCalled = true;
+            return super.disconnect();
         }
 
         @Override
         protected void doClose() {
-            closeCalled.set(true);
+            closeCalled = true;
+        }
+
+        @Override
+        public ChannelFuture close() {
+            closeCalled = true;
+            return super.close();
+        }
+
+        @Override
+        public ChannelFuture close(ChannelPromise promise) {
+            closeCalled = true;
+            return super.close(promise);
         }
 
         @Override
@@ -516,22 +532,29 @@ public class Netty4Http11ChannelBinaryDataTests {
 
         @Override
         public ChannelConfig config() {
+            configCalled = true;
             return new DefaultChannelConfig(this);
         }
 
         @Override
         public boolean isOpen() {
-            return !closeCalled.get();
+            return !closeCalled;
         }
 
         @Override
         public boolean isActive() {
-            return !closeCalled.get();
+            return !closeCalled;
         }
 
         @Override
         public ChannelMetadata metadata() {
             return new ChannelMetadata(false);
+        }
+
+        @Override
+        public Channel read() {
+            readCalled = true;
+            return super.read();
         }
     }
 
@@ -549,5 +572,32 @@ public class Netty4Http11ChannelBinaryDataTests {
             handler.channelRead(ctx, LastHttpContent.EMPTY_LAST_CONTENT);
             handler.channelReadComplete(ctx);
         });
+    }
+
+    private static final class IOExceptionThrowingSerializer implements ObjectSerializer {
+        @Override
+        public <T> T deserializeFromBytes(byte[] data, Type type) throws IOException {
+            throw new IOException("deserialization failed");
+        }
+
+        @Override
+        public <T> T deserializeFromStream(InputStream stream, Type type) throws IOException {
+            throw new IOException("deserialization failed");
+        }
+
+        @Override
+        public byte[] serializeToBytes(Object value) throws IOException {
+            throw new IOException("serialization failed");
+        }
+
+        @Override
+        public void serializeToStream(OutputStream stream, Object value) throws IOException {
+            throw new IOException("serialization failed");
+        }
+
+        @Override
+        public boolean supportsFormat(SerializationFormat format) {
+            return true;
+        }
     }
 }

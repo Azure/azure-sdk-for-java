@@ -15,7 +15,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
@@ -153,11 +152,11 @@ public class NettyHttpClientBuilder {
     /**
      * Sets the event loop group for the Netty client.
      * <p>
-     * By default, if no {@code eventLoopGroup} is configured and no native transports are available (Epoll KQueue)
-     * {@link NioEventLoopGroup} will be used.
+     * By default, if no {@code eventLoopGroup} is configured and no native transports are available (Epoll, KQueue)
+     * {@link io.netty.channel.nio.NioEventLoopGroup} will be used.
      * <p>
      * If native transports are available, the {@link EventLoopGroup} implementation for the native transport will be
-     * chosen over {@link NioEventLoopGroup}.
+     * chosen over {@link io.netty.channel.nio.NioEventLoopGroup}.
      *
      * @param eventLoopGroup The event loop group.
      * @return The updated builder.
@@ -453,6 +452,7 @@ public class NettyHttpClientBuilder {
         return (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
     }
 
+    @SuppressWarnings("deprecation")
     static EventLoopGroup getEventLoopGroupToUse(EventLoopGroup configuredGroup,
         Class<? extends SocketChannel> configuredChannelClass, boolean isEpollAvailable,
         MethodHandle epollEventLoopGroupCreator, boolean isKqueueAvailable, MethodHandle kqueueEventLoopGroupCreator) {
@@ -483,7 +483,7 @@ public class NettyHttpClientBuilder {
         }
 
         // Fallback to NioEventLoopGroup.
-        return new NioEventLoopGroup(threadFactory);
+        return new io.netty.channel.nio.NioEventLoopGroup(threadFactory);
     }
 
     static Class<? extends SocketChannel> getChannelClass(Class<? extends SocketChannel> configuredChannelClass,

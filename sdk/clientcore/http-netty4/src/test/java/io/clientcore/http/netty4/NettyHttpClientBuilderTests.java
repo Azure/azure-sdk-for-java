@@ -15,11 +15,8 @@ import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.bootstrap.BootstrapConfig;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.kqueue.KQueueSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.junit.jupiter.api.Test;
@@ -283,10 +280,12 @@ public class NettyHttpClientBuilderTests {
      * Tests that a custom {@link io.netty.channel.EventLoopGroup} is properly applied to the Netty client to handle
      * sending and receiving requests and responses.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
-        NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
+        io.netty.channel.nio.NioEventLoopGroup eventLoopGroup
+            = new io.netty.channel.nio.NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
 
         NettyHttpClient nettyClient
             = (NettyHttpClient) new NettyHttpClientBuilder().eventLoopGroup(eventLoopGroup).build();
@@ -307,59 +306,64 @@ public class NettyHttpClientBuilderTests {
             Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1)));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     @EnabledOnOs(OS.WINDOWS)
     public void windowsUseNioByDefault() {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(io.netty.channel.nio.NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     @EnabledOnOs(OS.MAC)
     public void macUsesKQueueByDefault() {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertInstanceOf(KQueueEventLoopGroup.class, config.group());
+        assertInstanceOf(io.netty.channel.kqueue.KQueueEventLoopGroup.class, config.group());
         assertInstanceOf(KQueueSocketChannel.class, config.channelFactory().newChannel());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     @EnabledOnOs(OS.MAC)
     public void macUsesNioIfConfigured() {
         NettyHttpClient nettyHttpClient
             = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
-                .eventLoopGroup(new NioEventLoopGroup())
+                .eventLoopGroup(new io.netty.channel.nio.NioEventLoopGroup())
                 .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(io.netty.channel.nio.NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     @EnabledOnOs(OS.LINUX)
     public void linuxUsesEpollByDefault() {
         NettyHttpClient nettyHttpClient = (NettyHttpClient) new NettyHttpClientBuilder().build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertInstanceOf(EpollEventLoopGroup.class, config.group());
+        assertInstanceOf(io.netty.channel.epoll.EpollEventLoopGroup.class, config.group());
         assertInstanceOf(EpollSocketChannel.class, config.channelFactory().newChannel());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     @EnabledOnOs(OS.LINUX)
     public void linuxUsesNioIfConfigured() {
         NettyHttpClient nettyHttpClient
             = (NettyHttpClient) new NettyHttpClientBuilder().channelClass(NioSocketChannel.class)
-                .eventLoopGroup(new NioEventLoopGroup())
+                .eventLoopGroup(new io.netty.channel.nio.NioEventLoopGroup())
                 .build();
 
         BootstrapConfig config = nettyHttpClient.getBootstrap().config();
-        assertInstanceOf(NioEventLoopGroup.class, config.group());
+        assertInstanceOf(io.netty.channel.nio.NioEventLoopGroup.class, config.group());
         assertInstanceOf(NioSocketChannel.class, config.channelFactory().newChannel());
     }
 
@@ -404,11 +408,12 @@ public class NettyHttpClientBuilderTests {
         assertEquals(HttpProtocolVersion.HTTP_2, httpVersionField.get(clientv2));
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> getEventLoopGroupToUseSupplier() throws ReflectiveOperationException {
         // Doesn't matter what this is calling, just needs to throw an exception.
         // This will as it doesn't accept the arguments that it will be called with.
-        MethodHandle exceptionCreator
-            = MethodHandles.publicLookup().unreflectConstructor(NioEventLoopGroup.class.getDeclaredConstructor());
+        MethodHandle exceptionCreator = MethodHandles.publicLookup()
+            .unreflectConstructor(io.netty.channel.nio.NioEventLoopGroup.class.getDeclaredConstructor());
 
         // NOTE: This test doesn't use EpollEventLoopGroup or KQueueEventLoopGroup directly, but rather uses different
         // EventLoopGroup classes as the creation of those requires native libraries to be loaded.
@@ -420,8 +425,8 @@ public class NettyHttpClientBuilderTests {
             .unreflectConstructor(MockKQueueEventLoopGroup.class.getDeclaredConstructor(ThreadFactory.class));
 
         // EventLoopGroup is configured, use it.
-        Arguments configuredGroup
-            = Arguments.of(NioEventLoopGroup.class, new NioEventLoopGroup(), null, false, null, false, null);
+        Arguments configuredGroup = Arguments.of(io.netty.channel.nio.NioEventLoopGroup.class,
+            new io.netty.channel.nio.NioEventLoopGroup(), null, false, null, false, null);
 
         // Epoll is available and nothing is configured, use EpollEventLoopGroup.
         Arguments epollGroup = Arguments.of(MockEpollEventLoopGroup.class, null, null, true, epollCreator, false, null);
@@ -431,8 +436,8 @@ public class NettyHttpClientBuilderTests {
             epollCreator, false, null);
 
         // Epoll is available but throws an exception, use NioEventLoopGroup.
-        Arguments epollExceptionGroup
-            = Arguments.of(NioEventLoopGroup.class, null, null, true, exceptionCreator, false, null);
+        Arguments epollExceptionGroup = Arguments.of(io.netty.channel.nio.NioEventLoopGroup.class, null, null, true,
+            exceptionCreator, false, null);
 
         // KQueue is available and nothing is configured, use KQueueEventLoopGroup.
         Arguments kqueueGroup
@@ -443,8 +448,8 @@ public class NettyHttpClientBuilderTests {
             false, null, true, kqueueCreator);
 
         // KQueue is available but throws an exception, use NioEventLoopGroup.
-        Arguments kqueueExceptionGroup
-            = Arguments.of(NioEventLoopGroup.class, null, null, false, null, true, exceptionCreator);
+        Arguments kqueueExceptionGroup = Arguments.of(io.netty.channel.nio.NioEventLoopGroup.class, null, null, false,
+            null, true, exceptionCreator);
 
         // Both Epoll and KQueue are available, use EpollEventLoopGroup.
         Arguments epollAndKqueueGroup
@@ -456,8 +461,8 @@ public class NettyHttpClientBuilderTests {
             KQueueSocketChannel.class, true, epollCreator, true, kqueueCreator);
 
         // Both Epoll and KQueue are available but throws an exception, use NioEventLoopGroup.
-        Arguments epollAndKqueueExceptionGroup
-            = Arguments.of(NioEventLoopGroup.class, null, null, true, exceptionCreator, true, exceptionCreator);
+        Arguments epollAndKqueueExceptionGroup = Arguments.of(io.netty.channel.nio.NioEventLoopGroup.class, null, null,
+            true, exceptionCreator, true, exceptionCreator);
 
         // Both Epoll and KQueue are available but channel class is set to EpollSocketChannel, use
         // EpollEventLoopGroup.
@@ -466,21 +471,23 @@ public class NettyHttpClientBuilderTests {
 
         // Both Epoll and KQueue are available but channel class is set to NioSocketChannel, use
         // NioEventLoopGroup.
-        Arguments epollAndKqueueChannelNioGroup = Arguments.of(NioEventLoopGroup.class, null, NioSocketChannel.class,
-            true, epollCreator, true, kqueueCreator);
+        Arguments epollAndKqueueChannelNioGroup = Arguments.of(io.netty.channel.nio.NioEventLoopGroup.class, null,
+            NioSocketChannel.class, true, epollCreator, true, kqueueCreator);
 
         return Stream.of(configuredGroup, epollGroup, epollChannelGroup, epollExceptionGroup, kqueueGroup,
             kqueueChannelGroup, kqueueExceptionGroup, epollAndKqueueGroup, epollAndKqueueChannelGroup,
             epollAndKqueueExceptionGroup, epollAndKqueueChannelExceptionGroup, epollAndKqueueChannelNioGroup);
     }
 
-    public static final class MockEpollEventLoopGroup extends NioEventLoopGroup {
+    @SuppressWarnings("deprecation")
+    public static final class MockEpollEventLoopGroup extends io.netty.channel.nio.NioEventLoopGroup {
         public MockEpollEventLoopGroup(ThreadFactory threadFactory) {
             super(threadFactory);
         }
     }
 
-    public static final class MockKQueueEventLoopGroup extends NioEventLoopGroup {
+    @SuppressWarnings("deprecation")
+    public static final class MockKQueueEventLoopGroup extends io.netty.channel.nio.NioEventLoopGroup {
         public MockKQueueEventLoopGroup(ThreadFactory threadFactory) {
             super(threadFactory);
         }
@@ -496,34 +503,38 @@ public class NettyHttpClientBuilderTests {
         assertEquals(expected, channelClass);
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> getChannelClassSupplier() {
         // Channel class is configured, use it.
         Arguments configuredChannel = Arguments.of(NioSocketChannel.class, NioSocketChannel.class, null, false, false);
 
         // Epoll is available and EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
-        Arguments epollChannel = Arguments.of(EpollSocketChannel.class, null, EpollEventLoopGroup.class, true, false);
+        Arguments epollChannel = Arguments.of(EpollSocketChannel.class, null,
+            io.netty.channel.epoll.EpollEventLoopGroup.class, true, false);
 
         // KQueue is available and EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
-        Arguments kqueueChannel
-            = Arguments.of(KQueueSocketChannel.class, null, KQueueEventLoopGroup.class, false, true);
+        Arguments kqueueChannel = Arguments.of(KQueueSocketChannel.class, null,
+            io.netty.channel.kqueue.KQueueEventLoopGroup.class, false, true);
 
         // Epoll is available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
-        Arguments epollNioChannel = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, true, false);
+        Arguments epollNioChannel
+            = Arguments.of(NioSocketChannel.class, null, io.netty.channel.nio.NioEventLoopGroup.class, true, false);
 
         // KQueue is available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
-        Arguments kqueueNioChannel = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, false, true);
+        Arguments kqueueNioChannel
+            = Arguments.of(NioSocketChannel.class, null, io.netty.channel.nio.NioEventLoopGroup.class, false, true);
 
         // Both Epoll and KQueue are available and EventLoopGroup is NioEventLoopGroup, use NioSocketChannel.
         Arguments epollAndKqueueNioChannel
-            = Arguments.of(NioSocketChannel.class, null, NioEventLoopGroup.class, true, true);
+            = Arguments.of(NioSocketChannel.class, null, io.netty.channel.nio.NioEventLoopGroup.class, true, true);
 
         // Both Epoll and KQueue are available and EventLoopGroup is EpollEventLoopGroup, use EpollSocketChannel.
-        Arguments epollAndKqueueEpollChannel
-            = Arguments.of(EpollSocketChannel.class, null, EpollEventLoopGroup.class, true, true);
+        Arguments epollAndKqueueEpollChannel = Arguments.of(EpollSocketChannel.class, null,
+            io.netty.channel.epoll.EpollEventLoopGroup.class, true, true);
 
         // Both Epoll and KQueue are available and EventLoopGroup is KQueueEventLoopGroup, use KQueueSocketChannel.
-        Arguments epollAndKqueueKqueueChannel
-            = Arguments.of(KQueueSocketChannel.class, null, KQueueEventLoopGroup.class, true, true);
+        Arguments epollAndKqueueKqueueChannel = Arguments.of(KQueueSocketChannel.class, null,
+            io.netty.channel.kqueue.KQueueEventLoopGroup.class, true, true);
 
         return Stream.of(configuredChannel, epollChannel, kqueueChannel, epollNioChannel, kqueueNioChannel,
             epollAndKqueueNioChannel, epollAndKqueueEpollChannel, epollAndKqueueKqueueChannel);
