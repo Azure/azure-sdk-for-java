@@ -71,41 +71,42 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
         int partitionsNeededForMe = target - myCount;
 
         if (expiredLeases.size() > 0) {
-            // We should try to pick at least one expired lease even if already overbooked when maximum partition count is not set.
-            // If other CFP instances are running, legacy behavior limits the number of expired leases to acquire to maximum 1
-            // (non-greedy acquiring) to reduce collisions. A configured maxLeasesToAcquirePerCycle overrides this clamp.
-            if (this.maxPartitionCount == 0 && partitionsNeededForMe <= 0) {
-                partitionsNeededForMe = 1;
-            } else if (partitionsNeededForMe > 1 && workerToPartitionCount.size() > 1 && this.maxLeasesToAcquirePerCycle == 0) {
-                // Legacy behavior: clamp to 1 when multiple workers exist.
-                partitionsNeededForMe = 1;
+            // Determine how many unused/expired leases to attempt this cycle.
+            // 1) If maxScaleCount is not set (unlimited), try to pick at least one expired lease even if we're already overbooked.
+            // 2) If maxLeasesToAcquirePerCycle is configured, cap with it (overrides the legacy non-greedy clamp by design).
+            // 3) Otherwise, preserve the legacy non-greedy clamp (at most one lease per cycle when multiple workers exist).
+            int leasesToAcquire = partitionsNeededForMe;
+            if (this.maxPartitionCount == 0 && leasesToAcquire <= 0) {
+                leasesToAcquire = 1;
             }
 
             if (this.maxLeasesToAcquirePerCycle > 0) {
-                partitionsNeededForMe = Math.min(partitionsNeededForMe, this.maxLeasesToAcquirePerCycle);
+                leasesToAcquire = Math.min(leasesToAcquire, this.maxLeasesToAcquirePerCycle);
+            } else if (leasesToAcquire > 1 && workerToPartitionCount.size() > 1) {
+                leasesToAcquire = 1;
             }
 
-            if (partitionsNeededForMe <= 0) {
+            if (leasesToAcquire <= 0) {
                 return new ArrayList<>();
             }
 
-            // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
-            // For multiple acquisitions, take a random subset.
             Random random = new Random();
-            Collections.shuffle(expiredLeases, random);
 
-            if (partitionsNeededForMe == 1) {
-                Lease expiredLease = expiredLeases.get(0);
+            if (leasesToAcquire == 1) {
+                // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
+                Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
                 this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount);
 
                 return Collections.singletonList(expiredLease);
             }
 
+            // For multiple acquisitions, shuffle and take a random subset.
+            Collections.shuffle(expiredLeases, random);
             this.logger.info("Found {} unused or expired leases; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                expiredLeases.size(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+                expiredLeases.size(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount);
 
-            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
+            return expiredLeases.subList(0, Math.min(leasesToAcquire, expiredLeases.size()));
         }
 
         if (partitionsNeededForMe <= 0) {
