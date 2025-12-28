@@ -443,7 +443,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                     this.hostName,
                     this.changeFeedProcessorOptions.getMinScaleCount(),
                     this.changeFeedProcessorOptions.getMaxScaleCount(),
-                    this.changeFeedProcessorOptions.getLeaseExpirationInterval());
+                    this.changeFeedProcessorOptions.getLeaseExpirationInterval(),
+                    this.changeFeedProcessorOptions.getMaxLeasesToAcquirePerCycle());
         }
 
         PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, scheduler);

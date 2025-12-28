@@ -469,10 +469,11 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
 
         if (this.loadBalancingStrategy == null) {
             this.loadBalancingStrategy = new EqualPartitionsBalancingStrategy(
-                this.hostName,
-                this.changeFeedProcessorOptions.getMinScaleCount(),
-                this.changeFeedProcessorOptions.getMaxScaleCount(),
-                this.changeFeedProcessorOptions.getLeaseExpirationInterval());
+                    this.hostName,
+                    this.changeFeedProcessorOptions.getMinScaleCount(),
+                    this.changeFeedProcessorOptions.getMaxScaleCount(),
+                    this.changeFeedProcessorOptions.getLeaseExpirationInterval(),
+                    this.changeFeedProcessorOptions.getMaxLeasesToAcquirePerCycle());
         }
 
         PartitionController partitionController =

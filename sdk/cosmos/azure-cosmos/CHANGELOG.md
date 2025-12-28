@@ -3,6 +3,7 @@
 ### 4.77.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `ChangeFeedProcessorOptions#setMaxLeasesToAcquirePerCycle(int)` to allow faster acquisition of unused/expired leases during scale-out and rolling deployments (default `0` preserves legacy behavior).
 
 #### Breaking Changes
 
