@@ -1166,7 +1166,7 @@ public abstract class JsonParser implements Closeable {
             return;
         }
         if (_currToken == JsonToken.VALUE_NUMBER_FLOAT) {
-            _parseSlowFloat(expType);
+            _parseSlowFloat();
             return;
         }
         _reportError("Current token (%s) not numeric, can not use numeric value accessors", _currToken);
@@ -1197,24 +1197,10 @@ public abstract class JsonParser implements Closeable {
         return _numberInt;
     }
 
-    private void _parseSlowFloat(int expType) throws IOException {
-        /*
-         * Nope: floating point. Here we need to be careful to get
-         * optimal parsing strategy: choice is between accurate but
-         * slow (BigDecimal) and lossy but fast (Double). For now
-         * let's only use BD when explicitly requested -- it can
-         * still be constructed correctly at any point since we do
-         * retain textual representation
-         */
+    private void _parseSlowFloat() throws IOException {
         try {
-            if (expType == NR_BIGDECIMAL) {
-                _numberBigDecimal = _textBuffer.contentsAsDecimal();
-                _numTypesValid = NR_BIGDECIMAL;
-            } else {
-                // Otherwise double has to do
-                _numberDouble = _textBuffer.contentsAsDouble();
-                _numTypesValid = NR_DOUBLE;
-            }
+            _numberDouble = _textBuffer.contentsAsDouble();
+            _numTypesValid = NR_DOUBLE;
         } catch (NumberFormatException nex) {
             // Can this ever occur? Due to overflow, maybe?
             _wrapError("Malformed numeric value (" + _longNumberDesc(_textBuffer.contentsAsString()) + ")", nex);

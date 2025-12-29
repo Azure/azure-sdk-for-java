@@ -123,7 +123,8 @@ public class JsonFactory {
      * @since 2.1
      */
     public JsonParser createParser(InputStream in) throws IOException {
-        return _createParser(in, _createContext(ContentReference.construct(in), false));
+        return new ByteSourceJsonBootstrapper(_createContext(ContentReference.construct(in), false), in)
+            .constructParser(_parserFeatures, _byteSymbolCanonicalizer, _rootCharSymbols);
     }
 
     /**
@@ -136,7 +137,8 @@ public class JsonFactory {
      */
     public JsonParser createParser(Reader r) {
         // false -> we do NOT own Reader (did not create it)
-        return _createParser(r, _createContext(ContentReference.construct(r), false));
+        return new ReaderBasedJsonParser(_createContext(ContentReference.construct(r), false), _parserFeatures, r,
+            _rootCharSymbols.makeChild());
     }
 
     /**
@@ -147,7 +149,8 @@ public class JsonFactory {
      */
     public JsonParser createParser(byte[] data) throws IOException {
         IOContext ctxt = _createContext(ContentReference.construct(data), true);
-        return _createParser(data, data.length, ctxt);
+        return new ByteSourceJsonBootstrapper(ctxt, data, 0, data.length).constructParser(_parserFeatures,
+            _byteSymbolCanonicalizer, _rootCharSymbols);
     }
 
     /**
@@ -162,7 +165,8 @@ public class JsonFactory {
         IOContext ctxt = _createContext(ContentReference.construct(content), true);
         char[] buf = ctxt.allocTokenBuffer(strLen);
         content.getChars(0, strLen, buf, 0);
-        return _createParser(buf, strLen, ctxt);
+        return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _rootCharSymbols.makeChild(), buf, 0, strLen,
+            true);
     }
 
     /*
@@ -198,7 +202,7 @@ public class JsonFactory {
         IOContext ctxt = _createContext(ContentReference.construct(out), false);
         ctxt.setEncoding(enc);
         if (enc == JsonEncoding.UTF8) {
-            return _createUTF8Generator(out, ctxt);
+            return new UTF8JsonGenerator(ctxt, _generatorFeatures, out);
         }
         Writer w = _createWriter(out, enc, ctxt);
         return _createGenerator(w, ctxt);
@@ -237,95 +241,6 @@ public class JsonFactory {
 
     /*
      * /**********************************************************
-     * /* Factory methods used by factory for creating parser instances,
-     * /* overridable by sub-classes
-     * /**********************************************************
-     */
-
-    /**
-     * Overridable factory method that actually instantiates desired parser
-     * given {@link InputStream} and context object.
-     *<p>
-     * This method is specifically designed to remain
-     * compatible between minor versions so that sub-classes can count
-     * on it being called as expected. That is, it is part of official
-     * interface from sub-class perspective, although not a public
-     * method available to users of factory implementations.
-     *
-     * @param in InputStream to use for reading content to parse
-     * @param ctxt I/O context to use for parsing
-     *
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     *
-     * @return Parser constructed
-     *
-     * @since 2.1
-     */
-    protected JsonParser _createParser(InputStream in, IOContext ctxt) throws IOException {
-        // As per [JACKSON-259], may want to fully disable canonicalization:
-        return new ByteSourceJsonBootstrapper(ctxt, in).constructParser(_parserFeatures, _byteSymbolCanonicalizer,
-            _rootCharSymbols);
-    }
-
-    /**
-     * Overridable factory method that actually instantiates parser
-     * using given {@link Reader} object for reading content.
-     *<p>
-     * This method is specifically designed to remain
-     * compatible between minor versions so that sub-classes can count
-     * on it being called as expected. That is, it is part of official
-     * interface from sub-class perspective, although not a public
-     * method available to users of factory implementations.
-     *
-     * @param r Reader to use for reading content to parse
-     * @param ctxt I/O context to use for parsing
-     *
-     * @return Actual parser to use
-     *
-     * @since 2.1
-     */
-    protected JsonParser _createParser(Reader r, IOContext ctxt) {
-        return new ReaderBasedJsonParser(ctxt, _parserFeatures, r, _rootCharSymbols.makeChild());
-    }
-
-    /**
-     * Overridable factory method that actually instantiates parser
-     * using given <code>char[]</code> object for accessing content.
-     *
-     * @param data Buffer that contains content to parse
-     * @param len Number of characters within buffer to parse
-     * @param ctxt I/O context to use for parsing
-     * @return Actual parser to use
-     * @since 2.4
-     */
-    protected JsonParser _createParser(char[] data, int len, IOContext ctxt) {
-        return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _rootCharSymbols.makeChild(), data, 0, len, true);
-    }
-
-    /**
-     * Overridable factory method that actually instantiates parser
-     * using given {@link Reader} object for reading content
-     * passed as raw byte array.
-     * <p>
-     * This method is specifically designed to remain
-     * compatible between minor versions so that sub-classes can count
-     * on it being called as expected. That is, it is part of official
-     * interface from sub-class perspective, although not a public
-     * method available to users of factory implementations.
-     *
-     * @param data Buffer that contains content to parse
-     * @param len Number of characters within buffer to parse
-     * @param ctxt I/O context to use for parsing
-     * @return Actual parser to use
-     * @throws IOException if parser initialization fails due to I/O (read) problem
-     */
-    protected JsonParser _createParser(byte[] data, int len, IOContext ctxt) throws IOException {
-        return new ByteSourceJsonBootstrapper(ctxt, data, 0, len).constructParser(_parserFeatures,
-            _byteSymbolCanonicalizer, _rootCharSymbols);
-    }
-
-    /*
-     * /**********************************************************
      * /* Factory methods used by factory for creating generator instances,
      * /* overridable by sub-classes
      * /**********************************************************
@@ -351,26 +266,6 @@ public class JsonFactory {
         return new WriterBasedJsonGenerator(ctxt, _generatorFeatures, out);
     }
 
-    /**
-     * Overridable factory method that actually instantiates generator for
-     * given {@link OutputStream} and context object, using UTF-8 encoding.
-     *<p>
-     * This method is specifically designed to remain
-     * compatible between minor versions so that sub-classes can count
-     * on it being called as expected. That is, it is part of official
-     * interface from sub-class perspective, although not a public
-     * method available to users of factory implementations.
-     *
-     * @param out OutputStream underlying writer to write generated content to
-     * @param ctxt I/O context to use
-     *
-     * @return This factory instance (to allow call chaining)
-     *
-     */
-    protected JsonGenerator _createUTF8Generator(OutputStream out, IOContext ctxt) {
-        return new UTF8JsonGenerator(ctxt, _generatorFeatures, out);
-    }
-
     protected Writer _createWriter(OutputStream out, JsonEncoding enc, IOContext ctxt) throws IOException {
         // note: this should not get called any more (caller checks, dispatches)
         if (enc == JsonEncoding.UTF8) { // We have optimized writer for UTF-8
@@ -394,7 +289,7 @@ public class JsonFactory {
      *
      * @return Buffer recycler instance to use
      */
-    public BufferRecycler _getBufferRecycler() {
+    private static BufferRecycler _getBufferRecycler() {
         return BufferRecyclers.getBufferRecycler();
     }
 
@@ -407,7 +302,7 @@ public class JsonFactory {
      *
      * @return I/O context created
      */
-    protected IOContext _createContext(ContentReference contentRef, boolean resourceManaged) {
+    private static IOContext _createContext(ContentReference contentRef, boolean resourceManaged) {
         // 21-Mar-2021, tatu: Bit of defensive coding for backwards compatibility
         return new IOContext(_getBufferRecycler(), contentRef, resourceManaged);
     }

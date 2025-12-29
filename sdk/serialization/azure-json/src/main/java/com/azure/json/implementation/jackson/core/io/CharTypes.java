@@ -94,7 +94,7 @@ public final class CharTypes {
         // Control chars need generic escape sequence
         for (int i = 0; i < 32; ++i) {
             // 04-Mar-2011, tatu: Used to use "-(i + 1)", replaced with constant
-            table[i] = CharacterEscapes.ESCAPE_STANDARD;
+            table[i] = -1;
         }
         // Others (and some within that range too) have explicit shorter sequences
         table['"'] = '"';

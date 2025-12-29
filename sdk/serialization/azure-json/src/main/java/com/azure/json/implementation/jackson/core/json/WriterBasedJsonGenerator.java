@@ -5,7 +5,6 @@ import com.azure.json.implementation.jackson.core.Base64Variant;
 import com.azure.json.implementation.jackson.core.JsonGenerator;
 import com.azure.json.implementation.jackson.core.JsonStreamContext;
 import com.azure.json.implementation.jackson.core.io.CharTypes;
-import com.azure.json.implementation.jackson.core.io.CharacterEscapes;
 import com.azure.json.implementation.jackson.core.io.IOContext;
 import com.azure.json.implementation.jackson.core.io.NumberOutput;
 
@@ -722,46 +721,44 @@ public class WriterBasedJsonGenerator extends JsonGenerator {
             _writer.write(buf, 0, 2);
             return;
         }
-        if (escCode != CharacterEscapes.ESCAPE_CUSTOM) { // std, \\uXXXX
-            if (_outputTail >= 6) { // fits, prepend to buffer
-                char[] buf = _outputBuffer;
-                int ptr = _outputTail - 6;
-                _outputHead = ptr;
-                buf[ptr] = '\\';
-                buf[++ptr] = 'u';
-                // We know it's a control char, so only the last 2 chars are non-0
-                if (ch > 0xFF) { // beyond 8 bytes
-                    int hi = (ch >> 8) & 0xFF;
-                    buf[++ptr] = HEX_CHARS[hi >> 4];
-                    buf[++ptr] = HEX_CHARS[hi & 0xF];
-                    ch &= 0xFF;
-                } else {
-                    buf[++ptr] = '0';
-                    buf[++ptr] = '0';
-                }
-                buf[++ptr] = HEX_CHARS[ch >> 4];
-                buf[++ptr] = HEX_CHARS[ch & 0xF];
-                return;
-            }
-            // won't fit, flush and write
-            char[] buf = _entityBuffer;
-            if (buf == null) {
-                buf = _allocateEntityBuffer();
-            }
-            _outputHead = _outputTail;
+        if (_outputTail >= 6) { // fits, prepend to buffer
+            char[] buf = _outputBuffer;
+            int ptr = _outputTail - 6;
+            _outputHead = ptr;
+            buf[ptr] = '\\';
+            buf[++ptr] = 'u';
+            // We know it's a control char, so only the last 2 chars are non-0
             if (ch > 0xFF) { // beyond 8 bytes
                 int hi = (ch >> 8) & 0xFF;
-                int lo = ch & 0xFF;
-                buf[10] = HEX_CHARS[hi >> 4];
-                buf[11] = HEX_CHARS[hi & 0xF];
-                buf[12] = HEX_CHARS[lo >> 4];
-                buf[13] = HEX_CHARS[lo & 0xF];
-                _writer.write(buf, 8, 6);
-            } else { // We know it's a control char, so only the last 2 chars are non-0
-                buf[6] = HEX_CHARS[ch >> 4];
-                buf[7] = HEX_CHARS[ch & 0xF];
-                _writer.write(buf, 2, 6);
+                buf[++ptr] = HEX_CHARS[hi >> 4];
+                buf[++ptr] = HEX_CHARS[hi & 0xF];
+                ch &= 0xFF;
+            } else {
+                buf[++ptr] = '0';
+                buf[++ptr] = '0';
             }
+            buf[++ptr] = HEX_CHARS[ch >> 4];
+            buf[++ptr] = HEX_CHARS[ch & 0xF];
+            return;
+        }
+        // won't fit, flush and write
+        char[] buf = _entityBuffer;
+        if (buf == null) {
+            buf = _allocateEntityBuffer();
+        }
+        _outputHead = _outputTail;
+        if (ch > 0xFF) { // beyond 8 bytes
+            int hi = (ch >> 8) & 0xFF;
+            int lo = ch & 0xFF;
+            buf[10] = HEX_CHARS[hi >> 4];
+            buf[11] = HEX_CHARS[hi & 0xF];
+            buf[12] = HEX_CHARS[lo >> 4];
+            buf[13] = HEX_CHARS[lo & 0xF];
+            _writer.write(buf, 8, 6);
+        } else { // We know it's a control char, so only the last 2 chars are non-0
+            buf[6] = HEX_CHARS[ch >> 4];
+            buf[7] = HEX_CHARS[ch & 0xF];
+            _writer.write(buf, 2, 6);
         }
     }
 
@@ -789,46 +786,43 @@ public class WriterBasedJsonGenerator extends JsonGenerator {
             }
             return ptr;
         }
-        if (escCode != CharacterEscapes.ESCAPE_CUSTOM) { // std, \\uXXXX
-            if (ptr > 5 && ptr < end) { // fits, prepend to buffer
-                ptr -= 6;
-                buffer[ptr++] = '\\';
-                buffer[ptr++] = 'u';
-                // We know it's a control char, so only the last 2 chars are non-0
-                if (ch > 0xFF) { // beyond 8 bytes
-                    int hi = (ch >> 8) & 0xFF;
-                    buffer[ptr++] = HEX_CHARS[hi >> 4];
-                    buffer[ptr++] = HEX_CHARS[hi & 0xF];
-                    ch &= 0xFF;
-                } else {
-                    buffer[ptr++] = '0';
-                    buffer[ptr++] = '0';
-                }
-                buffer[ptr++] = HEX_CHARS[ch >> 4];
-                buffer[ptr] = HEX_CHARS[ch & 0xF];
-                ptr -= 5;
+        if (ptr > 5 && ptr < end) { // fits, prepend to buffer
+            ptr -= 6;
+            buffer[ptr++] = '\\';
+            buffer[ptr++] = 'u';
+            // We know it's a control char, so only the last 2 chars are non-0
+            if (ch > 0xFF) { // beyond 8 bytes
+                int hi = (ch >> 8) & 0xFF;
+                buffer[ptr++] = HEX_CHARS[hi >> 4];
+                buffer[ptr++] = HEX_CHARS[hi & 0xF];
+                ch &= 0xFF;
             } else {
-                // won't fit, flush and write
-                char[] ent = _entityBuffer;
-                if (ent == null) {
-                    ent = _allocateEntityBuffer();
-                }
-                _outputHead = _outputTail;
-                if (ch > 0xFF) { // beyond 8 bytes
-                    int hi = (ch >> 8) & 0xFF;
-                    int lo = ch & 0xFF;
-                    ent[10] = HEX_CHARS[hi >> 4];
-                    ent[11] = HEX_CHARS[hi & 0xF];
-                    ent[12] = HEX_CHARS[lo >> 4];
-                    ent[13] = HEX_CHARS[lo & 0xF];
-                    _writer.write(ent, 8, 6);
-                } else { // We know it's a control char, so only the last 2 chars are non-0
-                    ent[6] = HEX_CHARS[ch >> 4];
-                    ent[7] = HEX_CHARS[ch & 0xF];
-                    _writer.write(ent, 2, 6);
-                }
+                buffer[ptr++] = '0';
+                buffer[ptr++] = '0';
             }
-            return ptr;
+            buffer[ptr++] = HEX_CHARS[ch >> 4];
+            buffer[ptr] = HEX_CHARS[ch & 0xF];
+            ptr -= 5;
+        } else {
+            // won't fit, flush and write
+            char[] ent = _entityBuffer;
+            if (ent == null) {
+                ent = _allocateEntityBuffer();
+            }
+            _outputHead = _outputTail;
+            if (ch > 0xFF) { // beyond 8 bytes
+                int hi = (ch >> 8) & 0xFF;
+                int lo = ch & 0xFF;
+                ent[10] = HEX_CHARS[hi >> 4];
+                ent[11] = HEX_CHARS[hi & 0xF];
+                ent[12] = HEX_CHARS[lo >> 4];
+                ent[13] = HEX_CHARS[lo & 0xF];
+                _writer.write(ent, 8, 6);
+            } else { // We know it's a control char, so only the last 2 chars are non-0
+                ent[6] = HEX_CHARS[ch >> 4];
+                ent[7] = HEX_CHARS[ch & 0xF];
+                _writer.write(ent, 2, 6);
+            }
         }
         return ptr;
     }

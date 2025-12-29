@@ -1,8 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package com.azure.json.implementation.jackson.core.io;
 
-import java.math.BigDecimal;
-
 @SuppressWarnings("fallthrough")
 public final class NumberInput {
     /**
@@ -190,13 +188,5 @@ public final class NumberInput {
             return Double.MIN_VALUE;
         }
         return Double.parseDouble(s);
-    }
-
-    public static BigDecimal parseBigDecimal(char[] ch, int off, int len) throws NumberFormatException {
-        return BigDecimalParser.parse(ch, off, len);
-    }
-
-    public static BigDecimal parseBigDecimal(char[] ch) throws NumberFormatException {
-        return BigDecimalParser.parse(ch);
     }
 }
