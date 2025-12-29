@@ -33,6 +33,8 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
     private RxDocumentServiceRequest request;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final AtomicReference<CosmosDiagnostics> cosmosDiagnosticsHolder;
+    private final ResourceType enclosingOperationTargetResourceType;
+    private final OperationType enclosingOperationType;
 
     private volatile boolean retried = false;
 
@@ -43,7 +45,9 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
         Map<String, Object> requestOptionProperties,
         Map<String, String> requestCustomHeaders,
         ISessionContainer sessionContainer,
-        DiagnosticsClientContext diagnosticsClientContext) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        ResourceType enclosingOperationTargetResourceType,
+        OperationType enclosingOperationType) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
@@ -56,6 +60,9 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.cosmosDiagnosticsHolder = new AtomicReference<>(null); // will only create one if no request is bound to the retry policy
+
+        this.enclosingOperationTargetResourceType = enclosingOperationTargetResourceType;
+        this.enclosingOperationType = enclosingOperationType;
     }
 
     @Override
@@ -127,8 +134,16 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
                             CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                            if (!ResourceType.DocumentCollection.equals(this.request.getResourceType()) && Exceptions.isNotFound(cosmosException)) {
+                            if (this.request != null && !ResourceType.DocumentCollection.equals(this.request.getResourceType()) && Exceptions.isNotFound(cosmosException)) {
                                 BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+
+                                return cosmosException;
+                            }
+
+                            if (this.enclosingOperationTargetResourceType != null && !ResourceType.DocumentCollection.equals(this.enclosingOperationTargetResourceType)) {
+                                BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+
+                                return cosmosException;
                             }
 
                             return cosmosException;

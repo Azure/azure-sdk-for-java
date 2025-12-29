@@ -10,17 +10,24 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class FaultInjectionTestBase extends TestSuiteBase {
     public FaultInjectionTestBase(CosmosClientBuilder cosmosClientBuilder) {
@@ -32,6 +39,24 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
         OperationType operationType,
         TestObject createdItem,
         boolean isReadMany) {
+
+        return performDocumentOperation(
+            cosmosAsyncContainer,
+            operationType,
+            createdItem,
+            isReadMany,
+            true,
+            false);
+    }
+
+    protected CosmosDiagnostics performDocumentOperation(
+        CosmosAsyncContainer cosmosAsyncContainer,
+        OperationType operationType,
+        TestObject createdItem,
+        boolean isReadMany,
+        boolean fetchFeedRangesBeforehandForChangeFeed,
+        boolean isBulkOperation) {
+
         try {
             if (operationType == OperationType.Query && !isReadMany) {
                 CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
@@ -87,24 +112,61 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Batch) {
-                    CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(createdItem.getId()));
 
-                    batch.upsertItemOperation(createdItem);
-                    batch.readItemOperation(createdItem.getId());
+                    if (isBulkOperation) {
 
-                    return cosmosAsyncContainer.executeCosmosBatch(batch).block().getDiagnostics();
+                        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+
+                        CosmosItemOperation cosmosItemOperation = CosmosBulkOperations.getReadItemOperation(
+                            createdItem.getId(),
+                            new PartitionKey(createdItem.getId()),
+                            TestObject.class);
+
+                        cosmosItemOperations.add(cosmosItemOperation);
+
+                        Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
+
+                        CosmosBulkOperationResponse<Object> response = cosmosAsyncContainer.executeBulkOperations(operationsFlux).blockLast();
+
+                        assertThat(response).isNotNull();
+
+                        return response.getResponse().getCosmosDiagnostics();
+                    } else {
+                        CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(createdItem.getId()));
+
+                        batch.upsertItemOperation(createdItem);
+                        batch.readItemOperation(createdItem.getId());
+
+                        return cosmosAsyncContainer.executeCosmosBatch(batch).block().getDiagnostics();
+                    }
                 }
             }
 
             if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+
+                if (fetchFeedRangesBeforehandForChangeFeed) {
+                    List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+
+                    assertThat(feedRanges).isNotNull();
+                    assertThat(feedRanges.size()).isGreaterThan(0);
+
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                        CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+
+                    FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
+                        .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
+                        .byPage()
+                        .blockLast();
+                    return firstPage.getCosmosDiagnostics();
+                }
+
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
-                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
 
                 FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
                     .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                     .byPage()
-                    .blockFirst();
+                    .blockLast();
                 return firstPage.getCosmosDiagnostics();
             }
 

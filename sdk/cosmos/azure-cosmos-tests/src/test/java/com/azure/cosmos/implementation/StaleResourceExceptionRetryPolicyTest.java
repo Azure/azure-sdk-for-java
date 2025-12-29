@@ -51,7 +51,9 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             null,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null,
+            null
         );
 
         CosmosException exception = BridgeInternal.createCosmosException(statusCode);
@@ -88,7 +90,9 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             customHeaders,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null,
+            null
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
@@ -125,7 +129,9 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             null,
             sessionContainer,
-            TestUtils.mockDiagnosticsClientContext()
+            TestUtils.mockDiagnosticsClientContext(),
+            null,
+            null
         );
 
         InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
