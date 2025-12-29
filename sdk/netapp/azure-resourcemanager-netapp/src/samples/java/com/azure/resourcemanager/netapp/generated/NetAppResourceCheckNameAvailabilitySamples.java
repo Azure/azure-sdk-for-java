@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
  */
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01/CheckNameAvailability.json
+     * x-ms-original-file: 2025-09-01-preview/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.

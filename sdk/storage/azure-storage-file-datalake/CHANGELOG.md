@@ -1,12 +1,21 @@
 # Release History
 
-## 12.26.0-beta.1 (Unreleased)
+## 12.26.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.26.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
 
 ### Other Changes
 - Added support for container names with special characters when using OneLake.

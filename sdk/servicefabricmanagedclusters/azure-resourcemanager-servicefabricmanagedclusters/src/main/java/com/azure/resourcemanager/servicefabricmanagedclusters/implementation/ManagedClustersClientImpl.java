@@ -1360,12 +1360,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartFaultSimulationAsync(String resourceGroupName,
-        String clusterName, FaultSimulationContentWrapper parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulationAsync(
+        String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startFaultSimulationWithResponseAsync(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -1380,10 +1380,11 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        FaultSimulationContentWrapper parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters) {
         Response<BinaryData> response = startFaultSimulationWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -1399,11 +1400,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        FaultSimulationContentWrapper parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters, Context context) {
         Response<BinaryData> response
             = startFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -1415,10 +1417,10 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startFaultSimulationAsync(String resourceGroupName, String clusterName,
+    private Mono<FaultSimulationInner> startFaultSimulationAsync(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
         return beginStartFaultSimulationAsync(resourceGroupName, clusterName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1433,11 +1435,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
@@ -1450,11 +1453,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters, Context context) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**
@@ -1529,12 +1533,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopFaultSimulationAsync(String resourceGroupName,
-        String clusterName, FaultSimulationIdContent parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulationAsync(
+        String resourceGroupName, String clusterName, FaultSimulationIdContent parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopFaultSimulationWithResponseAsync(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -1549,10 +1553,11 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        FaultSimulationIdContent parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner>
+        beginStopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters) {
         Response<BinaryData> response = stopFaultSimulationWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -1568,11 +1573,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        FaultSimulationIdContent parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationIdContent parameters, Context context) {
         Response<BinaryData> response
             = stopFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -1584,10 +1590,10 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopFaultSimulationAsync(String resourceGroupName, String clusterName,
+    private Mono<FaultSimulationInner> stopFaultSimulationAsync(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters) {
         return beginStopFaultSimulationAsync(resourceGroupName, clusterName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1602,10 +1608,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters) {
+        return beginStopFaultSimulation(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
@@ -1618,11 +1626,12 @@ public final class ManagedClustersClientImpl implements ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters,
-        Context context) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters, Context context) {
+        return beginStopFaultSimulation(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**

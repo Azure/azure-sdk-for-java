@@ -22,7 +22,7 @@ public final class BackupsListByVaultMockTests {
     @Test
     public void testListByVault() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupId\":\"tvtzeexavoxtfg\",\"creationDate\":\"2021-10-13T21:26:08Z\",\"snapshotCreationDate\":\"2021-07-20T08:15:13Z\",\"completionDate\":\"2021-07-23T09:21:39Z\",\"provisioningState\":\"wpypqtgsfj\",\"size\":1144456929835288203,\"label\":\"hhxud\",\"backupType\":\"Manual\",\"failureReason\":\"d\",\"volumeResourceId\":\"tnsi\",\"useExistingSnapshot\":true,\"snapshotName\":\"z\",\"backupPolicyResourceId\":\"es\",\"isLargeVolume\":true},\"id\":\"pagzrcxfailcfxwm\",\"name\":\"boxdfgsftufq\",\"type\":\"brjlnacgcckknhxk\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupId\":\"zgwldoychillcec\",\"creationDate\":\"2021-03-16T05:59:46Z\",\"snapshotCreationDate\":\"2021-06-11T01:25:36Z\",\"completionDate\":\"2021-02-23T12:52:34Z\",\"provisioningState\":\"guh\",\"size\":54160127149122492,\"label\":\"izs\",\"backupType\":\"Scheduled\",\"failureReason\":\"jvhrweft\",\"volumeResourceId\":\"wqejpmvsse\",\"useExistingSnapshot\":true,\"snapshotName\":\"wamcxtczhup\",\"backupPolicyResourceId\":\"knijduyyes\",\"isLargeVolume\":false},\"id\":\"fbocyvhh\",\"name\":\"lrtywikdmhlakuf\",\"type\":\"gbhgau\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class BackupsListByVaultMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Backup> response = manager.backups()
-            .listByVault("cuijpxt", "s", "wprtu", "wsawddjibabxvi", com.azure.core.util.Context.NONE);
+        PagedIterable<Backup> response
+            = manager.backups().listByVault("upbezqccydrt", "eukdqkkyih", "tg", "qm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhxud", response.iterator().next().label());
-        Assertions.assertEquals("tnsi", response.iterator().next().volumeResourceId());
+        Assertions.assertEquals("izs", response.iterator().next().label());
+        Assertions.assertEquals("wqejpmvsse", response.iterator().next().volumeResourceId());
         Assertions.assertTrue(response.iterator().next().useExistingSnapshot());
-        Assertions.assertEquals("z", response.iterator().next().snapshotName());
+        Assertions.assertEquals("wamcxtczhup", response.iterator().next().snapshotName());
     }
 }

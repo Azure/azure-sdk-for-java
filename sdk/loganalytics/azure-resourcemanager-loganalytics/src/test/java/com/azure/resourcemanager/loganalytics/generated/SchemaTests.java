@@ -16,42 +16,42 @@ public final class SchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Schema model = BinaryData.fromString(
-            "{\"name\":\"r\",\"displayName\":\"ukiscvwmzhw\",\"description\":\"efaxvxilc\",\"columns\":[{\"name\":\"hnze\",\"type\":\"guid\",\"dataTypeHint\":\"ip\",\"displayName\":\"fzqlqhycavod\",\"description\":\"xdbeesmieknl\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"wiuagydwqf\",\"type\":\"int\",\"dataTypeHint\":\"uri\",\"displayName\":\"giagtcojo\",\"description\":\"wogfnzjvu\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"uxylfsbtkadpy\",\"type\":\"string\",\"dataTypeHint\":\"ip\",\"displayName\":\"gkbugrjqct\",\"description\":\"cmisofie\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"yqdhcuplcplcw\",\"type\":\"int\",\"dataTypeHint\":\"armPath\",\"displayName\":\"lhzdsqtzb\",\"description\":\"gnowcjhfgmveca\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"teyowclu\",\"type\":\"real\",\"dataTypeHint\":\"guid\",\"displayName\":\"vgqouwifzmpj\",\"description\":\"ivqikfxcvhr\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"grttikteusqczk\",\"type\":\"real\",\"dataTypeHint\":\"ip\",\"displayName\":\"byjaffmmf\",\"description\":\"cqc\",\"isDefaultDisplay\":false,\"isHidden\":true}],\"categories\":[\"rtalmet\"],\"labels\":[\"gdslqxihhrmoo\",\"z\"],\"source\":\"customer\",\"tableType\":\"CustomLog\",\"tableSubType\":\"Classic\",\"solutions\":[\"cxa\",\"zhyrpeto\",\"e\",\"joxslhvnhla\"]}")
+            "{\"name\":\"xnavvwxq\",\"displayName\":\"y\",\"description\":\"nyowxwlmdjrkvfg\",\"columns\":[{\"name\":\"p\",\"type\":\"real\",\"dataTypeHint\":\"armPath\",\"displayName\":\"izsjqlhkrr\",\"description\":\"deibqip\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"ndzwmkrefa\",\"type\":\"guid\",\"dataTypeHint\":\"uri\",\"displayName\":\"kqnyh\",\"description\":\"ij\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"jabibsystawf\",\"type\":\"dynamic\",\"dataTypeHint\":\"uri\",\"displayName\":\"vp\",\"description\":\"xbkzbzkdvncj\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"categories\":[\"kakmokzh\",\"jk\",\"ffhmouwqlgzr\",\"zeeyebi\"],\"labels\":[\"ayuhqlbjbsy\",\"bqwrvtldgm\",\"pgvmpipaslthaqfx\"],\"source\":\"customer\",\"tableType\":\"Microsoft\",\"tableSubType\":\"Classic\",\"solutions\":[\"srezp\",\"rhneuyowq\",\"d\",\"ytisibir\"]}")
             .toObject(Schema.class);
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("ukiscvwmzhw", model.displayName());
-        Assertions.assertEquals("efaxvxilc", model.description());
-        Assertions.assertEquals("hnze", model.columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.GUID, model.columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.IP, model.columns().get(0).dataTypeHint());
-        Assertions.assertEquals("fzqlqhycavod", model.columns().get(0).displayName());
-        Assertions.assertEquals("xdbeesmieknl", model.columns().get(0).description());
+        Assertions.assertEquals("xnavvwxq", model.name());
+        Assertions.assertEquals("y", model.displayName());
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.description());
+        Assertions.assertEquals("p", model.columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.REAL, model.columns().get(0).type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, model.columns().get(0).dataTypeHint());
+        Assertions.assertEquals("izsjqlhkrr", model.columns().get(0).displayName());
+        Assertions.assertEquals("deibqip", model.columns().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schema model = new Schema().withName("r")
-            .withDisplayName("ukiscvwmzhw")
-            .withDescription("efaxvxilc")
+        Schema model = new Schema().withName("xnavvwxq")
+            .withDisplayName("y")
+            .withDescription("nyowxwlmdjrkvfg")
             .withColumns(Arrays.asList(
-                new Column().withName("hnze")
+                new Column().withName("p")
+                    .withType(ColumnTypeEnum.REAL)
+                    .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
+                    .withDisplayName("izsjqlhkrr")
+                    .withDescription("deibqip"),
+                new Column().withName("ndzwmkrefa")
                     .withType(ColumnTypeEnum.GUID)
-                    .withDataTypeHint(ColumnDataTypeHintEnum.IP)
-                    .withDisplayName("fzqlqhycavod")
-                    .withDescription("xdbeesmieknl"),
-                new Column().withName("wiuagydwqf")
-                    .withType(ColumnTypeEnum.INT)
                     .withDataTypeHint(ColumnDataTypeHintEnum.URI)
-                    .withDisplayName("giagtcojo")
-                    .withDescription("wogfnzjvu")));
+                    .withDisplayName("kqnyh")
+                    .withDescription("ij")));
         model = BinaryData.fromObject(model).toObject(Schema.class);
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("ukiscvwmzhw", model.displayName());
-        Assertions.assertEquals("efaxvxilc", model.description());
-        Assertions.assertEquals("hnze", model.columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.GUID, model.columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.IP, model.columns().get(0).dataTypeHint());
-        Assertions.assertEquals("fzqlqhycavod", model.columns().get(0).displayName());
-        Assertions.assertEquals("xdbeesmieknl", model.columns().get(0).description());
+        Assertions.assertEquals("xnavvwxq", model.name());
+        Assertions.assertEquals("y", model.displayName());
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.description());
+        Assertions.assertEquals("p", model.columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.REAL, model.columns().get(0).type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, model.columns().get(0).dataTypeHint());
+        Assertions.assertEquals("izsjqlhkrr", model.columns().get(0).displayName());
+        Assertions.assertEquals("deibqip", model.columns().get(0).description());
     }
 }

@@ -692,8 +692,8 @@ public interface NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters);
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters);
 
     /**
      * Starts a fault simulation on the node type.
@@ -709,8 +709,9 @@ public interface NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters, Context context);
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters,
+        Context context);
 
     /**
      * Starts a fault simulation on the node type.
@@ -722,9 +723,10 @@ public interface NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters);
 
     /**
@@ -738,9 +740,10 @@ public interface NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context);
 
     /**
@@ -756,8 +759,8 @@ public interface NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters);
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters);
 
     /**
      * Stops a fault simulation on the node type.
@@ -773,8 +776,9 @@ public interface NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters, Context context);
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters,
+        Context context);
 
     /**
      * Stops a fault simulation on the node type.
@@ -786,9 +790,10 @@ public interface NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters);
 
     /**
@@ -802,9 +807,10 @@ public interface NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context);
 
     /**

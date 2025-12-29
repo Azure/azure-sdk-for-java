@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Pools_Update.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -25,7 +25,7 @@ public final class PoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Pools_Update_CustomThroughput.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_Update_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Update_CustomThroughput.

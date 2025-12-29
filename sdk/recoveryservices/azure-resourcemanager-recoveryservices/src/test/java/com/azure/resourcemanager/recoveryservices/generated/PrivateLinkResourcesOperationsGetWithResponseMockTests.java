@@ -20,7 +20,7 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"mbes\",\"requiredMembers\":[\"k\"],\"requiredZoneNames\":[\"pp\",\"flcxoga\"]},\"id\":\"onz\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"}";
+            = "{\"properties\":{\"groupId\":\"weriofzpyqsem\",\"requiredMembers\":[\"n\",\"tshhszhedp\"],\"requiredZoneNames\":[\"iwubmwmbesldnk\",\"wtppjflcxogaoko\"]},\"id\":\"m\",\"name\":\"sikvmkqzeqqkdlt\",\"type\":\"zxmhhvhgu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.privateLinkResourcesOperations()
-            .getWithResponse("wab", "ets", "hszhedplvwiwu", com.azure.core.util.Context.NONE)
+            .getWithResponse("dzu", "erscdntne", "fiwjmygtdssls", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

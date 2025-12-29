@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.netapp.models.DesiredRansomwareProtectionState;
+import com.azure.resourcemanager.netapp.models.RansomwareProtectionPatchSettings;
 import com.azure.resourcemanager.netapp.models.VolumeBackupProperties;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumeSnapshotProperties;
@@ -14,25 +16,31 @@ public final class VolumePatchPropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchPropertiesDataProtection model = BinaryData.fromString(
-            "{\"backup\":{\"backupPolicyId\":\"vxysl\",\"policyEnforced\":true,\"backupVaultId\":\"fxoblytkb\"},\"snapshot\":{\"snapshotPolicyId\":\"ewwwfbkrvrnsv\"}}")
+            "{\"backup\":{\"backupPolicyId\":\"hin\",\"policyEnforced\":false,\"backupVaultId\":\"mifthnzdnd\"},\"snapshot\":{\"snapshotPolicyId\":\"nayqi\"},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\"}}")
             .toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("vxysl", model.backup().backupPolicyId());
-        Assertions.assertTrue(model.backup().policyEnforced());
-        Assertions.assertEquals("fxoblytkb", model.backup().backupVaultId());
-        Assertions.assertEquals("ewwwfbkrvrnsv", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("hin", model.backup().backupPolicyId());
+        Assertions.assertFalse(model.backup().policyEnforced());
+        Assertions.assertEquals("mifthnzdnd", model.backup().backupVaultId());
+        Assertions.assertEquals("nayqi", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
+            model.ransomwareProtection().desiredRansomwareProtectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumePatchPropertiesDataProtection model = new VolumePatchPropertiesDataProtection()
-            .withBackup(new VolumeBackupProperties().withBackupPolicyId("vxysl")
-                .withPolicyEnforced(true)
-                .withBackupVaultId("fxoblytkb"))
-            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("ewwwfbkrvrnsv"));
+            .withBackup(new VolumeBackupProperties().withBackupPolicyId("hin")
+                .withPolicyEnforced(false)
+                .withBackupVaultId("mifthnzdnd"))
+            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("nayqi"))
+            .withRansomwareProtection(new RansomwareProtectionPatchSettings()
+                .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.ENABLED));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("vxysl", model.backup().backupPolicyId());
-        Assertions.assertTrue(model.backup().policyEnforced());
-        Assertions.assertEquals("fxoblytkb", model.backup().backupVaultId());
-        Assertions.assertEquals("ewwwfbkrvrnsv", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("hin", model.backup().backupPolicyId());
+        Assertions.assertFalse(model.backup().policyEnforced());
+        Assertions.assertEquals("mifthnzdnd", model.backup().backupVaultId());
+        Assertions.assertEquals("nayqi", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
+            model.ransomwareProtection().desiredRansomwareProtectionState());
     }
 }

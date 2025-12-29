@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>6.0.0</version>
+    <version>6.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -280,8 +280,8 @@ java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
 
 #### Using database provisioned throughput
 
-Cosmos supports both [container](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
-and [database](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+Cosmos supports both [container](https://learn.microsoft.com/azure/cosmos-db/how-to-provision-container-throughput)
+and [database](https://learn.microsoft.com/azure/cosmos-db/how-to-provision-database-throughput) provisioned
 throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
 to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
 
@@ -608,7 +608,7 @@ public class MyItem {
     String _etag;
 }
 ```
-- Read more about Optimistic Locking [here](https://learn.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+- Read more about Optimistic Locking [here](https://learn.microsoft.com/azure/cosmos-db/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
 
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]

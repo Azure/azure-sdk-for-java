@@ -83,13 +83,13 @@
 # ServiceOwners:                                                   @mojayara @Prasanna-Padmanabhan
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @jhakulin @jpalvarezl @Azure/azure-java-sdk
+/sdk/ai/                                                           @dargilco @trrwilson @jpalvarezl @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @jhakulin @jayantjha @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @dargilco @trrwilson @jayantjha @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @jhakulin @glharper @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @dargilco @trrwilson @glharper @Azure/azure-java-sdk
 
 # PRLabel: %Voice Live
 /sdk/ai/azure-ai-voicelive/                                        @rhurey @xitzhang @amber-yujueWang
@@ -262,6 +262,13 @@
 # ServiceLabel: %Cognitive - Speech
 # ServiceOwners:                                                   @rhurey
 
+# PRLabel: %Speech Transcription
+/sdk/transcription/azure-ai-speech-transcription/              @amber-yujueWang @rhurey @xitzhang @Azure/azure-java-sdk
+
+# ServiceLabel: %Speech Transcription
+# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang
+# ServiceOwners:                                                   @rhurey @xitzhang @amber-yujueWang
+
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                                @samvaity @quentinRobinson @Azure/azure-java-sdk
 
@@ -269,8 +276,11 @@
 # AzureSdkOwners:                                                  @samvaity
 # ServiceOwners:                                                   @assafi
 
+# PRLabel: %Cognitive - Translator
+/sdk/translation/                                                  @jrjrguo @SG-MS @Azure/azure-java-sdk
+
 # ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                                   @swmachan @MikeyMCZ
+# ServiceOwners:                                                   @swmachan @jrjrguo @SG-MS
 
 # ServiceLabel: %Commerce
 # ServiceOwners:                                                   @ms-premp @qiaozha
@@ -843,12 +853,6 @@
 # ServiceLabel: %Tables
 # AzureSdkOwners:                                                  @jairmyree
 # ServiceOwners:                                                   @klaaslanghout
-
-# PRLabel: %Text Translation
-/sdk/translation/azure-ai-translation-text/                        @MikeyMCZ @Azure/azure-java-sdk
-
-# ServiceLabel: %Text Translation
-# ServiceOwners:                                                   @MikeyMCZ
 
 # ServiceLabel: %TimeseriesInsights
 # ServiceOwners:                                                   @Shipra1Mishra

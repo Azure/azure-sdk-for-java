@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Accounts_ListBySubscription.json
+     * x-ms-original-file: 2025-09-01-preview/Accounts_ListBySubscription.json
      */
     /**
      * Sample code: Accounts_ListBySubscription.

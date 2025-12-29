@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.ListQuotaReportResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
+import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -374,6 +376,28 @@ public final class VolumesImpl implements Volumes {
     public void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context) {
         this.serviceClient().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        ListQuotaReportResponseInner inner
+            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new ListQuotaReportResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        ListQuotaReportResponseInner inner
+            = this.serviceClient().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
+        if (inner != null) {
+            return new ListQuotaReportResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Volume getById(String id) {

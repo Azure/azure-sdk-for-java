@@ -26,12 +26,23 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
+import com.azure.resourcemanager.netapp.implementation.ActiveDirectoryConfigsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.BucketsImpl;
+import com.azure.resourcemanager.netapp.implementation.CachesImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticAccountsImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticBackupPoliciesImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticBackupVaultsImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticBackupsImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticCapacityPoolsImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticSnapshotPoliciesImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticSnapshotsImpl;
+import com.azure.resourcemanager.netapp.implementation.ElasticVolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsAccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
@@ -40,6 +51,7 @@ import com.azure.resourcemanager.netapp.implementation.NetAppResourceUsagesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourcesImpl;
 import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
+import com.azure.resourcemanager.netapp.implementation.RansomwareReportsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
 import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
@@ -47,12 +59,23 @@ import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumeQuotaRulesImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.Accounts;
+import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfigs;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
 import com.azure.resourcemanager.netapp.models.BackupVaults;
 import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.BackupsUnderAccounts;
 import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
+import com.azure.resourcemanager.netapp.models.Buckets;
+import com.azure.resourcemanager.netapp.models.Caches;
+import com.azure.resourcemanager.netapp.models.ElasticAccounts;
+import com.azure.resourcemanager.netapp.models.ElasticBackupPolicies;
+import com.azure.resourcemanager.netapp.models.ElasticBackupVaults;
+import com.azure.resourcemanager.netapp.models.ElasticBackups;
+import com.azure.resourcemanager.netapp.models.ElasticCapacityPools;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicies;
+import com.azure.resourcemanager.netapp.models.ElasticSnapshots;
+import com.azure.resourcemanager.netapp.models.ElasticVolumes;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimitsAccounts;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
@@ -60,6 +83,7 @@ import com.azure.resourcemanager.netapp.models.NetAppResourceUsages;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
+import com.azure.resourcemanager.netapp.models.RansomwareReports;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.azure.resourcemanager.netapp.models.Subvolumes;
@@ -97,7 +121,31 @@ public final class NetAppFilesManager {
 
     private VolumeQuotaRules volumeQuotaRules;
 
+    private RansomwareReports ransomwareReports;
+
     private BackupVaults backupVaults;
+
+    private Buckets buckets;
+
+    private Caches caches;
+
+    private ElasticAccounts elasticAccounts;
+
+    private ElasticCapacityPools elasticCapacityPools;
+
+    private ElasticVolumes elasticVolumes;
+
+    private ElasticSnapshots elasticSnapshots;
+
+    private ElasticSnapshotPolicies elasticSnapshotPolicies;
+
+    private ElasticBackupVaults elasticBackupVaults;
+
+    private ElasticBackupPolicies elasticBackupPolicies;
+
+    private ElasticBackups elasticBackups;
+
+    private ActiveDirectoryConfigs activeDirectoryConfigs;
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
@@ -444,6 +492,18 @@ public final class NetAppFilesManager {
     }
 
     /**
+     * Gets the resource collection API of RansomwareReports.
+     * 
+     * @return Resource collection API of RansomwareReports.
+     */
+    public RansomwareReports ransomwareReports() {
+        if (this.ransomwareReports == null) {
+            this.ransomwareReports = new RansomwareReportsImpl(clientObject.getRansomwareReports(), this);
+        }
+        return ransomwareReports;
+    }
+
+    /**
      * Gets the resource collection API of BackupVaults. It manages BackupVault.
      * 
      * @return Resource collection API of BackupVaults.
@@ -453,6 +513,140 @@ public final class NetAppFilesManager {
             this.backupVaults = new BackupVaultsImpl(clientObject.getBackupVaults(), this);
         }
         return backupVaults;
+    }
+
+    /**
+     * Gets the resource collection API of Buckets. It manages Bucket.
+     * 
+     * @return Resource collection API of Buckets.
+     */
+    public Buckets buckets() {
+        if (this.buckets == null) {
+            this.buckets = new BucketsImpl(clientObject.getBuckets(), this);
+        }
+        return buckets;
+    }
+
+    /**
+     * Gets the resource collection API of Caches. It manages Cache.
+     * 
+     * @return Resource collection API of Caches.
+     */
+    public Caches caches() {
+        if (this.caches == null) {
+            this.caches = new CachesImpl(clientObject.getCaches(), this);
+        }
+        return caches;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticAccounts. It manages ElasticAccount.
+     * 
+     * @return Resource collection API of ElasticAccounts.
+     */
+    public ElasticAccounts elasticAccounts() {
+        if (this.elasticAccounts == null) {
+            this.elasticAccounts = new ElasticAccountsImpl(clientObject.getElasticAccounts(), this);
+        }
+        return elasticAccounts;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticCapacityPools. It manages ElasticCapacityPool.
+     * 
+     * @return Resource collection API of ElasticCapacityPools.
+     */
+    public ElasticCapacityPools elasticCapacityPools() {
+        if (this.elasticCapacityPools == null) {
+            this.elasticCapacityPools = new ElasticCapacityPoolsImpl(clientObject.getElasticCapacityPools(), this);
+        }
+        return elasticCapacityPools;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticVolumes. It manages ElasticVolume.
+     * 
+     * @return Resource collection API of ElasticVolumes.
+     */
+    public ElasticVolumes elasticVolumes() {
+        if (this.elasticVolumes == null) {
+            this.elasticVolumes = new ElasticVolumesImpl(clientObject.getElasticVolumes(), this);
+        }
+        return elasticVolumes;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticSnapshots. It manages ElasticSnapshot.
+     * 
+     * @return Resource collection API of ElasticSnapshots.
+     */
+    public ElasticSnapshots elasticSnapshots() {
+        if (this.elasticSnapshots == null) {
+            this.elasticSnapshots = new ElasticSnapshotsImpl(clientObject.getElasticSnapshots(), this);
+        }
+        return elasticSnapshots;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticSnapshotPolicies. It manages ElasticSnapshotPolicy.
+     * 
+     * @return Resource collection API of ElasticSnapshotPolicies.
+     */
+    public ElasticSnapshotPolicies elasticSnapshotPolicies() {
+        if (this.elasticSnapshotPolicies == null) {
+            this.elasticSnapshotPolicies
+                = new ElasticSnapshotPoliciesImpl(clientObject.getElasticSnapshotPolicies(), this);
+        }
+        return elasticSnapshotPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticBackupVaults. It manages ElasticBackupVault.
+     * 
+     * @return Resource collection API of ElasticBackupVaults.
+     */
+    public ElasticBackupVaults elasticBackupVaults() {
+        if (this.elasticBackupVaults == null) {
+            this.elasticBackupVaults = new ElasticBackupVaultsImpl(clientObject.getElasticBackupVaults(), this);
+        }
+        return elasticBackupVaults;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticBackupPolicies. It manages ElasticBackupPolicy.
+     * 
+     * @return Resource collection API of ElasticBackupPolicies.
+     */
+    public ElasticBackupPolicies elasticBackupPolicies() {
+        if (this.elasticBackupPolicies == null) {
+            this.elasticBackupPolicies = new ElasticBackupPoliciesImpl(clientObject.getElasticBackupPolicies(), this);
+        }
+        return elasticBackupPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticBackups. It manages ElasticBackup.
+     * 
+     * @return Resource collection API of ElasticBackups.
+     */
+    public ElasticBackups elasticBackups() {
+        if (this.elasticBackups == null) {
+            this.elasticBackups = new ElasticBackupsImpl(clientObject.getElasticBackups(), this);
+        }
+        return elasticBackups;
+    }
+
+    /**
+     * Gets the resource collection API of ActiveDirectoryConfigs. It manages ActiveDirectoryConfig.
+     * 
+     * @return Resource collection API of ActiveDirectoryConfigs.
+     */
+    public ActiveDirectoryConfigs activeDirectoryConfigs() {
+        if (this.activeDirectoryConfigs == null) {
+            this.activeDirectoryConfigs
+                = new ActiveDirectoryConfigsImpl(clientObject.getActiveDirectoryConfigs(), this);
+        }
+        return activeDirectoryConfigs;
     }
 
     /**

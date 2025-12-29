@@ -309,6 +309,10 @@ public class ReflectionUtils {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
 
+    public static StoreReader getStoreReader(ConsistencyWriter consistencyWriter) {
+        return get(StoreReader.class, consistencyWriter, "storeReader");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }

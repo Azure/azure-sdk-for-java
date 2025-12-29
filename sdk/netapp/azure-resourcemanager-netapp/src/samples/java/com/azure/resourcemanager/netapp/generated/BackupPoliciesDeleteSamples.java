@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupPolicies_Delete.json
+     * x-ms-original-file: 2025-09-01-preview/BackupPolicies_Delete.json
      */
     /**
      * Sample code: BackupPolicies_Delete.

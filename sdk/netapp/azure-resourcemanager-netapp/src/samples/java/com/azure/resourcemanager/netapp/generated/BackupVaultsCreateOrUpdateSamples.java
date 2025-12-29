@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupVaults_Create.json
+     * x-ms-original-file: 2025-09-01-preview/BackupVaults_Create.json
      */
     /**
      * Sample code: BackupVault_CreateOrUpdate.

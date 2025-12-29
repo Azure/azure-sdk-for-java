@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
  */
 public final class AccountsTransitionToCmkSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Accounts_TransitionEncryptionKey.json
+     * x-ms-original-file: 2025-09-01-preview/Accounts_TransitionEncryptionKey.json
      */
     /**
      * Sample code: Accounts_MigrateEncryptionKey.

@@ -3,7 +3,9 @@
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -43,8 +45,11 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 
+import static java.util.Base64.getUrlDecoder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -388,5 +393,33 @@ public final class StorageCommonTestUtils {
 
             return builder.build();
         }
+    }
+
+    /**
+     * Extracts the OID (Object ID) from a token.
+     *
+     * @param credential The TokenCredential to extract the OID from.
+     * @return The OID extracted from the token.
+     */
+    public static String getOidFromToken(TokenCredential credential) {
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
+        String[] chunks = accessToken.getToken().split("\\.");
+        if (chunks.length < 2) {
+            throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
+        }
+        String payload;
+        try {
+            payload = new String(getUrlDecoder().decode(chunks[1]), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Malformed JWT: payload is not valid base64url", e);
+        }
+
+        Pattern pattern = Pattern.compile("\"oid\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new RuntimeException("Could not find oid in token");
     }
 }

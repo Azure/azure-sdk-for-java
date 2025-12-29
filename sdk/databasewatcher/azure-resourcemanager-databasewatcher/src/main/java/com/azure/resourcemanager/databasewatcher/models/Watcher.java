@@ -302,9 +302,8 @@ public interface Watcher {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher start();
+    void start();
 
     /**
      * The action to start monitoring all targets configured for a database watcher.
@@ -313,18 +312,16 @@ public interface Watcher {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher start(Context context);
+    void start(Context context);
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher stop();
+    void stop();
 
     /**
      * The action to stop monitoring all targets configured for a database watcher.
@@ -333,7 +330,6 @@ public interface Watcher {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Watcher stop(Context context);
+    void stop(Context context);
 }

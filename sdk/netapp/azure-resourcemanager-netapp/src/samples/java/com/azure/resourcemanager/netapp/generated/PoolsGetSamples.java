@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Pools_Get_CustomThroughput.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_Get_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Get_CustomThroughput.
@@ -21,7 +21,7 @@ public final class PoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Pools_Get.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.

@@ -36,6 +36,11 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
      */
     private VolumeRelocationProperties volumeRelocation;
 
+    /*
+     * Advanced Ransomware Protection settings
+     */
+    private RansomwareProtectionSettings ransomwareProtection;
+
     /**
      * Creates an instance of VolumePropertiesDataProtection class.
      */
@@ -123,6 +128,26 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
     }
 
     /**
+     * Get the ransomwareProtection property: Advanced Ransomware Protection settings.
+     * 
+     * @return the ransomwareProtection value.
+     */
+    public RansomwareProtectionSettings ransomwareProtection() {
+        return this.ransomwareProtection;
+    }
+
+    /**
+     * Set the ransomwareProtection property: Advanced Ransomware Protection settings.
+     * 
+     * @param ransomwareProtection the ransomwareProtection value to set.
+     * @return the VolumePropertiesDataProtection object itself.
+     */
+    public VolumePropertiesDataProtection withRansomwareProtection(RansomwareProtectionSettings ransomwareProtection) {
+        this.ransomwareProtection = ransomwareProtection;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +165,9 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
         if (volumeRelocation() != null) {
             volumeRelocation().validate();
         }
+        if (ransomwareProtection() != null) {
+            ransomwareProtection().validate();
+        }
     }
 
     /**
@@ -152,6 +180,7 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
         jsonWriter.writeJsonField("replication", this.replication);
         jsonWriter.writeJsonField("snapshot", this.snapshot);
         jsonWriter.writeJsonField("volumeRelocation", this.volumeRelocation);
+        jsonWriter.writeJsonField("ransomwareProtection", this.ransomwareProtection);
         return jsonWriter.writeEndObject();
     }
 
@@ -180,6 +209,9 @@ public final class VolumePropertiesDataProtection implements JsonSerializable<Vo
                 } else if ("volumeRelocation".equals(fieldName)) {
                     deserializedVolumePropertiesDataProtection.volumeRelocation
                         = VolumeRelocationProperties.fromJson(reader);
+                } else if ("ransomwareProtection".equals(fieldName)) {
+                    deserializedVolumePropertiesDataProtection.ransomwareProtection
+                        = RansomwareProtectionSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

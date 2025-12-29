@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
  */
 public final class VolumesRelocateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_Relocate.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_Relocate.json
      */
     /**
      * Sample code: Volumes_Relocate.

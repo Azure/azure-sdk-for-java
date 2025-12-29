@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupsUnderBackupVault_Create.json
+     * x-ms-original-file: 2025-09-01-preview/BackupsUnderBackupVault_Create.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Create.

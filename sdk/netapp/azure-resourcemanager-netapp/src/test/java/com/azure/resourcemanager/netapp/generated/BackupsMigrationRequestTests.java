@@ -12,14 +12,14 @@ public final class BackupsMigrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsMigrationRequest model
-            = BinaryData.fromString("{\"backupVaultId\":\"srhnjivo\"}").toObject(BackupsMigrationRequest.class);
-        Assertions.assertEquals("srhnjivo", model.backupVaultId());
+            = BinaryData.fromString("{\"backupVaultId\":\"kjxnqpvwgfstmhq\"}").toObject(BackupsMigrationRequest.class);
+        Assertions.assertEquals("kjxnqpvwgfstmhq", model.backupVaultId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupsMigrationRequest model = new BackupsMigrationRequest().withBackupVaultId("srhnjivo");
+        BackupsMigrationRequest model = new BackupsMigrationRequest().withBackupVaultId("kjxnqpvwgfstmhq");
         model = BinaryData.fromObject(model).toObject(BackupsMigrationRequest.class);
-        Assertions.assertEquals("srhnjivo", model.backupVaultId());
+        Assertions.assertEquals("kjxnqpvwgfstmhq", model.backupVaultId());
     }
 }

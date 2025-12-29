@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeGroups_Delete.json
+     * x-ms-original-file: 2025-09-01-preview/VolumeGroups_Delete.json
      */
     /**
      * Sample code: VolumeGroups_Delete.

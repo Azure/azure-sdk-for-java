@@ -14,12 +14,12 @@ public final class ListReplicationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListReplications model = BinaryData.fromString(
-            "{\"value\":[{\"replicationId\":\"nayqi\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"havhqlkthumaqolb\",\"remoteVolumeRegion\":\"cdui\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-07-05T23:49:12Z\",\"replicationDeletionTime\":\"2021-11-08T10:44:08Z\"}],\"nextLink\":\"vaolpsslqlf\"}")
+            "{\"value\":[{\"replicationId\":\"rsc\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"vfiwjmygtdss\",\"remoteVolumeRegion\":\"wtmwerio\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-06-08T10:58:30Z\",\"replicationDeletionTime\":\"2021-02-21T22:13:10Z\"}],\"nextLink\":\"wab\"}")
             .toObject(ListReplications.class);
-        Assertions.assertEquals(EndpointType.DST, model.value().get(0).endpointType());
-        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.value().get(0).replicationSchedule());
-        Assertions.assertEquals("havhqlkthumaqolb", model.value().get(0).remoteVolumeResourceId());
-        Assertions.assertEquals("cdui", model.value().get(0).remoteVolumeRegion());
-        Assertions.assertEquals("vaolpsslqlf", model.nextLink());
+        Assertions.assertEquals(EndpointType.SRC, model.value().get(0).endpointType());
+        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.value().get(0).replicationSchedule());
+        Assertions.assertEquals("vfiwjmygtdss", model.value().get(0).remoteVolumeResourceId());
+        Assertions.assertEquals("wtmwerio", model.value().get(0).remoteVolumeRegion());
+        Assertions.assertEquals("wab", model.nextLink());
     }
 }

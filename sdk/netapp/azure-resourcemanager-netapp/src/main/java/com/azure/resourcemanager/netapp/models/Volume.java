@@ -98,9 +98,11 @@ public interface Volume {
 
     /**
      * Gets the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -332,6 +334,13 @@ public interface Volume {
     Boolean ldapEnabled();
 
     /**
+     * Gets the ldapServerType property: Specifies the type of LDAP server for a given NFS volume.
+     * 
+     * @return the ldapServerType value.
+     */
+    LdapServerType ldapServerType();
+
+    /**
      * Gets the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
      * 
      * @return the coolAccess value.
@@ -518,6 +527,17 @@ public interface Volume {
     Boolean isLargeVolume();
 
     /**
+     * Gets the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+     * volume is created with standard configuration.
+     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
+     * with cool access enabled,
+     * delivering higher capacity limit with lower costs.
+     * 
+     * @return the largeVolumeType value.
+     */
+    LargeVolumeType largeVolumeType();
+
+    /**
      * Gets the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
@@ -530,6 +550,20 @@ public interface Volume {
      * @return the inheritedSizeInBytes value.
      */
     Long inheritedSizeInBytes();
+
+    /**
+     * Gets the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    VolumeLanguage language();
+
+    /**
+     * Gets the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode.
+     * 
+     * @return the breakthroughMode value.
+     */
+    BreakthroughMode breakthroughMode();
 
     /**
      * Gets the region of the resource.
@@ -635,12 +669,16 @@ public interface Volume {
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
              * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
-             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
-             * Values expressed in bytes as multiples of 1 GiB.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -675,14 +713,15 @@ public interface Volume {
             DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
             DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
             DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
-            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
-            DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
-            DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
-            DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
-            DefinitionStages.WithDefaultGroupQuotaInKiBs, DefinitionStages.WithCapacityPoolResourceId,
-            DefinitionStages.WithProximityPlacementGroup, DefinitionStages.WithVolumeSpecName,
-            DefinitionStages.WithPlacementRules, DefinitionStages.WithEnableSubvolumes,
-            DefinitionStages.WithIsLargeVolume {
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithLdapServerType, DefinitionStages.WithCoolAccess,
+            DefinitionStages.WithCoolnessPeriod, DefinitionStages.WithCoolAccessRetrievalPolicy,
+            DefinitionStages.WithCoolAccessTieringPolicy, DefinitionStages.WithUnixPermissions,
+            DefinitionStages.WithAvsDataStore, DefinitionStages.WithIsDefaultQuotaEnabled,
+            DefinitionStages.WithDefaultUserQuotaInKiBs, DefinitionStages.WithDefaultGroupQuotaInKiBs,
+            DefinitionStages.WithCapacityPoolResourceId, DefinitionStages.WithProximityPlacementGroup,
+            DefinitionStages.WithVolumeSpecName, DefinitionStages.WithPlacementRules,
+            DefinitionStages.WithEnableSubvolumes, DefinitionStages.WithIsLargeVolume,
+            DefinitionStages.WithLargeVolumeType, DefinitionStages.WithLanguage, DefinitionStages.WithBreakthroughMode {
             /**
              * Executes the create request.
              * 
@@ -1037,6 +1076,19 @@ public interface Volume {
         }
 
         /**
+         * The stage of the Volume definition allowing to specify ldapServerType.
+         */
+        interface WithLdapServerType {
+            /**
+             * Specifies the ldapServerType property: Specifies the type of LDAP server for a given NFS volume..
+             * 
+             * @param ldapServerType Specifies the type of LDAP server for a given NFS volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLdapServerType(LdapServerType ldapServerType);
+        }
+
+        /**
          * The stage of the Volume definition allowing to specify coolAccess.
          */
         interface WithCoolAccess {
@@ -1272,6 +1324,53 @@ public interface Volume {
              */
             WithCreate withIsLargeVolume(Boolean isLargeVolume);
         }
+
+        /**
+         * The stage of the Volume definition allowing to specify largeVolumeType.
+         */
+        interface WithLargeVolumeType {
+            /**
+             * Specifies the largeVolumeType property: Specifies the type of the Large Volume. When set to
+             * 'LargeVolume', the large volume is created with standard configuration.
+             * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit
+             * 7.2PiB with cool access enabled,
+             * delivering higher capacity limit with lower costs..
+             * 
+             * @param largeVolumeType Specifies the type of the Large Volume. When set to 'LargeVolume', the large
+             * volume is created with standard configuration.
+             * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit
+             * 7.2PiB with cool access enabled,
+             * delivering higher capacity limit with lower costs.
+             * @return the next definition stage.
+             */
+            WithCreate withLargeVolumeType(LargeVolumeType largeVolumeType);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify language.
+         */
+        interface WithLanguage {
+            /**
+             * Specifies the language property: Language supported for volume..
+             * 
+             * @param language Language supported for volume.
+             * @return the next definition stage.
+             */
+            WithCreate withLanguage(VolumeLanguage language);
+        }
+
+        /**
+         * The stage of the Volume definition allowing to specify breakthroughMode.
+         */
+        interface WithBreakthroughMode {
+            /**
+             * Specifies the breakthroughMode property: Specifies whether the volume operates in Breakthrough Mode..
+             * 
+             * @param breakthroughMode Specifies whether the volume operates in Breakthrough Mode.
+             * @return the next definition stage.
+             */
+            WithCreate withBreakthroughMode(BreakthroughMode breakthroughMode);
+        }
     }
 
     /**
@@ -1346,12 +1445,16 @@ public interface Volume {
              * Specifies the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is
              * a soft quota used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
              * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
-             * 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB..
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB..
              * 
              * @param usageThreshold Maximum storage quota allowed for a file system in bytes. This is a soft quota used
-             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-             * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
-             * Values expressed in bytes as multiples of 1 GiB.
+             * for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+             * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to
+             * 2400GiB to 2400TiB.
+             * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as
+             * multiples of 1 GiB.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -2034,4 +2137,24 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void revertRelocation(Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    ListQuotaReportResponse listQuotaReport();
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    ListQuotaReportResponse listQuotaReport(Context context);
 }

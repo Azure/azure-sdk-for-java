@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Snapshots_List.json
+     * x-ms-original-file: 2025-09-01-preview/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.

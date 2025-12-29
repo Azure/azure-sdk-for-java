@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.BackupPolicy;
  */
 public final class BackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupPolicies_Update.json
+     * x-ms-original-file: 2025-09-01-preview/BackupPolicies_Update.json
      */
     /**
      * Sample code: BackupPolicies_Update.

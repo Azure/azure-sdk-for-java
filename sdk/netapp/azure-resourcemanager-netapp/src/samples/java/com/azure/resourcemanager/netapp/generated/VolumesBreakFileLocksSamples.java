@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
  */
 public final class VolumesBreakFileLocksSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_BreakFileLocks.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_BreakFileLocks.json
      */
     /**
      * Sample code: Volumes_BreakFileLocks.

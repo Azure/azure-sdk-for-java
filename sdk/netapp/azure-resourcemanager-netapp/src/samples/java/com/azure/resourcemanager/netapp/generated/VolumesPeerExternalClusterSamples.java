@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VolumesPeerExternalClusterSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_PeerExternalCluster.json
+     * x-ms-original-file: 2025-09-01-preview/Volumes_PeerExternalCluster.json
      */
     /**
      * Sample code: Volumes_PeerExternalCluster.

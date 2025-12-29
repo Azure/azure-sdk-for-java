@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/BackupsUnderBackupVault_Get.json
+     * x-ms-original-file: 2025-09-01-preview/BackupsUnderBackupVault_Get.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Get.

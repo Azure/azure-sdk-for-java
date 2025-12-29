@@ -1076,11 +1076,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WatcherInner>, WatcherInner> beginStartAsync(String resourceGroupName,
-        String watcherName) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String watcherName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, watcherName);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(mono, this.client.getHttpPipeline(),
-            WatcherInner.class, WatcherInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1094,10 +1093,9 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName) {
         Response<BinaryData> response = startWithResponse(resourceGroupName, watcherName);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1112,11 +1110,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStart(String resourceGroupName, String watcherName,
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String watcherName,
         Context context) {
         Response<BinaryData> response = startWithResponse(resourceGroupName, watcherName, context);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1127,10 +1124,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WatcherInner> startAsync(String resourceGroupName, String watcherName) {
+    private Mono<Void> startAsync(String resourceGroupName, String watcherName) {
         return beginStartAsync(resourceGroupName, watcherName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1142,11 +1139,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner start(String resourceGroupName, String watcherName) {
-        return beginStart(resourceGroupName, watcherName).getFinalResult();
+    public void start(String resourceGroupName, String watcherName) {
+        beginStart(resourceGroupName, watcherName).getFinalResult();
     }
 
     /**
@@ -1158,11 +1154,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner start(String resourceGroupName, String watcherName, Context context) {
-        return beginStart(resourceGroupName, watcherName, context).getFinalResult();
+    public void start(String resourceGroupName, String watcherName, Context context) {
+        beginStart(resourceGroupName, watcherName, context).getFinalResult();
     }
 
     /**
@@ -1230,11 +1225,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WatcherInner>, WatcherInner> beginStopAsync(String resourceGroupName,
-        String watcherName) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String watcherName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, watcherName);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(mono, this.client.getHttpPipeline(),
-            WatcherInner.class, WatcherInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1248,10 +1242,9 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName) {
         Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1266,11 +1259,9 @@ public final class WatchersClientImpl implements WatchersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WatcherInner>, WatcherInner> beginStop(String resourceGroupName, String watcherName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String watcherName, Context context) {
         Response<BinaryData> response = stopWithResponse(resourceGroupName, watcherName, context);
-        return this.client.<WatcherInner, WatcherInner>getLroResult(response, WatcherInner.class, WatcherInner.class,
-            context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1281,10 +1272,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WatcherInner> stopAsync(String resourceGroupName, String watcherName) {
+    private Mono<Void> stopAsync(String resourceGroupName, String watcherName) {
         return beginStopAsync(resourceGroupName, watcherName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1296,11 +1287,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner stop(String resourceGroupName, String watcherName) {
-        return beginStop(resourceGroupName, watcherName).getFinalResult();
+    public void stop(String resourceGroupName, String watcherName) {
+        beginStop(resourceGroupName, watcherName).getFinalResult();
     }
 
     /**
@@ -1312,11 +1302,10 @@ public final class WatchersClientImpl implements WatchersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WatcherInner stop(String resourceGroupName, String watcherName, Context context) {
-        return beginStop(resourceGroupName, watcherName, context).getFinalResult();
+    public void stop(String resourceGroupName, String watcherName, Context context) {
+        beginStop(resourceGroupName, watcherName, context).getFinalResult();
     }
 
     /**

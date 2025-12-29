@@ -110,11 +110,95 @@ public interface NetAppManagementClient {
     VolumeQuotaRulesClient getVolumeQuotaRules();
 
     /**
+     * Gets the RansomwareReportsClient object to access its operations.
+     * 
+     * @return the RansomwareReportsClient object.
+     */
+    RansomwareReportsClient getRansomwareReports();
+
+    /**
      * Gets the BackupVaultsClient object to access its operations.
      * 
      * @return the BackupVaultsClient object.
      */
     BackupVaultsClient getBackupVaults();
+
+    /**
+     * Gets the BucketsClient object to access its operations.
+     * 
+     * @return the BucketsClient object.
+     */
+    BucketsClient getBuckets();
+
+    /**
+     * Gets the CachesClient object to access its operations.
+     * 
+     * @return the CachesClient object.
+     */
+    CachesClient getCaches();
+
+    /**
+     * Gets the ElasticAccountsClient object to access its operations.
+     * 
+     * @return the ElasticAccountsClient object.
+     */
+    ElasticAccountsClient getElasticAccounts();
+
+    /**
+     * Gets the ElasticCapacityPoolsClient object to access its operations.
+     * 
+     * @return the ElasticCapacityPoolsClient object.
+     */
+    ElasticCapacityPoolsClient getElasticCapacityPools();
+
+    /**
+     * Gets the ElasticVolumesClient object to access its operations.
+     * 
+     * @return the ElasticVolumesClient object.
+     */
+    ElasticVolumesClient getElasticVolumes();
+
+    /**
+     * Gets the ElasticSnapshotsClient object to access its operations.
+     * 
+     * @return the ElasticSnapshotsClient object.
+     */
+    ElasticSnapshotsClient getElasticSnapshots();
+
+    /**
+     * Gets the ElasticSnapshotPoliciesClient object to access its operations.
+     * 
+     * @return the ElasticSnapshotPoliciesClient object.
+     */
+    ElasticSnapshotPoliciesClient getElasticSnapshotPolicies();
+
+    /**
+     * Gets the ElasticBackupVaultsClient object to access its operations.
+     * 
+     * @return the ElasticBackupVaultsClient object.
+     */
+    ElasticBackupVaultsClient getElasticBackupVaults();
+
+    /**
+     * Gets the ElasticBackupPoliciesClient object to access its operations.
+     * 
+     * @return the ElasticBackupPoliciesClient object.
+     */
+    ElasticBackupPoliciesClient getElasticBackupPolicies();
+
+    /**
+     * Gets the ElasticBackupsClient object to access its operations.
+     * 
+     * @return the ElasticBackupsClient object.
+     */
+    ElasticBackupsClient getElasticBackups();
+
+    /**
+     * Gets the ActiveDirectoryConfigsClient object to access its operations.
+     * 
+     * @return the ActiveDirectoryConfigsClient object.
+     */
+    ActiveDirectoryConfigsClient getActiveDirectoryConfigs();
 
     /**
      * Gets the NetAppResourceQuotaLimitsClient object to access its operations.

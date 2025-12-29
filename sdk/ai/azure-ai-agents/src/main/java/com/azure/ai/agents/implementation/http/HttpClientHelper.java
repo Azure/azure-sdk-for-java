@@ -1,0 +1,240 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents.implementation.http;
+
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.openai.core.RequestOptions;
+import com.openai.core.Timeout;
+import com.openai.core.http.Headers;
+import com.openai.core.http.HttpClient;
+import com.openai.core.http.HttpRequest;
+import com.openai.core.http.HttpRequestBody;
+import com.openai.core.http.HttpResponse;
+import com.openai.errors.BadRequestException;
+import com.openai.errors.InternalServerException;
+import com.openai.errors.NotFoundException;
+import com.openai.errors.OpenAIException;
+import com.openai.errors.PermissionDeniedException;
+import com.openai.errors.RateLimitException;
+import com.openai.errors.UnauthorizedException;
+import com.openai.errors.UnexpectedStatusCodeException;
+import com.openai.errors.UnprocessableEntityException;
+
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
+ * the OpenAI SDK generated clients. The helper performs request/response translation so that existing Azure
+ * pipelines, diagnostics, and retry policies can be reused without exposing the Azure HTTP primitives to
+ * callers that only understand the OpenAI surface area.
+ */
+public final class HttpClientHelper {
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientHelper.class);
+
+    private HttpClientHelper() {
+    }
+
+    /**
+     * Implements the OpenAI {@link HttpClient} interface that sends the HTTP request through the Azure HTTP pipeline.
+     * All requests and responses are converted on the fly.
+     *
+     * @param httpPipeline The Azure HTTP pipeline that will execute HTTP requests.
+     * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
+     */
+    public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline) {
+        return new HttpClientWrapper(httpPipeline);
+    }
+
+    private static final class HttpClientWrapper implements HttpClient {
+
+        private final HttpPipeline httpPipeline;
+
+        private HttpClientWrapper(HttpPipeline httpPipeline) {
+            this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        }
+
+        @Override
+        public void close() {
+            // no-op
+        }
+
+        @Override
+        public HttpResponse execute(HttpRequest request) {
+            return execute(request, RequestOptions.none());
+        }
+
+        @Override
+        public HttpResponse execute(HttpRequest request, RequestOptions requestOptions) {
+            Objects.requireNonNull(request, "request");
+            Objects.requireNonNull(requestOptions, "requestOptions");
+
+            com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
+
+            return new AzureHttpResponseAdapter(
+                this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+        }
+
+        @Override
+        public CompletableFuture<HttpResponse> executeAsync(HttpRequest request) {
+            return executeAsync(request, RequestOptions.none());
+        }
+
+        @Override
+        public CompletableFuture<HttpResponse> executeAsync(HttpRequest request, RequestOptions requestOptions) {
+            Objects.requireNonNull(request, "request");
+            Objects.requireNonNull(requestOptions, "requestOptions");
+
+            final com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
+
+            return this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions))
+                .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
+                .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
+                .toFuture();
+        }
+
+        /**
+         * Maps Azure exceptions to their corresponding OpenAI exception types.
+         *
+         * @param throwable The Azure exception to map.
+         * @return The corresponding OpenAI exception.
+         */
+        private static Throwable mapAzureExceptionToOpenAI(Throwable throwable) {
+            if (throwable instanceof HttpResponseException) {
+                HttpResponseException httpResponseException = (HttpResponseException) throwable;
+                int statusCode = httpResponseException.getResponse().getStatusCode();
+                Headers headers = toOpenAIHeaders(httpResponseException.getResponse().getHeaders());
+
+                switch (statusCode) {
+                    case 400:
+                        return BadRequestException.builder().headers(headers).cause(httpResponseException).build();
+
+                    case 401:
+                        return UnauthorizedException.builder().headers(headers).cause(httpResponseException).build();
+
+                    case 403:
+                        return PermissionDeniedException.builder()
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
+
+                    case 404:
+                        return NotFoundException.builder().headers(headers).cause(httpResponseException).build();
+
+                    case 422:
+                        return UnprocessableEntityException.builder()
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
+
+                    case 429:
+                        return RateLimitException.builder().headers(headers).cause(httpResponseException).build();
+
+                    case 500:
+                    case 502:
+                    case 503:
+                    case 504:
+                        return InternalServerException.builder()
+                            .statusCode(statusCode)
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
+
+                    default:
+                        return UnexpectedStatusCodeException.builder()
+                            .statusCode(statusCode)
+                            .headers(headers)
+                            .cause(httpResponseException)
+                            .build();
+                }
+            } else if (throwable instanceof TimeoutException) {
+                return throwable;
+            } else {
+                return new OpenAIException(throwable.getMessage(), throwable.getCause());
+            }
+        }
+
+        /**
+         * Converts Azure {@link HttpHeaders} to OpenAI {@link Headers}.
+         */
+        private static Headers toOpenAIHeaders(HttpHeaders azureHeaders) {
+            Headers.Builder builder = Headers.builder();
+            azureHeaders.forEach(header -> builder.put(header.getName(), header.getValue()));
+            return builder.build();
+        }
+
+        /**
+         * Converts the OpenAI request metadata and body into an Azure {@link com.azure.core.http.HttpRequest}.
+         */
+        private static com.azure.core.http.HttpRequest buildAzureRequest(HttpRequest request) {
+            HttpRequestBody requestBody = request.body();
+            String contentType = requestBody != null ? requestBody.contentType() : null;
+            BinaryData bodyData = null;
+
+            if (requestBody != null && requestBody.contentLength() > 0) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                requestBody.writeTo(outputStream);
+                bodyData = BinaryData.fromBytes(outputStream.toByteArray());
+            }
+
+            HttpHeaders headers = toAzureHeaders(request.headers());
+            if (!CoreUtils.isNullOrEmpty(contentType) && headers.getValue(HttpHeaderName.CONTENT_TYPE) == null) {
+                headers.set(HttpHeaderName.CONTENT_TYPE, contentType);
+            }
+
+            com.azure.core.http.HttpRequest azureRequest = new com.azure.core.http.HttpRequest(
+                HttpMethod.valueOf(request.method().name()), OpenAiRequestUrlBuilder.buildUrl(request), headers);
+
+            if (bodyData != null) {
+                azureRequest.setBody(bodyData);
+            }
+
+            return azureRequest;
+        }
+
+        /**
+         * Copies OpenAI headers into an {@link HttpHeaders} instance so the Azure pipeline can process them.
+         */
+        private static HttpHeaders toAzureHeaders(Headers sourceHeaders) {
+            HttpHeaders target = new HttpHeaders();
+            sourceHeaders.names().forEach(name -> {
+                List<String> values = sourceHeaders.values(name);
+                HttpHeaderName headerName = HttpHeaderName.fromString(name);
+                if (values.isEmpty()) {
+                    target.set(headerName, "");
+                } else {
+                    target.set(headerName, values);
+                }
+            });
+            return target;
+        }
+
+        /**
+         * Builds the request context from the given request options.
+         * @param requestOptions OpenAI SDK request options
+         * @return Azure request {@link Context}
+         */
+        private static Context buildRequestContext(RequestOptions requestOptions) {
+            Context context = new Context("azure-eagerly-read-response", true);
+            Timeout timeout = requestOptions.getTimeout();
+            // we use "read" as it's the closes thing to the "response timeout"
+            if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
+                context = context.addData("azure-response-timeout", timeout.read());
+            }
+            return context;
+        }
+    }
+}

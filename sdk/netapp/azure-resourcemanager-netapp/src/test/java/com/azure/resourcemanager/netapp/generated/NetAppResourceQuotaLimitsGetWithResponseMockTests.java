@@ -20,7 +20,7 @@ public final class NetAppResourceQuotaLimitsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"current\":698476500,\"default\":1137080537,\"usage\":1889972002},\"id\":\"pvwgfstmhqykizmd\",\"name\":\"saoafcluqvox\",\"type\":\"ycjimryvwgcwwpbm\"}";
+            = "{\"properties\":{\"current\":833282883,\"default\":1088510786,\"usage\":967504624},\"id\":\"hmxvvl\",\"name\":\"rskapbxwieexu\",\"type\":\"aderltfokyk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class NetAppResourceQuotaLimitsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubscriptionQuotaItem response = manager.netAppResourceQuotaLimits()
-            .getWithResponse("mxuq", "bsxtkcudfbsfarfs", com.azure.core.util.Context.NONE)
+            .getWithResponse("dmcvhtbbz", "hfvhuwzbxpcqz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

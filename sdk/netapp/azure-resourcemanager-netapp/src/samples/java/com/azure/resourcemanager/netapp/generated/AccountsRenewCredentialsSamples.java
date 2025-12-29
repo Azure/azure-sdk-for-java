@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class AccountsRenewCredentialsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Accounts_RenewCredentials.json
+     * x-ms-original-file: 2025-09-01-preview/Accounts_RenewCredentials.json
      */
     /**
      * Sample code: Accounts_RenewCredentials.

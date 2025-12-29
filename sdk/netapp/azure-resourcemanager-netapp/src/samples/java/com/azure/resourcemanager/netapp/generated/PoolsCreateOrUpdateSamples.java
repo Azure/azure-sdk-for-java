@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Pools_CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -31,7 +31,7 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/Pools_CreateOrUpdate_CustomThroughput.json
+     * x-ms-original-file: 2025-09-01-preview/Pools_CreateOrUpdate_CustomThroughput.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate_CustomThroughput.

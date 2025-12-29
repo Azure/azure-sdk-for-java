@@ -20,6 +20,7 @@ import com.azure.spring.messaging.servicebus.implementation.properties.merger.Co
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceBusConsumerFactory, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceConsumerFactory.class);
     private final List<Listener> listeners = new ArrayList<>();
+    private ApplicationContext applicationContext;
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ConsumerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSessionReceiverClient> clients = new ConcurrentHashMap<>();
@@ -122,6 +124,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                factory.setApplicationContext(this.applicationContext);
 
                 ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = factory.build();
 
@@ -214,4 +217,11 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
                                          .forEach(customizer -> customizer.customize(builder));
     }
 
+    /**
+     * Set the application context.
+     * @param applicationContext the application context.
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 }
