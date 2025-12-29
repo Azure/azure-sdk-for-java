@@ -945,7 +945,7 @@ public abstract class TestSuiteBase extends DocumentClientTest {
         try {
             List<String> modeStrings = objectMapper.readValue(connectionModes, new com.fasterxml.jackson.core.type.TypeReference<List<String>>() {});
             for (String mode : modeStrings) {
-                modeList.add(ConnectionMode.valueOf(com.azure.cosmos.implementation.guava25.base.CaseFormat.UPPER_CAMEL.to(com.azure.cosmos.implementation.guava25.base.CaseFormat.UPPER_UNDERSCORE, mode)));
+                modeList.add(ConnectionMode.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, mode)));
             }
             return modeList;
         } catch (Exception e) {
