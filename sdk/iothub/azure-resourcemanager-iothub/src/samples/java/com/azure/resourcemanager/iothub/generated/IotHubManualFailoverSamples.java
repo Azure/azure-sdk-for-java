@@ -12,7 +12,8 @@ import com.azure.resourcemanager.iothub.models.FailoverInput;
 public final class IotHubManualFailoverSamples {
     /*
      * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/IotHub_ManualFailover.json
+     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/
+     * IotHub_ManualFailover.json
      */
     /**
      * Sample code: IotHub_ManualFailover.

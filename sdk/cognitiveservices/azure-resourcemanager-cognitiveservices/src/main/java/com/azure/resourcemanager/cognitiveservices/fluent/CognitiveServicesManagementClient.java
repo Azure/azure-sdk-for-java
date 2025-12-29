@@ -173,6 +173,13 @@ public interface CognitiveServicesManagementClient {
     RaiBlocklistItemsClient getRaiBlocklistItems();
 
     /**
+     * Gets the RaiTopicsClient object to access its operations.
+     * 
+     * @return the RaiTopicsClient object.
+     */
+    RaiTopicsClient getRaiTopics();
+
+    /**
      * Gets the RaiContentFiltersClient object to access its operations.
      * 
      * @return the RaiContentFiltersClient object.
@@ -227,4 +234,11 @@ public interface CognitiveServicesManagementClient {
      * @return the ProjectCapabilityHostsClient object.
      */
     ProjectCapabilityHostsClient getProjectCapabilityHosts();
+
+    /**
+     * Gets the QuotaTiersClient object to access its operations.
+     * 
+     * @return the QuotaTiersClient object.
+     */
+    QuotaTiersClient getQuotaTiers();
 }

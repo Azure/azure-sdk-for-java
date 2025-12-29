@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * public network access is enabled or not.
+ * Indicates if public network access is enabled or not. This is only supported for servers that are not integrated into
+ * a virtual network which is owned and provided by customer when server is deployed.
  */
 public final class ServerPublicNetworkAccessState extends ExpandableStringEnum<ServerPublicNetworkAccessState> {
     /**

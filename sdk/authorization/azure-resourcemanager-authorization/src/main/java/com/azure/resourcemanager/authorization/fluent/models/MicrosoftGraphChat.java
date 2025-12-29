@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * chat.
+ * Represents a chat.
  */
 @Fluent
 public final class MicrosoftGraphChat extends MicrosoftGraphEntity {

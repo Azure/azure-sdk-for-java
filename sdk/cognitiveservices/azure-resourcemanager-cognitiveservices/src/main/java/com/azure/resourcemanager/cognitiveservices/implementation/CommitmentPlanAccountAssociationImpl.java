@@ -29,10 +29,6 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -44,6 +40,10 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String accountId() {

@@ -24,17 +24,10 @@ public final class Configuration implements JsonSerializable<Configuration> {
 
     /*
      * ActiveRevisionsMode controls how active revisions are handled for the Container app:
-     * <list><item>Single: Only one revision can be active at a time. Traffic weights cannot be used. This is the
-     * default.</item><item>Multiple: Multiple revisions can be active, including optional traffic weights and
-     * labels.</item><item>Labels: Only revisions with labels are active. Traffic weights can be applied to
-     * labels.</item></list>
+     * <list><item>Multiple: multiple revisions can be active.</item><item>Single: Only one revision can be active at a
+     * time. Revision weights can not be used in this mode. If no value if provided, this is the default.</item></list>
      */
     private ActiveRevisionsMode activeRevisionsMode;
-
-    /*
-     * Required in labels revisions mode. Label to apply to newly created revision.
-     */
-    private String targetLabel;
 
     /*
      * Ingress configurations.
@@ -60,12 +53,6 @@ public final class Configuration implements JsonSerializable<Configuration> {
      * Optional. Max inactive revisions a Container App can have.
      */
     private Integer maxInactiveRevisions;
-
-    /*
-     * Optional. The percent of the total number of replicas that must be brought up before revision transition occurs.
-     * Defaults to 100 when none is given. Value must be greater than 0 and less than or equal to 100.
-     */
-    private Integer revisionTransitionThreshold;
 
     /*
      * Container App to be a dev Container App Service
@@ -107,10 +94,9 @@ public final class Configuration implements JsonSerializable<Configuration> {
     /**
      * Get the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
      * Container app:
-     * &lt;list&gt;&lt;item&gt;Single: Only one revision can be active at a time. Traffic weights cannot be used. This
-     * is the default.&lt;/item&gt;&lt;item&gt;Multiple: Multiple revisions can be active, including optional traffic
-     * weights and labels.&lt;/item&gt;&lt;item&gt;Labels: Only revisions with labels are active. Traffic weights can be
-     * applied to labels.&lt;/item&gt;&lt;/list&gt;.
+     * &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active.&lt;/item&gt;&lt;item&gt;Single: Only one
+     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is
+     * the default.&lt;/item&gt;&lt;/list&gt;.
      * 
      * @return the activeRevisionsMode value.
      */
@@ -121,36 +107,15 @@ public final class Configuration implements JsonSerializable<Configuration> {
     /**
      * Set the activeRevisionsMode property: ActiveRevisionsMode controls how active revisions are handled for the
      * Container app:
-     * &lt;list&gt;&lt;item&gt;Single: Only one revision can be active at a time. Traffic weights cannot be used. This
-     * is the default.&lt;/item&gt;&lt;item&gt;Multiple: Multiple revisions can be active, including optional traffic
-     * weights and labels.&lt;/item&gt;&lt;item&gt;Labels: Only revisions with labels are active. Traffic weights can be
-     * applied to labels.&lt;/item&gt;&lt;/list&gt;.
+     * &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active.&lt;/item&gt;&lt;item&gt;Single: Only one
+     * revision can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is
+     * the default.&lt;/item&gt;&lt;/list&gt;.
      * 
      * @param activeRevisionsMode the activeRevisionsMode value to set.
      * @return the Configuration object itself.
      */
     public Configuration withActiveRevisionsMode(ActiveRevisionsMode activeRevisionsMode) {
         this.activeRevisionsMode = activeRevisionsMode;
-        return this;
-    }
-
-    /**
-     * Get the targetLabel property: Required in labels revisions mode. Label to apply to newly created revision.
-     * 
-     * @return the targetLabel value.
-     */
-    public String targetLabel() {
-        return this.targetLabel;
-    }
-
-    /**
-     * Set the targetLabel property: Required in labels revisions mode. Label to apply to newly created revision.
-     * 
-     * @param targetLabel the targetLabel value to set.
-     * @return the Configuration object itself.
-     */
-    public Configuration withTargetLabel(String targetLabel) {
-        this.targetLabel = targetLabel;
         return this;
     }
 
@@ -257,30 +222,6 @@ public final class Configuration implements JsonSerializable<Configuration> {
     }
 
     /**
-     * Get the revisionTransitionThreshold property: Optional. The percent of the total number of replicas that must be
-     * brought up before revision transition occurs. Defaults to 100 when none is given. Value must be greater than 0
-     * and less than or equal to 100.
-     * 
-     * @return the revisionTransitionThreshold value.
-     */
-    public Integer revisionTransitionThreshold() {
-        return this.revisionTransitionThreshold;
-    }
-
-    /**
-     * Set the revisionTransitionThreshold property: Optional. The percent of the total number of replicas that must be
-     * brought up before revision transition occurs. Defaults to 100 when none is given. Value must be greater than 0
-     * and less than or equal to 100.
-     * 
-     * @param revisionTransitionThreshold the revisionTransitionThreshold value to set.
-     * @return the Configuration object itself.
-     */
-    public Configuration withRevisionTransitionThreshold(Integer revisionTransitionThreshold) {
-        this.revisionTransitionThreshold = revisionTransitionThreshold;
-        return this;
-    }
-
-    /**
      * Get the service property: Container App to be a dev Container App Service.
      * 
      * @return the service value.
@@ -360,13 +301,11 @@ public final class Configuration implements JsonSerializable<Configuration> {
         jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("activeRevisionsMode",
             this.activeRevisionsMode == null ? null : this.activeRevisionsMode.toString());
-        jsonWriter.writeStringField("targetLabel", this.targetLabel);
         jsonWriter.writeJsonField("ingress", this.ingress);
         jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("dapr", this.dapr);
         jsonWriter.writeJsonField("runtime", this.runtime);
         jsonWriter.writeNumberField("maxInactiveRevisions", this.maxInactiveRevisions);
-        jsonWriter.writeNumberField("revisionTransitionThreshold", this.revisionTransitionThreshold);
         jsonWriter.writeJsonField("service", this.service);
         jsonWriter.writeArrayField("identitySettings", this.identitySettings,
             (writer, element) -> writer.writeJson(element));
@@ -393,8 +332,6 @@ public final class Configuration implements JsonSerializable<Configuration> {
                     deserializedConfiguration.secrets = secrets;
                 } else if ("activeRevisionsMode".equals(fieldName)) {
                     deserializedConfiguration.activeRevisionsMode = ActiveRevisionsMode.fromString(reader.getString());
-                } else if ("targetLabel".equals(fieldName)) {
-                    deserializedConfiguration.targetLabel = reader.getString();
                 } else if ("ingress".equals(fieldName)) {
                     deserializedConfiguration.ingress = Ingress.fromJson(reader);
                 } else if ("registries".equals(fieldName)) {
@@ -407,8 +344,6 @@ public final class Configuration implements JsonSerializable<Configuration> {
                     deserializedConfiguration.runtime = Runtime.fromJson(reader);
                 } else if ("maxInactiveRevisions".equals(fieldName)) {
                     deserializedConfiguration.maxInactiveRevisions = reader.getNullable(JsonReader::getInt);
-                } else if ("revisionTransitionThreshold".equals(fieldName)) {
-                    deserializedConfiguration.revisionTransitionThreshold = reader.getNullable(JsonReader::getInt);
                 } else if ("service".equals(fieldName)) {
                     deserializedConfiguration.service = Service.fromJson(reader);
                 } else if ("identitySettings".equals(fieldName)) {

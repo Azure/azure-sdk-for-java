@@ -82,7 +82,7 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientDomains")
     public interface DomainsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
@@ -292,10 +292,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             identifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkAvailability(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), identifier, accept, context))
+                this.client.getSubscriptionId(), apiVersion, identifier, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -327,10 +328,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             identifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), identifier, accept, context);
+        return service.checkAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            identifier, accept, context);
     }
 
     /**
@@ -402,10 +404,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -432,11 +435,10 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -522,10 +524,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getControlCenterSsoRequest(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -552,10 +555,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getControlCenterSsoRequest(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -630,10 +634,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRecommendations(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .<PagedResponse<NameIdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -668,11 +673,12 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommendations(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), parameters, accept, context)
+            .listRecommendations(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, parameters,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -772,10 +778,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -808,11 +815,12 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -915,10 +923,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -953,10 +962,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1049,10 +1059,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domain.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), domain, accept, context))
+                this.client.getSubscriptionId(), apiVersion, domain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1093,10 +1104,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domain.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), domain, accept, context);
+            this.client.getSubscriptionId(), apiVersion, domain, accept, context);
     }
 
     /**
@@ -1293,10 +1305,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, domainName,
-                forceHardDeleteDomain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                forceHardDeleteDomain, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1333,10 +1346,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, domainName, forceHardDeleteDomain,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1432,10 +1446,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domain.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), domain, accept, context))
+                this.client.getSubscriptionId(), apiVersion, domain, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1476,10 +1491,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domain.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, domainName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), domain, accept, context);
+            apiVersion, domain, accept, context);
     }
 
     /**
@@ -1570,10 +1586,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOwnershipIdentifiers(this.client.getEndpoint(), resourceGroupName,
-                domainName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                domainName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DomainOwnershipIdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1611,11 +1628,12 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOwnershipIdentifiers(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1730,10 +1748,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName,
-                domainName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                domainName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1772,10 +1791,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName, domainName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1880,10 +1900,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domainOwnershipIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateOwnershipIdentifier(this.client.getEndpoint(),
-                resourceGroupName, domainName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, domainName, name, this.client.getSubscriptionId(), apiVersion,
                 domainOwnershipIdentifier, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1932,10 +1953,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domainOwnershipIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName, domainName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), domainOwnershipIdentifier, accept, context);
+            this.client.getSubscriptionId(), apiVersion, domainOwnershipIdentifier, accept, context);
     }
 
     /**
@@ -2040,10 +2062,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName,
-                domainName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                domainName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2082,10 +2105,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName, domainName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2187,11 +2211,12 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domainOwnershipIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName,
-                domainName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                domainOwnershipIdentifier, accept, context))
+            .withContext(
+                context -> service.updateOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName, domainName,
+                    name, this.client.getSubscriptionId(), apiVersion, domainOwnershipIdentifier, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2239,10 +2264,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
         } else {
             domainOwnershipIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateOwnershipIdentifier(this.client.getEndpoint(), resourceGroupName, domainName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), domainOwnershipIdentifier, accept, context);
+            this.client.getSubscriptionId(), apiVersion, domainOwnershipIdentifier, accept, context);
     }
 
     /**
@@ -2341,10 +2367,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.renew(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2378,10 +2405,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.renew(this.client.getEndpoint(), resourceGroupName, domainName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -2463,10 +2491,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.transferOut(this.client.getEndpoint(), resourceGroupName, domainName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2500,10 +2529,11 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.transferOut(this.client.getEndpoint(), resourceGroupName, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2557,6 +2587,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get all domains in a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2582,6 +2614,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get all domains in a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2608,6 +2642,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get domain name recommendations based on keywords.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2636,6 +2672,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get domain name recommendations based on keywords.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2664,6 +2702,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get all domains in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2691,6 +2731,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Get all domains in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2717,6 +2759,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Lists domain ownership identifiers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2746,6 +2790,8 @@ public final class DomainsClientImpl implements InnerSupportsGet<DomainInner>, I
     }
 
     /**
+     * Lists domain ownership identifiers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

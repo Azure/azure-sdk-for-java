@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDiagnosticCategorySamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategory
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * Diagnostics_GetSiteDiagnosticCategory.json
      */
     /**
      * Sample code: Get App Diagnostic Category.
@@ -28,7 +27,7 @@ public final class DiagnosticsGetSiteDiagnosticCategorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
      * Diagnostics_GetSiteDiagnosticCategorySlot.json
      */
     /**

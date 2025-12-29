@@ -42,6 +42,10 @@ parameters:
   displayName: 'Release depends on live tests'
   type: boolean
   default: true
+- name: release_azurecontainerscontainerregistry
+  displayName: 'azure-containers-containerregistry'
+  type: boolean
+  default: true
 - name: release_azureresourcemanagercontainerregistry
   displayName: 'azure-resourcemanager-containerregistry'
   type: boolean
@@ -55,6 +59,7 @@ extends:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+        releaseInBatch: ${{ parameters.release_azurecontainerscontainerregistry }}
       - name: azure-resourcemanager-containerregistry
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerregistry

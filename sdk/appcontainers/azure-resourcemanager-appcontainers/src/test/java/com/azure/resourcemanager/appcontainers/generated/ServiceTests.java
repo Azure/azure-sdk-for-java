@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Service model = BinaryData.fromString("{\"type\":\"ircgpikpz\"}").toObject(Service.class);
-        Assertions.assertEquals("ircgpikpz", model.type());
+        Service model = BinaryData.fromString("{\"type\":\"vwvxyslqbhsfx\"}").toObject(Service.class);
+        Assertions.assertEquals("vwvxyslqbhsfx", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Service model = new Service().withType("ircgpikpz");
+        Service model = new Service().withType("vwvxyslqbhsfx");
         model = BinaryData.fromObject(model).toObject(Service.class);
-        Assertions.assertEquals("ircgpikpz", model.type());
+        Assertions.assertEquals("vwvxyslqbhsfx", model.type());
     }
 }

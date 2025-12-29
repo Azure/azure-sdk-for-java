@@ -183,7 +183,9 @@ public final class ExtensionDataSource implements JsonSerializable<ExtensionData
         jsonWriter.writeStringField("extensionName", this.extensionName);
         jsonWriter.writeArrayField("streams", this.streams,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeUntypedField("extensionSettings", this.extensionSettings);
+        if (this.extensionSettings != null) {
+            jsonWriter.writeUntypedField("extensionSettings", this.extensionSettings);
+        }
         jsonWriter.writeArrayField("inputDataSources", this.inputDataSources,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("name", this.name);

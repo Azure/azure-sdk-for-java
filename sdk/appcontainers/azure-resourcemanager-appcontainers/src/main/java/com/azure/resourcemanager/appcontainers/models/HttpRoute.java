@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Http Routes configuration, including paths to match on and whether or not rewrites are to be done.
+ * Http Routes, including paths to match on and whether or not rewrites are to be done.
  */
 @Fluent
 public final class HttpRoute implements JsonSerializable<HttpRoute> {

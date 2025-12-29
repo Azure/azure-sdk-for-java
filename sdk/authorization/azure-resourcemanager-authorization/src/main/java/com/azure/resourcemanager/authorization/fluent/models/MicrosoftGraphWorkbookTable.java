@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workbookTable.
+ * Represents a workbook table.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {

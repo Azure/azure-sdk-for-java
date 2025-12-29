@@ -72,7 +72,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientNotebookWorkspaces")
     public interface NotebookWorkspacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces")

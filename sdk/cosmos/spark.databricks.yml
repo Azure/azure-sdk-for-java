@@ -90,13 +90,13 @@ stages:
       - task: Bash@3
         displayName: Importing Jars
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-jar-install.sh
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3/test-databricks/databricks-jar-install.sh
           arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarStorageAccountKey }}'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
-          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpointMsi }} ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3/test-databricks/databricks-notebooks-install.sh
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3/test-databricks/notebooks ${{ parameters.CosmosEndpointMsi }} ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }} ${{ parameters.SubscriptionId }} ${{ parameters.TenantId }} ${{ parameters.ResourceGroupName }} ${{ parameters.ClientId }} ${{ parameters.ClientSecret }} ${{ parameters.CosmosContainerName }} ${{ parameters.CosmosDatabaseName }}
       - task: Bash@3
         displayName: 'Validating Checksum'
         inputs:

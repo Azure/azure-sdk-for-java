@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedMaintenanceWindowStatusesGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ManagedMaintenanceWindowStatusGet_example.json
+     * x-ms-original-file: 2025-10-01-preview/ManagedMaintenanceWindowStatusGet_example.json
      */
     /**
      * Sample code: Get Maintenance Window Status.

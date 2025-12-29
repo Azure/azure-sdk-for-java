@@ -75,7 +75,8 @@ class AzureAppConfigDataResourceTest {
 
         assertTrue(resource.isConfigStoreEnabled(), 
             "Config store should be enabled in " + scenarioDescription + " when conditions are met");
-        assertEquals(isRefresh, resource.isRefresh(), 
+        // You pass in startup, but it becomes is refresh
+        assertEquals(!isRefresh, resource.isRefresh(), 
             "Should correctly report refresh state for " + scenarioDescription);
     }
 
@@ -93,14 +94,14 @@ class AzureAppConfigDataResourceTest {
             true, configStore, mockProfiles, false, TEST_REFRESH_INTERVAL);
 
         assertTrue(enabledResource.isConfigStoreEnabled());
-        assertAllPropertiesCorrect(enabledResource, trimKeyPrefixes, selects, featureFlagSelects, false);
+        assertAllPropertiesCorrect(enabledResource, trimKeyPrefixes, selects, featureFlagSelects, true);
 
         configStore.setEnabled(false);
         AzureAppConfigDataResource disabledResource = new AzureAppConfigDataResource(
             true, configStore, mockProfiles, true, TEST_REFRESH_INTERVAL);
 
         assertFalse(disabledResource.isConfigStoreEnabled());
-        assertAllPropertiesCorrect(disabledResource, trimKeyPrefixes, selects, featureFlagSelects, true);
+        assertAllPropertiesCorrect(disabledResource, trimKeyPrefixes, selects, featureFlagSelects, false);
     }
 
     private void assertAllPropertiesCorrect(AzureAppConfigDataResource resource,
@@ -131,7 +132,7 @@ class AzureAppConfigDataResourceTest {
             false, configStore, mockProfiles, true, null);
         assertFalse(disabledResource.isConfigStoreEnabled());
         assertNull(disabledResource.getRefreshInterval());
-        assertTrue(disabledResource.isRefresh());
+        assertFalse(disabledResource.isRefresh());
     }
 
 }

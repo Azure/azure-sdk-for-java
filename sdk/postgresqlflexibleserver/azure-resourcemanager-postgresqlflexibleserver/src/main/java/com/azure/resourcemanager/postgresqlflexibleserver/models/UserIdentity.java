@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes a single user-assigned identity associated with the application.
+ * User assigned managed identity associated with a server.
  */
 @Fluent
 public final class UserIdentity implements JsonSerializable<UserIdentity> {
     /*
-     * the object identifier of the Service Principal which this identity represents.
+     * Identifier of the object of the service principal associated to the user assigned managed identity.
      */
     private String principalId;
 
     /*
-     * the client identifier of the Service Principal which this identity represents.
+     * Identifier of the client of the service principal associated to the user assigned managed identity.
      */
     private String clientId;
 
@@ -33,7 +33,8 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
     }
 
     /**
-     * Get the principalId property: the object identifier of the Service Principal which this identity represents.
+     * Get the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @return the principalId value.
      */
@@ -42,7 +43,8 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
     }
 
     /**
-     * Set the principalId property: the object identifier of the Service Principal which this identity represents.
+     * Set the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @param principalId the principalId value to set.
      * @return the UserIdentity object itself.
@@ -53,7 +55,8 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
     }
 
     /**
-     * Get the clientId property: the client identifier of the Service Principal which this identity represents.
+     * Get the clientId property: Identifier of the client of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @return the clientId value.
      */
@@ -62,7 +65,8 @@ public final class UserIdentity implements JsonSerializable<UserIdentity> {
     }
 
     /**
-     * Set the clientId property: the client identifier of the Service Principal which this identity represents.
+     * Set the clientId property: Identifier of the client of the service principal associated to the user assigned
+     * managed identity.
      * 
      * @param clientId the clientId value to set.
      * @return the UserIdentity object itself.

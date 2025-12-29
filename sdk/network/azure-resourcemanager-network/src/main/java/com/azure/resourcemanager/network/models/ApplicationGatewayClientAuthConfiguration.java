@@ -27,6 +27,11 @@ public final class ApplicationGatewayClientAuthConfiguration
      */
     private ApplicationGatewayClientRevocationOptions verifyClientRevocation;
 
+    /*
+     * Verify client Authentication mode.
+     */
+    private ApplicationGatewayClientAuthVerificationModes verifyClientAuthMode;
+
     /**
      * Creates an instance of ApplicationGatewayClientAuthConfiguration class.
      */
@@ -75,6 +80,27 @@ public final class ApplicationGatewayClientAuthConfiguration
     }
 
     /**
+     * Get the verifyClientAuthMode property: Verify client Authentication mode.
+     * 
+     * @return the verifyClientAuthMode value.
+     */
+    public ApplicationGatewayClientAuthVerificationModes verifyClientAuthMode() {
+        return this.verifyClientAuthMode;
+    }
+
+    /**
+     * Set the verifyClientAuthMode property: Verify client Authentication mode.
+     * 
+     * @param verifyClientAuthMode the verifyClientAuthMode value to set.
+     * @return the ApplicationGatewayClientAuthConfiguration object itself.
+     */
+    public ApplicationGatewayClientAuthConfiguration
+        withVerifyClientAuthMode(ApplicationGatewayClientAuthVerificationModes verifyClientAuthMode) {
+        this.verifyClientAuthMode = verifyClientAuthMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -91,6 +117,8 @@ public final class ApplicationGatewayClientAuthConfiguration
         jsonWriter.writeBooleanField("verifyClientCertIssuerDN", this.verifyClientCertIssuerDN);
         jsonWriter.writeStringField("verifyClientRevocation",
             this.verifyClientRevocation == null ? null : this.verifyClientRevocation.toString());
+        jsonWriter.writeStringField("verifyClientAuthMode",
+            this.verifyClientAuthMode == null ? null : this.verifyClientAuthMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -116,6 +144,9 @@ public final class ApplicationGatewayClientAuthConfiguration
                 } else if ("verifyClientRevocation".equals(fieldName)) {
                     deserializedApplicationGatewayClientAuthConfiguration.verifyClientRevocation
                         = ApplicationGatewayClientRevocationOptions.fromString(reader.getString());
+                } else if ("verifyClientAuthMode".equals(fieldName)) {
+                    deserializedApplicationGatewayClientAuthConfiguration.verifyClientAuthMode
+                        = ApplicationGatewayClientAuthVerificationModes.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

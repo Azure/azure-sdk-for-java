@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class TasksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TasksDelete.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TasksDelete.json
      */
     /**
      * Sample code: Tasks_Delete.

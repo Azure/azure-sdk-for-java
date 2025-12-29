@@ -62,5 +62,9 @@ public enum FaultInjectionOperationType {
     /**
      * Read change feed items
      */
-    READ_FEED_ITEM
+    READ_FEED_ITEM,
+    /**
+     * Head collection request - barrier request for document operation
+     */
+    HEAD_COLLECTION
 }

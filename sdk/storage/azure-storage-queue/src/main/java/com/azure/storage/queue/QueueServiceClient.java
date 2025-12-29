@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -15,10 +16,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.models.KeyInfo;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -26,18 +31,22 @@ import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 import static com.azure.storage.common.implementation.StorageImplUtils.submitThreadPool;
 
 /**
@@ -693,4 +702,48 @@ public final class QueueServiceClient {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
+
+    /**
+     * Gets a user delegation key for use with this account's queue storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return The user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's queue storage. Note: This method call is only valid when
+     * using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("expiry", expiry);
+        if (start != null && !start.isBefore(expiry)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
+        }
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
+            = () -> this.azureQueueStorage.getServices()
+                .getUserDelegationKeyWithResponse(
+                    new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                        .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    null, null, finalContext);
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
+            = sendRequest(operation, timeout, QueueStorageException.class);
+        return new SimpleResponse<>(response, response.getValue());
+    }
+
 }

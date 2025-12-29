@@ -63,7 +63,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowRunActions")
     public interface WorkflowRunActionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions")
@@ -153,11 +153,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, runName, this.client.getApiVersion(), top, filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, apiVersion, top, filter, accept, context))
             .<PagedResponse<WorkflowRunActionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -202,11 +202,12 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (runName == null) {
             return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, this.client.getApiVersion(), top, filter, accept, context)
+                runName, apiVersion, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -357,11 +358,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, runName, actionName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -406,10 +407,11 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, this.client.getApiVersion(), accept, context);
+            workflowName, runName, actionName, apiVersion, accept, context);
     }
 
     /**
@@ -511,11 +513,12 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listExpressionTraces(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, name, workflowName, runName, actionName,
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
             .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().inputs(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -562,11 +565,12 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-                workflowName, runName, actionName, this.client.getApiVersion(), accept, context)
+                workflowName, runName, actionName, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().inputs(), res.getValue().nextLink(), null));
     }
@@ -661,8 +665,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink) {
@@ -688,8 +691,7 @@ public final class WorkflowRunActionsClientImpl implements WorkflowRunActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow run actions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return a list of workflow run actions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionInner>> listNextSinglePageAsync(String nextLink, Context context) {

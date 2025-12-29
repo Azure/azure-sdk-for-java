@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksDeleteVMGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-01/WorkloadNetworks_DeleteVMGroup.json
+     * x-ms-original-file: 2025-09-01/WorkloadNetworks_DeleteVMGroup.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteVMGroup.

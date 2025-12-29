@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * deviceManagementTroubleshootingEvent
- * 
+ * Represents a device management troubleshooting event.
+ * <p>
  * Event representing an general failure.
  */
 @Fluent

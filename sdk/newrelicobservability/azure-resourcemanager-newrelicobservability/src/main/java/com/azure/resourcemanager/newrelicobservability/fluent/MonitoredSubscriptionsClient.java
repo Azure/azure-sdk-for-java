@@ -19,20 +19,25 @@ import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
  */
 public interface MonitoredSubscriptionsClient {
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -40,14 +45,17 @@ public interface MonitoredSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName,
         Context context);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -56,15 +64,16 @@ public interface MonitoredSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, Context context);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -72,14 +81,16 @@ public interface MonitoredSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @return a MonitoredSubscriptionProperties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MonitoredSubscriptionPropertiesInner get(String resourceGroupName, String monitorName,
         ConfigurationName configurationName);
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -92,10 +103,12 @@ public interface MonitoredSubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName);
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName);
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -110,11 +123,13 @@ public interface MonitoredSubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -125,11 +140,13 @@ public interface MonitoredSubscriptionsClient {
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+    MonitoredSubscriptionPropertiesInner createOrUpdate(String resourceGroupName, String monitorName,
         ConfigurationName configurationName);
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -142,11 +159,14 @@ public interface MonitoredSubscriptionsClient {
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+    MonitoredSubscriptionPropertiesInner createOrUpdate(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -162,7 +182,10 @@ public interface MonitoredSubscriptionsClient {
         beginUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -181,7 +204,10 @@ public interface MonitoredSubscriptionsClient {
         MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -196,7 +222,10 @@ public interface MonitoredSubscriptionsClient {
         ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -213,7 +242,10 @@ public interface MonitoredSubscriptionsClient {
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -228,7 +260,10 @@ public interface MonitoredSubscriptionsClient {
         ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -244,7 +279,10 @@ public interface MonitoredSubscriptionsClient {
         ConfigurationName configurationName, Context context);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -257,7 +295,10 @@ public interface MonitoredSubscriptionsClient {
     void delete(String resourceGroupName, String monitorName, ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.

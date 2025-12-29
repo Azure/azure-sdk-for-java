@@ -162,6 +162,30 @@ public final class AttackStrategy extends ExpandableStringEnum<AttackStrategy> {
     public static final AttackStrategy BASELINE = fromString("baseline");
 
     /**
+     * Represents indirect jailbreak attacks that use complex methods to bypass AI safeguards.
+     */
+    @Generated
+    public static final AttackStrategy INDIRECT_JAILBREAK = fromString("indirect_jailbreak");
+
+    /**
+     * Alters the tense of the text, changing its temporal context.
+     */
+    @Generated
+    public static final AttackStrategy TENSE = fromString("tense");
+
+    /**
+     * Creates multi-turn conversations to simulate extended interactions.
+     */
+    @Generated
+    public static final AttackStrategy MULTI_TURN = fromString("multi_turn");
+
+    /**
+     * Gradually increases the intensity or complexity of the attack over time.
+     */
+    @Generated
+    public static final AttackStrategy CRESCENDO = fromString("crescendo");
+
+    /**
      * Creates a new instance of AttackStrategy value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

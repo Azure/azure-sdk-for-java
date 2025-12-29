@@ -11,25 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobStorageTokenStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobStorageTokenStore model = BinaryData.fromString(
-            "{\"sasUrlSettingName\":\"tzxdpnqbqqwx\",\"blobContainerUri\":\"feallnwsu\",\"clientId\":\"snjampmng\",\"managedIdentityResourceId\":\"scxaq\"}")
-            .toObject(BlobStorageTokenStore.class);
-        Assertions.assertEquals("tzxdpnqbqqwx", model.sasUrlSettingName());
-        Assertions.assertEquals("feallnwsu", model.blobContainerUri());
-        Assertions.assertEquals("snjampmng", model.clientId());
-        Assertions.assertEquals("scxaq", model.managedIdentityResourceId());
+        BlobStorageTokenStore model
+            = BinaryData.fromString("{\"sasUrlSettingName\":\"mijcmmxdcufufs\"}").toObject(BlobStorageTokenStore.class);
+        Assertions.assertEquals("mijcmmxdcufufs", model.sasUrlSettingName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobStorageTokenStore model = new BlobStorageTokenStore().withSasUrlSettingName("tzxdpnqbqqwx")
-            .withBlobContainerUri("feallnwsu")
-            .withClientId("snjampmng")
-            .withManagedIdentityResourceId("scxaq");
+        BlobStorageTokenStore model = new BlobStorageTokenStore().withSasUrlSettingName("mijcmmxdcufufs");
         model = BinaryData.fromObject(model).toObject(BlobStorageTokenStore.class);
-        Assertions.assertEquals("tzxdpnqbqqwx", model.sasUrlSettingName());
-        Assertions.assertEquals("feallnwsu", model.blobContainerUri());
-        Assertions.assertEquals("snjampmng", model.clientId());
-        Assertions.assertEquals("scxaq", model.managedIdentityResourceId());
+        Assertions.assertEquals("mijcmmxdcufufs", model.sasUrlSettingName());
     }
 }

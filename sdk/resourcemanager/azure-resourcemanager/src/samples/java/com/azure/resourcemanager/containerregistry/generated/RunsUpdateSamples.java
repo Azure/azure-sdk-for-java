@@ -12,8 +12,8 @@ import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 public final class RunsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RunsUpdate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RunsUpdate.json
      */
     /**
      * Sample code: Runs_Update.

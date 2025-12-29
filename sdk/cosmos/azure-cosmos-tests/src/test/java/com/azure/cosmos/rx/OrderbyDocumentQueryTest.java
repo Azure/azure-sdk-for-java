@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializerNoExceptionWrapping;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -41,6 +42,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -658,7 +660,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @BeforeMethod(groups = { "query" })
     public void beforeMethod() throws Exception {
         // add a cool off time
-        TimeUnit.SECONDS.sleep(10);
+        CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+    }
+
+    @AfterMethod(groups = { "query" }, alwaysRun = true)
+    public void afterMethod() throws Exception {
+        logger.info("captureNettyLeaks: {}", captureNettyLeaks());
     }
 
     @BeforeClass(groups = { "query" }, timeOut = 4 * SETUP_TIMEOUT)

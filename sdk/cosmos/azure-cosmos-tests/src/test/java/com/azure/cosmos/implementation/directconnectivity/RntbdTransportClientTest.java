@@ -97,7 +97,6 @@ import java.util.stream.Stream;
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.testng.Assert.assertEquals;
@@ -1007,7 +1006,7 @@ public final class RntbdTransportClientTest {
                 this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
-                    lenientFormat("addressUri %s cannot be parsed as a server-based authority", addressUri),
+                    String.format("addressUri %s cannot be parsed as a server-based authority", addressUri),
                     error);
             }
 
@@ -1136,6 +1135,11 @@ public final class RntbdTransportClientTest {
         @Override
         public URI serviceEndpoint() {
             return null;
+        }
+
+        @Override
+        public URI serverKeyUsedAsActualRemoteAddress() {
+            return this.remoteURI;
         }
 
         @Override

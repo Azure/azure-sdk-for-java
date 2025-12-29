@@ -10,16 +10,16 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ServersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerListByResourceGroup.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersListByResourceGroup.json
      */
     /**
-     * Sample code: ServerListByResourceGroup.
+     * Sample code: List all servers in a resource group.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        serverListByResourceGroup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().listByResourceGroup("testrgn", com.azure.core.util.Context.NONE);
+        listAllServersInAResourceGroup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().listByResourceGroup("exampleresourcegroup", com.azure.core.util.Context.NONE);
     }
 }

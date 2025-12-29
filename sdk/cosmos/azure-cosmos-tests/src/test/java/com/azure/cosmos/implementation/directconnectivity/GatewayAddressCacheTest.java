@@ -168,7 +168,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void getMasterAddressesViaGatewayAsync(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();

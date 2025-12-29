@@ -54,7 +54,9 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -235,7 +237,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"})
+    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region"})
     public void beforeClass() {
         try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
@@ -4498,7 +4500,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @AfterClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"})
+    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    public void beforeMethod() throws Exception {
+        // add a cool off time
+        CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+    }
+
+    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    public void afterMethod() throws Exception {
+        logger.info("captureNettyLeaks: {}", captureNettyLeaks());
+    }
+
+    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

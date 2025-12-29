@@ -60,7 +60,7 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
      * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowRunActionScopeRepetitions")
     public interface WorkflowRunActionScopeRepetitionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/scopeRepetitions")
@@ -134,11 +134,11 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, runName, actionName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, runName, actionName, apiVersion, accept, context))
             .<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -188,11 +188,12 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (actionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, actionName, this.client.getApiVersion(), accept, context)
+                runName, actionName, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -323,11 +324,12 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, runName, actionName, repetitionName, this.client.getApiVersion(),
-                accept, context))
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    name, workflowName, runName, actionName, repetitionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -377,10 +379,11 @@ public final class WorkflowRunActionScopeRepetitionsClientImpl implements Workfl
         if (repetitionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context);
+            workflowName, runName, actionName, repetitionName, apiVersion, accept, context);
     }
 
     /**

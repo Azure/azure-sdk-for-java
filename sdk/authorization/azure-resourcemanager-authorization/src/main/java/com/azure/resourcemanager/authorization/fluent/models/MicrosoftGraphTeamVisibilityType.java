@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * teamVisibilityType.
+ * Represents a team visibility type.
  */
 public final class MicrosoftGraphTeamVisibilityType extends ExpandableStringEnum<MicrosoftGraphTeamVisibilityType> {
     /**

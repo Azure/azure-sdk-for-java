@@ -2,7 +2,7 @@
 
 Azure Resource Manager ContainerAppsApi client library for Java.
 
-This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions extension resource. Package tag package-preview-2025-02-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Logic app is an extension resource on container app and the extension resource enables logic specific operations on the container app through the APIs listed. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-appcontainers</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

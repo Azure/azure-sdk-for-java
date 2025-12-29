@@ -120,7 +120,7 @@ public interface SourceControl {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithRepoUrl, DefinitionStages.WithBranch,
-            DefinitionStages.WithGithubActionConfiguration, DefinitionStages.WithXMsGithubAuxiliary {
+            DefinitionStages.WithGithubActionConfiguration {
             /**
              * Executes the create request.
              * 
@@ -180,19 +180,6 @@ public interface SourceControl {
              */
             WithCreate withGithubActionConfiguration(GithubActionConfiguration githubActionConfiguration);
         }
-
-        /**
-         * The stage of the SourceControl definition allowing to specify xMsGithubAuxiliary.
-         */
-        interface WithXMsGithubAuxiliary {
-            /**
-             * Specifies the xMsGithubAuxiliary property: Github personal access token used for SourceControl..
-             * 
-             * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-             * @return the next definition stage.
-             */
-            WithCreate withXMsGithubAuxiliary(String xMsGithubAuxiliary);
-        }
     }
 
     /**
@@ -205,8 +192,8 @@ public interface SourceControl {
     /**
      * The template for SourceControl update.
      */
-    interface Update extends UpdateStages.WithRepoUrl, UpdateStages.WithBranch,
-        UpdateStages.WithGithubActionConfiguration, UpdateStages.WithXMsGithubAuxiliary {
+    interface Update
+        extends UpdateStages.WithRepoUrl, UpdateStages.WithBranch, UpdateStages.WithGithubActionConfiguration {
         /**
          * Executes the update request.
          * 
@@ -269,19 +256,6 @@ public interface SourceControl {
              * @return the next definition stage.
              */
             Update withGithubActionConfiguration(GithubActionConfiguration githubActionConfiguration);
-        }
-
-        /**
-         * The stage of the SourceControl update allowing to specify xMsGithubAuxiliary.
-         */
-        interface WithXMsGithubAuxiliary {
-            /**
-             * Specifies the xMsGithubAuxiliary property: Github personal access token used for SourceControl..
-             * 
-             * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-             * @return the next definition stage.
-             */
-            Update withXMsGithubAuxiliary(String xMsGithubAuxiliary);
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workbookComment.
+ * Represents a workbook comment.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {

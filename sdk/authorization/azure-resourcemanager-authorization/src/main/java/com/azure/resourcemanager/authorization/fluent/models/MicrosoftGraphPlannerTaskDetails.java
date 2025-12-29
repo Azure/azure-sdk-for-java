@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * plannerTaskDetails.
+ * Represents a planner task details.
  */
 @Fluent
 public final class MicrosoftGraphPlannerTaskDetails extends MicrosoftGraphEntity {

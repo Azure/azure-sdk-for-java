@@ -14,8 +14,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.LogicAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
 import com.azure.resourcemanager.appcontainers.models.LogicApp;
 import com.azure.resourcemanager.appcontainers.models.LogicApps;
-import com.azure.resourcemanager.appcontainers.models.LogicAppsProxyMethod;
-import com.azure.resourcemanager.appcontainers.models.WorkflowArtifacts;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelope;
 
 public final class LogicAppsImpl implements LogicApps {
@@ -98,17 +96,6 @@ public final class LogicAppsImpl implements LogicApps {
         }
     }
 
-    public Response<Void> deployWorkflowArtifactsWithResponse(String resourceGroupName, String containerAppName,
-        String logicAppName, WorkflowArtifacts workflowArtifacts, Context context) {
-        return this.serviceClient()
-            .deployWorkflowArtifactsWithResponse(resourceGroupName, containerAppName, logicAppName, workflowArtifacts,
-                context);
-    }
-
-    public void deployWorkflowArtifacts(String resourceGroupName, String containerAppName, String logicAppName) {
-        this.serviceClient().deployWorkflowArtifacts(resourceGroupName, containerAppName, logicAppName);
-    }
-
     public Response<WorkflowEnvelope> listWorkflowsConnectionsWithResponse(String resourceGroupName,
         String containerAppName, String logicAppName, Context context) {
         Response<WorkflowEnvelopeInner> inner = this.serviceClient()
@@ -130,19 +117,6 @@ public final class LogicAppsImpl implements LogicApps {
         } else {
             return null;
         }
-    }
-
-    public Response<Object> invokeWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod, Context context) {
-        return this.serviceClient()
-            .invokeWithResponse(resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath,
-                xMsLogicAppsProxyMethod, context);
-    }
-
-    public Object invoke(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod) {
-        return this.serviceClient()
-            .invoke(resourceGroupName, containerAppName, logicAppName, xMsLogicAppsProxyPath, xMsLogicAppsProxyMethod);
     }
 
     public LogicApp getById(String id) {

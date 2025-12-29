@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class WebhooksListSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2025-04-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/
      * WebhookList.json
      */
     /**

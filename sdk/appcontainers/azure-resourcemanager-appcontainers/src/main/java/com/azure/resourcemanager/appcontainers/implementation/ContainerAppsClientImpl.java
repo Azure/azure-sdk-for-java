@@ -41,7 +41,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppCollection;
-import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -81,7 +80,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/containerApps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -89,7 +88,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.App/containerApps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -97,7 +96,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -106,7 +105,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppCollection> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -116,7 +115,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -127,7 +126,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -137,7 +136,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -148,7 +147,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -159,7 +158,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 202, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -169,7 +168,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 202, 204 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -179,7 +178,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -190,7 +189,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -201,7 +200,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listCustomHostNameAnalysis")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomHostnameAnalysisResultInner>> listCustomHostnameAnalysis(
             @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -211,7 +210,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listCustomHostNameAnalysis")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CustomHostnameAnalysisResultInner> listCustomHostnameAnalysisSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -221,7 +220,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listSecrets")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecretsCollectionInner>> listSecrets(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -231,7 +230,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/listSecrets")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<SecretsCollectionInner> listSecretsSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -242,7 +241,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/getAuthtoken")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppAuthTokenInner>> getAuthToken(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -253,7 +252,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/getAuthtoken")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ManagementException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppAuthTokenInner> getAuthTokenSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -263,7 +262,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/start")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -273,7 +272,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/start")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> startSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -283,7 +282,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/stop")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -293,7 +292,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/stop")
         @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> stopSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
@@ -303,7 +302,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppCollection>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -311,7 +310,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppCollection> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -319,7 +318,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerAppCollection>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -327,7 +326,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ContainerAppCollection> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -336,7 +335,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     /**
      * Get the Container Apps in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -363,7 +362,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     /**
      * Get the Container Apps in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription as paginated response with {@link PagedFlux}.
      */
@@ -376,7 +375,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     /**
      * Get the Container Apps in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse}.
      */
@@ -404,7 +403,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse}.
      */
@@ -430,7 +429,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
     /**
      * Get the Container Apps in a given subscription.
      * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -444,7 +443,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription as paginated response with {@link PagedIterable}.
      */
@@ -459,7 +458,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -492,7 +491,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group as paginated response with {@link PagedFlux}.
      */
@@ -507,7 +506,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse}.
      */
@@ -540,7 +539,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse}.
      */
@@ -572,7 +571,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
      */
@@ -588,7 +587,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group as paginated response with {@link PagedIterable}.
      */
@@ -604,7 +603,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response} on successful completion of {@link Mono}.
@@ -642,7 +641,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App on successful completion of {@link Mono}.
@@ -660,7 +659,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response}.
@@ -697,7 +696,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App.
@@ -714,7 +713,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -758,7 +757,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -802,7 +801,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties used to create a container app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -845,7 +844,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App.
      */
@@ -865,7 +864,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -886,7 +885,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties used to create a container app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -906,7 +905,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App on successful completion of {@link Mono}.
      */
@@ -924,7 +923,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties used to create a container app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -942,7 +941,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties used to create a container app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -958,7 +957,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -994,7 +993,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1030,7 +1029,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -1066,7 +1065,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
@@ -1083,7 +1082,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -1100,7 +1099,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -1117,7 +1116,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -1133,7 +1132,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1148,7 +1147,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1165,7 +1164,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1211,7 +1210,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -1257,7 +1256,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -1302,7 +1301,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App.
      */
@@ -1324,7 +1323,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -1346,7 +1345,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -1368,7 +1367,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App on successful completion of {@link Mono}.
      */
@@ -1388,7 +1387,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -1408,7 +1407,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppEnvelope Properties of a Container App that need to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -1425,7 +1424,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param customHostname Custom hostname.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1462,7 +1461,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis on successful completion of {@link Mono}.
      */
@@ -1482,7 +1481,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param customHostname Custom hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis along with {@link Response}.
      */
@@ -1518,7 +1517,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom domain analysis.
      */
@@ -1536,7 +1535,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -1573,7 +1572,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource on successful completion of {@link Mono}.
      */
@@ -1590,7 +1589,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource along with {@link Response}.
      */
@@ -1626,7 +1625,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Secrets Collection ARM resource.
      */
@@ -1641,7 +1640,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app along with {@link Response} on successful completion of {@link Mono}.
@@ -1678,7 +1677,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app on successful completion of {@link Mono}.
@@ -1696,7 +1695,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app along with {@link Response}.
@@ -1733,7 +1732,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return auth token for a container app.
@@ -1749,7 +1748,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1784,7 +1783,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -1820,7 +1819,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -1855,7 +1854,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App.
      */
@@ -1873,7 +1872,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -1892,7 +1891,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -1910,7 +1909,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App on successful completion of {@link Mono}.
      */
@@ -1926,7 +1925,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -1942,7 +1941,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -1957,7 +1956,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1992,7 +1991,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -2028,7 +2027,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App along with {@link Response}.
      */
@@ -2063,7 +2062,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of container App.
      */
@@ -2081,7 +2080,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -2100,7 +2099,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of container App.
      */
@@ -2118,7 +2117,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App on successful completion of {@link Mono}.
      */
@@ -2134,7 +2133,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -2150,7 +2149,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App.
      */
@@ -2166,7 +2165,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -2196,7 +2195,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse}.
      */
@@ -2226,7 +2225,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given subscription along with {@link PagedResponse}.
      */
@@ -2255,7 +2254,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -2285,7 +2284,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse}.
      */
@@ -2315,7 +2314,7 @@ public final class ContainerAppsClientImpl implements ContainerAppsClient {
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Container Apps in a given resource group along with {@link PagedResponse}.
      */

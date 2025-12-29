@@ -835,6 +835,31 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePatchResourcePropertiesInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
      * 
      * @return the storageAccountRequired value.

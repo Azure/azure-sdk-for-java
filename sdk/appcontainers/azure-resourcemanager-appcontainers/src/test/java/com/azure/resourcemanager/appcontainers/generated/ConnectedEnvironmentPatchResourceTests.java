@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectedEnvironmentPatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedEnvironmentPatchResource model = BinaryData.fromString(
-            "{\"tags\":{\"quuvxzxcl\":\"htozfikdow\",\"sg\":\"ithhqzon\",\"c\":\"b\",\"acffgdkzzewkfvhq\":\"hfwdsjnkaljutiis\"}}")
+        ConnectedEnvironmentPatchResource model = BinaryData
+            .fromString(
+                "{\"tags\":{\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\"}}")
             .toObject(ConnectedEnvironmentPatchResource.class);
-        Assertions.assertEquals("htozfikdow", model.tags().get("quuvxzxcl"));
+        Assertions.assertEquals("kcciwwzjuqkhr", model.tags().get("ajiwkuo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedEnvironmentPatchResource model = new ConnectedEnvironmentPatchResource().withTags(
-            mapOf("quuvxzxcl", "htozfikdow", "sg", "ithhqzon", "c", "b", "acffgdkzzewkfvhq", "hfwdsjnkaljutiis"));
+        ConnectedEnvironmentPatchResource model = new ConnectedEnvironmentPatchResource()
+            .withTags(mapOf("ajiwkuo", "kcciwwzjuqkhr", "sauuimj", "oskg", "rfbyaosvexcso", "vxieduugidyj"));
         model = BinaryData.fromObject(model).toObject(ConnectedEnvironmentPatchResource.class);
-        Assertions.assertEquals("htozfikdow", model.tags().get("quuvxzxcl"));
+        Assertions.assertEquals("kcciwwzjuqkhr", model.tags().get("ajiwkuo"));
     }
 
     // Use "Map.of" if available

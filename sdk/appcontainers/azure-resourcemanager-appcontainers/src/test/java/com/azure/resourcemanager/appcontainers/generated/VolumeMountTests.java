@@ -11,21 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeMountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeMount model
-            = BinaryData.fromString("{\"volumeName\":\"byrqufeg\",\"mountPath\":\"vwz\",\"subPath\":\"nhlmctlpdng\"}")
-                .toObject(VolumeMount.class);
-        Assertions.assertEquals("byrqufeg", model.volumeName());
-        Assertions.assertEquals("vwz", model.mountPath());
-        Assertions.assertEquals("nhlmctlpdng", model.subPath());
+        VolumeMount model = BinaryData
+            .fromString("{\"volumeName\":\"ndlkzgxhurip\",\"mountPath\":\"podxunkb\",\"subPath\":\"xmubyyntwlrbq\"}")
+            .toObject(VolumeMount.class);
+        Assertions.assertEquals("ndlkzgxhurip", model.volumeName());
+        Assertions.assertEquals("podxunkb", model.mountPath());
+        Assertions.assertEquals("xmubyyntwlrbq", model.subPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeMount model
-            = new VolumeMount().withVolumeName("byrqufeg").withMountPath("vwz").withSubPath("nhlmctlpdng");
+            = new VolumeMount().withVolumeName("ndlkzgxhurip").withMountPath("podxunkb").withSubPath("xmubyyntwlrbq");
         model = BinaryData.fromObject(model).toObject(VolumeMount.class);
-        Assertions.assertEquals("byrqufeg", model.volumeName());
-        Assertions.assertEquals("vwz", model.mountPath());
-        Assertions.assertEquals("nhlmctlpdng", model.subPath());
+        Assertions.assertEquals("ndlkzgxhurip", model.volumeName());
+        Assertions.assertEquals("podxunkb", model.mountPath());
+        Assertions.assertEquals("xmubyyntwlrbq", model.subPath());
     }
 }

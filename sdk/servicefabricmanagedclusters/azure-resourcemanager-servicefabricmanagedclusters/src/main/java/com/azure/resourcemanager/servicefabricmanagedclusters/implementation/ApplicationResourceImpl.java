@@ -8,12 +8,16 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ApplicationResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationFetchHealthRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationResource;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParametersProperties;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUserAssignedIdentity;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedIdentity;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartDeployedCodePackageRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResumeApplicationUpgradeParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeUpdateApplicationUpgradeParameters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -150,16 +154,14 @@ public final class ApplicationResourceImpl
     public ApplicationResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getApplications()
-            .updateWithResponse(resourceGroupName, clusterName, applicationName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, Context.NONE);
         return this;
     }
 
     public ApplicationResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getApplications()
-            .updateWithResponse(resourceGroupName, clusterName, applicationName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, context);
         return this;
     }
 
@@ -213,6 +215,33 @@ public final class ApplicationResourceImpl
         serviceManager.applications().startRollback(resourceGroupName, clusterName, applicationName, context);
     }
 
+    public void updateUpgrade(RuntimeUpdateApplicationUpgradeParameters parameters) {
+        serviceManager.applications().updateUpgrade(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void updateUpgrade(RuntimeUpdateApplicationUpgradeParameters parameters, Context context) {
+        serviceManager.applications()
+            .updateUpgrade(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
+    public void fetchHealth(ApplicationFetchHealthRequest parameters) {
+        serviceManager.applications().fetchHealth(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void fetchHealth(ApplicationFetchHealthRequest parameters, Context context) {
+        serviceManager.applications().fetchHealth(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
+    public void restartDeployedCodePackage(RestartDeployedCodePackageRequest parameters) {
+        serviceManager.applications()
+            .restartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void restartDeployedCodePackage(RestartDeployedCodePackageRequest parameters, Context context) {
+        serviceManager.applications()
+            .restartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
     public ApplicationResourceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -255,6 +284,11 @@ public final class ApplicationResourceImpl
 
     public ApplicationResourceImpl withUpgradePolicy(ApplicationUpgradePolicy upgradePolicy) {
         this.innerModel().withUpgradePolicy(upgradePolicy);
+        return this;
+    }
+
+    public ApplicationResourceImpl withProperties(ApplicationUpdateParametersProperties properties) {
+        this.updateParameters.withProperties(properties);
         return this;
     }
 

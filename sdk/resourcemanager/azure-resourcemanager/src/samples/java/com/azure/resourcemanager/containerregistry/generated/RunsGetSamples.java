@@ -10,8 +10,8 @@ package com.azure.resourcemanager.containerregistry.generated;
 public final class RunsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RunsGet.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RunsGet.json
      */
     /**
      * Sample code: Runs_Get.

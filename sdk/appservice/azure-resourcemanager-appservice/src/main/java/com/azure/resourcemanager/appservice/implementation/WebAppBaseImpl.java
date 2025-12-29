@@ -831,6 +831,15 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         siteUpdate.withCloningInfo(siteInner.cloningInfo());
         siteUpdate.withHttpsOnly(siteInner.httpsOnly());
         siteUpdate.withRedundancyMode(siteInner.redundancyMode());
+        siteUpdate.withPublicNetworkAccess(siteInner.publicNetworkAccess());
+        siteUpdate.withDnsConfiguration(siteInner.dnsConfiguration());
+        siteUpdate.withClientAffinityProxyEnabled(siteInner.clientAffinityProxyEnabled());
+        siteUpdate.withClientCertMode(siteInner.clientCertMode());
+        siteUpdate.withCustomDomainVerificationId(siteInner.customDomainVerificationId());
+        siteUpdate.withStorageAccountRequired(siteInner.storageAccountRequired());
+        siteUpdate.withKeyVaultReferenceIdentity(siteInner.keyVaultReferenceIdentity());
+        siteUpdate.withVirtualNetworkSubnetId(siteInner.virtualNetworkSubnetId());
+        // this code need to be updated when api-version upgrade
 
         this.webAppMsiHandler.handleExternalIdentities(siteUpdate);
         return submitSite(siteUpdate).map(siteInner1 -> {
@@ -1754,6 +1763,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.siteConfig = new SiteConfigResourceInner();
         }
         this.siteConfig.withPublicNetworkAccess("Enabled");
+        this.innerModel().withPublicNetworkAccess("Enabled");
         return (FluentImplT) this;
     }
 
@@ -1764,6 +1774,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.siteConfig = new SiteConfigResourceInner();
         }
         this.siteConfig.withPublicNetworkAccess("Disabled");
+        this.innerModel().withPublicNetworkAccess("Disabled");
         return (FluentImplT) this;
     }
 

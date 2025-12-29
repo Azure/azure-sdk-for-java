@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * storagePlanInformation.
+ * Represents a storage plan information.
  */
 @Fluent
 public final class MicrosoftGraphStoragePlanInformation

@@ -13,33 +13,34 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParamete
 public final class ServersRestartSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerRestart.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ServersRestartWithFailover.json
      */
     /**
-     * Sample code: ServerRestart.
+     * Sample code: Restart PostgreSQL database engine in a server with a forced failover to standby server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverRestart(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().restart("testrg", "testserver", null, com.azure.core.util.Context.NONE);
+    public static void restartPostgreSQLDatabaseEngineInAServerWithAForcedFailoverToStandbyServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers()
+            .restart("exampleresourcegroup", "exampleserver",
+                new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_FAILOVER),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ServerRestartWithFailover.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ServersRestart.
+     * json
      */
     /**
-     * Sample code: ServerRestartWithFailover.
+     * Sample code: Restart PostgreSQL database engine in a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void
-        serverRestartWithFailover(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers()
-            .restart("testrg", "testserver",
-                new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_FAILOVER),
-                com.azure.core.util.Context.NONE);
+    public static void restartPostgreSQLDatabaseEngineInAServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().restart("exampleresourcegroup", "exampleserver", null, com.azure.core.util.Context.NONE);
     }
 }

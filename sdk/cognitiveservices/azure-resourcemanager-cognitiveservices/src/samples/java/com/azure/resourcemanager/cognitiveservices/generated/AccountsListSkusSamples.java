@@ -10,7 +10,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 public final class AccountsListSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListSkus.
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListSkus.
      * json
      */
     /**

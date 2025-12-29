@@ -12,19 +12,19 @@ public final class NetworkSecurityPerimeterConfigurationAssociationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationAssociationInfo model
-            = BinaryData.fromString("{\"name\":\"lxveabfqx\",\"accessMode\":\"wmqtibx\"}")
+            = BinaryData.fromString("{\"name\":\"kwfbkgo\",\"accessMode\":\"wopdbydpiz\"}")
                 .toObject(NetworkSecurityPerimeterConfigurationAssociationInfo.class);
-        Assertions.assertEquals("lxveabfqx", model.name());
-        Assertions.assertEquals("wmqtibx", model.accessMode());
+        Assertions.assertEquals("kwfbkgo", model.name());
+        Assertions.assertEquals("wopdbydpiz", model.accessMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterConfigurationAssociationInfo model
-            = new NetworkSecurityPerimeterConfigurationAssociationInfo().withName("lxveabfqx")
-                .withAccessMode("wmqtibx");
+            = new NetworkSecurityPerimeterConfigurationAssociationInfo().withName("kwfbkgo")
+                .withAccessMode("wopdbydpiz");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationAssociationInfo.class);
-        Assertions.assertEquals("lxveabfqx", model.name());
-        Assertions.assertEquals("wmqtibx", model.accessMode());
+        Assertions.assertEquals("kwfbkgo", model.name());
+        Assertions.assertEquals("wopdbydpiz", model.accessMode());
     }
 }

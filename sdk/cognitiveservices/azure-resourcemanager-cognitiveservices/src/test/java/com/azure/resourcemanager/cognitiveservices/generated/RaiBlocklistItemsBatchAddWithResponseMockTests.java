@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
     @Test
     public void testBatchAddWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"zwaqxofqo\",\"tags\":{\"ekxbyjg\":\"iqbplvfidusz\"},\"properties\":{\"description\":\"e\"},\"id\":\"x\",\"name\":\"ihpq\",\"type\":\"dagrhrdicxdw\"}";
+            = "{\"etag\":\"zwyqejga\",\"tags\":{\"ngdyfcixrhlcq\":\"ctgkppgkqzkcyzmf\",\"goiutgw\":\"hoe\"},\"properties\":{\"description\":\"a\"},\"id\":\"qha\",\"name\":\"yntacihnco\",\"type\":\"mip\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,20 @@ public final class RaiBlocklistItemsBatchAddWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RaiBlocklist response
-            = manager.raiBlocklistItems()
-                .batchAddWithResponse("syjdeolctae", "fsyrledjc", "stbvtqig",
-                    Arrays.asList(new RaiBlocklistItemBulkRequest().withName("vsgeafgf")
-                        .withProperties(new RaiBlocklistItemProperties().withPattern("hxlzsxez").withIsRegex(false)),
-                        new RaiBlocklistItemBulkRequest().withName("waaeskyfjl")
-                            .withProperties(new RaiBlocklistItemProperties().withPattern("qtoyrpl").withIsRegex(false)),
-                        new RaiBlocklistItemBulkRequest().withName("jmllpquevhamfow")
-                            .withProperties(new RaiBlocklistItemProperties().withPattern("tmk").withIsRegex(false))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        RaiBlocklist response = manager.raiBlocklistItems()
+            .batchAddWithResponse("ukklvzrlr", "l", "cme",
+                Arrays.asList(new RaiBlocklistItemBulkRequest().withName("czivfqbqna")
+                    .withProperties(new RaiBlocklistItemProperties().withPattern("yenzsieuscpl").withIsRegex(false)),
+                    new RaiBlocklistItemBulkRequest().withName("gxlyzkxitdshezs")
+                        .withProperties(new RaiBlocklistItemProperties().withPattern("lrupjovmo").withIsRegex(false)),
+                    new RaiBlocklistItemBulkRequest().withName("ebrazwzlpzbtzuyk")
+                        .withProperties(new RaiBlocklistItemProperties().withPattern("pfs").withIsRegex(false)),
+                    new RaiBlocklistItemBulkRequest().withName("fnocmbe")
+                        .withProperties(new RaiBlocklistItemProperties().withPattern("fp").withIsRegex(true))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("iqbplvfidusz", response.tags().get("ekxbyjg"));
-        Assertions.assertEquals("e", response.properties().description());
+        Assertions.assertEquals("ctgkppgkqzkcyzmf", response.tags().get("ngdyfcixrhlcq"));
+        Assertions.assertEquals("a", response.properties().description());
     }
 }

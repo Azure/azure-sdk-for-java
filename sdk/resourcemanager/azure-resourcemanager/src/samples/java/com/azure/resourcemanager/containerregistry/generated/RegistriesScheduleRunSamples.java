@@ -31,8 +31,8 @@ import java.util.Map;
 public final class RegistriesScheduleRunSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_FileTaskRun.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_FileTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_FileTaskRun.
@@ -58,8 +58,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun.
@@ -88,8 +88,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_EncodedTaskRun.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_EncodedTaskRun.
@@ -113,8 +113,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_WithCustomCredentials.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithCustomCredentials.
@@ -155,8 +155,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_WithLogTemplate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_WithLogTemplate.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithLogTemplate.
@@ -186,8 +186,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_Task.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_Task.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task.
@@ -219,8 +219,8 @@ public final class RegistriesScheduleRunSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * RegistriesScheduleRun_FileTask_WithCustomCredentials.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task_WithCustomCredentials.

@@ -28,7 +28,7 @@ public final class AlertRuleResourcesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.alertRuleResources()
-            .deleteWithResponse("ytkblmpew", "wfbkrvrns", "shqjohxcrsbf", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("klwndnhjdauwhv", "l", "zbtd", com.azure.core.util.Context.NONE);
 
     }
 }

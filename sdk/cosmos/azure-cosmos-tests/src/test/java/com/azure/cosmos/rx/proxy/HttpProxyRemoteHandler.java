@@ -32,18 +32,41 @@ public class HttpProxyRemoteHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        clientChannel.writeAndFlush(msg); // just forward
+        if (clientChannel != null && clientChannel.isActive()) {
+            clientChannel.writeAndFlush(msg).addListener(f -> {
+                if (!f.isSuccess()) {
+                    // transport is broken; close both sides
+                    flushAndClose(clientChannel);
+                    flushAndClose(remoteChannel);
+                }
+            });
+        } else {
+            io.netty.util.ReferenceCountUtil.safeRelease(msg); // prevent leak
+            flushAndClose(remoteChannel);
+        }
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         flushAndClose(clientChannel);
+        remoteChannel = null;
+        clientChannel = null;
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) {
-        logger.error(id + " error occured", e);
+        logger.error(id + " error occurred", e);
         flushAndClose(remoteChannel);
+        flushAndClose(clientChannel);
+    }
+
+    @Override
+    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+        if (remoteChannel != null) {
+            boolean writable = clientChannel != null && clientChannel.isWritable();
+            remoteChannel.config().setAutoRead(writable);
+        }
+        ctx.fireChannelWritabilityChanged();
     }
 
     private void flushAndClose(Channel ch) {

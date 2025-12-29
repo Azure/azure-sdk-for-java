@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.BillingSource;
@@ -23,20 +23,20 @@ public final class OrganizationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"organizationId\":\"cjwvn\",\"organizationName\":\"ld\",\"billingSource\":\"AZURE\"},\"id\":\"cxrslpmutwuoe\",\"name\":\"rpkhjwn\",\"type\":\"yqsluic\"}]}";
+            = "{\"value\":[{\"properties\":{\"organizationId\":\"orzihle\",\"organizationName\":\"jswsrmslyz\",\"billingSource\":\"NEWRELIC\"},\"id\":\"c\",\"name\":\"ckqqzqioxiysui\",\"type\":\"zynkedya\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OrganizationResource> response
-            = manager.organizations().list("rhvoods", "tbobz", com.azure.core.util.Context.NONE);
+            = manager.organizations().list("saknynfsyn", "jphuopxodlqi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cjwvn", response.iterator().next().organizationId());
-        Assertions.assertEquals("ld", response.iterator().next().organizationName());
-        Assertions.assertEquals(BillingSource.AZURE, response.iterator().next().billingSource());
+        Assertions.assertEquals("orzihle", response.iterator().next().organizationId());
+        Assertions.assertEquals("jswsrmslyz", response.iterator().next().organizationName());
+        Assertions.assertEquals(BillingSource.NEWRELIC, response.iterator().next().billingSource());
     }
 }

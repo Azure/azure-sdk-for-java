@@ -10,7 +10,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFilter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResourceForPatch;
 import reactor.core.publisher.Mono;
@@ -22,333 +23,379 @@ public interface MigrationsClient {
     /**
      * Creates a new migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for creating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required for creating a migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> createWithResponseAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, MigrationResourceInner parameters);
+    Mono<Response<MigrationInner>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String migrationName, MigrationInner parameters);
 
     /**
      * Creates a new migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for creating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required for creating a migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource on successful completion of {@link Mono}.
+     * @return properties of a migration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> createAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, MigrationResourceInner parameters);
+    Mono<MigrationInner> createAsync(String resourceGroupName, String serverName, String migrationName,
+        MigrationInner parameters);
 
     /**
      * Creates a new migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for creating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required for creating a migration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource along with {@link Response}.
+     * @return properties of a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> createWithResponse(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, MigrationResourceInner parameters, Context context);
+    Response<MigrationInner> createWithResponse(String resourceGroupName, String serverName, String migrationName,
+        MigrationInner parameters, Context context);
 
     /**
      * Creates a new migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for creating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required for creating a migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource.
+     * @return properties of a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner create(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, MigrationResourceInner parameters);
+    MigrationInner create(String resourceGroupName, String serverName, String migrationName, MigrationInner parameters);
 
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> getWithResponseAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName);
-
-    /**
-     * Gets details of a migration.
-     * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> getAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+    Mono<Response<MigrationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName);
 
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a migration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrationInner> getAsync(String resourceGroupName, String serverName, String migrationName);
+
+    /**
+     * Gets information about a migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration along with {@link Response}.
+     * @return information about a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> getWithResponse(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, Context context);
+    Response<MigrationInner> getWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context);
 
     /**
-     * Gets details of a migration.
+     * Gets information about a migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a migration.
+     * @return information about a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner get(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName);
+    MigrationInner get(String resourceGroupName, String serverName, String migrationName);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for updating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required to update an existing migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MigrationResourceInner>> updateWithResponseAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters);
-
-    /**
-     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
-     * migration definition. Certain property updates initiate migration state transitions.
-     * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for updating a migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationResourceInner> updateAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+    Mono<Response<MigrationInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName, MigrationResourceForPatch parameters);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for updating a migration.
-     * @param context The context to associate with this operation.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required to update an existing migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource along with {@link Response}.
+     * @return properties of a migration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationResourceInner> updateWithResponse(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters, Context context);
+    Mono<MigrationInner> updateAsync(String resourceGroupName, String serverName, String migrationName,
+        MigrationResourceForPatch parameters);
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
-     * @param parameters The required parameters for updating a migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required to update an existing migration.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration resource.
+     * @return properties of a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationResourceInner update(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, MigrationResourceForPatch parameters);
+    Response<MigrationInner> updateWithResponse(String resourceGroupName, String serverName, String migrationName,
+        MigrationResourceForPatch parameters, Context context);
 
     /**
-     * Deletes a migration.
+     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
+     * migration definition. Certain property updates initiate migration state transitions.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @param parameters Parameters required to update an existing migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName);
+    MigrationInner update(String resourceGroupName, String serverName, String migrationName,
+        MigrationResourceForPatch parameters);
 
     /**
-     * Deletes a migration.
+     * Cancels an active migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+    Mono<Response<MigrationInner>> cancelWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName);
 
     /**
-     * Deletes a migration.
+     * Cancels an active migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a migration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrationInner> cancelAsync(String resourceGroupName, String serverName, String migrationName);
+
+    /**
+     * Cancels an active migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return properties of a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, Context context);
+    Response<MigrationInner> cancelWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context);
 
     /**
-     * Deletes a migration.
+     * Cancels an active migration.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationName The name of the migration.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationName Name of migration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName);
+    MigrationInner cancel(String resourceGroupName, String serverName, String migrationName);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationListFilter Migration list filter. Retrieves either active migrations or all migrations.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationListFilter Migration list filter. Indicates if the request should retrieve only active migrations
+     * or all migrations. Defaults to Active.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedFlux}.
+     * @return list of migrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, MigrationListFilter migrationListFilter);
+    PagedFlux<MigrationInner> listByTargetServerAsync(String resourceGroupName, String serverName,
+        MigrationListFilter migrationListFilter);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedFlux}.
+     * @return list of migrations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
-        String targetDbServerName);
+    PagedFlux<MigrationInner> listByTargetServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedIterable}.
+     * @return list of migrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName);
+    PagedIterable<MigrationInner> listByTargetServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the migrations on a given target server.
+     * Lists all migrations of a target flexible server.
      * 
-     * @param subscriptionId The subscription ID of the target database server.
-     * @param resourceGroupName The resource group name of the target database server.
-     * @param targetDbServerName The name of the target database server.
-     * @param migrationListFilter Migration list filter. Retrieves either active migrations or all migrations.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param migrationListFilter Migration list filter. Indicates if the request should retrieve only active migrations
+     * or all migrations. Defaults to Active.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of migration resources as paginated response with {@link PagedIterable}.
+     * @return list of migrations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, MigrationListFilter migrationListFilter, Context context);
+    PagedIterable<MigrationInner> listByTargetServer(String resourceGroupName, String serverName,
+        MigrationListFilter migrationListFilter, Context context);
+
+    /**
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MigrationNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String serverName, MigrationNameAvailabilityInner parameters);
+
+    /**
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MigrationNameAvailabilityInner> checkNameAvailabilityAsync(String resourceGroupName, String serverName,
+        MigrationNameAvailabilityInner parameters);
+
+    /**
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MigrationNameAvailabilityInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String serverName, MigrationNameAvailabilityInner parameters, Context context);
+
+    /**
+     * Check the validity and availability of the given name, to assign it to a new migration.
+     * 
+     * Checks if a proposed migration name is valid and available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters Parameters required to check if a migration name is valid and available.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return availability of a migration name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MigrationNameAvailabilityInner checkNameAvailability(String resourceGroupName, String serverName,
+        MigrationNameAvailabilityInner parameters);
 }

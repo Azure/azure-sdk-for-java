@@ -94,6 +94,8 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
 
     private String configurationName;
 
+    private ConfigurationForUpdate createParameters;
+
     private ConfigurationForUpdate updateParameters;
 
     public ConfigurationImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
@@ -105,14 +107,14 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     public Configuration create() {
         this.innerObject = serviceManager.serviceClient()
             .getConfigurations()
-            .put(resourceGroupName, serverName, configurationName, this.innerModel(), Context.NONE);
+            .put(resourceGroupName, serverName, configurationName, createParameters, Context.NONE);
         return this;
     }
 
     public Configuration create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConfigurations()
-            .put(resourceGroupName, serverName, configurationName, this.innerModel(), context);
+            .put(resourceGroupName, serverName, configurationName, createParameters, context);
         return this;
     }
 
@@ -121,6 +123,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         this.innerObject = new ConfigurationInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
+        this.createParameters = new ConfigurationForUpdate();
     }
 
     public ConfigurationImpl update() {
@@ -169,7 +172,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
 
     public ConfigurationImpl withValue(String value) {
         if (isInCreateMode()) {
-            this.innerModel().withValue(value);
+            this.createParameters.withValue(value);
             return this;
         } else {
             this.updateParameters.withValue(value);
@@ -179,7 +182,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
 
     public ConfigurationImpl withSource(String source) {
         if (isInCreateMode()) {
-            this.innerModel().withSource(source);
+            this.createParameters.withSource(source);
             return this;
         } else {
             this.updateParameters.withSource(source);
@@ -188,6 +191,6 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

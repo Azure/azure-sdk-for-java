@@ -29,11 +29,6 @@ public final class BrokerSubscriberQueueCustomPolicySettings
      */
     private BrokerSubscriberQueueDynamic dynamic;
 
-    /*
-     * List of topics under which messages would be persisted to disk for each subscriber. Wildcards # and + supported.
-     */
-    private List<String> topics;
-
     /**
      * Creates an instance of BrokerSubscriberQueueCustomPolicySettings class.
      */
@@ -83,28 +78,6 @@ public final class BrokerSubscriberQueueCustomPolicySettings
     }
 
     /**
-     * Get the topics property: List of topics under which messages would be persisted to disk for each subscriber.
-     * Wildcards # and + supported.
-     * 
-     * @return the topics value.
-     */
-    public List<String> topics() {
-        return this.topics;
-    }
-
-    /**
-     * Set the topics property: List of topics under which messages would be persisted to disk for each subscriber.
-     * Wildcards # and + supported.
-     * 
-     * @param topics the topics value to set.
-     * @return the BrokerSubscriberQueueCustomPolicySettings object itself.
-     */
-    public BrokerSubscriberQueueCustomPolicySettings withTopics(List<String> topics) {
-        this.topics = topics;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -113,7 +86,6 @@ public final class BrokerSubscriberQueueCustomPolicySettings
         jsonWriter.writeArrayField("subscriberClientIds", this.subscriberClientIds,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("dynamic", this.dynamic);
-        jsonWriter.writeArrayField("topics", this.topics, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -139,9 +111,6 @@ public final class BrokerSubscriberQueueCustomPolicySettings
                 } else if ("dynamic".equals(fieldName)) {
                     deserializedBrokerSubscriberQueueCustomPolicySettings.dynamic
                         = BrokerSubscriberQueueDynamic.fromJson(reader);
-                } else if ("topics".equals(fieldName)) {
-                    List<String> topics = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBrokerSubscriberQueueCustomPolicySettings.topics = topics;
                 } else {
                     reader.skipChildren();
                 }

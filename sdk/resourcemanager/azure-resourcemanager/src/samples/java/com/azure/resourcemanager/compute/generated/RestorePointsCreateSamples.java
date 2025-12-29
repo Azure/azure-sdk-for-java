@@ -50,7 +50,8 @@ public final class RestorePointsCreateSamples {
             .getRestorePoints()
             .create("myResourceGroup", "rpcName", "rpName",
                 new RestorePointInner().withExcludeDisks(Arrays.asList(new ApiEntityReference().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/disk123"))),
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/disk123")))
+                    .withInstantAccessDurationMinutes(120),
                 com.azure.core.util.Context.NONE);
     }
 }

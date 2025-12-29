@@ -29,6 +29,9 @@ public interface StorageAppliances {
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +39,7 @@ public interface StorageAppliances {
      * @return a list of storage appliances in the provided subscription as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<StorageAppliance> list(Context context);
+    PagedIterable<StorageAppliance> list(Integer top, String skipToken, Context context);
 
     /**
      * List storage appliances in the resource group.
@@ -58,6 +61,9 @@ public interface StorageAppliances {
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +71,8 @@ public interface StorageAppliances {
      * @return a list of storage appliances in the provided resource group as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the storage appliance.
@@ -100,8 +107,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -115,8 +122,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -196,6 +203,39 @@ public interface StorageAppliances {
         Context context);
 
     /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
+
+    /**
      * Retrieve the storage appliance.
      * 
      * Get properties of the provided storage appliance.
@@ -225,8 +265,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,8 +279,8 @@ public interface StorageAppliances {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param id the resource ID.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify

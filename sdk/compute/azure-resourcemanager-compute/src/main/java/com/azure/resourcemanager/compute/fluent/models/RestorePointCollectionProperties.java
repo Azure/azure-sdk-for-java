@@ -38,6 +38,13 @@ public final class RestorePointCollectionProperties implements JsonSerializable<
      */
     private List<RestorePointInner> restorePoints;
 
+    /*
+     * This property determines whether instant access snapshot is enabled for restore points created under this restore
+     * point collection for Premium SSD v2 or Ultra disk. Instant access snapshot for Premium SSD v2 or Ultra disk is
+     * instantaneously available for restoring disk with fast restore performance.
+     */
+    private Boolean instantAccess;
+
     /**
      * Creates an instance of RestorePointCollectionProperties class.
      */
@@ -94,6 +101,30 @@ public final class RestorePointCollectionProperties implements JsonSerializable<
     }
 
     /**
+     * Get the instantAccess property: This property determines whether instant access snapshot is enabled for restore
+     * points created under this restore point collection for Premium SSD v2 or Ultra disk. Instant access snapshot for
+     * Premium SSD v2 or Ultra disk is instantaneously available for restoring disk with fast restore performance.
+     * 
+     * @return the instantAccess value.
+     */
+    public Boolean instantAccess() {
+        return this.instantAccess;
+    }
+
+    /**
+     * Set the instantAccess property: This property determines whether instant access snapshot is enabled for restore
+     * points created under this restore point collection for Premium SSD v2 or Ultra disk. Instant access snapshot for
+     * Premium SSD v2 or Ultra disk is instantaneously available for restoring disk with fast restore performance.
+     * 
+     * @param instantAccess the instantAccess value to set.
+     * @return the RestorePointCollectionProperties object itself.
+     */
+    public RestorePointCollectionProperties withInstantAccess(Boolean instantAccess) {
+        this.instantAccess = instantAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,6 +145,7 @@ public final class RestorePointCollectionProperties implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeBooleanField("instantAccess", this.instantAccess);
         return jsonWriter.writeEndObject();
     }
 
@@ -144,6 +176,9 @@ public final class RestorePointCollectionProperties implements JsonSerializable<
                     List<RestorePointInner> restorePoints
                         = reader.readArray(reader1 -> RestorePointInner.fromJson(reader1));
                     deserializedRestorePointCollectionProperties.restorePoints = restorePoints;
+                } else if ("instantAccess".equals(fieldName)) {
+                    deserializedRestorePointCollectionProperties.instantAccess
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

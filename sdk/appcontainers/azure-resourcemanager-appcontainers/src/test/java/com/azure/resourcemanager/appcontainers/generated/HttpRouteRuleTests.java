@@ -17,73 +17,63 @@ public final class HttpRouteRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpRouteRule model = BinaryData.fromString(
-            "{\"targets\":[{\"containerApp\":\"fq\",\"revision\":\"ubyzn\",\"label\":\"k\",\"weight\":1441657669},{\"containerApp\":\"ebgvo\",\"revision\":\"m\",\"label\":\"oqujlyegqavn\",\"weight\":1397511481},{\"containerApp\":\"lqqbtnyjpylxdbfv\",\"revision\":\"mvmsxbae\",\"label\":\"jcnkottlwu\",\"weight\":1321268747},{\"containerApp\":\"jmailfemjjzakzw\",\"revision\":\"qullqxbdmvrscm\",\"label\":\"rndb\",\"weight\":1408629251}],\"routes\":[{\"match\":{\"prefix\":\"tfnnxrk\",\"path\":\"jfynnfmuiiirip\",\"pathSeparatedPrefix\":\"hykfkxbb\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"iutgnjizbeewoiy\"}},{\"match\":{\"prefix\":\"zbju\",\"path\":\"srziuct\",\"pathSeparatedPrefix\":\"gbdsuifrev\",\"caseSensitive\":true},\"action\":{\"prefixRewrite\":\"zkiswqjmdghsy\"}},{\"match\":{\"prefix\":\"ybjufptb\",\"path\":\"z\",\"pathSeparatedPrefix\":\"ciuiyqvldaswv\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"qzlgcndhzxrrfcfs\"}},{\"match\":{\"prefix\":\"hgsnxuwwkpph\",\"path\":\"sbzxl\",\"pathSeparatedPrefix\":\"xomeikjclwzacn\",\"caseSensitive\":true},\"action\":{\"prefixRewrite\":\"uqtaazyqbxyxoyf\"}}],\"description\":\"qqi\"}")
+            "{\"targets\":[{\"containerApp\":\"tu\",\"revision\":\"bfjkw\",\"label\":\"snkq\"},{\"containerApp\":\"hsyrqunj\",\"revision\":\"denxau\",\"label\":\"pakdkifmjnnawt\"},{\"containerApp\":\"abpxuc\",\"revision\":\"ggqowey\",\"label\":\"dhlisngwflqqmpi\"}],\"routes\":[{\"match\":{\"prefix\":\"pqxpx\",\"path\":\"fcngjsa\",\"pathSeparatedPrefix\":\"iixtmkzj\",\"caseSensitive\":true},\"action\":{\"prefixRewrite\":\"rhgfgrwsdpgrat\"}},{\"match\":{\"prefix\":\"bglbyvict\",\"path\":\"brxkjzwr\",\"pathSeparatedPrefix\":\"ffm\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"bkgozxwopdbydpi\"}},{\"match\":{\"prefix\":\"clnapxbiygnugjkn\",\"path\":\"mfcttux\",\"pathSeparatedPrefix\":\"yilflqoiquvrehmr\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"ujztcz\"}},{\"match\":{\"prefix\":\"jtwhauunf\",\"path\":\"njle\",\"pathSeparatedPrefix\":\"xsmrpddouifamow\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"knlqwzdvpiwhxqsz\"}}],\"description\":\"maajquhuxylr\"}")
             .toObject(HttpRouteRule.class);
-        Assertions.assertEquals("fq", model.targets().get(0).containerApp());
-        Assertions.assertEquals("ubyzn", model.targets().get(0).revision());
-        Assertions.assertEquals("k", model.targets().get(0).label());
-        Assertions.assertEquals(1441657669, model.targets().get(0).weight());
-        Assertions.assertEquals("tfnnxrk", model.routes().get(0).match().prefix());
-        Assertions.assertEquals("jfynnfmuiiirip", model.routes().get(0).match().path());
-        Assertions.assertEquals("hykfkxbb", model.routes().get(0).match().pathSeparatedPrefix());
-        Assertions.assertFalse(model.routes().get(0).match().caseSensitive());
-        Assertions.assertEquals("iutgnjizbeewoiy", model.routes().get(0).action().prefixRewrite());
-        Assertions.assertEquals("qqi", model.description());
+        Assertions.assertEquals("tu", model.targets().get(0).containerApp());
+        Assertions.assertEquals("bfjkw", model.targets().get(0).revision());
+        Assertions.assertEquals("snkq", model.targets().get(0).label());
+        Assertions.assertEquals("pqxpx", model.routes().get(0).match().prefix());
+        Assertions.assertEquals("fcngjsa", model.routes().get(0).match().path());
+        Assertions.assertEquals("iixtmkzj", model.routes().get(0).match().pathSeparatedPrefix());
+        Assertions.assertTrue(model.routes().get(0).match().caseSensitive());
+        Assertions.assertEquals("rhgfgrwsdpgrat", model.routes().get(0).action().prefixRewrite());
+        Assertions.assertEquals("maajquhuxylr", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRouteRule model = new HttpRouteRule().withTargets(Arrays.asList(
-            new HttpRouteTarget().withContainerApp("fq").withRevision("ubyzn").withLabel("k").withWeight(1441657669),
-            new HttpRouteTarget().withContainerApp("ebgvo")
-                .withRevision("m")
-                .withLabel("oqujlyegqavn")
-                .withWeight(1397511481),
-            new HttpRouteTarget().withContainerApp("lqqbtnyjpylxdbfv")
-                .withRevision("mvmsxbae")
-                .withLabel("jcnkottlwu")
-                .withWeight(1321268747),
-            new HttpRouteTarget().withContainerApp("jmailfemjjzakzw")
-                .withRevision("qullqxbdmvrscm")
-                .withLabel("rndb")
-                .withWeight(1408629251)))
+        HttpRouteRule model = new HttpRouteRule()
+            .withTargets(Arrays.asList(
+                new HttpRouteTarget().withContainerApp("tu").withRevision("bfjkw").withLabel("snkq"),
+                new HttpRouteTarget().withContainerApp("hsyrqunj").withRevision("denxau").withLabel("pakdkifmjnnawt"),
+                new HttpRouteTarget().withContainerApp("abpxuc").withRevision("ggqowey").withLabel("dhlisngwflqqmpi")))
             .withRoutes(
-                Arrays.asList(
-                    new HttpRoute()
-                        .withMatch(new HttpRouteMatch().withPrefix("tfnnxrk")
-                            .withPath("jfynnfmuiiirip")
-                            .withPathSeparatedPrefix("hykfkxbb")
-                            .withCaseSensitive(false))
-                        .withAction(new HttpRouteAction().withPrefixRewrite("iutgnjizbeewoiy")),
-                    new HttpRoute()
-                        .withMatch(new HttpRouteMatch().withPrefix("zbju")
-                            .withPath("srziuct")
-                            .withPathSeparatedPrefix("gbdsuifrev")
-                            .withCaseSensitive(true))
-                        .withAction(new HttpRouteAction().withPrefixRewrite("zkiswqjmdghsy")),
-                    new HttpRoute()
-                        .withMatch(new HttpRouteMatch().withPrefix("ybjufptb")
-                            .withPath("z")
-                            .withPathSeparatedPrefix("ciuiyqvldaswv")
-                            .withCaseSensitive(false))
-                        .withAction(new HttpRouteAction().withPrefixRewrite("qzlgcndhzxrrfcfs")),
-                    new HttpRoute()
-                        .withMatch(new HttpRouteMatch().withPrefix("hgsnxuwwkpph")
-                            .withPath("sbzxl")
-                            .withPathSeparatedPrefix("xomeikjclwzacn")
-                            .withCaseSensitive(true))
-                        .withAction(new HttpRouteAction().withPrefixRewrite("uqtaazyqbxyxoyf"))))
-            .withDescription("qqi");
+                Arrays
+                    .asList(
+                        new HttpRoute()
+                            .withMatch(new HttpRouteMatch().withPrefix("pqxpx")
+                                .withPath("fcngjsa")
+                                .withPathSeparatedPrefix("iixtmkzj")
+                                .withCaseSensitive(true))
+                            .withAction(new HttpRouteAction().withPrefixRewrite("rhgfgrwsdpgrat")),
+                        new HttpRoute()
+                            .withMatch(new HttpRouteMatch().withPrefix("bglbyvict")
+                                .withPath("brxkjzwr")
+                                .withPathSeparatedPrefix("ffm")
+                                .withCaseSensitive(false))
+                            .withAction(new HttpRouteAction().withPrefixRewrite("bkgozxwopdbydpi")),
+                        new HttpRoute()
+                            .withMatch(new HttpRouteMatch().withPrefix("clnapxbiygnugjkn")
+                                .withPath("mfcttux")
+                                .withPathSeparatedPrefix("yilflqoiquvrehmr")
+                                .withCaseSensitive(false))
+                            .withAction(new HttpRouteAction().withPrefixRewrite("ujztcz")),
+                        new HttpRoute()
+                            .withMatch(new HttpRouteMatch().withPrefix("jtwhauunf")
+                                .withPath("njle")
+                                .withPathSeparatedPrefix("xsmrpddouifamow")
+                                .withCaseSensitive(false))
+                            .withAction(new HttpRouteAction().withPrefixRewrite("knlqwzdvpiwhxqsz"))))
+            .withDescription("maajquhuxylr");
         model = BinaryData.fromObject(model).toObject(HttpRouteRule.class);
-        Assertions.assertEquals("fq", model.targets().get(0).containerApp());
-        Assertions.assertEquals("ubyzn", model.targets().get(0).revision());
-        Assertions.assertEquals("k", model.targets().get(0).label());
-        Assertions.assertEquals(1441657669, model.targets().get(0).weight());
-        Assertions.assertEquals("tfnnxrk", model.routes().get(0).match().prefix());
-        Assertions.assertEquals("jfynnfmuiiirip", model.routes().get(0).match().path());
-        Assertions.assertEquals("hykfkxbb", model.routes().get(0).match().pathSeparatedPrefix());
-        Assertions.assertFalse(model.routes().get(0).match().caseSensitive());
-        Assertions.assertEquals("iutgnjizbeewoiy", model.routes().get(0).action().prefixRewrite());
-        Assertions.assertEquals("qqi", model.description());
+        Assertions.assertEquals("tu", model.targets().get(0).containerApp());
+        Assertions.assertEquals("bfjkw", model.targets().get(0).revision());
+        Assertions.assertEquals("snkq", model.targets().get(0).label());
+        Assertions.assertEquals("pqxpx", model.routes().get(0).match().prefix());
+        Assertions.assertEquals("fcngjsa", model.routes().get(0).match().path());
+        Assertions.assertEquals("iixtmkzj", model.routes().get(0).match().pathSeparatedPrefix());
+        Assertions.assertTrue(model.routes().get(0).match().caseSensitive());
+        Assertions.assertEquals("rhgfgrwsdpgrat", model.routes().get(0).action().prefixRewrite());
+        Assertions.assertEquals("maajquhuxylr", model.description());
     }
 }

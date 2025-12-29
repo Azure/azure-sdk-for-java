@@ -38,7 +38,6 @@ import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsCerti
 import com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appcontainers.models.CertificateCollection;
 import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
-import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,7 +77,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -88,7 +87,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CertificateCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -98,7 +97,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -109,7 +108,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CertificateInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -190,14 +189,14 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CertificateCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
@@ -208,7 +207,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -247,7 +246,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedFlux}.
      */
@@ -263,7 +262,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse}.
      */
@@ -303,7 +302,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse}.
      */
@@ -343,7 +342,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -360,7 +359,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment as paginated response with {@link PagedIterable}.
      */
@@ -378,7 +377,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -420,7 +419,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate on successful completion of {@link Mono}.
      */
@@ -439,7 +438,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param certificateName Name of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate along with {@link Response}.
      */
@@ -481,7 +480,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param connectedEnvironmentName Name of the Connected Environment.
      * @param certificateName Name of the Certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Certificate.
      */
@@ -1367,7 +1366,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
@@ -1395,7 +1394,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse}.
      */
@@ -1425,7 +1424,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Certificates in a given connected environment along with {@link PagedResponse}.
      */

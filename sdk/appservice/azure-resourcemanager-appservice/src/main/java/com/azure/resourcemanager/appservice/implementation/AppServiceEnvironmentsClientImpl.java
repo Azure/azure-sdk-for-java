@@ -105,7 +105,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientAppServiceEnvironments")
     public interface AppServiceEnvironmentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
@@ -754,10 +754,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<AppServiceEnvironmentResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -785,11 +786,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -882,10 +882,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AppServiceEnvironmentResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -919,11 +920,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1029,10 +1031,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1068,10 +1071,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1166,11 +1170,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             hostingEnvironmentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), hostingEnvironmentEnvelope, accept,
-                context))
+                this.client.getSubscriptionId(), apiVersion, hostingEnvironmentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1213,10 +1217,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             hostingEnvironmentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), hostingEnvironmentEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, hostingEnvironmentEnvelope, accept, context);
     }
 
     /**
@@ -1423,10 +1428,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, forceDelete,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1463,10 +1469,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, name, forceDelete,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1708,9 +1715,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             hostingEnvironmentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), hostingEnvironmentEnvelope, accept, context))
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), apiVersion, hostingEnvironmentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1753,10 +1762,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             hostingEnvironmentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), hostingEnvironmentEnvelope, accept, context);
+            apiVersion, hostingEnvironmentEnvelope, accept, context);
     }
 
     /**
@@ -1848,10 +1858,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCapacities(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StampCapacityInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1888,11 +1899,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCapacities(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1999,10 +2011,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVipInfo(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2038,10 +2051,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVipInfo(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -2133,13 +2147,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             vnetInfo.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono
-                = service
-                    .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                        this.client.getApiVersion(), vnetInfo, accept, context)
-                    .cache();
+            Mono<Response<Flux<ByteBuffer>>> mono = service
+                .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    apiVersion, vnetInfo, accept, context)
+                .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
@@ -2190,12 +2204,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             vnetInfo.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = service
                 .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                    this.client.getApiVersion(), vnetInfo, accept, context)
+                    apiVersion, vnetInfo, accept, context)
                 .cache();
         return Mono
             .zip(mono,
@@ -2315,10 +2330,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAseCustomDnsSuffixConfiguration(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2352,10 +2368,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAseCustomDnsSuffixConfiguration(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2443,11 +2460,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             customDnsSuffixConfiguration.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateAseCustomDnsSuffixConfiguration(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                customDnsSuffixConfiguration, accept, context))
+            .withContext(
+                context -> service.updateAseCustomDnsSuffixConfiguration(this.client.getEndpoint(), resourceGroupName,
+                    name, this.client.getSubscriptionId(), apiVersion, customDnsSuffixConfiguration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2489,11 +2507,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             customDnsSuffixConfiguration.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateAseCustomDnsSuffixConfiguration(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), customDnsSuffixConfiguration, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, customDnsSuffixConfiguration, accept, context);
     }
 
     /**
@@ -2580,10 +2598,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteAseCustomDnsSuffixConfiguration(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2616,10 +2635,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteAseCustomDnsSuffixConfiguration(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2701,10 +2721,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAseV3NetworkingConfiguration(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2740,10 +2761,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAseV3NetworkingConfiguration(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2839,11 +2861,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             aseNetworkingConfiguration.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateAseNetworkingConfiguration(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                aseNetworkingConfiguration, accept, context))
+            .withContext(
+                context -> service.updateAseNetworkingConfiguration(this.client.getEndpoint(), resourceGroupName, name,
+                    this.client.getSubscriptionId(), apiVersion, aseNetworkingConfiguration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2887,10 +2910,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             aseNetworkingConfiguration.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateAseNetworkingConfiguration(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), aseNetworkingConfiguration, accept, context);
+            this.client.getSubscriptionId(), apiVersion, aseNetworkingConfiguration, accept, context);
     }
 
     /**
@@ -2986,10 +3010,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDiagnostics(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3025,10 +3050,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listDiagnostics(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3121,10 +3147,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDiagnosticsItem(this.client.getEndpoint(), resourceGroupName, name,
-                diagnosticsName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                diagnosticsName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3165,10 +3192,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDiagnosticsItem(this.client.getEndpoint(), resourceGroupName, name, diagnosticsName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3261,10 +3289,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<InboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3302,11 +3331,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getInboundNetworkDependenciesEndpoints(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3418,10 +3448,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMultiRolePools(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<WorkerPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3458,11 +3489,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMultiRolePools(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3572,10 +3604,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getMultiRolePool(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3611,10 +3644,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getMultiRolePool(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3709,11 +3743,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             multiRolePoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateMultiRolePool(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), multiRolePoolEnvelope, accept,
-                context))
+                name, this.client.getSubscriptionId(), apiVersion, multiRolePoolEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3756,10 +3790,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             multiRolePoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateMultiRolePool(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), multiRolePoolEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, multiRolePoolEnvelope, accept, context);
     }
 
     /**
@@ -3970,10 +4005,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             multiRolePoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateMultiRolePool(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), multiRolePoolEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, multiRolePoolEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4016,10 +4052,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             multiRolePoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateMultiRolePool(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), multiRolePoolEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, multiRolePoolEnvelope, accept, context);
     }
 
     /**
@@ -4118,11 +4155,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMultiRolePoolInstanceMetricDefinitions(this.client.getEndpoint(),
-                resourceGroupName, name, instance, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context))
+                resourceGroupName, name, instance, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceMetricDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -4166,11 +4203,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMultiRolePoolInstanceMetricDefinitions(this.client.getEndpoint(), resourceGroupName, name, instance,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -4293,10 +4331,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMultiRoleMetricDefinitions(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceMetricDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -4334,11 +4373,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMultiRoleMetricDefinitions(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -4449,10 +4489,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMultiRolePoolSkus(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<SkuInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -4489,11 +4530,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMultiRolePoolSkus(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -4598,10 +4640,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.testUpgradeAvailableNotification(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4634,10 +4677,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.testUpgradeAvailableNotification(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -4716,10 +4760,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.upgrade(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4754,10 +4799,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.upgrade(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -4934,10 +4980,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMultiRoleUsages(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<UsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -4974,11 +5021,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMultiRoleUsages(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5084,10 +5132,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOperations(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5122,10 +5171,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listOperations(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -5213,10 +5263,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5254,11 +5305,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5370,10 +5422,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateEndpointConnectionList(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -5411,11 +5464,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getPrivateEndpointConnectionList(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5533,11 +5587,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName,
-                name, privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                name, privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5579,11 +5633,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -5691,11 +5745,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             privateEndpointWrapper.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveOrRejectPrivateEndpointConnection(this.client.getEndpoint(),
-                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), privateEndpointWrapper, accept, context))
+                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion,
+                privateEndpointWrapper, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5744,11 +5799,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             privateEndpointWrapper.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveOrRejectPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            privateEndpointWrapper, accept, context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, privateEndpointWrapper, accept,
+            context);
     }
 
     /**
@@ -5989,11 +6045,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deletePrivateEndpointConnection(this.client.getEndpoint(),
-                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
+                    privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6033,11 +6090,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -6240,10 +6297,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateLinkResources(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6279,10 +6337,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateLinkResources(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -6368,10 +6427,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reboot(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6405,10 +6465,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reboot(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -6491,12 +6552,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
                 = service
                     .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                        this.client.getApiVersion(), accept, context)
+                        apiVersion, accept, context)
                     .cache();
             return Mono.zip(mono,
                 this.client
@@ -6542,13 +6604,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = service
-                .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                    this.client.getApiVersion(), accept, context)
-                .cache();
+        Mono<Response<Flux<ByteBuffer>>> mono = service
+            .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
+            .cache();
         return Mono
             .zip(mono,
                 this.client
@@ -6663,10 +6725,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAppServicePlans(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AppServicePlanInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6704,11 +6767,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listAppServicePlans(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -6818,10 +6882,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWebApps(this.client.getEndpoint(), resourceGroupName, name,
-                propertiesToInclude, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                propertiesToInclude, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6859,11 +6924,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWebApps(this.client.getEndpoint(), resourceGroupName, name, propertiesToInclude,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -6994,12 +7060,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
                 = service
                     .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                        this.client.getApiVersion(), accept, context)
+                        apiVersion, accept, context)
                     .cache();
             return Mono.zip(mono,
                 this.client
@@ -7045,13 +7112,13 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = service
-                .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                    this.client.getApiVersion(), accept, context)
-                .cache();
+        Mono<Response<Flux<ByteBuffer>>> mono = service
+            .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
+            .cache();
         return Mono
             .zip(mono,
                 this.client
@@ -7168,10 +7235,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsages(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context))
+                this.client.getSubscriptionId(), apiVersion, filter, accept, context))
             .<PagedResponse<CsmUsageQuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -7211,11 +7279,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listUsages(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), filter, accept, context)
+            .listUsages(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(), apiVersion,
+                filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -7353,10 +7422,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWorkerPools(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<WorkerPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -7393,11 +7463,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWorkerPools(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -7511,10 +7582,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getWorkerPool(this.client.getEndpoint(), resourceGroupName, name,
-                workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                workerPoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7554,10 +7626,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getWorkerPool(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -7660,11 +7733,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             workerPoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateWorkerPool(this.client.getEndpoint(), resourceGroupName, name,
-                workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), workerPoolEnvelope,
-                accept, context))
+                workerPoolName, this.client.getSubscriptionId(), apiVersion, workerPoolEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7711,10 +7784,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             workerPoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateWorkerPool(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), workerPoolEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, workerPoolEnvelope, accept, context);
     }
 
     /**
@@ -7940,11 +8014,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             workerPoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.updateWorkerPool(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-                    this.client.getSubscriptionId(), this.client.getApiVersion(), workerPoolEnvelope, accept, context))
+            .withContext(context -> service.updateWorkerPool(this.client.getEndpoint(), resourceGroupName, name,
+                workerPoolName, this.client.getSubscriptionId(), apiVersion, workerPoolEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7991,10 +8065,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         } else {
             workerPoolEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateWorkerPool(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), workerPoolEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, workerPoolEnvelope, accept, context);
     }
 
     /**
@@ -8100,11 +8175,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listWorkerPoolInstanceMetricDefinitions(this.client.getEndpoint(),
-                resourceGroupName, name, workerPoolName, instance, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.listWorkerPoolInstanceMetricDefinitions(this.client.getEndpoint(), resourceGroupName,
+                    name, workerPoolName, instance, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceMetricDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -8150,11 +8226,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWorkerPoolInstanceMetricDefinitions(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-                instance, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                instance, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -8283,10 +8360,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWebWorkerMetricDefinitions(this.client.getEndpoint(), resourceGroupName,
-                name, workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, workerPoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<ResourceMetricDefinitionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -8328,11 +8406,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWebWorkerMetricDefinitions(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -8454,10 +8533,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWorkerPoolSkus(this.client.getEndpoint(), resourceGroupName, name,
-                workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                workerPoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<SkuInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -8498,11 +8578,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWorkerPoolSkus(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -8622,10 +8703,11 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listWebWorkerUsages(this.client.getEndpoint(), resourceGroupName, name,
-                workerPoolName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                workerPoolName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<UsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -8666,11 +8748,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listWebWorkerUsages(this.client.getEndpoint(), resourceGroupName, name, workerPoolName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -8756,6 +8839,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service Environments for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8782,6 +8867,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service Environments for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8810,6 +8897,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service Environments in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8839,6 +8928,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service Environments in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8867,6 +8958,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the used, available, and total worker capacity an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8893,6 +8986,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the used, available, and total worker capacity an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8920,6 +9015,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Move an App Service Environment to a different VNET.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8946,6 +9043,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Move an App Service Environment to a different VNET.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -8972,6 +9071,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9001,6 +9102,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9029,6 +9132,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all multi-role pools.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9056,6 +9161,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all multi-role pools.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9083,6 +9190,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9112,6 +9221,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9141,6 +9252,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9169,6 +9282,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9197,6 +9312,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get available SKUs for scaling a multi-role pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9224,6 +9341,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get available SKUs for scaling a multi-role pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9251,6 +9370,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9278,6 +9399,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9304,6 +9427,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9333,6 +9458,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9361,6 +9488,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Gets the list of private endpoints associated with a hosting environment
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9390,6 +9519,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Gets the list of private endpoints associated with a hosting environment
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9417,6 +9548,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Resume an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9442,6 +9575,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Resume an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9468,6 +9603,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service plans in an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9496,6 +9633,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all App Service plans in an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9524,6 +9663,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all apps in an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9550,6 +9691,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all apps in an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9576,6 +9719,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Suspend an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9602,6 +9747,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Suspend an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9628,6 +9775,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get global usage metrics of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9654,6 +9803,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get global usage metrics of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9680,6 +9831,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all worker pools of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9706,6 +9859,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get all worker pools of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9733,6 +9888,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9762,6 +9919,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9790,6 +9949,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9818,6 +9979,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get metric definitions for a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9846,6 +10009,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get available SKUs for scaling a worker pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9873,6 +10038,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get available SKUs for scaling a worker pool.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9899,6 +10066,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get usage metrics for a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -9926,6 +10095,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
+     * Get usage metrics for a worker pool of an App Service Environment.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

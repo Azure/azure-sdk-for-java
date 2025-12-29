@@ -48,11 +48,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -79,8 +79,8 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRedTeamWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getRedTeamWithResponse(name, requestOptions);
+    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(name, requestOptions);
     }
 
     /**
@@ -94,11 +94,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -124,8 +124,8 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listRedTeams(RequestOptions requestOptions) {
-        return this.serviceClient.listRedTeams(requestOptions);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
     }
 
     /**
@@ -139,11 +139,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -169,11 +169,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -200,8 +200,8 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createRedTeamWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
-        return this.serviceClient.createRedTeamWithResponse(redTeam, requestOptions);
+    public Response<BinaryData> createWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponse(redTeam, requestOptions);
     }
 
     /**
@@ -218,10 +218,10 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedTeam getRedTeam(String name) {
-        // Generated convenience method for getRedTeamWithResponse
+    public RedTeam get(String name) {
+        // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getRedTeamWithResponse(name, requestOptions).getValue().toObject(RedTeam.class);
+        return getWithResponse(name, requestOptions).getValue().toObject(RedTeam.class);
     }
 
     /**
@@ -236,11 +236,10 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedTeam> listRedTeams() {
-        // Generated convenience method for listRedTeams
+    public PagedIterable<RedTeam> list() {
+        // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listRedTeams(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(RedTeam.class));
+        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(RedTeam.class));
     }
 
     /**
@@ -257,10 +256,9 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedTeam createRedTeam(RedTeam redTeam) {
-        // Generated convenience method for createRedTeamWithResponse
+    public RedTeam create(RedTeam redTeam) {
+        // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createRedTeamWithResponse(BinaryData.fromObject(redTeam), requestOptions).getValue()
-            .toObject(RedTeam.class);
+        return createWithResponse(BinaryData.fromObject(redTeam), requestOptions).getValue().toObject(RedTeam.class);
     }
 }

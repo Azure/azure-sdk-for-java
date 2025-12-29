@@ -24,7 +24,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 import reactor.core.publisher.Mono;
 
@@ -58,13 +58,13 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientVirtualNetworkSubnetUsages")
     public interface VirtualNetworkSubnetUsagesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkSubnetUsageResultInner>> execute(@HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkSubnetUsageModelInner>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
             @BodyParam("application/json") VirtualNetworkSubnetUsageParameter parameters,
@@ -74,7 +74,7 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkVirtualNetworkSubnetUsage")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<VirtualNetworkSubnetUsageResultInner> executeSync(@HostParam("$host") String endpoint,
+        Response<VirtualNetworkSubnetUsageModelInner> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
             @BodyParam("application/json") VirtualNetworkSubnetUsageParameter parameters,
@@ -82,18 +82,17 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
     }
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return virtual network subnet usage data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(String locationName,
+    public Mono<Response<VirtualNetworkSubnetUsageModelInner>> listWithResponseAsync(String locationName,
         VirtualNetworkSubnetUsageParameter parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -113,29 +112,29 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), locationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id on successful completion of {@link Mono}.
+     * @return virtual network subnet usage data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(String locationName,
+    public Mono<VirtualNetworkSubnetUsageModelInner> listAsync(String locationName,
         VirtualNetworkSubnetUsageParameter parameters) {
-        return executeWithResponseAsync(locationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return listWithResponseAsync(locationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
@@ -143,10 +142,10 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
+     * @return virtual network subnet usage data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(String locationName,
+    public Response<VirtualNetworkSubnetUsageModelInner> listWithResponse(String locationName,
         VirtualNetworkSubnetUsageParameter parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -169,24 +168,24 @@ public final class VirtualNetworkSubnetUsagesClientImpl implements VirtualNetwor
             parameters.validate();
         }
         final String accept = "application/json";
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), locationName, parameters, accept, context);
+        return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            locationName, parameters, accept, context);
     }
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id.
+     * @return virtual network subnet usage data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkSubnetUsageResultInner execute(String locationName,
+    public VirtualNetworkSubnetUsageModelInner list(String locationName,
         VirtualNetworkSubnetUsageParameter parameters) {
-        return executeWithResponse(locationName, parameters, Context.NONE).getValue();
+        return listWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkSubnetUsagesClientImpl.class);

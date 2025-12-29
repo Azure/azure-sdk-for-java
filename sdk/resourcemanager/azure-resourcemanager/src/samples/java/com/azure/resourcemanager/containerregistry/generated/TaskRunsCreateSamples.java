@@ -18,8 +18,8 @@ import java.util.Arrays;
 public final class TaskRunsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
-     * TaskRunsCreate.json
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-
+     * preview/examples/TaskRunsCreate.json
      */
     /**
      * Sample code: TaskRuns_Create.
