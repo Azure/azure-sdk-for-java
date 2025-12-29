@@ -37,6 +37,10 @@ class QueryPlanRetriever {
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
+    private final static
+    ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+
     private static final String TRUE = "True";
 
     // For a limited time, if the query runs against a region or emulator that has not yet been updated with the
@@ -149,7 +153,7 @@ class QueryPlanRetriever {
                     CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                     if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode())) {
-                        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                        cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                     }
 
                     return cosmosException;

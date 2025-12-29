@@ -52,7 +52,6 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             sessionContainer,
             TestUtils.mockDiagnosticsClientContext(),
-            null,
             null
         );
 
@@ -91,7 +90,6 @@ public class StaleResourceExceptionRetryPolicyTest {
             customHeaders,
             sessionContainer,
             TestUtils.mockDiagnosticsClientContext(),
-            null,
             null
         );
 
@@ -130,7 +128,6 @@ public class StaleResourceExceptionRetryPolicyTest {
             null,
             sessionContainer,
             TestUtils.mockDiagnosticsClientContext(),
-            null,
             null
         );
 

@@ -674,6 +674,13 @@ public class CosmosException extends AzureException {
                     public Uri getRequestUri(CosmosException cosmosException) {
                         return cosmosException.getRequestUri();
                     }
+
+                    @Override
+                    public void setSubStatusCode(CosmosException cosmosException, int subStatusCode) {
+                        cosmosException.setSubStatusCode(subStatusCode);
+                    }
+
+
                 });
     }
 

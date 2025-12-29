@@ -24,6 +24,9 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger  = LoggerFactory.getLogger(StaleResourceRetryPolicy.class);
 
+    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
@@ -34,7 +37,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final AtomicReference<CosmosDiagnostics> cosmosDiagnosticsHolder;
     private final ResourceType enclosingOperationTargetResourceType;
-    private final OperationType enclosingOperationType;
 
     private volatile boolean retried = false;
 
@@ -46,8 +48,7 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
         Map<String, String> requestCustomHeaders,
         ISessionContainer sessionContainer,
         DiagnosticsClientContext diagnosticsClientContext,
-        ResourceType enclosingOperationTargetResourceType,
-        OperationType enclosingOperationType) {
+        ResourceType enclosingOperationTargetResourceType) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
@@ -62,7 +63,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
         this.cosmosDiagnosticsHolder = new AtomicReference<>(null); // will only create one if no request is bound to the retry policy
 
         this.enclosingOperationTargetResourceType = enclosingOperationTargetResourceType;
-        this.enclosingOperationType = enclosingOperationType;
     }
 
     @Override
@@ -135,13 +135,13 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                             CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                             if (this.request != null && !ResourceType.DocumentCollection.equals(this.request.getResourceType()) && Exceptions.isNotFound(cosmosException)) {
-                                BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
 
                                 return cosmosException;
                             }
 
                             if (this.enclosingOperationTargetResourceType != null && !ResourceType.DocumentCollection.equals(this.enclosingOperationTargetResourceType)) {
-                                BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
 
                                 return cosmosException;
                             }

@@ -1596,6 +1596,7 @@ public class ImplementationBridgeHelpers {
             List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
             void setRequestUri(CosmosException cosmosException, Uri requestUri);
             Uri getRequestUri(CosmosException cosmosException);
+            void setSubStatusCode(CosmosException cosmosException, int subStatusCode);
         }
     }
 

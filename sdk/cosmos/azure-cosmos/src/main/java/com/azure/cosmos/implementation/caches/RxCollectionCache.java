@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -28,6 +29,9 @@ import java.util.Map;
  * This is meant to be internally used only by our sdk.
  */
 public abstract class RxCollectionCache {
+
+    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
@@ -94,7 +98,7 @@ public abstract class RxCollectionCache {
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                                 if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
-                                    BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                    cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
                                 return cosmosException;
@@ -110,7 +114,7 @@ public abstract class RxCollectionCache {
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                                 if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
-                                    BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                    cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
                                 return cosmosException;
@@ -136,7 +140,7 @@ public abstract class RxCollectionCache {
                         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
                         if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
-                            BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                            cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                         }
 
                         return cosmosException;
