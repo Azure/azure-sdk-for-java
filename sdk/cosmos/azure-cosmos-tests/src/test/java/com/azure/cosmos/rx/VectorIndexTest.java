@@ -3,12 +3,15 @@
 
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -16,13 +19,13 @@ import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
 import com.azure.cosmos.models.CosmosVectorEmbedding;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
-import com.azure.cosmos.models.CosmosVectorIndexSpec;
-import com.azure.cosmos.models.CosmosVectorIndexType;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.CosmosVectorIndexSpec;
+import com.azure.cosmos.models.CosmosVectorIndexType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
+@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
 public class VectorIndexTest extends TestSuiteBase {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
