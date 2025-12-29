@@ -82,18 +82,19 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void performDocumentOperationOnNonExistentContainer(OperationType operationType) {
 
-        CosmosAsyncClient asyncClientToUse = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
-
-        // Try to read the item from a non-existent container
-        String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
-        CosmosAsyncContainer nonExistentContainer = asyncClientToUse
-            .getDatabase(existingAsyncContainer.getDatabase().getId())
-            .getContainer(nonExistentContainerId);
+        CosmosAsyncClient asyncClientToUse = null;
 
         try {
+            asyncClientToUse = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            // Try to read the item from a non-existent container
+            String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
+            CosmosAsyncContainer nonExistentContainer = asyncClientToUse
+                .getDatabase(existingAsyncContainer.getDatabase().getId())
+                .getContainer(nonExistentContainerId);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(nonExistentContainer, operationType, this.objectToCreate, false, false, true);
 
@@ -122,18 +123,18 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void performBulkOnNonExistentContainer() {
 
-        CosmosAsyncClient asyncClientToUse = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
-
-        // Try to read the item from a non-existent container
-        String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
-        CosmosAsyncContainer nonExistentContainer = asyncClientToUse
-            .getDatabase(existingAsyncContainer.getDatabase().getId())
-            .getContainer(nonExistentContainerId);
-
+        CosmosAsyncClient asyncClientToUse = null;
         try {
+            asyncClientToUse = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            // Try to read the item from a non-existent container
+            String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
+            CosmosAsyncContainer nonExistentContainer = asyncClientToUse
+                .getDatabase(existingAsyncContainer.getDatabase().getId())
+                .getContainer(nonExistentContainerId);
 
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
@@ -169,22 +170,25 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     public void performDocumentOperationOnNonExistentContainerGatewayModeV2(OperationType operationType) {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
-        // Try to read the item from a non-existent container using Gateway mode client
-        String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
-
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-
-        CosmosAsyncClient v2GatewayAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
-            .buildAsyncClient();
-
-        CosmosAsyncContainer nonExistentContainer = v2GatewayAsyncClient
-            .getDatabase(existingAsyncContainer.getDatabase().getId())
-            .getContainer(nonExistentContainerId);
+        CosmosAsyncClient v2GatewayAsyncClient = null;
 
         try {
+
+            // Try to read the item from a non-existent container using Gateway mode client
+            String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
+
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+
+            v2GatewayAsyncClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
+                .buildAsyncClient();
+
+            CosmosAsyncContainer nonExistentContainer = v2GatewayAsyncClient
+                .getDatabase(existingAsyncContainer.getDatabase().getId())
+                .getContainer(nonExistentContainerId);
+
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(nonExistentContainer, operationType, this.objectToCreate, false, false, true);
 
             assertThat(cosmosDiagnostics).isNotNull();
@@ -213,22 +217,24 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     public void performBulkOnNonExistentContainerGatewayModeV2() {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
-        // Try to read the item from a non-existent container using Gateway mode client
-        String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
-
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-
-        CosmosAsyncClient v2GatewayAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
-            .buildAsyncClient();
-
-        CosmosAsyncContainer nonExistentContainer = v2GatewayAsyncClient
-            .getDatabase(existingAsyncContainer.getDatabase().getId())
-            .getContainer(nonExistentContainerId);
+        CosmosAsyncClient v2GatewayAsyncClient = null;
 
         try {
+
+            // Try to read the item from a non-existent container using Gateway mode client
+            String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
+
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+
+            v2GatewayAsyncClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode(new GatewayConnectionConfig().setHttp2ConnectionConfig(new Http2ConnectionConfig().setEnabled(true)))
+                .buildAsyncClient();
+
+            CosmosAsyncContainer nonExistentContainer = v2GatewayAsyncClient
+                .getDatabase(existingAsyncContainer.getDatabase().getId())
+                .getContainer(nonExistentContainerId);
 
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
@@ -264,31 +270,33 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void performDocumentOperationOnDeletedContainer(OperationType operationType) throws InterruptedException {
 
-        // Create a dedicated container for this test
-        String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-        testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-
-        CosmosAsyncClient clientToUse = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
-
-        CosmosAsyncContainer testContainer = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
-
-        Thread.sleep(5000);
-
-        // Create an item in the container
-        TestObject testObject = TestObject.create(this.createdItemPk);
-        testContainer.createItem(testObject).block();
-
-        // Create a different client instance to delete the container
-        CosmosAsyncClient deletingAsyncClient = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
+        CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
 
         try {
+            // Create a dedicated container for this test
+            String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+
+            clientToUse = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer testContainer = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
+
+            Thread.sleep(5000);
+
+            // Create an item in the container
+            TestObject testObject = TestObject.create(this.createdItemPk);
+            testContainer.createItem(testObject).block();
+
+            // Create a different client instance to delete the container
+            deletingAsyncClient = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
             // Delete the container using the different client instance
             CosmosAsyncContainer containerToDelete = deletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             containerToDelete.delete().block();
@@ -335,31 +343,33 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void performBulkOnDeletedContainer() throws InterruptedException {
 
-        // Create a dedicated container for this test
-        String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-        testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-
-        CosmosAsyncClient clientToUse = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
-
-        CosmosAsyncContainer containerToUse = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
-
-        Thread.sleep(5000);
-
-        // Create an item in the container
-        TestObject testObject = TestObject.create(this.createdItemPk);
-        containerToUse.createItem(testObject).block();
-
-        // Create a different client instance to delete the container
-        CosmosAsyncClient deletingAsyncClient = getClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .buildAsyncClient();
+        CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
 
         try {
+            // Create a dedicated container for this test
+            String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+
+            clientToUse = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer containerToUse = clientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
+
+            Thread.sleep(5000);
+
+            // Create an item in the container
+            TestObject testObject = TestObject.create(this.createdItemPk);
+            containerToUse.createItem(testObject).block();
+
+            // Create a different client instance to delete the container
+            deletingAsyncClient = getClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .buildAsyncClient();
+
             // Delete the container using the different client instance
             CosmosAsyncContainer containerToDelete = deletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             containerToDelete.delete().block();
@@ -394,36 +404,39 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     public void performDocumentOperationOnDeletedContainerWithGatewayV2(OperationType operationType) throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 
-        // Create a dedicated container for this test
-        String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-        testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
-
-        CosmosAsyncClient gatewayV2AsyncClientToUse = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode(gatewayConnectionConfig)
-            .buildAsyncClient();
-        CosmosAsyncClient containerDeletingAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode()
-            .buildAsyncClient();
-
-        CosmosAsyncContainer testContainer = gatewayV2AsyncClientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
-
-        Thread.sleep(5000);
-
-        // Create an item in the container
-        TestObject testObject = TestObject.create(this.createdItemPk);
-        testContainer.createItem(testObject).block();
+        CosmosAsyncClient gatewayV2AsyncClientToUse = null, containerDeletingAsyncClient = null;
 
         try {
+            // Create a dedicated container for this test
+            String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
+
+            gatewayV2AsyncClientToUse = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode(gatewayConnectionConfig)
+                .buildAsyncClient();
+
+            containerDeletingAsyncClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer testContainer = gatewayV2AsyncClientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
+
+            Thread.sleep(5000);
+
+            // Create an item in the container
+            TestObject testObject = TestObject.create(this.createdItemPk);
+            testContainer.createItem(testObject).block();
+
             // Delete the container using the different client instance
             CosmosAsyncContainer asyncContainerToDelete = containerDeletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             asyncContainerToDelete.delete().block();
@@ -462,36 +475,40 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
     public void performBulkOnDeletedContainerWithGatewayV2() throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 
-        // Create a dedicated container for this test
-        String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-        testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
-
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
-
-        CosmosAsyncClient gatewayV2AsyncClientToUse = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode(gatewayConnectionConfig)
-            .buildAsyncClient();
-        CosmosAsyncClient containerDeletingAsyncClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode()
-            .buildAsyncClient();
-
-        CosmosAsyncContainer containerToUse = gatewayV2AsyncClientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
-
-        Thread.sleep(5000);
-
-        // Create an item in the container
-        TestObject testObject = TestObject.create(this.createdItemPk);
-        containerToUse.createItem(testObject).block();
+        CosmosAsyncClient gatewayV2AsyncClientToUse = null, containerDeletingAsyncClient = null;
 
         try {
+
+            // Create a dedicated container for this test
+            String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
+
+            gatewayV2AsyncClientToUse = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode(gatewayConnectionConfig)
+                .buildAsyncClient();
+
+            containerDeletingAsyncClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer containerToUse = gatewayV2AsyncClientToUse.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
+
+            Thread.sleep(5000);
+
+            // Create an item in the container
+            TestObject testObject = TestObject.create(this.createdItemPk);
+            containerToUse.createItem(testObject).block();
+
             // Delete the container using the different client instance
             CosmosAsyncContainer asyncContainerToDelete = containerDeletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             asyncContainerToDelete.delete().block();
