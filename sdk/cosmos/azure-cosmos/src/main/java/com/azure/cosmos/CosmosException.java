@@ -677,6 +677,9 @@ public class CosmosException extends AzureException {
 
                     @Override
                     public void setSubStatusCode(CosmosException cosmosException, int subStatusCode) {
+                        Map<String, String> responseHeaders = cosmosException.getResponseHeaders();
+
+                        responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(subStatusCode));
                         cosmosException.setSubStatusCode(subStatusCode);
                     }
 

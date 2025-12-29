@@ -204,9 +204,7 @@ public abstract class RxCollectionCache {
         Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
             collectionResourceId,
             null,
-            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties).onErrorMap(throwable -> {
-                return throwable;
-            }));
+            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
         return async.map(Utils.ValueHolder::new);
     }
 
@@ -230,9 +228,7 @@ public abstract class RxCollectionCache {
             () -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
                     metaDataDiagnosticsContext, resourceFullName, properties);
-                return collectionObs.onErrorMap(throwable -> {
-                    return throwable;
-                }).doOnSuccess(collection -> this.collectionInfoByIdCache.set(
+                return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
                     collection.getResourceId(),
                     collection));
             });

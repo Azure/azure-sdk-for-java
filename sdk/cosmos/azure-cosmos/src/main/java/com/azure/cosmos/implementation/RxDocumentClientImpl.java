@@ -191,6 +191,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -4758,10 +4761,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .onErrorMap(throwable -> {
                 if (throwable instanceof CosmosException) {
 
-                    CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
-                    BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                    CosmosException ce = Utils.as(throwable, CosmosException.class);
 
-                    return cosmosException;
+                    if (HttpConstants.StatusCodes.NOTFOUND == ce.getStatusCode() && HttpConstants.SubStatusCodes.UNKNOWN == ce.getSubStatusCode()) {
+                        cosmosExceptionAccessor.setSubStatusCode(ce, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                    }
+
+                    return ce;
                 }
 
                 return throwable;

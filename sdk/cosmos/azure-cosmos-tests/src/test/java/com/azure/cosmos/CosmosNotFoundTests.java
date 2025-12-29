@@ -13,6 +13,9 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -21,13 +24,18 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
+    private static final Logger logger = LoggerFactory.getLogger(CosmosNotFoundTests.class);
+
+    private static final String thinClientEndpointIndicator = ":10250/";
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor accessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
@@ -148,6 +156,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
             nonExistentContainer.executeBulkOperations(operationsFlux).blockLast();
+
+            fail("Bulk operation on non-existent container should have failed.");
         } catch (CosmosException ce) {
 
             // Verify status code is 404 (Not Found)
@@ -248,6 +258,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
             nonExistentContainer.executeBulkOperations(operationsFlux).blockLast();
+
+            fail("Bulk operation on non-existent container should have failed.");
         } catch (CosmosException ce) {
 
             // Verify status code is 404 (Not Found)
@@ -390,6 +402,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
             containerToUse.executeBulkOperations(operationsFlux).blockLast();
+
+            fail("Bulk operation on deleted container should have failed.");
         } catch (CosmosException ce) {
             assertThat(ce.getSubStatusCode())
                 .as("Sub-status code should be 0")
@@ -463,6 +477,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                     HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
                 );
 
+            if (!OperationType.Query.equals(operationType)) {
+                assertThinClientEndpointUsed(cosmosDiagnostics);
+            }
         } finally {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
@@ -529,17 +546,47 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
             containerToUse.executeBulkOperations(operationsFlux).blockLast();
+
+            fail("Bulk operation on deleted container should have failed.");
         } catch (CosmosException ce) {
             assertThat(ce.getSubStatusCode())
                 .as("Sub-status code should be 1003")
                 .isIn(
                     HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
                 );
+
+            assertThinClientEndpointUsed(ce.getDiagnostics());
         } finally {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
 
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
+    }
+
+    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
+        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
+
+        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+        AssertionsForClassTypes.assertThat(ctx).isNotNull();
+
+        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
+        AssertionsForClassTypes.assertThat(requests).isNotNull();
+        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
+
+        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
+            logger.info(
+                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
+                requestInfo.getEndpoint(),
+                requestInfo.getRequestType(),
+                requestInfo.getPartitionId(),
+                requestInfo.getPartitionKeyRangeId(),
+                requestInfo.getActivityId());
+            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
+                return;
+            }
+        }
+
+        fail("No request targeting thin client proxy endpoint.");
     }
 }
