@@ -23,7 +23,6 @@ import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
-import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -72,11 +71,9 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -209,7 +206,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
@@ -237,13 +234,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             safeDeleteDatabase(SHARED_DATABASE);
             CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
         }
-    }
-
-    @AfterSuite(groups = { "emulator-vnext" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public void afterSuitEmulatorVNext() {
-        // can not use the after suite method directly as for vnext, query databases is not implemented, so it will error out
-        logger.info("afterSuite for emulator vnext group started. ");
-        safeDeleteDatabase(SHARED_DATABASE);
     }
 
     protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
