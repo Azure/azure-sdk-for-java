@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
@@ -21,20 +21,20 @@ public final class QueryPacksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"queryPackId\":\"pgclrciv\",\"timeCreated\":\"2021-01-12T06:52:04Z\",\"timeModified\":\"2020-12-22T20:01:29Z\",\"provisioningState\":\"kenx\"},\"location\":\"m\",\"tags\":{\"oqvm\":\"frpmpdnqqskaw\"},\"id\":\"bnpqfrtqlkzme\",\"name\":\"nitgvkxlz\",\"type\":\"qdrfegcealzxwhc\"}";
+            = "{\"properties\":{\"queryPackId\":\"uaurkihcir\",\"timeCreated\":\"2021-04-17T15:27:55Z\",\"timeModified\":\"2021-09-20T22:33:09Z\",\"provisioningState\":\"dcoxnbk\"},\"location\":\"anurnnqb\",\"tags\":{\"rxvbfihwuh\":\"pizxqltgrdogyp\",\"iowxi\":\"ctafsrbxrblm\",\"klsbsbqqqagw\":\"spnxwqagnepzw\"},\"id\":\"rxaomzisglrrcze\",\"name\":\"k\",\"type\":\"hltnjadhqoawjq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogAnalyticsQueryPack response = manager.queryPacks()
-            .getByResourceGroupWithResponse("ijouwivkxoyzunb", "xxrtikvc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("zsylollgt", "czzydmxzjij", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("m", response.location());
-        Assertions.assertEquals("frpmpdnqqskaw", response.tags().get("oqvm"));
+        Assertions.assertEquals("anurnnqb", response.location());
+        Assertions.assertEquals("pizxqltgrdogyp", response.tags().get("rxvbfihwuh"));
     }
 }
