@@ -9,6 +9,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
 
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Bugs Fixed
+
+- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`.
+
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
@@ -38,7 +45,6 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 #### Bugs Fixed
 
 - Fixed bug where `spring.cloud.azure.appconfiguration.enabled=false` was ignored in the new major version. [#47029](https://github.com/Azure/azure-sdk-for-java/pull/47029)
-- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`.
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
