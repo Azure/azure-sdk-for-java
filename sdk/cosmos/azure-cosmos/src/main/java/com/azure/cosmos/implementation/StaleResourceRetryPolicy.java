@@ -134,13 +134,21 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
                             CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                            if (this.request != null && !ResourceType.DocumentCollection.equals(this.request.getResourceType()) && Exceptions.isNotFound(cosmosException)) {
+                            if (this.request != null &&
+                                !ResourceType.DocumentCollection.equals(this.request.getResourceType()) &&
+                                Exceptions.isNotFound(cosmosException) &&
+                                Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
                                 cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
 
                                 return cosmosException;
                             }
 
-                            if (this.enclosingOperationTargetResourceType != null && !ResourceType.DocumentCollection.equals(this.enclosingOperationTargetResourceType) && Exceptions.isNotFound(cosmosException)) {
+                            if (this.enclosingOperationTargetResourceType != null &&
+                                !ResourceType.DocumentCollection.equals(this.enclosingOperationTargetResourceType) &&
+                                Exceptions.isNotFound(cosmosException) &&
+                                Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
                                 cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
 
                                 return cosmosException;

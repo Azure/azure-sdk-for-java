@@ -97,7 +97,10 @@ public abstract class RxCollectionCache {
 
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) &&
+                                    com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                                    com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
                                     cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
@@ -113,7 +116,9 @@ public abstract class RxCollectionCache {
 
                                 CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                                if (!ResourceType.DocumentCollection.equals(request.getResourceType()) &&
+                                    com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                                    com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
                                     cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                                 }
 
@@ -139,7 +144,9 @@ public abstract class RxCollectionCache {
 
                         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                        if (!ResourceType.DocumentCollection.equals(request.getResourceType()) && com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException)) {
+                        if (!ResourceType.DocumentCollection.equals(request.getResourceType()) &&
+                            com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                            com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
                             cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                         }
 
