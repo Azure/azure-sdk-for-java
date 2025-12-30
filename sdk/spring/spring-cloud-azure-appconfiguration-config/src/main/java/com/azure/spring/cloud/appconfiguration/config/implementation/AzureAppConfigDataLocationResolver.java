@@ -57,8 +57,16 @@ public class AzureAppConfigDataLocationResolver
             return false;
         }
 
+        Binder binder = context.getBinder();
+        
+        // Check if Azure App Configuration is enabled
+        Boolean enabled = binder.bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class).orElse(true);
+        if (!enabled) {
+            return false;
+        }
+
         // Check if the configuration properties for Azure App Configuration are present
-        return hasValidStoreConfiguration(context.getBinder());
+        return hasValidStoreConfiguration(binder);
     }
 
     /**
