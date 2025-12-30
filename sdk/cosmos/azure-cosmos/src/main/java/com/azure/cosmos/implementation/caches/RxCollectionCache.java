@@ -250,9 +250,7 @@ public abstract class RxCollectionCache {
                     obsoleteValue,
                     () -> {
                         Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties);
-                        return collectionObs.onErrorMap(throwable -> {
-                            return throwable;
-                        }).doOnSuccess(collection -> {
+                        return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });
                     }).then();
