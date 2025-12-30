@@ -225,7 +225,9 @@ public abstract class RxCollectionCache {
         MetadataDiagnosticsContext metaDataDiagnosticsContext,
         String resourceAddress,
         Map<String, Object> properties,
-        DocumentCollection obsoleteValue) {
+        DocumentCollection obsoleteValue,
+        RxDocumentServiceRequest encapsulatingRequest,
+        ResourceType encapsulatingOperationResourceType) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -234,11 +236,51 @@ public abstract class RxCollectionCache {
             obsoleteValue,
             () -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
-                    metaDataDiagnosticsContext, resourceFullName, properties);
+                    metaDataDiagnosticsContext, resourceFullName, properties)
+                    .onErrorMap(throwable -> {
+
+                        if (throwable instanceof CosmosException) {
+
+                            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                            if (encapsulatingRequest != null &&
+                                !ResourceType.DocumentCollection.equals(encapsulatingRequest.getResourceType()) &&
+                                com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                                com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
+                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+
+                                return cosmosException;
+                            }
+
+                            if (encapsulatingOperationResourceType != null &&
+                                !ResourceType.DocumentCollection.equals(encapsulatingOperationResourceType) &&
+                                com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
+                                com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
+
+                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+
+                                return cosmosException;
+                            }
+
+                            return cosmosException;
+                        }
+
+                        return throwable;
+                    });
                 return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
                     collection.getResourceId(),
                     collection));
             });
+    }
+
+    public Mono<DocumentCollection> resolveByNameAsync(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String resourceAddress,
+        Map<String, Object> properties,
+        DocumentCollection obsoleteValue) {
+
+        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, obsoleteValue, null, null);
     }
 
     public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {

@@ -91,7 +91,7 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                 // 2. If the collection rid has changed, then also clean up session container for old containerRid
                 AtomicReference<String> oldCollectionRid = new AtomicReference<>();
                 return this.clientCollectionCache
-                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties)
+                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties, null, this.request, this.enclosingOperationTargetResourceType)
                     .flatMap(collectionInCache -> {
                         oldCollectionRid.set(collectionInCache.getResourceId());
 
@@ -109,8 +109,10 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                                 .resolveByNameAsync(
                                     this.getMetadataDiagnosticsContext(),
                                     collectionLink,
-                                    requestOptionProperties
-                                )
+                                    requestOptionProperties,
+                                    null,
+                                    this.request,
+                                    this.enclosingOperationTargetResourceType)
                                 .map(DocumentCollection :: getResourceId);
                         }
 
@@ -127,37 +129,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                         }
 
                         return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-                    })
-                    .onErrorMap(throwable -> {
-
-                        if (throwable instanceof CosmosException) {
-
-                            CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
-
-                            if (this.request != null &&
-                                !ResourceType.DocumentCollection.equals(this.request.getResourceType()) &&
-                                Exceptions.isNotFound(cosmosException) &&
-                                Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
-
-                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
-
-                                return cosmosException;
-                            }
-
-                            if (this.enclosingOperationTargetResourceType != null &&
-                                !ResourceType.DocumentCollection.equals(this.enclosingOperationTargetResourceType) &&
-                                Exceptions.isNotFound(cosmosException) &&
-                                Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
-
-                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
-
-                                return cosmosException;
-                            }
-
-                            return cosmosException;
-                        }
-
-                        return throwable;
                     });
 
             } else {

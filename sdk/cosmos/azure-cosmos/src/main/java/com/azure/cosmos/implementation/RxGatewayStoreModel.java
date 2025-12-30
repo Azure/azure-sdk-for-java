@@ -633,7 +633,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
                             request.requestContext.getCrossRegionAvailabilityContext();
 
-                        if (availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled() && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()) {
+                        if (availabilityStrategyContextForReq.getAvailabilityStrategyContext() != null && availabilityStrategyContextForReq.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled() && !availabilityStrategyContextForReq.getAvailabilityStrategyContext().isHedgedRequest()) {
 
                             BridgeInternal.setRequestTimeline(oce, reactorNettyRequestRecord.takeTimelineSnapshot());
 

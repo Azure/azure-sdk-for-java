@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -401,13 +403,43 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
-            containerToUse.executeBulkOperations(operationsFlux).blockLast();
+            CosmosBulkOperationResponse<Object> response = containerToUse.executeBulkOperations(operationsFlux).blockLast();
 
-            fail("Bulk operation on deleted container should have failed.");
+            assertThat(response).isNotNull();
+            assertThat(response.getException()).isNotNull();
+
+            Exception e = response.getException();
+
+            assertThat(e).isInstanceOf(CosmosException.class);
+
+            CosmosException ce = Utils.as(e, CosmosException.class);
+
+            if (ConnectionMode.DIRECT.name().equals(accessor.getConnectionMode(clientToUse))) {
+                assertThat(ce.getSubStatusCode())
+                    .as("Sub-status code should be 1003")
+                    .isIn(HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+            }
+
+            if (ConnectionMode.GATEWAY.name().equals(accessor.getConnectionMode(clientToUse))) {
+                assertThat(ce.getSubStatusCode())
+                    .as("Sub-status code should be 0")
+                    .isIn(HttpConstants.SubStatusCodes.UNKNOWN);
+            }
         } catch (CosmosException ce) {
-            assertThat(ce.getSubStatusCode())
+
+            assertThat(ce.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+
+            if (ConnectionMode.DIRECT.name().equals(accessor.getConnectionMode(clientToUse))) {
+                assertThat(ce.getSubStatusCode())
+                .as("Sub-status code should be 1003")
+                .isIn(HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+            }
+
+            if (ConnectionMode.GATEWAY.name().equals(accessor.getConnectionMode(clientToUse))) {
+                assertThat(ce.getSubStatusCode())
                 .as("Sub-status code should be 0")
                 .isIn(HttpConstants.SubStatusCodes.UNKNOWN);
+            }
         } finally {
             safeClose(clientToUse);
             safeClose(deletingAsyncClient);
@@ -545,9 +577,19 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
             Flux<CosmosItemOperation> operationsFlux = Flux.fromIterable(cosmosItemOperations);
 
-            containerToUse.executeBulkOperations(operationsFlux).blockLast();
+            CosmosBulkOperationResponse<Object> response = containerToUse.executeBulkOperations(operationsFlux).blockLast();
 
-            fail("Bulk operation on deleted container should have failed.");
+            assertThat(response).isNotNull();
+            assertThat(response.getException()).isNotNull();
+
+            Exception ce = response.getException();
+
+            assertThat(ce).isInstanceOf(CosmosException.class);
+
+            CosmosException cosmosException = Utils.as(ce, CosmosException.class);
+
+            assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
         } catch (CosmosException ce) {
             assertThat(ce.getSubStatusCode())
                 .as("Sub-status code should be 1003")
