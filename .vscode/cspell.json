@@ -437,7 +437,8 @@
     "windowtitle",
     "wordomatic",
     "xlint",
-    "XLint"
+    "XLint",
+    "xmlparserv"
   ],
   "overrides": [
     {

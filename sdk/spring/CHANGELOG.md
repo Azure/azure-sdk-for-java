@@ -1,6 +1,7 @@
 # Release History
 
 ## 6.2.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.5.9 and Spring Cloud dependencies version to 2025.0.1
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -8,6 +9,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 
 - Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Bugs Fixed
+
+- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
