@@ -14,7 +14,7 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 
 #### Bugs Fixed
 
-- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`.
+- Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
