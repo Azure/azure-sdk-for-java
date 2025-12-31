@@ -73,7 +73,7 @@ mvn clean install -Dgpg.skip
 
 - Skip tests execution
 ```bash
-mvn clean install -Dgpg.skip-DskipTests
+mvn clean install -Dgpg.skip -DskipTests
 ```
 
 ## Version management
