@@ -1,10 +1,16 @@
 ## Release History
 
-### 4.76.0-beta.1 (Unreleased)
+### 4.77.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.76.0 (2025-12-09)
 
 #### Bugs Fixed
 * Fixed a possible memory leak (Netty buffers) in Gateway mode caused by a race condition when timeouts are happening. - [47228](https://github.com/Azure/azure-sdk-for-java/pull/47228) and [47251](https://github.com/Azure/azure-sdk-for-java/pull/47251)

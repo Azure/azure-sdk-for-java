@@ -1,12 +1,16 @@
 ## Release History
 
-### 4.42.0-beta.1 (Unreleased)
+### 4.43.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.42.0 (2025-12-09)
 
 #### Other Changes
 * Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
