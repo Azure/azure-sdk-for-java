@@ -38,7 +38,7 @@
     <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
 
-    <cosmos-spark-version>3.3</cosmos-spark-version>
+    <cosmos-spark-version>3.1</cosmos-spark-version>
     <!-- Default values - same as scala 2.12 -->
     <scala.binary.version>2.12</scala.binary.version>
     <scala.version>2.12.19</scala.version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
