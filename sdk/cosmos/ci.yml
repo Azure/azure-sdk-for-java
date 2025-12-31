@@ -159,7 +159,7 @@ extends:
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ release_azurecosmosspark35-scala213 }}
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35-scala213 }}
       - name: fabric-cosmos-spark-auth_3
         groupId: com.azure.cosmos.spark
         safeName: fabriccosmossparkauth3
