@@ -1,7 +1,7 @@
 # Contributing
 This instruction is guideline for building and code contribution.
 
-## Prequisites
+## Prerequisites
 - JDK 8 and above
 - [Maven](https://maven.apache.org/) 3.0 and above
 
@@ -73,7 +73,7 @@ mvn clean install -Dgpg.skip
 
 - Skip tests execution
 ```bash
-mvn clean install -Dgpg.skip-DskipTests
+mvn clean install -Dgpg.skip -DskipTests
 ```
 
 ## Version management
