@@ -178,7 +178,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thin-client-multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void performDocumentOperationOnNonExistentContainerGatewayModeV2(OperationType operationType) {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
@@ -189,7 +189,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Try to read the item from a non-existent container using Gateway mode client
             String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
 
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // Uncomment if running locally
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
             v2GatewayAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -221,11 +222,11 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 );
         } finally {
             safeClose(v2GatewayAsyncClient);
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
-    @Test(groups = {"thin-client-multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void performBulkOnNonExistentContainerGatewayModeV2() {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
@@ -236,7 +237,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Try to read the item from a non-existent container using Gateway mode client
             String nonExistentContainerId = "NonExistentContainer_" + UUID.randomUUID();
 
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // Uncomment if running locally
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
             v2GatewayAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -277,7 +279,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 );
         } finally {
             safeClose(v2GatewayAsyncClient);
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
@@ -446,7 +448,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thin-client-multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void performDocumentOperationOnDeletedContainerWithGatewayV2(OperationType operationType) throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 
@@ -458,7 +460,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
             testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
 
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // Uncomment if running locally
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
@@ -516,11 +519,11 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
 
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
-    @Test(groups = {"thin-client-multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void performBulkOnDeletedContainerWithGatewayV2() throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 
@@ -533,7 +536,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
             testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
 
-            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            // Uncomment if running locally
+            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig().setEnabled(true);
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
@@ -602,7 +606,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
 
-            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
