@@ -52,7 +52,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
         this.commonAsyncClient = getClientBuilder().buildAsyncClient();
 
@@ -84,7 +84,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         };
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast", "thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.commonAsyncClient);
     }
@@ -222,7 +222,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 );
         } finally {
             safeClose(v2GatewayAsyncClient);
-//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+
+            // Uncomment if running locally
+            // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
@@ -279,7 +281,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 );
         } finally {
             safeClose(v2GatewayAsyncClient);
-//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+
+            // Uncomment if running locally
+            // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
@@ -519,7 +523,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
 
-//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            // Uncomment if running locally
+            // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
@@ -606,7 +611,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             safeClose(gatewayV2AsyncClientToUse);
             safeClose(containerDeletingAsyncClient);
 
-//            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            // Uncomment if running locally
+            // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
 
