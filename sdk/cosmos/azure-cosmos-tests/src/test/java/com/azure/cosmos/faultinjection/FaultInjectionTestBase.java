@@ -156,7 +156,7 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                     FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
                         .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                         .byPage()
-                        .blockLast();
+                        .blockFirst();
                     return firstPage.getCosmosDiagnostics();
                 }
 
@@ -166,7 +166,7 @@ public abstract class FaultInjectionTestBase extends TestSuiteBase {
                 FeedResponse<TestObject> firstPage =  cosmosAsyncContainer
                     .queryChangeFeed(changeFeedRequestOptions, TestObject.class)
                     .byPage()
-                    .blockLast();
+                    .blockFirst();
                 return firstPage.getCosmosDiagnostics();
             }
 
