@@ -4761,21 +4761,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext diagnosticsClientContext) {
 
         return this.getCollectionCache()
-            .resolveByNameAsync(null, collectionLink, null)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof CosmosException) {
-
-                    CosmosException ce = Utils.as(throwable, CosmosException.class);
-
-                    if (HttpConstants.StatusCodes.NOTFOUND == ce.getStatusCode() && HttpConstants.SubStatusCodes.UNKNOWN == ce.getSubStatusCode()) {
-                        cosmosExceptionAccessor.setSubStatusCode(ce, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
-                    }
-
-                    return ce;
-                }
-
-                return throwable;
-            })
+            .resolveByNameAsync(null, collectionLink, null, null, null, ResourceType.Document)
             .flatMapMany(collection -> {
                 if (collection == null) {
                     throw new IllegalStateException("Collection can not be null");

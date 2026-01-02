@@ -152,7 +152,7 @@ class QueryPlanRetriever {
 
                     CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-                    if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode())) {
+                    if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode()) && HttpConstants.SubStatusCodes.UNKNOWN == (cosmosException.getSubStatusCode())) {
                         cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                     }
 
