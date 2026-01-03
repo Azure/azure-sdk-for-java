@@ -171,135 +171,147 @@ public class PoolTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createPool(poolToCreate));
         }
 
-        try {
-            // GET
-            boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
-                () -> poolExists(batchAsyncClient, poolId));
-            Assertions.assertTrue(poolExists, "Pool should exist after creation");
+        // try {
+        // GET
+        boolean poolExists = SyncAsyncExtension.execute(() -> poolExists(batchClient, poolId),
+            () -> poolExists(batchAsyncClient, poolId));
+        Assertions.assertTrue(poolExists, "Pool should exist after creation");
 
-            // Wait for the VM to be allocated
-            BatchPool pool = SyncAsyncExtension.execute(
-                () -> waitForPoolState(poolId, AllocationState.STEADY, poolSteadyTimeoutInMilliseconds),
-                () -> Mono.fromCallable(
-                    () -> waitForPoolStateAsync(poolId, AllocationState.STEADY, poolSteadyTimeoutInMilliseconds)));
+        // Wait for the VM to be allocated
+        BatchPool pool = SyncAsyncExtension.execute(
+            () -> waitForPoolState(poolId, AllocationState.STEADY, poolSteadyTimeoutInMilliseconds),
+            () -> Mono.fromCallable(
+                () -> waitForPoolStateAsync(poolId, AllocationState.STEADY, poolSteadyTimeoutInMilliseconds)));
 
-            Assertions.assertEquals(poolVmCount, (long) pool.getCurrentDedicatedNodes());
-            Assertions.assertEquals(poolLowPriVmCount, (long) pool.getCurrentLowPriorityNodes());
+        Assertions.assertEquals(poolVmCount, (long) pool.getCurrentDedicatedNodes());
+        Assertions.assertEquals(poolLowPriVmCount, (long) pool.getCurrentLowPriorityNodes());
 
-            Iterable<BatchNode> nodeListIterator = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
-                () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
-            List<BatchNode> computeNodes = new ArrayList<BatchNode>();
+        Iterable<BatchNode> nodeListIterator = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
+            () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
+        List<BatchNode> computeNodes = new ArrayList<BatchNode>();
 
-            for (BatchNode node : nodeListIterator) {
-                computeNodes.add(node);
-            }
+        for (BatchNode node : nodeListIterator) {
+            computeNodes.add(node);
+        }
 
-            List<InboundEndpoint> inboundEndpoints
-                = computeNodes.get(0).getEndpointConfiguration().getInboundEndpoints();
-            Assertions.assertEquals(2, inboundEndpoints.size());
-            InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
-            Assertions.assertEquals(5000, inboundEndpoint.getBackendPort());
-            Assertions.assertTrue(inboundEndpoint.getFrontendPort() >= 60000);
-            Assertions.assertTrue(inboundEndpoint.getFrontendPort() <= 60040);
-            Assertions.assertTrue(inboundEndpoint.getName().startsWith("testinbound."));
-            Assertions.assertTrue(inboundEndpoints.get(1).getName().startsWith("SSHRule"));
+        List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).getEndpointConfiguration().getInboundEndpoints();
+        Assertions.assertEquals(2, inboundEndpoints.size());
+        InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
+        Assertions.assertEquals(5000, inboundEndpoint.getBackendPort());
+        Assertions.assertTrue(inboundEndpoint.getFrontendPort() >= 60000);
+        Assertions.assertTrue(inboundEndpoint.getFrontendPort() <= 60040);
+        Assertions.assertTrue(inboundEndpoint.getName().startsWith("testinbound."));
+        Assertions.assertTrue(inboundEndpoints.get(1).getName().startsWith("SSHRule"));
 
-            // CHECK POOL NODE COUNTS
-            BatchPoolNodeCounts poolNodeCount = null;
-            Iterable<BatchPoolNodeCounts> poolNodeCountIterator
-                = SyncAsyncExtension.execute(() -> batchClient.listPoolNodeCounts(),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.listPoolNodeCounts().toIterable()));
+        // CHECK POOL NODE COUNTS
+        BatchPoolNodeCounts poolNodeCount = null;
+        Iterable<BatchPoolNodeCounts> poolNodeCountIterator
+            = SyncAsyncExtension.execute(() -> batchClient.listPoolNodeCounts(),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listPoolNodeCounts().toIterable()));
 
-            for (BatchPoolNodeCounts tmp : poolNodeCountIterator) {
-                if (tmp.getPoolId().equals(poolId)) {
-                    poolNodeCount = tmp;
-                    break;
-                }
-            }
-            Assertions.assertNotNull(poolNodeCount); // Single pool only
-            Assertions.assertNotNull(poolNodeCount.getLowPriority());
-
-            Assertions.assertEquals(poolLowPriVmCount, poolNodeCount.getLowPriority().getTotal());
-            Assertions.assertEquals(poolVmCount, poolNodeCount.getDedicated().getTotal());
-
-            // Update NodeCommunicationMode to Simplified
-
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters();
-            poolUpdateParameters.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
-                .setMetadata(new LinkedList<BatchMetadataItem>());
-
-            SyncAsyncExtension.execute(() -> batchClient.updatePool(poolId, poolUpdateParameters),
-                () -> batchAsyncClient.updatePool(poolId, poolUpdateParameters));
-
-            pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
-                () -> batchAsyncClient.getPool(poolId));
-
-            // Patch NodeCommunicationMode to Classic
-
-            BatchPoolUpdateParameters poolUpdateParameters2 = new BatchPoolUpdateParameters();
-            SyncAsyncExtension.execute(() -> batchClient.updatePool(poolId, poolUpdateParameters2),
-                () -> batchAsyncClient.updatePool(poolId, poolUpdateParameters2));
-
-            pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId),
-                () -> batchAsyncClient.getPool(poolId));
-
-            // RESIZE
-            BatchPoolResizeParameters resizeParameters
-                = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
-
-            SyncPoller<BatchPool, BatchPool> resizePoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginResizePool(poolId, resizeParameters), () -> Mono
-                    .fromCallable(() -> batchAsyncClient.beginResizePool(poolId, resizeParameters).getSyncPoller())));
-
-            // Inspect first poll
-            PollResponse<BatchPool> resizeFirst = resizePoller.poll();
-            if (resizeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchPool poolDuringResize = resizeFirst.getValue();
-                Assertions.assertNotNull(poolDuringResize);
-                Assertions.assertEquals(AllocationState.RESIZING, poolDuringResize.getAllocationState());
-            }
-
-            // Wait for completion
-            resizePoller.waitForCompletion();
-
-            // Final pool after resize
-            BatchPool resizedPool = resizePoller.getFinalResult();
-            Assertions.assertNotNull(resizedPool);
-            Assertions.assertEquals(AllocationState.STEADY, resizedPool.getAllocationState());
-            Assertions.assertEquals(1, (long) resizedPool.getTargetDedicatedNodes());
-            Assertions.assertEquals(1, (long) resizedPool.getTargetLowPriorityNodes());
-
-            // DELETE using LRO
-            SyncPoller<BatchPool, Void> poller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
-
-            // Validate initial poll result (pool should be in DELETING state)
-            PollResponse<BatchPool> initialResponse = poller.poll();
-            if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchPool poolDuringPoll = initialResponse.getValue();
-                Assertions.assertNotNull(poolDuringPoll, "Expected pool data during polling");
-                Assertions.assertEquals(poolId, poolDuringPoll.getId());
-                Assertions.assertEquals(BatchPoolState.DELETING, poolDuringPoll.getState());
-            }
-
-            // Wait for LRO to finish
-            poller.waitForCompletion();
-
-            // Final result should be null after successful deletion
-            PollResponse<BatchPool> finalResponse = poller.poll();
-            Assertions.assertNull(finalResponse.getValue(),
-                "Expected final result to be null after successful deletion");
-
-        } finally {
-            // Confirm pool is no longer retrievable
-            try {
-                SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
-                Assertions.fail("Expected pool to be deleted.");
-            } catch (HttpResponseException ex) {
-                Assertions.assertEquals(404, ex.getResponse().getStatusCode());
+        for (BatchPoolNodeCounts tmp : poolNodeCountIterator) {
+            if (tmp.getPoolId().equals(poolId)) {
+                poolNodeCount = tmp;
+                break;
             }
         }
+        Assertions.assertNotNull(poolNodeCount); // Single pool only
+        Assertions.assertNotNull(poolNodeCount.getLowPriority());
+
+        Assertions.assertEquals(poolLowPriVmCount, poolNodeCount.getLowPriority().getTotal());
+        Assertions.assertEquals(poolVmCount, poolNodeCount.getDedicated().getTotal());
+
+        // REPLACE with poolReplaceParameters
+        // Metadata, startTask, and applicationPackageReferences are replaceable
+        BatchPoolReplaceParameters poolReplaceParameters
+            = new BatchPoolReplaceParameters(Arrays.asList(new BatchApplicationPackageReference("testapp")),    // App was created previously
+                Arrays.asList(new BatchMetadataItem("bar", "foo")));
+
+        SyncAsyncExtension.execute(() -> batchClient.replacePoolProperties(poolId, poolReplaceParameters),
+            () -> batchAsyncClient.replacePoolProperties(poolId, poolReplaceParameters));
+
+        pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+
+        Assertions.assertEquals(pool.getMetadata().get(0).getName(),
+            poolReplaceParameters.getMetadata().get(0).getName());
+        Assertions.assertEquals(pool.getMetadata().get(0).getValue(),
+            poolReplaceParameters.getMetadata().get(0).getValue());
+
+        // PATCH with poolUpdateParameters
+        // Metadata, startTask, and applicationPackageReferences are updatable when pool isn't empty
+        BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters();
+        poolUpdateParameters.setMetadata(Arrays.asList(new BatchMetadataItem("foo", "bar")));
+
+        SyncAsyncExtension.execute(() -> batchClient.updatePool(poolId, poolUpdateParameters),
+            () -> batchAsyncClient.updatePool(poolId, poolUpdateParameters));
+
+        pool = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+        Assertions.assertEquals(pool.getMetadata().get(0).getName(),
+            poolUpdateParameters.getMetadata().get(0).getName());
+        Assertions.assertEquals(pool.getMetadata().get(0).getValue(),
+            poolUpdateParameters.getMetadata().get(0).getValue());
+
+        // RESIZE
+        BatchPoolResizeParameters resizeParameters
+            = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+
+        SyncPoller<BatchPool, BatchPool> resizePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(
+            () -> batchClient.beginResizePool(poolId, resizeParameters),
+            () -> Mono.fromCallable(() -> batchAsyncClient.beginResizePool(poolId, resizeParameters).getSyncPoller())));
+
+        // Inspect first poll
+        PollResponse<BatchPool> resizeFirst = resizePoller.poll();
+        if (resizeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringResize = resizeFirst.getValue();
+            Assertions.assertNotNull(poolDuringResize);
+            Assertions.assertEquals(AllocationState.RESIZING, poolDuringResize.getAllocationState());
+        }
+
+        // Wait for completion
+        resizePoller.waitForCompletion();
+
+        // Final pool after resize
+        BatchPool resizedPool = resizePoller.getFinalResult();
+        Assertions.assertNotNull(resizedPool);
+        Assertions.assertEquals(AllocationState.STEADY, resizedPool.getAllocationState());
+        Assertions.assertEquals(1, (long) resizedPool.getTargetDedicatedNodes());
+        Assertions.assertEquals(1, (long) resizedPool.getTargetLowPriorityNodes());
+
+        // DELETE using LRO
+        SyncPoller<BatchPool, Void> poller
+            = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+
+        // Validate initial poll result (pool should be in DELETING state)
+        PollResponse<BatchPool> initialResponse = poller.poll();
+        if (initialResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchPool poolDuringPoll = initialResponse.getValue();
+            Assertions.assertNotNull(poolDuringPoll, "Expected pool data during polling");
+            Assertions.assertEquals(poolId, poolDuringPoll.getId());
+            Assertions.assertEquals(BatchPoolState.DELETING, poolDuringPoll.getState());
+        }
+
+        // Wait for LRO to finish
+        poller.waitForCompletion();
+
+        //  Confirm pool is not retrievable
+        var httpErrorRes = Assertions.assertThrows(HttpResponseException.class, () -> {
+            SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+        }, "Expected pool to be deleted.");
+
+        Assertions.assertEquals(404, httpErrorRes.getResponse().getStatusCode());
+
+        // Final result should be null after successful deletion
+        PollResponse<BatchPool> finalResponse = poller.poll();
+        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
+
+        // Confirm pool is no longer retrievable
+        // try {
+        //     SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+        //     Assertions.fail("Expected pool to be deleted.");
+        // } catch (HttpResponseException ex) {
+        //     Assertions.assertEquals(404, ex.getResponse().getStatusCode());
+        // }
     }
 
     @Test
