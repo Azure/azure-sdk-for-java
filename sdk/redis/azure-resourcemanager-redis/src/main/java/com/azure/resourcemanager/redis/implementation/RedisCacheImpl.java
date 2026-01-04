@@ -757,6 +757,16 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         return this;
     }
 
+    @Override
+    public RedisCacheImpl enableLocalAuth() {
+        if (isInCreateMode()) {
+            createParameters.withDisableAccessKeyAuthentication(false);
+        } else {
+            updateParameters.withDisableAccessKeyAuthentication(false);
+        }
+        return this;
+    }
+
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
         private final PrivateLinkResourceInner innerModel;
 

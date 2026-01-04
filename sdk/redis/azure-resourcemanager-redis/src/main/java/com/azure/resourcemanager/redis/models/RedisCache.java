@@ -217,6 +217,14 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
             default WithCreate disableLocalAuth() {
                 throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
             }
+            /**
+             * Enable SAS authentication for the Redis cache.
+             *
+             * @return next stage of the Redis cache definition
+             */
+            default WithCreate enableLocalAuth() {
+                throw new UnsupportedOperationException("[enableLocalAuth] is not supported in " + getClass());
+            }
         }
 
         /** A Redis Cache definition allowing the sku to be set. */
@@ -443,6 +451,14 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
              */
             default Update disableLocalAuth() {
                 throw new UnsupportedOperationException("[disableLocalAuth] is not supported in " + getClass());
+            }
+            /**
+             * Enable SAS authentication for the Redis cache.
+             *
+             * @return next stage of the Redis cache definition
+             */
+            default Update enableLocalAuth() {
+                throw new UnsupportedOperationException("[enableLocalAuth] is not supported in " + getClass());
             }
         }
 
