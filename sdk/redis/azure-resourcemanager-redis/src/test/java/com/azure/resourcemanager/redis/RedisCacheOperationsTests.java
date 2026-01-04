@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.redis;
 
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
