@@ -56,6 +56,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
+    private volatile boolean addHubRegionProcessingOnlyHeader = false;
+
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -107,7 +109,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
-            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false, true)) {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
@@ -266,6 +268,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
                         checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
                         crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+
+                        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.shouldAddHubRegionProcessingOnlyHeader(request)) {
+                            this.addHubRegionProcessingOnlyHeader = true;
+                        }
                     }
 
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
@@ -520,6 +526,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);
+        }
+
+        if (this.addHubRegionProcessingOnlyHeader) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
         }
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request
