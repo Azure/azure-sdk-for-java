@@ -445,13 +445,13 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     interface UpdateStages {
 
         /**
-         * The stage of Redis cache definition allowing to toggle authentication through access keys.
+         * The stage of Redis cache update allowing to toggle authentication through access keys.
          */
         interface WithAccessKeyAuthentication {
             /**
              * Specifies that authentication to Redis through access keys is disabled.
              *
-             * @return next stage of the Redis cache definition
+             * @return next stage of the Redis cache update
              */
             default Update disableAccessKeyAuthentication() {
                 throw new UnsupportedOperationException(
@@ -461,7 +461,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
             /**
              * Specifies that authentication to Redis through access keys is enabled.
              *
-             * @return next stage of the Redis cache definition
+             * @return next stage of the Redis cache update
              */
             default Update enableAccessKeyAuthentication() {
                 throw new UnsupportedOperationException(
