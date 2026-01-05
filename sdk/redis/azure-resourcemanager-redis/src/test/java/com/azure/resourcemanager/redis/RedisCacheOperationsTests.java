@@ -210,7 +210,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
         // The SAS token is poorly formatted.
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
-
+        
         premiumCache.importData(Arrays.asList("snapshot1"));*/
     }
 
