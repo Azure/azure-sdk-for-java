@@ -182,7 +182,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      **************************************************************/
 
     /**
-     * Authentication to Redis through access keys is disabled when set as true. Default value is false.
+     * Whether authentication to Redis through access keys is enabled.
      *
      * @return whether access keys is disabled
      */
