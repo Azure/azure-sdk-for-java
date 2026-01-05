@@ -184,7 +184,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     /**
      * Whether authentication to Redis through access keys is enabled.
      *
-     * @return whether access keys is disabled
+     * @return whether authentication to Redis through access keys is enabled
      */
     default boolean isAccessKeyAuthenticationEnabled() {
         throw new UnsupportedOperationException("[isAccessKeyAuthenticationEnabled] is not supported in " + getClass());
@@ -210,7 +210,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
          */
         interface WithAccessKeyAuthentication {
             /**
-             * Disables SAS authentication for the Redis cache.
+             * Specifies that authentication to Redis through access keys is disabled.
              *
              * @return next stage of the Redis cache definition
              */
@@ -220,7 +220,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
             }
 
             /**
-             * Enable SAS authentication for the Redis cache.
+             * Specifies that authentication to Redis through access keys is enabled.
              *
              * @return next stage of the Redis cache definition
              */
