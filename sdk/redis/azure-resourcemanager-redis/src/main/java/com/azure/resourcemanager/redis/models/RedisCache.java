@@ -182,9 +182,9 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      **************************************************************/
 
     /**
-     * Checks whether local auth is disabled.
+     * Authentication to Redis through access keys is disabled when set as true. Default value is false.
      *
-     * @return whether local auth is disabled
+     * @return whether access keys is disabled
      */
     default boolean isAccessKeyAuthenticationEnabled() {
         throw new UnsupportedOperationException("[isAccessKeyAuthenticationEnabled] is not supported in " + getClass());
@@ -206,7 +206,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
         }
 
         /**
-         * The stage of Redis cache definition allowing to disable local auth.
+         * The stage of Redis cache definition allowing to disable access keys.
          */
         interface WithAccessKeyAuthentication {
             /**
@@ -445,7 +445,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     interface UpdateStages {
 
         /**
-         * The stage of Redis cache definition allowing to disable local auth.
+         * The stage of Redis cache definition allowing to disable access keys.
          */
         interface WithAccessKeyAuthentication {
             /**
