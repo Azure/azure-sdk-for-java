@@ -16,28 +16,28 @@ import java.util.Map;
  */
 public interface LogAnalyticsQueryPackQuery {
     /**
-     * Gets the id property: Azure resource Id.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: Azure resource name.
+     * Gets the name property: The name of the resource.
      * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the type property: Azure resource type.
+     * Gets the type property: The type of the resource.
      * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the systemData property: Read only system data.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */

@@ -141,7 +141,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagedCluster(this.client.getEndpoint(), apiVersion,
@@ -181,7 +181,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -268,7 +268,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -296,7 +297,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -309,7 +310,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +340,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -350,7 +352,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,7 +371,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,7 +390,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,7 +407,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param parameters The maintenance configuration to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -436,7 +442,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, resourceName, configName, parameters, accept, context))
@@ -448,7 +454,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param parameters The maintenance configuration to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +490,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -495,7 +502,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param parameters The maintenance configuration to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -515,7 +523,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param parameters The maintenance configuration to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,7 +545,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param parameters The maintenance configuration to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -555,7 +565,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -582,7 +593,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -595,7 +606,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -623,7 +635,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (configName == null) {
             return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-02-preview";
+        final String apiVersion = "2025-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -635,7 +647,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -651,7 +664,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -669,7 +683,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param configName The name of the maintenance configuration. Supported values are 'default',
+     * 'aksManagedAutoUpgradeSchedule', or 'aksManagedNodeOSUpgradeSchedule'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
