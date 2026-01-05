@@ -186,8 +186,8 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      *
      * @return whether local auth is disabled
      */
-    default boolean withAccessKeyAuthentication() {
-        throw new UnsupportedOperationException("[withAccessKeyAuthentication] is not supported in " + getClass());
+    default boolean isAccessKeyAuthenticationEnabled() {
+        throw new UnsupportedOperationException("[isAccessKeyAuthenticationEnabled] is not supported in " + getClass());
     }
 
     /** Container interface for all the definitions that need to be implemented. */

@@ -386,7 +386,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .disableAccessKeyAuthentication()
             .create();
 
-        Assertions.assertTrue(redisCache.withAccessKeyAuthentication());
+        Assertions.assertTrue(redisCache.isAccessKeyAuthenticationEnabled());
         redisCache.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
 

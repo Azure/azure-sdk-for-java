@@ -381,7 +381,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     }
 
     @Override
-    public boolean withAccessKeyAuthentication() {
+    public boolean isAccessKeyAuthenticationEnabled() {
         return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableAccessKeyAuthentication());
     }
 
