@@ -37,7 +37,7 @@ public class KafkaCosmosUtils {
                     protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
                         // Whitelist only allowed classes to prevent rce from arbitrary classes
                         if (!ALLOWED_CLASSES.contains(desc.getName())) {
-                            LOGGER.error(desc.getName());
+                            LOGGER.error("Invalid class type for deserialization {}", desc.getName());
                             throw new InvalidClassException("Unauthorized deserialization attempt", desc.getName());
                         }
                         return super.resolveClass(desc);
