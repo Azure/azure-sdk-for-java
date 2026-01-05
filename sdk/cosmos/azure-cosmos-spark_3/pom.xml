@@ -292,20 +292,25 @@
               <includes>
                 <include>org.apache.commons:commons-lang3:[3.18.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark33.version}]</include>
-                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark34.version}]</include>
-                <include>org.apache.spark:spark-sql_${scala.binary.version}:[${spark35.version}]</include>
+                <include>org.apache.spark:spark-sql_2.12:[${spark33.version}]</include>
+                <include>org.apache.spark:spark-sql_2.12:[${spark34.version}]</include>
+                <include>org.apache.spark:spark-sql_2.12:[${spark35.version}]</include>
+                <include>org.apache.spark:spark-sql_2.13:[${spark35.version}]</include>
                 <include>org.scala-lang:scala-library:[${scala.version}]</include>
-                <include>org.scala-lang.modules:scala-java8-compat_${scala.binary.version}:[${scala-java8-compat.version}]</include>
-                <include>io.projectreactor:reactor-scala-extensions_${scala.binary.version}:[${reactor-scala-extensions.version}]</include>
-                <include>org.scalatest:scalatest_${scala.binary.version}:[${scalatest.version}]</include>
+                <include>org.scala-lang.modules:scala-java8-compat_2.12:[${scala-java8-compat.version}]</include>
+                <include>org.scala-lang.modules:scala-java8-compat_2.13:[${scala-java8-compat.version}]</include>
+                <include>io.projectreactor:reactor-scala-extensions_2.12:[${reactor-scala-extensions.version}]</include>
+                <include>io.projectreactor:reactor-scala-extensions_2.13:[${reactor-scala-extensions.version}]</include>
+                <include>org.scalatest:scalatest_2.12:[${scalatest.version}]</include>
+                <include>org.scalatest:scalatest_2.13:[${scalatest.version}]</include>
                 <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-scala_${scala.binary.version}:[${scala-jackson.version}]</include>
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[${scala-jackson.version}]</include>
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.13:[${scala-jackson.version}]</include>
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-core;external_dependency} -->
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;cosmos_com.microsoft.azure:applicationinsights-core;external_dependency} -->
