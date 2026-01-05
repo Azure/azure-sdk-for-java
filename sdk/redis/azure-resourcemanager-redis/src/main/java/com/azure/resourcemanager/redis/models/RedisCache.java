@@ -206,7 +206,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
         }
 
         /**
-         * The stage of Redis cache definition allowing to disable access keys.
+         * The stage of Redis cache definition allowing to toggle authentication through access keys.
          */
         interface WithAccessKeyAuthentication {
             /**
@@ -445,7 +445,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
     interface UpdateStages {
 
         /**
-         * The stage of Redis cache definition allowing to disable access keys.
+         * The stage of Redis cache definition allowing to toggle authentication through access keys.
          */
         interface WithAccessKeyAuthentication {
             /**
