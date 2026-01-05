@@ -103,28 +103,25 @@ public class PoolTests extends BatchClientTestBase {
             .setTargetDedicatedNodes(poolVmCount)
             .setVirtualMachineConfiguration(configuration);
 
+        SyncAsyncExtension.execute(() -> batchClient.createPool(poolToCreate),
+            () -> batchAsyncClient.createPool(poolToCreate));
+
+        BatchPool pool
+            = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+        Assertions.assertEquals(lun,
+            pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLogicalUnitNumber());
+        Assertions.assertEquals(diskSizeGB,
+            pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
+        // DELETE
         try {
-            SyncAsyncExtension.execute(() -> batchClient.createPool(poolToCreate),
-                () -> batchAsyncClient.createPool(poolToCreate));
+            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
-            BatchPool pool
-                = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
-            Assertions.assertEquals(lun,
-                pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLogicalUnitNumber());
-            Assertions.assertEquals(diskSizeGB,
-                pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGb());
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for pool: " + poolId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for pool: " + poolId);
+            e.printStackTrace();
         }
     }
 
@@ -223,9 +220,8 @@ public class PoolTests extends BatchClientTestBase {
 
         // REPLACE with poolReplaceParameters
         // Metadata, startTask, and applicationPackageReferences are replaceable
-        BatchPoolReplaceParameters poolReplaceParameters
-            = new BatchPoolReplaceParameters(Arrays.asList(new BatchApplicationPackageReference("testapp")),    // App was created previously
-                Arrays.asList(new BatchMetadataItem("bar", "foo")));
+        BatchPoolReplaceParameters poolReplaceParameters = new BatchPoolReplaceParameters(new ArrayList<>(),    // App was created previously ( else send empty new ArrayList<>() )
+            Arrays.asList(new BatchMetadataItem("bar", "foo")));
 
         SyncAsyncExtension.execute(() -> batchClient.replacePoolProperties(poolId, poolReplaceParameters),
             () -> batchAsyncClient.replacePoolProperties(poolId, poolReplaceParameters));
@@ -390,33 +386,30 @@ public class PoolTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createPool(poolCreateParameters));
         }
 
+        BatchPool pool
+            = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
+        Assertions.assertNotNull(pool);
+
+        SecurityProfile sp = pool.getVirtualMachineConfiguration().getSecurityProfile();
+        Assertions
+            .assertTrue(SecurityTypes.CONFIDENTIAL_VM.toString().equalsIgnoreCase(sp.getSecurityType().toString()));
+        Assertions.assertTrue(sp.isEncryptionAtHost());
+        Assertions.assertTrue(sp.getUefiSettings().isSecureBootEnabled());
+        Assertions.assertTrue(sp.getUefiSettings().isVTpmEnabled());
+
+        BatchOsDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
+            disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
+        // DELETE
         try {
-            BatchPool pool
-                = SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
-            Assertions.assertNotNull(pool);
+            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
-            SecurityProfile sp = pool.getVirtualMachineConfiguration().getSecurityProfile();
-            Assertions
-                .assertTrue(SecurityTypes.CONFIDENTIAL_VM.toString().equalsIgnoreCase(sp.getSecurityType().toString()));
-            Assertions.assertTrue(sp.isEncryptionAtHost());
-            Assertions.assertTrue(sp.getUefiSettings().isSecureBootEnabled());
-            Assertions.assertTrue(sp.getUefiSettings().isVTpmEnabled());
-
-            BatchOsDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
-            Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
-                disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
-
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for pool: " + poolId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for pool: " + poolId);
+            e.printStackTrace();
         }
     }
 
@@ -447,100 +440,95 @@ public class PoolTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createPool(poolCreateParameters));
         }
 
-        try {
-            // Wait for the pool to become steady and nodes to become idle
-            BatchPool pool = SyncAsyncExtension.execute(
-                () -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+        // Wait for the pool to become steady and nodes to become idle
+        BatchPool pool
+            = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
                 () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
 
-            Assertions.assertNotNull(pool);
-            Assertions.assertEquals(AllocationState.STEADY, pool.getAllocationState());
+        Assertions.assertNotNull(pool);
+        Assertions.assertEquals(AllocationState.STEADY, pool.getAllocationState());
 
-            // Retrieve the nodes
-            Iterable<BatchNode> nodesPaged = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
-                () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
+        // Retrieve the nodes
+        Iterable<BatchNode> nodesPaged = SyncAsyncExtension.execute(() -> batchClient.listNodes(poolId),
+            () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()));
 
-            BatchNode firstNode = null;
-            for (BatchNode node : nodesPaged) {
-                firstNode = node;  // Get the first node
-                break;
-            }
-            Assertions.assertNotNull(firstNode, "Expected at least one compute node in pool");
+        BatchNode firstNode = null;
+        for (BatchNode node : nodesPaged) {
+            firstNode = node;  // Get the first node
+            break;
+        }
+        Assertions.assertNotNull(firstNode, "Expected at least one compute node in pool");
 
-            String nodeId = firstNode.getId();
+        String nodeId = firstNode.getId();
 
-            sleepIfRunningAgainstService(15000);
+        sleepIfRunningAgainstService(15000);
 
-            // DEALLOCATE using LRO
-            BatchNodeDeallocateParameters deallocateParams
-                = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
+        // DEALLOCATE using LRO
+        BatchNodeDeallocateParameters deallocateParams
+            = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
 
-            BatchNodeDeallocateOptions deallocateOptions
-                = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
-                    .setParameters(deallocateParams);
+        BatchNodeDeallocateOptions deallocateOptions
+            = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
+                .setParameters(deallocateParams);
 
-            SyncPoller<BatchNode, BatchNode> deallocatePoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginDeallocateNode(poolId, nodeId, deallocateOptions),
-                    () -> Mono
-                        .fromCallable(() -> batchAsyncClient.beginDeallocateNode(poolId, nodeId, deallocateOptions)
-                            .getSyncPoller())));
+        SyncPoller<BatchNode, BatchNode> deallocatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+            .execute(() -> batchClient.beginDeallocateNode(poolId, nodeId, deallocateOptions), () -> Mono.fromCallable(
+                () -> batchAsyncClient.beginDeallocateNode(poolId, nodeId, deallocateOptions).getSyncPoller())));
 
-            // Validate first poll
-            PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
-            if (firstPoll.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchNode nodeDuringPoll = firstPoll.getValue();
-                Assertions.assertNotNull(nodeDuringPoll);
-                Assertions.assertEquals(nodeId, nodeDuringPoll.getId());
-                Assertions.assertEquals(BatchNodeState.DEALLOCATING, nodeDuringPoll.getState());
-            }
+        // Validate first poll
+        PollResponse<BatchNode> firstPoll = deallocatePoller.poll();
+        if (firstPoll.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchNode nodeDuringPoll = firstPoll.getValue();
+            Assertions.assertNotNull(nodeDuringPoll);
+            Assertions.assertEquals(nodeId, nodeDuringPoll.getId());
+            Assertions.assertEquals(BatchNodeState.DEALLOCATING, nodeDuringPoll.getState());
+        }
 
-            // Wait for completion and validate final state
-            deallocatePoller.waitForCompletion();
-            BatchNode deallocatedNode = deallocatePoller.getFinalResult();
+        // Wait for completion and validate final state
+        deallocatePoller.waitForCompletion();
+        BatchNode deallocatedNode = deallocatePoller.getFinalResult();
 
-            Assertions.assertNotNull(deallocatedNode, "Final result should contain the node object");
-            Assertions.assertEquals(BatchNodeState.DEALLOCATED, deallocatedNode.getState());
+        Assertions.assertNotNull(deallocatedNode, "Final result should contain the node object");
+        Assertions.assertEquals(BatchNodeState.DEALLOCATED, deallocatedNode.getState());
 
-            // Start the node
-            SyncPoller<BatchNode, BatchNode> startPoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginStartNode(poolId, nodeId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginStartNode(poolId, nodeId).getSyncPoller())));
+        // Start the node
+        SyncPoller<BatchNode, BatchNode> startPoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginStartNode(poolId, nodeId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginStartNode(poolId, nodeId).getSyncPoller())));
 
-            // First poll
-            PollResponse<BatchNode> startFirst = startPoller.poll();
-            BatchNode firstVal = startFirst.getValue();
+        // First poll
+        PollResponse<BatchNode> startFirst = startPoller.poll();
+        BatchNode firstVal = startFirst.getValue();
 
-            if (startFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                // Only possible while the node is STARTING
-                Assertions.assertNotNull(firstVal, "Expected node payload during polling");
-                Assertions.assertEquals(BatchNodeState.STARTING, firstVal.getState(),
-                    "When IN_PROGRESS the node must be in STARTING state");
-            } else {
-                // Operation completed in a single poll
-                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, startFirst.getStatus());
-                Assertions.assertNotNull(firstVal);
-                Assertions.assertNotEquals(BatchNodeState.STARTING, firstVal.getState(),
-                    "Node should have left STARTING when operation already completed");
-            }
+        if (startFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            // Only possible while the node is STARTING
+            Assertions.assertNotNull(firstVal, "Expected node payload during polling");
+            Assertions.assertEquals(BatchNodeState.STARTING, firstVal.getState(),
+                "When IN_PROGRESS the node must be in STARTING state");
+        } else {
+            // Operation completed in a single poll
+            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, startFirst.getStatus());
+            Assertions.assertNotNull(firstVal);
+            Assertions.assertNotEquals(BatchNodeState.STARTING, firstVal.getState(),
+                "Node should have left STARTING when operation already completed");
+        }
 
-            startPoller.waitForCompletion();
-            BatchNode startedNode = startPoller.getFinalResult();
-            Assertions.assertNotNull(startedNode, "Final result of beginStartNode should not be null");
-            Assertions.assertEquals(BatchNodeState.IDLE, startedNode.getState(),
-                "Node should reach IDLE once it has started");
+        startPoller.waitForCompletion();
+        BatchNode startedNode = startPoller.getFinalResult();
+        Assertions.assertNotNull(startedNode, "Final result of beginStartNode should not be null");
+        Assertions.assertEquals(BatchNodeState.IDLE, startedNode.getState(),
+            "Node should reach IDLE once it has started");
 
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+        // DELETE
+        try {
+            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
 
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for pool: " + poolId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for pool: " + poolId);
+            e.printStackTrace();
         }
     }
 
@@ -570,157 +558,154 @@ public class PoolTests extends BatchClientTestBase {
                 () -> batchAsyncClient.createPool(createParams));
         }
 
+        // Wait for pool to reach steady state
+        BatchPool pool
+            = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+        // Grab two node IDs
+        List<BatchNode> nodes = new ArrayList<>();
+        SyncAsyncExtension
+            .execute(() -> batchClient.listNodes(poolId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()))
+            .forEach(nodes::add);
+
+        Assertions.assertTrue(nodes.size() >= 2, "Need at least two nodes for this test.");
+        String nodeIdA = nodes.get(0).getId();
+        String nodeIdB = nodes.get(1).getId();
+
+        // Reboot node
+        SyncPoller<BatchNode, BatchNode> rebootPoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginRebootNode(poolId, nodeIdA),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginRebootNode(poolId, nodeIdA).getSyncPoller())));
+
+        // Validate first poll (node should be rebooting)
+        PollResponse<BatchNode> rebootFirst = rebootPoller.poll();
+        if (rebootFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchNode nodeDuringReboot = rebootFirst.getValue();
+            Assertions.assertNotNull(nodeDuringReboot);
+            Assertions.assertEquals(nodeIdA, nodeDuringReboot.getId());
+            Assertions.assertEquals(BatchNodeState.REBOOTING, nodeDuringReboot.getState(),
+                "When in progress the node must be REBOOTING");
+        }
+
+        rebootPoller.waitForCompletion();
+        BatchNode rebootedNode = rebootPoller.getFinalResult();
+        Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
+
+        // Reimage node
+        SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
+
+        // First poll – should still be re-imaging OR may already have finished
+        PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
+        BatchNode nodeDuringReimage = reimageFirst.getValue();
+
+        if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            // Only possible when state is REIMAGING
+            Assertions.assertNotNull(nodeDuringReimage);
+            Assertions.assertEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
+                "When IN_PROGRESS the node must be REIMAGING");
+        } else {
+            // Operation finished in a single poll
+            Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, reimageFirst.getStatus());
+            Assertions.assertNotNull(nodeDuringReimage);
+            Assertions.assertNotEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
+                "Node should have left REIMAGING when operation already completed");
+        }
+
+        // Wait until the OS has been re-applied and the node is usable
+        reimagePoller.waitForCompletion();
+        BatchNode reimagedNode = reimagePoller.getFinalResult();
+        Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
+
+        Assertions.assertNotEquals(BatchNodeState.REIMAGING, reimagedNode.getState(),
+            "Node should have left the REIMAGING state once the operation completes");
+
+        // Shrink pool by one node
+        BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
+            .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION);
+
+        SyncPoller<BatchPool, BatchPool> removePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(
+            () -> batchClient.beginRemoveNodes(poolId, removeParams),
+            () -> Mono.fromCallable(() -> batchAsyncClient.beginRemoveNodes(poolId, removeParams).getSyncPoller())));
+
+        // First poll – pool should have entered RESIZING (value may be null on the first activation in playback mode)
+        PollResponse<BatchPool> removeFirst = removePoller.poll();
+        if (removeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && removeFirst.getValue() != null) {
+            Assertions.assertEquals(AllocationState.RESIZING, removeFirst.getValue().getAllocationState(),
+                "Pool should be in RESIZING immediately after removeNodes starts.");
+        }
+
+        // Wait for the LRO to finish and grab the final pool object
+        removePoller.waitForCompletion();
+        BatchPool poolAfterRemove = removePoller.getFinalResult();
+
+        Assertions.assertNotNull(poolAfterRemove, "Final result of beginRemoveNodes should be the updated pool.");
+        Assertions.assertEquals(AllocationState.STEADY, poolAfterRemove.getAllocationState(),
+            "Pool must return to STEADY after node removal.");
+        Assertions.assertEquals(Integer.valueOf(1), poolAfterRemove.getTargetDedicatedNodes(),
+            "Pool should have shrunk to one dedicated node after beginRemoveNodes.");
+
+        // Wait again for STEADY after auto-resize
+        pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+            () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+        Assertions.assertEquals(Integer.valueOf(1), pool.getTargetDedicatedNodes(),
+            "Pool should have shrunk to one dedicated node after removeNodes.");
+
+        // Start a resize, then stop pool resize
+        BatchPoolResizeParameters grow = new BatchPoolResizeParameters().setTargetDedicatedNodes(2);
+
+        // Start the resize as an LRO
+        SyncPoller<BatchPool, BatchPool> growPoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginResizePool(poolId, grow),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginResizePool(poolId, grow).getSyncPoller())));
+
+        // Validate the very first poll – pool should be RESIZING
+        PollResponse<BatchPool> growFirst = growPoller.poll();
+        if (growFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && growFirst.getValue() != null) {
+            Assertions.assertEquals(AllocationState.RESIZING, growFirst.getValue().getAllocationState(),
+                "Pool should enter RESIZING when beginResizePool starts.");
+        }
+
+        // Immediately stop it
+        SyncPoller<BatchPool, BatchPool> stopPoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginStopPoolResize(poolId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginStopPoolResize(poolId).getSyncPoller())));
+
+        // First poll – allocation state should be STOPPING or still RESIZING
+        PollResponse<BatchPool> stopFirst = stopPoller.poll();
+        if (stopFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && stopFirst.getValue() != null) {
+            AllocationState interim = stopFirst.getValue().getAllocationState();
+            Assertions.assertTrue(interim == AllocationState.STOPPING || interim == AllocationState.RESIZING,
+                "Unexpected interim allocation state: " + interim);
+        }
+
+        // Wait for completion
+        stopPoller.waitForCompletion();
+        BatchPool stoppedPool = stopPoller.getFinalResult();
+
+        Assertions.assertNotNull(stoppedPool, "Final result of beginStopPoolResize should be the updated pool.");
+        Assertions.assertEquals(AllocationState.STEADY, stoppedPool.getAllocationState(),
+            "Pool should return to STEADY after stop-resize.");
+
+        pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
+            () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
+
+        Assertions.assertNotEquals(AllocationState.RESIZING, pool.getAllocationState(),
+            "Pool should not remain in RESIZING after stopPoolResize.");
+
+        // Clean-up
         try {
-            // Wait for pool to reach steady state
-            BatchPool pool = SyncAsyncExtension.execute(
-                () -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
-                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
-
-            // Grab two node IDs
-            List<BatchNode> nodes = new ArrayList<>();
-            SyncAsyncExtension
-                .execute(() -> batchClient.listNodes(poolId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.listNodes(poolId).toIterable()))
-                .forEach(nodes::add);
-
-            Assertions.assertTrue(nodes.size() >= 2, "Need at least two nodes for this test.");
-            String nodeIdA = nodes.get(0).getId();
-            String nodeIdB = nodes.get(1).getId();
-
-            // Reboot node
-            SyncPoller<BatchNode, BatchNode> rebootPoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginRebootNode(poolId, nodeIdA),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginRebootNode(poolId, nodeIdA).getSyncPoller())));
-
-            // Validate first poll (node should be rebooting)
-            PollResponse<BatchNode> rebootFirst = rebootPoller.poll();
-            if (rebootFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchNode nodeDuringReboot = rebootFirst.getValue();
-                Assertions.assertNotNull(nodeDuringReboot);
-                Assertions.assertEquals(nodeIdA, nodeDuringReboot.getId());
-                Assertions.assertEquals(BatchNodeState.REBOOTING, nodeDuringReboot.getState(),
-                    "When in progress the node must be REBOOTING");
-            }
-
-            rebootPoller.waitForCompletion();
-            BatchNode rebootedNode = rebootPoller.getFinalResult();
-            Assertions.assertNotNull(rebootedNode, "Final result of beginRebootNode should not be null");
-
-            // Reimage node
-            SyncPoller<BatchNode, BatchNode> reimagePoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginReimageNode(poolId, nodeIdB),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginReimageNode(poolId, nodeIdB).getSyncPoller())));
-
-            // First poll – should still be re-imaging OR may already have finished
-            PollResponse<BatchNode> reimageFirst = reimagePoller.poll();
-            BatchNode nodeDuringReimage = reimageFirst.getValue();
-
-            if (reimageFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                // Only possible when state is REIMAGING
-                Assertions.assertNotNull(nodeDuringReimage);
-                Assertions.assertEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                    "When IN_PROGRESS the node must be REIMAGING");
-            } else {
-                // Operation finished in a single poll
-                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, reimageFirst.getStatus());
-                Assertions.assertNotNull(nodeDuringReimage);
-                Assertions.assertNotEquals(BatchNodeState.REIMAGING, nodeDuringReimage.getState(),
-                    "Node should have left REIMAGING when operation already completed");
-            }
-
-            // Wait until the OS has been re-applied and the node is usable
-            reimagePoller.waitForCompletion();
-            BatchNode reimagedNode = reimagePoller.getFinalResult();
-            Assertions.assertNotNull(reimagedNode, "Final result of beginReimageNode should not be null");
-
-            Assertions.assertNotEquals(BatchNodeState.REIMAGING, reimagedNode.getState(),
-                "Node should have left the REIMAGING state once the operation completes");
-
-            // Shrink pool by one node
-            BatchNodeRemoveParameters removeParams = new BatchNodeRemoveParameters(Collections.singletonList(nodeIdB))
-                .setNodeDeallocationOption(BatchNodeDeallocationOption.TASK_COMPLETION);
-
-            SyncPoller<BatchPool, BatchPool> removePoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginRemoveNodes(poolId, removeParams), () -> Mono
-                    .fromCallable(() -> batchAsyncClient.beginRemoveNodes(poolId, removeParams).getSyncPoller())));
-
-            // First poll – pool should have entered RESIZING (value may be null on the first activation in playback mode)
-            PollResponse<BatchPool> removeFirst = removePoller.poll();
-            if (removeFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && removeFirst.getValue() != null) {
-                Assertions.assertEquals(AllocationState.RESIZING, removeFirst.getValue().getAllocationState(),
-                    "Pool should be in RESIZING immediately after removeNodes starts.");
-            }
-
-            // Wait for the LRO to finish and grab the final pool object
-            removePoller.waitForCompletion();
-            BatchPool poolAfterRemove = removePoller.getFinalResult();
-
-            Assertions.assertNotNull(poolAfterRemove, "Final result of beginRemoveNodes should be the updated pool.");
-            Assertions.assertEquals(AllocationState.STEADY, poolAfterRemove.getAllocationState(),
-                "Pool must return to STEADY after node removal.");
-            Assertions.assertEquals(Integer.valueOf(1), poolAfterRemove.getTargetDedicatedNodes(),
-                "Pool should have shrunk to one dedicated node after beginRemoveNodes.");
-
-            // Wait again for STEADY after auto-resize
-            pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
-                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
-
-            Assertions.assertEquals(Integer.valueOf(1), pool.getTargetDedicatedNodes(),
-                "Pool should have shrunk to one dedicated node after removeNodes.");
-
-            // Start a resize, then stop pool resize
-            BatchPoolResizeParameters grow = new BatchPoolResizeParameters().setTargetDedicatedNodes(2);
-
-            // Start the resize as an LRO
-            SyncPoller<BatchPool, BatchPool> growPoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginResizePool(poolId, grow),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginResizePool(poolId, grow).getSyncPoller())));
-
-            // Validate the very first poll – pool should be RESIZING
-            PollResponse<BatchPool> growFirst = growPoller.poll();
-            if (growFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && growFirst.getValue() != null) {
-                Assertions.assertEquals(AllocationState.RESIZING, growFirst.getValue().getAllocationState(),
-                    "Pool should enter RESIZING when beginResizePool starts.");
-            }
-
-            // Immediately stop it
-            SyncPoller<BatchPool, BatchPool> stopPoller = setPlaybackSyncPollerPollInterval(
-                SyncAsyncExtension.execute(() -> batchClient.beginStopPoolResize(poolId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginStopPoolResize(poolId).getSyncPoller())));
-
-            // First poll – allocation state should be STOPPING or still RESIZING
-            PollResponse<BatchPool> stopFirst = stopPoller.poll();
-            if (stopFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS && stopFirst.getValue() != null) {
-                AllocationState interim = stopFirst.getValue().getAllocationState();
-                Assertions.assertTrue(interim == AllocationState.STOPPING || interim == AllocationState.RESIZING,
-                    "Unexpected interim allocation state: " + interim);
-            }
-
-            // Wait for completion
-            stopPoller.waitForCompletion();
-            BatchPool stoppedPool = stopPoller.getFinalResult();
-
-            Assertions.assertNotNull(stoppedPool, "Final result of beginStopPoolResize should be the updated pool.");
-            Assertions.assertEquals(AllocationState.STEADY, stoppedPool.getAllocationState(),
-                "Pool should return to STEADY after stop-resize.");
-
-            pool = SyncAsyncExtension.execute(() -> waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000),
-                () -> Mono.fromCallable(() -> waitForPoolStateAsync(poolId, AllocationState.STEADY, 15 * 60 * 1000)));
-
-            Assertions.assertNotEquals(AllocationState.RESIZING, pool.getAllocationState(),
-                "Pool should not remain in RESIZING after stopPoolResize.");
-
-        } finally {
-            // Clean-up
-            try {
-                SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for pool: " + poolId);
-                e.printStackTrace();
-            }
+            SyncPoller<BatchPool, Void> deletePoller = setPlaybackSyncPollerPollInterval(
+                SyncAsyncExtension.execute(() -> batchClient.beginDeletePool(poolId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeletePool(poolId).getSyncPoller())));
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for pool: " + poolId);
+            e.printStackTrace();
         }
     }
 }
