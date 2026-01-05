@@ -987,7 +987,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         AppendBlobClient finalDestBlob = destBlob;
         BlobStorageException ex = assertThrows(BlobStorageException.class,
             () -> finalDestBlob.appendBlockFromUrlWithResponse(options, null, null));
-        assertEquals(409, ex.getStatusCode());
+        assertEquals(409, ex.getStatusCode()); 
         assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
     }
 }
