@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.healthbot.implementation;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthbot.fluent.models.OperationDetailInner;
 import com.azure.resourcemanager.healthbot.models.OperationDetail;
 import com.azure.resourcemanager.healthbot.models.OperationDisplay;
@@ -36,7 +35,7 @@ public final class OperationDetailImpl implements OperationDetail {
         return this.innerModel().origin();
     }
 
-    public BinaryData properties() {
+    public Object properties() {
         return this.innerModel().properties();
     }
 

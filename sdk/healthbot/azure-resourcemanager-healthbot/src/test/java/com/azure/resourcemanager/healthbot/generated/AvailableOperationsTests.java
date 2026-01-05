@@ -12,7 +12,7 @@ public final class AvailableOperationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableOperations model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"hq\",\"isDataAction\":true,\"display\":{\"provider\":\"pybczmehmtzopb\",\"resource\":\"h\",\"operation\":\"pidgsybbejhphoyc\",\"description\":\"xaobhdxbmtqioqjz\"},\"origin\":\"tbmufpo\"},{\"name\":\"izhwlrxy\",\"isDataAction\":false,\"display\":{\"provider\":\"ijgkdm\",\"resource\":\"azlobcufpdznrbt\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"},\"origin\":\"lhjxr\"},{\"name\":\"wmrvktsizntocipa\",\"isDataAction\":false,\"display\":{\"provider\":\"s\",\"resource\":\"cmpoyfdkfogkny\",\"operation\":\"ofjdde\",\"description\":\"rd\"},\"origin\":\"pewnw\"}],\"nextLink\":\"tjzyflus\"}")
+            "{\"value\":[{\"name\":\"hq\",\"isDataAction\":true,\"display\":{\"provider\":\"pybczmehmtzopb\",\"resource\":\"h\",\"operation\":\"pidgsybbejhphoyc\",\"description\":\"xaobhdxbmtqioqjz\"},\"origin\":\"tbmufpo\",\"properties\":\"dataoizh\"},{\"name\":\"rxybqsoq\",\"isDataAction\":false,\"display\":{\"provider\":\"mbpazlobcufpdzn\",\"resource\":\"t\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"},\"origin\":\"lhjxr\",\"properties\":\"datakwm\"},{\"name\":\"ktsizntocipaou\",\"isDataAction\":true,\"display\":{\"provider\":\"ucmpoyfd\",\"resource\":\"ogknygjofjdd\",\"operation\":\"s\",\"description\":\"eupewnwreitjz\"},\"origin\":\"lusarh\",\"properties\":\"datafcqhsmyurkd\"}],\"nextLink\":\"lx\"}")
             .toObject(AvailableOperations.class);
         Assertions.assertEquals("hq", model.value().get(0).name());
         Assertions.assertTrue(model.value().get(0).isDataAction());
@@ -21,6 +21,6 @@ public final class AvailableOperationsTests {
         Assertions.assertEquals("pidgsybbejhphoyc", model.value().get(0).display().operation());
         Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).display().description());
         Assertions.assertEquals("tbmufpo", model.value().get(0).origin());
-        Assertions.assertEquals("tjzyflus", model.nextLink());
+        Assertions.assertEquals("lx", model.nextLink());
     }
 }

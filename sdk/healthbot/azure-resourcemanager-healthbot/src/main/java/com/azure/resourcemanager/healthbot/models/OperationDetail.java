@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.healthbot.models;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthbot.fluent.models.OperationDetailInner;
 
 /**
@@ -44,7 +43,7 @@ public interface OperationDetail {
      * 
      * @return the properties value.
      */
-    BinaryData properties();
+    Object properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.healthbot.fluent.models.OperationDetailInner object.
