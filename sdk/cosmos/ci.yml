@@ -97,11 +97,11 @@ parameters:
     displayName: 'azure-cosmos-spark_3-4_2-12'
     type: boolean
     default: true
-  - name: release_azurecosmosspark35-scala212
+  - name: release_azurecosmosspark35_scala212
     displayName: 'azure-cosmos-spark_3-5_2-12'
     type: boolean
     default: true
-  - name: release_azurecosmosspark35-scala213
+  - name: release_azurecosmosspark35_scala213
     displayName: 'azure-cosmos-spark_3-5_2-13'
     type: boolean
     default: true
@@ -152,14 +152,14 @@ extends:
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark35-scala212 }}
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35_scala212 }}
       - name: azure-cosmos-spark_3-5_2-13
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark35scala213
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark35-scala213 }}
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35_scala213 }}
       - name: fabric-cosmos-spark-auth_3
         groupId: com.azure.cosmos.spark
         safeName: fabriccosmossparkauth3
