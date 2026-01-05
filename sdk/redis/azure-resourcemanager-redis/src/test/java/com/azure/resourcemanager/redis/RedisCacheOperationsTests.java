@@ -210,7 +210,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
         // The SAS token is poorly formatted.
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
-
+        
         premiumCache.importData(Arrays.asList("snapshot1"));*/
     }
 
@@ -323,11 +323,11 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withPremiumSku()
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withRedisConfiguration(new RedisConfiguration().withRdbBackupEnabled("true")
-            .withRdbBackupFrequency("15")
-            .withRdbBackupMaxSnapshotCount("1")
-            .withRdbStorageConnectionString(storageAccount.endPoints().primary().blob())
-            .withPreferredDataPersistenceAuthMethod("managedIdentity")
-            .withAadEnabled("true"))
+                .withRdbBackupFrequency("15")
+                .withRdbBackupMaxSnapshotCount("1")
+                .withRdbStorageConnectionString(storageAccount.endPoints().primary().blob())
+                .withPreferredDataPersistenceAuthMethod("managedIdentity")
+                .withAadEnabled("true"))
             .disableAccessKeyAuthentication()
             .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());

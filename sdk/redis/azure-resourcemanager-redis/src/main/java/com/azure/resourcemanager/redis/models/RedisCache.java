@@ -215,15 +215,18 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
              * @return next stage of the Redis cache definition
              */
             default WithCreate disableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException("[disableAccessKeyAuthentication] is not supported in " + getClass());
+                throw new UnsupportedOperationException(
+                    "[disableAccessKeyAuthentication] is not supported in " + getClass());
             }
+
             /**
              * Enable SAS authentication for the Redis cache.
              *
              * @return next stage of the Redis cache definition
              */
             default WithCreate enableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException("[enableAccessKeyAuthentication] is not supported in " + getClass());
+                throw new UnsupportedOperationException(
+                    "[enableAccessKeyAuthentication] is not supported in " + getClass());
             }
         }
 
@@ -281,7 +284,8 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
          * A Redis Cache definition with sufficient inputs to create a new Redis Cache in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessKeyAuthentication {
+        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithAccessKeyAuthentication {
             /**
              * Enables non-ssl Redis server port (6379).
              *
@@ -450,15 +454,18 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
              * @return next stage of the Redis cache definition
              */
             default Update disableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException("[disableAccessKeyAuthentication] is not supported in " + getClass());
+                throw new UnsupportedOperationException(
+                    "[disableAccessKeyAuthentication] is not supported in " + getClass());
             }
+
             /**
              * Enable SAS authentication for the Redis cache.
              *
              * @return next stage of the Redis cache definition
              */
             default Update enableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException("[enableAccessKeyAuthentication] is not supported in " + getClass());
+                throw new UnsupportedOperationException(
+                    "[enableAccessKeyAuthentication] is not supported in " + getClass());
             }
         }
 
@@ -594,7 +601,8 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<RedisCache>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
-        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAccessKeyAuthentication {
+        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithAccessKeyAuthentication {
         /**
          * The number of shards to be created on a Premium Cluster Cache.
          *
