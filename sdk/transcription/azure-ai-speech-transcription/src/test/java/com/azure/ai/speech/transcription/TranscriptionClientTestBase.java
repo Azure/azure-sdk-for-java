@@ -9,8 +9,10 @@ import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -115,6 +118,9 @@ class TranscriptionClientTestBase extends TestProxyTestBase {
             transcriptionClientBuilder.httpClient(interceptorManager.getPlaybackClient());
             // In playback mode, use a fake key regardless of authentication method
             transcriptionClientBuilder.credential(new KeyCredential(key));
+
+            // Remove retries as we know the recordings don't have any.
+            transcriptionClientBuilder.retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ZERO)));
         }
 
         // Configure sanitizers - must be done after registering the record policy or playback client
