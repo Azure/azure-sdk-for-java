@@ -819,7 +819,7 @@ public final class BlobServiceClient {
                         ? ""
                         : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                    .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, finalContext);
+                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, finalContext);
 
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, BlobStorageException.class);

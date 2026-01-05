@@ -785,7 +785,7 @@ public final class QueueServiceAsyncClient {
                     ? ""
                     : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
                 .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                .setDelegatedUserTid(options.getDelegatedUserTenantId()), null, null, context)
+                .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }

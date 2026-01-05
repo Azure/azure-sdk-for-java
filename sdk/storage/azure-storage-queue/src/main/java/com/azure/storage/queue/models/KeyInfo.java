@@ -34,7 +34,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * The delegated user tenant id in Azure AD
      */
     @Generated
-    private String delegatedUserTid;
+    private String delegatedUserTenantId;
 
     /**
      * Creates an instance of KeyInfo class.
@@ -88,24 +88,24 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
     }
 
     /**
-     * Get the delegatedUserTid property: The delegated user tenant id in Azure AD.
+     * Get the delegatedUserTenantId property: The delegated user tenant id in Azure AD.
      * 
-     * @return the delegatedUserTid value.
+     * @return the delegatedUserTenantId value.
      */
     @Generated
-    public String getDelegatedUserTid() {
-        return this.delegatedUserTid;
+    public String getDelegatedUserTenantId() {
+        return this.delegatedUserTenantId;
     }
 
     /**
-     * Set the delegatedUserTid property: The delegated user tenant id in Azure AD.
+     * Set the delegatedUserTenantId property: The delegated user tenant id in Azure AD.
      * 
-     * @param delegatedUserTid the delegatedUserTid value to set.
+     * @param delegatedUserTenantId the delegatedUserTenantId value to set.
      * @return the KeyInfo object itself.
      */
     @Generated
-    public KeyInfo setDelegatedUserTid(String delegatedUserTid) {
-        this.delegatedUserTid = delegatedUserTid;
+    public KeyInfo setDelegatedUserTenantId(String delegatedUserTenantId) {
+        this.delegatedUserTenantId = delegatedUserTenantId;
         return this;
     }
 
@@ -122,7 +122,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Start", this.start);
         xmlWriter.writeStringElement("Expiry", this.expiry);
-        xmlWriter.writeStringElement("DelegatedUserTid", this.delegatedUserTid);
+        xmlWriter.writeStringElement("DelegatedUserTid", this.delegatedUserTenantId);
         return xmlWriter.writeEndElement();
     }
 
@@ -163,7 +163,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
                 } else if ("Expiry".equals(elementName.getLocalPart())) {
                     deserializedKeyInfo.expiry = reader.getStringElement();
                 } else if ("DelegatedUserTid".equals(elementName.getLocalPart())) {
-                    deserializedKeyInfo.delegatedUserTid = reader.getStringElement();
+                    deserializedKeyInfo.delegatedUserTenantId = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }

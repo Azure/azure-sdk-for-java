@@ -452,6 +452,16 @@ directive:
   transform: >
     $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
     $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+    $.properties.SignedDelegatedUserTid["x-ms-client-name"] = "signedDelegatedUserTenantId";
+```
+
+### Rename KeyInfo DelegatedUserTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.KeyInfo
+  transform: >
+    $.properties.DelegatedUserTid["x-ms-client-name"] = "delegatedUserTenantId";
 ```
 
 ### Remove AccessConditions parameter groupings

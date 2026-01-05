@@ -242,7 +242,7 @@ public class BlobSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID,
-                userDelegationKey.getSignedDelegatedUserTid());
+                userDelegationKey.getSignedDelegatedUserTenantId());
 
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
                 this.authorizedAadObjectId);
@@ -440,7 +440,7 @@ public class BlobSasImplUtil {
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 "", /* suoid - empty since this applies to HNS only accounts. */
                 this.correlationId == null ? "" : this.correlationId,
-                key.getSignedDelegatedUserTid() == null ? "" : key.getSignedDelegatedUserTid(),
+                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,

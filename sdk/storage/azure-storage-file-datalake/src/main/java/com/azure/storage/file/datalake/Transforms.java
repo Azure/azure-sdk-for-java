@@ -254,7 +254,7 @@ class Transforms {
             .setSignedService(blobUserDelegationKey.getSignedService())
             .setSignedStart(blobUserDelegationKey.getSignedStart())
             .setSignedVersion(blobUserDelegationKey.getSignedVersion())
-            .setSignedDelegatedUserTenantId(blobUserDelegationKey.getSignedDelegatedUserTid())
+            .setSignedDelegatedUserTenantId(blobUserDelegationKey.getSignedDelegatedUserTenantId())
             .setValue(blobUserDelegationKey.getValue());
     }
 
