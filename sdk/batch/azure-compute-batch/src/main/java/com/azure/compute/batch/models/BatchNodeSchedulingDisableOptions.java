@@ -20,12 +20,6 @@ public final class BatchNodeSchedulingDisableOptions {
     @Generated
     private Long timeOutInSeconds;
 
-    /*
-     * The options to use for disabling scheduling on the Compute Node.
-     */
-    @Generated
-    private BatchNodeDisableSchedulingParameters parameters;
-
     /**
      * Creates an instance of BatchNodeSchedulingDisableOptions class.
      */
@@ -48,16 +42,6 @@ public final class BatchNodeSchedulingDisableOptions {
     }
 
     /**
-     * Get the parameters property: The options to use for disabling scheduling on the Compute Node.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public BatchNodeDisableSchedulingParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
      * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
@@ -71,18 +55,6 @@ public final class BatchNodeSchedulingDisableOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
-        return this;
-    }
-
-    /**
-     * Set the parameters property: The options to use for disabling scheduling on the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeSchedulingDisableOptions object itself.
-     */
-    @Generated
-    public BatchNodeSchedulingDisableOptions setParameters(BatchNodeDisableSchedulingParameters parameters) {
-        this.parameters = parameters;
         return this;
     }
 }

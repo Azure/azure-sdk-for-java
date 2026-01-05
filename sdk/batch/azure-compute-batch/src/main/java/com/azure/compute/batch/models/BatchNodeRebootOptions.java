@@ -20,12 +20,6 @@ public final class BatchNodeRebootOptions {
     @Generated
     private Long timeOutInSeconds;
 
-    /*
-     * The options to use for rebooting the Compute Node.
-     */
-    @Generated
-    private BatchNodeRebootParameters parameters;
-
     /**
      * Creates an instance of BatchNodeRebootOptions class.
      */
@@ -48,16 +42,6 @@ public final class BatchNodeRebootOptions {
     }
 
     /**
-     * Get the parameters property: The options to use for rebooting the Compute Node.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public BatchNodeRebootParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
      * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
@@ -71,18 +55,6 @@ public final class BatchNodeRebootOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
-        return this;
-    }
-
-    /**
-     * Set the parameters property: The options to use for rebooting the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeRebootOptions object itself.
-     */
-    @Generated
-    public BatchNodeRebootOptions setParameters(BatchNodeRebootParameters parameters) {
-        this.parameters = parameters;
         return this;
     }
 }

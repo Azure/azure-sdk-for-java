@@ -54,7 +54,6 @@ import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
 import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingParameters;
 import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
 import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -13718,7 +13717,6 @@ public final class BatchAsyncClient {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
@@ -13726,9 +13724,6 @@ public final class BatchAsyncClient {
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -15277,12 +15272,8 @@ public final class BatchAsyncClient {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return rebootNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15392,12 +15383,8 @@ public final class BatchAsyncClient {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return reimageNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15456,12 +15443,8 @@ public final class BatchAsyncClient {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return deallocateNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15518,12 +15501,8 @@ public final class BatchAsyncClient {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
         }
         return disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }

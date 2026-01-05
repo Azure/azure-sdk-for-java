@@ -20,12 +20,6 @@ public final class BatchNodeReimageOptions {
     @Generated
     private Long timeOutInSeconds;
 
-    /*
-     * The options to use for reimaging the Compute Node.
-     */
-    @Generated
-    private BatchNodeReimageParameters parameters;
-
     /**
      * Creates an instance of BatchNodeReimageOptions class.
      */
@@ -48,16 +42,6 @@ public final class BatchNodeReimageOptions {
     }
 
     /**
-     * Get the parameters property: The options to use for reimaging the Compute Node.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public BatchNodeReimageParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
      * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
@@ -71,18 +55,6 @@ public final class BatchNodeReimageOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
-        return this;
-    }
-
-    /**
-     * Set the parameters property: The options to use for reimaging the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeReimageOptions object itself.
-     */
-    @Generated
-    public BatchNodeReimageOptions setParameters(BatchNodeReimageParameters parameters) {
-        this.parameters = parameters;
         return this;
     }
 }

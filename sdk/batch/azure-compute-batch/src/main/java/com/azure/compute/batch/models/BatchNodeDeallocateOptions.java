@@ -20,12 +20,6 @@ public final class BatchNodeDeallocateOptions {
     @Generated
     private Long timeOutInSeconds;
 
-    /*
-     * The options to use for deallocating the Compute Node.
-     */
-    @Generated
-    private BatchNodeDeallocateParameters parameters;
-
     /**
      * Creates an instance of BatchNodeDeallocateOptions class.
      */
@@ -48,16 +42,6 @@ public final class BatchNodeDeallocateOptions {
     }
 
     /**
-     * Get the parameters property: The options to use for deallocating the Compute Node.
-     *
-     * @return the parameters value.
-     */
-    @Generated
-    public BatchNodeDeallocateParameters getParameters() {
-        return this.parameters;
-    }
-
-    /**
      * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
      * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
@@ -71,18 +55,6 @@ public final class BatchNodeDeallocateOptions {
         } else {
             this.timeOutInSeconds = timeOutInSeconds.getSeconds();
         }
-        return this;
-    }
-
-    /**
-     * Set the parameters property: The options to use for deallocating the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeDeallocateOptions object itself.
-     */
-    @Generated
-    public BatchNodeDeallocateOptions setParameters(BatchNodeDeallocateParameters parameters) {
-        this.parameters = parameters;
         return this;
     }
 }
