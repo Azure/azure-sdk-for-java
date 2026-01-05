@@ -20,7 +20,7 @@ import java.time.Duration
 import java.util.UUID
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
-import scala.jdk.CollectionConverters.asScalaBufferConverter
+import scala.jdk.CollectionConverters._
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -536,7 +536,7 @@ class SparkE2EChangeFeedITest
     val collectedFrame = groupedFrame.collect()
     collectedFrame.foreach(row => {
       val wrappedArray = row.get(1).asInstanceOf[mutable.WrappedArray[String]]
-      val array = wrappedArray.array
+      val array: Array[String] = wrappedArray.toArray
       row.get(0) match {
         case "create" =>
           validateArraysUnordered(createdObjectIds, array)
