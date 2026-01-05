@@ -26,6 +26,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -217,9 +218,34 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     }
 
     // test contains a data-plane call
+    // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
+    // Azure Storage doesn't support SMB mounting of file share using managed identity
     @DoNotRecord(skipInPlayback = true)
     @Test
+    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
     public void testBeginCreateWithFileShareVolume() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        Region region = Region.US_WEST3;
+
+        // create storage account (and virtual network), before create container group
+        Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
+            .define(containerGroupName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            // definition step only allow creating one file share volume
+            .withNewAzureFileShareVolume("vol1", "share1")
+            .withContainerInstance("nginx", 80)
+            .withNewVirtualNetwork("10.0.0.0/24")
+            .beginCreate();
+        ContainerGroup containerGroup = acceptedContainerGroup.getSyncPoller().getFinalResult();
+        Assertions.assertEquals(1, containerGroup.volumes().size());
+    }
+
+    @DoNotRecord(skipInPlayback = true)
+    @Test
+    public void testBeginCreateWithEmptyDirectoryVolume() {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
 
@@ -248,15 +274,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
             .withNewResourceGroup(rgName)
             .withLinux()
             .withPublicImageRegistryOnly()
-            // definition step only allow creating one file share volume
-            // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
-            // Azure Storage doesn't support SMB mounting of file share using managed identity
-//            .withEmptyDirectoryVolume("vol2")
-            .defineVolume("vol1")
-            .withExistingReadWriteAzureFileShare(shareName)
-            .withStorageAccountName(storageAccount.name())
-            .withStorageAccountKey(key.value())
-            .attach()
+            .withEmptyDirectoryVolume("vol2")
             .withContainerInstance("nginx", 80)
             .withNewVirtualNetwork("10.0.0.0/24")
             .beginCreate();
