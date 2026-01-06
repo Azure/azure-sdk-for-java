@@ -34,6 +34,10 @@ parameters:
     type: string
   - name: JarReadOnlySasUri
     type: string
+  - name: JarStorageAccountName
+    type: string
+  - name: JarName
+    type: string
 stages:
   - stage:
     displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
@@ -91,7 +95,7 @@ stages:
         displayName: Importing Jars
         inputs:
           filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3/test-databricks/databricks-jar-install.sh
-          arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarStorageAccountKey }}'
+          arguments: '${{ parameters.ClusterName }} ${{ parameters.AvoidDBFS }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target ${{ parameters.JarStorageAccountName }} ${{ parameters.JarStorageAccountKey }} ${{ parameters.JarName }}'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:

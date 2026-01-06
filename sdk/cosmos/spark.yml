@@ -26,6 +26,8 @@ stages:
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -44,6 +46,8 @@ stages:
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -63,6 +67,8 @@ stages:
       AvoidDBFS: false
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -82,6 +88,8 @@ stages:
       AvoidDBFS: true
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpointMsi: $(spark-databricks-cosmos-endpoint-msi)
@@ -101,3 +109,5 @@ stages:
       AvoidDBFS: true
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-token)
+      JarStorageAccountName: 'oltpsparkcijarstore1225'
+      JarName: 'azure-cosmos-spark_3-5_2-13-latest-ci-candidate.jar'
