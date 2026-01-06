@@ -20,7 +20,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"eventTime\":\"2021-09-27T22:08:27Z\",\"state\":\"Active\",\"severity\":\"Low\",\"clearedCount\":1684475673,\"reportedCount\":1140842141,\"suspects\":[{\"extension\":\"tlgflwfgz\",\"resolution\":\"PotentialThreat\",\"fileCount\":1455150949,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"eatlijjjrtvamcas\",\"resolution\":\"FalsePositive\",\"fileCount\":1639548790,\"suspectFiles\":[{},{},{}]}],\"provisioningState\":\"xetyvku\"},\"id\":\"ignohi\",\"name\":\"kgqogjw\",\"type\":\"indedvabbx\"}";
+            = "{\"properties\":{\"eventTime\":\"2021-09-27T06:46:36Z\",\"state\":\"Resolved\",\"severity\":\"Moderate\",\"clearedCount\":67838372,\"reportedCount\":928179611,\"suspects\":[{\"extension\":\"cdsiwdfmmpzhzzwv\",\"resolution\":\"FalsePositive\",\"fileCount\":1475743348,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"dgrpx\",\"resolution\":\"PotentialThreat\",\"fileCount\":938896992,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ndjrkclamggl\",\"resolution\":\"FalsePositive\",\"fileCount\":125559187,\"suspectFiles\":[{},{}]},{\"extension\":\"qey\",\"resolution\":\"FalsePositive\",\"fileCount\":528509838,\"suspectFiles\":[{}]}],\"provisioningState\":\"qfgqkayejsxtlg\"},\"id\":\"wf\",\"name\":\"ziiucij\",\"type\":\"ceatlijjjrtvamca\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RansomwareReport response = manager.ransomwareReports()
-            .getWithResponse("wdfmmpzhzzwvywr", "yngydgrpxncaki", "aondjrkclamgg", "vlmfej", "oqeykglt",
+            .getWithResponse("cduwjoedx", "gucaif", "aurwwgilfjq", "a", "dmkxwxdcvjwcy",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

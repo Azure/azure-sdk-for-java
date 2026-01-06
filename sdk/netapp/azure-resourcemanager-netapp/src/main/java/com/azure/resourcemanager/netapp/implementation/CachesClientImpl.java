@@ -812,12 +812,12 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link PollerFlux} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String accountName,
-        String poolName, String cacheName, CacheUpdate body) {
+    private PollerFlux<PollResult<CacheInner>, CacheInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String poolName, String cacheName, CacheUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<CacheInner, CacheInner>getLroResult(mono, this.client.getHttpPipeline(), CacheInner.class,
+            CacheInner.class, this.client.getContext());
     }
 
     /**
@@ -834,10 +834,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String accountName, String poolName,
-        String cacheName, CacheUpdate body) {
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String cacheName, CacheUpdate body) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, poolName, cacheName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class,
+            Context.NONE);
     }
 
     /**
@@ -855,11 +856,11 @@ public final class CachesClientImpl implements CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String accountName, String poolName,
-        String cacheName, CacheUpdate body, Context context) {
+    public SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String cacheName, CacheUpdate body, Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, accountName, poolName, cacheName, body, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<CacheInner, CacheInner>getLroResult(response, CacheInner.class, CacheInner.class, context);
     }
 
     /**
@@ -876,8 +877,8 @@ public final class CachesClientImpl implements CachesClient {
      * @return cache resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String accountName, String poolName, String cacheName,
-        CacheUpdate body) {
+    private Mono<CacheInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        String cacheName, CacheUpdate body) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, cacheName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -893,11 +894,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheUpdate body) {
-        beginUpdate(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
+        return beginUpdate(resourceGroupName, accountName, poolName, cacheName, body).getFinalResult();
     }
 
     /**
@@ -912,11 +914,12 @@ public final class CachesClientImpl implements CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName,
         CacheUpdate body, Context context) {
-        beginUpdate(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+        return beginUpdate(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
     }
 
     /**

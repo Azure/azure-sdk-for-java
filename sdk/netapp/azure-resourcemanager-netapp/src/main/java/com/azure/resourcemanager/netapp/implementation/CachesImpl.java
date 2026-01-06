@@ -13,7 +13,6 @@ import com.azure.resourcemanager.netapp.fluent.CachesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CacheInner;
 import com.azure.resourcemanager.netapp.fluent.models.PeeringPassphrasesInner;
 import com.azure.resourcemanager.netapp.models.Cache;
-import com.azure.resourcemanager.netapp.models.CacheUpdate;
 import com.azure.resourcemanager.netapp.models.Caches;
 import com.azure.resourcemanager.netapp.models.PeeringPassphrases;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -49,16 +48,6 @@ public final class CachesImpl implements Caches {
         } else {
             return null;
         }
-    }
-
-    public void update(String resourceGroupName, String accountName, String poolName, String cacheName,
-        CacheUpdate body) {
-        this.serviceClient().update(resourceGroupName, accountName, poolName, cacheName, body);
-    }
-
-    public void update(String resourceGroupName, String accountName, String poolName, String cacheName,
-        CacheUpdate body, Context context) {
-        this.serviceClient().update(resourceGroupName, accountName, poolName, cacheName, body, context);
     }
 
     public void delete(String resourceGroupName, String accountName, String poolName, String cacheName) {

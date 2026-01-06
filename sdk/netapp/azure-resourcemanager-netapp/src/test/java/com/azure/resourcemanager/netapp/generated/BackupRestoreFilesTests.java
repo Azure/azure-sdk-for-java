@@ -13,22 +13,21 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"klelssxb\",\"ycsxzu\",\"ksrl\",\"mdesqp\"],\"restoreFilePath\":\"vmjcdoewb\",\"destinationVolumeId\":\"dyvt\"}")
+            "{\"fileList\":[\"xetlgydlhqv\",\"n\",\"pxy\"],\"restoreFilePath\":\"fiqgeaar\",\"destinationVolumeId\":\"gjekglklby\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("klelssxb", model.fileList().get(0));
-        Assertions.assertEquals("vmjcdoewb", model.restoreFilePath());
-        Assertions.assertEquals("dyvt", model.destinationVolumeId());
+        Assertions.assertEquals("xetlgydlhqv", model.fileList().get(0));
+        Assertions.assertEquals("fiqgeaar", model.restoreFilePath());
+        Assertions.assertEquals("gjekglklby", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model
-            = new BackupRestoreFiles().withFileList(Arrays.asList("klelssxb", "ycsxzu", "ksrl", "mdesqp"))
-                .withRestoreFilePath("vmjcdoewb")
-                .withDestinationVolumeId("dyvt");
+        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("xetlgydlhqv", "n", "pxy"))
+            .withRestoreFilePath("fiqgeaar")
+            .withDestinationVolumeId("gjekglklby");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("klelssxb", model.fileList().get(0));
-        Assertions.assertEquals("vmjcdoewb", model.restoreFilePath());
-        Assertions.assertEquals("dyvt", model.destinationVolumeId());
+        Assertions.assertEquals("xetlgydlhqv", model.fileList().get(0));
+        Assertions.assertEquals("fiqgeaar", model.restoreFilePath());
+        Assertions.assertEquals("gjekglklby", model.destinationVolumeId());
     }
 }

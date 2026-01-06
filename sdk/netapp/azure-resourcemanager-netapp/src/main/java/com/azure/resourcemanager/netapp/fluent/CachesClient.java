@@ -136,8 +136,8 @@ public interface CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String accountName, String poolName,
-        String cacheName, CacheUpdate body);
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String cacheName, CacheUpdate body);
 
     /**
      * Patch the specified Cache.
@@ -154,8 +154,8 @@ public interface CachesClient {
      * @return the {@link SyncPoller} for polling of cache resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String accountName, String poolName,
-        String cacheName, CacheUpdate body, Context context);
+    SyncPoller<PollResult<CacheInner>, CacheInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String cacheName, CacheUpdate body, Context context);
 
     /**
      * Patch the specified Cache.
@@ -168,9 +168,11 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String accountName, String poolName, String cacheName, CacheUpdate body);
+    CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName,
+        CacheUpdate body);
 
     /**
      * Patch the specified Cache.
@@ -184,9 +186,10 @@ public interface CachesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cache resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String accountName, String poolName, String cacheName, CacheUpdate body,
+    CacheInner update(String resourceGroupName, String accountName, String poolName, String cacheName, CacheUpdate body,
         Context context);
 
     /**

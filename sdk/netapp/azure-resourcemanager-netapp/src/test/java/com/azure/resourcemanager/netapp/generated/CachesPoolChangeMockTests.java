@@ -29,8 +29,8 @@ public final class CachesPoolChangeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.caches()
-            .poolChange("r", "odlikcdrdaasax", "obsmf", "wiyjvzuko", new PoolChangeRequest().withNewPoolResourceId("r"),
-                com.azure.core.util.Context.NONE);
+            .poolChange("weucyrth", "qlehmcgcjeinu", "hokamvfej", "qnttmbq",
+                new PoolChangeRequest().withNewPoolResourceId("abzfivf"), com.azure.core.util.Context.NONE);
 
     }
 }

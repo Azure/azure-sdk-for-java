@@ -23,7 +23,7 @@ public final class BackupVaultsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"qi\",\"tags\":{\"qdcadwvps\":\"xlhdj\",\"ybmrzoepnxwd\":\"zjiihjr\",\"xaurs\":\"wnjkgvfn\",\"pnqn\":\"ftibtyibuyvpirfq\"},\"id\":\"owsbedenrexkxbh\",\"name\":\"vucnulgmnh\",\"type\":\"evdyz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"zxomeikjclwz\",\"tags\":{\"qtaazyqbxy\":\"mwpfs\",\"iqezxlhdj\":\"oyfpuq\"},\"id\":\"qdcadwvps\",\"name\":\"zjiihjr\",\"type\":\"ybmrzoepnxwd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class BackupVaultsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupVault response = manager.backupVaults()
-            .define("g")
-            .withRegion("czjnc")
-            .withExistingNetAppAccount("pezkis", "qjm")
-            .withTags(mapOf("daswvpp", "yqv", "rr", "sqqzlgcndhz", "uww", "cfsrhkhgsn"))
+            .define("pezkis")
+            .withRegion("fptb")
+            .withExistingNetAppAccount("bdsuifr", "vka")
+            .withTags(mapOf("qvldaswvppisqqzl", "jnciui"))
             .create();
 
-        Assertions.assertEquals("qi", response.location());
-        Assertions.assertEquals("xlhdj", response.tags().get("qdcadwvps"));
+        Assertions.assertEquals("zxomeikjclwz", response.location());
+        Assertions.assertEquals("mwpfs", response.tags().get("qtaazyqbxy"));
     }
 
     // Use "Map.of" if available

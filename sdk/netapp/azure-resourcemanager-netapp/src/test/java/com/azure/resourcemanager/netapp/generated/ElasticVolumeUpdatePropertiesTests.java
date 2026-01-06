@@ -26,67 +26,61 @@ public final class ElasticVolumeUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeUpdateProperties model = BinaryData.fromString(
-            "{\"size\":6340644129016563843,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1430018563,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"klnsrmffey\",\"xcktpiymerteeamm\",\"qiekkkzddrt\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":221974172,\"unixAccessRule\":\"ReadOnly\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"fdeesvecuijpxtx\",\"uwprtujwsawd\"],\"rootAccess\":\"Disabled\"}]},\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"xvititvtz\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"avoxtfg\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"m\"}},\"snapshotDirectoryVisibility\":\"Visible\",\"smbProperties\":{\"smbEncryption\":\"Enabled\"}}")
+            "{\"size\":5868166807959460587,\"exportPolicy\":{\"rules\":[{\"ruleIndex\":1411302775,\"unixAccessRule\":\"ReadWrite\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"hqlyvijo\",\"wivkxo\"],\"rootAccess\":\"Enabled\"},{\"ruleIndex\":1386333494,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Enabled\",\"allowedClients\":[\"cpwpg\",\"lrcivtsoxfrke\",\"xpmyyefrpmpdnq\"],\"rootAccess\":\"Enabled\"}]},\"dataProtection\":{\"snapshot\":{\"snapshotPolicyResourceId\":\"oqvm\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"pqfrtqlkz\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"itgvkx\"}},\"snapshotDirectoryVisibility\":\"Hidden\",\"smbProperties\":{\"smbEncryption\":\"Enabled\"}}")
             .toObject(ElasticVolumeUpdateProperties.class);
-        Assertions.assertEquals(6340644129016563843L, model.size());
-        Assertions.assertEquals(1430018563, model.exportPolicy().rules().get(0).ruleIndex());
-        Assertions.assertEquals(ElasticUnixAccessRule.NO_ACCESS, model.exportPolicy().rules().get(0).unixAccessRule());
+        Assertions.assertEquals(5868166807959460587L, model.size());
+        Assertions.assertEquals(1411302775, model.exportPolicy().rules().get(0).ruleIndex());
+        Assertions.assertEquals(ElasticUnixAccessRule.READ_WRITE, model.exportPolicy().rules().get(0).unixAccessRule());
         Assertions.assertEquals(ElasticNfsv3Access.ENABLED, model.exportPolicy().rules().get(0).nfsv3());
-        Assertions.assertEquals(ElasticNfsv4Access.ENABLED, model.exportPolicy().rules().get(0).nfsv4());
-        Assertions.assertEquals("klnsrmffey", model.exportPolicy().rules().get(0).allowedClients().get(0));
+        Assertions.assertEquals(ElasticNfsv4Access.DISABLED, model.exportPolicy().rules().get(0).nfsv4());
+        Assertions.assertEquals("hqlyvijo", model.exportPolicy().rules().get(0).allowedClients().get(0));
         Assertions.assertEquals(ElasticRootAccess.ENABLED, model.exportPolicy().rules().get(0).rootAccess());
-        Assertions.assertEquals("xvititvtz", model.dataProtection().snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("avoxtfg", model.dataProtection().backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED,
+        Assertions.assertEquals("oqvm", model.dataProtection().snapshot().snapshotPolicyResourceId());
+        Assertions.assertEquals("pqfrtqlkz", model.dataProtection().backup().elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED,
             model.dataProtection().backup().policyEnforcement());
-        Assertions.assertEquals("m", model.dataProtection().backup().elasticBackupVaultResourceId());
-        Assertions.assertEquals(SnapshotDirectoryVisibility.VISIBLE, model.snapshotDirectoryVisibility());
+        Assertions.assertEquals("itgvkx", model.dataProtection().backup().elasticBackupVaultResourceId());
+        Assertions.assertEquals(SnapshotDirectoryVisibility.HIDDEN, model.snapshotDirectoryVisibility());
         Assertions.assertEquals(ElasticSmbEncryption.ENABLED, model.smbProperties().smbEncryption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVolumeUpdateProperties model
-            = new ElasticVolumeUpdateProperties().withSize(6340644129016563843L)
-                .withExportPolicy(
-                    new ElasticExportPolicy()
-                        .withRules(
-                            Arrays
-                                .asList(
-                                    new ElasticExportPolicyRule().withRuleIndex(1430018563)
-                                        .withUnixAccessRule(ElasticUnixAccessRule.NO_ACCESS)
-                                        .withNfsv3(ElasticNfsv3Access.ENABLED)
-                                        .withNfsv4(ElasticNfsv4Access.ENABLED)
-                                        .withAllowedClients(
-                                            Arrays.asList("klnsrmffey", "xcktpiymerteeamm", "qiekkkzddrt"))
-                                        .withRootAccess(ElasticRootAccess.ENABLED),
-                                    new ElasticExportPolicyRule().withRuleIndex(221974172)
-                                        .withUnixAccessRule(ElasticUnixAccessRule.READ_ONLY)
-                                        .withNfsv3(ElasticNfsv3Access.DISABLED)
-                                        .withNfsv4(ElasticNfsv4Access.DISABLED)
-                                        .withAllowedClients(Arrays.asList("fdeesvecuijpxtx", "uwprtujwsawd"))
-                                        .withRootAccess(ElasticRootAccess.DISABLED))))
-                .withDataProtection(new ElasticVolumeDataProtectionPatchProperties()
-                    .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("xvititvtz"))
-                    .withBackup(new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("avoxtfg")
-                        .withPolicyEnforcement(ElasticVolumePolicyEnforcement.ENFORCED)
-                        .withElasticBackupVaultResourceId("m")))
-                .withSnapshotDirectoryVisibility(SnapshotDirectoryVisibility.VISIBLE)
-                .withSmbProperties(new ElasticSmbPatchProperties().withSmbEncryption(ElasticSmbEncryption.ENABLED));
+        ElasticVolumeUpdateProperties model = new ElasticVolumeUpdateProperties().withSize(5868166807959460587L)
+            .withExportPolicy(new ElasticExportPolicy().withRules(Arrays.asList(
+                new ElasticExportPolicyRule().withRuleIndex(1411302775)
+                    .withUnixAccessRule(ElasticUnixAccessRule.READ_WRITE)
+                    .withNfsv3(ElasticNfsv3Access.ENABLED)
+                    .withNfsv4(ElasticNfsv4Access.DISABLED)
+                    .withAllowedClients(Arrays.asList("hqlyvijo", "wivkxo"))
+                    .withRootAccess(ElasticRootAccess.ENABLED),
+                new ElasticExportPolicyRule().withRuleIndex(1386333494)
+                    .withUnixAccessRule(ElasticUnixAccessRule.NO_ACCESS)
+                    .withNfsv3(ElasticNfsv3Access.DISABLED)
+                    .withNfsv4(ElasticNfsv4Access.ENABLED)
+                    .withAllowedClients(Arrays.asList("cpwpg", "lrcivtsoxfrke", "xpmyyefrpmpdnq"))
+                    .withRootAccess(ElasticRootAccess.ENABLED))))
+            .withDataProtection(new ElasticVolumeDataProtectionPatchProperties()
+                .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("oqvm"))
+                .withBackup(new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("pqfrtqlkz")
+                    .withPolicyEnforcement(ElasticVolumePolicyEnforcement.NOT_ENFORCED)
+                    .withElasticBackupVaultResourceId("itgvkx")))
+            .withSnapshotDirectoryVisibility(SnapshotDirectoryVisibility.HIDDEN)
+            .withSmbProperties(new ElasticSmbPatchProperties().withSmbEncryption(ElasticSmbEncryption.ENABLED));
         model = BinaryData.fromObject(model).toObject(ElasticVolumeUpdateProperties.class);
-        Assertions.assertEquals(6340644129016563843L, model.size());
-        Assertions.assertEquals(1430018563, model.exportPolicy().rules().get(0).ruleIndex());
-        Assertions.assertEquals(ElasticUnixAccessRule.NO_ACCESS, model.exportPolicy().rules().get(0).unixAccessRule());
+        Assertions.assertEquals(5868166807959460587L, model.size());
+        Assertions.assertEquals(1411302775, model.exportPolicy().rules().get(0).ruleIndex());
+        Assertions.assertEquals(ElasticUnixAccessRule.READ_WRITE, model.exportPolicy().rules().get(0).unixAccessRule());
         Assertions.assertEquals(ElasticNfsv3Access.ENABLED, model.exportPolicy().rules().get(0).nfsv3());
-        Assertions.assertEquals(ElasticNfsv4Access.ENABLED, model.exportPolicy().rules().get(0).nfsv4());
-        Assertions.assertEquals("klnsrmffey", model.exportPolicy().rules().get(0).allowedClients().get(0));
+        Assertions.assertEquals(ElasticNfsv4Access.DISABLED, model.exportPolicy().rules().get(0).nfsv4());
+        Assertions.assertEquals("hqlyvijo", model.exportPolicy().rules().get(0).allowedClients().get(0));
         Assertions.assertEquals(ElasticRootAccess.ENABLED, model.exportPolicy().rules().get(0).rootAccess());
-        Assertions.assertEquals("xvititvtz", model.dataProtection().snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("avoxtfg", model.dataProtection().backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED,
+        Assertions.assertEquals("oqvm", model.dataProtection().snapshot().snapshotPolicyResourceId());
+        Assertions.assertEquals("pqfrtqlkz", model.dataProtection().backup().elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED,
             model.dataProtection().backup().policyEnforcement());
-        Assertions.assertEquals("m", model.dataProtection().backup().elasticBackupVaultResourceId());
-        Assertions.assertEquals(SnapshotDirectoryVisibility.VISIBLE, model.snapshotDirectoryVisibility());
+        Assertions.assertEquals("itgvkx", model.dataProtection().backup().elasticBackupVaultResourceId());
+        Assertions.assertEquals(SnapshotDirectoryVisibility.HIDDEN, model.snapshotDirectoryVisibility());
         Assertions.assertEquals(ElasticSmbEncryption.ENABLED, model.smbProperties().smbEncryption());
     }
 }

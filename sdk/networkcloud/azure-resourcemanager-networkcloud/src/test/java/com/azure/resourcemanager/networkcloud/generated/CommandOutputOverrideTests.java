@@ -15,12 +15,13 @@ public final class CommandOutputOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandOutputOverride model = BinaryData.fromString(
-            "{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"ftwwaezkojvdc\"},\"commandOutputType\":\"BareMetalMachineRunReadCommands\",\"containerUrl\":\"qouicybxarzgsz\"}")
+            "{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"ftwwaezkojvdc\"},\"commandOutputType\":\"BareMetalMachineRunDataExtractsRestricted\",\"containerUrl\":\"qouicybxarzgsz\"}")
             .toObject(CommandOutputOverride.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
         Assertions.assertEquals("ftwwaezkojvdc", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_READ_COMMANDS, model.commandOutputType());
+        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_DATA_EXTRACTS_RESTRICTED,
+            model.commandOutputType());
         Assertions.assertEquals("qouicybxarzgsz", model.containerUrl());
     }
 
@@ -30,13 +31,14 @@ public final class CommandOutputOverrideTests {
             .withAssociatedIdentity(
                 new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
                     .withUserAssignedIdentityResourceId("ftwwaezkojvdc"))
-            .withCommandOutputType(CommandOutputType.BARE_METAL_MACHINE_RUN_READ_COMMANDS)
+            .withCommandOutputType(CommandOutputType.BARE_METAL_MACHINE_RUN_DATA_EXTRACTS_RESTRICTED)
             .withContainerUrl("qouicybxarzgsz");
         model = BinaryData.fromObject(model).toObject(CommandOutputOverride.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
         Assertions.assertEquals("ftwwaezkojvdc", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_READ_COMMANDS, model.commandOutputType());
+        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_DATA_EXTRACTS_RESTRICTED,
+            model.commandOutputType());
         Assertions.assertEquals("qouicybxarzgsz", model.containerUrl());
     }
 }

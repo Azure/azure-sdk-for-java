@@ -22,7 +22,7 @@ public final class BucketsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"path\":\"vuqbozoo\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":8547000283721640460,\"groupId\":8793158195572566388},\"cifsUser\":{\"username\":\"bc\"}},\"provisioningState\":\"Succeeded\",\"status\":\"CredentialsExpired\",\"server\":{\"fqdn\":\"awqytllhdyzm\",\"certificateCommonName\":\"kzexnx\",\"certificateExpiryDate\":\"2021-06-14T23:11:42Z\",\"ipAddress\":\"ywymxgaabj\",\"certificateObject\":\"tfohf\"},\"permissions\":\"ReadWrite\"},\"id\":\"vkiwrsiwdyjqu\",\"name\":\"ykcrraue\",\"type\":\"kcsueho\"}";
+            = "{\"properties\":{\"path\":\"cnulgmnhjevdy\",\"fileSystemUser\":{\"nfsUser\":{\"userId\":7743082681184560174,\"groupId\":8672179791701967060},\"cifsUser\":{\"username\":\"qozzkivyhjrliizj\"}},\"provisioningState\":\"Moving\",\"status\":\"Active\",\"server\":{\"fqdn\":\"fkwa\",\"certificateCommonName\":\"olro\",\"certificateExpiryDate\":\"2021-02-20T19:57:08Z\",\"ipAddress\":\"mgnlqxsjxtel\",\"certificateObject\":\"hvuqbo\"},\"permissions\":\"ReadOnly\"},\"id\":\"zqocarku\",\"name\":\"lbcnndt\",\"type\":\"nx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class BucketsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Bucket response = manager.buckets()
-            .getWithResponse("fajs", "kskmqozzkivyhjrl", "izjixlq", "hefkwabsolronqq", "mgnlqxsjxtel",
+            .getWithResponse("wnjkgvfn", "xaurs", "ftibtyibuyvpirfq", "pnqn", "owsbedenrexkxbh",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vuqbozoo", response.path());
-        Assertions.assertEquals(8547000283721640460L, response.fileSystemUser().nfsUser().userId());
-        Assertions.assertEquals(8793158195572566388L, response.fileSystemUser().nfsUser().groupId());
-        Assertions.assertEquals("bc", response.fileSystemUser().cifsUser().username());
-        Assertions.assertEquals("awqytllhdyzm", response.server().fqdn());
-        Assertions.assertEquals("tfohf", response.server().certificateObject());
-        Assertions.assertEquals(BucketPermissions.READ_WRITE, response.permissions());
+        Assertions.assertEquals("cnulgmnhjevdy", response.path());
+        Assertions.assertEquals(7743082681184560174L, response.fileSystemUser().nfsUser().userId());
+        Assertions.assertEquals(8672179791701967060L, response.fileSystemUser().nfsUser().groupId());
+        Assertions.assertEquals("qozzkivyhjrliizj", response.fileSystemUser().cifsUser().username());
+        Assertions.assertEquals("fkwa", response.server().fqdn());
+        Assertions.assertEquals("hvuqbo", response.server().certificateObject());
+        Assertions.assertEquals(BucketPermissions.READ_ONLY, response.permissions());
     }
 }

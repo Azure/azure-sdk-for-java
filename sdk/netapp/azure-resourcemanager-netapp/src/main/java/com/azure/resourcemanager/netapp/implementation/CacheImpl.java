@@ -11,6 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.CacheInner;
 import com.azure.resourcemanager.netapp.models.Cache;
 import com.azure.resourcemanager.netapp.models.CacheProperties;
+import com.azure.resourcemanager.netapp.models.CacheUpdate;
+import com.azure.resourcemanager.netapp.models.CacheUpdateProperties;
 import com.azure.resourcemanager.netapp.models.PeeringPassphrases;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import java.util.Collections;
@@ -96,6 +98,8 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
 
     private String cacheName;
 
+    private CacheUpdate updateBody;
+
     public CacheImpl withExistingCapacityPool(String resourceGroupName, String accountName, String poolName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -124,20 +128,21 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public CacheImpl update() {
+        this.updateBody = new CacheUpdate();
         return this;
     }
 
     public Cache apply() {
         this.innerObject = serviceManager.serviceClient()
             .getCaches()
-            .createOrUpdate(resourceGroupName, accountName, poolName, cacheName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, accountName, poolName, cacheName, updateBody, Context.NONE);
         return this;
     }
 
     public Cache apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCaches()
-            .createOrUpdate(resourceGroupName, accountName, poolName, cacheName, this.innerModel(), context);
+            .update(resourceGroupName, accountName, poolName, cacheName, updateBody, context);
         return this;
     }
 
@@ -199,12 +204,26 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public CacheImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public CacheImpl withZones(List<String> zones) {
         this.innerModel().withZones(zones);
         return this;
+    }
+
+    public CacheImpl withProperties(CacheUpdateProperties properties) {
+        this.updateBody.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }
