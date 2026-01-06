@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported disabling authentication through access keys for `RedisCache`.
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
 
 ### Breaking Changes
 
