@@ -100,4 +100,4 @@ stages:
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4-scala_2.13'
       AvoidDBFS: true
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
-      JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
+      JarReadOnlySasUri: $(spark-databricks-token)
