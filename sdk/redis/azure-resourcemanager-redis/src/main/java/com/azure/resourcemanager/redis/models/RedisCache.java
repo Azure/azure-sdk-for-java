@@ -218,16 +218,6 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
                 throw new UnsupportedOperationException(
                     "[disableAccessKeyAuthentication] is not supported in " + getClass());
             }
-
-            /**
-             * Specifies that authentication to Redis through access keys is enabled.
-             *
-             * @return next stage of the Redis cache definition
-             */
-            default WithCreate enableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException(
-                    "[enableAccessKeyAuthentication] is not supported in " + getClass());
-            }
         }
 
         /** A Redis Cache definition allowing the sku to be set. */
