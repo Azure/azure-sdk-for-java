@@ -59,7 +59,7 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
     while (returnValue.isEmpty) {
       if (readManyFilterBatchIterator.hasNext) {
         // fetch items for the next readMany filter batch
-        val readManyFilterBatch = readManyFilterBatchIterator.next()
+        val readManyFilterBatch = readManyFilterBatchIterator.next().toList
         returnValue =
           TransientErrorsRetryPolicy.executeWithRetry(
             () => hasNextInternalCore(readManyFilterBatch),
@@ -78,14 +78,14 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
    *
    * @return true (more records exist), false (no more records exist), None (unknown call should be repeated)
    */
-  private def hasNextInternalCore(readManyFilterList: Seq[CosmosItemIdentity]): Option[Boolean] = {
+  private def hasNextInternalCore(readManyFilterList: List[CosmosItemIdentity]): Option[Boolean] = {
     val feedResponse = try {
       Await.result(
         Future {
           ImplementationBridgeHelpers
             .CosmosAsyncContainerHelper
             .getCosmosAsyncContainerAccessor
-            .readMany(container, readManyFilterList.toList.asJava, queryOptionsWithEnd2EndTimeout, classType)
+            .readMany(container, readManyFilterList.asJava, queryOptionsWithEnd2EndTimeout, classType)
             .block()
         }(TransientIOErrorsRetryingReadManyIterator.executionContext),
         maxPageRetrievalTimeout)
