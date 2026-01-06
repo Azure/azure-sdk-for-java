@@ -242,7 +242,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
 
-        // create storage account (and virtual network), before create container group
+        // create virtual network before creating container group
         Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
             .define(containerGroupName)
             .withRegion(region)
