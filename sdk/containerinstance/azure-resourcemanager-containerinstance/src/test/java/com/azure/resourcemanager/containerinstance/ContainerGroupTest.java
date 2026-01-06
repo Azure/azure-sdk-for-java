@@ -249,24 +249,6 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-            .define(containerGroupName)
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess()
-            .create();
-
-        StorageAccountKey key = storageAccount.getKeys().get(0);
-
-        String shareName = "share1";
-        String fileEndpoint = String.format("https://%s.file.core.windows.net", storageAccount.name());
-        ShareServiceAsyncClient shareServiceAsyncClient = new ShareServiceClientBuilder()
-            .endpoint(fileEndpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(containerInstanceManager.httpPipeline().getHttpClient())
-            .buildAsyncClient();
-        shareServiceAsyncClient.createShare(shareName).block();
-
         // create storage account (and virtual network), before create container group
         Accepted<ContainerGroup> acceptedContainerGroup = containerInstanceManager.containerGroups()
             .define(containerGroupName)
