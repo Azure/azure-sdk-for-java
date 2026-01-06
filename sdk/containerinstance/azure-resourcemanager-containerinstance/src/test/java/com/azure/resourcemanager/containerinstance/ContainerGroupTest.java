@@ -218,8 +218,8 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     }
 
     // test contains a data-plane call
-    // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
     // Azure Storage doesn't support SMB mounting of file share using managed identity
+    // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
     @DoNotRecord(skipInPlayback = true)
     @Test
     @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
