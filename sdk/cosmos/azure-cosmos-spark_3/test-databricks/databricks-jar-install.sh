@@ -50,7 +50,7 @@ if [[ "${AVOID_DBFS,,}" == "true" ]]; then
   account=$STORAGE_ACCOUNT_NAME
 
   echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account $STORAGE_ACCOUNT_NAME (ephemeral tenant) container jarstore BLOB jars/$JAR_NAME"
-  az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --account-key $STORAGE_ACCOUNT_KEY --container-name jarstore --name jars/ --file $JARPATH/$JARFILE --type block --overwrite true --only-show-errors
+  az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --account-key $STORAGE_ACCOUNT_KEY --container-name jarstore --name jars/$JAR_NAME --file $JARPATH/$JARFILE --type block --overwrite true --only-show-errors
 
   if [ $? -eq 0 ]; then
     echo "Successfully uploaded JAR to $STORAGE_ACCOUNT_NAME (ephemeral tenant)."
