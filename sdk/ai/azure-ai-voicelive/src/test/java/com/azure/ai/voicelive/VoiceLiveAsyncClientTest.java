@@ -38,7 +38,7 @@ class VoiceLiveAsyncClientTest {
     @BeforeEach
     void setUp() throws Exception {
         testEndpoint = new URI("https://test.cognitiveservices.azure.com");
-        client = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, "2024-10-01-preview", mockHeaders);
+        client = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, "2024-10-01-preview", mockHeaders, null);
     }
 
     @Test
@@ -51,7 +51,7 @@ class VoiceLiveAsyncClientTest {
     void testConstructorWithNullEndpoint() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(null, mockKeyCredential, "2024-10-01-preview", mockHeaders);
+            new VoiceLiveAsyncClient(null, mockKeyCredential, "2024-10-01-preview", mockHeaders, null);
         });
     }
 
@@ -59,7 +59,7 @@ class VoiceLiveAsyncClientTest {
     void testConstructorWithNullCredential() {
         // Act & Assert
         assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(testEndpoint, (KeyCredential) null, "2024-10-01-preview", mockHeaders);
+            new VoiceLiveAsyncClient(testEndpoint, (KeyCredential) null, "2024-10-01-preview", mockHeaders, null);
         });
     }
 
@@ -165,6 +165,53 @@ class VoiceLiveAsyncClientTest {
             Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession(options.getModel());
             assertNotNull(sessionMono);
             // The returned Mono should contain a VoiceLiveSessionAsyncClient when subscribed
+        });
+    }
+
+    @Test
+    void testStartSessionWithoutModel() {
+        // Test that startSession() without parameters works
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession();
+            assertNotNull(sessionMono);
+        });
+    }
+
+    @Test
+    void testConstructorWithCustomQueryParameters() throws Exception {
+        // Arrange
+        java.util.Map<String, String> customParams = new java.util.HashMap<>();
+        customParams.put("deployment-id", "test-deployment");
+        customParams.put("custom-param", "custom-value");
+
+        // Act
+        VoiceLiveAsyncClient clientWithParams = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential,
+            "2024-10-01-preview", mockHeaders, customParams);
+
+        // Assert
+        assertNotNull(clientWithParams);
+    }
+
+    @Test
+    void testConstructorWithNullCustomQueryParameters() throws Exception {
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient clientWithNullParams
+                = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, "2024-10-01-preview", mockHeaders, null);
+            assertNotNull(clientWithNullParams);
+        });
+    }
+
+    @Test
+    void testConstructorWithEmptyCustomQueryParameters() throws Exception {
+        // Arrange
+        java.util.Map<String, String> emptyParams = new java.util.HashMap<>();
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient clientWithEmptyParams = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential,
+                "2024-10-01-preview", mockHeaders, emptyParams);
+            assertNotNull(clientWithEmptyParams);
         });
     }
 }

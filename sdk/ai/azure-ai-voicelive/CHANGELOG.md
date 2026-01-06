@@ -4,6 +4,16 @@
 
 ### Features Added
 
+- Added custom query parameter support for WebSocket connections:
+  - `VoiceLiveClientBuilder.customQueryParameters(Map<String, String>)` to set custom query parameters
+  - Custom parameters are merged with endpoint URL parameters and SDK-managed parameters
+  - Parameter precedence: Endpoint URL params → Custom params → api-version (SDK managed) → model (method parameter)
+  - Enables scenarios like deployment-id, region, or other service-specific parameters
+- Enhanced session creation flexibility:
+  - Added `VoiceLiveAsyncClient.startSession()` overload without model parameter
+  - Model can now be provided via custom query parameters or endpoint URL if required
+  - Original `startSession(String model)` method preserved for backward compatibility
+
 ### Breaking Changes
 
 ### Bugs Fixed

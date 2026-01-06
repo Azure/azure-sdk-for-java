@@ -221,4 +221,66 @@ class VoiceLiveClientBuilderTest {
         assertSame(clientBuilder, clientBuilder.credential(mockKeyCredential));
         assertSame(clientBuilder, clientBuilder.serviceVersion(VoiceLiveServiceVersion.V2025_10_01));
     }
+
+    @Test
+    void testBuilderWithCustomQueryParameters() {
+        // Arrange
+        String endpoint = "https://test.cognitiveservices.azure.com";
+        java.util.Map<String, String> customParams = new java.util.HashMap<>();
+        customParams.put("deployment-id", "test-deployment");
+        customParams.put("region", "eastus");
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
+                .credential(mockKeyCredential)
+                .customQueryParameters(customParams)
+                .buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
+
+    @Test
+    void testBuilderWithNullCustomQueryParameters() {
+        // Arrange
+        String endpoint = "https://test.cognitiveservices.azure.com";
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
+                .credential(mockKeyCredential)
+                .customQueryParameters(null)
+                .buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
+
+    @Test
+    void testBuilderWithEmptyCustomQueryParameters() {
+        // Arrange
+        String endpoint = "https://test.cognitiveservices.azure.com";
+        java.util.Map<String, String> emptyParams = new java.util.HashMap<>();
+
+        // Act & Assert
+        assertDoesNotThrow(() -> {
+            VoiceLiveAsyncClient client = clientBuilder.endpoint(endpoint)
+                .credential(mockKeyCredential)
+                .customQueryParameters(emptyParams)
+                .buildAsyncClient();
+
+            assertNotNull(client);
+        });
+    }
+
+    @Test
+    void testCustomQueryParametersReturnsBuilder() {
+        // Arrange
+        java.util.Map<String, String> customParams = new java.util.HashMap<>();
+        customParams.put("test", "value");
+
+        // Act & Assert
+        assertSame(clientBuilder, clientBuilder.customQueryParameters(customParams));
+    }
 }
