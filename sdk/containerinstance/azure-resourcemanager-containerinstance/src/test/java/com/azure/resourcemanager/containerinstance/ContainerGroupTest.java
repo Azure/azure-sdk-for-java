@@ -215,7 +215,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
     // https://learn.microsoft.com/azure/container-instances/container-instances-volume-azure-files
     @DoNotRecord(skipInPlayback = true)
     @Test
-    @Disabled("This request was denied due to internal policy. Local authentication methods are not allowed.")
+    @Disabled("This request was denied due to internal policy. Container Group requires that Storage Accounts is authenticated with managed identity, but Azure Storage doesn't support SMB mounting of file share using managed identity. ")
     public void testBeginCreateWithFileShareVolume() {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_WEST3;
