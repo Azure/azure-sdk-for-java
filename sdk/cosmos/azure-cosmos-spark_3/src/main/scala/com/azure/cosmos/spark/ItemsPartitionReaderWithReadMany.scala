@@ -177,7 +177,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
                   ((_: ObjectNode) => {
                     CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
                       idValue,
-                      ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray.toSeq.toList)
+                      ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray.toList)
                   })
               )
 
