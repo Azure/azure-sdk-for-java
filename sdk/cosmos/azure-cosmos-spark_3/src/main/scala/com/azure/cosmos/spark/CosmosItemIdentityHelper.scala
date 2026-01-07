@@ -31,23 +31,23 @@ private[spark] object CosmosItemIdentityHelper {
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {
     cosmosItemIdentityString match {
       case cosmosItemIdentityStringRegx(idValue, pkValue) =>
-        val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
-        partitionKeyValue match {
-          case arrayList: util.ArrayList[_] => 
-            // Convert Jackson JsonNode objects to their primitive values
-            // This is necessary because Utils.parse returns JsonNode instances when deserializing from JSON
-            // In Scala 2.13, the deprecated JavaConverters behaves differently, so we need explicit conversion
-            val pkValuesArray = new Array[Object](arrayList.size())
-            var i = 0
-            while (i < arrayList.size()) {
-              pkValuesArray(i) = arrayList.get(i) match {
-                case node: JsonNode => convertJsonNodeToPrimitive(node)
-                case other => other.asInstanceOf[Object]
-              }
-              i += 1
-            }
-            Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, pkValuesArray))
-          case _ => Some(new CosmosItemIdentity(new PartitionKey(partitionKeyValue), idValue))
+        // Parse the partition key value from JSON string
+        // Use JsonNode first, then convert to ArrayList to avoid Scala 2.12/2.13 differences
+        val pkValueNode = objectMapper.readTree(pkValue)
+        
+        if (pkValueNode.isArray) {
+          // Multi-value partition key (hierarchical)
+          val pkValuesArray = new Array[Object](pkValueNode.size())
+          var i = 0
+          while (i < pkValueNode.size()) {
+            pkValuesArray(i) = convertJsonNodeToPrimitive(pkValueNode.get(i))
+            i += 1
+          }
+          Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, pkValuesArray))
+        } else {
+          // Single value partition key
+          val primitiveValue = convertJsonNodeToPrimitive(pkValueNode)
+          Some(new CosmosItemIdentity(new PartitionKey(primitiveValue), idValue))
         }
       case _ => None
     }
@@ -75,8 +75,9 @@ private[spark] object CosmosItemIdentityHelper {
     } else if (node.isNull) {
       null
     } else {
-      // For any other type, return the node itself and let the partition key logic handle it
-      node
+      throw new IllegalArgumentException(
+        s"Invalid partition key value: partition keys must be primitive values (string, number, boolean, or null), got JsonNode type: ${node.getNodeType}"
+      )
     }
   }
 }
