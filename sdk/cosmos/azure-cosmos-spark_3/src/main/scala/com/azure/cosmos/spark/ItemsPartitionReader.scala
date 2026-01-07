@@ -196,7 +196,7 @@ private case class ItemsPartitionReader
                 ((_: ObjectNode) => {
                   CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
                     idValue,
-                    ModelBridgeInternal.getPartitionKeyInternal(pkValue).toObjectArray.toList)
+                    ModelBridgeInternal.getPartitionKeyInternal(pkValue).toObjectArray.toSeq.toList)
                 })
             )
 

@@ -25,17 +25,10 @@ private[spark] object CosmosItemIdentityHelper extends BasicLoggingTrait {
   private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosItemIdentityValueString(id: String, partitionKeyValue: List[Object]): String = {
-    val result = s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
-    logInfo(s"getCosmosItemIdentityValueString (id")
-    for (pkValueItem <- partitionKeyValue) {
-      logInfo(s"pkValueItem: ${pkValueItem.getClass.getName} - $pkValueItem")
-    }
-    logInfo(result)
-    result
+    s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {
-    logInfo(s"tryParseCosmosItemIdentity - $cosmosItemIdentityString")
     cosmosItemIdentityString match {
       case cosmosItemIdentityStringRegx(idValue, pkValue) =>
         val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
