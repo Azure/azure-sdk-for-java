@@ -56,12 +56,34 @@ public final class IdentityProperties implements JsonSerializable<IdentityProper
     }
 
     /**
+     * Set the principalId property: The principal ID of resource identity.
+     * 
+     * @param principalId the principalId value to set.
+     * @return the IdentityProperties object itself.
+     */
+    public IdentityProperties withPrincipalId(String principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
      * Get the tenantId property: The tenant ID of resource.
      * 
      * @return the tenantId value.
      */
     public String tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenant ID of resource.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the IdentityProperties object itself.
+     */
+    public IdentityProperties withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
     }
 
     /**
@@ -133,6 +155,8 @@ public final class IdentityProperties implements JsonSerializable<IdentityProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
             (writer, element) -> writer.writeJson(element));
