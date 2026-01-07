@@ -18,6 +18,7 @@ import java.io.{BufferedReader, InputStreamReader}
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.UUID
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters._
 
@@ -247,7 +248,6 @@ class SparkE2EChangeFeedITest
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
     CosmosClientMetrics.meterRegistry.isDefined shouldEqual true
-    val meterRegistry = CosmosClientMetrics.meterRegistry.get
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val sinkContainerName = cosmosClient
@@ -860,7 +860,7 @@ class SparkE2EChangeFeedITest
     hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileBackupLocation))
     hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
 
-    var remainingFromLastBatchOfTen = 10;
+    var remainingFromLastBatchOfTen = 10
     while(remainingFromLastBatchOfTen > 0) {
       hdfs.copyToLocalFile(true, new Path(startOffsetFileBackupLocation), new Path(startOffsetFileLocation))
       hdfs.delete(new Path(latestOffsetFileLocation), true)
