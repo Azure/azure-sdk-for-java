@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
@@ -22,7 +23,6 @@ import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
-import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -71,11 +71,9 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -114,6 +112,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     protected static final ImmutableList<Protocol> protocols;
+    protected static final ImmutableList<ConnectionMode> connectionModes;
 
     protected static final AzureKeyCredential credential;
 
@@ -158,6 +157,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
             ImmutableList.of(Protocol.TCP));
+        //  Defaulting to Gateway if no connection mode is specified to maintain backward compatibility
+        connectionModes = ObjectUtils.defaultIfNull(immutableListOrNull(parseConnectionModes(TestConfigurations.CONNECTION_MODES)),
+            ImmutableList.of(ConnectionMode.GATEWAY));
 
         //  Object mapper configurations
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -204,7 +206,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
-        "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
+        "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
         "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
@@ -232,13 +234,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             safeDeleteDatabase(SHARED_DATABASE);
             CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
         }
-    }
-
-    @AfterSuite(groups = { "emulator-vnext" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public void afterSuitEmulatorVNext() {
-        // can not use the after suite method directly as for vnext, query databases is not implemented, so it will error out
-        logger.info("afterSuite for emulator vnext group started. ");
-        safeDeleteDatabase(SHARED_DATABASE);
     }
 
     protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
@@ -1119,6 +1114,76 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
+    /**
+     * Helper method to create CosmosClientBuilders for the static field connectionModes with given flags.
+     */
+    private static Object[][] emulatorClientBuildersWithFlags(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests) {
+        List<Object[]> builders = new ArrayList<>();
+        for (ConnectionMode mode : connectionModes) {
+            switch (mode) {
+                case DIRECT:
+                    builders.add(new Object[]{createDirectRxDocumentClient(
+                        ConsistencyLevel.SESSION,
+                        Protocol.TCP,
+                        false,
+                        preferredLocations,
+                        contentResponseOnWriteEnabled,
+                        retryOnThrottledRequests
+                    )});
+                    break;
+                case GATEWAY:
+                    builders.add(new Object[]{createGatewayRxDocumentClient(
+                        ConsistencyLevel.SESSION,
+                        false,
+                        preferredLocations,
+                        contentResponseOnWriteEnabled,
+                        retryOnThrottledRequests
+                    )});
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported ConnectionMode: " + mode);
+            }
+        }
+        return builders.toArray(new Object[0][]);
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuilders() {
+        return emulatorClientBuildersWithFlags(true, true);
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes with contentResponseOnWriteEnabled = false.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuildersContentResponseOnWriteEnabledFalse() {
+        return emulatorClientBuildersWithFlags(false, true);
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes with both contentResponseOnWriteEnabled true and false.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuildersContentResponseOnWriteEnabledAndDisabled() {
+        Object[][] enabled = emulatorClientBuildersWithFlags(true, true);
+        Object[][] disabled = emulatorClientBuildersWithFlags(false, true);
+        Object[][] combined = new Object[enabled.length + disabled.length][];
+        System.arraycopy(enabled, 0, combined, 0, enabled.length);
+        System.arraycopy(disabled, 0, combined, enabled.length, disabled.length);
+        return combined;
+    }
+
+    /**
+     * DataProvider that returns CosmosClientBuilders for the static field connectionModes with retryOnThrottledRequests = false.
+     */
+    @DataProvider
+    public static Object[][] emulatorClientBuildersWithoutRetryOnThrottledRequests() {
+        return emulatorClientBuildersWithFlags(true, false);
+    }
+
     @DataProvider
     public static Object[][] clientBuilders() {
         return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true)}};
@@ -1193,6 +1258,23 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    static List<ConnectionMode> parseConnectionModes(String connectionModes) {
+        if (StringUtils.isEmpty(connectionModes)) {
+            return null;
+        }
+        List<ConnectionMode> modeList = new ArrayList<>();
+        try {
+            List<String> modeStrings = objectMapper.readValue(connectionModes, new TypeReference<List<String>>() {});
+            for (String mode : modeStrings) {
+                modeList.add(ConnectionMode.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, mode)));
+            }
+            return modeList;
+        } catch (Exception e) {
+            logger.error("INVALID configured test connectionModes [{}].", connectionModes);
+            throw new IllegalStateException("INVALID configured test connectionModes " + connectionModes);
+        }
+    }
+
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
         return simpleClientBuildersWithDirect(true, true, true, toArray(protocols));
@@ -1216,14 +1298,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectTcpWithContentResponseOnWriteDisabled() {
         return simpleClientBuildersWithDirect(false, true, true, Protocol.TCP);
-    }
-
-    @DataProvider
-    public static Object[][] simpleClientBuildersWithoutRetryOnThrottledRequests() {
-        return new Object[][]{
-            { createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false) },
-            { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, false) }
-        };
     }
 
     @DataProvider
@@ -1616,5 +1690,5 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         return "";
     }
-
 }
+

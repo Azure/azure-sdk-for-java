@@ -783,33 +783,6 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB VNext Emulator Endpoint -->
-      <id>emulator-vnext</id>
-      <properties>
-        <test.groups>emulator-vnext</test.groups>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <suiteXmlFiles>
-                <suiteXmlFile>src/test/resources/emulator-vnext-testng.xml</suiteXmlFile>
-              </suiteXmlFiles>
-              <systemPropertyVariables>
-                <COSMOS.CLIENT_LEAK_DETECTION_ENABLED>true</COSMOS.CLIENT_LEAK_DETECTION_ENABLED>
-                <io.netty.leakDetection.samplingInterval>1</io.netty.leakDetection.samplingInterval>
-                <io.netty.leakDetection.targetRecords>256</io.netty.leakDetection.targetRecords>
-                <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <!-- e2e integration tests, requires Cosmos DB endpoint -->
       <id>e2e</id>
       <properties>

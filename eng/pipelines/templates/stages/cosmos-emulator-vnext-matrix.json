@@ -8,7 +8,7 @@
     },
     "EmulatorConfig": {
       "Emulator VNext Integration Tests On Insecure Connection - Java ": {
-        "ProfileFlag": "-Pemulator-vnext",
+        "ProfileFlag": "-Pemulator",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "AdditionalArgs": "-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
