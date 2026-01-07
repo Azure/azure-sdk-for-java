@@ -6,7 +6,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
-import com.fasterxml.jackson.databind.JsonNode
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util
 
@@ -14,7 +14,7 @@ import java.util
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[spark] object CosmosItemIdentityHelper {
+private[spark] object CosmosItemIdentityHelper extends BasicLoggingTrait {
   // pattern will be recognized
   // 1. id(idValue).pk(partitionKeyValue)
   //
@@ -25,32 +25,23 @@ private[spark] object CosmosItemIdentityHelper {
   private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosItemIdentityValueString(id: String, partitionKeyValue: List[Object]): String = {
-    // Explicitly create a Java ArrayList to avoid Scala 2.12/2.13 differences in .asJava behavior
-    val javaList = new util.ArrayList[Object](partitionKeyValue.size)
-    partitionKeyValue.foreach(value => javaList.add(value))
-    s"id($id).pk(${objectMapper.writeValueAsString(javaList)})"
+    val result = s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
+    logInfo(s"getCosmosItemIdentityValueString (id")
+    for (pkValueItem <- partitionKeyValue) {
+      logInfo(s"pkValueItem: ${partitionKeyValue.getClass.getName} - $pkValueItem")
+    }
+    logInfo(result)
+    result
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {
+    logInfo(s"tryParseCosmosItemIdentity - $cosmosItemIdentityString")
     cosmosItemIdentityString match {
       case cosmosItemIdentityStringRegx(idValue, pkValue) =>
-        // Parse the partition key value from JSON string
-        // Use JsonNode first, then convert to ArrayList to avoid Scala 2.12/2.13 differences
-        val pkValueNode = objectMapper.readTree(pkValue)
-        
-        if (pkValueNode.isArray) {
-          // Multi-value partition key (hierarchical)
-          val pkValuesArray = new Array[Object](pkValueNode.size())
-          var i = 0
-          while (i < pkValueNode.size()) {
-            pkValuesArray(i) = convertJsonNodeToPrimitive(pkValueNode.get(i))
-            i += 1
-          }
-          Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, pkValuesArray))
-        } else {
-          // Single value partition key
-          val primitiveValue = convertJsonNodeToPrimitive(pkValueNode)
-          Some(new CosmosItemIdentity(new PartitionKey(primitiveValue), idValue))
+        val partitionKeyValue = Utils.parse(pkValue, classOf[Object])
+        partitionKeyValue match {
+          case arrayList: util.ArrayList[Object] => Some(createCosmosItemIdentityWithMultiHashPartitionKey(idValue, arrayList.toArray))
+          case _ => Some(new CosmosItemIdentity(new PartitionKey(partitionKeyValue), idValue))
         }
       case _ => None
     }
@@ -61,26 +52,8 @@ private[spark] object CosmosItemIdentityHelper {
       ImplementationBridgeHelpers
         .PartitionKeyHelper
         .getPartitionKeyAccessor
-        .toPartitionKey(PartitionKeyInternal.fromObjectArray(pkValuesArray, true))
+        .toPartitionKey(PartitionKeyInternal.fromObjectArray(pkValuesArray, false))
 
     new CosmosItemIdentity(partitionKey, idValue)
-  }
-  
-  private[this] def convertJsonNodeToPrimitive(node: JsonNode): Object = {
-    if (node.isTextual) {
-      node.asText()
-    } else if (node.isBoolean) {
-      Boolean.box(node.asBoolean())
-    } else if (node.isInt || node.isLong) {
-      Long.box(node.asLong())
-    } else if (node.isDouble || node.isFloat) {
-      Double.box(node.asDouble())
-    } else if (node.isNull) {
-      null
-    } else {
-      throw new IllegalArgumentException(
-        s"Invalid partition key value: partition keys must be primitive values (string, number, boolean, or null), got JsonNode type: ${node.getNodeType}"
-      )
-    }
   }
 }
