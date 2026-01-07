@@ -25,7 +25,10 @@ private[spark] object CosmosItemIdentityHelper {
   private val objectMapper = Utils.getSimpleObjectMapper
 
   def getCosmosItemIdentityValueString(id: String, partitionKeyValue: List[Object]): String = {
-    s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
+    // Explicitly create a Java ArrayList to avoid Scala 2.12/2.13 differences in .asJava behavior
+    val javaList = new util.ArrayList[Object](partitionKeyValue.size)
+    partitionKeyValue.foreach(value => javaList.add(value))
+    s"id($id).pk(${objectMapper.writeValueAsString(javaList)})"
   }
 
   def tryParseCosmosItemIdentity(cosmosItemIdentityString: String): Option[CosmosItemIdentity] = {

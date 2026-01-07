@@ -71,7 +71,7 @@
         "JavaTestVersion": "1.11",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       },
-      "Spark 3.5 Integration Tests targeting Cosmos Emulator - Java 8'": {
+      "Spark 3.5, Scala 2.12 Integration Tests targeting Cosmos Emulator - Java 8'": {
         "ProfileFlag": "-Dspark-e2e_3-5_2-12",
         "PROTOCOLS": "[\"Tcp\"]",
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
