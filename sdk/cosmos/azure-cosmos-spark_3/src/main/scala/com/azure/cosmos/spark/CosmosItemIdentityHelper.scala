@@ -28,7 +28,7 @@ private[spark] object CosmosItemIdentityHelper extends BasicLoggingTrait {
     val result = s"id($id).pk(${objectMapper.writeValueAsString(partitionKeyValue.asJava)})"
     logInfo(s"getCosmosItemIdentityValueString (id")
     for (pkValueItem <- partitionKeyValue) {
-      logInfo(s"pkValueItem: ${partitionKeyValue.getClass.getName} - $pkValueItem")
+      logInfo(s"pkValueItem: ${pkValueItem.getClass.getName} - $pkValueItem")
     }
     logInfo(result)
     result
