@@ -18,8 +18,6 @@ import java.io.{BufferedReader, InputStreamReader}
 import java.nio.file.Paths
 import java.time.Duration
 import java.util.UUID
-import scala.collection.immutable.ArraySeq
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters._
 
@@ -537,8 +535,7 @@ class SparkE2EChangeFeedITest
     val collectedFrame = groupedFrame.collect()
     collectedFrame.foreach(row => {
       val array = row.get(1) match {
-        case wrappedArray: mutable.WrappedArray[String] => wrappedArray.toArray
-        case wrappedArraySeq: ArraySeq[String] => wrappedArraySeq.toArray
+        case seq: Seq[String] => seq.toArray
         case _ => throw new IllegalArgumentException("Unexpected type of array")
       }
       row.get(0) match {
