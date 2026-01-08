@@ -169,7 +169,7 @@ public final class HttpClientHelper {
             } else if (throwable instanceof TimeoutException) {
                 return throwable;
             } else {
-                return new OpenAIException(throwable.getMessage(), throwable.getCause());
+                return new OpenAIException(throwable.getMessage(), throwable);
             }
         }
 
