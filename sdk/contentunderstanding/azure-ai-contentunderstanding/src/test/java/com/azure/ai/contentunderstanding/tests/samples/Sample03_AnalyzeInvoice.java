@@ -12,9 +12,7 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.MediaContent;
-import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.ObjectField;
-import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -79,21 +77,16 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 "Pages: " + documentContent.getStartPageNumber() + " to " + documentContent.getEndPageNumber());
             System.out.println();
 
-            // Extract simple string fields
+            // Extract simple string fields using getValue() convenience method
+            // getValue() returns the typed value regardless of field type (StringField, NumberField, etc.)
             ContentField customerNameField
                 = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
             ContentField invoiceDateField
                 = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
 
-            String customerName = null;
-            if (customerNameField instanceof StringField) {
-                customerName = ((StringField) customerNameField).getValueString();
-            }
-
-            String invoiceDate = null;
-            if (invoiceDateField instanceof StringField) {
-                invoiceDate = ((StringField) invoiceDateField).getValueString();
-            }
+            // Use getValue() instead of casting to specific types
+            String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
+            String invoiceDate = invoiceDateField != null ? (String) invoiceDateField.getValue() : null;
 
             System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
             if (customerNameField != null) {
@@ -125,26 +118,20 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 }
             }
 
-            // Extract object fields (nested structures)
+            // Extract object fields (nested structures) using getFieldOrDefault() convenience method
+            // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
             ContentField totalAmountField
                 = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
             if (totalAmountField instanceof ObjectField) {
                 ObjectField totalAmountObj = (ObjectField) totalAmountField;
-                ContentField amountField
-                    = totalAmountObj.getValueObject() != null ? totalAmountObj.getValueObject().get("Amount") : null;
-                ContentField currencyField = totalAmountObj.getValueObject() != null
-                    ? totalAmountObj.getValueObject().get("CurrencyCode")
-                    : null;
 
-                Double amount = null;
-                if (amountField instanceof NumberField) {
-                    amount = ((NumberField) amountField).getValueNumber();
-                }
+                // Use getFieldOrDefault() for safe nested field access
+                ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
+                ContentField currencyField = totalAmountObj.getFieldOrDefault("CurrencyCode");
 
-                String currency = null;
-                if (currencyField instanceof StringField) {
-                    currency = ((StringField) currencyField).getValueString();
-                }
+                // Use getValue() instead of type-specific getters
+                Double amount = amountField != null ? (Double) amountField.getValue() : null;
+                String currency = currencyField != null ? (String) currencyField.getValue() : null;
 
                 System.out.println("Total: " + (currency != null ? currency : "$")
                     + (amount != null ? String.format("%.2f", amount) : "(None)"));
@@ -156,33 +143,28 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
                 }
             }
 
-            // Extract array fields (collections like line items)
+            // Extract array fields (collections like line items) using size() and get() convenience methods
             ContentField lineItemsField
                 = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
             if (lineItemsField instanceof ArrayField) {
                 ArrayField lineItems = (ArrayField) lineItemsField;
-                System.out.println("Line Items (" + lineItems.getValueArray().size() + "):");
-                for (int i = 0; i < lineItems.getValueArray().size(); i++) {
-                    ContentField itemField = lineItems.getValueArray().get(i);
+                // Use size() convenience method instead of getValueArray().size()
+                System.out.println("Line Items (" + lineItems.size() + "):");
+                for (int i = 0; i < lineItems.size(); i++) {
+                    // Use get(index) convenience method instead of getValueArray().get(i)
+                    ContentField itemField = lineItems.get(i);
                     if (itemField instanceof ObjectField) {
                         ObjectField item = (ObjectField) itemField;
-                        ContentField descField
-                            = item.getValueObject() != null ? item.getValueObject().get("Description") : null;
-                        ContentField qtyField
-                            = item.getValueObject() != null ? item.getValueObject().get("Quantity") : null;
+                        // Use getFieldOrDefault() for safe nested access
+                        ContentField descField = item.getFieldOrDefault("Description");
+                        ContentField qtyField = item.getFieldOrDefault("Quantity");
 
-                        String description = null;
-                        if (descField instanceof StringField) {
-                            description = ((StringField) descField).getValueString();
-                        }
-
-                        String quantity = null;
-                        if (qtyField instanceof NumberField) {
-                            quantity = String.valueOf(((NumberField) qtyField).getValueNumber());
-                        }
+                        // Use getValue() instead of type-specific getters
+                        String description = descField != null ? (String) descField.getValue() : null;
+                        Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
 
                         System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A")
-                            + " (Qty: " + (quantity != null ? quantity : "N/A") + ")");
+                            + " (Qty: " + (quantity != null ? String.valueOf(quantity) : "N/A") + ")");
                         if (item.getConfidence() != null) {
                             System.out.println("    Confidence: " + String.format("%.2f", item.getConfidence()));
                         }

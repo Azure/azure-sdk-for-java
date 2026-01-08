@@ -6,8 +6,8 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -46,31 +46,33 @@ public class Sample13_DeleteResult extends ContentUnderstandingClientTestBase {
         AnalyzeResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Display some sample results
-        if (result.getContents() != null && result.getContents().size() > 0) {
+        // Get the operation ID using the getOperationId() convenience method
+        // This ID is extracted from the Operation-Location header and is needed for deleteResult()
+        String operationId = poller.poll().getValue().getOperationId();
+        System.out.println("Operation ID: " + operationId);
+
+        // Display some sample results using getValue() convenience method
+        if (result.getContents() != null && !result.getContents().isEmpty()) {
             Object firstContent = result.getContents().get(0);
             if (firstContent instanceof DocumentContent) {
                 DocumentContent docContent = (DocumentContent) firstContent;
-                Map<String, com.azure.ai.contentunderstanding.models.ContentField> fields = docContent.getFields();
+                Map<String, ContentField> fields = docContent.getFields();
                 if (fields != null) {
                     System.out.println("Total fields extracted: " + fields.size());
-                    if (fields.containsKey("CustomerName")) {
-                        Object customerNameField = fields.get("CustomerName");
-                        if (customerNameField instanceof StringField) {
-                            StringField sf = (StringField) customerNameField;
-                            System.out.println("Customer Name: "
-                                + (sf.getValueString() != null ? sf.getValueString() : "(not found)"));
-                        }
+                    ContentField customerNameField = fields.get("CustomerName");
+                    if (customerNameField != null) {
+                        // Use getValue() instead of casting to StringField
+                        String customerName = (String) customerNameField.getValue();
+                        System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
                     }
                 }
             }
         }
 
-        // Step 2: Delete the analysis result
-        // Note: Use the result ID from the poller if available
-        // For this sample, we demonstrate the API pattern
-        System.out.println("Analysis result can be deleted using deleteResultWithResponse");
-        System.out.println("Example: contentUnderstandingClient.deleteResultWithResponse(resultId, null)");
+        // Step 2: Delete the analysis result using the operation ID
+        // This cleans up the server-side resources (including keyframe images for video analysis)
+        contentUnderstandingClient.deleteResult(operationId);
+        System.out.println("Analysis result deleted successfully!");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
         // Verify operation

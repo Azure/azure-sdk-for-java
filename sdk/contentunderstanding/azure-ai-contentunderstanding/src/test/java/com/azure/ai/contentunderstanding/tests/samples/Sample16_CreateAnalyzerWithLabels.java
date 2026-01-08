@@ -6,25 +6,21 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
-import com.azure.ai.contentunderstanding.models.ArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
-import com.azure.ai.contentunderstanding.models.ObjectField;
-import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -291,17 +287,19 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
                 DocumentContent docContent = (DocumentContent) analyzeResult.getContents().get(0);
                 System.out.println("Extracted fields: " + docContent.getFields().size());
 
-                // Display extracted values
+                // Display extracted values using getValue() convenience method
                 if (docContent.getFields().containsKey("MerchantName")) {
-                    Object merchantField = docContent.getFields().get("MerchantName");
-                    if (merchantField instanceof StringField) {
-                        System.out.println("  MerchantName: " + ((StringField) merchantField).getValueString());
+                    ContentField merchantField = docContent.getFields().get("MerchantName");
+                    if (merchantField != null) {
+                        String merchantName = (String) merchantField.getValue();
+                        System.out.println("  MerchantName: " + merchantName);
                     }
                 }
                 if (docContent.getFields().containsKey("Total")) {
-                    Object totalFieldValue = docContent.getFields().get("Total");
-                    if (totalFieldValue instanceof StringField) {
-                        System.out.println("  Total: " + ((StringField) totalFieldValue).getValueString());
+                    ContentField totalFieldValue = docContent.getFields().get("Total");
+                    if (totalFieldValue != null) {
+                        String total = (String) totalFieldValue.getValue();
+                        System.out.println("  Total: " + total);
                     }
                 }
             }
