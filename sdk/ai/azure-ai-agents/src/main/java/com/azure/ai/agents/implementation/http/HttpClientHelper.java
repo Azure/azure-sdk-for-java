@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation.http;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -169,7 +170,11 @@ public final class HttpClientHelper {
             } else if (throwable instanceof TimeoutException) {
                 return throwable;
             } else {
-                return new OpenAIException(throwable.getMessage(), throwable);
+                if (throwable instanceof AzureException) {
+                    return new OpenAIException(throwable.getMessage(), throwable.getCause());
+                } else {
+                    return new OpenAIException(throwable.getMessage(), throwable);
+                }
             }
         }
 
