@@ -83,15 +83,18 @@ public class Sample03_AnalyzeInvoice {
             System.out.println();
 
             // Extract simple string fields using getValue() convenience method
-            // getValue() returns the typed value regardless of field type (StringField, NumberField, etc.)
+            // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
             ContentField customerNameField
                 = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
             ContentField invoiceDateField
                 = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
 
             // Use getValue() instead of casting to specific types
+            // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
             String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
-            String invoiceDate = invoiceDateField != null ? (String) invoiceDateField.getValue() : null;
+            // InvoiceDate is a DateField, so getValue() returns LocalDate - convert to String for display
+            Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
+            String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
 
             System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
             if (customerNameField != null) {
