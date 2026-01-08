@@ -71,7 +71,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Gets Content Understanding service endpoint.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -85,7 +85,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public ContentUnderstandingServiceVersion getServiceVersion() {
@@ -99,7 +99,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -113,7 +113,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -122,7 +122,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Initializes an instance of ContentUnderstandingClient client.
-     * 
+     *
      * @param endpoint Content Understanding service endpoint.
      * @param serviceVersion Service version.
      */
@@ -133,7 +133,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Initializes an instance of ContentUnderstandingClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Content Understanding service endpoint.
      * @param serviceVersion Service version.
@@ -145,7 +145,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Initializes an instance of ContentUnderstandingClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Content Understanding service endpoint.
@@ -212,8 +212,8 @@ public final class ContentUnderstandingClientImpl {
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -224,8 +224,8 @@ public final class ContentUnderstandingClientImpl {
             @BodyParam("application/json") BinaryData copyAnalyzerRequest, RequestOptions requestOptions,
             Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -529,7 +529,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -548,9 +548,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -603,7 +603,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -638,7 +638,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -657,9 +657,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -712,7 +712,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -745,7 +745,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -764,9 +764,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -819,7 +819,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -860,7 +860,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -879,9 +879,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -934,7 +934,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -975,7 +975,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -994,9 +994,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1049,7 +1049,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1089,7 +1089,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1108,9 +1108,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1163,7 +1163,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param analyzeRequest1 The analyzeRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1205,15 +1205,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1266,7 +1266,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1303,15 +1303,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1364,7 +1364,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1399,15 +1399,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1460,7 +1460,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1504,15 +1504,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1565,7 +1565,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1609,15 +1609,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1670,7 +1670,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1713,15 +1713,15 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1774,7 +1774,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param contentType Request content type.
      * @param binaryInput The binary content of the document to analyze.
@@ -1812,7 +1812,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1822,9 +1822,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1932,7 +1932,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1964,7 +1964,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1974,9 +1974,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2084,7 +2084,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2114,7 +2114,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2124,9 +2124,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2234,7 +2234,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2272,7 +2272,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2282,9 +2282,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2392,7 +2392,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2430,7 +2430,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2440,9 +2440,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2550,7 +2550,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2587,7 +2587,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2597,9 +2597,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2707,7 +2707,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param copyAnalyzerRequest The copyAnalyzerRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2744,7 +2744,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2847,9 +2847,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2952,7 +2952,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2983,7 +2983,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3086,9 +3086,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3191,7 +3191,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3221,7 +3221,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3324,9 +3324,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3429,7 +3429,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3468,7 +3468,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3571,9 +3571,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3676,7 +3676,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3715,7 +3715,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3818,9 +3818,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3923,7 +3923,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3961,7 +3961,7 @@ public final class ContentUnderstandingClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4064,9 +4064,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4169,7 +4169,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4198,7 +4198,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Delete analyzer.
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4215,7 +4215,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Delete analyzer.
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4232,7 +4232,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Mark the result of an analysis operation for deletion.
-     * 
+     *
      * @param operationId Operation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4249,7 +4249,7 @@ public final class ContentUnderstandingClientImpl {
 
     /**
      * Mark the result of an analysis operation for deletion.
-     * 
+     *
      * @param operationId Operation identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4267,7 +4267,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get analyzer properties.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4370,7 +4370,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4389,7 +4389,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get analyzer properties.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4492,7 +4492,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4511,7 +4511,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4521,7 +4521,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4540,7 +4540,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4550,7 +4550,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4568,7 +4568,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the status of an analyzer creation operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4687,7 +4687,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param operationId The unique ID of the operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4709,7 +4709,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the status of an analyzer creation operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4828,7 +4828,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param operationId The unique ID of the operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4849,7 +4849,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4913,7 +4913,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param operationId The unique ID of the operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4932,7 +4932,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4996,7 +4996,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param operationId The unique ID of the operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -5015,13 +5015,13 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get a file associated with the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param operationId Operation identifier.
      * @param path File path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5043,13 +5043,13 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get a file associated with the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * @param operationId Operation identifier.
      * @param path File path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5070,7 +5070,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get authorization for copying this analyzer to another location.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5079,9 +5079,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5091,7 +5091,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5115,7 +5115,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get authorization for copying this analyzer to another location.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5124,9 +5124,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5136,7 +5136,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param grantCopyAuthorizationRequest1 The grantCopyAuthorizationRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5158,7 +5158,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5261,7 +5261,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5283,7 +5283,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5386,7 +5386,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5406,7 +5406,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5509,7 +5509,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5529,7 +5529,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5632,7 +5632,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5652,7 +5652,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Update analyzer properties.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5755,9 +5755,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5860,7 +5860,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5883,7 +5883,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Update analyzer properties.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -5986,9 +5986,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6091,7 +6091,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6113,7 +6113,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6125,9 +6125,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6137,7 +6137,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param updateDefaultsRequest The updateDefaultsRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6160,7 +6160,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6172,9 +6172,9 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6184,7 +6184,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param updateDefaultsRequest The updateDefaultsRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6205,7 +6205,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6308,7 +6308,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -6332,7 +6332,7 @@ public final class ContentUnderstandingClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -6435,7 +6435,7 @@ public final class ContentUnderstandingClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

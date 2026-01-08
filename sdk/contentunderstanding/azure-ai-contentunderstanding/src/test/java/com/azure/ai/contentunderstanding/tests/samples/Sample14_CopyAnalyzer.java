@@ -90,12 +90,11 @@ public class Sample14_CopyAnalyzer extends ContentUnderstandingClientTestBase {
             System.out.println("Source analyzer verified: " + verifiedSource.getDescription());
 
             // Step 2: Copy the source analyzer to target
-            // Note: This copies within the same resource. Some services may not support same-resource copy.
+            // Note: This copies within the same resource using the simplified 2-parameter method.
             ContentAnalyzer copiedAnalyzer = null;
             try {
                 SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                    = contentUnderstandingClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, true, null,
-                        null);
+                    = contentUnderstandingClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
                 copiedAnalyzer = copyPoller.getFinalResult();
                 System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
                 // END: com.azure.ai.contentunderstanding.copyAnalyzer

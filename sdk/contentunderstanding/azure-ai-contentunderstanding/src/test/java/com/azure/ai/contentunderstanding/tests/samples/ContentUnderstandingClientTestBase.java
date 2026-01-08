@@ -32,8 +32,12 @@ class ContentUnderstandingClientTestBase extends TestProxyTestBase {
 
     @Override
     protected void beforeTest() {
-        String endpoint
-            = Configuration.getGlobalConfiguration().get("AZURE_CONTENT_UNDERSTANDING_ENDPOINT", "https://localhost");
+        // Try CONTENTUNDERSTANDING_ENDPOINT first (matches .NET SDK convention), then fallback
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        if (endpoint == null || endpoint.isEmpty()) {
+            endpoint = Configuration.getGlobalConfiguration()
+                .get("AZURE_CONTENT_UNDERSTANDING_ENDPOINT", "https://localhost");
+        }
         // Strip trailing slash to prevent double-slash in URLs
         if (endpoint.endsWith("/")) {
             endpoint = endpoint.substring(0, endpoint.length() - 1);

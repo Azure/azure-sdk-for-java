@@ -14,6 +14,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -32,12 +33,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * For same-resource copying, see Sample14_CopyAnalyzer.
  *
  * Required environment variables for cross-resource copying:
- * - SOURCE_RESOURCE_ID: Azure resource ID of the source resource
- * - SOURCE_REGION: Region of the source resource
- * - TARGET_ENDPOINT: Endpoint of the target resource
- * - TARGET_RESOURCE_ID: Azure resource ID of the target resource
- * - TARGET_REGION: Region of the target resource
- * - TARGET_KEY (optional): API key for the target resource
+ * - AZURE_CONTENT_UNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource
+ * - AZURE_CONTENT_UNDERSTANDING_SOURCE_REGION: Region of the source resource
+ * - AZURE_CONTENT_UNDERSTANDING_TARGET_ENDPOINT or CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource
+ * - AZURE_CONTENT_UNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource
+ * - AZURE_CONTENT_UNDERSTANDING_TARGET_REGION: Region of the target resource
+ * - AZURE_CONTENT_UNDERSTANDING_TARGET_KEY (optional): API key for the target resource
  */
 public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
 
@@ -171,22 +172,30 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
      * Demonstrates cross-resource copying with actual resource information.
      *
      * This test requires environment variables to be set:
-     * - SOURCE_RESOURCE_ID
-     * - SOURCE_REGION
-     * - TARGET_ENDPOINT
-     * - TARGET_RESOURCE_ID
-     * - TARGET_REGION
-     * - TARGET_KEY (optional)
+     * - AZURE_CONTENT_UNDERSTANDING_SOURCE_RESOURCE_ID
+     * - AZURE_CONTENT_UNDERSTANDING_SOURCE_REGION
+     * - AZURE_CONTENT_UNDERSTANDING_TARGET_ENDPOINT or CONTENTUNDERSTANDING_TARGET_ENDPOINT
+     * - AZURE_CONTENT_UNDERSTANDING_TARGET_RESOURCE_ID
+     * - AZURE_CONTENT_UNDERSTANDING_TARGET_REGION
+     * - AZURE_CONTENT_UNDERSTANDING_TARGET_KEY (optional)
+     *
+     * This test is marked as LiveOnly because it requires connecting to two separate
+     * Azure resources, which cannot be reliably replayed in PLAYBACK mode.
      */
+    @LiveOnly
     @Test
     public void testCrossResourceCopy() {
-        // Check for required environment variables
-        String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
-        String sourceRegion = System.getenv("SOURCE_REGION");
-        String targetEndpoint = System.getenv("TARGET_ENDPOINT");
-        String targetResourceId = System.getenv("TARGET_RESOURCE_ID");
-        String targetRegion = System.getenv("TARGET_REGION");
-        String targetKey = System.getenv("TARGET_KEY");
+        // Check for required environment variables (matching .NET SDK naming convention)
+        String sourceResourceId = System.getenv("AZURE_CONTENT_UNDERSTANDING_SOURCE_RESOURCE_ID");
+        String sourceRegion = System.getenv("AZURE_CONTENT_UNDERSTANDING_SOURCE_REGION");
+        // Support both naming conventions for target endpoint
+        String targetEndpoint = System.getenv("AZURE_CONTENT_UNDERSTANDING_TARGET_ENDPOINT");
+        if (targetEndpoint == null || targetEndpoint.isEmpty()) {
+            targetEndpoint = System.getenv("CONTENTUNDERSTANDING_TARGET_ENDPOINT");
+        }
+        String targetResourceId = System.getenv("AZURE_CONTENT_UNDERSTANDING_TARGET_RESOURCE_ID");
+        String targetRegion = System.getenv("AZURE_CONTENT_UNDERSTANDING_TARGET_REGION");
+        String targetKey = System.getenv("AZURE_CONTENT_UNDERSTANDING_TARGET_KEY");
 
         if (sourceResourceId == null
             || sourceRegion == null
@@ -194,9 +203,14 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
             || targetResourceId == null
             || targetRegion == null) {
             System.out.println("⚠️ Cross-resource copying requires environment variables:");
-            System.out.println("   SOURCE_RESOURCE_ID, SOURCE_REGION");
-            System.out.println("   TARGET_ENDPOINT, TARGET_RESOURCE_ID, TARGET_REGION");
-            System.out.println("   TARGET_KEY (optional, uses DefaultAzureCredential if not provided)");
+            System.out.println(
+                "   AZURE_CONTENT_UNDERSTANDING_SOURCE_RESOURCE_ID, AZURE_CONTENT_UNDERSTANDING_SOURCE_REGION");
+            System.out
+                .println("   AZURE_CONTENT_UNDERSTANDING_TARGET_ENDPOINT (or CONTENTUNDERSTANDING_TARGET_ENDPOINT)");
+            System.out.println(
+                "   AZURE_CONTENT_UNDERSTANDING_TARGET_RESOURCE_ID, AZURE_CONTENT_UNDERSTANDING_TARGET_REGION");
+            System.out.println(
+                "   AZURE_CONTENT_UNDERSTANDING_TARGET_KEY (optional, uses DefaultAzureCredential if not provided)");
             System.out.println("   Skipping cross-resource copy test.");
             return;
         }
@@ -211,6 +225,19 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
             targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
+        // Verify target client can communicate with target resource
+        System.out.println("\n=== Verifying target client connectivity ===");
+        try {
+            Iterable<ContentAnalyzer> analyzers = targetClient.listAnalyzers();
+            System.out.println("Target resource reachable. Existing analyzers:");
+            for (ContentAnalyzer a : analyzers) {
+                System.out.println("  - " + a.getAnalyzerId());
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: Cannot connect to target resource: " + e.getMessage());
+        }
+        System.out.println("============================================\n");
+
         String sourceAnalyzerId = testResourceNamer.randomName("test_cross_resource_source_", 50);
         String targetAnalyzerId = testResourceNamer.randomName("test_cross_resource_target_", 50);
 
@@ -219,6 +246,11 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
             ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
             sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
             sourceAnalyzer.setDescription("Test analyzer for cross-resource copying");
+
+            // Set required models
+            Map<String, String> models = new HashMap<>();
+            models.put("completion", "gpt-4.1");
+            sourceAnalyzer.setModels(models);
 
             ContentAnalyzer sourceResult
                 = contentUnderstandingClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer).getFinalResult();
@@ -235,16 +267,31 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
 
             System.out.println("Copy authorization granted!");
             System.out.println("  Response status: " + authResponse.getStatusCode());
+            System.out.println("  Auth response body: " + authResponse.getValue().toString());
 
-            // Copy to target resource
+            // Copy to target resource using the typed convenience method
+            System.out.println("\n=== CopyAnalyzer Request Parameters ===");
+            System.out.println("  targetAnalyzerId: " + targetAnalyzerId);
+            System.out.println("  sourceAnalyzerId: " + sourceAnalyzerId);
+            System.out.println("  sourceResourceId: " + sourceResourceId);
+            System.out.println("  sourceRegion: " + sourceRegion);
+            System.out.println("  targetEndpoint: " + targetEndpoint);
+            System.out.println("  allowReplace: true");
+            System.out.println("=======================================\n");
+
+            // First try using raw BinaryData to see the actual request/response
             String copyRequestJson = String.format(
                 "{\"sourceAnalyzerId\":\"%s\",\"sourceAzureResourceId\":\"%s\",\"sourceRegion\":\"%s\"}",
                 sourceAnalyzerId, sourceResourceId, sourceRegion);
-            BinaryData copyRequest = BinaryData.fromString(copyRequestJson);
+            System.out.println("Copy request body: " + copyRequestJson);
 
-            SyncPoller<BinaryData, BinaryData> copyPoller
-                = targetClient.beginCopyAnalyzer(targetAnalyzerId, copyRequest, requestOptions);
-            BinaryData copyResult = copyPoller.getFinalResult();
+            BinaryData copyRequest = BinaryData.fromString(copyRequestJson);
+            RequestOptions copyOptions = new RequestOptions().addQueryParam("allowReplace", "true");
+
+            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                = targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, true, sourceResourceId,
+                    sourceRegion);
+            ContentAnalyzer copyResult = copyPoller.getFinalResult();
 
             System.out.println("Analyzer copied to target resource successfully!");
             System.out.println("  Target analyzer ID: " + targetAnalyzerId);
