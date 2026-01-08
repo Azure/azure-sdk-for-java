@@ -396,10 +396,3 @@ springboot3_ch.qos.logback:logback-classic;1.5.22
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.9
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.1
-
-# Java 7 support
-
-# Jackson dropped support for Java 7 with the release of 2.14.0.
-# Add custom Jackson dependencies for Track 1 libraries using Jackson.
-org.mockito:mockito-junit-jupiter;4.11.0
-com.github.tomakehurst:wiremock-jre8;2.35.2
