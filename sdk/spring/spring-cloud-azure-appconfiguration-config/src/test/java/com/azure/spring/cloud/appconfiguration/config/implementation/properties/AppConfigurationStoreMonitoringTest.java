@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class AppConfigurationStoreMonitoringTest {
@@ -48,6 +47,65 @@ public class AppConfigurationStoreMonitoringTest {
 
         monitoring.setFeatureFlagRefreshInterval(Duration.ofSeconds(1));
 
+        monitoring.validateAndInit();
+    }
+
+    @Test
+    public void refreshAllEnabledWithoutTriggersTest() {
+        // When refreshAll is enabled, triggers are not required
+        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring.setEnabled(true);
+        monitoring.setRefreshAll(true);
+        
+        // Should not throw an exception even with no triggers
+        monitoring.validateAndInit();
+        
+        // Verify refresh interval validation still applies
+        monitoring.setRefreshInterval(Duration.ofSeconds(0));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
+        assertEquals("Minimum refresh interval time is 1 Second.", e.getMessage());
+    }
+
+    @Test
+    public void refreshAllDisabledRequiresTriggersTest() {
+        // When refreshAll is disabled or null, triggers are required
+        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring.setEnabled(true);
+        monitoring.setRefreshAll(false);
+        
+        // Should throw an exception with no triggers
+        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
+        
+        // Setting refreshAll to null should also require triggers
+        monitoring.setRefreshAll(null);
+        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
+    }
+
+    @Test
+    public void refreshAllWithTriggersTest() {
+        // Even when refreshAll is enabled, having triggers should still be valid
+        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring.setEnabled(true);
+        monitoring.setRefreshAll(true);
+        
+        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
+        AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
+        trigger.setKey("sentinel");
+        triggers.add(trigger);
+        monitoring.setTriggers(triggers);
+        
+        // Should not throw an exception
+        monitoring.validateAndInit();
+    }
+
+    @Test
+    public void monitoringDisabledWithRefreshAllTest() {
+        // When monitoring is disabled, refreshAll setting should not matter
+        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
+        monitoring.setEnabled(false);
+        monitoring.setRefreshAll(true);
+        
+        // Should not throw an exception even with no triggers
         monitoring.validateAndInit();
     }
 

@@ -2,15 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.UnknownHostException;
@@ -20,10 +11,18 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -45,6 +44,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.identity.CredentialUnavailableException;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 
 import reactor.core.publisher.Mono;
 
@@ -347,6 +347,69 @@ public class AppConfigurationReplicaClientTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void collectionMonitoringTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
+
+        ConfigurationSetting setting1 = new ConfigurationSetting().setKey("key1").setLabel("label1");
+        ConfigurationSetting setting2 = new ConfigurationSetting().setKey("key2").setLabel("label2");
+        List<ConfigurationSetting> configurations = List.of(setting1, setting2);
+
+        PagedFlux<ConfigurationSetting> pagedFlux = new PagedFlux<>(supplierMock);
+        HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.ETAG, "test-etag-value");
+        PagedResponse<ConfigurationSetting> pagedResponse = new PagedResponseBase<Object, ConfigurationSetting>(
+            null, 200, headers, configurations, null, null);
+
+        when(supplierMock.get()).thenReturn(Mono.just(pagedResponse));
+        when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
+            .thenReturn(new PagedIterable<>(pagedFlux));
+
+        SettingSelector selector = new SettingSelector().setKeyFilter("*");
+        CollectionMonitoring result = client.collectionMonitoring(selector, contextMock);
+
+        assertEquals(2, result.getConfigurations().size());
+        assertEquals("key1", result.getConfigurations().get(0).getKey());
+        assertEquals("key2", result.getConfigurations().get(1).getKey());
+        assertEquals(1, result.getSettingSelector().getMatchConditions().size());
+        assertEquals("test-etag-value", result.getSettingSelector().getMatchConditions().get(0).getIfNoneMatch());
+        assertEquals(0, client.getFailedAttempts());
+    }
+
+    @Test
+    public void collectionMonitoringErrorTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
+
+        when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
+        when(exceptionMock.getResponse()).thenReturn(responseMock);
+        when(responseMock.getStatusCode()).thenReturn(429);
+
+        assertThrows(AppConfigurationStatusException.class,
+            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+
+        when(responseMock.getStatusCode()).thenReturn(408);
+        assertThrows(AppConfigurationStatusException.class,
+            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+
+        when(responseMock.getStatusCode()).thenReturn(500);
+        assertThrows(AppConfigurationStatusException.class,
+            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+
+        when(responseMock.getStatusCode()).thenReturn(499);
+        assertThrows(HttpResponseException.class,
+            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+    }
+
+    @Test
+    public void collectionMonitoringUncheckedIOExceptionTest() {
+        AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
+
+        when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
+            .thenThrow(new UncheckedIOException(new IOException("Network error")));
+
+        assertThrows(AppConfigurationStatusException.class,
+            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
     }
 
 }
