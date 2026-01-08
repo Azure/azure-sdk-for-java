@@ -602,9 +602,6 @@ public class AppConfigurationRefreshUtilTest {
         
         monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
-        FeatureFlagStore disabledFeatureStore = new FeatureFlagStore();
-        disabledFeatureStore.setEnabled(false);
-        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(disabledFeatureStore);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
@@ -720,9 +717,6 @@ public class AppConfigurationRefreshUtilTest {
         
         monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
-        FeatureFlagStore disabledFeatureStore = new FeatureFlagStore();
-        disabledFeatureStore.setEnabled(false);
-        when(connectionManagerMock.getFeatureFlagStore()).thenReturn(disabledFeatureStore);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
