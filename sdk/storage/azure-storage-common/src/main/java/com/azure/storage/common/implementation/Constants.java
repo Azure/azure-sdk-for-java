@@ -420,6 +420,11 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
+         * The SAS signed delegated user tenant id parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID = "skdutid";
+
+        /**
          * The SAS preauthorized agent object id parameter for user delegation SAS.
          */
         public static final String SAS_PREAUTHORIZED_AGENT_OBJECT_ID = "saoid";
