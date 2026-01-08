@@ -994,3 +994,6 @@
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json        @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
+
+# Add Johnathan Walker as code owner for Event Hubs SDK
+/sdk/messaging/azure-messaging-eventhubs/* @j7nw4r
