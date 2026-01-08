@@ -62,7 +62,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -76,7 +76,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public BatchServiceVersion getServiceVersion() {
@@ -90,7 +90,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -104,7 +104,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -113,7 +113,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     *
+     * 
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
      * @param serviceVersion Service version.
      */
@@ -124,7 +124,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
      * @param serviceVersion Service version.
@@ -135,7 +135,7 @@ public final class BatchClientImpl {
 
     /**
      * Initializes an instance of BatchClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Batch account endpoint (for example: https://batchaccount.eastus2.batch.azure.com).
@@ -203,16 +203,16 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createPoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
+            Context context);
 
         @Get("/pools")
         @ExpectedResponses({ 200 })
@@ -233,28 +233,28 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deletePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/pools/{poolId}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deletePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Boolean>> poolExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Head("/pools/{poolId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Boolean> poolExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}")
         @ExpectedResponses({ 200 })
@@ -275,39 +275,37 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updatePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/pools/{poolId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updatePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/disableautoscale")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enablePoolAutoScale(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -316,7 +314,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enablePoolAutoScaleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -343,7 +341,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> resizePool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -352,7 +350,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> resizePoolSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -361,39 +359,37 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> stopPoolResize(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/stopresize")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> stopPoolResizeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replacePoolProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/updateproperties")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replacePoolPropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData pool, RequestOptions requestOptions,
-            Context context);
+            @PathParam("poolId") String poolId, @BodyParam("application/json; odata=minimalmetadata") BinaryData pool,
+            RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/removenodes")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> removeNodes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -402,7 +398,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> removeNodesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("poolId") String poolId, @HeaderParam("Accept") String accept,
+            @PathParam("poolId") String poolId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -439,14 +435,14 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -467,43 +463,39 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Patch("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Put("/jobs/{jobId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/disable")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @PathParam("jobId") String jobId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -512,7 +504,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
+            @PathParam("jobId") String jobId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -521,44 +513,44 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/enable")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/terminate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Post("/jobs")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData job, RequestOptions requestOptions,
+            Context context);
 
         @Get("/jobs")
         @ExpectedResponses({ 200 })
@@ -616,113 +608,33 @@ public final class BatchClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Post("/certificates")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<Void>> createCertificate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
-            Context context);
-
-        @Post("/certificates")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<Void> createCertificateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData certificate, RequestOptions requestOptions,
-            Context context);
-
-        @Get("/certificates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<BinaryData>> listCertificates(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/certificates")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<BinaryData> listCertificatesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<Void>> cancelCertificateDeletion(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
-        @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<Void> cancelCertificateDeletionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<Void>> deleteCertificate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Delete("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<Void> deleteCertificateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<BinaryData>> getCertificate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
-        @Get("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<BinaryData> getCertificateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("thumbprintAlgorithm") String thumbprintAlgorithm,
-            @PathParam("thumbprint") String thumbprint, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
-
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Boolean>> jobScheduleExists(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Head("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200, 404 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Boolean> jobScheduleExistsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/jobschedules/{jobScheduleId}")
         @ExpectedResponses({ 200 })
@@ -743,7 +655,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> updateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -752,7 +664,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> updateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -761,7 +673,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -770,7 +682,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobScheduleId") String jobScheduleId, @HeaderParam("Accept") String accept,
+            @PathParam("jobScheduleId") String jobScheduleId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -779,49 +691,48 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/disable")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/enable")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules/{jobScheduleId}/terminate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobScheduleId") String jobScheduleId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobschedules")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createJobSchedule(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -830,7 +741,6 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createJobScheduleSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @HeaderParam("Accept") String accept,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule, RequestOptions requestOptions,
             Context context);
 
@@ -853,18 +763,16 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> createTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData task,
+            RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> createTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
-            Context context);
+            @PathParam("jobId") String jobId, @BodyParam("application/json; odata=minimalmetadata") BinaryData task,
+            RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks")
         @ExpectedResponses({ 200 })
@@ -903,16 +811,14 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}")
         @ExpectedResponses({ 200 })
@@ -935,7 +841,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> replaceTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -944,7 +850,7 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> replaceTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
-            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept,
+            @PathParam("jobId") String jobId, @PathParam("taskId") String taskId,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData task, RequestOptions requestOptions,
             Context context);
 
@@ -969,48 +875,44 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> terminateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/terminate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> terminateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> reactivateTask(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Post("/jobs/{jobId}/tasks/{taskId}/reactivate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> reactivateTaskSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("taskId") String taskId, RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteTaskFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteTaskFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1033,16 +935,16 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> getTaskFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Head("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> getTaskFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("taskId") String taskId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Get("/jobs/{jobId}/tasks/{taskId}/files")
         @ExpectedResponses({ 200 })
@@ -1066,8 +968,8 @@ public final class BatchClientImpl {
         Mono<Response<Void>> createNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData user, RequestOptions requestOptions,
+            Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/users")
         @ExpectedResponses({ 201 })
@@ -1075,24 +977,24 @@ public final class BatchClientImpl {
         Response<Void> createNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json; odata=minimalmetadata") BinaryData user,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData user, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("userName") String userName, RequestOptions requestOptions,
+            Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
         @ExpectedResponses({ 200 })
@@ -1100,7 +1002,7 @@ public final class BatchClientImpl {
         Mono<Response<Void>> replaceNodeUser(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
+            @PathParam("userName") String userName,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -1110,7 +1012,7 @@ public final class BatchClientImpl {
         Response<Void> replaceNodeUserSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
-            @PathParam("userName") String userName, @HeaderParam("Accept") String accept,
+            @PathParam("userName") String userName,
             @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
             Context context);
 
@@ -1135,96 +1037,84 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> rebootNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reboot")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> rebootNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> startNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/start")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> startNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> reimageNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/reimage")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> reimageNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deallocateNode(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/deallocate")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deallocateNodeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> disableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> disableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> enableNodeScheduling(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> enableNodeSchedulingSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("nodeId") String nodeId, RequestOptions requestOptions, Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
         @ExpectedResponses({ 200 })
@@ -1313,16 +1203,16 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> deleteNodeFile(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> deleteNodeFileSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
@@ -1345,16 +1235,16 @@ public final class BatchClientImpl {
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<Void>> getNodeFileProperties(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
         Response<Void> getNodeFilePropertiesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
-            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @PathParam("nodeId") String nodeId, @PathParam("filePath") String filePath, RequestOptions requestOptions,
+            Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}/files")
         @ExpectedResponses({ 200 })
@@ -1487,20 +1377,6 @@ public final class BatchClientImpl {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Mono<Response<BinaryData>> listCertificatesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
-        Response<BinaryData> listCertificatesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(BatchErrorException.class)
         Mono<Response<BinaryData>> listJobSchedulesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
@@ -1599,7 +1475,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -1618,7 +1494,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1630,7 +1506,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse} on
@@ -1648,7 +1524,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -1667,7 +1543,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1679,7 +1555,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
@@ -1716,7 +1592,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -1735,7 +1611,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1747,7 +1623,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account along with {@link PagedResponse}.
@@ -1763,7 +1639,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about applications and versions that are not yet
@@ -1782,7 +1658,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1794,7 +1670,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
@@ -1831,7 +1707,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Application.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about Applications and versions that are not yet
@@ -1847,7 +1723,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1859,12 +1735,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -1879,7 +1755,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Application.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference. For
      * administrator information about Applications and versions that are not yet
@@ -1895,7 +1771,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1907,12 +1783,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
-     *
+     * 
      * This operation returns only Applications and versions that are available for
      * use on Compute Nodes; that is, that can be used in an Package reference along with {@link Response}.
      */
@@ -1926,7 +1802,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -1957,7 +1833,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1969,7 +1845,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse} on successful
@@ -1988,7 +1864,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2019,7 +1895,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2031,7 +1907,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
@@ -2068,7 +1944,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2099,7 +1975,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2111,7 +1987,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse}.
@@ -2128,7 +2004,7 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * If you do not specify a $filter clause including a poolId, the response
      * includes all Pools that existed in the Account in the time range of the
      * returned aggregation intervals. If you do not specify a $filter clause
@@ -2159,7 +2035,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2171,7 +2047,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with
@@ -2208,7 +2084,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Pool to the specified Account.
-     *
+     * 
      * When naming Pools, avoid including sensitive information such as user names or
      * secret project names. This information may appear in telemetry logs accessible
      * to Microsoft Support engineers.
@@ -2222,7 +2098,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2249,6 +2125,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -2270,6 +2155,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -2302,16 +2194,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -2323,9 +2218,6 @@ public final class BatchClientImpl {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -2358,8 +2250,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -2405,17 +2306,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -2424,6 +2314,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -2479,7 +2370,6 @@ public final class BatchClientImpl {
      *             }
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -2501,7 +2391,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -2510,14 +2400,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createPoolWithResponseAsync(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createPool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, pool, requestOptions, context));
     }
 
     /**
      * Creates a Pool to the specified Account.
-     *
+     * 
      * When naming Pools, avoid including sensitive information such as user names or
      * secret project names. This information may appear in telemetry logs accessible
      * to Microsoft Support engineers.
@@ -2531,7 +2420,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2558,6 +2447,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -2579,6 +2477,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -2611,16 +2516,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -2632,9 +2540,6 @@ public final class BatchClientImpl {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -2667,8 +2572,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -2714,17 +2628,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -2733,6 +2636,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -2788,7 +2692,6 @@ public final class BatchClientImpl {
      *             }
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -2810,7 +2713,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -2819,13 +2722,12 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createPoolWithResponse(BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return service.createPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            pool, requestOptions, Context.NONE);
+        return service.createPoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, pool,
+            requestOptions, Context.NONE);
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -2846,21 +2748,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -2881,6 +2783,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -2902,6 +2813,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -2934,16 +2852,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -2967,11 +2888,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -3015,8 +2933,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -3062,17 +2989,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3081,6 +2997,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -3171,8 +3088,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -3194,7 +3109,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse} on successful completion
@@ -3211,7 +3126,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3232,21 +3147,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -3267,6 +3182,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -3288,6 +3212,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -3320,16 +3251,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -3353,11 +3287,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -3401,8 +3332,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -3448,17 +3388,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3467,6 +3396,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -3557,8 +3487,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -3580,7 +3508,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedFlux}.
@@ -3615,7 +3543,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -3636,21 +3564,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -3671,6 +3599,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -3692,6 +3629,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -3724,16 +3668,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -3757,11 +3704,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -3805,8 +3749,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -3852,17 +3805,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -3871,6 +3813,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -3961,8 +3904,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -3984,7 +3925,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account along with {@link PagedResponse}.
@@ -3999,7 +3940,7 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -4020,21 +3961,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -4055,6 +3996,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -4076,6 +4026,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -4108,16 +4065,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -4141,11 +4101,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -4189,8 +4146,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -4236,17 +4202,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4255,6 +4210,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -4345,8 +4301,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -4368,7 +4322,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
@@ -4404,7 +4358,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Pool from the specified Account.
-     *
+     * 
      * When you request that a Pool be deleted, the following actions occur: the Pool
      * state is set to deleting; any ongoing resize operation on the Pool are stopped;
      * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
@@ -4448,7 +4402,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -4456,14 +4410,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePoolWithResponseAsync(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deletePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
     }
 
     /**
      * Deletes a Pool from the specified Account.
-     *
+     * 
      * When you request that a Pool be deleted, the following actions occur: the Pool
      * state is set to deleting; any ongoing resize operation on the Pool are stopped;
      * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
@@ -4507,7 +4460,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -4515,9 +4468,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deletePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
-            requestOptions, Context.NONE);
+        return service.deletePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4554,13 +4506,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -4568,9 +4520,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> poolExistsWithResponseAsync(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.poolExists(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
     }
 
     /**
@@ -4607,13 +4558,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -4621,9 +4572,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> poolExistsWithResponse(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.poolExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
-            requestOptions, Context.NONE);
+        return service.poolExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -4664,21 +4614,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -4699,6 +4649,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -4720,6 +4679,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -4752,16 +4718,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -4785,11 +4754,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -4833,8 +4799,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -4880,17 +4855,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -4899,6 +4863,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -4989,8 +4954,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -5012,7 +4975,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -5064,21 +5027,21 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -5099,6 +5062,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -5120,6 +5092,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -5152,16 +5131,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -5185,11 +5167,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -5233,8 +5212,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -5280,17 +5268,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5299,6 +5276,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -5389,8 +5367,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -5412,7 +5388,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -5427,7 +5403,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Pool.
-     *
+     * 
      * This only replaces the Pool properties specified in the request. For example,
      * if the Pool has a StartTask associated with it, and a request does not specify
      * a StartTask element, then the Pool keeps the existing StartTask.
@@ -5463,7 +5439,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5518,17 +5494,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5561,6 +5526,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -5575,6 +5549,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -5607,16 +5588,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -5627,9 +5611,9 @@ public final class BatchClientImpl {
      *             id: String (Required)
      *         }
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     networkConfiguration (Optional): {
@@ -5658,14 +5642,20 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
      *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
+     *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
-     *     }
-     *     resourceTags (Optional): {
-     *         String: String (Required)
      *     }
      *     userAccounts (Optional): [
      *          (Optional){
@@ -5735,7 +5725,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5746,14 +5736,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updatePoolWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updatePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, pool, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Pool.
-     *
+     * 
      * This only replaces the Pool properties specified in the request. For example,
      * if the Pool has a StartTask associated with it, and a request does not specify
      * a StartTask element, then the Pool keeps the existing StartTask.
@@ -5789,7 +5778,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5844,17 +5833,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -5887,6 +5865,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -5901,6 +5888,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -5933,16 +5927,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -5953,9 +5950,9 @@ public final class BatchClientImpl {
      *             id: String (Required)
      *         }
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     networkConfiguration (Optional): {
@@ -5984,14 +5981,20 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
      *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
+     *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
-     *     }
-     *     resourceTags (Optional): {
-     *         String: String (Required)
      *     }
      *     userAccounts (Optional): [
      *          (Optional){
@@ -6061,7 +6064,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6071,9 +6074,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.updatePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, pool, requestOptions, Context.NONE);
+            pool, requestOptions, Context.NONE);
     }
 
     /**
@@ -6087,7 +6089,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -6095,9 +6097,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disablePoolAutoScaleWithResponseAsync(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
     }
 
     /**
@@ -6111,7 +6112,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -6119,14 +6120,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disablePoolAutoScaleWithResponse(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.disablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
      * Enables automatic scaling for a Pool.
-     *
+     * 
      * You cannot enable automatic scaling on a Pool if a resize operation is in
      * progress on the Pool. If automatic scaling of the Pool is currently disabled,
      * you must specify a valid autoscale formula as part of the request. If automatic
@@ -6165,7 +6165,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6174,7 +6174,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6185,14 +6185,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> enablePoolAutoScaleWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enablePoolAutoScale(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, parameters, requestOptions, context));
     }
 
     /**
      * Enables automatic scaling for a Pool.
-     *
+     * 
      * You cannot enable automatic scaling on a Pool if a resize operation is in
      * progress on the Pool. If automatic scaling of the Pool is currently disabled,
      * you must specify a valid autoscale formula as part of the request. If automatic
@@ -6231,7 +6230,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6240,7 +6239,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6251,14 +6250,13 @@ public final class BatchClientImpl {
     public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.enablePoolAutoScaleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, parameters, requestOptions, Context.NONE);
+            poolId, parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
+     * 
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool. The Pool must have auto
      * scaling enabled in order to evaluate a formula.
@@ -6272,7 +6270,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6280,9 +6278,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6301,13 +6299,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
+     * 
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -6323,7 +6321,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
+     * 
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool. The Pool must have auto
      * scaling enabled in order to evaluate a formula.
@@ -6337,7 +6335,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6345,9 +6343,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6366,13 +6364,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
+     * 
      * This API is primarily for validating an autoscale formula, as it simply returns
      * the result without applying the formula to the Pool along with {@link Response}.
      */
@@ -6387,7 +6385,7 @@ public final class BatchClientImpl {
 
     /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
+     * 
      * You can only resize a Pool when its allocation state is steady. If the Pool is
      * already resizing, the request fails with status code 409. When you resize a
      * Pool, the Pool's allocation state changes from steady to resizing. You cannot
@@ -6427,7 +6425,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6438,7 +6436,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6449,14 +6447,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> resizePoolWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.resizePool(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, parameters, requestOptions, context));
     }
 
     /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
+     * 
      * You can only resize a Pool when its allocation state is steady. If the Pool is
      * already resizing, the request fails with status code 409. When you resize a
      * Pool, the Pool's allocation state changes from steady to resizing. You cannot
@@ -6496,7 +6493,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6507,7 +6504,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6517,14 +6514,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.resizePoolSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, parameters, requestOptions, Context.NONE);
+            parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Stops an ongoing resize operation on the Pool.
-     *
+     * 
      * This does not restore the Pool to its previous state before the resize
      * operation: it only stops any further changes being made, and the Pool maintains
      * its current state. After stopping, the Pool stabilizes at the number of Compute
@@ -6563,7 +6559,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -6571,14 +6567,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopPoolResizeWithResponseAsync(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.stopPoolResize(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, requestOptions, context));
     }
 
     /**
      * Stops an ongoing resize operation on the Pool.
-     *
+     * 
      * This does not restore the Pool to its previous state before the resize
      * operation: it only stops any further changes being made, and the Pool maintains
      * its current state. After stopping, the Pool stabilizes at the number of Compute
@@ -6617,7 +6612,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -6625,14 +6620,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.stopPoolResizeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, accept,
+        return service.stopPoolResizeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
             requestOptions, Context.NONE);
     }
 
     /**
      * Updates the properties of the specified Pool.
-     *
+     * 
      * This fully replaces all the updatable properties of the Pool. For example, if
      * the Pool has a StartTask associated with it and if StartTask is not specified
      * with this request, then the Batch service will remove the existing StartTask.
@@ -6646,7 +6640,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6698,17 +6692,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -6721,11 +6704,10 @@ public final class BatchClientImpl {
      *             value: String (Required)
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6736,14 +6718,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replacePoolPropertiesWithResponseAsync(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replacePoolProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, pool, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, pool, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Pool.
-     *
+     * 
      * This fully replaces all the updatable properties of the Pool. For example, if
      * the Pool has a StartTask associated with it and if StartTask is not specified
      * with this request, then the Batch service will remove the existing StartTask.
@@ -6757,7 +6738,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6809,17 +6790,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -6832,11 +6802,10 @@ public final class BatchClientImpl {
      *             value: String (Required)
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6847,14 +6816,13 @@ public final class BatchClientImpl {
     public Response<Void> replacePoolPropertiesWithResponse(String poolId, BinaryData pool,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.replacePoolPropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, accept, pool, requestOptions, Context.NONE);
+            poolId, pool, requestOptions, Context.NONE);
     }
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     *
+     * 
      * This operation can only run when the allocation state of the Pool is steady.
      * When this operation runs, the allocation state changes from steady to resizing.
      * Each request may remove up to 100 nodes.
@@ -6890,7 +6858,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6902,7 +6870,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6913,14 +6881,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> removeNodesWithResponseAsync(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeNodes(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, parameters, requestOptions, context));
     }
 
     /**
      * Removes Compute Nodes from the specified Pool.
-     *
+     * 
      * This operation can only run when the allocation state of the Pool is steady.
      * When this operation runs, the allocation state changes from steady to resizing.
      * Each request may remove up to 100 nodes.
@@ -6956,7 +6923,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6968,7 +6935,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6978,9 +6945,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.removeNodesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, poolId,
-            accept, parameters, requestOptions, Context.NONE);
+            parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -7001,7 +6967,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7025,7 +6991,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse} on successful
@@ -7059,7 +7025,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7083,7 +7049,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with {@link PagedFlux}.
@@ -7135,7 +7101,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7159,7 +7125,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images along with {@link PagedResponse}.
@@ -7191,7 +7157,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7215,7 +7181,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
@@ -7270,7 +7236,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7298,7 +7264,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse} on successful
@@ -7334,7 +7300,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7362,7 +7328,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link PagedFlux}.
@@ -7416,7 +7382,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7444,7 +7410,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
@@ -7478,7 +7444,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7506,7 +7472,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
@@ -7543,7 +7509,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Job.
-     *
+     * 
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
@@ -7585,7 +7551,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -7593,14 +7559,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
     }
 
     /**
      * Deletes a Job.
-     *
+     * 
      * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
      * statistics. This also overrides the retention period for Task data; that is, if
      * the Job contains Tasks which are still retained on Compute Nodes, the Batch
@@ -7642,7 +7607,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -7650,9 +7615,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions, Context.NONE);
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -7693,19 +7657,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -7865,6 +7829,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -7879,6 +7852,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -7911,16 +7891,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -7933,10 +7916,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -7969,8 +7952,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -7988,17 +7980,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -8055,7 +8036,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -8122,7 +8102,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -8173,19 +8153,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -8345,6 +8325,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -8359,6 +8348,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -8391,16 +8387,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -8413,10 +8412,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -8449,8 +8448,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -8468,17 +8476,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -8535,7 +8532,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -8602,7 +8598,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -8617,7 +8613,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job.
-     *
+     * 
      * This replaces only the Job properties specified in the request. For example, if
      * the Job has constraints, and a request does not specify the constraints
      * element, then the Job keeps the existing constraints.
@@ -8653,7 +8649,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8693,6 +8689,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -8714,6 +8719,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -8746,16 +8758,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -8768,10 +8783,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -8804,8 +8819,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -8851,17 +8875,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -8921,7 +8934,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -8954,7 +8966,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8965,14 +8977,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updateJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, job, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Job.
-     *
+     * 
      * This replaces only the Job properties specified in the request. For example, if
      * the Job has constraints, and a request does not specify the constraints
      * element, then the Job keeps the existing constraints.
@@ -9008,7 +9019,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9048,6 +9059,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -9069,6 +9089,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -9101,16 +9128,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -9123,10 +9153,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -9159,8 +9189,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -9206,17 +9245,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -9276,7 +9304,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -9309,7 +9336,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -9319,14 +9346,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return service.updateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, job, requestOptions, Context.NONE);
+        return service.updateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId, job,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Updates the properties of the specified Job.
-     *
+     * 
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -9362,19 +9388,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -9534,6 +9560,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -9548,6 +9583,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -9580,16 +9622,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -9602,10 +9647,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -9638,8 +9683,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -9657,17 +9711,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -9724,7 +9767,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -9791,7 +9833,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -9802,14 +9844,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceJobWithResponseAsync(String jobId, BinaryData job,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, job, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Job.
-     *
+     * 
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -9845,19 +9886,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -10017,6 +10058,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -10031,6 +10081,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -10063,16 +10120,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -10085,10 +10145,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -10121,8 +10181,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -10140,17 +10209,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -10207,7 +10265,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -10274,7 +10331,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10284,14 +10341,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.replaceJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, job, requestOptions, Context.NONE);
+            job, requestOptions, Context.NONE);
     }
 
     /**
      * Disables the specified Job, preventing new Tasks from running.
-     *
+     * 
      * The Batch Service immediately moves the Job to the disabling state. Batch then
      * uses the disableTasks parameter to determine what to do with the currently
      * running Tasks of the Job. The Job remains in the disabling state until the
@@ -10332,7 +10388,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10340,7 +10396,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10351,14 +10407,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> disableJobWithResponseAsync(String jobId, BinaryData parameters,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, parameters, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, parameters, requestOptions, context));
     }
 
     /**
      * Disables the specified Job, preventing new Tasks from running.
-     *
+     * 
      * The Batch Service immediately moves the Job to the disabling state. Batch then
      * uses the disableTasks parameter to determine what to do with the currently
      * running Tasks of the Job. The Job remains in the disabling state until the
@@ -10399,7 +10454,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10407,7 +10462,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10417,14 +10472,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.disableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, parameters, requestOptions, Context.NONE);
+            parameters, requestOptions, Context.NONE);
     }
 
     /**
      * Enables the specified Job, allowing new Tasks to run.
-     *
+     * 
      * When you call this API, the Batch service sets a disabled Job to the enabling
      * state. After the this operation is completed, the Job moves to the active
      * state, and scheduling of new Tasks under the Job resumes. The Batch service
@@ -10462,7 +10516,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -10470,14 +10524,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, requestOptions, context));
     }
 
     /**
      * Enables the specified Job, allowing new Tasks to run.
-     *
+     * 
      * When you call this API, the Batch service sets a disabled Job to the enabling
      * state. After the this operation is completed, the Job moves to the active
      * state, and scheduling of new Tasks under the Job resumes. The Batch service
@@ -10515,7 +10568,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -10523,14 +10576,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.enableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions, Context.NONE);
+        return service.enableJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Terminates the specified Job, marking it as completed.
-     *
+     * 
      * When a Terminate Job request is received, the Batch service sets the Job to the
      * terminating state. The Batch service then terminates any running Tasks
      * associated with the Job and runs any required Job release Tasks. Then the Job
@@ -10573,7 +10625,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10581,7 +10633,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -10589,7 +10641,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -10597,12 +10648,12 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.terminateJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), jobId, requestOptionsLocal, context));
     }
 
     /**
      * Terminates the specified Job, marking it as completed.
-     *
+     * 
      * When a Terminate Job request is received, the Batch service sets the Job to the
      * terminating state. The Batch service then terminates any running Tasks
      * associated with the Job and runs any required Job release Tasks. Then the Job
@@ -10645,7 +10696,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10653,7 +10704,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -10661,20 +10712,19 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.terminateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, accept,
+        return service.terminateJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
             requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Creates a Job to the specified Account.
-     *
+     * 
      * The Batch service supports two ways to control the work done as part of a Job.
      * In the first approach, the user specifies a Job Manager Task. The Batch service
      * launches this Task when it is ready to start the Job. The Job Manager Task
@@ -10694,7 +10744,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10858,6 +10908,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -10872,6 +10931,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -10904,16 +10970,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -10926,10 +10995,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -10962,8 +11031,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -10981,17 +11059,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11048,7 +11115,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -11082,7 +11148,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -11091,14 +11157,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createJobWithResponseAsync(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, job, requestOptions, context));
     }
 
     /**
      * Creates a Job to the specified Account.
-     *
+     * 
      * The Batch service supports two ways to control the work done as part of a Job.
      * In the first approach, the user specifies a Job Manager Task. The Batch service
      * launches this Task when it is ready to start the Job. The Job Manager Task
@@ -11118,7 +11183,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -11282,6 +11347,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -11296,6 +11370,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -11328,16 +11409,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -11350,10 +11434,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -11386,8 +11470,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -11405,17 +11498,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11472,7 +11554,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -11506,7 +11587,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -11515,9 +11596,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobWithResponse(BinaryData job, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            job, requestOptions, Context.NONE);
+        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, job,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -11542,19 +11622,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -11714,6 +11794,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -11728,6 +11817,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -11760,16 +11856,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -11782,10 +11881,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -11818,8 +11917,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -11837,17 +11945,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -11904,7 +12001,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -11971,7 +12067,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse} on successful completion of
@@ -12009,19 +12105,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -12181,6 +12277,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -12195,6 +12300,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -12227,16 +12339,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -12249,10 +12364,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -12285,8 +12400,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -12304,17 +12428,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12371,7 +12484,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -12438,7 +12550,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedFlux}.
@@ -12494,19 +12606,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -12666,6 +12778,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -12680,6 +12801,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -12712,16 +12840,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -12734,10 +12865,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -12770,8 +12901,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -12789,17 +12929,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -12856,7 +12985,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -12923,7 +13051,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account along with {@link PagedResponse}.
@@ -12959,19 +13087,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -13131,6 +13259,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -13145,6 +13282,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -13177,16 +13321,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -13199,10 +13346,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -13235,8 +13382,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -13254,17 +13410,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13321,7 +13466,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -13388,7 +13532,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
@@ -13444,19 +13588,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -13616,6 +13760,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -13630,6 +13783,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -13662,16 +13822,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -13684,10 +13847,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -13720,8 +13883,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -13739,17 +13911,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -13806,7 +13967,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -13873,7 +14033,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -13913,19 +14073,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -14085,6 +14245,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -14099,6 +14268,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -14131,16 +14307,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -14153,10 +14332,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -14189,8 +14368,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -14208,17 +14396,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14275,7 +14452,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -14342,7 +14518,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -14399,19 +14575,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -14571,6 +14747,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -14585,6 +14770,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -14617,16 +14809,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -14639,10 +14834,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -14675,8 +14870,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -14694,17 +14898,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -14761,7 +14954,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -14828,7 +15020,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -14866,19 +15058,19 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -15038,6 +15230,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -15052,6 +15253,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -15084,16 +15292,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -15106,10 +15317,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -15142,8 +15353,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -15161,17 +15381,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -15228,7 +15437,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -15295,7 +15503,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15333,7 +15541,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -15358,7 +15566,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15406,7 +15614,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15427,7 +15635,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -15452,7 +15660,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15500,7 +15708,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15540,7 +15748,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -15565,7 +15773,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15613,7 +15821,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15633,7 +15841,7 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * This API returns the Job Preparation and Job Release Task status on all Compute
      * Nodes that have run the Job Preparation or Job Release Task. This includes
      * Compute Nodes which have since been removed from the Pool. If this API is
@@ -15658,7 +15866,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15706,7 +15914,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15745,7 +15953,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the Task counts for the specified Job.
-     *
+     * 
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
      * state are counted as running. Note that the numbers returned may not always be
@@ -15760,7 +15968,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15781,12 +15989,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
-     *
+     * 
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -15800,7 +16008,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the Task counts for the specified Job.
-     *
+     * 
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
      * state are counted as running. Note that the numbers returned may not always be
@@ -15815,7 +16023,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -15836,12 +16044,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
-     *
+     * 
      * Task counts provide a count of the Tasks by active, running or completed Task
      * state, and a count of Tasks which succeeded or failed along with {@link Response}.
      */
@@ -15853,660 +16061,6 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Creates a Certificate to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param certificate The Certificate to be created.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createCertificateWithResponseAsync(BinaryData certificate,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createCertificate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, certificate, requestOptions, context));
-    }
-
-    /**
-     * Creates a Certificate to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param certificate The Certificate to be created.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
-        final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return service.createCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, certificate, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listCertificatesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listCertificates(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listCertificatesAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>((pageSize) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            if (pageSize != null) {
-                requestOptionsLocal.addRequestCallback(requestLocal -> {
-                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
-                    requestLocal.setUrl(urlBuilder.toString());
-                });
-            }
-            return listCertificatesSinglePageAsync(requestOptionsLocal);
-        }, (nextLink, pageSize) -> {
-            RequestOptions requestOptionsLocal = new RequestOptions();
-            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-            if (pageSize != null) {
-                requestOptionsLocal.addRequestCallback(requestLocal -> {
-                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
-                    requestLocal.setUrl(urlBuilder.toString());
-                });
-            }
-            return listCertificatesNextSinglePageAsync(nextLink, requestOptionsLocal);
-        });
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listCertificatesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.listCertificatesSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCertificates(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>((pageSize) -> {
-            RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
-            if (pageSize != null) {
-                requestOptionsLocal.addRequestCallback(requestLocal -> {
-                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
-                    requestLocal.setUrl(urlBuilder.toString());
-                });
-            }
-            return listCertificatesSinglePage(requestOptionsLocal);
-        }, (nextLink, pageSize) -> {
-            RequestOptions requestOptionsLocal = new RequestOptions();
-            requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
-            if (pageSize != null) {
-                requestOptionsLocal.addRequestCallback(requestLocal -> {
-                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
-                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
-                    requestLocal.setUrl(urlBuilder.toString());
-                });
-            }
-            return listCertificatesNextSinglePage(nextLink, requestOptionsLocal);
-        });
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelCertificateDeletionWithResponseAsync(String thumbprintAlgorithm,
-        String thumbprint, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelCertificateDeletion(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.cancelCertificateDeletionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCertificateWithResponseAsync(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteCertificate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return information about the specified Certificate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificateWithResponseAsync(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificate(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), thumbprintAlgorithm, thumbprint, accept, requestOptions, context));
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return information about the specified Certificate along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getCertificateSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            thumbprintAlgorithm, thumbprint, accept, requestOptions, Context.NONE);
-    }
-
-    /**
      * Checks the specified Job Schedule exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -16540,13 +16094,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16555,9 +16109,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> jobScheduleExistsWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.jobScheduleExists(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
     }
 
     /**
@@ -16594,13 +16147,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16608,14 +16161,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.jobScheduleExistsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
      * Deletes a Job Schedule from the specified Account.
-     *
+     * 
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
      * the Compute Nodes are also deleted (the retention period is ignored). The Job
@@ -16654,7 +16206,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16663,14 +16215,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
     }
 
     /**
      * Deletes a Job Schedule from the specified Account.
-     *
+     * 
      * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
      * schedule. When Tasks are deleted, all the files in their working directories on
      * the Compute Nodes are also deleted (the retention period is ignored). The Job
@@ -16709,7 +16260,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16717,9 +16268,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -16760,18 +16310,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -16946,6 +16496,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -16960,6 +16519,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -16992,16 +16558,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -17014,10 +16583,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -17050,8 +16619,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -17069,17 +16647,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17136,7 +16703,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -17162,7 +16728,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -17192,7 +16758,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -17245,18 +16811,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -17431,6 +16997,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -17445,6 +17020,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -17477,16 +17059,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -17499,10 +17084,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -17535,8 +17120,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -17554,17 +17148,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -17621,7 +17204,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -17647,7 +17229,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -17677,7 +17259,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -17692,7 +17274,7 @@ public final class BatchClientImpl {
 
     /**
      * Updates the properties of the specified Job Schedule.
-     *
+     * 
      * This replaces only the Job Schedule properties specified in the request. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will keep the existing schedule. Changes to a Job Schedule only
@@ -17730,7 +17312,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -17906,6 +17488,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -17920,6 +17511,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -17952,16 +17550,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -17974,10 +17575,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -18010,8 +17611,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -18029,17 +17639,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18096,7 +17695,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -18128,7 +17726,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -18139,15 +17737,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> updateJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.updateJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateJobSchedule(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, jobScheduleId, jobSchedule, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Job Schedule.
-     *
+     * 
      * This replaces only the Job Schedule properties specified in the request. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will keep the existing schedule. Changes to a Job Schedule only
@@ -18185,7 +17781,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -18361,6 +17957,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -18375,6 +17980,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -18407,16 +18019,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -18429,10 +18044,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -18465,8 +18080,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -18484,17 +18108,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -18551,7 +18164,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -18583,7 +18195,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -18594,14 +18206,13 @@ public final class BatchClientImpl {
     public Response<Void> updateJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.updateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
+            jobScheduleId, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
      * Updates the properties of the specified Job Schedule.
-     *
+     * 
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -18639,18 +18250,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -18825,6 +18436,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -18839,6 +18459,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -18871,16 +18498,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -18893,10 +18523,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -18929,8 +18559,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -18948,17 +18587,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19015,7 +18643,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -19041,7 +18668,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -19071,7 +18698,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19082,15 +18709,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceJobScheduleWithResponseAsync(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.replaceJobSchedule(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, jobScheduleId, accept, jobSchedule, requestOptions, context));
+        return FluxUtil.withContext(context -> service.replaceJobSchedule(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, jobScheduleId, jobSchedule, requestOptions, context));
     }
 
     /**
      * Updates the properties of the specified Job Schedule.
-     *
+     * 
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -19128,18 +18753,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -19314,6 +18939,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -19328,6 +18962,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -19360,16 +19001,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -19382,10 +19026,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -19418,8 +19062,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -19437,17 +19090,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -19504,7 +19146,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -19530,7 +19171,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -19560,7 +19201,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19571,14 +19212,13 @@ public final class BatchClientImpl {
     public Response<Void> replaceJobScheduleWithResponse(String jobScheduleId, BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.replaceJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            jobScheduleId, accept, jobSchedule, requestOptions, Context.NONE);
+            jobScheduleId, jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
      * Disables a Job Schedule.
-     *
+     * 
      * No new Jobs will be created until the Job Schedule is enabled again.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -19611,7 +19251,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19620,14 +19260,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
     }
 
     /**
      * Disables a Job Schedule.
-     *
+     * 
      * No new Jobs will be created until the Job Schedule is enabled again.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -19660,7 +19299,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19668,9 +19307,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.disableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -19706,7 +19344,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19715,9 +19353,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
     }
 
     /**
@@ -19753,7 +19390,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19761,9 +19398,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.enableJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobScheduleId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -19801,7 +19437,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19810,9 +19446,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateJobScheduleWithResponseAsync(String jobScheduleId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.terminateJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobScheduleId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobScheduleId, requestOptions, context));
     }
 
     /**
@@ -19850,7 +19485,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -19858,9 +19493,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.terminateJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            jobScheduleId, accept, requestOptions, Context.NONE);
+            jobScheduleId, requestOptions, Context.NONE);
     }
 
     /**
@@ -19875,7 +19509,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -20053,6 +19687,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -20067,6 +19710,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -20099,16 +19749,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -20121,10 +19774,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -20157,8 +19810,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -20176,17 +19838,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20243,7 +19894,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -20275,7 +19925,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -20285,9 +19935,8 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createJobScheduleWithResponseAsync(BinaryData jobSchedule,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createJobSchedule(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, jobSchedule, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobSchedule, requestOptions, context));
     }
 
     /**
@@ -20302,7 +19951,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -20480,6 +20129,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -20494,6 +20152,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -20526,16 +20191,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -20548,10 +20216,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -20584,8 +20252,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -20603,17 +20280,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -20670,7 +20336,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -20702,7 +20367,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -20711,9 +20376,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.createJobScheduleSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            accept, jobSchedule, requestOptions, Context.NONE);
+            jobSchedule, requestOptions, Context.NONE);
     }
 
     /**
@@ -20738,18 +20402,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -20924,6 +20588,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -20938,6 +20611,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -20970,16 +20650,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -20992,10 +20675,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -21028,8 +20711,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -21047,17 +20739,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21114,7 +20795,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -21140,7 +20820,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -21170,7 +20850,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse} on successful
@@ -21208,18 +20888,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -21394,6 +21074,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -21408,6 +21097,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -21440,16 +21136,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -21462,10 +21161,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -21498,8 +21197,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -21517,17 +21225,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -21584,7 +21281,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -21610,7 +21306,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -21640,7 +21336,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedFlux}.
@@ -21696,18 +21392,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -21882,6 +21578,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -21896,6 +21601,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -21928,16 +21640,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -21950,10 +21665,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -21986,8 +21701,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -22005,17 +21729,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -22072,7 +21785,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -22098,7 +21810,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -22128,7 +21840,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account along with {@link PagedResponse}.
@@ -22164,18 +21876,18 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -22350,6 +22062,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -22364,6 +22085,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -22396,16 +22124,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -22418,10 +22149,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -22454,8 +22185,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -22473,17 +22213,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -22540,7 +22269,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -22566,7 +22294,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -22596,7 +22324,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
@@ -22632,7 +22360,7 @@ public final class BatchClientImpl {
 
     /**
      * Creates a Task to the specified Job.
-     *
+     * 
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
      * Task has not completed within 180 days of being added it will be terminated by
      * the Batch service and left in whatever state it was in at that time.
@@ -22646,7 +22374,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -22779,7 +22507,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22790,14 +22518,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createTaskWithResponseAsync(String jobId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, accept, task, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, task, requestOptions, context));
     }
 
     /**
      * Creates a Task to the specified Job.
-     *
+     * 
      * The maximum lifetime of a Task from addition to completion is 180 days. If a
      * Task has not completed within 180 days of being added it will be terminated by
      * the Batch service and left in whatever state it was in at that time.
@@ -22811,7 +22538,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -22944,7 +22671,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22954,14 +22681,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.createTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            accept, task, requestOptions, Context.NONE);
+            task, requestOptions, Context.NONE);
     }
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -22985,16 +22711,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -23016,11 +22742,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -23173,7 +22899,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -23192,7 +22918,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -23216,16 +22942,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -23247,11 +22973,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -23404,7 +23130,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -23441,7 +23167,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -23465,16 +23191,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -23496,11 +23222,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -23653,7 +23379,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -23670,7 +23396,7 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -23694,16 +23420,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -23725,11 +23451,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -23882,7 +23608,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -23919,7 +23645,7 @@ public final class BatchClientImpl {
 
     /**
      * Adds a collection of Tasks to the specified Job.
-     *
+     * 
      * Note that each Task must have a unique ID. The Batch service may not return the
      * results for each Task in the same order the Tasks were submitted in this
      * request. If the server times out or the connection is closed during the
@@ -23944,7 +23670,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -24081,9 +23807,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -24112,7 +23838,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24132,7 +23858,7 @@ public final class BatchClientImpl {
 
     /**
      * Adds a collection of Tasks to the specified Job.
-     *
+     * 
      * Note that each Task must have a unique ID. The Batch service may not return the
      * results for each Task in the same order the Tasks were submitted in this
      * request. If the server times out or the connection is closed during the
@@ -24157,7 +23883,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -24294,9 +24020,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -24325,7 +24051,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24343,7 +24069,7 @@ public final class BatchClientImpl {
 
     /**
      * Deletes a Task from the specified Job.
-     *
+     * 
      * When a Task is deleted, all of the files in its directory on the Compute Node
      * where it ran are also deleted (regardless of the retention time). For
      * multi-instance Tasks, the delete Task operation applies synchronously to the
@@ -24380,7 +24106,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24390,14 +24116,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
     }
 
     /**
      * Deletes a Task from the specified Job.
-     *
+     * 
      * When a Task is deleted, all of the files in its directory on the Compute Node
      * where it ran are also deleted (regardless of the retention time). For
      * multi-instance Tasks, the delete Task operation applies synchronously to the
@@ -24434,7 +24159,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24443,14 +24168,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId, accept,
+        return service.deleteTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
             requestOptions, Context.NONE);
     }
 
     /**
      * Gets information about the specified Task.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -24490,16 +24214,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -24521,11 +24245,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -24678,13 +24402,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -24698,7 +24422,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets information about the specified Task.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
      * information about subtasks.
@@ -24738,16 +24462,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -24769,11 +24493,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -24926,13 +24650,13 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
-     *
+     * 
      * For multi-instance Tasks, information such as affinityId, executionInfo and
      * nodeInfo refer to the primary Task along with {@link Response}.
      */
@@ -24977,16 +24701,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -25008,11 +24732,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -25165,7 +24889,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
@@ -25177,9 +24901,8 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceTaskWithResponseAsync(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, jobId, taskId, accept, task, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, jobId, taskId, task, requestOptions, context));
     }
 
     /**
@@ -25216,16 +24939,16 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -25247,11 +24970,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -25404,7 +25127,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
@@ -25416,15 +25139,14 @@ public final class BatchClientImpl {
     public Response<Void> replaceTaskWithResponse(String jobId, String taskId, BinaryData task,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.replaceTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, jobId,
-            taskId, accept, task, requestOptions, Context.NONE);
+            taskId, task, requestOptions, Context.NONE);
     }
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -25438,7 +25160,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -25478,7 +25200,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25500,7 +25222,7 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -25514,7 +25236,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -25554,7 +25276,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25573,7 +25295,7 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -25587,7 +25309,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -25627,7 +25349,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25647,7 +25369,7 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * If the Task is not a multi-instance Task then this returns an empty collection.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -25661,7 +25383,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -25701,7 +25423,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25719,7 +25441,7 @@ public final class BatchClientImpl {
 
     /**
      * Terminates the specified Task.
-     *
+     * 
      * When the Task has been terminated, it moves to the completed state. For
      * multi-instance Tasks, the terminate Task operation applies synchronously to the
      * primary task; subtasks are then terminated asynchronously in the background.
@@ -25754,7 +25476,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25764,14 +25486,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.terminateTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
     }
 
     /**
      * Terminates the specified Task.
-     *
+     * 
      * When the Task has been terminated, it moves to the completed state. For
      * multi-instance Tasks, the terminate Task operation applies synchronously to the
      * primary task; subtasks are then terminated asynchronously in the background.
@@ -25806,7 +25527,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25815,15 +25536,14 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.terminateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
      * Reactivates a Task, allowing it to run again even if its retry count has been
      * exhausted.
-     *
+     * 
      * Reactivation makes a Task eligible to be retried again up to its maximum retry
      * count. The Task's state is changed to active. As the Task is no longer in the
      * completed state, any previous exit code or failure information is no longer
@@ -25862,7 +25582,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25872,15 +25592,14 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reactivateTaskWithResponseAsync(String jobId, String taskId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.reactivateTask(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, requestOptions, context));
     }
 
     /**
      * Reactivates a Task, allowing it to run again even if its retry count has been
      * exhausted.
-     *
+     * 
      * Reactivation makes a Task eligible to be retried again up to its maximum retry
      * count. The Task's state is changed to active. As the Task is no longer in the
      * completed state, any previous exit code or failure information is no longer
@@ -25919,7 +25638,7 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -25928,9 +25647,8 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.reactivateTaskSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -25949,7 +25667,7 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -25960,9 +25678,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTaskFileWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTaskFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, filePath, requestOptions, context));
     }
 
     /**
@@ -25981,7 +25698,7 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -25992,9 +25709,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTaskFileWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteTaskFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId, taskId,
-            filePath, accept, requestOptions, Context.NONE);
+            filePath, requestOptions, Context.NONE);
     }
 
     /**
@@ -26026,13 +25742,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -26077,13 +25793,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -26124,7 +25840,7 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -26136,9 +25852,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getTaskFilePropertiesWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getTaskFileProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobId, taskId, filePath, requestOptions, context));
     }
 
     /**
@@ -26166,7 +25881,7 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -26177,9 +25892,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getTaskFilePropertiesWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.getTaskFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobId,
-            taskId, filePath, accept, requestOptions, Context.NONE);
+            taskId, filePath, requestOptions, Context.NONE);
     }
 
     /**
@@ -26203,7 +25917,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26220,7 +25934,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26260,7 +25974,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26277,7 +25991,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26335,7 +26049,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26352,7 +26066,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26391,7 +26105,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26408,7 +26122,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26447,7 +26161,7 @@ public final class BatchClientImpl {
 
     /**
      * Adds a user Account to the specified Compute Node.
-     *
+     * 
      * You can add a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
@@ -26460,7 +26174,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26472,7 +26186,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
@@ -26484,14 +26198,13 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> createNodeUserWithResponseAsync(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createNodeUser(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, user, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, poolId, nodeId, user, requestOptions, context));
     }
 
     /**
      * Adds a user Account to the specified Compute Node.
-     *
+     * 
      * You can add a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
@@ -26504,7 +26217,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26516,7 +26229,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
@@ -26528,14 +26241,13 @@ public final class BatchClientImpl {
     public Response<Void> createNodeUserWithResponse(String poolId, String nodeId, BinaryData user,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.createNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, accept, user, requestOptions, Context.NONE);
+            poolId, nodeId, user, requestOptions, Context.NONE);
     }
 
     /**
      * Deletes a user Account from the specified Compute Node.
-     *
+     * 
      * You can delete a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
@@ -26547,7 +26259,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
@@ -26558,14 +26270,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteNodeUser(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, userName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, userName, requestOptions, context));
     }
 
     /**
      * Deletes a user Account from the specified Compute Node.
-     *
+     * 
      * You can delete a user Account to a Compute Node only when it is in the idle or
      * running state.
      * <p><strong>Query Parameters</strong></p>
@@ -26577,7 +26288,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
@@ -26588,14 +26299,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            userName, accept, requestOptions, Context.NONE);
+            userName, requestOptions, Context.NONE);
     }
 
     /**
      * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
+     * 
      * This operation replaces of all the updatable properties of the Account. For
      * example, if the expiryTime element is not specified, the current value is
      * replaced with the default value, not left unmodified. You can update a user
@@ -26610,7 +26320,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26620,7 +26330,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
@@ -26633,15 +26343,14 @@ public final class BatchClientImpl {
     public Mono<Response<Void>> replaceNodeUserWithResponseAsync(String poolId, String nodeId, String userName,
         BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.replaceNodeUser(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, poolId, nodeId, userName, accept, parameters, requestOptions, context));
+                contentType, poolId, nodeId, userName, parameters, requestOptions, context));
     }
 
     /**
      * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
+     * 
      * This operation replaces of all the updatable properties of the Account. For
      * example, if the expiryTime element is not specified, the current value is
      * replaced with the default value, not left unmodified. You can update a user
@@ -26656,7 +26365,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -26666,7 +26375,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
@@ -26679,9 +26388,8 @@ public final class BatchClientImpl {
     public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
         BinaryData parameters, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
-        final String accept = "application/json";
         return service.replaceNodeUserSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            poolId, nodeId, userName, accept, parameters, requestOptions, Context.NONE);
+            poolId, nodeId, userName, parameters, requestOptions, Context.NONE);
     }
 
     /**
@@ -26698,21 +26406,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -26810,17 +26519,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -26843,11 +26541,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -26863,7 +26561,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26893,21 +26591,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -27005,17 +26704,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27038,11 +26726,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -27058,7 +26746,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27074,7 +26762,7 @@ public final class BatchClientImpl {
 
     /**
      * Restarts the specified Compute Node.
-     *
+     * 
      * You can restart a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27094,7 +26782,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27102,7 +26790,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27112,7 +26800,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27120,12 +26807,12 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.rebootNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
     }
 
     /**
      * Restarts the specified Compute Node.
-     *
+     * 
      * You can restart a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27145,7 +26832,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27153,7 +26840,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27162,20 +26849,19 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
             }
         });
-        return service.rebootNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
+        return service.rebootNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
             requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Starts the specified Compute Node.
-     *
+     * 
      * You can start a Compute Node only if it has been deallocated.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27186,7 +26872,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27196,14 +26882,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.startNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptions, context));
     }
 
     /**
      * Starts the specified Compute Node.
-     *
+     * 
      * You can start a Compute Node only if it has been deallocated.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27214,7 +26899,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27223,14 +26908,13 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.startNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId, accept,
+        return service.startNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
             requestOptions, Context.NONE);
     }
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     *
+     * 
      * You can reinstall the operating system on a Compute Node only if it is in an
      * idle or running state. This API can be invoked only on Pools created with the
      * cloud service configuration property.
@@ -27252,7 +26936,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27260,7 +26944,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27270,7 +26954,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> reimageNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27278,12 +26961,12 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.reimageNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
     }
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     *
+     * 
      * You can reinstall the operating system on a Compute Node only if it is in an
      * idle or running state. This API can be invoked only on Pools created with the
      * cloud service configuration property.
@@ -27305,7 +26988,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27313,7 +26996,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27322,7 +27005,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27330,12 +27012,12 @@ public final class BatchClientImpl {
             }
         });
         return service.reimageNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            accept, requestOptionsLocal, Context.NONE);
+            requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Deallocates the specified Compute Node.
-     *
+     * 
      * You can deallocate a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27355,7 +27037,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27363,7 +27045,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27373,7 +27055,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deallocateNodeWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27381,12 +27062,12 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.deallocateNode(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
     }
 
     /**
      * Deallocates the specified Compute Node.
-     *
+     * 
      * You can deallocate a Compute Node only if it is in an idle or running state.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -27406,7 +27087,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27414,7 +27095,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27423,7 +27104,6 @@ public final class BatchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27431,12 +27111,12 @@ public final class BatchClientImpl {
             }
         });
         return service.deallocateNodeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            accept, requestOptionsLocal, Context.NONE);
+            requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Disables Task scheduling on the specified Compute Node.
-     *
+     * 
      * You can disable Task scheduling on a Compute Node only if its current
      * scheduling state is enabled.
      * <p><strong>Query Parameters</strong></p>
@@ -27457,7 +27137,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27465,7 +27145,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27475,7 +27155,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27483,12 +27162,12 @@ public final class BatchClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.disableNodeScheduling(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptionsLocal, context));
     }
 
     /**
      * Disables Task scheduling on the specified Compute Node.
-     *
+     * 
      * You can disable Task scheduling on a Compute Node only if its current
      * scheduling state is enabled.
      * <p><strong>Query Parameters</strong></p>
@@ -27509,7 +27188,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27517,7 +27196,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27527,7 +27206,6 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -27535,12 +27213,12 @@ public final class BatchClientImpl {
             }
         });
         return service.disableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, accept, requestOptionsLocal, Context.NONE);
+            nodeId, requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Enables Task scheduling on the specified Compute Node.
-     *
+     * 
      * You can enable Task scheduling on a Compute Node only if its current scheduling
      * state is disabled.
      * <p><strong>Query Parameters</strong></p>
@@ -27552,7 +27230,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27562,14 +27240,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableNodeSchedulingWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enableNodeScheduling(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, requestOptions, context));
     }
 
     /**
      * Enables Task scheduling on the specified Compute Node.
-     *
+     * 
      * You can enable Task scheduling on a Compute Node only if its current scheduling
      * state is disabled.
      * <p><strong>Query Parameters</strong></p>
@@ -27581,7 +27258,7 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27591,14 +27268,13 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableNodeSchedulingWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.enableNodeSchedulingSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, accept, requestOptions, Context.NONE);
+            nodeId, requestOptions, Context.NONE);
     }
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     *
+     * 
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
@@ -27611,22 +27287,24 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
+     *     ipv6RemoteLoginIPAddress: String (Optional)
+     *     ipv6RemoteLoginPort: Integer (Optional)
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
-     *
+     * 
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -27641,7 +27319,7 @@ public final class BatchClientImpl {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     *
+     * 
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node.
      * <p><strong>Query Parameters</strong></p>
@@ -27654,22 +27332,24 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
+     *     ipv6RemoteLoginIPAddress: String (Optional)
+     *     ipv6RemoteLoginPort: Integer (Optional)
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
-     *
+     * 
      * Before you can remotely login to a Compute Node using the remote login settings,
      * you must create a user Account on the Compute Node along with {@link Response}.
      */
@@ -27684,7 +27364,7 @@ public final class BatchClientImpl {
     /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure
      * Blob Storage.
-     *
+     * 
      * This is for gathering Azure Batch service log files in an automated fashion
      * from Compute Nodes if you are experiencing an error and wish to escalate to
      * Azure support. The Azure Batch service log files should be shared with Azure
@@ -27699,7 +27379,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27712,9 +27392,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27723,7 +27403,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
@@ -27746,7 +27426,7 @@ public final class BatchClientImpl {
     /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure
      * Blob Storage.
-     *
+     * 
      * This is for gathering Azure Batch service log files in an automated fashion
      * from Compute Nodes if you are experiencing an error and wish to escalate to
      * Azure support. The Azure Batch service log files should be shared with Azure
@@ -27761,7 +27441,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27774,9 +27454,9 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -27785,7 +27465,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
@@ -27823,21 +27503,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -27935,17 +27616,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -27968,11 +27638,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -27988,7 +27658,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -28025,21 +27695,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -28137,17 +27808,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28170,11 +27830,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -28190,7 +27850,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -28245,21 +27905,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -28357,17 +28018,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28390,11 +28040,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -28410,7 +28060,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -28445,21 +28095,22 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -28557,17 +28208,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -28590,11 +28230,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -28610,7 +28250,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -28659,7 +28299,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -28699,7 +28339,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
@@ -28730,7 +28370,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -28770,7 +28410,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
@@ -28803,7 +28443,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -28843,7 +28483,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28879,7 +28519,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -28919,7 +28559,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -28972,7 +28612,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29012,7 +28652,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29046,7 +28686,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29086,7 +28726,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29139,7 +28779,7 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29150,9 +28790,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNodeFileWithResponseAsync(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteNodeFile(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, requestOptions, context));
     }
 
     /**
@@ -29171,7 +28810,7 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29182,9 +28821,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNodeFileWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteNodeFileSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId, nodeId,
-            filePath, accept, requestOptions, Context.NONE);
+            filePath, requestOptions, Context.NONE);
     }
 
     /**
@@ -29216,13 +28854,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29267,13 +28905,13 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29314,7 +28952,7 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29326,9 +28964,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getNodeFilePropertiesWithResponseAsync(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getNodeFileProperties(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), poolId, nodeId, filePath, requestOptions, context));
     }
 
     /**
@@ -29356,7 +28993,7 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -29367,9 +29004,8 @@ public final class BatchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getNodeFilePropertiesWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.getNodeFilePropertiesSync(this.getEndpoint(), this.getServiceVersion().getVersion(), poolId,
-            nodeId, filePath, accept, requestOptions, Context.NONE);
+            nodeId, filePath, requestOptions, Context.NONE);
     }
 
     /**
@@ -29391,7 +29027,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29408,7 +29044,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29446,7 +29082,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29463,7 +29099,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29519,7 +29155,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29536,7 +29172,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29573,7 +29209,7 @@ public final class BatchClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29590,7 +29226,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -29629,10 +29265,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29644,7 +29280,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -29664,10 +29300,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the applications available in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29679,7 +29315,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -29697,10 +29333,10 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29712,7 +29348,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -29732,10 +29368,10 @@ public final class BatchClientImpl {
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals,
      * for the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -29747,7 +29383,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -29764,25 +29400,25 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
-     *
+     * Lists all of the Pools in the specified Account.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -29803,6 +29439,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -29824,6 +29469,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -29856,16 +29508,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -29889,11 +29544,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -29937,8 +29589,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -29984,17 +29645,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -30003,6 +29653,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -30093,8 +29744,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -30116,7 +29765,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -30135,25 +29784,25 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
-     *
+     * Lists all of the Pools in the specified Account.
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -30174,6 +29823,15 @@ public final class BatchClientImpl {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
@@ -30195,6 +29853,13 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -30227,16 +29892,19 @@ public final class BatchClientImpl {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
      *             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
@@ -30260,11 +29928,8 @@ public final class BatchClientImpl {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -30308,8 +29973,17 @@ public final class BatchClientImpl {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -30355,17 +30029,6 @@ public final class BatchClientImpl {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -30374,6 +30037,7 @@ public final class BatchClientImpl {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -30464,8 +30128,6 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -30487,7 +30149,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -30504,10 +30166,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -30531,7 +30193,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -30550,10 +30212,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -30577,7 +30239,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -30596,7 +30258,7 @@ public final class BatchClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -30624,12 +30286,12 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listPoolNodeCountsNextSinglePageAsync(String nextLink,
@@ -30644,7 +30306,7 @@ public final class BatchClientImpl {
     /**
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -30672,11 +30334,11 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Compute Node counts in the Account along with {@link PagedResponse}.
+     * @return the number of Compute Nodes in each state, grouped by Pool along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listPoolNodeCountsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -30689,22 +30351,22 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Jobs in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -30864,6 +30526,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -30878,6 +30549,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -30910,16 +30588,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -30932,10 +30613,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -30968,8 +30649,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -30987,17 +30677,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31054,7 +30733,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -31121,7 +30799,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -31140,22 +30818,22 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Jobs in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -31315,6 +30993,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -31329,6 +31016,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -31361,16 +31055,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -31383,10 +31080,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -31419,8 +31116,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -31438,17 +31144,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31505,7 +31200,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -31572,7 +31266,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -31589,22 +31283,22 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Jobs that have been created under the specified Job Schedule.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -31764,6 +31458,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -31778,6 +31481,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -31810,16 +31520,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -31832,10 +31545,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -31868,8 +31581,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -31887,17 +31609,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -31954,7 +31665,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -32021,7 +31731,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -32040,22 +31750,22 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Jobs that have been created under the specified Job Schedule.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -32215,6 +31925,15 @@ public final class BatchClientImpl {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
@@ -32229,6 +31948,13 @@ public final class BatchClientImpl {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -32261,16 +31987,19 @@ public final class BatchClientImpl {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
      *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
@@ -32283,10 +32012,10 @@ public final class BatchClientImpl {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -32319,8 +32048,17 @@ public final class BatchClientImpl {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -32338,17 +32076,6 @@ public final class BatchClientImpl {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -32405,7 +32132,6 @@ public final class BatchClientImpl {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -32472,7 +32198,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -32491,10 +32217,10 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -32542,7 +32268,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -32563,10 +32289,10 @@ public final class BatchClientImpl {
     /**
      * Lists the execution status of the Job Preparation and Job Release Task for the
      * specified Job across the Compute Nodes where the Job has run.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -32614,7 +32340,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -32632,121 +32358,22 @@ public final class BatchClientImpl {
     }
 
     /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listCertificatesNextSinglePageAsync(String nextLink,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listCertificatesNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null));
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listCertificatesNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listCertificatesNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "odata.nextLink"), null);
-    }
-
-    /**
      * Lists all of the Job Schedules in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -32921,6 +32548,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -32935,6 +32571,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -32967,16 +32610,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -32989,10 +32635,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -33025,8 +32671,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -33044,17 +32699,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -33111,7 +32755,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -33137,7 +32780,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -33167,7 +32810,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -33187,21 +32830,21 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Job Schedules in the specified Account.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -33376,6 +33019,15 @@ public final class BatchClientImpl {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
@@ -33390,6 +33042,13 @@ public final class BatchClientImpl {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -33422,16 +33081,19 @@ public final class BatchClientImpl {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
      *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
@@ -33444,10 +33106,10 @@ public final class BatchClientImpl {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -33480,8 +33142,17 @@ public final class BatchClientImpl {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -33499,17 +33170,6 @@ public final class BatchClientImpl {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -33566,7 +33226,6 @@ public final class BatchClientImpl {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -33592,7 +33251,7 @@ public final class BatchClientImpl {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -33622,7 +33281,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -33639,19 +33298,19 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -33673,11 +33332,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -33830,7 +33489,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -33850,19 +33509,19 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the Tasks that are associated with the specified Job.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -33884,11 +33543,11 @@ public final class BatchClientImpl {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -34041,7 +33700,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34059,10 +33718,10 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34102,7 +33761,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34123,10 +33782,10 @@ public final class BatchClientImpl {
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34166,7 +33825,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34183,10 +33842,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the files in a Task's directory on its Compute Node.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34203,7 +33862,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34223,10 +33882,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the files in a Task's directory on its Compute Node.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34243,7 +33902,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34261,24 +33920,25 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes in the specified Pool.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -34376,17 +34036,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -34409,11 +34058,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -34429,7 +34078,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34449,24 +34098,25 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes in the specified Pool.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -34564,17 +34214,6 @@ public final class BatchClientImpl {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -34597,11 +34236,11 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Optional): {
+     *     nodeAgentInfo (Required): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -34617,7 +34256,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34634,10 +34273,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34677,7 +34316,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34696,10 +34335,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34739,7 +34378,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34756,10 +34395,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the files in Task directories on the specified Compute Node.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34776,7 +34415,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -34796,10 +34435,10 @@ public final class BatchClientImpl {
 
     /**
      * Lists all of the files in Task directories on the specified Compute Node.
-     *
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -34816,7 +34455,7 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
