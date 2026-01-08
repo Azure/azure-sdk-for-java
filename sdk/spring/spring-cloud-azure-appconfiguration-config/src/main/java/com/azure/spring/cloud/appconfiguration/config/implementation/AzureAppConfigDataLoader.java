@@ -128,7 +128,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             if ((notification.getPrimaryToken() != null
                 && StringUtils.hasText(notification.getPrimaryToken().getName()))
                 || (notification.getSecondaryToken() != null
-                    && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                    && StringUtils.hasText(notification.getSecondaryToken().getName()))) {
                 pushRefresh = true;
             }
             // Feature Management needs to be set in the last config store.

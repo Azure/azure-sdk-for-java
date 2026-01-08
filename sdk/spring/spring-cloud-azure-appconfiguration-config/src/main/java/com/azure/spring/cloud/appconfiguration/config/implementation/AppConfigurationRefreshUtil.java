@@ -29,6 +29,17 @@ public class AppConfigurationRefreshUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshUtil.class);
 
+    private static final String FEATURE_FLAG_PATTERN = ".appconfig.featureflag/*";
+
+    /**
+     * Functional interface for refresh operations that can throw AppConfigurationStatusException.
+     */
+    @FunctionalInterface
+    private interface RefreshOperation {
+        void execute(AppConfigurationReplicaClient client, RefreshEventData eventData, Context context)
+            throws AppConfigurationStatusException;
+    }
+
     /**
      * Checks all configured stores to determine if any configurations need to be refreshed.
      *
@@ -66,66 +77,46 @@ public class AppConfigurationRefreshUtil {
                 if ((notification.getPrimaryToken() != null
                     && StringUtils.hasText(notification.getPrimaryToken().getName()))
                     || (notification.getSecondaryToken() != null
-                        && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                        && StringUtils.hasText(notification.getSecondaryToken().getName()))) {
                     pushRefresh = true;
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
                 
                 clientFactory.findActiveClients(originEndpoint);
 
-                AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
-
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
-                    while (client != null) {
-                        try {
-                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
-                                eventData, replicaLookUp, context);
-                            if (eventData.getDoRefresh()) {
-                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
-                                return eventData;
-                            }
-                            // If check didn't throw an error other clients don't need to be checked.
-                            break;
-                        } catch (HttpResponseException e) {
-                            LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during configuration refresh check. "
-                                    + "Status: {}, Message: {}",
-                                client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
-
-                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                            client = clientFactory.getNextActiveClient(originEndpoint, false);
-                        }
+                    RefreshEventData result = executeRefreshWithRetry(
+                        clientFactory,
+                        originEndpoint,
+                        (client, data, ctx) -> refreshWithTime(client, StateHolder.getState(originEndpoint),
+                            monitor.getRefreshInterval(), data, replicaLookUp, ctx),
+                        eventData,
+                        context,
+                        "configuration refresh check");
+                    if (result != null) {
+                        return result;
                     }
                 } else {
-                    LOGGER.debug("Skipping configuration refresh check for " + originEndpoint);
+                    LOGGER.debug("Skipping configuration refresh check for {}", originEndpoint);
                 }
 
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
                 if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(originEndpoint) != null) {
-                    client = clientFactory.getNextActiveClient(originEndpoint, false);
-                    while (client != null) {
-                        try {
-                            refreshWithTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(originEndpoint),
-                                monitor.getFeatureFlagRefreshInterval(), eventData, replicaLookUp, context);
-                            if (eventData.getDoRefresh()) {
-                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
-                                return eventData;
-                            }
-                            // If check didn't throw an error other clients don't need to be checked.
-                            break;
-                        } catch (HttpResponseException e) {
-                            LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during feature flag refresh check. "
-                                    + "Status: {}, Message: {}",
-                                client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
-
-                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                            client = clientFactory.getNextActiveClient(originEndpoint, false);
-                        }
+                    RefreshEventData result = executeRefreshWithRetry(
+                        clientFactory,
+                        originEndpoint,
+                        (client, data, ctx) -> refreshWithTimeFeatureFlags(client,
+                            StateHolder.getStateFeatureFlag(originEndpoint),
+                            monitor.getFeatureFlagRefreshInterval(), data, replicaLookUp, ctx),
+                        eventData,
+                        context,
+                        "feature flag refresh check");
+                    if (result != null) {
+                        return result;
                     }
                 } else {
-                    LOGGER.debug("Skipping feature flag refresh check for " + originEndpoint);
+                    LOGGER.debug("Skipping feature flag refresh check for {}", originEndpoint);
                 }
 
             }
@@ -135,6 +126,47 @@ public class AppConfigurationRefreshUtil {
             throw e;
         }
         return eventData;
+    }
+
+    /**
+     * Executes a refresh operation with automatic retry logic across replica clients.
+     * 
+     * @param clientFactory factory for accessing App Configuration clients
+     * @param originEndpoint the endpoint of the origin configuration store
+     * @param operation the refresh operation to execute
+     * @param eventData the refresh event data to update
+     * @param context the operation context
+     * @param checkType description of the check type for logging (e.g., "configuration refresh check")
+     * @return the eventData if refresh is needed, null otherwise
+     */
+    private RefreshEventData executeRefreshWithRetry(
+            AppConfigurationReplicaClientFactory clientFactory,
+            String originEndpoint,
+            RefreshOperation operation,
+            RefreshEventData eventData,
+            Context context,
+            String checkType) {
+        AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
+        
+        while (client != null) {
+            try {
+                operation.execute(client, eventData, context);
+                if (eventData.getDoRefresh()) {
+                    clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
+                    return eventData;
+                }
+                // If check didn't throw an error, other clients don't need to be checked.
+                break;
+            } catch (HttpResponseException e) {
+                LOGGER.warn(
+                    "Failed to connect to App Configuration store {} during {}. Status: {}, Message: {}",
+                    client.getEndpoint(), checkType, e.getResponse().getStatusCode(), e.getMessage());
+
+                clientFactory.backoffClient(originEndpoint, client.getEndpoint());
+                client = clientFactory.getNextActiveClient(originEndpoint, false);
+            }
+        }
+        return null;
     }
 
     /**
@@ -171,7 +203,7 @@ public class AppConfigurationRefreshUtil {
         if (featureStoreEnabled && StateHolder.getStateFeatureFlag(endpoint) != null) {
             refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData, context);
         } else {
-            LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
+            LOGGER.debug("Skipping feature flag refresh check for {}", endpoint);
         }
         return eventData.getDoRefresh();
     }
@@ -249,9 +281,9 @@ public class AppConfigurationRefreshUtil {
             if (client.checkWatchKeys(collectionMonitoring.getSettingSelector(), context)) {
                 String eventDataInfo = collectionMonitoring.getSettingSelector().getKeyFilter();
 
-                // Only one refresh Event needs to be call to update all of the
+                // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by collection monitoring: " + eventDataInfo);
+                LOGGER.info("Configuration Refresh Event triggered by collection monitoring: {}", eventDataInfo);
 
                 eventData.setMessage(eventDataInfo);
                 return;
@@ -280,13 +312,11 @@ public class AppConfigurationRefreshUtil {
 
             for (CollectionMonitoring featureFlags : state.getWatchKeys()) {
                 if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
-                    String eventDataInfo = ".appconfig.featureflag/*";
-
-                    // Only one refresh Event needs to be call to update all of the
+                    // Only one refresh event needs to be called to update all of the
                     // stores, not one for each.
-                    LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                    LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PATTERN);
 
-                    eventData.setMessage(eventDataInfo);
+                    eventData.setMessage(FEATURE_FLAG_PATTERN);
                     return;
                 }
 
@@ -311,13 +341,11 @@ public class AppConfigurationRefreshUtil {
 
         for (CollectionMonitoring featureFlags : watchKeys.getWatchKeys()) {
             if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
-                String eventDataInfo = ".appconfig.featureflag/*";
-
-                // Only one refresh Event needs to be call to update all of the
+                // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PATTERN);
 
-                eventData.setMessage(eventDataInfo);
+                eventData.setMessage(FEATURE_FLAG_PATTERN);
             }
 
         }
@@ -346,9 +374,9 @@ public class AppConfigurationRefreshUtil {
 
             String eventDataInfo = watchSetting.getKey();
 
-            // Only one refresh Event needs to be call to update all of the
+            // Only one refresh event needs to be called to update all of the
             // stores, not one for each.
-            LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+            LOGGER.info("Configuration Refresh Event triggered by {}", eventDataInfo);
             eventData.setMessage(eventDataInfo);
         }
     }
@@ -358,7 +386,7 @@ public class AppConfigurationRefreshUtil {
      */
     static class RefreshEventData {
 
-        private static final String MSG_TEMPLATE = "Some keys matching %s has been updated since last check.";
+        private static final String MSG_TEMPLATE = "Some keys matching %s have been updated since last check.";
 
         private String message;
 
