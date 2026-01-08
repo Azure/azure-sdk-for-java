@@ -1056,7 +1056,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     false,
                     collectionLink,
                     new SerializationDiagnosticsContext()),
-                new AvailabilityStrategyContext(false, false)));
+                new AvailabilityStrategyContext(false, false),
+                new AtomicBoolean(false)));
 
         return request;
     }

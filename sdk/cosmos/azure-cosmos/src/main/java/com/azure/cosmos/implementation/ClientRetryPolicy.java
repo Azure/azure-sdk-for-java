@@ -56,8 +56,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
-    private volatile boolean addHubRegionProcessingOnlyHeader = false;
-
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -270,7 +268,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
 
                         if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.shouldAddHubRegionProcessingOnlyHeader(request)) {
-                            this.addHubRegionProcessingOnlyHeader = true;
+
+                            if (request.requestContext != null) {
+
+                                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                                    = request.requestContext.getCrossRegionAvailabilityContext();
+
+                                if (crossRegionAvailabilityContext != null) {
+                                    crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
+                                }
+                            }
                         }
                     }
 
@@ -287,11 +294,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
-
-        // if PPAF is enabled, mark pk-range as unavailable and force a retry
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
-            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-        }
 
         // Some requests may be in progress when the endpoint manager and client are closed.
         // In that case, the request won't succeed since the http client is closed.
@@ -526,10 +528,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);
-        }
 
-        if (this.addHubRegionProcessingOnlyHeader) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
+            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                = request.requestContext.getCrossRegionAvailabilityContext();
+
+            if (crossRegionAvailabilityContext != null) {
+                if (crossRegionAvailabilityContext.shouldAddHubRegionProcessingOnlyHeader()) {
+                    request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
+                }
+            }
         }
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request

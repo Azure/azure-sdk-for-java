@@ -299,8 +299,8 @@ public class ApplicableRegionEvaluatorTest {
                         true,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(true, false)
-                ));
+                    new AvailabilityStrategyContext(true, false),
+                    new AtomicBoolean(false)));
         } else {
             request.requestContext.setCrossRegionAvailabilityContext(
                 new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
@@ -310,8 +310,8 @@ public class ApplicableRegionEvaluatorTest {
                         false,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(false, false)
-                ));
+                    new AvailabilityStrategyContext(false, false),
+                    new AtomicBoolean(false)));
         }
 
         return request;

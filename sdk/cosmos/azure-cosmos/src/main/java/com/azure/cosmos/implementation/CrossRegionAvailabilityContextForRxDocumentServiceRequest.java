@@ -11,6 +11,8 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     private final AtomicBoolean hasPerPartitionAutomaticFailoverBeenAppliedForReads = new AtomicBoolean(false);
 
+    private final AtomicBoolean shouldAddHubRegionProcessingOnlyHeader;
+
     private final FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
 
     private final PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
@@ -20,11 +22,13 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        AvailabilityStrategyContext availabilityStrategyContext) {
+        AvailabilityStrategyContext availabilityStrategyContext,
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader) {
 
         this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
         this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
         this.availabilityStrategyContext = availabilityStrategyContext;
+        this.shouldAddHubRegionProcessingOnlyHeader = shouldAddHubRegionProcessingOnlyHeader;
     }
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
@@ -53,5 +57,13 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
         return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
+    }
+
+    public void setShouldAddHubRegionProcessingOnlyHeader(boolean shouldAddHubRegionProcessingOnlyHeader) {
+        this.shouldAddHubRegionProcessingOnlyHeader.set(shouldAddHubRegionProcessingOnlyHeader);
+    }
+
+    public boolean shouldAddHubRegionProcessingOnlyHeader() {
+        return this.shouldAddHubRegionProcessingOnlyHeader.get();
     }
 }

@@ -421,8 +421,8 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                     false,
                     collectionLink,
                     new SerializationDiagnosticsContext()),
-                new AvailabilityStrategyContext(true, true)
-            )
+                new AvailabilityStrategyContext(true, true),
+                new AtomicBoolean(false))
 );
 
         return request;

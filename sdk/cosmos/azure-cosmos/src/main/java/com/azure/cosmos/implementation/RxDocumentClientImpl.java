@@ -2245,6 +2245,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+
         request.requestContext.setCrossRegionAvailabilityContext(
 
             new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
@@ -2254,7 +2256,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     false,
                     documentCollectionLink,
                     serializationDiagnosticsContext),
-                null));
+                null,
+                shouldAddHubRegionProcessingOnlyHeader));
 
         return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
             .flatMap(documentCollectionValueHolder -> {
@@ -7230,6 +7233,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             nonNullRequestOptions);
 
         AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible
@@ -7247,7 +7251,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                 null,
                 pointOperationContextForCircuitBreakerForMainRequest,
-                availabilityStrategyContextForMainRequest);
+                availabilityStrategyContextForMainRequest,
+                shouldAddHubRegionProcessingOnlyHeader);
 
             return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, crossRegionAvailabilityContextForMainRequest);
         }
@@ -7283,7 +7288,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                         null,
                         pointOperationContextForCircuitBreakerForMainRequest,
-                        availabilityStrategyContextForMainRequest);
+                        availabilityStrategyContextForMainRequest,
+                        shouldAddHubRegionProcessingOnlyHeader);
 
                     Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForMainRequest)
@@ -7327,7 +7333,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForHedgedRequest = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                         null,
                         pointOperationContextForCircuitBreakerForHedgedRequest,
-                        availabilityStrategyContextForHedgedRequest);
+                        availabilityStrategyContextForHedgedRequest,
+                        shouldAddHubRegionProcessingOnlyHeader);
 
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForHedgedRequest)
@@ -7649,6 +7656,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getEffectiveEndToEndOperationLatencyPolicyConfig(
                 req.requestContext.getEndToEndOperationLatencyPolicyConfig(), resourceType, operationType);
 
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+
         req.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
@@ -7676,7 +7685,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                     feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow,
                 null,
-                availabilityStrategyContext);
+                availabilityStrategyContext,
+                shouldAddHubRegionProcessingOnlyHeader);
 
             req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
@@ -7697,7 +7707,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
             feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow,
             null,
-            availabilityStrategyContext);
+            availabilityStrategyContext,
+            shouldAddHubRegionProcessingOnlyHeader);
 
         req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
@@ -7728,7 +7739,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequestForNonHedgedRequest = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                         feedOperationContextForCircuitBreakerForNonHedgedRequest,
                         null,
-                        availabilityStrategyContextForNonHedgedRequest);
+                        availabilityStrategyContextForNonHedgedRequest,
+                        shouldAddHubRegionProcessingOnlyHeader);
 
                     clonedRequest.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequestForNonHedgedRequest);
 
@@ -7771,8 +7783,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                             feedOperationContextForCircuitBreakerForHedgedRequest,
                         null,
-                        availabilityStrategyContextForHedgedRequest
-                    );
+                        availabilityStrategyContextForHedgedRequest,
+                        shouldAddHubRegionProcessingOnlyHeader);
 
                     clonedRequest.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequestForHedgedRequest);
 
