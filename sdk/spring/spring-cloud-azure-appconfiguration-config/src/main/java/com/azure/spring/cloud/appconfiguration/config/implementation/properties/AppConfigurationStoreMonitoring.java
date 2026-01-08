@@ -39,7 +39,7 @@ public final class AppConfigurationStoreMonitoring {
     private Boolean refreshAll = false;
 
     /**
-     * Validation tokens for push notificaiton requests.
+     * Validation tokens for push notification requests.
      */
     private PushNotification pushNotification = new PushNotification();
 
@@ -139,9 +139,9 @@ public final class AppConfigurationStoreMonitoring {
             // Triggers are required unless refreshAll is enabled (which uses collection monitoring instead)
             if (!Boolean.TRUE.equals(refreshAll)) {
                 Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled and refreshAll is not enabled.");
-            }
-            for (AppConfigurationStoreTrigger trigger : triggers) {
-                trigger.validateAndInit();
+                for (AppConfigurationStoreTrigger trigger : triggers) {
+                    trigger.validateAndInit();
+                }
             }
         }
         Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
