@@ -787,10 +787,10 @@
 # ServiceOwners:                                                   @skarri-microsoft @EldertGrootenboer
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                                   @skarri-microsoft @EldertGrootenboer @Azure/azure-java-sdk
+/sdk/servicebus/                                                   @skarri-microsoft @EldertGrootenboer @j7nw4r @Azure/azure-java-sdk
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @skarri-microsoft @EldertGrootenboer @Azure/azure-java-sdk
+/sdk/servicebus/microsoft-azure-servicebus/                        @skarri-microsoft @EldertGrootenboer @j7nw4r @Azure/azure-java-sdk
 
 # ServiceLabel: %Service Bus %Track 1
 # AzureSdkOwners:                                                  @skarri-microsoft @EldertGrootenboer
