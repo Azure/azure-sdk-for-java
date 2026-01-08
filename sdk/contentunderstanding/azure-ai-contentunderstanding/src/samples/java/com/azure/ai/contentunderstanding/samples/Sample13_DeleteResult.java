@@ -8,14 +8,14 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * Sample demonstrates how to delete analysis results after they are no longer needed.
@@ -50,62 +50,57 @@ public class Sample13_DeleteResult {
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(documentUrl);
 
-        SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
             = client.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input), null);
 
-        // Wait for operation to complete to get a result ID
+        // Wait for operation to complete
         System.out.println("Started analysis operation");
 
         // Wait for completion
         AnalyzeResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
-        // Display some sample results
-        if (result.getContents() != null && result.getContents().size() > 0) {
+        // Get the operation ID using the getOperationId() convenience method
+        // This ID is extracted from the Operation-Location header and is needed for deleteResult()
+        String operationId = poller.poll().getValue().getOperationId();
+        System.out.println("Operation ID: " + operationId);
+
+        // Display some sample results using getValue() convenience method
+        if (result.getContents() != null && !result.getContents().isEmpty()) {
             Object firstContent = result.getContents().get(0);
             if (firstContent instanceof DocumentContent) {
                 DocumentContent docContent = (DocumentContent) firstContent;
-                Map<String, com.azure.ai.contentunderstanding.models.ContentField> fields = docContent.getFields();
+                java.util.Map<String, ContentField> fields = docContent.getFields();
                 if (fields != null) {
                     System.out.println("Total fields extracted: " + fields.size());
-                    if (fields.containsKey("CustomerName")) {
-                        Object customerNameField = fields.get("CustomerName");
-                        if (customerNameField instanceof StringField) {
-                            StringField sf = (StringField) customerNameField;
-                            System.out.println("Customer Name: "
-                                + (sf.getValueString() != null ? sf.getValueString() : "(not found)"));
-                        }
+                    ContentField customerNameField = fields.get("CustomerName");
+                    if (customerNameField != null) {
+                        // Use getValue() instead of casting to StringField
+                        String customerName = (String) customerNameField.getValue();
+                        System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
                     }
                 }
             }
         }
 
-        // Step 2: Delete the analysis result
-        // Note: Use the result ID from the poller if available
-        // For this sample, we demonstrate the API pattern
-        System.out.println("Analysis result can be deleted using deleteResultWithResponse");
-        System.out.println("Example: client.deleteResultWithResponse(resultId, null)");
+        // Step 2: Delete the analysis result using the operation ID
+        // This cleans up the server-side resources (including keyframe images for video analysis)
+        client.deleteResult(operationId);
+        System.out.println("Analysis result deleted successfully!");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
-        System.out.println("\n📋 Analysis Operation Verification:");
+        System.out.println("\n📋 DeleteResult Sample Summary:");
         System.out.println("Document URL: " + documentUrl);
-        System.out.println("Analysis operation completed successfully");
-
-        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+        System.out.println("Operation ID: " + operationId);
 
         Object firstContent = result.getContents().get(0);
         DocumentContent documentContent = (DocumentContent) firstContent;
-        System.out.println("Document content has " + documentContent.getFields().size() + " field(s)");
-
-        // API Pattern Demo
-        System.out.println("\n🗑️ Result Deletion API Pattern:");
-        System.out.println("  client.deleteResultWithResponse(resultId, requestOptions)");
-        System.out.println("  Use the result ID from the analysis operation for cleanup");
+        System.out.println("Fields extracted: " + documentContent.getFields().size());
 
         // Summary
-        System.out.println("\n✅ DeleteResult API pattern demonstrated:");
-        System.out.println("  Analysis: Completed successfully");
-        System.out.println("  Fields extracted: " + documentContent.getFields().size());
-        System.out.println("  API: deleteResultWithResponse available for cleanup");
+        System.out.println("\n✅ DeleteResult completed successfully:");
+        System.out.println("  1. Analysis operation completed");
+        System.out.println("  2. Operation ID obtained via getOperationId()");
+        System.out.println("  3. Result deleted via deleteResult(operationId)");
     }
 }

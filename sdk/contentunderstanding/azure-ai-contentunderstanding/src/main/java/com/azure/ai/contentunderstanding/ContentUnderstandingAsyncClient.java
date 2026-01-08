@@ -70,7 +70,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -89,9 +89,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -177,15 +177,15 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -267,7 +267,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -277,9 +277,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -376,12 +376,12 @@ public final class ContentUnderstandingAsyncClient {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): [
-     *                 String (Required)
-     *             ]
-     *             embedding (Required): [
-     *                 String (Required)
-     *             ]
+     *             completion (Required): {
+     *                 String: String (Required)
+     *             }
+     *             embedding (Required): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     }
      * }
@@ -415,7 +415,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -508,19 +508,19 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -613,12 +613,12 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -678,7 +678,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get analyzer properties.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -771,12 +771,12 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -799,7 +799,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -827,7 +827,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get the status of an analyzer creation operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -924,12 +924,12 @@ public final class ContentUnderstandingAsyncClient {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): [
-     *                 String (Required)
-     *             ]
-     *             embedding (Required): [
-     *                 String (Required)
-     *             ]
+     *             completion (Required): {
+     *                 String: String (Required)
+     *             }
+     *             embedding (Required): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     }
      *     usage (Optional): {
@@ -967,7 +967,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1049,7 +1049,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get a file associated with the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -1076,7 +1076,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get authorization for copying this analyzer to another location.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1085,9 +1085,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1119,7 +1119,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1212,12 +1212,12 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -1239,7 +1239,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Update analyzer properties.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1332,19 +1332,19 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1437,12 +1437,12 @@ public final class ContentUnderstandingAsyncClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -1468,7 +1468,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1480,9 +1480,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1963,5 +1963,20 @@ public final class ContentUnderstandingAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Extract content and fields from binary input using default content type (application/octet-stream).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @return the {@link PollerFlux} for polling of the analyze operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput) {
+        return beginAnalyzeBinary(analyzerId, "application/octet-stream", binaryInput);
     }
 }

@@ -59,19 +59,21 @@ public class Sample12_GetResultFile {
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
             = client.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
 
-        // Get the operation ID from the poller
-        String operationId = poller.poll().getStatus().toString();
         System.out.println("Started analysis operation");
 
         // Wait for completion
         AnalyzeResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
+        // Get the operation ID from the polling result using the getOperationId() convenience method
+        // The operation ID is extracted from the Operation-Location header and can be used with
+        // getResultFile() and deleteResult() APIs
+        String operationId = poller.poll().getValue().getOperationId();
+        System.out.println("Operation ID: " + operationId);
+
         // END: com.azure.ai.contentunderstanding.getResultFile
 
         System.out.println("Video URL: " + videoUrl);
-        System.out.println("Operation ID obtained: " + operationId);
-        System.out.println("  Length: " + operationId.length() + " characters");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
 
         // BEGIN: com.azure.ai.contentunderstanding.getResultFile.keyframes

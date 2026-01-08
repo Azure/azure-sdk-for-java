@@ -370,12 +370,12 @@ public final class ContentUnderstandingClient {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): [
-     *                 String (Required)
-     *             ]
-     *             embedding (Required): [
-     *                 String (Required)
-     *             ]
+     *             completion (Required): {
+     *                 String: String (Required)
+     *             }
+     *             embedding (Required): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     }
      * }
@@ -502,12 +502,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -607,12 +607,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -765,12 +765,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -917,12 +917,12 @@ public final class ContentUnderstandingClient {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): [
-     *                 String (Required)
-     *             ]
-     *             embedding (Required): [
-     *                 String (Required)
-     *             ]
+     *             completion (Required): {
+     *                 String: String (Required)
+     *             }
+     *             embedding (Required): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     }
      *     usage (Optional): {
@@ -1202,12 +1202,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -1322,12 +1322,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -1427,12 +1427,12 @@ public final class ContentUnderstandingClient {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): [
-     *             String (Required)
-     *         ]
-     *         embedding (Required): [
-     *             String (Required)
-     *         ]
+     *         completion (Required): {
+     *             String: String (Required)
+     *         }
+     *         embedding (Required): {
+     *             String: String (Required)
+     *         }
      *     }
      * }
      * }
@@ -1932,5 +1932,20 @@ public final class ContentUnderstandingClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAnalyzers(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(ContentAnalyzer.class));
+    }
+
+    /**
+     * Extract content and fields from binary input using default content type (application/octet-stream).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param binaryInput The binary content of the document to analyze.
+     * @return the {@link SyncPoller} for polling of the analyze operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
+        BinaryData binaryInput) {
+        return beginAnalyzeBinary(analyzerId, "application/octet-stream", binaryInput);
     }
 }

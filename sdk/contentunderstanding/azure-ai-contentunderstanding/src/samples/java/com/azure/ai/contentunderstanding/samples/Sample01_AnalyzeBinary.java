@@ -58,8 +58,10 @@ public class Sample01_AnalyzeBinary {
         BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
+        // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
+        // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyzeBinary("prebuilt-documentSearch", "application/pdf", binaryData, null, null, null);
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeBinaryAsync

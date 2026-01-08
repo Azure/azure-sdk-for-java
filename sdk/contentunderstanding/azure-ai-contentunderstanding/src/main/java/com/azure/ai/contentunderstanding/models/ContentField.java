@@ -213,4 +213,50 @@ public class ContentField implements JsonSerializable<ContentField> {
             return deserializedContentField;
         });
     }
+
+    /**
+     * Gets the value of the field, regardless of its type.
+     * Returns the appropriate typed value for each field type:
+     * - StringField: returns String (from getValueString())
+     * - NumberField: returns Double (from getValueNumber())
+     * - IntegerField: returns Long (from getValueInteger())
+     * - DateField: returns LocalDate (from getValueDate())
+     * - TimeField: returns String (from getValueTime())
+     * - BooleanField: returns Boolean (from isValueBoolean())
+     * - ObjectField: returns Map (from getValueObject())
+     * - ArrayField: returns List (from getValueArray())
+     * - JsonField: returns String (from getValueJson())
+     *
+     * @return the field value, or null if not available.
+     */
+    public Object getValue() {
+        if (this instanceof StringField) {
+            return ((StringField) this).getValueString();
+        }
+        if (this instanceof NumberField) {
+            return ((NumberField) this).getValueNumber();
+        }
+        if (this instanceof IntegerField) {
+            return ((IntegerField) this).getValueInteger();
+        }
+        if (this instanceof DateField) {
+            return ((DateField) this).getValueDate();
+        }
+        if (this instanceof TimeField) {
+            return ((TimeField) this).getValueTime();
+        }
+        if (this instanceof BooleanField) {
+            return ((BooleanField) this).isValueBoolean();
+        }
+        if (this instanceof ObjectField) {
+            return ((ObjectField) this).getValueObject();
+        }
+        if (this instanceof ArrayField) {
+            return ((ArrayField) this).getValueArray();
+        }
+        if (this instanceof JsonField) {
+            return ((JsonField) this).getValueJson();
+        }
+        return null;
+    }
 }

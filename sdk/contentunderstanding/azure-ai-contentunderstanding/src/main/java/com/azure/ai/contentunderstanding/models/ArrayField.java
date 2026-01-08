@@ -106,4 +106,28 @@ public final class ArrayField extends ContentField {
             return deserializedArrayField;
         });
     }
+
+    /**
+     * Gets the number of items in the array.
+     *
+     * @return the number of items in the array, or 0 if the array is null.
+     */
+    public int size() {
+        return getValueArray() != null ? getValueArray().size() : 0;
+    }
+
+    /**
+     * Gets a field from the array by index.
+     *
+     * @param index The zero-based index of the field to retrieve.
+     * @return The field at the specified index.
+     * @throws IndexOutOfBoundsException if the index is out of range.
+     */
+    public ContentField get(int index) {
+        if (getValueArray() == null || index < 0 || index >= getValueArray().size()) {
+            throw new IndexOutOfBoundsException(
+                "Index " + index + " is out of range. Array has " + size() + " elements.");
+        }
+        return getValueArray().get(index);
+    }
 }

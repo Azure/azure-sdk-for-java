@@ -262,8 +262,10 @@ public final class AudioVisualContent extends MediaContent {
                     height = reader.getNullable(JsonReader::getInt);
                 } else if ("cameraShotTimesMs".equals(fieldName)) {
                     cameraShotTimesMs = reader.readArray(reader1 -> reader1.getLong());
-                } else if ("keyFrameTimesMs".equals(fieldName)) {
-                    keyFrameTimesMs = reader.readArray(reader1 -> reader1.getLong());
+                } else if ("keyFrameTimesMs".equals(fieldName) || "KeyFrameTimesMs".equals(fieldName)) {
+                    if (keyFrameTimesMs == null) {
+                        keyFrameTimesMs = reader.readArray(reader1 -> reader1.getLong());
+                    }
                 } else if ("transcriptPhrases".equals(fieldName)) {
                     transcriptPhrases = reader.readArray(reader1 -> TranscriptPhrase.fromJson(reader1));
                 } else if ("segments".equals(fieldName)) {

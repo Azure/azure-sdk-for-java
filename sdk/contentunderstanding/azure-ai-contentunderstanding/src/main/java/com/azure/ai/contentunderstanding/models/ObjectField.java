@@ -107,4 +107,35 @@ public final class ObjectField extends ContentField {
             return deserializedObjectField;
         });
     }
+
+    /**
+     * Gets a field from the object by name.
+     *
+     * @param fieldName The name of the field to retrieve.
+     * @return The field if found.
+     * @throws IllegalArgumentException if fieldName is null or empty.
+     * @throws java.util.NoSuchElementException if the field is not found.
+     */
+    public ContentField getField(String fieldName) {
+        if (fieldName == null || fieldName.isEmpty()) {
+            throw new IllegalArgumentException("fieldName cannot be null or empty.");
+        }
+        if (getValueObject() != null && getValueObject().containsKey(fieldName)) {
+            return getValueObject().get(fieldName);
+        }
+        throw new java.util.NoSuchElementException("Field '" + fieldName + "' was not found in the object.");
+    }
+
+    /**
+     * Gets a field from the object by name, or null if the field does not exist.
+     *
+     * @param fieldName The name of the field to retrieve.
+     * @return The field if found, or null if not found.
+     */
+    public ContentField getFieldOrDefault(String fieldName) {
+        if (fieldName == null || fieldName.isEmpty() || getValueObject() == null) {
+            return null;
+        }
+        return getValueObject().get(fieldName);
+    }
 }

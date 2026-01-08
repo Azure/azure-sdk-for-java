@@ -1,0 +1,572 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
+import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
+import org.slf4j.Logger;
+
+/**
+ * Customization class for Content Understanding SDK.
+ * This class contains customization code to modify the AutoRest/TypeSpec generated code.
+ */
+public class ContentUnderstandingCustomizations extends Customization {
+
+    private static final String PACKAGE_NAME = "com.azure.ai.contentunderstanding";
+    private static final String MODELS_PACKAGE = "com.azure.ai.contentunderstanding.models";
+    private static final String IMPLEMENTATION_PACKAGE = "com.azure.ai.contentunderstanding.implementation";
+
+    @Override
+    public void customize(LibraryCustomization customization, Logger logger) {
+        // 1. Add operationId field to AnalyzeResult model
+        customizeAnalyzeResult(customization, logger);
+
+        // 2. Customize PollingUtils to add parseOperationId method
+        customizePollingUtils(customization, logger);
+
+        // 3. Customize PollingStrategy to extract and set operationId
+        customizePollingStrategy(customization, logger);
+
+        // 4. Customize Client methods - hide stringEncoding parameter, add simplified overloads
+        customizeClientMethods(customization, logger);
+
+        // 5. Add static accessor helper for operationId
+        addStaticAccessorForOperationId(customization, logger);
+
+        // 6. Add convenience methods to model classes (equivalent to *.Extensions.cs)
+        customizeContentFieldExtensions(customization, logger);
+        customizeArrayFieldExtensions(customization, logger);
+        customizeObjectFieldExtensions(customization, logger);
+
+        // 7. SERVICE-FIX: Add keyFrameTimesMs case-insensitive deserialization
+        customizeAudioVisualContentDeserialization(customization, logger);
+
+        // 8. Add simplified beginAnalyzeBinary overload with default contentType
+        addSimplifiedAnalyzeBinaryMethods(customization, logger);
+
+        // 9. SERVICE-FIX: Fix SupportedModels to use List<String> instead of Map<String, String>
+        // The service returns arrays for completion/embedding, not maps
+        customizeSupportedModels(customization, logger);
+    }
+
+    /**
+     * Add operationId field and getter/setter to ContentAnalyzerAnalyzeOperationStatus
+     */
+    private void customizeAnalyzeResult(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing ContentAnalyzerAnalyzeOperationStatus to add operationId field");
+
+        customization.getClass(MODELS_PACKAGE, "ContentAnalyzerAnalyzeOperationStatus")
+            .customizeAst(ast -> ast.getClassByName("ContentAnalyzerAnalyzeOperationStatus").ifPresent(clazz -> {
+                // Remove @Immutable annotation if present
+                clazz.getAnnotationByName("Immutable").ifPresent(Node::remove);
+
+                // Add operationId field
+                clazz.addField("String", "operationId", Modifier.Keyword.PRIVATE);
+
+                // Add public getter for operationId
+                clazz.addMethod("getOperationId", Modifier.Keyword.PUBLIC)
+                    .setType("String")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets the operationId property: The unique ID of the analyze operation. "
+                        + "Use this ID with getResultFile() and deleteResult() methods."))
+                        .addBlockTag("return", "the operationId value."))
+                    .setBody(StaticJavaParser.parseBlock("{ return operationId; }"));
+
+                // Add private setter for operationId (used by helper)
+                clazz.addMethod("setOperationId", Modifier.Keyword.PRIVATE)
+                    .setType("void")
+                    .addParameter("String", "operationId")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Sets the operationId property: The unique ID of the analyze operation."))
+                        .addBlockTag("param", "operationId the operationId value to set."))
+                    .setBody(StaticJavaParser.parseBlock("{ this.operationId = operationId; }"));
+            }));
+    }
+
+    /**
+     * Add parseOperationId method to PollingUtils
+     */
+    private void customizePollingUtils(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing PollingUtils to add parseOperationId method");
+
+        customization.getClass(IMPLEMENTATION_PACKAGE, "PollingUtils").customizeAst(ast -> {
+            ast.addImport("java.util.regex.Matcher");
+            ast.addImport("java.util.regex.Pattern");
+
+            ast.getClassByName("PollingUtils").ifPresent(clazz -> {
+                // Add regex pattern for extracting operationId from Operation-Location header
+                // Example: https://endpoint/contentunderstanding/analyzers/myAnalyzer/results/operationId?api-version=xxx
+                clazz.addFieldWithInitializer("Pattern", "OPERATION_ID_PATTERN",
+                    StaticJavaParser.parseExpression("Pattern.compile(\"[^:]+://[^/]+/contentunderstanding/.+/([^?/]+)\")"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+
+                // Add parseOperationId method
+                clazz.addMethod("parseOperationId", Modifier.Keyword.STATIC)
+                    .setType("String")
+                    .addParameter("String", "operationLocationHeader")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Parses the operationId from the Operation-Location header."))
+                        .addBlockTag("param", "operationLocationHeader the Operation-Location header value.")
+                        .addBlockTag("return", "the operationId, or null if not found."))
+                    .setBody(StaticJavaParser.parseBlock("{ "
+                        + "if (CoreUtils.isNullOrEmpty(operationLocationHeader)) { return null; }"
+                        + "Matcher matcher = OPERATION_ID_PATTERN.matcher(operationLocationHeader);"
+                        + "if (matcher.find() && matcher.group(1) != null) { return matcher.group(1); }"
+                        + "return null; }"));
+            });
+        });
+    }
+
+    /**
+     * Customize polling strategies to extract operationId and set it on the result
+     */
+    private void customizePollingStrategy(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing SyncOperationLocationPollingStrategy class");
+        PackageCustomization packageCustomization = customization.getPackage(IMPLEMENTATION_PACKAGE);
+
+        packageCustomization.getClass("SyncOperationLocationPollingStrategy").customizeAst(ast ->
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus")
+               .addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper")
+               .getClassByName("SyncOperationLocationPollingStrategy").ifPresent(this::addSyncPollOverrideMethod));
+
+        logger.info("Customizing OperationLocationPollingStrategy class");
+        packageCustomization.getClass("OperationLocationPollingStrategy").customizeAst(ast ->
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus")
+               .addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper")
+               .getClassByName("OperationLocationPollingStrategy").ifPresent(this::addAsyncPollOverrideMethod));
+    }
+
+    private void addSyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
+        clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
+            .setType("PollResponse<T>")
+            .addParameter("PollingContext<T>", "pollingContext")
+            .addParameter("TypeReference<T>", "pollResponseType")
+            .addMarkerAnnotation(Override.class)
+            .setBody(StaticJavaParser.parseBlock("{ "
+                + "PollResponse<T> pollResponse = super.poll(pollingContext, pollResponseType);"
+                + "String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
+                + "String operationId = null;"
+                + "if (operationLocationHeader != null) {"
+                + "    operationId = PollingUtils.parseOperationId(operationLocationHeader);"
+                + "}"
+                + "if (pollResponse.getValue() instanceof ContentAnalyzerAnalyzeOperationStatus) {"
+                + "    ContentAnalyzerAnalyzeOperationStatus operation = (ContentAnalyzerAnalyzeOperationStatus) pollResponse.getValue();"
+                + "    ContentAnalyzerAnalyzeOperationStatusHelper.setOperationId(operation, operationId);"
+                + "}"
+                + "return pollResponse; }"));
+    }
+
+    private void addAsyncPollOverrideMethod(ClassOrInterfaceDeclaration clazz) {
+        clazz.addMethod("poll", Modifier.Keyword.PUBLIC)
+            .setType("Mono<PollResponse<T>>")
+            .addParameter("PollingContext<T>", "pollingContext")
+            .addParameter("TypeReference<T>", "pollResponseType")
+            .addMarkerAnnotation(Override.class)
+            .setBody(StaticJavaParser.parseBlock("{ return super.poll(pollingContext, pollResponseType)"
+                + ".map(pollResponse -> {"
+                + "    String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));"
+                + "    String operationId = null;"
+                + "    if (operationLocationHeader != null) {"
+                + "        operationId = PollingUtils.parseOperationId(operationLocationHeader);"
+                + "    }"
+                + "    if (pollResponse.getValue() instanceof ContentAnalyzerAnalyzeOperationStatus) {"
+                + "        ContentAnalyzerAnalyzeOperationStatus operation = (ContentAnalyzerAnalyzeOperationStatus) pollResponse.getValue();"
+                + "        ContentAnalyzerAnalyzeOperationStatusHelper.setOperationId(operation, operationId);"
+                + "    }"
+                + "    return pollResponse;"
+                + "}); }"));
+    }
+
+    /**
+     * Customize client methods to:
+     * 1. Hide methods with stringEncoding parameter (make them package-private)
+     * 2. Add simplified overloads that use "utf16" as default
+     */
+    private void customizeClientMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing ContentUnderstandingClient methods");
+        customizeClientClass(customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient"), false, logger);
+
+        logger.info("Customizing ContentUnderstandingAsyncClient methods");
+        customizeClientClass(customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient"), true, logger);
+    }
+
+    private void customizeClientClass(ClassCustomization classCustomization, boolean isAsync, Logger logger) {
+        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+            // Hide beginAnalyze methods with stringEncoding parameter
+            clazz.getMethodsByName("beginAnalyze").forEach(method -> {
+                if (method.getParameterByName("stringEncoding").isPresent()) {
+                    method.removeModifier(Modifier.Keyword.PUBLIC);
+                    logger.info("Hidden beginAnalyze method with stringEncoding in " + classCustomization.getClassName());
+                }
+            });
+
+            // Hide beginAnalyzeBinary methods with stringEncoding parameter
+            clazz.getMethodsByName("beginAnalyzeBinary").forEach(method -> {
+                if (method.getParameterByName("stringEncoding").isPresent()) {
+                    method.removeModifier(Modifier.Keyword.PUBLIC);
+                    logger.info("Hidden beginAnalyzeBinary method with stringEncoding in " + classCustomization.getClassName());
+                }
+            });
+        }));
+    }
+
+    /**
+     * Add static accessor helper for setting operationId on ContentAnalyzerAnalyzeOperationStatus
+     */
+    private void addStaticAccessorForOperationId(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding ContentAnalyzerAnalyzeOperationStatusHelper class");
+
+        // First, add the static initializer block to ContentAnalyzerAnalyzeOperationStatus
+        customization.getClass(MODELS_PACKAGE, "ContentAnalyzerAnalyzeOperationStatus").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.implementation.ContentAnalyzerAnalyzeOperationStatusHelper");
+            ast.getClassByName("ContentAnalyzerAnalyzeOperationStatus").ifPresent(clazz ->
+                clazz.getMembers().add(0, new InitializerDeclaration(true,
+                    StaticJavaParser.parseBlock("{"
+                        + "ContentAnalyzerAnalyzeOperationStatusHelper.setAccessor("
+                        + "new ContentAnalyzerAnalyzeOperationStatusHelper.ContentAnalyzerAnalyzeOperationStatusAccessor() {"
+                        + "    @Override"
+                        + "    public void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {"
+                        + "        status.setOperationId(operationId);"
+                        + "    }"
+                        + "}); }"))));
+        });
+
+        // Create the helper class file
+        String helperContent =
+            "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+            + "// Licensed under the MIT License.\n"
+            + "package com.azure.ai.contentunderstanding.implementation;\n\n"
+            + "import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;\n\n"
+            + "/**\n"
+            + " * Helper class to access private members of ContentAnalyzerAnalyzeOperationStatus.\n"
+            + " */\n"
+            + "public final class ContentAnalyzerAnalyzeOperationStatusHelper {\n"
+            + "    private static ContentAnalyzerAnalyzeOperationStatusAccessor accessor;\n\n"
+            + "    /**\n"
+            + "     * Interface for accessing private members.\n"
+            + "     */\n"
+            + "    public interface ContentAnalyzerAnalyzeOperationStatusAccessor {\n"
+            + "        void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId);\n"
+            + "    }\n\n"
+            + "    /**\n"
+            + "     * Sets the accessor.\n"
+            + "     * @param accessorInstance the accessor instance.\n"
+            + "     */\n"
+            + "    public static void setAccessor(ContentAnalyzerAnalyzeOperationStatusAccessor accessorInstance) {\n"
+            + "        accessor = accessorInstance;\n"
+            + "    }\n\n"
+            + "    /**\n"
+            + "     * Sets the operationId on a ContentAnalyzerAnalyzeOperationStatus instance.\n"
+            + "     * @param status the status instance.\n"
+            + "     * @param operationId the operationId to set.\n"
+            + "     */\n"
+            + "    public static void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {\n"
+            + "        accessor.setOperationId(status, operationId);\n"
+            + "    }\n\n"
+            + "    private ContentAnalyzerAnalyzeOperationStatusHelper() {\n"
+            + "    }\n"
+            + "}\n";
+
+        customization.getRawEditor().addFile(
+            "src/main/java/com/azure/ai/contentunderstanding/implementation/ContentAnalyzerAnalyzeOperationStatusHelper.java",
+            helperContent);
+    }
+
+    // =================== Extensions equivalent implementations ===================
+
+    /**
+     * Add getValue() method to ContentField class (equivalent to ContentField.Extensions.cs)
+     * This allows users to get the typed value regardless of the field subtype.
+     */
+    private void customizeContentFieldExtensions(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding getValue() method to ContentField class");
+
+        customization.getClass(MODELS_PACKAGE, "ContentField").customizeAst(ast ->
+            ast.getClassByName("ContentField").ifPresent(clazz -> {
+                // Add getValue() method that returns Object based on the actual type
+                clazz.addMethod("getValue", Modifier.Keyword.PUBLIC)
+                    .setType("Object")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets the value of the field, regardless of its type.\n"
+                        + "Returns the appropriate typed value for each field type:\n"
+                        + "- StringField: returns String (from getValueString())\n"
+                        + "- NumberField: returns Double (from getValueNumber())\n"
+                        + "- IntegerField: returns Long (from getValueInteger())\n"
+                        + "- DateField: returns LocalDate (from getValueDate())\n"
+                        + "- TimeField: returns String (from getValueTime())\n"
+                        + "- BooleanField: returns Boolean (from isValueBoolean())\n"
+                        + "- ObjectField: returns Map (from getValueObject())\n"
+                        + "- ArrayField: returns List (from getValueArray())\n"
+                        + "- JsonField: returns String (from getValueJson())"))
+                        .addBlockTag("return", "the field value, or null if not available."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "if (this instanceof StringField) { return ((StringField) this).getValueString(); }"
+                        + "if (this instanceof NumberField) { return ((NumberField) this).getValueNumber(); }"
+                        + "if (this instanceof IntegerField) { return ((IntegerField) this).getValueInteger(); }"
+                        + "if (this instanceof DateField) { return ((DateField) this).getValueDate(); }"
+                        + "if (this instanceof TimeField) { return ((TimeField) this).getValueTime(); }"
+                        + "if (this instanceof BooleanField) { return ((BooleanField) this).isValueBoolean(); }"
+                        + "if (this instanceof ObjectField) { return ((ObjectField) this).getValueObject(); }"
+                        + "if (this instanceof ArrayField) { return ((ArrayField) this).getValueArray(); }"
+                        + "if (this instanceof JsonField) { return ((JsonField) this).getValueJson(); }"
+                        + "return null; }"));
+            }));
+    }
+
+    /**
+     * Add convenience methods to ArrayField class (equivalent to ArrayField.Extensions.cs)
+     */
+    private void customizeArrayFieldExtensions(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding convenience methods to ArrayField class");
+
+        customization.getClass(MODELS_PACKAGE, "ArrayField").customizeAst(ast ->
+            ast.getClassByName("ArrayField").ifPresent(clazz -> {
+                // Add size() method - equivalent to Count property in C#
+                clazz.addMethod("size", Modifier.Keyword.PUBLIC)
+                    .setType("int")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets the number of items in the array."))
+                        .addBlockTag("return", "the number of items in the array, or 0 if the array is null."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return getValueArray() != null ? getValueArray().size() : 0; }"));
+
+                // Add get(int index) method - equivalent to indexer in C#
+                clazz.addMethod("get", Modifier.Keyword.PUBLIC)
+                    .setType("ContentField")
+                    .addParameter("int", "index")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets a field from the array by index."))
+                        .addBlockTag("param", "index The zero-based index of the field to retrieve.")
+                        .addBlockTag("return", "The field at the specified index.")
+                        .addBlockTag("throws", "IndexOutOfBoundsException if the index is out of range."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "if (getValueArray() == null || index < 0 || index >= getValueArray().size()) {"
+                        + "    throw new IndexOutOfBoundsException(\"Index \" + index + \" is out of range. Array has \" + size() + \" elements.\");"
+                        + "}"
+                        + "return getValueArray().get(index); }"));
+            }));
+    }
+
+    /**
+     * Add convenience methods to ObjectField class (equivalent to ObjectField.Extensions.cs)
+     */
+    private void customizeObjectFieldExtensions(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding convenience methods to ObjectField class");
+
+        customization.getClass(MODELS_PACKAGE, "ObjectField").customizeAst(ast ->
+            ast.getClassByName("ObjectField").ifPresent(clazz -> {
+                // Add getField(String fieldName) method - equivalent to indexer in C#
+                clazz.addMethod("getField", Modifier.Keyword.PUBLIC)
+                    .setType("ContentField")
+                    .addParameter("String", "fieldName")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets a field from the object by name."))
+                        .addBlockTag("param", "fieldName The name of the field to retrieve.")
+                        .addBlockTag("return", "The field if found.")
+                        .addBlockTag("throws", "IllegalArgumentException if fieldName is null or empty.")
+                        .addBlockTag("throws", "java.util.NoSuchElementException if the field is not found."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "if (fieldName == null || fieldName.isEmpty()) {"
+                        + "    throw new IllegalArgumentException(\"fieldName cannot be null or empty.\");"
+                        + "}"
+                        + "if (getValueObject() != null && getValueObject().containsKey(fieldName)) {"
+                        + "    return getValueObject().get(fieldName);"
+                        + "}"
+                        + "throw new java.util.NoSuchElementException(\"Field '\" + fieldName + \"' was not found in the object.\"); }"));
+
+                // Add getFieldOrDefault(String fieldName) method - returns null if not found
+                clazz.addMethod("getFieldOrDefault", Modifier.Keyword.PUBLIC)
+                    .setType("ContentField")
+                    .addParameter("String", "fieldName")
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Gets a field from the object by name, or null if the field does not exist."))
+                        .addBlockTag("param", "fieldName The name of the field to retrieve.")
+                        .addBlockTag("return", "The field if found, or null if not found."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "if (fieldName == null || fieldName.isEmpty() || getValueObject() == null) {"
+                        + "    return null;"
+                        + "}"
+                        + "return getValueObject().get(fieldName); }"));
+            }));
+    }
+
+    // =================== SERVICE-FIX implementations ===================
+
+    /**
+     * SERVICE-FIX: Customize AudioVisualContent deserialization to handle both "keyFrameTimesMs"
+     * and "KeyFrameTimesMs" (capital K) property names for forward-compatibility when the service
+     * fixes the casing issue.
+     */
+    private void customizeAudioVisualContentDeserialization(LibraryCustomization customization, Logger logger) {
+        logger.info("SERVICE-FIX: Customizing AudioVisualContent to handle keyFrameTimesMs casing");
+
+        customization.getClass(MODELS_PACKAGE, "AudioVisualContent").customizeAst(ast ->
+            ast.getClassByName("AudioVisualContent").ifPresent(clazz -> {
+                // Find the fromJson method and modify the keyFrameTimesMs handling
+                clazz.getMethodsByName("fromJson").forEach(method -> {
+                    method.getBody().ifPresent(body -> {
+                        String currentBody = body.toString();
+                        // Replace the exact match for keyFrameTimesMs with case-insensitive handling
+                        // Original: } else if ("keyFrameTimesMs".equals(fieldName)) {
+                        // New: } else if ("keyFrameTimesMs".equals(fieldName) || "KeyFrameTimesMs".equals(fieldName)) {
+                        String updatedBody = currentBody.replace(
+                            "} else if (\"keyFrameTimesMs\".equals(fieldName)) {",
+                            "} else if (\"keyFrameTimesMs\".equals(fieldName) || \"KeyFrameTimesMs\".equals(fieldName)) {"
+                        );
+
+                        // Also wrap the keyFrameTimesMs assignment to prevent overwriting if both casings present
+                        // Original: keyFrameTimesMs = reader.readArray(reader1 -> reader1.getLong());
+                        // New: if (keyFrameTimesMs == null) { keyFrameTimesMs = reader.readArray(...); }
+                        updatedBody = updatedBody.replace(
+                            "keyFrameTimesMs = reader.readArray(reader1 -> reader1.getLong());",
+                            "if (keyFrameTimesMs == null) { keyFrameTimesMs = reader.readArray(reader1 -> reader1.getLong()); }"
+                        );
+
+                        method.setBody(StaticJavaParser.parseBlock(updatedBody));
+                    });
+                });
+            }));
+    }
+
+    /**
+     * Add simplified beginAnalyzeBinary methods that don't require contentType parameter.
+     * When contentType is not specified, defaults to "application/octet-stream".
+     */
+    private void addSimplifiedAnalyzeBinaryMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding simplified beginAnalyzeBinary methods with default contentType");
+
+        // Add to sync client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
+                // Add simplified overload without contentType - delegates to version with default
+                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("BinaryData", "binaryInput")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from binary input using default content type (application/octet-stream)."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
+                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyzeBinary(analyzerId, \"application/octet-stream\", binaryInput); }"));
+            });
+        });
+
+        // Add to async client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
+                // Add simplified overload without contentType - delegates to version with default
+                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("BinaryData", "binaryInput")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from binary input using default content type (application/octet-stream)."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
+                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyzeBinary(analyzerId, \"application/octet-stream\", binaryInput); }"));
+            });
+        });
+    }
+
+    /**
+     * SERVICE-FIX: Fix SupportedModels to use List<String> instead of Map<String, String>.
+     * The service returns arrays for completion/embedding fields, not maps.
+     * This fixes the deserialization error: "Unexpected token to begin map deserialization: START_ARRAY"
+     */
+    private void customizeSupportedModels(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing SupportedModels to use List<String> instead of Map<String, String>");
+
+        customization.getClass(MODELS_PACKAGE, "SupportedModels").customizeAst(ast -> {
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.ArrayList");
+
+            ast.getClassByName("SupportedModels").ifPresent(clazz -> {
+                // Change completion field from Map<String, String> to List<String>
+                clazz.getFieldByName("completion").ifPresent(field -> {
+                    field.getVariable(0).setType("List<String>");
+                });
+
+                // Change embedding field from Map<String, String> to List<String>
+                clazz.getFieldByName("embedding").ifPresent(field -> {
+                    field.getVariable(0).setType("List<String>");
+                });
+
+                // Update getCompletion return type
+                clazz.getMethodsByName("getCompletion").forEach(method -> {
+                    method.setType("List<String>");
+                });
+
+                // Update getEmbedding return type
+                clazz.getMethodsByName("getEmbedding").forEach(method -> {
+                    method.setType("List<String>");
+                });
+
+                // Update constructor parameter types
+                clazz.getConstructors().forEach(constructor -> {
+                    constructor.getParameters().forEach(param -> {
+                        String paramName = param.getNameAsString();
+                        if ("completion".equals(paramName) || "embedding".equals(paramName)) {
+                            param.setType("List<String>");
+                        }
+                    });
+                });
+
+                // Update toJson method - change writeMapField to writeArrayField
+                clazz.getMethodsByName("toJson").forEach(method -> {
+                    method.getBody().ifPresent(body -> {
+                        String bodyStr = body.toString();
+                        // Replace writeMapField with writeArrayField for completion and embedding
+                        bodyStr = bodyStr.replace(
+                            "jsonWriter.writeMapField(\"completion\", this.completion, (writer, element) -> writer.writeString(element))",
+                            "jsonWriter.writeArrayField(\"completion\", this.completion, (writer, element) -> writer.writeString(element))");
+                        bodyStr = bodyStr.replace(
+                            "jsonWriter.writeMapField(\"embedding\", this.embedding, (writer, element) -> writer.writeString(element))",
+                            "jsonWriter.writeArrayField(\"embedding\", this.embedding, (writer, element) -> writer.writeString(element))");
+                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
+                    });
+                });
+
+                // Update fromJson method - change readMap to readArray
+                clazz.getMethodsByName("fromJson").forEach(method -> {
+                    method.getBody().ifPresent(body -> {
+                        String bodyStr = body.toString();
+                        // Replace Map<String, String> with List<String>
+                        bodyStr = bodyStr.replace("Map<String, String> completion = null;", "List<String> completion = null;");
+                        bodyStr = bodyStr.replace("Map<String, String> embedding = null;", "List<String> embedding = null;");
+                        // Replace readMap with readArray
+                        bodyStr = bodyStr.replace(
+                            "completion = reader.readMap(reader1 -> reader1.getString());",
+                            "completion = reader.readArray(reader1 -> reader1.getString());");
+                        bodyStr = bodyStr.replace(
+                            "embedding = reader.readMap(reader1 -> reader1.getString());",
+                            "embedding = reader.readArray(reader1 -> reader1.getString());");
+                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
+                    });
+                });
+            });
+        });
+    }
+}
