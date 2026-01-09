@@ -164,8 +164,7 @@ function Get-ArtifactsList-Per-Service-Directory {
         }
         # The ci.cosmos.yml lives in spring and is used to test the cosmos spring library. Its exception
         # will be moved once things are corrected.
-        if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
-            $ymlFile.Name -eq "ci.cosmos.yml") {
+        if ($ymlFile.Name -eq "ci.cosmos.yml") {
             continue
         }
         # The path is going to be the key. Since there can be multiple yml files for a single path,
@@ -728,7 +727,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         {
             # skip version checks when they have been intentionally applied via variables
         }
-        else 
+        else
         {
             if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
             {
@@ -738,7 +737,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 {
                     # skip version checks when they have been intentionally applied via variables
                 }
-                else 
+                else
                 {
                     if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
                     {
@@ -762,7 +761,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
-        }    
+        }
     }
     # Verify every plugin has a group, artifact and version
     # Verify every dependency has a group, artifact and version
@@ -897,7 +896,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 $groupId = $split[0]
                 $artifactId = $split[1]
                 $version = $split[2]
-                
+
                 if ($version.StartsWith('[${')) {
                     # skip version checks when they have been intentionally applied via variables
                 }

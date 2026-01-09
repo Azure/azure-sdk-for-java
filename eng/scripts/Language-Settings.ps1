@@ -36,9 +36,7 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
     # the service directory sits outside of the engineering system
     # 1. boms - BOMs are POM only releases. Also, their versions aren't version controlled.
     # 2. parents - parents are POM only releases which are version controlled
-    # 3. resourcemanagerhybrid - intermediate version of resourcemanager that was
-    #    a one time release which sits outside of the engineering system
-    $excludeFolders = "boms", "resourcemanagerhybrid", "parents"
+    $excludeFolders = "boms", "parents"
     [array]$ymlFiles = Get-ChildItem -Path $sdkRoot -Include "ci*.yml" -Recurse -Depth 3 | Where-Object { $_.PSIsContainer -eq $false -and $_.DirectoryName -notmatch ($excludeFolders -join "|") }
   }
 
