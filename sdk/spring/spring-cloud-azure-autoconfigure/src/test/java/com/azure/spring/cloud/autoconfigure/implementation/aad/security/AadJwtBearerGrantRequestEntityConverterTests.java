@@ -86,7 +86,7 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         List<String> grantTypeValues = parameters.get(OAuth2ParameterNames.GRANT_TYPE);
         assertNotNull(grantTypeValues);
         assertEquals(1, grantTypeValues.size(), 
-            "Grant type should be a single value, not duplicated: " + grantTypeValues);
+            "Grant type should be a single value, not duplicated. Found: " + grantTypeValues.size() + " values");
         assertEquals("urn:ietf:params:oauth:grant-type:jwt-bearer", grantTypeValues.get(0));
         
         // Verify the custom parameter was added
