@@ -5,8 +5,6 @@ package com.azure.ai.voicelive;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -33,7 +31,6 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
     private TokenCredential tokenCredential;
     private VoiceLiveServiceVersion serviceVersion;
     private ClientOptions clientOptions;
-    private Map<String, String> customQueryParameters;
 
     /**
      * Creates a new instance of VoiceLiveClientBuilder.
@@ -111,23 +108,6 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
     }
 
     /**
-     * Sets custom query parameters to be included in the WebSocket connection URL.
-     * These parameters will be appended to the query string when establishing the WebSocket connection.
-     * This will replace any previously set custom query parameters.
-     *
-     * @param customQueryParameters A map of query parameter names to values.
-     * @return The updated VoiceLiveClientBuilder instance.
-     */
-    public VoiceLiveClientBuilder customQueryParameters(Map<String, String> customQueryParameters) {
-        if (customQueryParameters != null) {
-            this.customQueryParameters = new HashMap<>(customQueryParameters);
-        } else {
-            this.customQueryParameters = null;
-        }
-        return this;
-    }
-
-    /**
      * Builds a {@link VoiceLiveAsyncClient} instance with the configured options.
      *
      * @return A new VoiceLiveAsyncClient instance.
@@ -146,11 +126,9 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
         if (keyCredential != null) {
-            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders,
-                customQueryParameters);
+            return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders);
         } else {
-            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders,
-                customQueryParameters);
+            return new VoiceLiveAsyncClient(endpoint, tokenCredential, version.getVersion(), additionalHeaders);
         }
     }
 }
