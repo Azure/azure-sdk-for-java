@@ -8,6 +8,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithms;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -103,6 +104,7 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
                                                                   .clientId("test")
                                                                   .clientSecret("test-secret")
+                                                                  .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                                                                   .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
                                                                   .tokenUri("http://localhost/token")
                                                                   .scope("openid", "profile")
@@ -131,6 +133,7 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         assertTrue(parameters.containsKey(OAuth2ParameterNames.SCOPE));
         assertEquals("openid profile", parameters.getFirst(OAuth2ParameterNames.SCOPE));
         
+        // For CLIENT_SECRET_POST, both client_id and client_secret should be in parameters
         assertTrue(parameters.containsKey(OAuth2ParameterNames.CLIENT_ID));
         assertEquals("test", parameters.getFirst(OAuth2ParameterNames.CLIENT_ID));
         
@@ -139,5 +142,41 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         
         assertTrue(parameters.containsKey("requested_token_use"));
         assertEquals("on_behalf_of", parameters.getFirst("requested_token_use"));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void clientSecretBasicAuthenticationMethod() {
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
+                                                                  .clientId("test")
+                                                                  .clientSecret("test-secret")
+                                                                  .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                                                                  .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
+                                                                  .tokenUri("http://localhost/token")
+                                                                  .scope("openid", "profile")
+                                                                  .build();
+        Jwt jwt = Jwt.withTokenValue("jwt-token-value")
+                     .header("alg", JwsAlgorithms.RS256)
+                     .claim("sub", "test")
+                     .issuedAt(Instant.ofEpochMilli(Instant.now().toEpochMilli()))
+                     .expiresAt(Instant.ofEpochMilli(Instant.now().plusSeconds(60).toEpochMilli()))
+                     .build();
+        JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRegistration, jwt);
+        AadJwtBearerGrantRequestEntityConverter converter =
+            new AadJwtBearerGrantRequestEntityConverter();
+        RequestEntity<MultiValueMap<String, String>> entity =
+            (RequestEntity<MultiValueMap<String, String>>) converter.convert(request);
+        MultiValueMap<String, String> parameters = entity.getBody();
+        
+        // For CLIENT_SECRET_BASIC, credentials should NOT be in the parameters (they go in the Authorization header)
+        assertFalse(parameters.containsKey(OAuth2ParameterNames.CLIENT_ID),
+                "CLIENT_ID should not be in parameters for CLIENT_SECRET_BASIC");
+        assertFalse(parameters.containsKey(OAuth2ParameterNames.CLIENT_SECRET),
+                "CLIENT_SECRET should not be in parameters for CLIENT_SECRET_BASIC");
+        
+        // But other parameters should still be present
+        assertTrue(parameters.containsKey(OAuth2ParameterNames.GRANT_TYPE));
+        assertTrue(parameters.containsKey(OAuth2ParameterNames.ASSERTION));
+        assertTrue(parameters.containsKey("requested_token_use"));
     }
 }
