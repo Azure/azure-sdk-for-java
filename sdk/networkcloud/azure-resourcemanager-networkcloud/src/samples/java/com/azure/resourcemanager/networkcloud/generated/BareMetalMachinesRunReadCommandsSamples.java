@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class BareMetalMachinesRunReadCommandsSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * BareMetalMachines_RunReadCommands_Hostname.json
      */
     /**
@@ -34,7 +34,7 @@ public final class BareMetalMachinesRunReadCommandsSamples {
 
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * BareMetalMachines_RunReadCommands_Multiple.json
      */
     /**

@@ -11,7 +11,7 @@
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-  <version>4.42.0</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+  <version>4.43.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-5_2-12</url>
   <name>OLTP Spark 3.5 Connector for Azure Cosmos DB SQL API</name>
@@ -40,6 +40,18 @@
   </developers>
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
+    <scala.binary.version>2.12</scala.binary.version>
+    <scala.version>2.12.19</scala.version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+    <spark33.version>3.3.0</spark33.version> <!-- {x-version-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <spark34.version>3.4.0</spark34.version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <scala-java8-compat.version>0.9.1</scala-java8-compat.version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+    <reactor-scala-extensions.version>0.8.0</reactor-scala-extensions.version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+    <scalatest.version>3.2.2</scalatest.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+    <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+    <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+    <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
   </properties>
   <build>
     <plugins>
@@ -102,13 +114,13 @@
   <profiles>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>spark-e2e_3-5</id>
+      <id>spark-e2e_3-5_2-12</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
         <property>
-          <name>spark-e2e_3-5</name>
+          <name>spark-e2e_3-5_2-12</name>
         </property>
       </activation>
       <build>
@@ -148,6 +160,7 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
+              <argLine>${scalatest.argLine}</argLine>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
@@ -164,6 +177,15 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>java9-plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <properties>
+        <scalatest.argLine>--add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/jdk.internal.ref=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/sun.nio.cs=ALL-UNNAMED --add-opens=java.base/sun.security.action=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED -Djdk.reflect.useDirectMethodHandle=false</scalatest.argLine>
+      </properties>
     </profile>
   </profiles>
 </project>

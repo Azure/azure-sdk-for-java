@@ -1,5 +1,16 @@
 ## Release History
 
+### 2.8.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Added filtering to deserialization of `"azure.cosmos.client.metadata.caches.snapshot"` - See [PR 47594](https://github.com/Azure/azure-sdk-for-java/pull/47594)
+
+#### Other Changes
+
 ### 2.7.0 (2025-12-09)
 
 #### Other Changes

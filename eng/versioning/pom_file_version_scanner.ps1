@@ -723,31 +723,46 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             continue
         }
-        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
+
+        if ($versionNode.FirstChild.Value.StartsWith('${'))
         {
-            # unfortunately because there are POM exceptions we need to wildcard the group which may be
-            # something like <area>_groupId
-            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
+            # skip version checks when they have been intentionally applied via variables
+        }
+        else 
+        {
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
             {
-                $hasError = $true
-                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                # unfortunately because there are POM exceptions we need to wildcard the group which may be
+                # something like <area>_groupId
+                if ($versionNode.FirstChild.Value.StartsWith('${'))
+                {
+                    # skip version checks when they have been intentionally applied via variables
+                }
+                else 
+                {
+                    if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
+                    {
+                        $hasError = $true
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: dependency version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    }
+                    else
+                    {
+                        # verify the version tag and version are correct
+                        $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value $artifactsPerSDHashSet
+                        if ($retVal)
+                        {
+                            $hasError = $true
+                            $potentialLogMessage = Join-With-NewLine $potentialLogMessage $retVal
+                        }
+                    }
+                }
             }
             else
             {
-                # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value $artifactsPerSDHashSet
-                if ($retVal)
-                {
-                    $hasError = $true
-                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage $retVal
-                }
+                $hasError = $true
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
-        }
-        else
-        {
-            $hasError = $true
-            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-        }
+        }    
     }
     # Verify every plugin has a group, artifact and version
     # Verify every dependency has a group, artifact and version
@@ -882,80 +897,87 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 $groupId = $split[0]
                 $artifactId = $split[1]
                 $version = $split[2]
-                # The groupId match has to be able to deal with <area>_ for external dependency exceptions
-                if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
-                {
-                    $hasError = $true
-                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
-                }
-                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
-                {
-                    $hasError = $true
-                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                
+                if ($version.StartsWith('[${')) {
+                    # skip version checks when they have been intentionally applied via variables
                 }
                 else
                 {
-                    # verify that the version is formatted correctly
-                    if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
+                    # The groupId match has to be able to deal with <area>_ for external dependency exceptions
+                    if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
                     {
                         $hasError = $true
-                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
                     }
-                    # verify the version has the correct value
+                    elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(.+)?$($groupId):$($artifactId);(current|dependency|external_dependency)}")
+                    {
+                        $hasError = $true
+                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                    }
                     else
                     {
-                        $versionWithoutBraces = $version.Substring(1, $version.Length -2)
-                        # the key into the dependency has needs to be created from the tag's group/artifact
-                        # entries in case it's an external dependency entry. Because this has already
-                        # been validated for format, grab the group:artifact
-                        $depKey = $includeNode.NextSibling.Value.Trim().Split(";")[1]
-                        $depType = $includeNode.NextSibling.Value.Trim().Split(";")[2]
-                        $depType = $depType.Substring(0, $depType.IndexOf("}"))
-                        if ($depType -eq $DependencyTypeExternal)
+                        # verify that the version is formatted correctly
+                        if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
                         {
-                            if ($extDepHash.ContainsKey($depKey))
+                            $hasError = $true
+                            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
+                        }
+                        # verify the version has the correct value
+                        else
+                        {
+                            $versionWithoutBraces = $version.Substring(1, $version.Length -2)
+                            # the key into the dependency has needs to be created from the tag's group/artifact
+                            # entries in case it's an external dependency entry. Because this has already
+                            # been validated for format, grab the group:artifact
+                            $depKey = $includeNode.NextSibling.Value.Trim().Split(";")[1]
+                            $depType = $includeNode.NextSibling.Value.Trim().Split(";")[2]
+                            $depType = $depType.Substring(0, $depType.IndexOf("}"))
+                            if ($depType -eq $DependencyTypeExternal)
                             {
-                                if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
+                                if ($extDepHash.ContainsKey($depKey))
+                                {
+                                    if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
+                                    {
+                                        $hasError = $true
+                                        $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                                    }
+                                }
+                                else
                                 {
                                     $hasError = $true
-                                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
                                 }
                             }
                             else
                             {
-                                $hasError = $true
-                                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
-                            }
-                        }
-                        else
-                        {
-                            # If the tag isn't external_dependency then verify it exists in the library hash
-                            if (!$libHash.ContainsKey($depKey))
-                            {
-                                $hasError = $true
-                                return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
+                                # If the tag isn't external_dependency then verify it exists in the library hash
+                                if (!$libHash.ContainsKey($depKey))
+                                {
+                                    $hasError = $true
+                                    return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
 
-                            }
-                            if ($depType -eq $DependencyTypeDependency)
-                            {
-                                if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
-                                {
-                                    $hasError = $true
-                                    return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                                 }
-                            }
-                            elseif ($depType -eq $DependencyTypeCurrent)
-                            {
-                                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
-                                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
+                                if ($depType -eq $DependencyTypeDependency)
                                 {
-                                    $hasError = $true
-                                    return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
+                                    if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
+                                    {
+                                        $hasError = $true
+                                        return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
+                                    }
                                 }
-                                if ($versionWithoutBraces -ne $libHash[$depKey].curVer)
+                                elseif ($depType -eq $DependencyTypeCurrent)
                                 {
-                                    $hasError = $true
-                                    return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
+                                    # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
+                                    if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
+                                    {
+                                        $hasError = $true
+                                        return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
+                                    }
+                                    if ($versionWithoutBraces -ne $libHash[$depKey].curVer)
+                                    {
+                                        $hasError = $true
+                                        return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
+                                    }
                                 }
                             }
                         }

@@ -60,6 +60,13 @@
     "package": "com.azure.resourcemanager.containerregistry",
     "args": "--tag=package-2025-11 --modelerfour.lenient-model-deduplication=true --enable-sync-stack=false"
   },
+  "containerregistrytasks": {
+    "dir": "../containerregistry/azure-resourcemanager-containerregistry",
+    "source": "specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/readme.md",
+    "package": "com.azure.resourcemanager.containerregistry",
+    "args": "--tag=package-2019-06-preview --title=ContainerRegistryTasksManagementClient --rename-operation-group:Registries:RegistryTasks --rename-model=DockerBuildStep:DockerTaskStep --modelerfour.lenient-model-deduplication=true --metadata-suffix=registrytasks --enable-sync-stack=false",
+    "note": "Use commit 09695f5a97dfcf201766ea2f2e7e3b53aec49144 for Swagger before TypeSpec migration"
+  },
   "containerregistry-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
@@ -70,7 +77,7 @@
     "dir": "../containerservice/azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-preview-2025-09 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --enable-sync-stack=false"
+    "args": "--tag=package-2025-10 --modelerfour.lenient-model-deduplication --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku --enable-sync-stack=false"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",

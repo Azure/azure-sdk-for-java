@@ -19,8 +19,8 @@ import java.util.Map;
 public final class BmcKeySetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
-     * BmcKeySets_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/BmcKeySets_Create.
+     * json
      */
     /**
      * Sample code: Create or update baseboard management controller key set of cluster.

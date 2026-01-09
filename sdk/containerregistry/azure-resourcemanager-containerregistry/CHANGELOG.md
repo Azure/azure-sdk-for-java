@@ -2,13 +2,16 @@
 
 ## 2.55.0-beta.2 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+#### Changes to `ContainerRegistryManagementClient` Class
 
-### Other Changes
+- Moved `ContainerRegistryManager.serviceClient().getAgentPools()` to `ContainerRegistryManager.taskClient().getAgentPools()`.
+- Moved `ContainerRegistryManager.serviceClient().getRuns()` to `ContainerRegistryManager.taskClient().getRuns()`.
+- Moved `ContainerRegistryManager.serviceClient().getTaskRuns()` to `ContainerRegistryManager.taskClient().getTaskRuns()`.
+- Moved `ContainerRegistryManager.serviceClient().getTasks()` to `ContainerRegistryManager.taskClient().getTasks()`.
+- Moved `ContainerRegistryManager.serviceClient().getRegistries().scheduleRun(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().scheduleRun(...)`.
+- Moved `ContainerRegistryManager.serviceClient().getRegistries().getBuildSourceUploadUrl(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().getBuildSourceUploadUrl(...)`.
 
 ## 2.55.0-beta.1 (2025-12-04)
 
