@@ -242,7 +242,7 @@ public final class HttpClientHelper {
         private static Context buildRequestContext(RequestOptions requestOptions) {
             Context context = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
-            // we use "read" as it's the closes thing to the "response timeout"
+            // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
                 context = context.addData("azure-response-timeout", timeout.read());
             }

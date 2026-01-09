@@ -545,8 +545,8 @@ public final class AIProjectClientBuilder
      */
     public EvaluationsClient buildEvaluationsClient() {
         return new EvaluationsClient(getOpenAIClientBuilder().build()
-                .withOptions(optionBuilder -> optionBuilder
-                        .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -556,8 +556,8 @@ public final class AIProjectClientBuilder
      */
     public EvaluationsAsyncClient buildEvaluationsAsyncClient() {
         return new EvaluationsAsyncClient(getOpenAIAsyncClientBuilder().build()
-                .withOptions(optionBuilder -> optionBuilder
-                        .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
