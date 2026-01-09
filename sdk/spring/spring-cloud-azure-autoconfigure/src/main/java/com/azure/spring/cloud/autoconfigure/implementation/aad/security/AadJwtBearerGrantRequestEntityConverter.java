@@ -5,7 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequestEntityConverter;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 /**
  * This is a special JWT Bearer flow implementation for Microsoft identify platform.
@@ -18,8 +24,19 @@ public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantReque
 
     @Override
     protected MultiValueMap<String, String> createParameters(JwtBearerGrantRequest jwtBearerGrantRequest) {
-        MultiValueMap<String, String> parameters = super.createParameters(jwtBearerGrantRequest);
-        parameters.add("requested_token_use", "on_behalf_of");
+        ClientRegistration clientRegistration = jwtBearerGrantRequest.getClientRegistration();
+        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        parameters.set(OAuth2ParameterNames.GRANT_TYPE, jwtBearerGrantRequest.getGrantType().getValue());
+        parameters.set(OAuth2ParameterNames.ASSERTION, jwtBearerGrantRequest.getJwt().getTokenValue());
+        if (!CollectionUtils.isEmpty(clientRegistration.getScopes())) {
+            parameters.set(OAuth2ParameterNames.SCOPE,
+                    StringUtils.collectionToDelimitedString(clientRegistration.getScopes(), " "));
+        }
+        if (ClientAuthenticationMethod.CLIENT_SECRET_POST.equals(clientRegistration.getClientAuthenticationMethod())) {
+            parameters.set(OAuth2ParameterNames.CLIENT_ID, clientRegistration.getClientId());
+            parameters.set(OAuth2ParameterNames.CLIENT_SECRET, clientRegistration.getClientSecret());
+        }
+        parameters.set("requested_token_use", "on_behalf_of");
         return parameters;
     }
 }
