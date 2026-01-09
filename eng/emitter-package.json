@@ -1,11 +1,11 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-java": "0.38.0"
+    "@azure-tools/typespec-java": "/mnt/vss/_work/1/s/autorest.java/typespec-extension/azure-tools-typespec-java-0.37.4.tgz"
   },
   "devDependencies": {
     "@azure-tools/typespec-autorest": "0.63.1",
-    "@azure-tools/typespec-azure-core": "0.63.1",
+    "@azure-tools/typespec-azure-core": "0.63.0",
     "@azure-tools/typespec-azure-resource-manager": "0.63.0",
     "@azure-tools/typespec-azure-rulesets": "0.63.0",
     "@azure-tools/typespec-client-generator-core": "0.63.3",
