@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +22,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -166,7 +166,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         if (Boolean.TRUE.equals(monitoring.getRefreshAll())) {
                             // Use collection monitoring for refresh
                             List<CollectionMonitoring> collectionMonitoringList = createCollectionMonitoring(currentClient);
-                            storeState.setState(resource.getEndpoint(), null, collectionMonitoringList, monitoring.getRefreshInterval());
+                            storeState.setState(resource.getEndpoint(), Collections.emptyList(), collectionMonitoringList, monitoring.getRefreshInterval());
                         } else {
                             // Use traditional watch key monitoring
                             List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
