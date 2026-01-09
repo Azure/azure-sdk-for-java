@@ -37,8 +37,8 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         Jwt jwt = Jwt.withTokenValue("jwt-token-value")
                      .header("alg", JwsAlgorithms.RS256)
                      .claim("sub", "test")
-                     .issuedAt(Instant.ofEpochMilli(Instant.now().toEpochMilli()))
-                     .expiresAt(Instant.ofEpochMilli(Instant.now().plusSeconds(60).toEpochMilli()))
+                     .issuedAt(Instant.now())
+                     .expiresAt(Instant.now().plusSeconds(60))
                      .build();
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRegistration, jwt);
         AadJwtBearerGrantRequestEntityConverter converter =
@@ -112,8 +112,8 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         Jwt jwt = Jwt.withTokenValue("jwt-token-value")
                      .header("alg", JwsAlgorithms.RS256)
                      .claim("sub", "test")
-                     .issuedAt(Instant.ofEpochMilli(Instant.now().toEpochMilli()))
-                     .expiresAt(Instant.ofEpochMilli(Instant.now().plusSeconds(60).toEpochMilli()))
+                     .issuedAt(Instant.now())
+                     .expiresAt(Instant.now().plusSeconds(60))
                      .build();
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRegistration, jwt);
         AadJwtBearerGrantRequestEntityConverter converter =
@@ -158,8 +158,8 @@ class AadJwtBearerGrantRequestEntityConverterTests {
         Jwt jwt = Jwt.withTokenValue("jwt-token-value")
                      .header("alg", JwsAlgorithms.RS256)
                      .claim("sub", "test")
-                     .issuedAt(Instant.ofEpochMilli(Instant.now().toEpochMilli()))
-                     .expiresAt(Instant.ofEpochMilli(Instant.now().plusSeconds(60).toEpochMilli()))
+                     .issuedAt(Instant.now())
+                     .expiresAt(Instant.now().plusSeconds(60))
                      .build();
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRegistration, jwt);
         AadJwtBearerGrantRequestEntityConverter converter =
