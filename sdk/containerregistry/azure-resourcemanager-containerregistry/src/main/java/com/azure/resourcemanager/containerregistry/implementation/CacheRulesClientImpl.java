@@ -157,11 +157,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
             .<PagedResponse<CacheRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -197,12 +196,11 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                registryName, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -308,11 +306,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, cacheRuleName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, cacheRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -350,11 +347,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, cacheRuleName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, cacheRuleName, accept, context);
     }
 
     /**
@@ -448,12 +444,11 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleCreateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters, accept, context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, cacheRuleName,
+                cacheRuleCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -498,11 +493,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleCreateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, cacheRuleName, cacheRuleCreateParameters, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters, accept, context);
     }
 
     /**
@@ -705,12 +699,11 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleUpdateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, cacheRuleName,
+                cacheRuleUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -755,11 +748,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         } else {
             cacheRuleUpdateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, cacheRuleName, cacheRuleUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters, accept, context);
     }
 
     /**
@@ -956,10 +948,9 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, cacheRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -997,11 +988,10 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
         if (cacheRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter cacheRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, cacheRuleName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, cacheRuleName, accept, context);
     }
 
     /**
