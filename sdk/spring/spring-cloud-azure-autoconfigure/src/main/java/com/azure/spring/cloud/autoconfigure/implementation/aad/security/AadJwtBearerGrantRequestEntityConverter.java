@@ -53,6 +53,8 @@ public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantReque
                 // Take the first value to preserve the base implementation's default
                 flattenedParameters.set(entry.getKey(), values.get(0));
             }
+            // Note: Parameters with null or empty value lists are intentionally excluded
+            // from the request, as per OAuth2 specification
         }
         
         // Return a new RequestEntity with the flattened parameters
