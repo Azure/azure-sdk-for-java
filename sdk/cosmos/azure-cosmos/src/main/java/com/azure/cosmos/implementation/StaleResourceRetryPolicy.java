@@ -24,6 +24,9 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger  = LoggerFactory.getLogger(StaleResourceRetryPolicy.class);
 
+    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
@@ -33,6 +36,7 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
     private RxDocumentServiceRequest request;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final AtomicReference<CosmosDiagnostics> cosmosDiagnosticsHolder;
+    private final ResourceType enclosingOperationTargetResourceType;
 
     private volatile boolean retried = false;
 
@@ -43,7 +47,8 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
         Map<String, Object> requestOptionProperties,
         Map<String, String> requestCustomHeaders,
         ISessionContainer sessionContainer,
-        DiagnosticsClientContext diagnosticsClientContext) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        ResourceType enclosingOperationTargetResourceType) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
@@ -56,6 +61,8 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
 
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.cosmosDiagnosticsHolder = new AtomicReference<>(null); // will only create one if no request is bound to the retry policy
+
+        this.enclosingOperationTargetResourceType = enclosingOperationTargetResourceType;
     }
 
     @Override
@@ -84,7 +91,7 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                 // 2. If the collection rid has changed, then also clean up session container for old containerRid
                 AtomicReference<String> oldCollectionRid = new AtomicReference<>();
                 return this.clientCollectionCache
-                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties)
+                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties, null, this.enclosingOperationTargetResourceType)
                     .flatMap(collectionInCache -> {
                         oldCollectionRid.set(collectionInCache.getResourceId());
 
@@ -102,8 +109,9 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                                 .resolveByNameAsync(
                                     this.getMetadataDiagnosticsContext(),
                                     collectionLink,
-                                    requestOptionProperties
-                                )
+                                    requestOptionProperties,
+                                    null,
+                                    this.enclosingOperationTargetResourceType)
                                 .map(DocumentCollection :: getResourceId);
                         }
 

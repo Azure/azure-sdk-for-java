@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.CollectionRoutingMapNotFoundException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -189,7 +190,8 @@ final class BulkExecutorUtil {
                 null,
                 resourceAddress,
                 null,
-                obsoleteValue);
+                obsoleteValue,
+                ResourceType.Document);
     }
 
     static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {
