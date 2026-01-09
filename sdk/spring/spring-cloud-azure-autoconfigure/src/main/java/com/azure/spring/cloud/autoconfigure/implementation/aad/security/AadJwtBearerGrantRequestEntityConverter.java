@@ -3,9 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
+import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.JwtBearerGrantRequestEntityConverter;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a special JWT Bearer flow implementation for Microsoft identify platform.
@@ -21,6 +26,40 @@ public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantReque
         MultiValueMap<String, String> parameters = super.createParameters(jwtBearerGrantRequest);
         parameters.add("requested_token_use", "on_behalf_of");
         return parameters;
+    }
+
+    @Override
+    public RequestEntity<?> convert(JwtBearerGrantRequest jwtBearerGrantRequest) {
+        // Call the parent convert() method which will run all registered parameter converters
+        RequestEntity<?> requestEntity = super.convert(jwtBearerGrantRequest);
+        
+        // Get the body (parameters) from the request entity
+        Object body = requestEntity.getBody();
+        if (!(body instanceof MultiValueMap)) {
+            return requestEntity;
+        }
+        
+        @SuppressWarnings("unchecked")
+        MultiValueMap<String, String> parameters = (MultiValueMap<String, String>) body;
+        
+        // Flatten multi-valued parameters to single values
+        // This fixes the issue where multiple converters add the same parameter key,
+        // causing duplicate values (e.g., grant_type=[value1, value2] instead of grant_type=[value1])
+        MultiValueMap<String, String> flattenedParameters = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
+            List<String> values = entry.getValue();
+            if (values != null && !values.isEmpty()) {
+                // Use set() to ensure only one value per key
+                // Take the first value to preserve the base implementation's default
+                flattenedParameters.set(entry.getKey(), values.get(0));
+            }
+        }
+        
+        // Return a new RequestEntity with the flattened parameters
+        return RequestEntity
+                .method(requestEntity.getMethod(), requestEntity.getUrl())
+                .headers(requestEntity.getHeaders())
+                .body(flattenedParameters);
     }
 }
 
