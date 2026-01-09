@@ -32,11 +32,13 @@ public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantReque
             parameters.set(OAuth2ParameterNames.SCOPE,
                     StringUtils.collectionToDelimitedString(clientRegistration.getScopes(), " "));
         }
-        // Add client_id for all authentication methods except CLIENT_SECRET_BASIC (where it's in the header)
+        // For CLIENT_SECRET_BASIC: credentials go in Authorization header, not in request parameters
+        // For CLIENT_SECRET_POST and other methods: client_id goes in request parameters
         if (!ClientAuthenticationMethod.CLIENT_SECRET_BASIC.equals(clientRegistration.getClientAuthenticationMethod())) {
             parameters.set(OAuth2ParameterNames.CLIENT_ID, clientRegistration.getClientId());
         }
-        // Add client_secret only for CLIENT_SECRET_POST (where credentials are in the POST body)
+        // For CLIENT_SECRET_POST: client_secret goes in request parameters
+        // For CLIENT_SECRET_BASIC and other methods: client_secret is handled separately (e.g., in Authorization header)
         if (ClientAuthenticationMethod.CLIENT_SECRET_POST.equals(clientRegistration.getClientAuthenticationMethod())) {
             parameters.set(OAuth2ParameterNames.CLIENT_SECRET, clientRegistration.getClientSecret());
         }
