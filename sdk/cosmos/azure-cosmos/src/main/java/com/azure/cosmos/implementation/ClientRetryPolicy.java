@@ -107,11 +107,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
-            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false, true)) {
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
-            return this.shouldRetryOnEndpointFailureAsync(false, true, false);
+            return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, false);
         }
 
         // Regional endpoint is not available yet for reads (e.g. add/ online of region is in progress)
@@ -266,17 +266,17 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
                         checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
                         crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                    }
 
-                        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.shouldAddHubRegionProcessingOnlyHeader(request)) {
+                    if (!this.globalEndpointManager.canUseMultipleWriteLocations(request)) {
 
-                            if (request.requestContext != null) {
+                        if (request.requestContext != null) {
 
-                                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
-                                    = request.requestContext.getCrossRegionAvailabilityContext();
+                            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                                = request.requestContext.getCrossRegionAvailabilityContext();
 
-                                if (crossRegionAvailabilityContext != null) {
-                                    crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
-                                }
+                            if (crossRegionAvailabilityContext != null) {
+                                crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
                             }
                         }
                     }
@@ -524,19 +524,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
-        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
+
+        boolean isInHubRegionDiscoveryMode = false;
 
         if (request.requestContext != null) {
-            request.requestContext.routeToLocation(this.regionalRoutingContext);
-
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
                 = request.requestContext.getCrossRegionAvailabilityContext();
 
             if (crossRegionAvailabilityContext != null) {
                 if (crossRegionAvailabilityContext.shouldAddHubRegionProcessingOnlyHeader()) {
+                    isInHubRegionDiscoveryMode = true;
                     request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
                 }
             }
+        }
+
+        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request, isInHubRegionDiscoveryMode);
+
+        if (request.requestContext != null) {
+            request.requestContext.routeToLocation(this.regionalRoutingContext);
         }
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request

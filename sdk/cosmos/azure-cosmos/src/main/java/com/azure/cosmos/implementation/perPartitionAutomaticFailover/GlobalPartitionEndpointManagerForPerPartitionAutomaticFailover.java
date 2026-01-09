@@ -182,17 +182,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
 
-        return this.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, isEndToEndTimeoutHit, false);
-    }
-
-    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit, boolean forceFailoverThroughReads) {
         boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
 
         if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
-        if (!isPerPartitionAutomaticFailoverApplicable(request, forceFailoverThroughReads)) {
+        if (!isPerPartitionAutomaticFailoverApplicable(request)) {
             return false;
         }
 
@@ -273,11 +269,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
 
-        return this.isPerPartitionAutomaticFailoverApplicable(request, false);
-    }
-
-    public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request, boolean forceFailoverThroughReads) {
-
         boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
 
         if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
@@ -296,7 +287,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (request.isReadOnlyRequest() && !forceFailoverThroughReads) {
+        if (request.isReadOnlyRequest()) {
             return false;
         }
 

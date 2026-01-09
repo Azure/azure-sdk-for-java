@@ -173,6 +173,10 @@ public class LocationCache {
      * @return Resolved getEndpoint
      */
     public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request) {
+        return this.resolveServiceEndpoint(request, false);
+    }
+
+    public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request, boolean isInHubRegionDiscoveryMode) {
         Objects.requireNonNull(request.requestContext,
             "RxDocumentServiceRequest.requestContext is required and cannot be null.");
 
@@ -190,6 +194,13 @@ public class LocationCache {
             DatabaseAccountLocationsInfo currentLocationInfo =  this.locationInfo;
 
             if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
+
+                if (isInHubRegionDiscoveryMode && !currentLocationInfo.availableReadLocations.isEmpty()) {
+                    locationIndex = locationIndex % currentLocationInfo.availableReadLocations.size();
+                    String potentialWriteLocation = currentLocationInfo.availableReadLocations.get(locationIndex);
+                    return currentLocationInfo.availableReadRegionalRoutingContextsByRegionName.get(potentialWriteLocation);
+                }
+
                 locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
                 return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
@@ -202,6 +213,7 @@ public class LocationCache {
             return endpoints.get(locationIndex % endpoints.size());
         }
     }
+
 
     public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(RxDocumentServiceRequest request) {
         return this.getApplicableWriteRegionRoutingContexts(request, request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
