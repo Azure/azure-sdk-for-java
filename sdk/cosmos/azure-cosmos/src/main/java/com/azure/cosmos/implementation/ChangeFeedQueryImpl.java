@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -179,13 +180,17 @@ class ChangeFeedQueryImpl<T> {
             options);
 
         if (request.requestContext != null) {
+
+            AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             request.requestContext.setCrossRegionAvailabilityContext(
                 new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
                     new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink),
                     null,
-                    new AvailabilityStrategyContext(false, false)));
+                    new AvailabilityStrategyContext(false, false),
+                    shouldAddHubRegionProcessingOnlyHeader));
         }
 
         return request;

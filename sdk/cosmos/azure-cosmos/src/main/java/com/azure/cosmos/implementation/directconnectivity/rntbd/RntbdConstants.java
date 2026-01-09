@@ -597,7 +597,8 @@ public final class RntbdConstants {
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
         PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
         GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
-        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false);
+        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false),
+        HubRegionProcessingOnly((short)0x00EF, RntbdTokenType.Byte , false);
 
         public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
             EffectivePartitionKey,

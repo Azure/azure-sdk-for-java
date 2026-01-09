@@ -111,7 +111,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
-            return this.shouldRetryOnEndpointFailureAsync(false, true, false);
+            return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, false);
         }
 
         // Regional endpoint is not available yet for reads (e.g. add/ online of region is in progress)
@@ -268,6 +268,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
                     }
 
+                    if (!this.globalEndpointManager.canUseMultipleWriteLocations(request)) {
+
+                        if (request.requestContext != null) {
+
+                            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                                = request.requestContext.getCrossRegionAvailabilityContext();
+
+                            if (crossRegionAvailabilityContext != null) {
+                                crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
+                            }
+                        }
+                    }
+
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }
@@ -281,11 +294,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
-
-        // if PPAF is enabled, mark pk-range as unavailable and force a retry
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
-            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
-        }
 
         // Some requests may be in progress when the endpoint manager and client are closed.
         // In that case, the request won't succeed since the http client is closed.
@@ -516,7 +524,22 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
-        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
+
+        boolean isInHubRegionDiscoveryMode = false;
+
+        if (request.requestContext != null) {
+            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
+                = request.requestContext.getCrossRegionAvailabilityContext();
+
+            if (crossRegionAvailabilityContext != null) {
+                if (crossRegionAvailabilityContext.shouldAddHubRegionProcessingOnlyHeader()) {
+                    isInHubRegionDiscoveryMode = true;
+                    request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
+                }
+            }
+        }
+
+        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request, isInHubRegionDiscoveryMode);
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);
