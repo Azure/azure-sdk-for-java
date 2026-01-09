@@ -56,6 +56,11 @@ public class ContentUnderstandingCustomizations extends Customization {
         // 9. SERVICE-FIX: Fix SupportedModels to use List<String> instead of Map<String, String>
         // The service returns arrays for completion/embedding, not maps
         customizeSupportedModels(customization, logger);
+
+        // 10. SERVICE-FIX: Fix copyAnalyzer API path and expected responses
+        // The TypeSpec spec incorrectly uses ":copyAnalyzer" but the service uses ":copy"
+        // Also, the service returns 200/201/202 not just 202
+        customizeCopyAnalyzerApi(customization, logger);
     }
 
     /**
@@ -566,6 +571,124 @@ public class ContentUnderstandingCustomizations extends Customization {
                         method.setBody(StaticJavaParser.parseBlock(bodyStr));
                     });
                 });
+            });
+        });
+    }
+
+    /**
+     * SERVICE-FIX: Fix the copyAnalyzer API path and expected responses.
+     *
+     * The TypeSpec/Swagger spec incorrectly uses ":copyAnalyzer" as the action,
+     * but the actual service endpoint uses ":copy". Additionally, the spec only
+     * expects 202 response, but the service can return 200, 201, or 202.
+     *
+     * This customization modifies the ContentUnderstandingService interface annotations
+     * to match the actual service behavior.
+     */
+    private void customizeCopyAnalyzerApi(LibraryCustomization customization, Logger logger) {
+        logger.info("SERVICE-FIX: Customizing copyAnalyzer API path and expected responses");
+
+        customization.getClass(IMPLEMENTATION_PACKAGE, "ContentUnderstandingClientImpl").customizeAst(ast -> {
+            ast.addImport("com.azure.core.exception.ResourceNotFoundException");
+
+            // Find the ContentUnderstandingService interface inside ContentUnderstandingClientImpl
+            ast.getClassByName("ContentUnderstandingClientImpl").ifPresent(implClass -> {
+                implClass.getMembers().stream()
+                    .filter(member -> member instanceof ClassOrInterfaceDeclaration)
+                    .map(member -> (ClassOrInterfaceDeclaration) member)
+                    .filter(innerClass -> innerClass.getNameAsString().equals("ContentUnderstandingService"))
+                    .findFirst()
+                    .ifPresent(serviceInterface -> {
+                        // Find and update copyAnalyzer method
+                        serviceInterface.getMethodsByName("copyAnalyzer").forEach(method -> {
+                            // Update @Post annotation from ":copyAnalyzer" to ":copy"
+                            method.getAnnotationByName("Post").ifPresent(postAnnotation -> {
+                                postAnnotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
+                                    if (pair.getValue().toString().contains(":copyAnalyzer")) {
+                                        pair.setValue(StaticJavaParser.parseExpression(
+                                            "\"/analyzers/{analyzerId}:copy\""));
+                                        logger.info("Updated @Post path for copyAnalyzer async method");
+                                    }
+                                });
+                                // Handle single value annotation
+                                if (postAnnotation.isSingleMemberAnnotationExpr()) {
+                                    String value = postAnnotation.asSingleMemberAnnotationExpr()
+                                        .getMemberValue().toString();
+                                    if (value.contains(":copyAnalyzer")) {
+                                        postAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
+                                            StaticJavaParser.parseExpression("\"/analyzers/{analyzerId}:copy\""));
+                                        logger.info("Updated @Post path for copyAnalyzer async method (single value)");
+                                    }
+                                }
+                            });
+
+                            // Update @ExpectedResponses from { 202 } to { 200, 201, 202 }
+                            method.getAnnotationByName("ExpectedResponses").ifPresent(expectedAnnotation -> {
+                                if (expectedAnnotation.isSingleMemberAnnotationExpr()) {
+                                    expectedAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
+                                        StaticJavaParser.parseExpression("{ 200, 201, 202 }"));
+                                    logger.info("Updated @ExpectedResponses for copyAnalyzer async method");
+                                }
+                            });
+
+                            // Add @UnexpectedResponseExceptionType for 404 if not present
+                            boolean has404Handler = method.getAnnotations().stream()
+                                .filter(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"))
+                                .anyMatch(a -> a.toString().contains("404"));
+
+                            if (!has404Handler) {
+                                // Add 404 handler annotation
+                                method.addAnnotation(StaticJavaParser.parseAnnotation(
+                                    "@UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })"));
+                                logger.info("Added 404 exception handler for copyAnalyzer async method");
+                            }
+                        });
+
+                        // Find and update copyAnalyzerSync method
+                        serviceInterface.getMethodsByName("copyAnalyzerSync").forEach(method -> {
+                            // Update @Post annotation from ":copyAnalyzer" to ":copy"
+                            method.getAnnotationByName("Post").ifPresent(postAnnotation -> {
+                                postAnnotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
+                                    if (pair.getValue().toString().contains(":copyAnalyzer")) {
+                                        pair.setValue(StaticJavaParser.parseExpression(
+                                            "\"/analyzers/{analyzerId}:copy\""));
+                                        logger.info("Updated @Post path for copyAnalyzerSync method");
+                                    }
+                                });
+                                // Handle single value annotation
+                                if (postAnnotation.isSingleMemberAnnotationExpr()) {
+                                    String value = postAnnotation.asSingleMemberAnnotationExpr()
+                                        .getMemberValue().toString();
+                                    if (value.contains(":copyAnalyzer")) {
+                                        postAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
+                                            StaticJavaParser.parseExpression("\"/analyzers/{analyzerId}:copy\""));
+                                        logger.info("Updated @Post path for copyAnalyzerSync method (single value)");
+                                    }
+                                }
+                            });
+
+                            // Update @ExpectedResponses from { 202 } to { 200, 201, 202 }
+                            method.getAnnotationByName("ExpectedResponses").ifPresent(expectedAnnotation -> {
+                                if (expectedAnnotation.isSingleMemberAnnotationExpr()) {
+                                    expectedAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
+                                        StaticJavaParser.parseExpression("{ 200, 201, 202 }"));
+                                    logger.info("Updated @ExpectedResponses for copyAnalyzerSync method");
+                                }
+                            });
+
+                            // Add @UnexpectedResponseExceptionType for 404 if not present
+                            boolean has404Handler = method.getAnnotations().stream()
+                                .filter(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"))
+                                .anyMatch(a -> a.toString().contains("404"));
+
+                            if (!has404Handler) {
+                                // Add 404 handler annotation
+                                method.addAnnotation(StaticJavaParser.parseAnnotation(
+                                    "@UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })"));
+                                logger.info("Added 404 exception handler for copyAnalyzerSync method");
+                            }
+                        });
+                    });
             });
         });
     }
