@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed duplicate parameter issue in `AadJwtBearerGrantRequestEntityConverter` when using on_behalf_of grant type. Previously, when additional parameter converters were registered, Spring Security's `MultiValueMap.addAll()` would create duplicate values for parameters like `grant_type`, causing authentication failures with error `AADSTS70003: The app requested an unsupported grant type`. The converter now flattens multi-valued parameters to single values after all converters are processed.
+
 ### Other Changes
 
 ## 6.1.0 (2025-12-16)
