@@ -180,7 +180,6 @@ public abstract class RxCollectionCache {
         String resourceAddress,
         Map<String, Object> properties,
         DocumentCollection obsoleteValue,
-        RxDocumentServiceRequest encapsulatingRequest,
         ResourceType encapsulatingOperationResourceType) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
@@ -196,16 +195,6 @@ public abstract class RxCollectionCache {
                         if (throwable instanceof CosmosException) {
 
                             CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
-
-                            if (encapsulatingRequest != null &&
-                                !ResourceType.DocumentCollection.equals(encapsulatingRequest.getResourceType()) &&
-                                com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
-                                com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
-
-                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
-
-                                return cosmosException;
-                            }
 
                             if (encapsulatingOperationResourceType != null &&
                                 !ResourceType.DocumentCollection.equals(encapsulatingOperationResourceType) &&
@@ -234,7 +223,7 @@ public abstract class RxCollectionCache {
         Map<String, Object> properties,
         DocumentCollection obsoleteValue) {
 
-        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, obsoleteValue, null, null);
+        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, obsoleteValue, null);
     }
 
     public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {

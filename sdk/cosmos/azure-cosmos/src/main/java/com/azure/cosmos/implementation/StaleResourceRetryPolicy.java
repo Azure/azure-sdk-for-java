@@ -91,7 +91,7 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                 // 2. If the collection rid has changed, then also clean up session container for old containerRid
                 AtomicReference<String> oldCollectionRid = new AtomicReference<>();
                 return this.clientCollectionCache
-                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties, null, this.request, this.enclosingOperationTargetResourceType)
+                    .resolveByNameAsync(this.getMetadataDiagnosticsContext(), collectionLink, requestOptionProperties, null, this.enclosingOperationTargetResourceType)
                     .flatMap(collectionInCache -> {
                         oldCollectionRid.set(collectionInCache.getResourceId());
 
@@ -111,7 +111,6 @@ public class StaleResourceRetryPolicy extends DocumentClientRetryPolicy {
                                     collectionLink,
                                     requestOptionProperties,
                                     null,
-                                    this.request,
                                     this.enclosingOperationTargetResourceType)
                                 .map(DocumentCollection :: getResourceId);
                         }
