@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated version of `openai` client library to `4.14.0`
+
 ## 1.0.0-beta.3 (2025-11-12)
 
 ### Features Added
