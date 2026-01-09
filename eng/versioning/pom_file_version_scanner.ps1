@@ -568,12 +568,6 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
-    # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
-    if ($_.FullName -like "*resourcemanagerhybrid*")
-    {
-        return
-    }
-
     # Code customization packages should be excluded.
     if ($_.FullName -like "*swagger*")
     {
