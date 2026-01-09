@@ -205,23 +205,10 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     private void customizeClientClass(ClassCustomization classCustomization, boolean isAsync, Logger logger) {
-        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
-            // Hide beginAnalyze methods with stringEncoding parameter
-            clazz.getMethodsByName("beginAnalyze").forEach(method -> {
-                if (method.getParameterByName("stringEncoding").isPresent()) {
-                    method.removeModifier(Modifier.Keyword.PUBLIC);
-                    logger.info("Hidden beginAnalyze method with stringEncoding in " + classCustomization.getClassName());
-                }
-            });
-
-            // Hide beginAnalyzeBinary methods with stringEncoding parameter
-            clazz.getMethodsByName("beginAnalyzeBinary").forEach(method -> {
-                if (method.getParameterByName("stringEncoding").isPresent()) {
-                    method.removeModifier(Modifier.Keyword.PUBLIC);
-                    logger.info("Hidden beginAnalyzeBinary method with stringEncoding in " + classCustomization.getClassName());
-                }
-            });
-        }));
+        // NOTE: Previously we were hiding beginAnalyze/beginAnalyzeBinary methods with stringEncoding parameter
+        // to simplify the API, but this breaks sample code that needs to pass inputs.
+        // Keeping all methods public for now to maintain compatibility with existing samples.
+        logger.info("Customizing " + classCustomization.getClassName() + " - keeping all convenience methods public");
     }
 
     /**
