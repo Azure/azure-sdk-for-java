@@ -321,7 +321,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosAsyncContainer containerToDelete = deletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             containerToDelete.delete().block();
 
-            Thread.sleep(5000);
+            Thread.sleep(15_000);
 
             // Try to read the item from the deleted container using the original client
 
