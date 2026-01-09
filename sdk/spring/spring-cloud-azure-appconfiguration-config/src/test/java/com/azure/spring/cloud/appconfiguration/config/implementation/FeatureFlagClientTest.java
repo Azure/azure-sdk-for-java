@@ -36,7 +36,7 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
@@ -80,14 +80,14 @@ public class FeatureFlagClientTest {
     @Test
     public void loadFeatureFlagsTestNoFeatureFlags() {
         List<ConfigurationSetting> settings = List.of(new ConfigurationSetting().setKey("FakeKey"));
-        FeatureFlags featureFlags = new FeatureFlags(null, settings);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
+        List<CollectionMonitoring> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
                 contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals("FakeKey", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
+        assertEquals("FakeKey", featureFlagsList.get(0).getConfigurations().get(0).getKey());
         assertEquals(0, featureFlagClient.getFeatureFlags().size());
     }
 
@@ -95,15 +95,15 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsTestFeatureFlags() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
                 new FeatureFlagConfigurationSetting("Beta", true));
-        FeatureFlags featureFlags = new FeatureFlags(null, settings);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
+        List<CollectionMonitoring> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
                 contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
+        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getConfigurations().get(0).getKey());
+        assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getConfigurations().get(1).getKey());
         assertEquals(2, featureFlagClient.getFeatureFlags().size());
     }
 
@@ -111,27 +111,27 @@ public class FeatureFlagClientTest {
     public void loadFeatureFlagsTestMultipleLoads() {
         List<ConfigurationSetting> settings = List.of(new FeatureFlagConfigurationSetting("Alpha", false),
                 new FeatureFlagConfigurationSetting("Beta", true));
-        FeatureFlags featureFlags = new FeatureFlags(null, settings);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
+        List<CollectionMonitoring> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
                 contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
+        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getConfigurations().get(0).getKey());
+        assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getConfigurations().get(1).getKey());
         assertEquals(2, featureFlagClient.getFeatureFlags().size());
 
         List<ConfigurationSetting> settings2 = List.of(new FeatureFlagConfigurationSetting("Alpha", true),
                 new FeatureFlagConfigurationSetting("Gamma", false));
-        featureFlags = new FeatureFlags(null, settings2);
+        featureFlags = new CollectionMonitoring(null, settings2);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
         featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(".appconfig.featureflag/Gamma", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
+        assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getConfigurations().get(0).getKey());
+        assertEquals(".appconfig.featureflag/Gamma", featureFlagsList.get(0).getConfigurations().get(1).getKey());
         assertEquals(3, featureFlagClient.getFeatureFlags().size());
         List<Feature> features = featureFlagClient.getFeatureFlags();
         assertTrue(features.get(0).isEnabled());
@@ -170,14 +170,14 @@ public class FeatureFlagClientTest {
         targetingFilter.addParameter("Audience", parameters);
         targetingFlag.addClientFilter(targetingFilter);
         List<ConfigurationSetting> settings = List.of(targetingFlag);
-        FeatureFlags featureFlags = new FeatureFlags(null, settings);
+        CollectionMonitoring featureFlags = new CollectionMonitoring(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.any(Context.class))).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
+        List<CollectionMonitoring> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
                 contextMock);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
-        assertEquals(".appconfig.featureflag/TargetingTest", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
+        assertEquals(".appconfig.featureflag/TargetingTest", featureFlagsList.get(0).getConfigurations().get(0).getKey());
         assertEquals(1, featureFlagClient.getFeatureFlags().size());
     }
 
