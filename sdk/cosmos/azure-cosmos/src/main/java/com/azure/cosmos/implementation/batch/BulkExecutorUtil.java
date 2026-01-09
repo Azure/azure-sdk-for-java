@@ -191,7 +191,6 @@ final class BulkExecutorUtil {
                 resourceAddress,
                 null,
                 obsoleteValue,
-                null,
                 ResourceType.Document);
     }
 

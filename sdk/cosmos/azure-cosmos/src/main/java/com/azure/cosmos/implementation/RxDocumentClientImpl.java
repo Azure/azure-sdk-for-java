@@ -4761,7 +4761,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext diagnosticsClientContext) {
 
         return this.getCollectionCache()
-            .resolveByNameAsync(null, collectionLink, null, null, null, ResourceType.Document)
+            .resolveByNameAsync(null, collectionLink, null, null, ResourceType.Document)
             .flatMapMany(collection -> {
                 if (collection == null) {
                     throw new IllegalStateException("Collection can not be null");
