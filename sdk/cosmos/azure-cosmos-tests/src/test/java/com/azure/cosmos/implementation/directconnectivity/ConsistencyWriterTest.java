@@ -369,6 +369,152 @@ public class ConsistencyWriterTest {
         assertThat(consistencyWriter.isGlobalStrongRequest(req, storeResponse)).isEqualTo(isGlobalStrongExpected);
     }
 
+    @Test
+    public void writeAsyncGlobalStrongRequest() {
+        initializeConsistencyWriter(false);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(false).when(timeoutHelper).isElapsed();
+        StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.doReturn("1").when(storeResponse).getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        Mockito.doReturn(ConsistencyLevel.STRONG).when(serviceConfigReader).getDefaultConsistencyLevel();
+        ConsistencyWriter spyWriter = Mockito.spy(this.consistencyWriter);
+        Mockito.doReturn(true).when(spyWriter).isGlobalStrongRequest(Mockito.any(), Mockito.any());
+        Mockito.doReturn(Mono.just(storeResponse)).when(spyWriter).barrierForGlobalStrong(Mockito.any(), Mockito.any(), Mockito.any());
+        // Mock addressSelector.resolveAddressesAsync to return a valid Mono
+        AddressInformation addressInformation = Mockito.mock(AddressInformation.class);
+        Uri primaryUri = Mockito.mock(Uri.class);
+        Mockito.doReturn(true).when(primaryUri).isPrimary();
+        Mockito.doReturn("Healthy").when(primaryUri).getHealthStatusDiagnosticString();
+        Mockito.doReturn(primaryUri).when(addressInformation).getPhysicalUri();
+        List<AddressInformation> addressList = Collections.singletonList(addressInformation);
+        Mockito.doReturn(Mono.just(addressList)).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
+        // Mock transportClient.invokeResourceOperationAsync to return a valid Mono
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
+        Mono<StoreResponse> result = spyWriter.writeAsync(request, timeoutHelper, false);
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        result.subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertNoErrors();
+        subscriber.assertValue(storeResponse);
+    }
+
+    @Test
+    public void writeAsyncNRegionCommitRequest() {
+        initializeConsistencyWriter(false);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(false).when(timeoutHelper).isElapsed();
+        StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.doReturn("1").when(storeResponse).getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN);
+        Mockito.doReturn("1").when(storeResponse).getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        Mockito.doReturn(ConsistencyLevel.STRONG).when(serviceConfigReader).getDefaultConsistencyLevel();
+        ConsistencyWriter spyWriter = Mockito.spy(this.consistencyWriter);
+        Mockito.doReturn(false).when(spyWriter).isGlobalStrongRequest(Mockito.any(), Mockito.any());
+        Mockito.doReturn(true).when(spyWriter).isBarrierRequest(Mockito.any(), Mockito.any());
+        Mockito.doReturn(Mono.just(storeResponse)).when(spyWriter).barrierForGlobalStrong(Mockito.any(), Mockito.any(), Mockito.any());
+        // Mock addressSelector.resolveAddressesAsync to return a valid Mono
+        AddressInformation addressInformation = Mockito.mock(AddressInformation.class);
+        Uri primaryUri = Mockito.mock(Uri.class);
+        Mockito.doReturn(true).when(primaryUri).isPrimary();
+        Mockito.doReturn("Healthy").when(primaryUri).getHealthStatusDiagnosticString();
+        Mockito.doReturn(primaryUri).when(addressInformation).getPhysicalUri();
+        List<AddressInformation> addressList = Collections.singletonList(addressInformation);
+        Mockito.doReturn(Mono.just(addressList)).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
+        // Mock transportClient.invokeResourceOperationAsync to return a valid Mono
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
+        Mono<StoreResponse> result = spyWriter.writeAsync(request, timeoutHelper, false);
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        result.subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertNoErrors();
+        subscriber.assertValue(storeResponse);
+    }
+
+    @Test
+    public void writeAsyncNoBarrierRequest() {
+        initializeConsistencyWriter(false);
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(false).when(timeoutHelper).isElapsed();
+        StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.doReturn("0").when(storeResponse).getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        Mockito.doReturn(ConsistencyLevel.SESSION).when(serviceConfigReader).getDefaultConsistencyLevel();
+        ConsistencyWriter spyWriter = Mockito.spy(this.consistencyWriter);
+        Mockito.doReturn(false).when(spyWriter).isGlobalStrongRequest(Mockito.any(), Mockito.any());
+        Mockito.doReturn(false).when(spyWriter).isBarrierRequest(Mockito.any(), Mockito.any());
+        Mockito.doReturn(Mono.just(storeResponse)).when(spyWriter).barrierForGlobalStrong(Mockito.any(), Mockito.any(), Mockito.any());
+        // Mock addressSelector.resolveAddressesAsync to return a valid Mono
+        AddressInformation addressInformation = Mockito.mock(AddressInformation.class);
+        Uri primaryUri = Mockito.mock(Uri.class);
+        Mockito.doReturn(true).when(primaryUri).isPrimary();
+        Mockito.doReturn("Healthy").when(primaryUri).getHealthStatusDiagnosticString();
+        Mockito.doReturn(primaryUri).when(addressInformation).getPhysicalUri();
+        List<AddressInformation> addressList = Collections.singletonList(addressInformation);
+        Mockito.doReturn(Mono.just(addressList)).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
+        // Mock transportClient.invokeResourceOperationAsync to return a valid Mono
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
+        Mono<StoreResponse> result = spyWriter.writeAsync(request, timeoutHelper, false);
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        result.subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertNoErrors();
+        subscriber.assertValue(storeResponse);
+    }
+
+    @Test
+    public void isBarrierRequest() {
+        // Setup ConsistencyWriter with useMultipleWriteLocations false
+        initializeConsistencyWriter(false);
+        ConsistencyWriter writer = this.consistencyWriter;
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        StoreResponse response = Mockito.mock(StoreResponse.class);
+
+        // 1. Global strong enabled and isGlobalStrongRequest returns true
+        try (MockedStatic<ReplicatedResourceClient> replicatedResourceClientMock = Mockito.mockStatic(ReplicatedResourceClient.class)) {
+            replicatedResourceClientMock.when(ReplicatedResourceClient::isGlobalStrongEnabled).thenReturn(true);
+            ConsistencyWriter spyWriter = Mockito.spy(writer);
+            Mockito.doReturn(true).when(spyWriter).isGlobalStrongRequest(request, response);
+            boolean result = spyWriter.isBarrierRequest(request, response);
+            assertThat(result).isTrue();
+        }
+
+        // 2. NRegionSynchronousCommitEnabled path
+        // Setup request.requestContext.getNRegionSynchronousCommitEnabled() to true
+        request.requestContext.setNRegionSynchronousCommitEnabled(true);
+        // useMultipleWriteLocations is already false
+        Mockito.doReturn("123").when(response).getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN);
+        Mockito.doReturn(2L).when(response).getNumberOfReadRegions();
+        boolean nRegionResult = writer.isBarrierRequest(request, response);
+        assertThat(nRegionResult).isTrue();
+
+        // 3. Negative case: NRegionSynchronousCommitEnabled false
+        request.requestContext.setNRegionSynchronousCommitEnabled(false);
+        boolean negativeResult = writer.isBarrierRequest(request, response);
+        assertThat(negativeResult).isFalse();
+
+        // 4. Negative case: useMultipleWriteLocations true
+        initializeConsistencyWriter(true);
+        writer = this.consistencyWriter;
+        request.requestContext.setNRegionSynchronousCommitEnabled(true);
+        boolean negativeResult2 = writer.isBarrierRequest(request, response);
+        assertThat(negativeResult2).isFalse();
+
+        // 5. Negative case: GLOBAL_NREGION_COMMITTED_LSN header missing
+        initializeConsistencyWriter(false);
+        writer = this.consistencyWriter;
+        request.requestContext.setNRegionSynchronousCommitEnabled(true);
+        Mockito.doReturn(null).when(response).getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN);
+        boolean negativeResult3 = writer.isBarrierRequest(request, response);
+        assertThat(negativeResult3).isFalse();
+
+        // 6. Negative case: NUMBER_OF_READ_REGIONS header missing or zero
+        Mockito.doReturn(0L).when(response).getNumberOfReadRegions();
+        boolean negativeResult4 = writer.isBarrierRequest(request, response);
+        assertThat(negativeResult4).isFalse();
+    }
+
+
     private void initializeConsistencyWriter(boolean useMultipleWriteLocation) {
         addressSelector = Mockito.mock(AddressSelector.class);
         sessionContainer = Mockito.mock(ISessionContainer.class);

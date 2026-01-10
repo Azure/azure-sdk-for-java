@@ -38,7 +38,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile ISessionToken sessionToken;
     public volatile long quorumSelectedLSN;
     public volatile long globalCommittedSelectedLSN;
-    public volatile StoreResponse globalStrongWriteResponse;
+    public volatile StoreResponse cachedWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile ReadConsistencyStrategy readConsistencyStrategy;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
@@ -65,6 +65,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile long approximateBloomFilterInsertionCount;
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
+    private volatile Boolean nRegionSynchronousCommitEnabled;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -148,7 +149,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.sessionToken = this.sessionToken;
         context.quorumSelectedLSN = this.quorumSelectedLSN;
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
-        context.globalStrongWriteResponse = this.globalStrongWriteResponse;
+        context.cachedWriteResponse = this.cachedWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.readConsistencyStrategy = this.readConsistencyStrategy;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
@@ -265,6 +266,14 @@ public class DocumentServiceRequestContext implements Cloneable {
         } else {
             this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
         }
+    }
+
+    public Boolean getNRegionSynchronousCommitEnabled() {
+        return nRegionSynchronousCommitEnabled;
+    }
+
+    public void setNRegionSynchronousCommitEnabled(Boolean nRegionSynchronousCommitEnabled) {
+        this.nRegionSynchronousCommitEnabled = nRegionSynchronousCommitEnabled;
     }
 }
 

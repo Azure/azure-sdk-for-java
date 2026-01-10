@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -174,7 +175,7 @@ public class ConsistencyWriter {
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
 
-        if (request.requestContext.globalStrongWriteResponse == null) {
+        if (request.requestContext.cachedWriteResponse == null) {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
@@ -315,7 +316,7 @@ public class ConsistencyWriter {
                     }
 
                     return Mono.just(request);
-                })).map(req -> req.requestContext.globalStrongWriteResponse);
+                })).map(req -> req.requestContext.cachedWriteResponse);
         }
     }
 
@@ -339,7 +340,7 @@ public class ConsistencyWriter {
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
 
         try {
-            if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
+            if (isBarrierRequest(request, response)) {
                 Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);
                 Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1L);
 
@@ -351,7 +352,7 @@ public class ConsistencyWriter {
                     throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
-                request.requestContext.globalStrongWriteResponse = response;
+                request.requestContext.cachedWriteResponse = response;
                 request.requestContext.globalCommittedSelectedLSN = lsn.v;
 
                 //if necessary we would have already refreshed cache by now.
@@ -384,13 +385,13 @@ public class ConsistencyWriter {
                                     HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                             }
 
-                            return Mono.just(request.requestContext.globalStrongWriteResponse);
+                            return Mono.just(request.requestContext.cachedWriteResponse);
                         });
 
                     });
 
                 } else {
-                    return Mono.just(request.requestContext.globalStrongWriteResponse);
+                    return Mono.just(request.requestContext.cachedWriteResponse);
                 }
             } else {
                 return Mono.just(response);
@@ -402,7 +403,19 @@ public class ConsistencyWriter {
         }
     }
 
-    private Mono<Boolean> waitForWriteBarrierAsync(
+    boolean isBarrierRequest(RxDocumentServiceRequest request, StoreResponse response) {
+        if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
+            return  true;
+        }
+        return request.requestContext.getNRegionSynchronousCommitEnabled() &&
+            !this.useMultipleWriteLocations &&
+            StringUtils.isNotEmpty(response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN)) &&
+            Long.parseLong(response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN)) != -1 &&
+            response.getNumberOfReadRegions() > 0;
+    }
+
+    // visibility set to package-private for testing
+    Mono<Boolean> waitForWriteBarrierAsync(
         RxDocumentServiceRequest barrierRequest,
         long selectedGlobalCommittedLsn,
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
@@ -501,6 +514,11 @@ public class ConsistencyWriter {
             lsn.v = Long.parseLong(headerValue);
         }
 
+        // if NRegionCommittedLSN is present, use it as GlobalCommittedLSN
+        if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_NREGION_COMMITTED_LSN)) != null) {
+            globalCommittedLsn.v = Long.parseLong(headerValue);
+            return;
+        }
         if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
             globalCommittedLsn.v = Long.parseLong(headerValue);
         }

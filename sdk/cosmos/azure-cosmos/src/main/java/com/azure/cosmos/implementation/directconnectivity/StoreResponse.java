@@ -275,6 +275,19 @@ public class StoreResponse {
         return subStatusCode;
     }
 
+    public long getNumberOfReadRegions() {
+        int numberOfReadRegions = -1;
+        String numberOfReadRegionsString = this.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        if (StringUtils.isNotEmpty(numberOfReadRegionsString)) {
+            try {
+                return Long.parseLong(numberOfReadRegionsString);
+            } catch (NumberFormatException e) {
+                // If value cannot be parsed as Long, return -1.
+            }
+        }
+        return numberOfReadRegions;
+    }
+
     public Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
