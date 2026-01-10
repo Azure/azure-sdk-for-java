@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `AzureCliCredential` fails in non-interactive environments due to hardcoded `/bin/sh` PATH resolution on MacOS and Linux.
+
 ### Other Changes
 - Removed unused jetty, redisson, and lettuce-core dependencies.
 
