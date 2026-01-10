@@ -29,8 +29,7 @@ $artifactsDict = [ordered]@{}
 $addModulesDict  = [ordered]@{}
 $ymlFiles = Get-ChildItem -Path $SourcesDirectory -Recurse -Depth 3 -File -Filter "ci.yml"
 foreach ($ymlFile in $ymlFiles) {
-    if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
-        $ymlFile.FullName -eq $YmlToUpdate) {
+    if ($ymlFile.FullName -eq $YmlToUpdate) {
         continue
     }
     $ymlContent = Get-Content $ymlFile.FullName -Raw

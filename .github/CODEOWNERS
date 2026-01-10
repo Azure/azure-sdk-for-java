@@ -964,9 +964,6 @@
 # ServiceLabel: %Mgmt
 # AzureSdkOwners:                                                  @weidongxu-microsoft
 
-# PRLabel: %Mgmt
-/sdk/resourcemanagerhybrid/                                        @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @bganapa @Azure/azure-java-sdk
-
 # ######## Eng Sys ########
 
 /eng/                                                              @raych1 @weshaggard @benbp
