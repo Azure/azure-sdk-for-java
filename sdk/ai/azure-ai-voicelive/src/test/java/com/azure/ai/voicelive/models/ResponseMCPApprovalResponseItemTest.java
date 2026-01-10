@@ -6,8 +6,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ResponseMCPApprovalResponseItemTest {
 
     @Test
-    void testFromJsonWithApprove() throws IOException {
+    void testFromJsonWithApprove() {
         // Arrange
         String json = "{" + "\"id\":\"response-1\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-123\"," + "\"approve\":true" + "}";
@@ -38,7 +36,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testFromJsonWithDeny() throws IOException {
+    void testFromJsonWithDeny() {
         // Arrange
         String json
             = "{" + "\"id\":\"response-2\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_approval_response\","
@@ -56,7 +54,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testFromJsonWithReason() throws IOException {
+    void testFromJsonWithReason() {
         // Arrange
         String json = "{" + "\"id\":\"response-3\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-789\"," + "\"approve\":false,"
@@ -73,7 +71,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testTypeIsAlwaysMcpApprovalResponse() throws IOException {
+    void testTypeIsAlwaysMcpApprovalResponse() {
         // Arrange
         String json = "{" + "\"id\":\"response-4\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-999\"," + "\"approve\":true" + "}";
@@ -87,7 +85,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testWithNullReason() throws IOException {
+    void testWithNullReason() {
         // Arrange
         String json = "{" + "\"id\":\"response-5\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-111\"," + "\"approve\":true" + "}";
@@ -102,7 +100,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testJsonRoundTrip() throws IOException {
+    void testJsonRoundTrip() {
         // Arrange
         String originalJson = "{" + "\"id\":\"round-trip\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-rt-001\"," + "\"approve\":false,"
@@ -124,7 +122,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testApprovalWithDetailedReason() throws IOException {
+    void testApprovalWithDetailedReason() {
         // Arrange
         String detailedReason = "Tool requires elevated privileges. User must confirm the action explicitly.";
         String json = "{" + "\"id\":\"detailed-response\"," + "\"object\":\"session.item\","
@@ -142,7 +140,7 @@ class ResponseMCPApprovalResponseItemTest {
     }
 
     @Test
-    void testApprovalApprovedWithReason() throws IOException {
+    void testApprovalApprovedWithReason() {
         // Arrange - approved with reason explaining why
         String json = "{" + "\"id\":\"approved-with-reason\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_response\"," + "\"approval_request_id\":\"req-approved\"," + "\"approve\":true,"

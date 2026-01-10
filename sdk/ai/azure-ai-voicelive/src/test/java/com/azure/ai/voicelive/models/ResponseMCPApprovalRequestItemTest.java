@@ -6,8 +6,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class ResponseMCPApprovalRequestItemTest {
 
     @Test
-    void testFromJsonWithRequiredFields() throws IOException {
+    void testFromJsonWithRequiredFields() {
         // Arrange
         String json
             = "{" + "\"id\":\"approval-req-1\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_approval_request\","
@@ -37,7 +35,7 @@ class ResponseMCPApprovalRequestItemTest {
     }
 
     @Test
-    void testFromJsonWithArguments() throws IOException {
+    void testFromJsonWithArguments() {
         // Arrange
         String json = "{" + "\"id\":\"approval-req-2\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_request\"," + "\"name\":\"delete-tool\"," + "\"server_label\":\"admin-server\","
@@ -56,7 +54,7 @@ class ResponseMCPApprovalRequestItemTest {
     }
 
     @Test
-    void testTypeIsAlwaysMcpApprovalRequest() throws IOException {
+    void testTypeIsAlwaysMcpApprovalRequest() {
         // Arrange
         String json = "{" + "\"id\":\"approval-3\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_request\"," + "\"name\":\"tool\"," + "\"server_label\":\"server\"" + "}";
@@ -70,7 +68,7 @@ class ResponseMCPApprovalRequestItemTest {
     }
 
     @Test
-    void testWithNullArguments() throws IOException {
+    void testWithNullArguments() {
         // Arrange
         String json
             = "{" + "\"id\":\"approval-4\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_approval_request\","
@@ -86,7 +84,7 @@ class ResponseMCPApprovalRequestItemTest {
     }
 
     @Test
-    void testJsonRoundTrip() throws IOException {
+    void testJsonRoundTrip() {
         // Arrange
         String originalJson = "{" + "\"id\":\"round-trip-id\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_approval_request\"," + "\"name\":\"backup-tool\"," + "\"server_label\":\"backup-server\","
@@ -108,7 +106,7 @@ class ResponseMCPApprovalRequestItemTest {
     }
 
     @Test
-    void testComplexToolArguments() throws IOException {
+    void testComplexToolArguments() {
         // Arrange
         String complexArgs = "{\"operation\":\"delete\",\"resources\":[\"id1\",\"id2\"],\"force\":true}";
         String json = "{" + "\"id\":\"complex-approval\"," + "\"object\":\"session.item\","

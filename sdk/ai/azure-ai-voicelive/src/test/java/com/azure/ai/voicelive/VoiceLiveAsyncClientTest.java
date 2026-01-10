@@ -8,9 +8,6 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -23,14 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link VoiceLiveAsyncClient}.
  */
-@ExtendWith(MockitoExtension.class)
 class VoiceLiveAsyncClientTest {
-
-    @Mock
-    private KeyCredential mockKeyCredential;
-
-    @Mock
-    private HttpHeaders mockHeaders;
+    private final KeyCredential mockKeyCredential = new KeyCredential("fake");
+    private final HttpHeaders mockHeaders = new HttpHeaders();
 
     private URI testEndpoint;
     private VoiceLiveAsyncClient client;
@@ -50,17 +42,15 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testConstructorWithNullEndpoint() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(null, mockKeyCredential, "2024-10-01-preview", mockHeaders);
-        });
+        assertThrows(NullPointerException.class,
+            () -> new VoiceLiveAsyncClient(null, mockKeyCredential, "2024-10-01-preview", mockHeaders));
     }
 
     @Test
     void testConstructorWithNullCredential() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            new VoiceLiveAsyncClient(testEndpoint, (KeyCredential) null, "2024-10-01-preview", mockHeaders);
-        });
+        assertThrows(NullPointerException.class,
+            () -> new VoiceLiveAsyncClient(testEndpoint, (KeyCredential) null, "2024-10-01-preview", mockHeaders));
     }
 
     @Test
@@ -79,9 +69,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullOptions() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            client.startSession((String) null);
-        });
+        assertThrows(NullPointerException.class, () -> client.startSession(null));
     }
 
     @Test
@@ -98,9 +86,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullModel() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            client.startSession((String) null);
-        });
+        assertThrows(NullPointerException.class, () -> client.startSession(null));
     }
 
     @Test
@@ -140,13 +126,9 @@ class VoiceLiveAsyncClientTest {
         });
 
         // Test null parameter validation for startSession methods
-        assertThrows(NullPointerException.class, () -> {
-            client.startSession((String) null);
-        });
+        assertThrows(NullPointerException.class, () -> client.startSession(null));
 
-        assertThrows(NullPointerException.class, () -> {
-            client.startSession((String) null);
-        });
+        assertThrows(NullPointerException.class, () -> client.startSession(null));
     }
 
     @Test

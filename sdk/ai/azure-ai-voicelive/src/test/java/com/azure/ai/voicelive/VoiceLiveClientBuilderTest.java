@@ -5,13 +5,9 @@ package com.azure.ai.voicelive;
 
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,20 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Unit tests for {@link VoiceLiveClientBuilder}.
  */
-@ExtendWith(MockitoExtension.class)
 class VoiceLiveClientBuilderTest {
-
-    @Mock
-    private KeyCredential mockKeyCredential;
-
-    @Mock
-    private TokenCredential mockTokenCredential;
-
-    @Mock
-    private HttpClient mockHttpClient;
-
-    @Mock
-    private Configuration mockConfiguration;
+    private final KeyCredential mockKeyCredential = new KeyCredential("fake");
+    private final TokenCredential mockTokenCredential = new MockTokenCredential();
 
     private VoiceLiveClientBuilder clientBuilder;
 
@@ -74,17 +59,15 @@ class VoiceLiveClientBuilderTest {
     @Test
     void testBuilderWithNullEndpoint() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            clientBuilder.endpoint(null).credential(mockKeyCredential).buildAsyncClient();
-        });
+        assertThrows(NullPointerException.class,
+            () -> clientBuilder.endpoint(null).credential(mockKeyCredential).buildAsyncClient());
     }
 
     @Test
     void testBuilderWithInvalidEndpoint() {
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            clientBuilder.endpoint("http:// invalid-url").credential(mockKeyCredential).buildAsyncClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> clientBuilder.endpoint("http:// invalid-url").credential(mockKeyCredential).buildAsyncClient());
     }
 
     @Test
@@ -93,9 +76,8 @@ class VoiceLiveClientBuilderTest {
         String endpoint = "https://test.cognitiveservices.azure.com";
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            clientBuilder.endpoint(endpoint).credential((KeyCredential) null).buildAsyncClient();
-        });
+        assertThrows(NullPointerException.class,
+            () -> clientBuilder.endpoint(endpoint).credential((KeyCredential) null).buildAsyncClient());
     }
 
     @Test

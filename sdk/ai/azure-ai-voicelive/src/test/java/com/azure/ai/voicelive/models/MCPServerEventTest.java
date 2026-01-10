@@ -6,8 +6,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class MCPServerEventTest {
 
     @Test
-    void testServerEventMcpListToolsInProgress() throws IOException {
+    void testServerEventMcpListToolsInProgress() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-1\"," + "\"type\":\"mcp_list_tools.in_progress\","
             + "\"item_id\":\"item-123\"" + "}";
@@ -34,7 +32,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testServerEventMcpListToolsCompleted() throws IOException {
+    void testServerEventMcpListToolsCompleted() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-2\"," + "\"type\":\"mcp_list_tools.completed\","
             + "\"item_id\":\"item-456\"" + "}";
@@ -51,7 +49,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testServerEventMcpListToolsFailed() throws IOException {
+    void testServerEventMcpListToolsFailed() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-3\"," + "\"type\":\"mcp_list_tools.failed\","
             + "\"item_id\":\"item-789\"" + "}";
@@ -67,7 +65,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testServerEventResponseMcpCallArgumentsDelta() throws IOException {
+    void testServerEventResponseMcpCallArgumentsDelta() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-4\"," + "\"type\":\"response.mcp_call_arguments.delta\","
             + "\"item_id\":\"call-item-1\"," + "\"response_id\":\"resp-1\"," + "\"output_index\":0,"
@@ -88,7 +86,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testServerEventResponseMcpCallArgumentsDeltaWithObfuscation() throws IOException {
+    void testServerEventResponseMcpCallArgumentsDeltaWithObfuscation() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-5\"," + "\"type\":\"response.mcp_call_arguments.delta\","
             + "\"item_id\":\"call-item-2\"," + "\"response_id\":\"resp-2\"," + "\"output_index\":1,"
@@ -105,7 +103,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testServerEventResponseMcpCallArgumentsDone() throws IOException {
+    void testServerEventResponseMcpCallArgumentsDone() {
         // Arrange
         String json = "{" + "\"event_id\":\"evt-6\"," + "\"type\":\"response.mcp_call_arguments.done\","
             + "\"item_id\":\"call-item-3\"," + "\"response_id\":\"resp-3\"," + "\"output_index\":0,"
@@ -126,7 +124,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testJsonRoundTripForInProgress() throws IOException {
+    void testJsonRoundTripForInProgress() {
         // Arrange
         String originalJson = "{" + "\"event_id\":\"round-trip-1\"," + "\"type\":\"mcp_list_tools.in_progress\","
             + "\"item_id\":\"item-rt\"" + "}";
@@ -146,7 +144,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testJsonRoundTripForArgumentsDelta() throws IOException {
+    void testJsonRoundTripForArgumentsDelta() {
         // Arrange
         String originalJson = "{" + "\"event_id\":\"round-trip-2\"," + "\"type\":\"response.mcp_call_arguments.delta\","
             + "\"item_id\":\"item-delta\"," + "\"response_id\":\"resp-delta\"," + "\"output_index\":2,"
@@ -167,7 +165,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testComplexArgumentsInDone() throws IOException {
+    void testComplexArgumentsInDone() {
         // Arrange
         String complexArgs = "{\"nested\":{\"array\":[1,2,3]},\"string\":\"value\",\"bool\":true}";
         String json = "{" + "\"event_id\":\"evt-complex\"," + "\"type\":\"response.mcp_call_arguments.done\","
@@ -183,7 +181,7 @@ class MCPServerEventTest {
     }
 
     @Test
-    void testMultipleDeltaEvents() throws IOException {
+    void testMultipleDeltaEvents() {
         // Simulate streaming multiple delta events
         String[] deltas = {
             "{\"event_id\":\"evt-7\",\"type\":\"response.mcp_call_arguments.delta\",\"item_id\":\"stream-1\",\"response_id\":\"resp-7\",\"output_index\":0,\"delta\":\"{\"}",
