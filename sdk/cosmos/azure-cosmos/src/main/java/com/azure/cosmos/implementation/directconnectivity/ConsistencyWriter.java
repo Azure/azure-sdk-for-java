@@ -194,7 +194,7 @@ public class ConsistencyWriter {
                     BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
-                    // RxJava1 doesn't allow throwing checked exception from Observable operators
+                    // Reactor doesn't allow throwing checked exception from flatMap operators
                     return Mono.error(e);
                 }
             }).flatMap(primaryUri -> {
@@ -379,7 +379,7 @@ public class ConsistencyWriter {
                                     return Mono.error(cosmosExceptionValueHolder.get());
                                 }
 
-                                // RxJava1 doesn't allow throwing checked exception
+                                // Reactor doesn't allow throwing checked exception
                                 return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
                                     HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                             }
@@ -397,7 +397,7 @@ public class ConsistencyWriter {
             }
 
         } catch (CosmosException e) {
-            // RxJava1 doesn't allow throwing checked exception from Observable operators
+            // Reactor doesn't allow throwing checked exception from flatMap operators
             return Mono.error(e);
         }
     }
