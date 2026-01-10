@@ -14,11 +14,10 @@ import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -212,8 +211,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getReadEndpoints()).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getReadEndpoints()).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getWriteEndpoints()).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             globalPartitionEndpointManagerForCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()), false);
@@ -282,8 +281,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
@@ -359,8 +358,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
@@ -447,8 +446,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
@@ -543,8 +542,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
@@ -637,8 +636,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker
@@ -722,8 +721,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 maxExclusive,
                 LocationEastUs2EndpointToLocationPair.getKey());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             int exceptionCountToHandle
                 = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
@@ -819,8 +818,8 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 .map(uriStringPair -> new RegionalRoutingContext(uriStringPair.getLeft()))
                 .collect(Collectors.toList());
 
-            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
-            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
+            Mockito.when(this.globalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(Collections.unmodifiableList(applicableReadWriteEndpoints));
 
             RxDocumentServiceRequest requestCentralUs = constructRxDocumentServiceRequestInstance(
                 readOperationTrue ? OperationType.Read : OperationType.Create,

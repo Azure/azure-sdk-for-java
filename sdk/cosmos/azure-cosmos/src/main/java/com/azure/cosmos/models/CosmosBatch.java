@@ -4,10 +4,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -375,7 +375,7 @@ public final class CosmosBatch {
      * @return The list of operations which are to be executed.
      */
     public List<CosmosItemOperation> getOperations() {
-        return UnmodifiableList.unmodifiableList(operations);
+        return Collections.unmodifiableList(operations);
     }
 
     /**

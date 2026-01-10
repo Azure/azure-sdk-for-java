@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosRequestOptions;
@@ -271,7 +270,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return Collections.unmodifiableList(this.excludeRegions);
     }
 
     /**

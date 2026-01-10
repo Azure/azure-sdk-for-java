@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +170,7 @@ public final class CosmosBatchRequestOptions {
         if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return Collections.unmodifiableList(this.excludeRegions);
     }
 
     /**

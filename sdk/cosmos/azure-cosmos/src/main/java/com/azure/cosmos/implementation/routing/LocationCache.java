@@ -15,9 +15,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +24,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -44,6 +43,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class LocationCache {
     private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
+
+    // Case-insensitive map Comparator for when the key is RegionalRoutingContext.
+    // This effectively matches the behavior of Apache Commons's CaseInsensitiveMap which uses a sentinel value when the
+    // key (RegionalRoutingContext) is null. Since it used the toString() value for key comparison, use
+    // Objects.toString(), which returns "null" when the key is null, to match behavior. We don't need to worry about
+    // inadvertent matches on "null" as RegionalRoutingContext overrides toString() and will never return "null".
+    private static final Comparator<RegionalRoutingContext> REGIONAL_ROUTING_CONTEXT_COMPARATOR
+        = Comparator.comparing(Objects::toString, String.CASE_INSENSITIVE_ORDER);
 
     private final boolean enableEndpointDiscovery;
     private final RegionalRoutingContext defaultRoutingContext;
@@ -89,7 +96,7 @@ public class LocationCache {
      * 2. Endpoint availability
      * @return
      */
-    public UnmodifiableList<RegionalRoutingContext> getReadEndpoints() {
+    public List<RegionalRoutingContext> getReadEndpoints() {
         if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
@@ -104,7 +111,7 @@ public class LocationCache {
      * 2. Endpoint availability
      * @return
      */
-    public UnmodifiableList<RegionalRoutingContext> getWriteEndpoints() {
+    public List<RegionalRoutingContext> getWriteEndpoints() {
         if (!this.locationUnavailabilityInfoByEndpoint.isEmpty()
                 && unavailableLocationsExpirationTimePassed()) {
             this.updateLocationCache();
@@ -197,19 +204,19 @@ public class LocationCache {
                 return this.defaultRoutingContext;
             }
         } else {
-            UnmodifiableList<RegionalRoutingContext> endpoints =
+            List<RegionalRoutingContext> endpoints =
                 request.getOperationType().isWriteOperation()? this.getApplicableWriteRegionRoutingContexts(request) : this.getApplicableReadRegionRoutingContexts(request);
             return endpoints.get(locationIndex % endpoints.size());
         }
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(RxDocumentServiceRequest request) {
+    public List<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(RxDocumentServiceRequest request) {
         return this.getApplicableWriteRegionRoutingContexts(request, request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
+    public List<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
 
-        UnmodifiableList<RegionalRoutingContext> writeEndpoints = this.getWriteEndpoints();
+        List<RegionalRoutingContext> writeEndpoints = this.getWriteEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -236,12 +243,12 @@ public class LocationCache {
             unavailableRegionsForPartition);
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(RxDocumentServiceRequest request) {
+    public List<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(RxDocumentServiceRequest request) {
         return this.getApplicableReadRegionRoutingContexts(request, request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
-    public UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
-        UnmodifiableList<RegionalRoutingContext> readEndpoints = this.getReadEndpoints();
+    public List<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(List<String> excludedRegionsOnRequest, List<String> unavailableRegionsForPartition) {
+        List<RegionalRoutingContext> readEndpoints = this.getReadEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -268,11 +275,11 @@ public class LocationCache {
             unavailableRegionsForPartition);
     }
 
-    private UnmodifiableList<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(
+    private List<RegionalRoutingContext> getApplicableReadRegionRoutingContexts(
         RxDocumentServiceRequest request,
         List<String> excludedRegionsOnRequest,
         List<String> unavailableRegionsForPartition) {
-        UnmodifiableList<RegionalRoutingContext> readEndpoints = this.getReadEndpoints();
+        List<RegionalRoutingContext> readEndpoints = this.getReadEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -299,12 +306,12 @@ public class LocationCache {
             unavailableRegionsForPartition);
     }
 
-    private UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(
+    private List<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(
         RxDocumentServiceRequest request,
         List<String> excludedRegionsOnRequest,
         List<String> unavailableRegionsForPartition) {
 
-        UnmodifiableList<RegionalRoutingContext> writeEndpoints = this.getWriteEndpoints();
+        List<RegionalRoutingContext> writeEndpoints = this.getWriteEndpoints();
         Supplier<CosmosExcludedRegions> excludedRegionsSupplier = this.connectionPolicy.getExcludedRegionsSupplier();
 
         List<String> effectiveExcludedRegions = isExcludedRegionsSupplierConfigured(excludedRegionsSupplier) ?
@@ -331,13 +338,13 @@ public class LocationCache {
             unavailableRegionsForPartition);
     }
 
-    private UnmodifiableList<RegionalRoutingContext> getApplicableRegionRoutingContexts(
+    private List<RegionalRoutingContext> getApplicableRegionRoutingContexts(
         RxDocumentServiceRequest request,
         List<String> effectivePreferredLocations,
-        UnmodifiableList<RegionalRoutingContext> regionalRoutingContexts,
+        List<RegionalRoutingContext> regionalRoutingContexts,
         RegionalRoutingContext hubRoutingContext,
-        UnmodifiableMap<RegionalRoutingContext, String> regionNameByRegionalRoutingContext,
-        UnmodifiableMap<String, RegionalRoutingContext> regionalRoutingContextByRegionName,
+        Map<RegionalRoutingContext, String> regionNameByRegionalRoutingContext,
+        Map<String, RegionalRoutingContext> regionalRoutingContextByRegionName,
         RegionalRoutingContext fallbackRoutingContext,
         List<String> userConfiguredExcludeRegions,
         List<String> internalExcludeRegions) {
@@ -389,7 +396,7 @@ public class LocationCache {
         return this.reevaluate(
             request,
             effectivePreferredLocations,
-            new UnmodifiableList<>(applicableEndpoints),
+            Collections.unmodifiableList(applicableEndpoints),
             regionNameByRegionalRoutingContext,
             regionalRoutingContextByRegionName,
             userConfiguredExcludeRegions,
@@ -400,13 +407,13 @@ public class LocationCache {
             isFallbackEndpointUsed);
     }
 
-    private UnmodifiableList<RegionalRoutingContext> reevaluate(
+    private List<RegionalRoutingContext> reevaluate(
         RxDocumentServiceRequest request,
         // populated when global endpoint == default endpoint && preferred regions not populated by user
         List<String> effectivePreferredLocations,
-        UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts,
-        UnmodifiableMap<RegionalRoutingContext, String> regionNameByRegionalRoutingContexts,
-        UnmodifiableMap<String, RegionalRoutingContext> regionalRoutingContextsByRegionName,
+        List<RegionalRoutingContext> applicableRegionalRoutingContexts,
+        Map<RegionalRoutingContext, String> regionNameByRegionalRoutingContexts,
+        Map<String, RegionalRoutingContext> regionalRoutingContextsByRegionName,
         // exclude regions from request options or client
         List<String> userConfiguredExcludeRegions,
         // exclude URIs from per-partition circuit breaker
@@ -509,7 +516,7 @@ public class LocationCache {
             }
         }
 
-        return new UnmodifiableList<>(modifiedRegionalRoutingContexts);
+        return Collections.unmodifiableList(modifiedRegionalRoutingContexts);
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
@@ -766,7 +773,7 @@ public class LocationCache {
             Iterable<DatabaseAccountLocation> gatewayReadLocations,
             Iterable<DatabaseAccountLocation> thinClientWriteLocations,
             Iterable<DatabaseAccountLocation> thinClientReadLocations,
-            UnmodifiableList<String> preferenceList,
+            List<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
             DatabaseAccountLocationsInfo nextLocationInfo = new DatabaseAccountLocationsInfo(this.locationInfo);
@@ -784,9 +791,9 @@ public class LocationCache {
             this.clearStaleEndpointUnavailabilityInfo();
 
             if (gatewayReadLocations != null) {
-                Utils.ValueHolder<UnmodifiableList<String>> readLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
-                Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> availableReadEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadRegionalRoutingContexts);
-                Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> readRegionMapValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadRegionalRoutingContexts);
+                Utils.ValueHolder<List<String>> readLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
+                Utils.ValueHolder<List<RegionalRoutingContext>> availableReadEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableReadRegionalRoutingContexts);
+                Utils.ValueHolder<Map<RegionalRoutingContext, String>> readRegionMapValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadRegionalRoutingContexts);
                 nextLocationInfo.availableReadRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayReadLocations, thinClientReadLocations, readLocationsValueHolderOut, availableReadEndpointsOut, readRegionMapValueHolderOut);
 
                 nextLocationInfo.availableReadLocations = readLocationsValueHolderOut.v;
@@ -796,9 +803,9 @@ public class LocationCache {
             }
 
             if (gatewayWriteLocations != null) {
-                Utils.ValueHolder<UnmodifiableList<String>> writeLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
-                Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> writeRegionMapOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteRegionalRoutingContexts);
-                Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> availableWriteEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteRegionalRoutingContexts);
+                Utils.ValueHolder<List<String>> writeLocationsValueHolderOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
+                Utils.ValueHolder<Map<RegionalRoutingContext, String>> writeRegionMapOut = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteRegionalRoutingContexts);
+                Utils.ValueHolder<List<RegionalRoutingContext>> availableWriteEndpointsOut = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteRegionalRoutingContexts);
 
                 nextLocationInfo.availableWriteRegionalRoutingContextsByRegionName = this.getEndpointsByLocation(gatewayWriteLocations, thinClientWriteLocations, writeLocationsValueHolderOut, availableWriteEndpointsOut, writeRegionMapOut);
                 nextLocationInfo.availableWriteLocations = writeLocationsValueHolderOut.v;
@@ -828,10 +835,10 @@ public class LocationCache {
         }
     }
 
-    private UnmodifiableList<RegionalRoutingContext> getPreferredAvailableRoutingContexts(UnmodifiableMap<String, RegionalRoutingContext> endpointsByLocation,
-                                                                                          UnmodifiableList<String> orderedLocations,
-                                                                                          OperationType expectedAvailableOperation,
-                                                                                          RegionalRoutingContext fallbackRegionalRoutingContext) {
+    private List<RegionalRoutingContext> getPreferredAvailableRoutingContexts(Map<String, RegionalRoutingContext> endpointsByLocation,
+                                                                                List<String> orderedLocations,
+                                                                                OperationType expectedAvailableOperation,
+                                                                                RegionalRoutingContext fallbackRegionalRoutingContext) {
         List<RegionalRoutingContext> endpoints = new ArrayList<>();
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         // if enableEndpointDiscovery is false, we always use the defaultEndpoint that user passed in during documentClient init
@@ -895,7 +902,7 @@ public class LocationCache {
         if (endpoints.isEmpty()) {
             endpoints.add(fallbackRegionalRoutingContext);
         }
-        return new UnmodifiableList<>(endpoints);
+        return Collections.unmodifiableList(endpoints);
     }
 
     private void addRoutingContexts(
@@ -957,23 +964,23 @@ public class LocationCache {
         }
     }
 
-    private UnmodifiableMap<String, RegionalRoutingContext> getEndpointsByLocation(Iterable<DatabaseAccountLocation> gatewayLocations,
+    private Map<String, RegionalRoutingContext> getEndpointsByLocation(Iterable<DatabaseAccountLocation> gatewayLocations,
                                                                                    Iterable<DatabaseAccountLocation> thinclientLocations,
-                                                                                   Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
-                                                                                   Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> orderedEndpointsHolder,
-                                                                                   Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap) {
-        Map<String, RegionalRoutingContext> endpointsByLocation = new CaseInsensitiveMap<>();
-        Map<RegionalRoutingContext, String> regionByEndpoint = new CaseInsensitiveMap<>();
+                                                                                   Utils.ValueHolder<List<String>> orderedLocations,
+                                                                                   Utils.ValueHolder<List<RegionalRoutingContext>> orderedEndpointsHolder,
+                                                                                   Utils.ValueHolder<Map<RegionalRoutingContext, String>> regionMap) {
+        Map<String, RegionalRoutingContext> endpointsByLocation = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<RegionalRoutingContext, String> regionByEndpoint = new TreeMap<>(REGIONAL_ROUTING_CONTEXT_COMPARATOR);
         List<String> parsedLocations = new ArrayList<>();
         List<RegionalRoutingContext> orderedEndpoints = new ArrayList<>();
 
         addRoutingContexts(gatewayLocations, thinclientLocations, endpointsByLocation, regionByEndpoint, parsedLocations, orderedEndpoints);
 
-        orderedLocations.v = new UnmodifiableList<>(parsedLocations);
-        orderedEndpointsHolder.v = new UnmodifiableList<>(orderedEndpoints);
-        regionMap.v = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.unmodifiableMap(regionByEndpoint);
+        orderedLocations.v = Collections.unmodifiableList(parsedLocations);
+        orderedEndpointsHolder.v = Collections.unmodifiableList(orderedEndpoints);
+        regionMap.v = Collections.unmodifiableMap(regionByEndpoint);
 
-        return (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.unmodifiableMap(endpointsByLocation);
+        return Collections.unmodifiableMap(endpointsByLocation);
     }
 
     public boolean canUseMultipleWriteLocations() {
@@ -1049,40 +1056,36 @@ public class LocationCache {
     }
 
     static class DatabaseAccountLocationsInfo {
-        private UnmodifiableList<RegionalRoutingContext> writeRegionalRoutingContexts;
-        private UnmodifiableList<RegionalRoutingContext> readRegionalRoutingContexts;
-        private UnmodifiableList<String> preferredLocations;
-        private UnmodifiableList<String> effectivePreferredLocations;
+        private List<RegionalRoutingContext> writeRegionalRoutingContexts;
+        private List<RegionalRoutingContext> readRegionalRoutingContexts;
+        private List<String> preferredLocations;
+        private List<String> effectivePreferredLocations;
         // lower-case region
-        private UnmodifiableList<String> availableWriteLocations;
+        private List<String> availableWriteLocations;
         // lower-case region
-        private UnmodifiableList<String> availableReadLocations;
-        private UnmodifiableMap<String, RegionalRoutingContext> availableWriteRegionalRoutingContextsByRegionName;
-        private UnmodifiableMap<String, RegionalRoutingContext> availableReadRegionalRoutingContextsByRegionName;
-        private UnmodifiableMap<RegionalRoutingContext, String> regionNameByWriteRegionalRoutingContexts;
-        private UnmodifiableMap<RegionalRoutingContext, String> regionNameByReadRegionalRoutingContexts;
-        private UnmodifiableList<RegionalRoutingContext> availableWriteRegionalRoutingContexts;
-        private UnmodifiableList<RegionalRoutingContext> availableReadRegionalRoutingContexts;
+        private List<String> availableReadLocations;
+        private Map<String, RegionalRoutingContext> availableWriteRegionalRoutingContextsByRegionName;
+        private Map<String, RegionalRoutingContext> availableReadRegionalRoutingContextsByRegionName;
+        private Map<RegionalRoutingContext, String> regionNameByWriteRegionalRoutingContexts;
+        private Map<RegionalRoutingContext, String> regionNameByReadRegionalRoutingContexts;
+        private List<RegionalRoutingContext> availableWriteRegionalRoutingContexts;
+        private List<RegionalRoutingContext> availableReadRegionalRoutingContexts;
         private RegionalRoutingContext hubRoutingContext;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             RegionalRoutingContext defaultRoutingContext) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
-            this.effectivePreferredLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.availableWriteRegionalRoutingContextsByRegionName
-                = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.availableReadRegionalRoutingContextsByRegionName
-                = (UnmodifiableMap<String, RegionalRoutingContext>) UnmodifiableMap.<String, RegionalRoutingContext>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.regionNameByWriteRegionalRoutingContexts
-                = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.<RegionalRoutingContext, String>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.regionNameByReadRegionalRoutingContexts
-                = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.<RegionalRoutingContext, String>unmodifiableMap(new CaseInsensitiveMap<>());
-            this.availableReadLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
-            this.readRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
-            this.writeRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
-            this.availableReadRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
-            this.availableWriteRegionalRoutingContexts = new UnmodifiableList<>(Collections.singletonList(defaultRoutingContext));
+            this.preferredLocations = Collections.unmodifiableList(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
+            this.effectivePreferredLocations = Collections.emptyList();
+            this.availableWriteRegionalRoutingContextsByRegionName = Collections.unmodifiableMap(new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
+            this.availableReadRegionalRoutingContextsByRegionName = Collections.unmodifiableMap(new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
+            this.regionNameByWriteRegionalRoutingContexts = Collections.unmodifiableMap(new TreeMap<>(REGIONAL_ROUTING_CONTEXT_COMPARATOR));
+            this.regionNameByReadRegionalRoutingContexts = Collections.unmodifiableMap(new TreeMap<>(REGIONAL_ROUTING_CONTEXT_COMPARATOR));
+            this.availableReadLocations = Collections.emptyList();
+            this.availableWriteLocations = Collections.emptyList();
+            this.readRegionalRoutingContexts = Collections.singletonList(defaultRoutingContext);
+            this.writeRegionalRoutingContexts = Collections.singletonList(defaultRoutingContext);
+            this.availableReadRegionalRoutingContexts = Collections.singletonList(defaultRoutingContext);
+            this.availableWriteRegionalRoutingContexts = Collections.singletonList(defaultRoutingContext);
         }
 
         public DatabaseAccountLocationsInfo(DatabaseAccountLocationsInfo other) {

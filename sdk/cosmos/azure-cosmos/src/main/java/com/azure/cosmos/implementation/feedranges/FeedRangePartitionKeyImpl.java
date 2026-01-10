@@ -12,13 +12,13 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -139,7 +139,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                             rangeList.add(rangeId);
                         }
 
-                        return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(rangeList));
+                        return Mono.just(Collections.unmodifiableList(rangeList));
                     });
             });
     }

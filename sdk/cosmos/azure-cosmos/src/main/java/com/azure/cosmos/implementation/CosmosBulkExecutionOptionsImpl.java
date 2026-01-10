@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -19,6 +18,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -327,7 +327,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return Collections.unmodifiableList(this.excludeRegions);
     }
 
     public void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {

@@ -6,10 +6,10 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -106,7 +106,7 @@ public abstract class ServerBatchRequest {
      * @return the list of {@link CosmosItemOperation operations} in this {@link ServerBatchRequest batch request}.
      */
     public final List<CosmosItemOperation> getOperations() {
-        return UnmodifiableList.unmodifiableList(this.operations);
+        return Collections.unmodifiableList(this.operations);
     }
 
     public boolean isAtomicBatch() {

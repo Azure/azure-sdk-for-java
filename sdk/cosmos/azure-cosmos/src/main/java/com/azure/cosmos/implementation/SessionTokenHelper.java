@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -258,7 +258,7 @@ public class SessionTokenHelper {
         return partitionKeyRangeRid + ":" + sessionToken;
     }
 
-    public static boolean tryEvaluateLocalLsnByRegionMappingWithNullSafety(ISessionToken sessionToken, Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion) {
+    public static boolean tryEvaluateLocalLsnByRegionMappingWithNullSafety(ISessionToken sessionToken, Utils.ValueHolder<Map<Integer, Long>> localLsnByRegion) {
 
         if (sessionToken instanceof VectorSessionToken) {
             VectorSessionToken castVectorSessionToken = Utils.as(sessionToken, VectorSessionToken.class);

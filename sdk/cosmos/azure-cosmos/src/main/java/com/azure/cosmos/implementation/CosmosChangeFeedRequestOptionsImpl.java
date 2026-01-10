@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
@@ -21,6 +20,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.util.Beta;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,7 +337,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return Collections.unmodifiableList(this.excludeRegions);
     }
 
     public CosmosChangeFeedRequestOptionsImpl setHeader(String name, String value) {

@@ -6,7 +6,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.ReadConsistencyStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.util.Beta;
 
 import java.util.Collections;
@@ -338,7 +337,7 @@ public final class CosmosRequestOptions {
          if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+        return Collections.unmodifiableList(this.excludeRegions);
     }
 
     /**
