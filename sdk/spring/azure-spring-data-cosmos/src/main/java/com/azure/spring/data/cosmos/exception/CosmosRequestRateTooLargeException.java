@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Request Rate Too Large Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosRequestRateTooLargeException extends CosmosAccessException {
 
     /**

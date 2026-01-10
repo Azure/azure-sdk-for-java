@@ -18,7 +18,7 @@ import com.azure.spring.messaging.eventhubs.implementation.support.converter.Eve
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -89,10 +89,11 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withoutObjectMapperShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .withPropertyValues(
             "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
         )
@@ -101,11 +102,12 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultEventHubsMessageConverter");
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
@@ -114,12 +116,13 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("eventHubsMessageConverter");
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
@@ -128,13 +131,14 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withUserProvidedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean("userObjectMapper", ObjectMapper.class, ObjectMapper::new)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);

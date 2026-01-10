@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>6.1.0</version>
+    <version>7.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -131,6 +131,7 @@ Set `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS
 ```java readme-sample-AppConfiguration
 @Configuration
 @EnableCosmosRepositories
+@SuppressWarnings("deprecation")
 public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);

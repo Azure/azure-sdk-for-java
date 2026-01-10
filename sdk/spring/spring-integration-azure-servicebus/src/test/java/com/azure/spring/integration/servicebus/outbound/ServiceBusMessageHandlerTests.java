@@ -25,6 +25,7 @@ class ServiceBusMessageHandlerTests extends DefaultMessageHandlerTests<ServiceBu
     @SuppressWarnings("unchecked")
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
+        super.setUp();
         this.sendOperation = mock(ServiceBusTemplate.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(mono);
         when(
