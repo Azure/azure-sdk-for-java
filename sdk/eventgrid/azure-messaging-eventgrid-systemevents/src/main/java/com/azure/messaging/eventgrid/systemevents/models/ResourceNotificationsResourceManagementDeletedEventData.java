@@ -20,14 +20,9 @@ public final class ResourceNotificationsResourceManagementDeletedEventData
 
     /**
      * Creates an instance of ResourceNotificationsResourceManagementDeletedEventData class.
-     *
-     * @param resourceDetails the resourceDetails value to set.
-     * @param operationalDetails the operationalDetails value to set.
      */
     @Generated
-    private ResourceNotificationsResourceManagementDeletedEventData(
-        ResourceNotificationsResourceDeletedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails) {
+    private ResourceNotificationsResourceManagementDeletedEventData() {
         super(resourceDetails, operationalDetails);
     }
 

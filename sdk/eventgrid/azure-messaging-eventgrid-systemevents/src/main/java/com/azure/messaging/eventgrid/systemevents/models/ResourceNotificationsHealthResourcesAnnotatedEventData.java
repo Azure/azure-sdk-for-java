@@ -21,14 +21,10 @@ public final class ResourceNotificationsHealthResourcesAnnotatedEventData
     /**
      * Creates an instance of ResourceNotificationsHealthResourcesAnnotatedEventData class.
      *
-     * @param resourceDetails the resourceDetails value to set.
-     * @param operationalDetails the operationalDetails value to set.
      * @param apiVersion the apiVersion value to set.
      */
     @Generated
-    private ResourceNotificationsHealthResourcesAnnotatedEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+    private ResourceNotificationsHealthResourcesAnnotatedEventData(String apiVersion) {
         super(resourceDetails, operationalDetails, apiVersion);
     }
 

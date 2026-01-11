@@ -29,18 +29,6 @@ public final class MessageTemplateText extends MessageTemplateValue {
     private final String text;
 
     /**
-     * Creates an instance of MessageTemplateText class.
-     *
-     * @param refValue the refValue value to set.
-     * @param text the text value to set.
-     */
-    @Generated
-    public MessageTemplateText(String refValue, String text) {
-        super(refValue);
-        this.text = text;
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.
@@ -106,5 +94,16 @@ public final class MessageTemplateText extends MessageTemplateValue {
             deserializedMessageTemplateText.kind = kind;
             return deserializedMessageTemplateText;
         });
+    }
+
+    /**
+     * Creates an instance of MessageTemplateText class.
+     *
+     * @param text the text value to set.
+     */
+    @Generated
+    public MessageTemplateText(String text) {
+        super(refValue);
+        this.text = text;
     }
 }

@@ -18,22 +18,6 @@ import java.util.List;
 public final class TransliterableScript extends LanguageScript {
 
     /**
-     * Creates an instance of TransliterableScript class.
-     *
-     * @param code the code value to set.
-     * @param name the name value to set.
-     * @param nativeName the nativeName value to set.
-     * @param directionality the directionality value to set.
-     * @param toScripts the toScripts value to set.
-     */
-    @Generated
-    private TransliterableScript(String code, String name, String nativeName, LanguageDirectionality directionality,
-        List<LanguageScript> toScripts) {
-        super(code, name, nativeName, directionality);
-        this.toScripts = toScripts;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -100,5 +84,19 @@ public final class TransliterableScript extends LanguageScript {
     @Generated
     public List<LanguageScript> getToScripts() {
         return this.toScripts;
+    }
+
+    /**
+     * Creates an instance of TransliterableScript class.
+     *
+     * @param code the code value to set.
+     * @param name the name value to set.
+     * @param nativeName the nativeName value to set.
+     * @param toScripts the toScripts value to set.
+     */
+    @Generated
+    private TransliterableScript(String code, String name, String nativeName, List<LanguageScript> toScripts) {
+        super(code, name, nativeName, directionality);
+        this.toScripts = toScripts;
     }
 }

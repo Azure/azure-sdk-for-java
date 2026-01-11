@@ -41,18 +41,6 @@ public final class MessageTemplateImage extends MessageTemplateValue {
     private String fileName;
 
     /**
-     * Creates an instance of MessageTemplateImage class.
-     *
-     * @param refValue the refValue value to set.
-     * @param url the url value to set.
-     */
-    @Generated
-    public MessageTemplateImage(String refValue, String url) {
-        super(refValue);
-        this.url = url;
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.
@@ -172,5 +160,16 @@ public final class MessageTemplateImage extends MessageTemplateValue {
             deserializedMessageTemplateImage.fileName = fileName;
             return deserializedMessageTemplateImage;
         });
+    }
+
+    /**
+     * Creates an instance of MessageTemplateImage class.
+     *
+     * @param url the url value to set.
+     */
+    @Generated
+    public MessageTemplateImage(String url) {
+        super(refValue);
+        this.url = url;
     }
 }

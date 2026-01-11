@@ -33,20 +33,6 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
     private DocumentClassifierDetails result;
 
     /**
-     * Creates an instance of DocumentClassifierBuildOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    private DocumentClassifierBuildOperationDetails(DocumentIntelligenceOperationStatus status,
-        OffsetDateTime createdOn, OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        super(status, createdOn, lastUpdatedOn, resourceLocation);
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -154,5 +140,17 @@ public final class DocumentClassifierBuildOperationDetails extends DocumentIntel
             deserializedDocumentClassifierBuildOperationDetails.result = result;
             return deserializedDocumentClassifierBuildOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentClassifierBuildOperationDetails class.
+     *
+     * @param status the status value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    private DocumentClassifierBuildOperationDetails(DocumentIntelligenceOperationStatus status,
+        String resourceLocation) {
+        super(status, createdOn, lastUpdatedOn, resourceLocation);
     }
 }

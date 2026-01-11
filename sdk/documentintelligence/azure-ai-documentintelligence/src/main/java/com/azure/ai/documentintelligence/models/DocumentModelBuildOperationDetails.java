@@ -33,20 +33,6 @@ public final class DocumentModelBuildOperationDetails extends DocumentIntelligen
     private DocumentModelDetails result;
 
     /**
-     * Creates an instance of DocumentModelBuildOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    private DocumentModelBuildOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        super(status, createdOn, lastUpdatedOn, resourceLocation);
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -154,5 +140,16 @@ public final class DocumentModelBuildOperationDetails extends DocumentIntelligen
             deserializedDocumentModelBuildOperationDetails.result = result;
             return deserializedDocumentModelBuildOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentModelBuildOperationDetails class.
+     *
+     * @param status the status value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    private DocumentModelBuildOperationDetails(DocumentIntelligenceOperationStatus status, String resourceLocation) {
+        super(status, createdOn, lastUpdatedOn, resourceLocation);
     }
 }

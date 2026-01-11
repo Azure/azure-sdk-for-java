@@ -22,14 +22,10 @@ public final class ResourceNotificationsHealthResourcesAvailabilityStatusChanged
     /**
      * Creates an instance of ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData class.
      *
-     * @param resourceDetails the resourceDetails value to set.
-     * @param operationalDetails the operationalDetails value to set.
      * @param apiVersion the apiVersion value to set.
      */
     @Generated
-    private ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+    private ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData(String apiVersion) {
         super(resourceDetails, operationalDetails, apiVersion);
     }
 

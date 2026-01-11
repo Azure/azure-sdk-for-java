@@ -86,13 +86,11 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      *
      * @param from the from value to set.
      * @param to the to value to set.
-     * @param receivedTimestamp the receivedTimestamp value to set.
      * @param channelKind the channelKind value to set.
      * @param messageType the messageType value to set.
      */
     @Generated
-    private AcsMessageReceivedEventData(String from, String to, OffsetDateTime receivedTimestamp,
-        AcsMessageChannelKind channelKind, String messageType) {
+    private AcsMessageReceivedEventData(String from, String to, AcsMessageChannelKind channelKind, String messageType) {
         super(from, to, receivedTimestamp);
         this.channelKind = channelKind;
         this.messageType = messageType;

@@ -21,14 +21,10 @@ public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventD
     /**
      * Creates an instance of ResourceNotificationsResourceManagementCreatedOrUpdatedEventData class.
      *
-     * @param resourceDetails the resourceDetails value to set.
-     * @param operationalDetails the operationalDetails value to set.
      * @param apiVersion the apiVersion value to set.
      */
     @Generated
-    private ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+    private ResourceNotificationsResourceManagementCreatedOrUpdatedEventData(String apiVersion) {
         super(resourceDetails, operationalDetails, apiVersion);
     }
 

@@ -51,13 +51,12 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
      *
      * @param from the from value to set.
      * @param to the to value to set.
-     * @param receivedTimestamp the receivedTimestamp value to set.
      * @param status the status value to set.
      * @param channelKind the channelKind value to set.
      */
     @Generated
-    private AcsMessageDeliveryStatusUpdatedEventData(String from, String to, OffsetDateTime receivedTimestamp,
-        AcsMessageDeliveryStatus status, AcsMessageChannelKind channelKind) {
+    private AcsMessageDeliveryStatusUpdatedEventData(String from, String to, AcsMessageDeliveryStatus status,
+        AcsMessageChannelKind channelKind) {
         super(from, to, receivedTimestamp);
         this.status = status;
         this.channelKind = channelKind;
