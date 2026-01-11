@@ -41,18 +41,6 @@ public final class MessageTemplateVideo extends MessageTemplateValue {
     private String fileName;
 
     /**
-     * Creates an instance of MessageTemplateVideo class.
-     *
-     * @param refValue the refValue value to set.
-     * @param url the url value to set.
-     */
-    @Generated
-    public MessageTemplateVideo(String refValue, String url) {
-        super(refValue);
-        this.url = url;
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.
@@ -172,5 +160,16 @@ public final class MessageTemplateVideo extends MessageTemplateValue {
             deserializedMessageTemplateVideo.fileName = fileName;
             return deserializedMessageTemplateVideo;
         });
+    }
+
+    /**
+     * Creates an instance of MessageTemplateVideo class.
+     *
+     * @param url the url value to set.
+     */
+    @Generated
+    public MessageTemplateVideo(String url) {
+        super(refValue);
+        this.url = url;
     }
 }

@@ -48,20 +48,6 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
     private final double longitude;
 
     /**
-     * Creates an instance of MessageTemplateLocation class.
-     *
-     * @param refValue the refValue value to set.
-     * @param latitude the latitude value to set.
-     * @param longitude the longitude value to set.
-     */
-    @Generated
-    private MessageTemplateLocation(String refValue, double latitude, double longitude) {
-        super(refValue);
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.

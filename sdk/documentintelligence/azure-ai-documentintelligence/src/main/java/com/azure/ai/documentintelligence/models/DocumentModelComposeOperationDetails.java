@@ -33,20 +33,6 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
     private DocumentModelDetails result;
 
     /**
-     * Creates an instance of DocumentModelComposeOperationDetails class.
-     *
-     * @param status the status value to set.
-     * @param createdOn the createdOn value to set.
-     * @param lastUpdatedOn the lastUpdatedOn value to set.
-     * @param resourceLocation the resourceLocation value to set.
-     */
-    @Generated
-    private DocumentModelComposeOperationDetails(DocumentIntelligenceOperationStatus status, OffsetDateTime createdOn,
-        OffsetDateTime lastUpdatedOn, String resourceLocation) {
-        super(status, createdOn, lastUpdatedOn, resourceLocation);
-    }
-
-    /**
      * Get the kind property: Type of operation.
      *
      * @return the kind value.
@@ -154,5 +140,16 @@ public final class DocumentModelComposeOperationDetails extends DocumentIntellig
             deserializedDocumentModelComposeOperationDetails.result = result;
             return deserializedDocumentModelComposeOperationDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DocumentModelComposeOperationDetails class.
+     *
+     * @param status the status value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    @Generated
+    private DocumentModelComposeOperationDetails(DocumentIntelligenceOperationStatus status, String resourceLocation) {
+        super(status, createdOn, lastUpdatedOn, resourceLocation);
     }
 }

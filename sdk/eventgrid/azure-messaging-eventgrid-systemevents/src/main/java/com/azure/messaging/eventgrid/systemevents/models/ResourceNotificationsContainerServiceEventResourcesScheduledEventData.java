@@ -23,14 +23,10 @@ public final class ResourceNotificationsContainerServiceEventResourcesScheduledE
     /**
      * Creates an instance of ResourceNotificationsContainerServiceEventResourcesScheduledEventData class.
      *
-     * @param resourceDetails the resourceDetails value to set.
-     * @param operationalDetails the operationalDetails value to set.
      * @param apiVersion the apiVersion value to set.
      */
     @Generated
-    private ResourceNotificationsContainerServiceEventResourcesScheduledEventData(
-        ResourceNotificationsResourceUpdatedDetails resourceDetails,
-        ResourceNotificationsOperationalDetails operationalDetails, String apiVersion) {
+    private ResourceNotificationsContainerServiceEventResourcesScheduledEventData(String apiVersion) {
         super(resourceDetails, operationalDetails, apiVersion);
     }
 

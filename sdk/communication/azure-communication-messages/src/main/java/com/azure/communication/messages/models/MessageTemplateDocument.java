@@ -41,18 +41,6 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
     private String fileName;
 
     /**
-     * Creates an instance of MessageTemplateDocument class.
-     *
-     * @param refValue the refValue value to set.
-     * @param url the url value to set.
-     */
-    @Generated
-    public MessageTemplateDocument(String refValue, String url) {
-        super(refValue);
-        this.url = url;
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.
@@ -172,5 +160,16 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
             deserializedMessageTemplateDocument.fileName = fileName;
             return deserializedMessageTemplateDocument;
         });
+    }
+
+    /**
+     * Creates an instance of MessageTemplateDocument class.
+     *
+     * @param url the url value to set.
+     */
+    @Generated
+    public MessageTemplateDocument(String url) {
+        super(refValue);
+        this.url = url;
     }
 }

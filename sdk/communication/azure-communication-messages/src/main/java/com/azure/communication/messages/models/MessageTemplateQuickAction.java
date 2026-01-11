@@ -35,16 +35,6 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     private String payload;
 
     /**
-     * Creates an instance of MessageTemplateQuickAction class.
-     *
-     * @param refValue the refValue value to set.
-     */
-    @Generated
-    public MessageTemplateQuickAction(String refValue) {
-        super(refValue);
-    }
-
-    /**
      * Get the kind property: The type discriminator describing a template parameter type.
      *
      * @return the kind value.
@@ -151,5 +141,13 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
             deserializedMessageTemplateQuickAction.payload = payload;
             return deserializedMessageTemplateQuickAction;
         });
+    }
+
+    /**
+     * Creates an instance of MessageTemplateQuickAction class.
+     */
+    @Generated
+    public MessageTemplateQuickAction() {
+        super(refValue);
     }
 }
