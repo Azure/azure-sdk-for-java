@@ -56,7 +56,7 @@ com.azure:azure-ai-projects;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-speech-transcription;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.5.11;5.6.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-translation-text;1.1.7;2.0.0-beta.1
+com.azure:azure-ai-translation-text;1.1.7;2.0.0-beta.2
 com.azure:azure-ai-translation-document;1.0.6;1.1.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-voicelive;1.0.0-beta.3;1.0.0-beta.4
@@ -115,6 +115,7 @@ com.azure:azure-cosmos-test;1.0.0-beta.16;1.0.0-beta.17
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.42.0;4.43.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.8.5;1.9.0-beta.1
