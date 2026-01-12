@@ -70,7 +70,28 @@ For more information on deploying models, see [Create model deployments in Micro
 
 > **IMPORTANT:** This is a **one-time setup per Microsoft Foundry resource** that maps your deployed models to those required by the prebuilt analyzers and custom models. If you have multiple Microsoft Foundry resources, you need to configure each one separately.
 
-You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK. The configuration maps your deployed models (currently gpt-4.1, gpt-4.1-mini, and text-embedding-3-large) to the large language models required by prebuilt analyzers.
+You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK.
+
+**Environment Setup:**
+
+Before running the configuration, set the following environment variables:
+
+```bash
+# Required: Your Microsoft Foundry resource endpoint
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+
+# Optional: API key (if not using DefaultAzureCredential)
+export AZURE_CONTENT_UNDERSTANDING_KEY="<your-api-key>"
+```
+
+**Run the Configuration Sample:**
+
+Run [Sample00_UpdateDefaults][sample00_update_defaults] to configure your model deployments. This sample demonstrates how to:
+1. Get the current default configuration
+2. Update the configuration with your model deployment mappings
+3. Verify the updated configuration
+
+The configuration maps your deployed models (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) to the large language models required by prebuilt analyzers.
 
 ### Adding the package to your product
 
@@ -172,6 +193,16 @@ The SDK provides `SyncPoller<T, U>` and `PollerFlux<T, U>` types that handle pol
 
 We guarantee that all client instance methods are thread-safe and independent of each other. This ensures that the recommendation of reusing client instances is always safe, even across threads.
 
+### Additional concepts
+
+The following concepts are common across all Azure SDK client libraries:
+
+[Client options][azure_core_http_client] |
+[Accessing the response][azure_core_response] |
+[Long-running operations][azure_core_lro] |
+[Handling failures][azure_core_exceptions] |
+[Logging][logging]
+
 ## Examples
 
 You can familiarize yourself with different APIs using [Samples][samples_directory].
@@ -254,7 +285,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [deploy_models_docs]: https://learn.microsoft.com/azure/ai-studio/how-to/deploy-models-openai
 [prebuilt_analyzers_docs]: https://learn.microsoft.com/azure/ai-services/content-understanding/concepts/prebuilt-analyzers
 [samples_directory]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples
+[sample00_update_defaults]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/contentunderstanding/azure-ai-contentunderstanding/src/samples/java/com/azure/ai/contentunderstanding/samples/Sample00_UpdateDefaults.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
+[azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
+[azure_core_lro]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#long-running-operations-with-pollerflux
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#exception-hierarchy-with-azureexception
 [contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [code_of_conduct_faq]: https://opensource.microsoft.com/codeofconduct/faq/

@@ -20,8 +20,24 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * 1. Getting current default configuration
  * 2. Updating default configuration
  * 3. Verifying the updated configuration
+ *
+ * <p><strong>Prerequisites:</strong></p>
+ * <p>Before running this sample, make sure you have:</p>
+ * <ol>
+ *   <li>Created a Microsoft Foundry resource (see README.md)</li>
+ *   <li>Deployed the required models (gpt-4.1, gpt-4.1-mini, text-embedding-3-large)</li>
+ *   <li>Set the environment variables:
+ *     <ul>
+ *       <li>{@code CONTENTUNDERSTANDING_ENDPOINT} - Your Foundry resource endpoint</li>
+ *       <li>{@code AZURE_CONTENT_UNDERSTANDING_KEY} - (Optional) Your API key</li>
+ *     </ul>
+ *   </li>
+ * </ol>
+ *
+ * <p>This sample demonstrates the one-time setup required to map your deployed models
+ * to those required by prebuilt and custom analyzers.</p>
  */
-public class Sample00_ConfigureDefaults {
+public class Sample00_UpdateDefaults {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample00.buildClient
