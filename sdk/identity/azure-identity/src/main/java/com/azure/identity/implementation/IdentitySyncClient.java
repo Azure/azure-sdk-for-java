@@ -43,6 +43,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -93,11 +94,11 @@ public class IdentitySyncClient extends IdentityClientBase {
             = new SynchronousAccessor<>(() -> this.getConfidentialClient(true));
 
         this.workloadIdentityConfidentialClientApplicationAccessor
-            = new SynchronousAccessor<>(() -> this.getWorkloadIdentityConfidentialClient());
+            = new SynchronousAccessor<>(this::getWorkloadIdentityConfidentialClient);
 
         this.clientAssertionAccessor = clientAssertionTimeout == null
-            ? new SynchronousAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
-            : new SynchronousAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
+            ? new SynchronousAccessor<>(this::parseClientAssertion, Duration.ofMinutes(5))
+            : new SynchronousAccessor<>(this::parseClientAssertion, clientAssertionTimeout);
     }
 
     private String parseClientAssertion() {
@@ -132,7 +133,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                 .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
         try {
-            return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
+            return new MsalToken(virtualThreadSafeFutureGet(confidentialClient.acquireToken(builder.build())));
         } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -169,8 +170,8 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         try {
-            IAuthenticationResult authenticationResult
-                = confidentialClientApplication.acquireTokenSilently(parametersBuilder.build()).get();
+            IAuthenticationResult authenticationResult = virtualThreadSafeFutureGet(
+                confidentialClientApplication.acquireTokenSilently(parametersBuilder.build()));
             AccessToken accessToken = new MsalToken(authenticationResult);
             if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
                 return accessToken;
@@ -227,7 +228,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
         parametersBuilder.tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
-            return new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
+            return new MsalToken(virtualThreadSafeFutureGet(pc.acquireTokenSilently(parametersBuilder.build())));
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
@@ -254,7 +255,8 @@ public class IdentitySyncClient extends IdentityClientBase {
         UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder
             = buildUsernamePasswordFlowParameters(request, username, password);
         try {
-            return new MsalToken(pc.acquireToken(userNamePasswordParametersBuilder.build()).get());
+            return new MsalToken(
+                virtualThreadSafeFutureGet(pc.acquireToken(userNamePasswordParametersBuilder.build())));
         } catch (Exception e) {
             throw LOGGER
                 .logExceptionAsError(new ClientAuthenticationException(
@@ -282,7 +284,7 @@ public class IdentitySyncClient extends IdentityClientBase {
             = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
 
         try {
-            return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
+            return new MsalToken(virtualThreadSafeFutureGet(pc.acquireToken(parametersBuilder.build())));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(
                 new ClientAuthenticationException("Failed to acquire token with device code.", null, e));
@@ -337,7 +339,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                 = buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
             try {
-                return new MsalToken(pc.acquireToken(builder.build()).get());
+                return new MsalToken(virtualThreadSafeFutureGet(pc.acquireToken(builder.build())));
             } catch (Exception e) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
                     "Failed to acquire token with Interactive Browser Authentication.", null, e));
@@ -453,7 +455,7 @@ public class IdentitySyncClient extends IdentityClientBase {
     public AccessToken authenticateWithOBO(TokenRequestContext request) {
         ConfidentialClientApplication cc = getConfidentialClientInstance(request).getValue();
         try {
-            return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
+            return new MsalToken(virtualThreadSafeFutureGet(cc.acquireToken(buildOBOFlowParameters(request))));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
                 "Failed to acquire token with On Behalf Of Authentication.", null, e));
@@ -496,7 +498,7 @@ public class IdentitySyncClient extends IdentityClientBase {
             ClientCredentialParameters.ClientCredentialParametersBuilder builder
                 = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-            return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
+            return new MsalToken(virtualThreadSafeFutureGet(confidentialClient.acquireToken(builder.build())));
         } catch (Exception e) {
             throw new CredentialUnavailableException("Managed Identity authentication is not available.", e);
         }
@@ -509,5 +511,18 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     public IdentityClientOptions getIdentityClientOptions() {
         return options;
+    }
+
+    private static <T> T virtualThreadSafeFutureGet(CompletableFuture<T> future)
+        throws ExecutionException, InterruptedException {
+        ReentrantLock lock = new ReentrantLock();
+        try {
+            lock.lock();
+            future.whenComplete((ignoredResult, ignoredThrowable) -> lock.unlock());
+            lock.lock();
+            return future.get();
+        } finally {
+            lock.unlock();
+        }
     }
 }
