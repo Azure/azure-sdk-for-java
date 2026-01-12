@@ -364,8 +364,8 @@ private class TransactionalBulkWriter
     // Acquire semaphore for retry
     val activeTasksSemaphoreTimeout = 10
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-    var activeBatchesSnapshot = mutable.Set.empty[String]
-    var pendingBatchRetriesSnapshot = mutable.Set.empty[String]
+    var activeBatchesSnapshot = Set.empty[String]
+    var pendingBatchRetriesSnapshot = Set.empty[String]
     
     while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
       if (subscriptionDisposable.isDisposed) {
@@ -375,13 +375,13 @@ private class TransactionalBulkWriter
       
       throwIfProgressStaled(
         "Batch retry semaphore acquisition",
-        activeBatchesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).to[mutable.Set],
-        pendingBatchRetriesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).to[mutable.Set],
+        activeBatchesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).toSet,
+        pendingBatchRetriesSnapshot.flatMap(id => activeBatches.get(id).map(_.operations).getOrElse(List.empty)).toSet,
         numberOfIntervalsWithIdenticalActiveOperationSnapshots,
         allowRetryOnNewBulkWriterInstance = false)
 
-      activeBatchesSnapshot = activeBatches.keySet.to[mutable.Set]
-      pendingBatchRetriesSnapshot = pendingBatchRetries.to[mutable.Set]
+      activeBatchesSnapshot = activeBatches.keySet.toSet
+      pendingBatchRetriesSnapshot = pendingBatchRetries.toSet
     }
     
     activeBatchCount.incrementAndGet()
@@ -644,8 +644,8 @@ private class TransactionalBulkWriter
       // Acquire semaphore before emitting batch - this limits concurrent batches
       val activeTasksSemaphoreTimeout = 10
       val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
-      var activeBatchesSnapshot = mutable.Set.empty[String]
-      var pendingBatchRetriesSnapshot = mutable.Set.empty[String]
+      var activeBatchesSnapshot = Set.empty[String]
+      var pendingBatchRetriesSnapshot = Set.empty[String]
       
       log.logTrace(s"Before acquiring semaphore for batch emission, activeBatchCount: ${activeBatchCount.get} $getThreadInfo")
       while (!semaphore.tryAcquire(activeTasksSemaphoreTimeout, TimeUnit.MINUTES)) {
@@ -657,13 +657,13 @@ private class TransactionalBulkWriter
 
         throwIfProgressStaled(
           "Batch semaphore acquisition",
-          activeBatchesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).to[mutable.Set],
-          pendingBatchRetriesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).to[mutable.Set],
+          activeBatchesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet,
+          pendingBatchRetriesSnapshot.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet,
           numberOfIntervalsWithIdenticalActiveOperationSnapshots,
           allowRetryOnNewBulkWriterInstance = false)
 
-        activeBatchesSnapshot = activeBatches.keySet.to[mutable.Set]
-        pendingBatchRetriesSnapshot = pendingBatchRetries.to[mutable.Set]
+        activeBatchesSnapshot = activeBatches.keySet.toSet
+        pendingBatchRetriesSnapshot = pendingBatchRetries.toSet
       }
       
       activeBatchCount.incrementAndGet()
@@ -819,7 +819,7 @@ private class TransactionalBulkWriter
   }
 
   private[this] def getActiveOperationsLog(
-                                              activeOperationsSnapshot: mutable.Set[CosmosItemOperation]): String = {
+                                              activeOperationsSnapshot: Set[CosmosItemOperation]): String = {
     val sb = new StringBuilder()
 
     activeOperationsSnapshot
@@ -840,8 +840,8 @@ private class TransactionalBulkWriter
 
   private[this] def sameBulkWriteOperations
   (
-    snapshot: mutable.Set[CosmosItemOperation],
-    current: mutable.Set[CosmosItemOperation]
+    snapshot: Set[CosmosItemOperation],
+    current: Set[CosmosItemOperation]
   ): Boolean = {
 
     if (snapshot.size != current.size) {
@@ -861,16 +861,16 @@ private class TransactionalBulkWriter
   private[this] def throwIfProgressStaled
   (
     operationName: String,
-    activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
-    pendingRetriesSnapshot: mutable.Set[CosmosItemOperation],
+    activeOperationsSnapshot: Set[CosmosItemOperation],
+    pendingRetriesSnapshot: Set[CosmosItemOperation],
     numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong,
     allowRetryOnNewBulkWriterInstance: Boolean
   ): Unit = {
 
     val operationsLog = getActiveOperationsLog(activeOperationsSnapshot)
 
-    val currentActiveOperations = activeBatches.values.flatMap(_.operations).to[mutable.Set]
-    val currentPendingRetries = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).to[mutable.Set]
+    val currentActiveOperations = activeBatches.values.flatMap(_.operations).toSet
+    val currentPendingRetries = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet
     if (sameBulkWriteOperations(pendingRetriesSnapshot ++ activeOperationsSnapshot, currentActiveOperations ++ currentPendingRetries)) {
 
       numberOfIntervalsWithIdenticalActiveOperationSnapshots.incrementAndGet()
@@ -952,8 +952,8 @@ private class TransactionalBulkWriter
               logInfoOrWarning(
                 s"Waiting for pending activeTasks $activeTasksSnapshot and/or pendingRetries " +
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} $getThreadInfo")
-              val activeOperationsSnapshot = activeBatches.values.flatMap(_.operations).to[mutable.Set]
-              val pendingOperationsSnapshot = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).to[mutable.Set]
+              val activeOperationsSnapshot = activeBatches.values.flatMap(_.operations).toSet
+              val pendingOperationsSnapshot = pendingBatchRetries.flatMap(batchId => activeBatches.get(batchId).map(_.operations).getOrElse(List.empty)).toSet
               val awaitCompleted = pendingTasksCompleted.await(writeConfig.flushCloseIntervalInSeconds, TimeUnit.SECONDS)
               if (!awaitCompleted) {
                 throwIfProgressStaled(
