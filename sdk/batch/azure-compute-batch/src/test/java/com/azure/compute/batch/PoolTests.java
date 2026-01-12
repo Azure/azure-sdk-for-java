@@ -220,8 +220,8 @@ public class PoolTests extends BatchClientTestBase {
 
         // REPLACE with poolReplaceParameters
         // Metadata, startTask, and applicationPackageReferences are replaceable
-        BatchPoolReplaceParameters poolReplaceParameters = new BatchPoolReplaceParameters(new ArrayList<>(),    // App was created previously ( else send empty new ArrayList<>() )
-            Arrays.asList(new BatchMetadataItem("bar", "foo")));
+        BatchPoolReplaceParameters poolReplaceParameters
+            = new BatchPoolReplaceParameters(new ArrayList<>(), Arrays.asList(new BatchMetadataItem("bar", "foo")));
 
         SyncAsyncExtension.execute(() -> batchClient.replacePoolProperties(poolId, poolReplaceParameters),
             () -> batchAsyncClient.replacePoolProperties(poolId, poolReplaceParameters));
@@ -291,7 +291,7 @@ public class PoolTests extends BatchClientTestBase {
         poller.waitForCompletion();
 
         //  Confirm pool is not retrievable
-        var httpErrorRes = Assertions.assertThrows(HttpResponseException.class, () -> {
+        HttpResponseException httpErrorRes = Assertions.assertThrows(HttpResponseException.class, () -> {
             SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
         }, "Expected pool to be deleted.");
 
@@ -300,14 +300,6 @@ public class PoolTests extends BatchClientTestBase {
         // Final result should be null after successful deletion
         PollResponse<BatchPool> finalResponse = poller.poll();
         Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
-
-        // Confirm pool is no longer retrievable
-        // try {
-        //     SyncAsyncExtension.execute(() -> batchClient.getPool(poolId), () -> batchAsyncClient.getPool(poolId));
-        //     Assertions.fail("Expected pool to be deleted.");
-        // } catch (HttpResponseException ex) {
-        //     Assertions.assertEquals(404, ex.getResponse().getStatusCode());
-        // }
     }
 
     @Test
