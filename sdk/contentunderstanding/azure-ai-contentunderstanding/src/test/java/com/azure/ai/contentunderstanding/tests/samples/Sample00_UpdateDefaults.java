@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * 2. Updating default configuration
  * 3. Verifying the updated configuration
  */
-public class Sample00_ConfigureDefaults extends ContentUnderstandingClientTestBase {
+public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testConfigureDefaults() {
+    public void testUpdateDefaults() {
         // Step 1: Get current defaults
         System.out.println("Getting current default configuration...");
         ContentUnderstandingDefaults currentDefaults = contentUnderstandingClient.getDefaults();
