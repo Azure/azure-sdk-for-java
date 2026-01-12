@@ -24,7 +24,7 @@ public final class WorkspacesListNspMockTests {
     @Test
     public void testListNsp() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"kxyqvgxiaodetv\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Warning\",\"description\":\"wsaifmcwno\",\"suggestedResourceIds\":[\"lehgcvkbc\",\"njolgjyyxpv\",\"lszerqzevx\",\"qe\"],\"suggestedAccessRules\":[{},{},{}]}},{\"name\":\"waljglzoblqwaaf\",\"properties\":{\"issueType\":\"Unknown\",\"severity\":\"Warning\",\"description\":\"yqbhd\",\"suggestedResourceIds\":[\"jrqpjiyrqjcrga\",\"wmzwdfkbnrzorpdl\",\"bqc\"],\"suggestedAccessRules\":[{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"xxsaetgz\",\"perimeterGuid\":\"7c25190c-b735-4965-9eab-ac58783e1b6a\",\"location\":\"pyigdaqqilzdc\"},\"resourceAssociation\":{\"name\":\"joedx\",\"accessMode\":\"Enforced\"},\"profile\":{\"name\":\"i\",\"accessRulesVersion\":652197370,\"accessRules\":[{\"name\":\"wgilfjqqac\",\"properties\":{}},{\"name\":\"xwxdcvjwc\",\"properties\":{}}],\"diagnosticSettingsVersion\":148579488,\"enabledLogCategories\":[\"ciqchxrtuicd\",\"iw\"]}},\"id\":\"m\",\"name\":\"p\",\"type\":\"hzzwvywrgyngy\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"kxyqvgxiaodetv\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Warning\",\"description\":\"wsaifmcwno\",\"suggestedResourceIds\":[\"lehgcvkbc\",\"njolgjyyxpv\",\"lszerqzevx\",\"qe\"],\"suggestedAccessRules\":[{},{},{}]}},{\"name\":\"waljglzoblqwaaf\",\"properties\":{\"issueType\":\"Unknown\",\"severity\":\"Warning\",\"description\":\"yqbhd\",\"suggestedResourceIds\":[\"jrqpjiyrqjcrga\",\"wmzwdfkbnrzorpdl\",\"bqc\"],\"suggestedAccessRules\":[{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"xxsaetgz\",\"perimeterGuid\":\"356dc794-27de-474a-b01f-8e647225fb47\",\"location\":\"pyigdaqqilzdc\"},\"resourceAssociation\":{\"name\":\"joedx\",\"accessMode\":\"Enforced\"},\"profile\":{\"name\":\"i\",\"accessRulesVersion\":652197370,\"accessRules\":[{\"name\":\"wgilfjqqac\",\"properties\":{}},{\"name\":\"xwxdcvjwc\",\"properties\":{}}],\"diagnosticSettingsVersion\":148579488,\"enabledLogCategories\":[\"ciqchxrtuicd\",\"iw\"]}},\"id\":\"m\",\"name\":\"p\",\"type\":\"hzzwvywrgyngy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,7 +37,7 @@ public final class WorkspacesListNspMockTests {
             = manager.workspaces().listNsp("qicqchygt", "xbyja", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xxsaetgz", response.iterator().next().properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals(UUID.fromString("7c25190c-b735-4965-9eab-ac58783e1b6a"),
+        Assertions.assertEquals(UUID.fromString("356dc794-27de-474a-b01f-8e647225fb47"),
             response.iterator().next().properties().networkSecurityPerimeter().perimeterGuid());
         Assertions.assertEquals("pyigdaqqilzdc",
             response.iterator().next().properties().networkSecurityPerimeter().location());
