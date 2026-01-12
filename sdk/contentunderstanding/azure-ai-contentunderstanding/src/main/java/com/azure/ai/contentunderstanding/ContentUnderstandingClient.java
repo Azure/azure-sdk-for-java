@@ -26,6 +26,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import java.util.List;
@@ -1947,5 +1948,41 @@ public final class ContentUnderstandingClient {
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
         return beginAnalyzeBinary(analyzerId, "application/octet-stream", binaryInput);
+    }
+
+    /**
+     * Update analyzer properties.
+     *
+     * This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param resource The ContentAnalyzer instance with properties to update.
+     * @return the updated ContentAnalyzer along with {@link Response}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ContentAnalyzer> updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
+        Response<BinaryData> response = updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null);
+        return new SimpleResponse<>(response, response.getValue().toObject(ContentAnalyzer.class));
+    }
+
+    /**
+     * Update default model deployment settings.
+     *
+     * This is the recommended public API for updating default model deployment settings. This method provides a simpler
+     * API that accepts a Map of model names to deployment names.
+     *
+     * @param modelDeployments Mapping of model names to deployment names. For example: { "gpt-4.1":
+     * "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * @return the updated ContentUnderstandingDefaults along with {@link Response}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ContentUnderstandingDefaults> updateDefaults(Map<String, String> modelDeployments) {
+        ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
+        Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
+        return new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class));
     }
 }

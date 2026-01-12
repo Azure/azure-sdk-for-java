@@ -5,10 +5,11 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,43 +17,73 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class demonstrating how to configure and manage default settings for Content Understanding service.
  * This test shows:
  * 1. Getting current default configuration
- * 2. Updating default configuration
+ * 2. Updating default configuration with model deployments
  * 3. Verifying the updated configuration
  */
 public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase {
 
     @Test
     public void testUpdateDefaults() {
-        // Step 1: Get current defaults
+        // Step 1: Get current defaults to see what's configured
         System.out.println("Getting current default configuration...");
         ContentUnderstandingDefaults currentDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Current defaults retrieved successfully.");
-        System.out.println("Current configuration: " + currentDefaults);
+        System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
 
-        // Step 2: Update defaults with the same configuration (demonstrating update)
+        // Step 2: Configure model deployments from environment variables
+        // These map model names to your deployed model names in Azure AI Foundry
+        System.out.println("\nConfiguring model deployments from environment variables...");
+
+        // Get deployment names from environment variables (with defaults)
+        String gpt41Deployment = getEnvOrDefault("GPT_4_1_DEPLOYMENT", "gpt-4.1");
+        String gpt41MiniDeployment = getEnvOrDefault("GPT_4_1_MINI_DEPLOYMENT", "gpt-4.1-mini");
+        String textEmbedding3LargeDeployment
+            = getEnvOrDefault("TEXT_EMBEDDING_3_LARGE_DEPLOYMENT", "text-embedding-3-large");
+
+        // Create model deployments map
+        Map<String, String> modelDeployments = new HashMap<>();
+        modelDeployments.put("gpt-4.1", gpt41Deployment);
+        modelDeployments.put("gpt-4.1-mini", gpt41MiniDeployment);
+        modelDeployments.put("text-embedding-3-large", textEmbedding3LargeDeployment);
+
+        System.out.println("Model deployments to configure:");
+        System.out.println("  gpt-4.1 -> " + gpt41Deployment);
+        System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
+        System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
+
+        // Step 3: Update defaults with the new configuration
         System.out.println("\nUpdating default configuration...");
 
-        // Convert the current defaults to BinaryData for the update request
-        BinaryData defaultsBody = BinaryData.fromObject(currentDefaults);
-        RequestOptions requestOptions = new RequestOptions();
-
-        // Update defaults with the configuration
-        Response<BinaryData> updateResponse
-            = contentUnderstandingClient.updateDefaultsWithResponse(defaultsBody, requestOptions);
+        // Update defaults with the configuration using the typed convenience method
+        Response<ContentUnderstandingDefaults> updateResponse
+            = contentUnderstandingClient.updateDefaults(modelDeployments);
 
         if (updateResponse.getStatusCode() == 200 || updateResponse.getStatusCode() == 201) {
             System.out.println("Defaults updated successfully.");
             System.out.println("Status code: " + updateResponse.getStatusCode());
+            System.out.println("Updated model deployments: " + updateResponse.getValue().getModelDeployments());
         } else {
             System.err.println("Failed to update defaults. Status code: " + updateResponse.getStatusCode());
         }
 
-        // Step 3: Verify the updated configuration
+        // Step 4: Verify the updated configuration
         System.out.println("\nVerifying updated configuration...");
         ContentUnderstandingDefaults updatedDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Updated defaults verified successfully.");
-        System.out.println("Updated configuration: " + updatedDefaults);
+        System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
 
         System.out.println("\nConfiguration management completed.");
+    }
+
+    /**
+     * Gets an environment variable value or returns a default value if not set.
+     *
+     * @param envVar the environment variable name
+     * @param defaultValue the default value to return if the environment variable is not set
+     * @return the environment variable value or the default value
+     */
+    private static String getEnvOrDefault(String envVar, String defaultValue) {
+        String value = System.getenv(envVar);
+        return (value != null && !value.trim().isEmpty()) ? value : defaultValue;
     }
 }

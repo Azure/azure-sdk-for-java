@@ -28,6 +28,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -70,7 +71,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -89,9 +90,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -177,15 +178,15 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -267,7 +268,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -277,9 +278,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -415,7 +416,7 @@ public final class ContentUnderstandingAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -518,9 +519,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -678,7 +679,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get analyzer properties.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -799,7 +800,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -827,7 +828,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get the status of an analyzer creation operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -967,7 +968,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1049,7 +1050,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get a file associated with the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -1076,7 +1077,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Get authorization for copying this analyzer to another location.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1085,9 +1086,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1119,7 +1120,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1239,7 +1240,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Update analyzer properties.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1342,9 +1343,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1468,7 +1469,7 @@ public final class ContentUnderstandingAsyncClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1480,9 +1481,9 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1978,5 +1979,43 @@ public final class ContentUnderstandingAsyncClient {
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
         return beginAnalyzeBinary(analyzerId, "application/octet-stream", binaryInput);
+    }
+
+    /**
+     * Update analyzer properties.
+     *
+     * This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param resource The ContentAnalyzer instance with properties to update.
+     * @return the updated ContentAnalyzer along with {@link Response} on successful completion of {@link Mono}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ContentAnalyzer>> updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
+        return updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null)
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ContentAnalyzer.class)));
+    }
+
+    /**
+     * Update default model deployment settings.
+     *
+     * This is the recommended public API for updating default model deployment settings. This method provides a simpler
+     * API that accepts a Map of model names to deployment names.
+     *
+     * @param modelDeployments Mapping of model names to deployment names. For example: { "gpt-4.1":
+     * "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * @return the updated ContentUnderstandingDefaults along with {@link Response} on successful completion of
+     * {@link Mono}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ContentUnderstandingDefaults>> updateDefaults(Map<String, String> modelDeployments) {
+        ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
+        return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().toObject(ContentUnderstandingDefaults.class)));
     }
 }

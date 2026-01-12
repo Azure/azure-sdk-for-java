@@ -4,7 +4,6 @@
 package com.azure.ai.contentunderstanding.models;
 
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +14,6 @@ import java.util.Map;
 /**
  * default settings for this Content Understanding resource.
  */
-@Immutable
 public final class ContentUnderstandingDefaults implements JsonSerializable<ContentUnderstandingDefaults> {
 
     /*
@@ -28,10 +26,11 @@ public final class ContentUnderstandingDefaults implements JsonSerializable<Cont
     /**
      * Creates an instance of ContentUnderstandingDefaults class.
      *
-     * @param modelDeployments the modelDeployments value to set.
+     * @param modelDeployments Mapping of model names to deployments. For example: { "gpt-4.1": "myGpt41Deployment",
+     * "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      */
     @Generated
-    private ContentUnderstandingDefaults(Map<String, String> modelDeployments) {
+    public ContentUnderstandingDefaults(Map<String, String> modelDeployments) {
         this.modelDeployments = modelDeployments;
     }
 
