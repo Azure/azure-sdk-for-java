@@ -1,0 +1,14 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: contentunderstanding
+    timeoutInMinutes: 150 # how long to run the job before automatically cancelling
+    Artifacts:
+      - name: azure-ai-contentunderstanding
+        groupId: com.azure
+        safeName: azureaicontentunderstanding
+    CloudConfig:
+      Public:
+        Location: 'eastus'
