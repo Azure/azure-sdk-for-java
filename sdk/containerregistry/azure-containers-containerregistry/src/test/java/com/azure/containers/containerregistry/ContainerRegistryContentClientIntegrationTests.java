@@ -65,9 +65,9 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.core.test.implementation.TestingHelpers.AZURE_TEST_MODE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -111,7 +111,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         GetManifestResult getManifestResult = client.getManifest(result.getDigest());
         assertEquals(result.getDigest(), getManifestResult.getDigest());
-        validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
+        validateManifest(getManifestResult.getManifest().toObject(OciImageManifest.class));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -128,7 +128,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         GetManifestResult getManifestResult = client.getManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
-        validateManifest(MANIFEST, getManifestResult.getManifest());
+        validateManifest(getManifestResult.getManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -144,7 +144,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         GetManifestResult getManifestResult = client.getManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
-        validateManifest(MANIFEST, getManifestResult.getManifest());
+        validateManifest(getManifestResult.getManifest());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -160,9 +160,9 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         GetManifestResult getManifestResult = client.getManifest(MANIFEST_DIGEST);
         assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
-        validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
+        validateManifest(getManifestResult.getManifest().toObject(OciImageManifest.class));
 
-        validateTag("oci-artifact", MANIFEST_DIGEST, tag, httpClient);
+        validateTag(MANIFEST_DIGEST, tag, httpClient);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -182,7 +182,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         GetManifestResult getManifestResult = client.getManifest(tag);
         assertEquals(result.getDigest(), getManifestResult.getDigest());
 
-        validateTag("oci-artifact", result.getDigest(), tag, httpClient);
+        validateTag(result.getDigest(), tag, httpClient);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -199,7 +199,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             return asyncClient.getManifest(MANIFEST_DIGEST);
         })).assertNext(getManifestResult -> {
             assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
-            validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
+            validateManifest(getManifestResult.getManifest().toObject(OciImageManifest.class));
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
@@ -225,7 +225,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        validateTag("oci-artifact", digest, tag, httpClient);
+        validateTag(digest, tag, httpClient);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -351,11 +351,11 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         SetManifestResult result = client.setManifest(MANIFEST, "latest");
         GetManifestResult downloadResult = client.getManifest(result.getDigest());
         assertNotNull(downloadResult.getManifest().toObject(OciImageManifest.class));
-        validateManifest(MANIFEST, downloadResult.getManifest().toObject(OciImageManifest.class));
+        validateManifest(downloadResult.getManifest().toObject(OciImageManifest.class));
 
         downloadResult = client.getManifest("latest");
         assertNotNull(downloadResult.getManifest().toObject(OciImageManifest.class));
-        validateManifest(MANIFEST, downloadResult.getManifest().toObject(OciImageManifest.class));
+        validateManifest(downloadResult.getManifest().toObject(OciImageManifest.class));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -366,7 +366,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             .flatMap(result -> asyncClient.getManifest(result.getDigest()))).assertNext(downloadResult -> {
                 OciImageManifest returnedManifest = downloadResult.getManifest().toObject(OciImageManifest.class);
                 assertNotNull(returnedManifest);
-                validateManifest(MANIFEST, returnedManifest);
+                validateManifest(returnedManifest);
             }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
@@ -385,7 +385,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         assertEquals(2, list.getSchemaVersion());
         assertEquals(OCI_INDEX_MEDIA_TYPE.toString(), list.getMediaType());
         // number of manifests is dynamic, so we just check that it's not empty
-        assertTrue(list.getManifests().size() > 0, "List of manifests is empty");
+        assertFalse(list.getManifests().isEmpty(), "List of manifests is empty");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -437,13 +437,13 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             assertEquals(2, list.getSchemaVersion());
             assertEquals(OCI_INDEX_MEDIA_TYPE.toString(), list.getMediaType());
             // number of manifests is dynamic, so we just check that it's not empty
-            assertTrue(list.getManifests().size() > 0, "List of manifests is empty");
+            assertFalse(list.getManifests().isEmpty(), "List of manifests is empty");
         }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
-    private void validateTag(String repoName, String digest, String tag, HttpClient httpClient) {
+    private void validateTag(String digest, String tag, HttpClient httpClient) {
         ContainerRegistryClient acrClient = getContainerRegistryBuilder(httpClient).buildClient();
-        RegistryArtifact artifact = acrClient.getArtifact(repoName, digest);
+        RegistryArtifact artifact = acrClient.getArtifact("oci-artifact", digest);
         PagedIterable<ArtifactTagProperties> tags = artifact.listTagProperties();
         assertEquals(1, tags.stream().count());
         assertEquals(tag, tags.stream().findFirst().get().getName());
@@ -503,27 +503,27 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         return manifest;
     }
 
-    private void validateManifest(OciImageManifest originalManifest, BinaryData returnedManifestData) {
+    private void validateManifest(BinaryData returnedManifestData) {
         OciImageManifest returnedManifest = returnedManifestData.toObject(OciImageManifest.class);
-        validateManifest(originalManifest, returnedManifest);
+        validateManifest(returnedManifest);
     }
 
-    private void validateManifest(OciImageManifest originalManifest, OciImageManifest returnedManifest) {
-        assertNotNull(originalManifest);
+    private void validateManifest(OciImageManifest returnedManifest) {
+        assertNotNull(TestUtils.MANIFEST);
         assertNotNull(returnedManifest);
         assertNotNull(returnedManifest.getConfiguration());
-        assertEquals(originalManifest.getConfiguration().getMediaType(),
+        assertEquals(TestUtils.MANIFEST.getConfiguration().getMediaType(),
             returnedManifest.getConfiguration().getMediaType());
-        assertEquals(originalManifest.getConfiguration().getSizeInBytes(),
+        assertEquals(TestUtils.MANIFEST.getConfiguration().getSizeInBytes(),
             returnedManifest.getConfiguration().getSizeInBytes());
         assertNotNull(returnedManifest.getLayers());
-        assertEquals(originalManifest.getLayers().size(), returnedManifest.getLayers().size());
-        for (int i = 0; i < originalManifest.getLayers().size(); i++) {
-            assertEquals(originalManifest.getLayers().get(i).getMediaType(),
+        assertEquals(TestUtils.MANIFEST.getLayers().size(), returnedManifest.getLayers().size());
+        for (int i = 0; i < TestUtils.MANIFEST.getLayers().size(); i++) {
+            assertEquals(TestUtils.MANIFEST.getLayers().get(i).getMediaType(),
                 returnedManifest.getLayers().get(i).getMediaType());
-            assertEquals(originalManifest.getLayers().get(i).getDigest(),
+            assertEquals(TestUtils.MANIFEST.getLayers().get(i).getDigest(),
                 returnedManifest.getLayers().get(i).getDigest());
-            assertEquals(originalManifest.getLayers().get(i).getSizeInBytes(),
+            assertEquals(TestUtils.MANIFEST.getLayers().get(i).getSizeInBytes(),
                 returnedManifest.getLayers().get(i).getSizeInBytes());
         }
     }

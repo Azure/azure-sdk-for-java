@@ -91,27 +91,27 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
         Mono<Response<ArtifactManifestProperties>> safeTestRegistyArtifacts
             = asyncClient.getManifestPropertiesWithResponse().flatMap(res -> {
-                validateManifestProperties(res, true, false);
+                validateManifestProperties(res, false);
                 return Mono.just(res);
             })
                 .flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res.getValue().getDigest())
                     .getManifestPropertiesWithResponse())
                 .flatMap(res -> {
-                    validateManifestProperties(res, true, false);
+                    validateManifestProperties(res, false);
                     return Mono.just(getChildArtifactDigest(res.getValue().getRelatedArtifacts()));
                 })
                 .flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res).getManifestPropertiesWithResponse());
 
         StepVerifier.create(safeTestRegistyArtifacts)
-            .assertNext(res -> validateManifestProperties(res, false, true))
+            .assertNext(res -> validateManifestProperties(res, true))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getManifestProperties())
-            .assertNext(res -> validateManifestProperties(res, true, false))
+            .assertNext(res -> validateManifestProperties(res, false))
             .verifyComplete();
 
-        validateManifestProperties(client.getManifestPropertiesWithResponse(Context.NONE), true, false);
-        validateManifestProperties(client.getManifestProperties(), true, false);
+        validateManifestProperties(client.getManifestPropertiesWithResponse(Context.NONE), false);
+        validateManifestProperties(client.getManifestProperties(), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -138,7 +138,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         client = getRegistryArtifactClient(httpClient, digest);
         StepVerifier.create(asyncClient.listTagProperties())
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(tags -> {
                 validateListTags(tags);
                 return true;
@@ -151,7 +151,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
         StepVerifier.create(asyncClient.listTagProperties())
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(tags -> {
                 validateListTags(tags);
                 return true;
@@ -169,7 +169,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
         StepVerifier.create(asyncClient.listTagProperties().byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 
@@ -197,7 +197,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         StepVerifier
             .create(asyncClient.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, true))
             .verifyComplete();
 
@@ -217,7 +217,7 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
         StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 

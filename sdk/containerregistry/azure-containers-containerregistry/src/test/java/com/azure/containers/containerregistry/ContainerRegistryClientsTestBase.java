@@ -11,6 +11,7 @@ import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
@@ -40,6 +41,7 @@ import static com.azure.containers.containerregistry.TestUtils.getAuthority;
 import static com.azure.containers.containerregistry.TestUtils.getCredentialByAuthority;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -131,22 +133,17 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
         TokenCredential credential) {
-        return getContentClientBuilder(repositoryName, httpClient, credential, REGISTRY_ENDPOINT);
-    }
-
-    ContainerRegistryContentClientBuilder getContentClientBuilder(String repositoryName, HttpClient httpClient,
-        TokenCredential credential, String endpoint) {
         ContainerRegistryContentClientBuilder builder
-            = new ContainerRegistryContentClientBuilder().endpoint(getEndpoint(endpoint))
+            = new ContainerRegistryContentClientBuilder().endpoint(getEndpoint(REGISTRY_ENDPOINT))
                 .repositoryName(repositoryName)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS)
                     .addAllowedHeaderName("Docker-Content-Digest")
-                    .addAllowedHeaderName("Range")
-                    .addAllowedHeaderName("Location")
+                    .addAllowedHttpHeaderName(HttpHeaderName.RANGE)
+                    .addAllowedHttpHeaderName(HttpHeaderName.LOCATION)
                     .addAllowedHeaderName("x-recording-id")
                     .addAllowedHeaderName("x-recording-upstream-base-uri")
-                    .addAllowedHeaderName("Content-Range"))
+                    .addAllowedHttpHeaderName(HttpHeaderName.CONTENT_RANGE))
                 .credential(credential);
 
         if (interceptorManager.isRecordMode()) {
@@ -171,8 +168,8 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
         assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
         assertNotNull(properties.getCreatedOn());
         assertNotNull(properties.getLastUpdatedOn());
-        assertNotNull(properties.getTagCount());
-        assertNotNull(properties.getManifestCount());
+        assertTrue(properties.getTagCount() >= 0);
+        assertTrue(properties.getManifestCount() >= 0);
         assertNotNull(properties.isDeleteEnabled());
         assertNotNull(properties.isListEnabled());
         assertNotNull(properties.isReadEnabled());
@@ -187,7 +184,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     }
 
     void validateListArtifacts(Collection<ArtifactManifestProperties> artifacts) {
-        assertTrue(artifacts.size() > 0);
+        assertFalse(artifacts.isEmpty());
         artifacts.forEach(props -> {
             assertNotNull(props.getDigest());
             assertNotNull(props.getCreatedOn());
@@ -248,12 +245,12 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
             && validateRepositories(props);
     }
 
-    void validateManifestProperties(Response<ArtifactManifestProperties> response, boolean hasTag, boolean isChild) {
+    void validateManifestProperties(Response<ArtifactManifestProperties> response, boolean isChild) {
         validateResponse(response);
-        validateManifestProperties(response.getValue(), hasTag, isChild);
+        validateManifestProperties(response.getValue(), isChild);
     }
 
-    void validateManifestProperties(ArtifactManifestProperties props, boolean hasTag, boolean isChild) {
+    void validateManifestProperties(ArtifactManifestProperties props, boolean isChild) {
         assertNotNull(props);
         assertNotNull(props.getRepositoryName());
         assertNotNull(props.getRegistryLoginServer());
@@ -272,7 +269,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
         } else {
             assertNotNull(props.getTags());
             assertNotNull(props.getRelatedArtifacts());
-            props.getRelatedArtifacts().stream().forEach(prop -> {
+            props.getRelatedArtifacts().forEach(prop -> {
                 assertNotNull(prop.getDigest());
                 assertNotNull(prop.getArchitecture());
                 assertNotNull(prop.getOperatingSystem());
@@ -281,7 +278,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
     }
 
     boolean validateListTags(Collection<ArtifactTagProperties> tags) {
-        assertTrue(tags.size() > 0);
+        assertFalse(tags.isEmpty());
         tags.forEach(props -> {
             assertEquals(HELLO_WORLD_REPOSITORY_NAME, props.getRepositoryName());
             assertNotNull(props.getName());
@@ -314,7 +311,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     <T> void validateResponse(Response<T> response) {
         assertNotNull(response);
-        assertNotNull(response.getStatusCode());
+        assertTrue(response.getStatusCode() >= 0);
         assertNotNull(response.getHeaders());
         assertNotNull(response.getRequest());
         assertNotNull(response.getValue());

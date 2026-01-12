@@ -72,11 +72,11 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     @Test
     public void deleteRepositoryByRegistryWithResponseAsyncClient() {
         StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(repositoryName))
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(repositoryName))
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
     }
 
@@ -90,11 +90,11 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     @Test
     public void deleteRepositoryWithResponseAsyncClient() {
         StepVerifier.create(asyncClient.deleteWithResponse())
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.deleteWithResponse())
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
     }
 

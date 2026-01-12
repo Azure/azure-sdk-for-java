@@ -87,7 +87,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames())
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(this::validateRepositories)
             .verifyComplete();
 
@@ -103,7 +103,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(PAGESIZE_1))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(this::validateRepositoriesByPage)
             .verifyComplete();
 
@@ -120,11 +120,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
         registryClient = getContainerRegistryClient(httpClient);
 
-        ArrayList<String> repositories = new ArrayList<>();
         assertThrows(IllegalArgumentException.class,
-            () -> registryClient.listRepositoryNames()
-                .iterableByPage(-1)
-                .forEach(res -> repositories.addAll(res.getValue())));
+            () -> registryClient.listRepositoryNames().iterableByPage(-1).forEach(ignored -> {}));
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(-1))
             .verifyError(IllegalArgumentException.class);
@@ -169,12 +166,12 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
             = registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
         StepVerifier.create(registryArtifactAsync.getManifestProperties())
-            .assertNext(res -> validateManifestProperties(res, true, false))
+            .assertNext(res -> validateManifestProperties(res, false))
             .verifyComplete();
 
         RegistryArtifact registryArtifact = registryClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME);
         assertNotNull(registryArtifact);
-        validateManifestProperties(registryArtifact.getManifestProperties(), true, false);
+        validateManifestProperties(registryArtifact.getManifestProperties(), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

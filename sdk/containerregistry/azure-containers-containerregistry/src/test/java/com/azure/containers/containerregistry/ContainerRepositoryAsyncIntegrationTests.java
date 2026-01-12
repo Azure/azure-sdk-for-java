@@ -135,7 +135,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
         StepVerifier.create(asyncClient.listManifestProperties())
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(artifacts -> {
                 validateListArtifacts(artifacts);
                 return true;
@@ -153,7 +153,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
         StepVerifier.create(asyncClient.listManifestProperties().byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(this::validateListArtifactsByPage)
             .verifyComplete();
 
@@ -180,7 +180,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             .create(
                 asyncClient.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(pagedResList -> validateListArtifactsByPage(pagedResList, true))
             .verifyComplete();
 
@@ -203,7 +203,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
         StepVerifier.create(asyncClient.listManifestProperties(ArtifactManifestOrder.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
+            .thenConsumeWhile(ignored -> true)
             .expectRecordedMatches(this::validateListArtifactsByPage)
             .verifyComplete();
 
@@ -250,12 +250,12 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
         RegistryArtifactAsync registryArtifactAsync = asyncClient.getArtifact(LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
         StepVerifier.create(registryArtifactAsync.getManifestProperties())
-            .assertNext(res -> validateManifestProperties(res, true, false))
+            .assertNext(res -> validateManifestProperties(res, false))
             .verifyComplete();
 
         RegistryArtifact registryArtifact = client.getArtifact(LATEST_TAG_NAME);
         assertNotNull(registryArtifact);
-        validateManifestProperties(registryArtifact.getManifestProperties(), true, false);
+        validateManifestProperties(registryArtifact.getManifestProperties(), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -108,11 +108,11 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         asyncClient = getRegistryArtifactAsyncClient(digest);
 
         StepVerifier.create(asyncClient.deleteWithResponse())
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.deleteWithResponse())
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
     }
 
@@ -130,11 +130,11 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         asyncClient = getRegistryArtifactAsyncClient(LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.deleteTagWithResponse(V3_TAG_NAME))
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.deleteTagWithResponse(V3_TAG_NAME))
-            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
     }
 
