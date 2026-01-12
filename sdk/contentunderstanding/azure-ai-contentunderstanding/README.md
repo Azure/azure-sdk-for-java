@@ -81,7 +81,13 @@ Before running the configuration, set the following environment variables:
 export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
 
 # Optional: API key (if not using DefaultAzureCredential)
-export AZURE_CONTENT_UNDERSTANDING_KEY="<your-api-key>"
+export CONTENTUNDERSTANDING_KEY="<your-api-key>"
+
+# Required: Your model deployment names
+# Use the deployment names you created in Step 2
+export GPT_4_1_DEPLOYMENT="gpt-4.1"                           # or your custom deployment name
+export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"                 # or your custom deployment name
+export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"  # or your custom deployment name
 ```
 
 **Run the Configuration Sample:**
