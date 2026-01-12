@@ -289,7 +289,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [azure_core_http_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#configuring-service-clients
 [azure_core_response]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#accessing-http-response-details-using-responset
-[azure_core_lro]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#long-running-operations-with-pollerflux
+[azure_core_lro]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#long-running-operations-with-pollerfluxt
 [azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md#exception-hierarchy-with-azureexception
 [contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
