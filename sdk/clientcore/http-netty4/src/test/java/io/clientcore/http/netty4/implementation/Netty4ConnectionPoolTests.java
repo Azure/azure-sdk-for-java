@@ -10,7 +10,6 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import org.junit.jupiter.api.AfterAll;
@@ -59,11 +58,12 @@ public class Netty4ConnectionPoolTests {
     private static Bootstrap bootstrap;
     private static Netty4ConnectionPoolKey connectionPoolKey;
 
+    @SuppressWarnings("deprecation")
     @BeforeAll
     public static void startTestServerAndEventLoopGroup() {
         server = NettyHttpClientLocalTestServer.getServer();
         server.start();
-        eventLoopGroup = new NioEventLoopGroup(2);
+        eventLoopGroup = new io.netty.channel.nio.NioEventLoopGroup(2);
         bootstrap = new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class);
         bootstrap.option(ChannelOption.AUTO_READ, false);
         SocketAddress socketAddress = new InetSocketAddress("localhost", server.getPort());

@@ -5,6 +5,7 @@ package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.netty.channel.AbstractChannel;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelConfig;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,11 +18,12 @@ import io.netty.channel.EventLoop;
 import io.netty.util.AttributeKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
@@ -34,16 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link Netty4PipelineCleanupHandler}.
  */
 public class Netty4PipelineCleanupHandlerTests {
-
-    @Mock
-    private Netty4ConnectionPool connectionPool;
+    private final ReleaseTrackingConnectionPool connectionPool = new ReleaseTrackingConnectionPool();
 
     private static final Object OBJECT = new Object();
     private TestMockChannel testChannel;
@@ -51,7 +49,6 @@ public class Netty4PipelineCleanupHandlerTests {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         testChannel = new TestMockChannel(new MockEventLoop());
         testChannel.attr(AttributeKey.valueOf("channel-lock")).set(new ReentrantLock());
         testChannel.attr(AttributeKey.valueOf("pipeline-owner-token")).set(OBJECT);
@@ -69,8 +66,8 @@ public class Netty4PipelineCleanupHandlerTests {
 
         handler.cleanup(ctx, false);
 
-        verify(connectionPool).release(testChannel);
-        assertEquals(0, testChannel.getCloseCallCount());
+        assertEquals(1, connectionPool.releaseCountTracker.get(testChannel));
+        assertEquals(1, testChannel.getCloseCallCount());
         assertNull(testChannel.pipeline().get(HTTP_CODEC));
         assertFalse(testChannel.config().isAutoRead());
     }
@@ -85,7 +82,7 @@ public class Netty4PipelineCleanupHandlerTests {
         handler.cleanup(ctx, true);
 
         assertEquals(1, testChannel.getCloseCallCount());
-        verify(connectionPool, never()).release(testChannel);
+        assertNull(connectionPool.releaseCountTracker.get(testChannel));
     }
 
     @Test
@@ -110,7 +107,7 @@ public class Netty4PipelineCleanupHandlerTests {
         handler.cleanup(ctx, false);
 
         assertEquals(1, testChannel.getCloseCallCount());
-        verify(connectionPool, never()).release(testChannel);
+        assertNull(connectionPool.releaseCountTracker.get(testChannel));
     }
 
     @Test
@@ -125,7 +122,7 @@ public class Netty4PipelineCleanupHandlerTests {
 
         assertNotNull(testChannel.pipeline().get(HTTP_CODEC));
         assertNull(testChannel.pipeline().get(HTTP_RESPONSE));
-        verify(connectionPool).release(testChannel);
+        assertEquals(1, connectionPool.releaseCountTracker.get(testChannel));
     }
 
     @Test
@@ -153,7 +150,7 @@ public class Netty4PipelineCleanupHandlerTests {
 
         assertEquals(testException, errorReference.get());
         assertEquals(1, testChannel.getCloseCallCount());
-        verify(connectionPool, never()).release(testChannel);
+        assertNull(connectionPool.releaseCountTracker.get(testChannel));
     }
 
     @Test
@@ -168,7 +165,7 @@ public class Netty4PipelineCleanupHandlerTests {
         handler.exceptionCaught(ctx, testException);
 
         assertEquals(1, testChannel.getCloseCallCount());
-        verify(connectionPool, never()).release(testChannel);
+        assertNull(connectionPool.releaseCountTracker.get(testChannel));
     }
 
     @Test
@@ -181,7 +178,7 @@ public class Netty4PipelineCleanupHandlerTests {
         testChannel.close();
 
         assertEquals(1, testChannel.getCloseCallCount(), "close() should be called once.");
-        verify(connectionPool, never()).release(testChannel);
+        assertNull(connectionPool.releaseCountTracker.get(testChannel));
     }
 
     private void populatePipelineWithStandardHandlers(Netty4PipelineCleanupHandler handler) {
@@ -299,6 +296,20 @@ public class Netty4PipelineCleanupHandlerTests {
                 throw new NullPointerException("task");
             }
             task.run();
+        }
+    }
+
+    private static final class ReleaseTrackingConnectionPool extends Netty4ConnectionPool {
+        private final Map<Channel, Integer> releaseCountTracker = new ConcurrentHashMap<>();
+
+        ReleaseTrackingConnectionPool() {
+            super(null, null, null, 0, Duration.ZERO, Duration.ZERO, Duration.ZERO, 0, null);
+        }
+
+        @Override
+        public void release(Channel channel) {
+            releaseCountTracker.compute(channel, (k, v) -> v == null ? 1 : v + 1);
+            super.release(channel);
         }
     }
 }

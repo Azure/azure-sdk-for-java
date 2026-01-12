@@ -133,6 +133,21 @@
           "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
         }
       }
+    },
+    {
+      "Agent": {
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
+      },
+      "JavaTestVersion": "1.26",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "",
+          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        }
+      }
     }
   ]
 }
