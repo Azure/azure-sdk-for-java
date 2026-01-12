@@ -620,8 +620,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             expectedEventCountAfterSecondSetOfUpdates);
     }
 
-    //TODO Temporarily disabling
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromStartTime_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
         (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
@@ -729,17 +728,6 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .createForProcessingFromContinuation(continuation);
 
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void asyncChangeFeed_fromPointInTime_fullFidelity_forFullRange() throws Exception {
-        assertThrows(
-            IllegalStateException.class,
-            () -> CosmosChangeFeedRequestOptions
-                .createForProcessingFromPointInTime(
-                    Instant.now().minus(10, ChronoUnit.SECONDS),
-                    FeedRange.forFullRange())
-                .allVersionsAndDeletes());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
