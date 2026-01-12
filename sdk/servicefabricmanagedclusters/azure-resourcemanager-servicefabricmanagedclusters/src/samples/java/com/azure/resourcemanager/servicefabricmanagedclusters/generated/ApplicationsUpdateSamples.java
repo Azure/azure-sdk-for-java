@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationResource;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationUpdateParametersProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  */
 public final class ApplicationsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ApplicationPatchOperation_example.json
+     * x-ms-original-file: 2025-10-01-preview/ApplicationPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application.
@@ -25,7 +26,11 @@ public final class ApplicationsUpdateSamples {
         ApplicationResource resource = manager.applications()
             .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("a", "b")).apply();
+        resource.update()
+            .withTags(mapOf("a", "b"))
+            .withProperties(new ApplicationUpdateParametersProperties()
+                .withParameters(mapOf("param1", "value1", "param2", "value2")))
+            .apply();
     }
 
     // Use "Map.of" if available

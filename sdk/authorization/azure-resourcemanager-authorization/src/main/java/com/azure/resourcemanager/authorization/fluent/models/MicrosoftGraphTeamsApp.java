@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * teamsApp.
+ * Represents a teams app.
  */
 @Fluent
 public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {

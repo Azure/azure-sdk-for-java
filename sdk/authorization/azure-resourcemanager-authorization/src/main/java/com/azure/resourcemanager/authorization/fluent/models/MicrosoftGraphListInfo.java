@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * listInfo.
+ * Represents a list info.
  */
 @Fluent
 public final class MicrosoftGraphListInfo implements JsonSerializable<MicrosoftGraphListInfo> {

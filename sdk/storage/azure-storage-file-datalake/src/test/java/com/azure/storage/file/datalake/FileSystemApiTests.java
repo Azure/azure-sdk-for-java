@@ -2394,7 +2394,49 @@ public class FileSystemApiTests extends DataLakeTestBase {
         // Act
         FileSystemAccessPolicies response = fileSystemClient.getAccessPolicy();
         fileSystemClient.setAccessPolicy(null, response.getIdentifiers());
+    }
 
+    @Test
+    public void fileSystemNameEncodingOnGetFileSystemUrl() {
+        DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        assertTrue(fileSystemClient.getFileSystemUrl().contains(expectedName));
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetPathUrl() {
+        DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        DataLakeDirectoryClient directoryClient = fileSystemClient.getDirectoryClient(generatePathName());
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryClient dir = dataLakeFileSystemClient.createDirectory(dirName);
+
+        setupDirectoryForListing(dir);
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
+
+        List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(3, pathsFromFoo.size());
+    }
+
+    private void setupDirectoryForListing(DataLakeDirectoryClient client) {
+        // Create 3 subdirs
+        DataLakeDirectoryClient foo = client.createSubdirectory("foo");
+        client.createSubdirectory("bar");
+        DataLakeDirectoryClient baz = client.createSubdirectory("baz");
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo");
+        foo.createSubdirectory("bar");
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").createSubdirectory("bar");
+        baz.createSubdirectory("bar/foo");
     }
 
     //    @Test

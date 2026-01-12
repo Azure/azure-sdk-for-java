@@ -86,8 +86,12 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("desired", this.desired);
-        jsonWriter.writeUntypedField("reported", this.reported);
+        if (this.desired != null) {
+            jsonWriter.writeUntypedField("desired", this.desired);
+        }
+        if (this.reported != null) {
+            jsonWriter.writeUntypedField("reported", this.reported);
+        }
         return jsonWriter.writeEndObject();
     }
 

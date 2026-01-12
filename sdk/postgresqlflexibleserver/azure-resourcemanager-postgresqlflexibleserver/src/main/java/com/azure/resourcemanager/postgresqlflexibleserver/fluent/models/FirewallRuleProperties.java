@@ -13,17 +13,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The properties of a server firewall rule.
+ * Properties of a firewall rule.
  */
 @Fluent
 public final class FirewallRuleProperties implements JsonSerializable<FirewallRuleProperties> {
     /*
-     * The start IP address of the server firewall rule. Must be IPv4 format.
+     * IP address defining the start of the range of addresses of a firewall rule. Must be expressed in IPv4 format.
      */
     private String startIpAddress;
 
     /*
-     * The end IP address of the server firewall rule. Must be IPv4 format.
+     * IP address defining the end of the range of addresses of a firewall rule. Must be expressed in IPv4 format.
      */
     private String endIpAddress;
 
@@ -34,7 +34,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Get the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule. Must
+     * be expressed in IPv4 format.
      * 
      * @return the startIpAddress value.
      */
@@ -43,7 +44,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Set the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Set the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule. Must
+     * be expressed in IPv4 format.
      * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
@@ -54,7 +56,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Get the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Get the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @return the endIpAddress value.
      */
@@ -63,7 +66,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Set the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Set the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.

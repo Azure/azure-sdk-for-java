@@ -258,6 +258,8 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                     return WebApiSkill.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.ChatCompletionSkill".equals(discriminatorValue)) {
                     return ChatCompletionSkill.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Skills.Util.ContentUnderstandingSkill".equals(discriminatorValue)) {
+                    return ContentUnderstandingSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
                     return AzureMachineLearningSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {

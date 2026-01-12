@@ -23,6 +23,11 @@ public final class BareMetalMachineKeySetPrivilegeLevel
     public static final BareMetalMachineKeySetPrivilegeLevel SUPERUSER = fromString("Superuser");
 
     /**
+     * Static value Other for BareMetalMachineKeySetPrivilegeLevel.
+     */
+    public static final BareMetalMachineKeySetPrivilegeLevel OTHER = fromString("Other");
+
+    /**
      * Creates a new instance of BareMetalMachineKeySetPrivilegeLevel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

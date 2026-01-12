@@ -117,14 +117,12 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
-TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+```java com.azure.messaging.eventhubs.eventhubproducerclient.connectionstring
+String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+    + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
 
-// "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-// "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
 EventHubProducerClient producer = new EventHubClientBuilder()
-    .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-        credential)
+    .connectionString(connectionString)
     .buildProducerClient();
 ```
 

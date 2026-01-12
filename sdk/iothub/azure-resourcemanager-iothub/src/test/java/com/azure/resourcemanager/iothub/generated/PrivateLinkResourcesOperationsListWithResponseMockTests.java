@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResources;
@@ -21,21 +21,21 @@ public final class PrivateLinkResourcesOperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"ph\",\"name\":\"qnrnrpxehuwryk\",\"type\":\"aifmvikl\",\"properties\":{\"groupId\":\"dvk\",\"requiredMembers\":[\"jdz\"],\"requiredZoneNames\":[\"vdsrhnjiv\",\"lvtno\"]}},{\"id\":\"fzg\",\"name\":\"jdftuljltd\",\"type\":\"eamtmcz\",\"properties\":{\"groupId\":\"m\",\"requiredMembers\":[\"cwwqiokn\"],\"requiredZoneNames\":[\"mojmsvpkjprvkw\",\"fz\",\"ljyxgtczhe\"]}},{\"id\":\"bsdshmkxmaehvbbx\",\"name\":\"iplt\",\"type\":\"htba\",\"properties\":{\"groupId\":\"gx\",\"requiredMembers\":[\"ckpyklyhplu\"],\"requiredZoneNames\":[\"vruu\",\"lgzi\"]}}]}";
+            = "{\"value\":[{\"id\":\"yxgtczh\",\"name\":\"dbsdshm\",\"type\":\"maehvbbxurip\",\"properties\":{\"groupId\":\"fnhtbaxkgxyw\",\"requiredMembers\":[\"pyklyhpluodpvru\",\"dlgzibthostgkt\"],\"requiredZoneNames\":[\"dxeclzedqbcvh\",\"lhpl\"]}},{\"id\":\"qkdlw\",\"name\":\"fbumlkx\",\"type\":\"qjfsmlmbtxhw\",\"properties\":{\"groupId\":\"wsrt\",\"requiredMembers\":[\"oezbrhubsk\",\"udygooo\",\"kqfqjbvl\"],\"requiredZoneNames\":[\"fmluiqtqzfavyvn\",\"qybaryeua\",\"jkqa\"]}},{\"id\":\"gzslesjcbhernnti\",\"name\":\"djc\",\"type\":\"quwrbehwag\",\"properties\":{\"groupId\":\"buffkmrqemvvhm\",\"requiredMembers\":[\"rjfut\"],\"requiredZoneNames\":[\"ebjvewzcjzn\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResources response = manager.privateLinkResourcesOperations()
-            .listWithResponse("jslb", "wkojgcyztsfmzn", com.azure.core.util.Context.NONE)
+            .listWithResponse("vpkjpr", "kwcf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dvk", response.value().get(0).properties().groupId());
-        Assertions.assertEquals("jdz", response.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("vdsrhnjiv", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("fnhtbaxkgxyw", response.value().get(0).properties().groupId());
+        Assertions.assertEquals("pyklyhpluodpvru", response.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("dxeclzedqbcvh", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

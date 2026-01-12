@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * contentType.
+ * Represents a content type.
  */
 @Fluent
 public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {

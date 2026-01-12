@@ -279,6 +279,7 @@ public final class FieldBuilder {
         boolean sortable;
         boolean facetable;
         String permissionFilter = null;
+        boolean sensitivityLabel;
         boolean stored;
         boolean searchable = searchableField != null;
         String analyzerName = null;
@@ -299,6 +300,7 @@ public final class FieldBuilder {
             facetable = simpleField.isFacetable();
             normalizerName = simpleField.normalizerName();
             permissionFilter = simpleField.permissionFilter();
+            sensitivityLabel = simpleField.isSensitivityLabel();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
@@ -307,6 +309,7 @@ public final class FieldBuilder {
             sortable = searchableField.isSortable();
             facetable = searchableField.isFacetable();
             permissionFilter = searchableField.permissionFilter();
+            sensitivityLabel = searchableField.isSensitivityLabel();
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
@@ -396,6 +399,8 @@ public final class FieldBuilder {
         if (!CoreUtils.isNullOrEmpty(permissionFilter)) {
             searchField.setPermissionFilter(PermissionFilter.fromString(permissionFilter));
         }
+
+        searchField.setSensitivityLabel(sensitivityLabel);
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {
             List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())

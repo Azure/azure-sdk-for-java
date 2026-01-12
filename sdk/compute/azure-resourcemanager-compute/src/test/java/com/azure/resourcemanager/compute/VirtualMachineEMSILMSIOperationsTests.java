@@ -92,7 +92,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withSsh(sshPublicKey())
             .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -283,7 +283,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
             .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -368,7 +368,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

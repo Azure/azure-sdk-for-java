@@ -9,8 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsDeleteOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/
-     * DeleteAppServiceDomainOwnershipIdentifier.json
+     * x-ms-original-file:
+     * specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-
+     * 01/examples/DeleteAppServiceDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: Delete App Service Domain Ownership Identifier.

@@ -66,6 +66,11 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     private SubResource loadDistributionPolicy;
 
     /*
+     * Entra JWT validation configuration resource of the application gateway.
+     */
+    private SubResource entraJwtValidationConfig;
+
+    /*
      * The provisioning state of the request routing rule resource.
      */
     private ProvisioningState provisioningState;
@@ -261,6 +266,29 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     }
 
     /**
+     * Get the entraJwtValidationConfig property: Entra JWT validation configuration resource of the application
+     * gateway.
+     * 
+     * @return the entraJwtValidationConfig value.
+     */
+    public SubResource entraJwtValidationConfig() {
+        return this.entraJwtValidationConfig;
+    }
+
+    /**
+     * Set the entraJwtValidationConfig property: Entra JWT validation configuration resource of the application
+     * gateway.
+     * 
+     * @param entraJwtValidationConfig the entraJwtValidationConfig value to set.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat
+        withEntraJwtValidationConfig(SubResource entraJwtValidationConfig) {
+        this.entraJwtValidationConfig = entraJwtValidationConfig;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
      * 
      * @return the provisioningState value.
@@ -292,6 +320,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
         jsonWriter.writeJsonField("rewriteRuleSet", this.rewriteRuleSet);
         jsonWriter.writeJsonField("redirectConfiguration", this.redirectConfiguration);
         jsonWriter.writeJsonField("loadDistributionPolicy", this.loadDistributionPolicy);
+        jsonWriter.writeJsonField("entraJWTValidationConfig", this.entraJwtValidationConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -338,6 +367,9 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
                         = SubResource.fromJson(reader);
                 } else if ("loadDistributionPolicy".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.loadDistributionPolicy
+                        = SubResource.fromJson(reader);
+                } else if ("entraJWTValidationConfig".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.entraJwtValidationConfig
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.provisioningState

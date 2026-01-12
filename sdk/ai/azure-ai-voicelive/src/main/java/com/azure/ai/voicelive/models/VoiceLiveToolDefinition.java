@@ -79,6 +79,8 @@ public class VoiceLiveToolDefinition implements JsonSerializable<VoiceLiveToolDe
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("function".equals(discriminatorValue)) {
                     return VoiceLiveFunctionDefinition.fromJson(readerToUse.reset());
+                } else if ("mcp".equals(discriminatorValue)) {
+                    return MCPServer.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

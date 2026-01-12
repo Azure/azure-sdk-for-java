@@ -515,13 +515,12 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDeleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName);
-        return this.client.<MhsmPrivateEndpointConnectionInner, MhsmPrivateEndpointConnectionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), MhsmPrivateEndpointConnectionInner.class,
-            MhsmPrivateEndpointConnectionInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -538,14 +537,13 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDeleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName, context);
-        return this.client.<MhsmPrivateEndpointConnectionInner, MhsmPrivateEndpointConnectionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), MhsmPrivateEndpointConnectionInner.class,
-            MhsmPrivateEndpointConnectionInner.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -561,8 +559,8 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String name, String privateEndpointConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
+        String privateEndpointConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).getSyncPoller();
     }
 
@@ -580,8 +578,8 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MhsmPrivateEndpointConnectionInner>, MhsmPrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name,
+        String privateEndpointConnectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).getSyncPoller();
     }
 
@@ -598,8 +596,7 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MhsmPrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String name,
-        String privateEndpointConnectionName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -618,8 +615,8 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MhsmPrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String name,
-        String privateEndpointConnectionName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String name, String privateEndpointConnectionName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -634,12 +631,10 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MhsmPrivateEndpointConnectionInner delete(String resourceGroupName, String name,
-        String privateEndpointConnectionName) {
-        return deleteAsync(resourceGroupName, name, privateEndpointConnectionName).block();
+    public void delete(String resourceGroupName, String name, String privateEndpointConnectionName) {
+        deleteAsync(resourceGroupName, name, privateEndpointConnectionName).block();
     }
 
     /**
@@ -653,12 +648,10 @@ public final class MhsmPrivateEndpointConnectionsClientImpl implements MhsmPriva
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MhsmPrivateEndpointConnectionInner delete(String resourceGroupName, String name,
-        String privateEndpointConnectionName, Context context) {
-        return deleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).block();
+    public void delete(String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
+        deleteAsync(resourceGroupName, name, privateEndpointConnectionName, context).block();
     }
 
     /**

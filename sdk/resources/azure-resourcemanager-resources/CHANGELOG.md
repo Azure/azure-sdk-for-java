@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.53.5 (2025-11-17)
+
+### Other Changes
+
+- Optimized `AzureServiceClient` to load library versions during class initialization.
+
 ## 2.53.4 (2025-10-27)
 
 ### Other Changes

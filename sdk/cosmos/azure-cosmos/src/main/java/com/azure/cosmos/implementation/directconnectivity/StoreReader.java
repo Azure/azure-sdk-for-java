@@ -281,36 +281,31 @@ public class StoreReader {
 
                 if (srr.isAvoidQuorumSelectionException) {
 
-                    // todo: fail fast when barrier requests also hit isAvoidQuorumSelectionException?
-                    // todo: https://github.com/Azure/azure-sdk-for-java/issues/46135
-                    if (!entity.isBarrierRequest) {
+                    // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
+                    // to fail fast in the region where a quorum selection is being attempted
+                    // no attempts to reselect quorum will be made
+                    if (logger.isDebugEnabled()) {
 
-                        // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
-                        // to fail fast in the region where a quorum selection is being attempted
-                        // no attempts to reselect quorum will be made
-                        if (logger.isDebugEnabled()) {
+                        int statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
+                        int subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
 
-                            int statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
-                            int subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
-
-                            logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
-                        }
-
-                        if (!entity.requestContext.performedBackgroundAddressRefresh) {
-                            this.startBackgroundAddressRefresh(entity);
-                            entity.requestContext.performedBackgroundAddressRefresh = true;
-                        }
-
-                        // (collect quorum store results if possible)
-                        // for QuorumReader (upstream) to make the final decision on quorum selection
-                        resultCollector.add(srr);
-
-                        // Remaining replicas
-                        replicasToRead.set(replicaCountToRead - resultCollector.size());
-
-                        // continue to the next store result
-                        continue;
+                        logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
                     }
+
+                    if (!entity.requestContext.performedBackgroundAddressRefresh) {
+                        this.startBackgroundAddressRefresh(entity);
+                        entity.requestContext.performedBackgroundAddressRefresh = true;
+                    }
+
+                    // (collect quorum store results if possible)
+                    // for QuorumReader (upstream) to make the final decision on quorum selection
+                    resultCollector.add(srr);
+
+                    // Remaining replicas
+                    replicasToRead.set(replicaCountToRead - resultCollector.size());
+
+                    // continue to the next store result
+                    continue;
                 }
 
                 if (srr.isValid) {
@@ -687,6 +682,15 @@ public class StoreReader {
                         true,
                         primaryUriReference.get(),
                         replicaStatusList);
+
+                if (storeTaskException instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) storeTaskException;
+
+                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+                        return Mono.error(cosmosException);
+                    }
+                }
+
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators

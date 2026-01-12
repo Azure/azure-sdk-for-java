@@ -17,30 +17,33 @@ import java.io.IOException;
 @Fluent
 public final class Replica implements JsonSerializable<Replica> {
     /*
-     * Used to indicate role of the server in replication set.
+     * Role of the server in a replication set.
      */
     private ReplicationRole role;
 
     /*
-     * Replicas allowed for a server.
+     * Maximum number of read replicas allowed for a server.
      */
     private Integer capacity;
 
     /*
-     * Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
-     * values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
+     * Indicates the replication state of a read replica. This property is returned only when the target server is a
+     * read replica. Possible values are Active, Broken, Catchup, Provisioning, Reconfiguring, and Updating
      */
     private ReplicationState replicationState;
 
     /*
-     * Sets the promote mode for a replica server. This is a write only property.
+     * Type of operation to apply on the read replica. This property is write only. Standalone means that the read
+     * replica will be promoted to a standalone server, and will become a completely independent entity from the
+     * replication set. Switchover means that the read replica will roles with the primary server.
      */
     private ReadReplicaPromoteMode promoteMode;
 
     /*
-     * Sets the promote options for a replica server. This is a write only property.
+     * Data synchronization option to use when processing the operation specified in the promoteMode property. This
+     * property is write only.
      */
-    private ReplicationPromoteOption promoteOption;
+    private ReadReplicaPromoteOption promoteOption;
 
     /**
      * Creates an instance of Replica class.
@@ -49,7 +52,7 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Get the role property: Used to indicate role of the server in replication set.
+     * Get the role property: Role of the server in a replication set.
      * 
      * @return the role value.
      */
@@ -58,7 +61,7 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Set the role property: Used to indicate role of the server in replication set.
+     * Set the role property: Role of the server in a replication set.
      * 
      * @param role the role value to set.
      * @return the Replica object itself.
@@ -69,7 +72,7 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Get the capacity property: Replicas allowed for a server.
+     * Get the capacity property: Maximum number of read replicas allowed for a server.
      * 
      * @return the capacity value.
      */
@@ -78,8 +81,9 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Get the replicationState property: Gets the replication state of a replica server. This property is returned only
-     * for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
+     * Get the replicationState property: Indicates the replication state of a read replica. This property is returned
+     * only when the target server is a read replica. Possible values are Active, Broken, Catchup, Provisioning,
+     * Reconfiguring, and Updating.
      * 
      * @return the replicationState value.
      */
@@ -88,7 +92,10 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Get the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
+     * Get the promoteMode property: Type of operation to apply on the read replica. This property is write only.
+     * Standalone means that the read replica will be promoted to a standalone server, and will become a completely
+     * independent entity from the replication set. Switchover means that the read replica will roles with the primary
+     * server.
      * 
      * @return the promoteMode value.
      */
@@ -97,7 +104,10 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Set the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
+     * Set the promoteMode property: Type of operation to apply on the read replica. This property is write only.
+     * Standalone means that the read replica will be promoted to a standalone server, and will become a completely
+     * independent entity from the replication set. Switchover means that the read replica will roles with the primary
+     * server.
      * 
      * @param promoteMode the promoteMode value to set.
      * @return the Replica object itself.
@@ -108,21 +118,23 @@ public final class Replica implements JsonSerializable<Replica> {
     }
 
     /**
-     * Get the promoteOption property: Sets the promote options for a replica server. This is a write only property.
+     * Get the promoteOption property: Data synchronization option to use when processing the operation specified in the
+     * promoteMode property. This property is write only.
      * 
      * @return the promoteOption value.
      */
-    public ReplicationPromoteOption promoteOption() {
+    public ReadReplicaPromoteOption promoteOption() {
         return this.promoteOption;
     }
 
     /**
-     * Set the promoteOption property: Sets the promote options for a replica server. This is a write only property.
+     * Set the promoteOption property: Data synchronization option to use when processing the operation specified in the
+     * promoteMode property. This property is write only.
      * 
      * @param promoteOption the promoteOption value to set.
      * @return the Replica object itself.
      */
-    public Replica withPromoteOption(ReplicationPromoteOption promoteOption) {
+    public Replica withPromoteOption(ReadReplicaPromoteOption promoteOption) {
         this.promoteOption = promoteOption;
         return this;
     }
@@ -171,7 +183,7 @@ public final class Replica implements JsonSerializable<Replica> {
                 } else if ("promoteMode".equals(fieldName)) {
                     deserializedReplica.promoteMode = ReadReplicaPromoteMode.fromString(reader.getString());
                 } else if ("promoteOption".equals(fieldName)) {
-                    deserializedReplica.promoteOption = ReplicationPromoteOption.fromString(reader.getString());
+                    deserializedReplica.promoteOption = ReadReplicaPromoteOption.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

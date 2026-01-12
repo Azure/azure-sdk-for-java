@@ -12,7 +12,9 @@ import com.azure.core.util.Context;
  */
 public interface BillingInfoes {
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -20,19 +22,22 @@ public interface BillingInfoes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor along with {@link Response}.
+     * @return marketplace Subscription and Organization details to which resource gets billed into along with
+     * {@link Response}.
      */
     Response<BillingInfoResponse> getWithResponse(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor.
+     * @return marketplace Subscription and Organization details to which resource gets billed into.
      */
     BillingInfoResponse get(String resourceGroupName, String monitorName);
 }

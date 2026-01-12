@@ -25,7 +25,7 @@ import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
-import com.azure.search.documents.indexes.models.KnowledgeAgent;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
@@ -1584,21 +1584,21 @@ public final class SearchIndexClient {
     /**
      * Creates a new agent.
      *
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBases The definition of the agent to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createKnowledgeAgentWithResponse(knowledgeAgent, Context.NONE).getValue();
+    public KnowledgeBase createKnowledgeBase(KnowledgeBase knowledgeBases) {
+        return createKnowledgeBaseWithResponse(knowledgeBases, Context.NONE).getValue();
     }
 
     /**
      * Creates a new agent.
      *
-     * @param knowledgeAgent The definition of the agent to create.
+     * @param knowledgeBases The definition of the agent to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1606,29 +1606,29 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent, Context context) {
+    public Response<KnowledgeBase> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBases, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getKnowledgeAgents().createWithResponse(knowledgeAgent, null, context), LOGGER);
+            () -> restClient.getKnowledgeBases().createWithResponse(knowledgeBases, null, context), LOGGER);
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBases The definition of the agent to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent createOrUpdateKnowledgeAgent(KnowledgeAgent knowledgeAgent) {
-        return createOrUpdateKnowledgeAgentWithResponse(knowledgeAgent, null, Context.NONE).getValue();
+    public KnowledgeBase createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBases) {
+        return createOrUpdateKnowledgeBaseWithResponse(knowledgeBases, null, Context.NONE).getValue();
     }
 
     /**
      * Creates a new agent or updates an agent if it already exists.
      *
-     * @param knowledgeAgent The definition of the agent to create or update.
+     * @param knowledgeBases The definition of the agent to create or update.
      * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
      * conditions will be applied.
      * @param context The context to associate with this operation.
@@ -1638,34 +1638,34 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> createOrUpdateKnowledgeAgentWithResponse(KnowledgeAgent knowledgeAgent,
+    public Response<KnowledgeBase> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBases,
         MatchConditions matchConditions, Context context) {
         String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
         String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeAgents()
-            .createOrUpdateWithResponse(knowledgeAgent.getName(), knowledgeAgent, ifMatch, ifNoneMatch, null, context),
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeBases()
+            .createOrUpdateWithResponse(knowledgeBases.getName(), knowledgeBases, ifMatch, ifNoneMatch, null, context),
             LOGGER);
     }
 
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeAgent getKnowledgeAgent(String agentName) {
-        return getKnowledgeAgentWithResponse(agentName, Context.NONE).getValue();
+    public KnowledgeBase getKnowledgeBase(String knowledgeBaseName) {
+        return getKnowledgeBaseWithResponse(knowledgeBaseName, Context.NONE).getValue();
 
     }
 
     /**
      * Retrieves an agent definition.
      *
-     * @param agentName The name of the agent to retrieve.
+     * @param knowledgeBaseName The name of the agent to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1673,13 +1673,13 @@ public final class SearchIndexClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeAgent> getKnowledgeAgentWithResponse(String agentName, Context context) {
+    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String knowledgeBaseName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getKnowledgeAgents().getWithResponse(agentName, null, context), LOGGER);
+            () -> restClient.getKnowledgeBases().getWithResponse(knowledgeBaseName, null, context), LOGGER);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1687,12 +1687,12 @@ public final class SearchIndexClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> listKnowledgeAgents() {
-        return listKnowledgeAgents(Context.NONE);
+    public PagedIterable<KnowledgeBase> listKnowledgeBases() {
+        return listKnowledgeBases(Context.NONE);
     }
 
     /**
-     * Lists all agents available for a search service.
+     * Lists all knowledgebases available for a search service.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1701,28 +1701,28 @@ public final class SearchIndexClient {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeAgent> listKnowledgeAgents(Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeAgents().list(null, context),
+    public PagedIterable<KnowledgeBase> listKnowledgeBases(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeBases().list(null, context),
             LOGGER);
     }
 
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeAgent(String agentName) {
-        deleteKnowledgeAgentWithResponse(agentName, null, Context.NONE).getValue();
+    public void deleteKnowledgeBase(String knowledgeBaseName) {
+        deleteKnowledgeBaseWithResponse(knowledgeBaseName, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes an existing agent.
      *
-     * @param agentName The name of the agent to delete.
+     * @param knowledgeBaseName The name of the agent to delete.
      * @param matchConditions Defining {@code If-Match} and {@code If-None-Match} conditions. If null is passed, no
      * conditions will be applied.
      * @param context The context to associate with this operation.
@@ -1732,13 +1732,12 @@ public final class SearchIndexClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeAgentWithResponse(String agentName, MatchConditions matchConditions,
+    public Response<Void> deleteKnowledgeBaseWithResponse(String knowledgeBaseName, MatchConditions matchConditions,
         Context context) {
         String ifMatch = matchConditions != null ? matchConditions.getIfMatch() : null;
         String ifNoneMatch = matchConditions != null ? matchConditions.getIfNoneMatch() : null;
-        return Utility.executeRestCallWithExceptionHandling(
-            () -> restClient.getKnowledgeAgents().deleteWithResponse(agentName, ifMatch, ifNoneMatch, null, context),
-            LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getKnowledgeBases()
+            .deleteWithResponse(knowledgeBaseName, ifMatch, ifNoneMatch, null, context), LOGGER);
     }
 
     /**

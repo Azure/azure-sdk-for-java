@@ -13,15 +13,16 @@ public final class SchemaRegistryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"vfvfcj\",\"namespace\":\"aeoisrvh\",\"displayName\":\"orffukiscv\",\"description\":\"zhwplefaxvxilc\",\"storageAccountContainerUrl\":\"tg\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"yqxtjjfzql\",\"tenantId\":\"ycavodggxdbees\",\"type\":\"None\"},\"location\":\"knlrariaawiuagy\",\"tags\":{\"agt\":\"fbylyrfg\"},\"id\":\"ojocqwogf\",\"name\":\"zjvusfzldmo\",\"type\":\"uxylfsbtkadpy\"},{\"properties\":{\"uuid\":\"nbtgkbugrjqctoj\",\"namespace\":\"mi\",\"displayName\":\"fieypefojyqdhcup\",\"description\":\"plcwkhi\",\"storageAccountContainerUrl\":\"ihlhzdsqtzb\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"wcjhfgmv\",\"tenantId\":\"actxmwoteyowc\",\"type\":\"SystemAssigned\"},\"location\":\"ovekqvgqouwi\",\"tags\":{\"ikf\":\"pjwyiv\"},\"id\":\"cvhrfsp\",\"name\":\"uagrttikteusqc\",\"type\":\"kvyklxubyjaffmm\"}],\"nextLink\":\"lcqcuubgqibrt\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"alzxwhcan\",\"namespace\":\"ymo\",\"displayName\":\"hlwigdivbkbxg\",\"description\":\"fajuwas\",\"storageAccountContainerUrl\":\"vdaeyyguxakjsq\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"zkgimsid\",\"tenantId\":\"sicddyvv\",\"type\":\"SystemAssigned\"},\"location\":\"gfmo\",\"tags\":{\"hnakzyb\":\"hpqgatjeaahhvj\"},\"id\":\"jjidjk\",\"name\":\"yxkyxvx\",\"type\":\"vblbjednljlageua\"},{\"properties\":{\"uuid\":\"unsmjbnkpp\",\"namespace\":\"ynenlsvxeizz\",\"displayName\":\"klnsrmffey\",\"description\":\"ckt\",\"storageAccountContainerUrl\":\"iymerteeammxqi\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"ddrtkgdojb\",\"tenantId\":\"vavrefdees\",\"type\":\"SystemAssigned\"},\"location\":\"uij\",\"tags\":{\"wprtu\":\"xs\"},\"id\":\"wsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"},{\"properties\":{\"uuid\":\"dqbwpypqtgsfja\",\"namespace\":\"b\",\"displayName\":\"hhxud\",\"description\":\"vodhtn\",\"storageAccountContainerUrl\":\"irudh\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ckdlpag\",\"tenantId\":\"cxfailcfxwmdboxd\",\"type\":\"SystemAssigned\"},\"location\":\"ft\",\"tags\":{\"knh\":\"obrjlnacgcc\"},\"id\":\"kizvytn\",\"name\":\"zvulj\",\"type\":\"aaeranokqgukk\"}],\"nextLink\":\"nvbroylaxx\"}")
             .toObject(SchemaRegistryListResult.class);
-        Assertions.assertEquals("knlrariaawiuagy", model.value().get(0).location());
-        Assertions.assertEquals("fbylyrfg", model.value().get(0).tags().get("agt"));
-        Assertions.assertEquals("aeoisrvh", model.value().get(0).properties().namespace());
-        Assertions.assertEquals("orffukiscv", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("zhwplefaxvxilc", model.value().get(0).properties().description());
-        Assertions.assertEquals("tg", model.value().get(0).properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("lcqcuubgqibrt", model.nextLink());
+        Assertions.assertEquals("gfmo", model.value().get(0).location());
+        Assertions.assertEquals("hpqgatjeaahhvj", model.value().get(0).tags().get("hnakzyb"));
+        Assertions.assertEquals("ymo", model.value().get(0).properties().namespace());
+        Assertions.assertEquals("hlwigdivbkbxg", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("fajuwas", model.value().get(0).properties().description());
+        Assertions.assertEquals("vdaeyyguxakjsq", model.value().get(0).properties().storageAccountContainerUrl());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
+            model.value().get(0).identity().type());
+        Assertions.assertEquals("nvbroylaxx", model.nextLink());
     }
 }

@@ -21,27 +21,27 @@ import java.util.List;
 @Fluent
 public final class ValidationDetails implements JsonSerializable<ValidationDetails> {
     /*
-     * Validation status for migration
+     * Validation status for migration.
      */
     private ValidationState status;
 
     /*
-     * Validation Start date-time in UTC
+     * Start time (UTC) for validation.
      */
     private OffsetDateTime validationStartTimeInUtc;
 
     /*
-     * Validation End date-time in UTC
+     * End time (UTC) for validation.
      */
     private OffsetDateTime validationEndTimeInUtc;
 
     /*
-     * Details of server level validations
+     * Details of server level validations.
      */
     private List<ValidationSummaryItem> serverLevelValidationDetails;
 
     /*
-     * Details of server level validations
+     * Details of server level validations.
      */
     private List<DbLevelValidationStatus> dbLevelValidationDetails;
 
@@ -72,7 +72,7 @@ public final class ValidationDetails implements JsonSerializable<ValidationDetai
     }
 
     /**
-     * Get the validationStartTimeInUtc property: Validation Start date-time in UTC.
+     * Get the validationStartTimeInUtc property: Start time (UTC) for validation.
      * 
      * @return the validationStartTimeInUtc value.
      */
@@ -81,7 +81,7 @@ public final class ValidationDetails implements JsonSerializable<ValidationDetai
     }
 
     /**
-     * Set the validationStartTimeInUtc property: Validation Start date-time in UTC.
+     * Set the validationStartTimeInUtc property: Start time (UTC) for validation.
      * 
      * @param validationStartTimeInUtc the validationStartTimeInUtc value to set.
      * @return the ValidationDetails object itself.
@@ -92,7 +92,7 @@ public final class ValidationDetails implements JsonSerializable<ValidationDetai
     }
 
     /**
-     * Get the validationEndTimeInUtc property: Validation End date-time in UTC.
+     * Get the validationEndTimeInUtc property: End time (UTC) for validation.
      * 
      * @return the validationEndTimeInUtc value.
      */
@@ -101,7 +101,7 @@ public final class ValidationDetails implements JsonSerializable<ValidationDetai
     }
 
     /**
-     * Set the validationEndTimeInUtc property: Validation End date-time in UTC.
+     * Set the validationEndTimeInUtc property: End time (UTC) for validation.
      * 
      * @param validationEndTimeInUtc the validationEndTimeInUtc value to set.
      * @return the ValidationDetails object itself.

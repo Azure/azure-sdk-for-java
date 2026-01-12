@@ -10,8 +10,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class DatabasesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * DatabaseCreate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/DatabasesCreate.
+     * json
      */
     /**
      * Sample code: Create a database.
@@ -20,8 +20,8 @@ public final class DatabasesCreateSamples {
      */
     public static void createADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.databases()
-            .define("db1")
-            .withExistingFlexibleServer("TestGroup", "testserver")
+            .define("exampledatabase")
+            .withExistingFlexibleServer("exampleresourcegroup", "exampleserver")
             .withCharset("utf8")
             .withCollation("en_US.utf8")
             .create();

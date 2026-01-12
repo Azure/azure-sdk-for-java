@@ -66,4 +66,10 @@ public final class ContentPartType extends ExpandableStringEnum<ContentPartType>
     public static Collection<ContentPartType> values() {
         return values(ContentPartType.class);
     }
+
+    /**
+     * Static value input_image for ContentPartType.
+     */
+    @Generated
+    public static final ContentPartType INPUT_IMAGE = fromString("input_image");
 }

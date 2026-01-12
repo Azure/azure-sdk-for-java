@@ -16,28 +16,28 @@ public final class TestAllRoutesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestAllRoutesResultInner model = BinaryData.fromString(
-            "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceMessages\",\"condition\":\"dkwobdagx\",\"endpointNames\":[\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\",\"podxunkb\"],\"isEnabled\":true}}]}")
+            "{\"routes\":[{\"properties\":{\"name\":\"qqkdltfzxmhhvhgu\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"dkwobdagx\",\"endpointNames\":[\"bqdxbx\",\"akbogqxndlkzgxh\",\"ripl\",\"podxunkb\"],\"isEnabled\":true}}]}")
             .toObject(TestAllRoutesResultInner.class);
         Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());
+        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.routes().get(0).properties().source());
         Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
         Assertions.assertEquals("bqdxbx", model.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertEquals(true, model.routes().get(0).properties().isEnabled());
+        Assertions.assertTrue(model.routes().get(0).properties().isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TestAllRoutesResultInner model = new TestAllRoutesResultInner().withRoutes(
             Arrays.asList(new MatchedRoute().withProperties(new RouteProperties().withName("qqkdltfzxmhhvhgu")
-                .withSource(RoutingSource.DEVICE_MESSAGES)
+                .withSource(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS)
                 .withCondition("dkwobdagx")
                 .withEndpointNames(Arrays.asList("bqdxbx", "akbogqxndlkzgxh", "ripl", "podxunkb"))
                 .withIsEnabled(true))));
         model = BinaryData.fromObject(model).toObject(TestAllRoutesResultInner.class);
         Assertions.assertEquals("qqkdltfzxmhhvhgu", model.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.routes().get(0).properties().source());
+        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS, model.routes().get(0).properties().source());
         Assertions.assertEquals("dkwobdagx", model.routes().get(0).properties().condition());
         Assertions.assertEquals("bqdxbx", model.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertEquals(true, model.routes().get(0).properties().isEnabled());
+        Assertions.assertTrue(model.routes().get(0).properties().isEnabled());
     }
 }

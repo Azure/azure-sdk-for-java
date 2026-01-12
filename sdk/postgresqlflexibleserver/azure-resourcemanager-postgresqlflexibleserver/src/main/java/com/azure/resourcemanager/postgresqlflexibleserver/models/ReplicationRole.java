@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Used to indicate role of the server in replication set.
+ * Role of the server in a replication set.
  */
 public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole> {
     /**

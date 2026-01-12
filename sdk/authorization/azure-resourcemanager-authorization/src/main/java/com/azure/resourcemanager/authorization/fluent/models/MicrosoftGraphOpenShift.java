@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * openShift.
+ * Represents an open shift.
  */
 @Fluent
 public final class MicrosoftGraphOpenShift extends MicrosoftGraphChangeTrackedEntity {

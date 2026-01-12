@@ -39,87 +39,6 @@ public final class ConnectionsClient {
     }
 
     /**
-     * Get the default connection for a given connection type.
-     *
-     * @param connectionType The type of the connection
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Default connection of the type specified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Connection getDefaultConnection(ConnectionType connectionType) {
-        return this.getDefaultConnection(connectionType, false);
-    }
-
-    /**
-     * Get the default connection for a given connection type.
-     *
-     * @param connectionType The type of the connection
-     * @param includeCredentials Whether to include connection credentials in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Default connection of the type specified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Connection getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
-        PagedIterable<Connection> connections = this.listConnections(connectionType, true);
-        for (Connection connection : connections) {
-            if (connection.isDefault()) {
-                return connection;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get a connection by name, without populating connection credentials.
-     *
-     * @param name The friendly name of the connection, provided by the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Connection getConnection(String name) {
-        RequestOptions requestOptions = new RequestOptions();
-        return getConnectionWithResponse(name, requestOptions).getValue().toObject(Connection.class);
-    }
-
-    /**
-     * Get a connection by name, without populating connection credentials.
-     *
-     * @param name The friendly name of the connection, provided by the user.
-     * @param includeCredentials Whether to include connection credentials in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection by name, without populating connection credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Connection getConnection(String name, boolean includeCredentials) {
-        if (includeCredentials) {
-            return getConnectionWithCredentials(name);
-        } else {
-            return getConnection(name);
-        }
-    }
-
-    /**
      * Get a connection by name, without populating connection credentials.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -128,11 +47,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -164,11 +83,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -199,7 +118,7 @@ public final class ConnectionsClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
      * connections</td></tr>
      * </table>
@@ -211,11 +130,11 @@ public final class ConnectionsClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -235,6 +154,26 @@ public final class ConnectionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listConnections(RequestOptions requestOptions) {
         return this.serviceClient.listConnections(requestOptions);
+    }
+
+    /**
+     * Get a connection by name, without populating connection credentials.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connection by name, without populating connection credentials.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Connection getConnection(String name) {
+        // Generated convenience method for getConnectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getConnectionWithResponse(name, requestOptions).getValue().toObject(Connection.class);
     }
 
     /**
@@ -302,5 +241,27 @@ public final class ConnectionsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listConnections(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Connection.class));
+    }
+
+    /**
+     * Get a connection by name, without populating connection credentials.
+     *
+     * @param name The friendly name of the connection, provided by the user.
+     * @param includeCredentials Whether to include connection credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connection by name, without populating connection credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Connection getConnection(String name, boolean includeCredentials) {
+        if (includeCredentials) {
+            return getConnectionWithCredentials(name);
+        } else {
+            return getConnection(name);
+        }
     }
 }

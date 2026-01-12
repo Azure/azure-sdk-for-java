@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * geoCoordinates.
+ * Represents a geo coordinates.
  */
 @Fluent
 public final class MicrosoftGraphGeoCoordinates implements JsonSerializable<MicrosoftGraphGeoCoordinates> {

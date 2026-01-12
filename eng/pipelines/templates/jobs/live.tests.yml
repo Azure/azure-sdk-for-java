@@ -141,14 +141,14 @@ jobs:
           ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
           VersionOverride: ${{ parameters.VersionOverride }}
 
+      - ${{ parameters.PostSteps }}
+
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
         - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
-
-      - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:

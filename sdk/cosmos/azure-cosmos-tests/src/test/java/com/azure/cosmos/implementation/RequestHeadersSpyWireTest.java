@@ -137,15 +137,20 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        client.queryDocuments(
-            collectionLink,
-            query,
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
-            Document.class).blockLast();
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            client.queryDocuments(
+                collectionLink,
+                query,
+                dummyState,
+                Document.class).blockLast();
 
-        List<HttpRequest> requests = client.getCapturedRequests();
-        for (HttpRequest httpRequest : requests) {
-            validateRequestHasDedicatedGatewayHeaders(httpRequest, options.getDedicatedGatewayRequestOptions());
+            List<HttpRequest> requests = client.getCapturedRequests();
+            for (HttpRequest httpRequest : requests) {
+                validateRequestHasDedicatedGatewayHeaders(httpRequest, options.getDedicatedGatewayRequestOptions());
+            }
+        } finally {
+            safeClose(dummyState);
         }
     }
 
@@ -168,11 +173,15 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             client
         );
 
-        assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, state, Document.class)
-            .blockLast())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
+        try {
+            assertThatThrownBy(() -> client
+                .queryDocuments(collectionLink, query, state, Document.class)
+                .blockLast())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
+        } finally {
+            safeClose(state);
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -192,13 +201,17 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             client
         );
 
-        client.clearCapturedRequests();
+        try {
+            client.clearCapturedRequests();
 
-        assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, state, Document.class)
-            .blockLast())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+            assertThatThrownBy(() -> client
+                .queryDocuments(collectionLink, query, state, Document.class)
+                .blockLast())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+        } finally {
+            safeClose(state);
+        }
     }
 
     @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderItemOptions", groups = { "fast" }, timeOut =

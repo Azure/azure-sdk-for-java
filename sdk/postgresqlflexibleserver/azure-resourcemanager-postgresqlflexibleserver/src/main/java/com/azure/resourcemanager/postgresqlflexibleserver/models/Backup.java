@@ -24,12 +24,12 @@ public final class Backup implements JsonSerializable<Backup> {
     private Integer backupRetentionDays;
 
     /*
-     * A value indicating whether Geo-Redundant backup is enabled on the server.
+     * Indicates if the server is configured to create geographically redundant backups.
      */
-    private GeoRedundantBackupEnum geoRedundantBackup;
+    private GeographicallyRedundantBackup geoRedundantBackup;
 
     /*
-     * The earliest restore point time (ISO8601 format) for server.
+     * Earliest restore point time (ISO8601 format) for a server.
      */
     private OffsetDateTime earliestRestoreDate;
 
@@ -60,27 +60,29 @@ public final class Backup implements JsonSerializable<Backup> {
     }
 
     /**
-     * Get the geoRedundantBackup property: A value indicating whether Geo-Redundant backup is enabled on the server.
+     * Get the geoRedundantBackup property: Indicates if the server is configured to create geographically redundant
+     * backups.
      * 
      * @return the geoRedundantBackup value.
      */
-    public GeoRedundantBackupEnum geoRedundantBackup() {
+    public GeographicallyRedundantBackup geoRedundantBackup() {
         return this.geoRedundantBackup;
     }
 
     /**
-     * Set the geoRedundantBackup property: A value indicating whether Geo-Redundant backup is enabled on the server.
+     * Set the geoRedundantBackup property: Indicates if the server is configured to create geographically redundant
+     * backups.
      * 
      * @param geoRedundantBackup the geoRedundantBackup value to set.
      * @return the Backup object itself.
      */
-    public Backup withGeoRedundantBackup(GeoRedundantBackupEnum geoRedundantBackup) {
+    public Backup withGeoRedundantBackup(GeographicallyRedundantBackup geoRedundantBackup) {
         this.geoRedundantBackup = geoRedundantBackup;
         return this;
     }
 
     /**
-     * Get the earliestRestoreDate property: The earliest restore point time (ISO8601 format) for server.
+     * Get the earliestRestoreDate property: Earliest restore point time (ISO8601 format) for a server.
      * 
      * @return the earliestRestoreDate value.
      */
@@ -126,7 +128,8 @@ public final class Backup implements JsonSerializable<Backup> {
                 if ("backupRetentionDays".equals(fieldName)) {
                     deserializedBackup.backupRetentionDays = reader.getNullable(JsonReader::getInt);
                 } else if ("geoRedundantBackup".equals(fieldName)) {
-                    deserializedBackup.geoRedundantBackup = GeoRedundantBackupEnum.fromString(reader.getString());
+                    deserializedBackup.geoRedundantBackup
+                        = GeographicallyRedundantBackup.fromString(reader.getString());
                 } else if ("earliestRestoreDate".equals(fieldName)) {
                     deserializedBackup.earliestRestoreDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

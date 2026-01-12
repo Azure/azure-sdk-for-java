@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * assignedLabel.
+ * Represents an assigned label.
  */
 @Fluent
 public final class MicrosoftGraphAssignedLabel implements JsonSerializable<MicrosoftGraphAssignedLabel> {

@@ -23,7 +23,7 @@ public class DeploymentsSample {
     public static void listDeployments() {
         // BEGIN:com.azure.ai.projects.DeploymentsSample.listDeployments
 
-        PagedIterable<Deployment> deployments = deploymentsClient.listDeployments();
+        PagedIterable<Deployment> deployments = deploymentsClient.list();
         for (Deployment deployment : deployments) {
             System.out.printf("Deployment name: %s%n", deployment.getName());
         }
@@ -35,7 +35,7 @@ public class DeploymentsSample {
         // BEGIN:com.azure.ai.projects.DeploymentsSample.getDeployment
 
         String deploymentName = Configuration.getGlobalConfiguration().get("DEPLOYMENT_NAME", "");
-        Deployment deployment = deploymentsClient.getDeployment(deploymentName);
+        Deployment deployment = deploymentsClient.get(deploymentName);
 
         System.out.printf("Deployment name: %s%n", deployment.getName());
         System.out.printf("Deployment type: %s%n", deployment.getType().getValue());

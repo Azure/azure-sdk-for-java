@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * eventType.
+ * Represents an event type.
  */
 public final class MicrosoftGraphEventType extends ExpandableStringEnum<MicrosoftGraphEventType> {
     /**

@@ -57,7 +57,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,7 +67,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -154,46 +152,49 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
-        GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+        try(CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient()) {
+            AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
+            GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-        AccountLevelLocationContext accountLevelReadableLocationContext
-            = getAccountLevelLocationContext(databaseAccount, false);
+            AccountLevelLocationContext accountLevelReadableLocationContext
+                = getAccountLevelLocationContext(databaseAccount, false);
 
-        AccountLevelLocationContext accountLevelWriteableLocationContext
-            = getAccountLevelLocationContext(databaseAccount, true);
+            AccountLevelLocationContext accountLevelWriteableLocationContext
+                = getAccountLevelLocationContext(databaseAccount, true);
 
-        validate(accountLevelReadableLocationContext, false);
-        validate(accountLevelWriteableLocationContext, true);
+            validate(accountLevelReadableLocationContext, false);
+            validate(accountLevelWriteableLocationContext, true);
 
-        this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
+            this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
                 .stream()
                 .map(regionName -> regionName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toList());
 
-        this.serviceOrderedReadableRegions = this.preferredRegions;
+            this.serviceOrderedReadableRegions = this.preferredRegions;
 
-        this.serviceOrderedWriteableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
-            .stream()
-            .map(regionName -> regionName.toLowerCase(Locale.ROOT))
-            .collect(Collectors.toList());
+            this.serviceOrderedWriteableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
+                .stream()
+                .map(regionName -> regionName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toList());
 
-        this.clientWithPreferredRegions = getClientBuilder()
-            .preferredRegions(this.preferredRegions)
-            .endpointDiscoveryEnabled(true)
-            .multipleWriteRegionsEnabled(true)
-            .buildAsyncClient();
+            this.clientWithPreferredRegions = getClientBuilder()
+                .preferredRegions(this.preferredRegions)
+                .endpointDiscoveryEnabled(true)
+                .multipleWriteRegionsEnabled(true)
+                .buildAsyncClient();
 
-        this.clientWithoutPreferredRegions = getClientBuilder()
-            .endpointDiscoveryEnabled(true)
-            .multipleWriteRegionsEnabled(true)
-            .buildAsyncClient();
+            this.clientWithoutPreferredRegions = getClientBuilder()
+                .endpointDiscoveryEnabled(true)
+                .multipleWriteRegionsEnabled(true)
+                .buildAsyncClient();
+        }
 
-        this.cosmosAsyncContainerFromClientWithPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
-        this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
+        this.cosmosAsyncContainerFromClientWithPreferredRegions =
+            getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+        this.cosmosAsyncContainerFromClientWithoutPreferredRegions =
+            getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
     @AfterClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -550,52 +551,49 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .hitLimit(hitLimit)
             .build();
 
-        CosmosAsyncClient testClient = getClientBuilder()
+        try (CosmosAsyncClient testClient = getClientBuilder()
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
             .directMode()
             // required to force a quorum read irrespective of account consistency level
             .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
-            .buildAsyncClient();
+            .buildAsyncClient()) {
 
-        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+            CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
 
-        try {
+            try {
 
-            testContainer.createItem(createdItem).block();
+                testContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
 
-            CosmosDiagnostics cosmosDiagnostics
-                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
-                .block();
+                CosmosDiagnostics cosmosDiagnostics
+                    = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                          .block();
 
-            if (shouldRetryCrossRegion) {
-                assertThat(cosmosDiagnostics).isNotNull();
-                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                if (shouldRetryCrossRegion) {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
-                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
-                assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
-                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
-            } else {
-                assertThat(cosmosDiagnostics).isNotNull();
-                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                    assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                } else {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
-                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-                assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-                assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
-            }
+                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                    assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                    assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
+                }
 
-        } finally {
-            leaseNotFoundFaultRule.disable();
-
-            if (testClient != null) {
+            } finally {
+                leaseNotFoundFaultRule.disable();
                 cleanUpContainer(testContainer);
-                testClient.close();
             }
         }
     }

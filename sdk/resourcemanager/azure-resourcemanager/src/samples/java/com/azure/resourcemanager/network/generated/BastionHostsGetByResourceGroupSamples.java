@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class BastionHostsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/BastionHostDeveloperGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/BastionHostDeveloperGet.json
      */
     /**
      * Sample code: Get Developer Bastion Host.
@@ -27,7 +27,7 @@ public final class BastionHostsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/BastionHostGetWithZones.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/BastionHostGetWithZones.json
      */
     /**
      * Sample code: Get Bastion Host With Zones.
@@ -44,7 +44,7 @@ public final class BastionHostsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/BastionHostGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/BastionHostGet.json
      */
     /**
      * Sample code: Get Bastion Host.
@@ -61,7 +61,7 @@ public final class BastionHostsGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/BastionHostGetWithPrivateOnly
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/BastionHostGetWithPrivateOnly
      * .json
      */
     /**

@@ -168,7 +168,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -220,7 +220,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -387,7 +387,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -434,7 +434,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -545,7 +545,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
@@ -601,7 +601,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -708,7 +708,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -756,7 +756,7 @@ public final class ReachabilityAnalysisRunsClientImpl implements ReachabilityAna
             return Mono.error(
                 new IllegalArgumentException("Parameter reachabilityAnalysisRunName is required and cannot be null."));
         }
-        final String apiVersion = "2025-01-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,

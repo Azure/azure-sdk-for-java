@@ -41,14 +41,14 @@ public interface Database {
     SystemData systemData();
 
     /**
-     * Gets the charset property: The charset of the database.
+     * Gets the charset property: Character set of the database.
      * 
      * @return the charset value.
      */
     String charset();
 
     /**
-     * Gets the collation property: The collation of the database.
+     * Gets the collation property: Collation of the database.
      * 
      * @return the collation value.
      */
@@ -118,9 +118,9 @@ public interface Database {
          */
         interface WithCharset {
             /**
-             * Specifies the charset property: The charset of the database..
+             * Specifies the charset property: Character set of the database..
              * 
-             * @param charset The charset of the database.
+             * @param charset Character set of the database.
              * @return the next definition stage.
              */
             WithCreate withCharset(String charset);
@@ -131,9 +131,9 @@ public interface Database {
          */
         interface WithCollation {
             /**
-             * Specifies the collation property: The collation of the database..
+             * Specifies the collation property: Collation of the database..
              * 
-             * @param collation The collation of the database.
+             * @param collation Collation of the database.
              * @return the next definition stage.
              */
             WithCreate withCollation(String collation);

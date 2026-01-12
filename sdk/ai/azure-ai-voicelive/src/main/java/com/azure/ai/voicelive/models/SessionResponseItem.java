@@ -141,6 +141,14 @@ public class SessionResponseItem implements JsonSerializable<SessionResponseItem
                     return ResponseFunctionCallItem.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return ResponseFunctionCallOutputItem.fromJson(readerToUse.reset());
+                } else if ("mcp_list_tools".equals(discriminatorValue)) {
+                    return ResponseMCPListToolItem.fromJson(readerToUse.reset());
+                } else if ("mcp_call".equals(discriminatorValue)) {
+                    return ResponseMCPCallItem.fromJson(readerToUse.reset());
+                } else if ("mcp_approval_request".equals(discriminatorValue)) {
+                    return ResponseMCPApprovalRequestItem.fromJson(readerToUse.reset());
+                } else if ("mcp_approval_response".equals(discriminatorValue)) {
+                    return ResponseMCPApprovalResponseItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

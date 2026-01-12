@@ -28,6 +28,7 @@ import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFl
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfileOperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetManagedNamespacesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.containerservicefleet.implementation.Operations
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfiles;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaces;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
@@ -60,6 +62,8 @@ public final class ContainerServiceFleetManager {
     private Fleets fleets;
 
     private FleetMembers fleetMembers;
+
+    private FleetManagedNamespaces fleetManagedNamespaces;
 
     private Gates gates;
 
@@ -321,6 +325,19 @@ public final class ContainerServiceFleetManager {
             this.fleetMembers = new FleetMembersImpl(clientObject.getFleetMembers(), this);
         }
         return fleetMembers;
+    }
+
+    /**
+     * Gets the resource collection API of FleetManagedNamespaces. It manages FleetManagedNamespace.
+     * 
+     * @return Resource collection API of FleetManagedNamespaces.
+     */
+    public FleetManagedNamespaces fleetManagedNamespaces() {
+        if (this.fleetManagedNamespaces == null) {
+            this.fleetManagedNamespaces
+                = new FleetManagedNamespacesImpl(clientObject.getFleetManagedNamespaces(), this);
+        }
+        return fleetManagedNamespaces;
     }
 
     /**

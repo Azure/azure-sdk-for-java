@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * subscribedSku.
+ * Represents a subscribed sku.
  */
 @Fluent
 public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {

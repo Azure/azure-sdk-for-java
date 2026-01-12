@@ -22,8 +22,8 @@ npm install -g autorest
 
 ### Generation
 
-There are three swaggers for Azure Search, `searchindex`, `searchservice`, and `knowledgeagent`. They always under same
-package version, e.g. `--tag=searchindex`, `--tag=searchservice`, and `--tag=knowledgeagent`.
+There are three swaggers for Azure Search, `searchindex`, `searchservice`, and `knowledgebase`. They always under same
+package version, e.g. `--tag=searchindex`, `--tag=searchservice`, and `--tag=knowledgebase`.
 
 ```ps
 cd <swagger-folder>
@@ -35,7 +35,7 @@ e.g.
 cd <swagger-folder>
 autorest --tag=searchindex
 autorest --tag=searchservice
-autorest --tag=knowledgeagent
+autorest --tag=knowledgebase
 ```
 
 ## Manual Changes
@@ -88,7 +88,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
@@ -106,10 +106,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeAgentsResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeBasesResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -156,14 +156,14 @@ directive:
         to: SearchIndexerDataSourceConnection
 ```
 
-### Tag: knowledgeagent
+### Tag: knowledgebase
 
-These settings apply only when `--tag=knowledgeagent` is specified on the commandSearchServiceCounters line.
+These settings apply only when `--tag=knowledgebase` is specified on the commandSearchServiceCounters line.
 
-``` yaml $(tag) == 'knowledgeagent'
-namespace: com.azure.search.documents.agents
+``` yaml $(tag) == 'knowledgebase'
+namespace: com.azure.search.documents.knowledgebases
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/429fd8c039c5b08541df2389f8c58d1090e01127/specification/search/data-plane/Azure.Search/preview/2025-08-01-preview/knowledgeagent.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/knowledgebase.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
@@ -480,23 +480,33 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
-### Make `SearchIndexerStatus.name` optional
+### Make `SearchIndexerStatus.name` and `.runtime` optional
 
 ```yaml $(tag) == 'searchservice'
 directive:
 - from: swagger-document
   where: $.definitions.SearchIndexerStatus
   transform: >
-    $.required = $.required.filter((required) => required !== "name");
+    $.required = $.required.filter((required) => required !== "name" && required !== "runtime");
 ```
 
-### Remove `KnowledgeAgentOutputOptimization`
+### Make `SearchServiceStatistics.indexersRuntime` optional
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: swagger-document
+  where: $.definitions.ServiceStatistics
+  transform: >
+    $.required = $.required.filter((required) => required !== "indexersRuntime");
+```
+
+### Remove `KnowledgeBaseOutputOptimization`
 ```yaml $(tag) == 'searchservice'
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      delete $.KnowledgeAgentOutputOptimization;
+      delete $.KnowledgeBaseOutputOptimization;
 ```
 
 ### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`

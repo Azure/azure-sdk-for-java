@@ -4,9 +4,8 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceServer;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Migration;
 
 /**
  * Samples for Migrations Update.
@@ -14,37 +13,20 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResour
 public final class MigrationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_Cancel.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsUpdate.
+     * json
      */
     /**
-     * Sample code: Cancel migration.
+     * Sample code: Update an existing migration.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void cancelMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        MigrationResource resource = manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
+    public static void
+        updateAnExistingMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        Migration resource = manager.migrations()
+            .getWithResponse("exampleresourcegroup", "exampleserver", "examplemigration",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withCancel(CancelEnum.TRUE).apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * Migrations_Update.json
-     */
-    /**
-     * Sample code: Migrations_Update.
-     * 
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void migrationsUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        MigrationResource resource = manager.migrations()
-            .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withSetupLogicalReplicationOnSourceDbIfNeeded(LogicalReplicationOnSourceDbEnum.TRUE).apply();
+        resource.update().withSetupLogicalReplicationOnSourceDbIfNeeded(LogicalReplicationOnSourceServer.TRUE).apply();
     }
 }

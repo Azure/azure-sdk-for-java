@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkSecurityPerimeterLinkReferencesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NspLinkReferenceDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NspLinkReferenceDelete.json
      */
     /**
      * Sample code: NspLinkReferenceDelete.

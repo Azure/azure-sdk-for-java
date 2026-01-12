@@ -252,7 +252,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
         case otherError: Throwable => throw otherError
       }
 
-      val userCfgMissingArmEndpoint = userConfig.toMap.filterKeys(_ != "spark.cosmos.account.azureEnvironment.mANagement")
+      val userCfgMissingArmEndpoint = userConfig.toMap.filter(_._1 != "spark.cosmos.account.azureEnvironment.mANagement")
       try {
         CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingArmEndpoint)
         throw new IllegalStateException("Should never reach here when ARM endpoint config is missing")

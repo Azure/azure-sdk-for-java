@@ -3,8 +3,17 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
+    <Bug pattern="BC_VACUOUS_INSTANCEOF" />
+    <Class name="com.azure.search.documents.KnowledgeSourceTests" />
+  </Match>
+  <Match>
+    <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
+    <Class name="com.azure.search.documents.KnowledgeSourceTests" />
+  </Match>
+  <Match>
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
+      <Class name="com.azure.search.documents.KnowledgeSourceTests" />
       <Class name="com.azure.search.documents.ReadmeSamples" />
       <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
     </Or>
@@ -15,6 +24,17 @@
       <Class name="com.azure.search.documents.SearchClientBuilderTests" />
       <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
       <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="DM_DEFAULT_ENCODING" />
+    <Class name="com.azure.search.documents.KnowledgeSourceTests" />
+  </Match>
+  <Match>
+    <Bug pattern="EC_UNRELATED_TYPES" />
+    <Or>
+      <Class name="com.azure.search.documents.KnowledgeSourceTests" />
+      <Class name="com.azure.search.documents.indexes.SkillsetManagementTests" />
     </Or>
   </Match>
   <Match>
@@ -35,6 +55,10 @@
       <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
       <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
     </Or>
+  </Match>
+  <Match>
+    <Bug pattern="UC_USELESS_OBJECT" />
+    <Class name="com.azure.search.documents.indexes.SkillsetManagementTests" />
   </Match>
   <Match>
     <Bug pattern="UWF_UNWRITTEN_FIELD" />

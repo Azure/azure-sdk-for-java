@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.MonitoredSubscriptionProperties;
@@ -24,24 +24,24 @@ public final class MonitoredSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"patchOperation\":\"AddComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"q\",\"status\":\"Failed\",\"error\":\"axoruzfgsquy\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"ptramxj\",\"status\":\"Failed\",\"error\":\"wnwxuqlcvyd\",\"tagRules\":{\"provisioningState\":\"Deleting\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"Deleted\"},\"id\":\"ojknio\",\"name\":\"kooebwnu\",\"type\":\"hemms\"}]}";
+            = "{\"value\":[{\"properties\":{\"patchOperation\":\"AddBegin\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"nwabfatkldd\",\"status\":\"Failed\",\"error\":\"wuaanoz\",\"tagRules\":{\"provisioningState\":\"Updating\",\"logRules\":{},\"metricRules\":{}}},{\"subscriptionId\":\"ulpjr\",\"status\":\"InProgress\",\"error\":\"l\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{},\"metricRules\":{}}}],\"provisioningState\":\"Succeeded\"},\"id\":\"tx\",\"name\":\"tcs\",\"type\":\"fcktqumiekke\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MonitoredSubscriptionProperties> response
-            = manager.monitoredSubscriptions().list("ytdw", "qbrqubpaxhexiili", com.azure.core.util.Context.NONE);
+            = manager.monitoredSubscriptions().list("c", "r", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PatchOperation.ADD_COMPLETE, response.iterator().next().properties().patchOperation());
-        Assertions.assertEquals("q",
+        Assertions.assertEquals(PatchOperation.ADD_BEGIN, response.iterator().next().properties().patchOperation());
+        Assertions.assertEquals("nwabfatkldd",
             response.iterator().next().properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.FAILED,
             response.iterator().next().properties().monitoredSubscriptionList().get(0).status());
-        Assertions.assertEquals("axoruzfgsquy",
+        Assertions.assertEquals("wuaanoz",
             response.iterator().next().properties().monitoredSubscriptionList().get(0).error());
     }
 }

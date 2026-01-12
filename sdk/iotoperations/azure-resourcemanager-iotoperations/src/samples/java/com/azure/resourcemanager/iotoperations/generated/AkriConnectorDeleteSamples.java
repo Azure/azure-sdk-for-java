@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class AkriConnectorDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnector_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/AkriConnector_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_Delete_MaximumSet.

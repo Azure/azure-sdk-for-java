@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * listItem.
+ * Represents a list item.
  */
 @Fluent
 public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
