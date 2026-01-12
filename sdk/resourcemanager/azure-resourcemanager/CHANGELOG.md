@@ -2,13 +2,11 @@
 
 ## 2.59.0-beta.1 (Unreleased)
 
-### Features Added
+### azure-resourcemanager-compute
 
-### Breaking Changes
+#### Dependency Updates
 
-### Bugs Fixed
-
-### Other Changes
+- Updated `GalleryRP api-version` to `2025-03-03`.
 
 ## 2.58.0 (2025-12-22)
 
