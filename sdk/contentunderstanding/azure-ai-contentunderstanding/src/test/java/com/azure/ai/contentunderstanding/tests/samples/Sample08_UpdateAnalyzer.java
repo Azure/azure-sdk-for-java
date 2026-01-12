@@ -11,7 +11,6 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -130,12 +129,9 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
 
         // Update the analyzer using the convenience method
         // This method accepts a ContentAnalyzer object directly instead of BinaryData
-        Response<ContentAnalyzer> updateResponse
-            = contentUnderstandingClient.updateAnalyzer(analyzerId, updatedAnalyzer);
+        ContentAnalyzer result = contentUnderstandingClient.updateAnalyzer(analyzerId, updatedAnalyzer);
 
-        ContentAnalyzer result = updateResponse.getValue();
         System.out.println("Analyzer updated successfully!");
-        System.out.println("Status code: " + updateResponse.getStatusCode());
         System.out.println("New description: " + result.getDescription());
         // END:ContentUnderstandingUpdateAnalyzer
 

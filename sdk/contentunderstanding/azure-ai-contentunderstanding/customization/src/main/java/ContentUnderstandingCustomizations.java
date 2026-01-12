@@ -720,6 +720,9 @@ public class ContentUnderstandingCustomizations extends Customization {
     /**
      * Add convenience methods for updateAnalyzer and updateDefaults that accept typed objects
      * instead of BinaryData. This is equivalent to C# Update Operations in ContentUnderstandingClient.Customizations.cs
+     *
+     * Note: Convenience methods return the typed object directly (not wrapped in Response) and do not
+     * have @ServiceMethod annotation to avoid linting errors.
      */
     private void addUpdateConvenienceMethods(LibraryCustomization customization, Logger logger) {
         logger.info("Adding updateAnalyzer and updateDefaults convenience methods");
@@ -729,62 +732,58 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzer");
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
             ast.addImport("com.azure.core.util.BinaryData");
-            ast.addImport("com.azure.core.http.rest.SimpleResponse");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                // Add updateAnalyzer convenience method
+                // Add updateAnalyzer convenience method - returns ContentAnalyzer directly
                 clazz.addMethod("updateAnalyzer", Modifier.Keyword.PUBLIC)
-                    .setType("Response<ContentAnalyzer>")
+                    .setType("ContentAnalyzer")
                     .addParameter("String", "analyzerId")
                     .addParameter("ContentAnalyzer", "resource")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update analyzer properties.\n\n"
                         + "This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData."))
                         .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
                         .addBlockTag("param", "resource The ContentAnalyzer instance with properties to update.")
-                        .addBlockTag("return", "the updated ContentAnalyzer along with {@link Response}.")
+                        .addBlockTag("return", "the updated ContentAnalyzer.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "Response<BinaryData> response = updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null);"
-                        + "return new SimpleResponse<>(response, response.getValue().toObject(ContentAnalyzer.class)); }"));
+                        + "return response.getValue().toObject(ContentAnalyzer.class); }"));
 
-                // Add updateDefaults convenience method with Map parameter (matching C# IDictionary<string, string>)
+                // Add updateDefaults convenience method with Map parameter - returns ContentUnderstandingDefaults directly
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
-                    .setType("Response<ContentUnderstandingDefaults>")
+                    .setType("ContentUnderstandingDefaults")
                     .addParameter("Map<String, String>", "modelDeployments")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update default model deployment settings.\n\n"
                         + "This is the recommended public API for updating default model deployment settings. "
                         + "This method provides a simpler API that accepts a Map of model names to deployment names."))
                         .addBlockTag("param", "modelDeployments Mapping of model names to deployment names. "
                             + "For example: { \"gpt-4.1\": \"myGpt41Deployment\", \"text-embedding-3-large\": \"myTextEmbedding3LargeDeployment\" }.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults along with {@link Response}.")
+                        .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);"
                         + "Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);"
-                        + "return new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
+                        + "return response.getValue().toObject(ContentUnderstandingDefaults.class); }"));
 
                 // Add updateDefaults convenience method with ContentUnderstandingDefaults parameter
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
-                    .setType("Response<ContentUnderstandingDefaults>")
+                    .setType("ContentUnderstandingDefaults")
                     .addParameter("ContentUnderstandingDefaults", "defaults")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update default model deployment settings.\n\n"
                         + "This is a convenience method that accepts a ContentUnderstandingDefaults object."))
                         .addBlockTag("param", "defaults The ContentUnderstandingDefaults instance with settings to update.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults along with {@link Response}.")
+                        .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);"
-                        + "return new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
+                        + "return response.getValue().toObject(ContentUnderstandingDefaults.class); }"));
             });
         });
 
@@ -793,62 +792,58 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzer");
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
             ast.addImport("com.azure.core.util.BinaryData");
-            ast.addImport("com.azure.core.http.rest.SimpleResponse");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                // Add updateAnalyzer convenience method
+                // Add updateAnalyzer convenience method - returns Mono<ContentAnalyzer> directly
                 clazz.addMethod("updateAnalyzer", Modifier.Keyword.PUBLIC)
-                    .setType("Mono<Response<ContentAnalyzer>>")
+                    .setType("Mono<ContentAnalyzer>")
                     .addParameter("String", "analyzerId")
                     .addParameter("ContentAnalyzer", "resource")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update analyzer properties.\n\n"
                         + "This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData."))
                         .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
                         .addBlockTag("param", "resource The ContentAnalyzer instance with properties to update.")
-                        .addBlockTag("return", "the updated ContentAnalyzer along with {@link Response} on successful completion of {@link Mono}.")
+                        .addBlockTag("return", "the updated ContentAnalyzer on successful completion of {@link Mono}.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null)"
-                        + ".map(response -> new SimpleResponse<>(response, response.getValue().toObject(ContentAnalyzer.class))); }"));
+                        + ".map(response -> response.getValue().toObject(ContentAnalyzer.class)); }"));
 
-                // Add updateDefaults convenience method with Map parameter
+                // Add updateDefaults convenience method with Map parameter - returns Mono<ContentUnderstandingDefaults>
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
-                    .setType("Mono<Response<ContentUnderstandingDefaults>>")
+                    .setType("Mono<ContentUnderstandingDefaults>")
                     .addParameter("Map<String, String>", "modelDeployments")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update default model deployment settings.\n\n"
                         + "This is the recommended public API for updating default model deployment settings. "
                         + "This method provides a simpler API that accepts a Map of model names to deployment names."))
                         .addBlockTag("param", "modelDeployments Mapping of model names to deployment names. "
                             + "For example: { \"gpt-4.1\": \"myGpt41Deployment\", \"text-embedding-3-large\": \"myTextEmbedding3LargeDeployment\" }.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults along with {@link Response} on successful completion of {@link Mono}.")
+                        .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);"
                         + "return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)"
-                        + ".map(response -> new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class))); }"));
+                        + ".map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
 
                 // Add updateDefaults convenience method with ContentUnderstandingDefaults parameter
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
-                    .setType("Mono<Response<ContentUnderstandingDefaults>>")
+                    .setType("Mono<ContentUnderstandingDefaults>")
                     .addParameter("ContentUnderstandingDefaults", "defaults")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Update default model deployment settings.\n\n"
                         + "This is a convenience method that accepts a ContentUnderstandingDefaults object."))
                         .addBlockTag("param", "defaults The ContentUnderstandingDefaults instance with settings to update.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults along with {@link Response} on successful completion of {@link Mono}.")
+                        .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)"
-                        + ".map(response -> new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class))); }"));
+                        + ".map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
             });
         });
     }

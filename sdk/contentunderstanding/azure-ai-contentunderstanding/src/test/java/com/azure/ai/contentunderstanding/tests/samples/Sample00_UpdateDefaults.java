@@ -5,7 +5,6 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
-import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -55,16 +54,9 @@ public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase 
         System.out.println("\nUpdating default configuration...");
 
         // Update defaults with the configuration using the typed convenience method
-        Response<ContentUnderstandingDefaults> updateResponse
-            = contentUnderstandingClient.updateDefaults(modelDeployments);
-
-        if (updateResponse.getStatusCode() == 200 || updateResponse.getStatusCode() == 201) {
-            System.out.println("Defaults updated successfully.");
-            System.out.println("Status code: " + updateResponse.getStatusCode());
-            System.out.println("Updated model deployments: " + updateResponse.getValue().getModelDeployments());
-        } else {
-            System.err.println("Failed to update defaults. Status code: " + updateResponse.getStatusCode());
-        }
+        ContentUnderstandingDefaults updatedConfig = contentUnderstandingClient.updateDefaults(modelDeployments);
+        System.out.println("Defaults updated successfully.");
+        System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
 
         // Step 4: Verify the updated configuration
         System.out.println("\nVerifying updated configuration...");

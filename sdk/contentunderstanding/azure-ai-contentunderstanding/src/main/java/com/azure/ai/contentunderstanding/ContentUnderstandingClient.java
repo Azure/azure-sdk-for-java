@@ -26,7 +26,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import java.util.List;
@@ -65,7 +64,7 @@ public final class ContentUnderstandingClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -84,9 +83,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -172,15 +171,15 @@ public final class ContentUnderstandingClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -262,7 +261,7 @@ public final class ContentUnderstandingClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -272,9 +271,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -410,7 +409,7 @@ public final class ContentUnderstandingClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -513,9 +512,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -673,7 +672,7 @@ public final class ContentUnderstandingClient {
     /**
      * Get analyzer properties.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -794,7 +793,7 @@ public final class ContentUnderstandingClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -821,7 +820,7 @@ public final class ContentUnderstandingClient {
     /**
      * Get the status of an analyzer creation operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -960,7 +959,7 @@ public final class ContentUnderstandingClient {
     /**
      * Get the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1042,7 +1041,7 @@ public final class ContentUnderstandingClient {
     /**
      * Get a file associated with the result of an analysis operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * BinaryData
@@ -1068,7 +1067,7 @@ public final class ContentUnderstandingClient {
     /**
      * Get authorization for copying this analyzer to another location.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1077,9 +1076,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1110,7 +1109,7 @@ public final class ContentUnderstandingClient {
     /**
      * List analyzers.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1230,7 +1229,7 @@ public final class ContentUnderstandingClient {
     /**
      * Update analyzer properties.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1333,9 +1332,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1458,7 +1457,7 @@ public final class ContentUnderstandingClient {
     /**
      * Return default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1470,9 +1469,9 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1957,14 +1956,13 @@ public final class ContentUnderstandingClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The ContentAnalyzer instance with properties to update.
-     * @return the updated ContentAnalyzer along with {@link Response}.
+     * @return the updated ContentAnalyzer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentAnalyzer> updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
+    public ContentAnalyzer updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
         Response<BinaryData> response = updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null);
-        return new SimpleResponse<>(response, response.getValue().toObject(ContentAnalyzer.class));
+        return response.getValue().toObject(ContentAnalyzer.class);
     }
 
     /**
@@ -1975,14 +1973,13 @@ public final class ContentUnderstandingClient {
      *
      * @param modelDeployments Mapping of model names to deployment names. For example: { "gpt-4.1":
      * "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
-     * @return the updated ContentUnderstandingDefaults along with {@link Response}.
+     * @return the updated ContentUnderstandingDefaults.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContentUnderstandingDefaults> updateDefaults(Map<String, String> modelDeployments) {
+    public ContentUnderstandingDefaults updateDefaults(Map<String, String> modelDeployments) {
         ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
         Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
-        return new SimpleResponse<>(response, response.getValue().toObject(ContentUnderstandingDefaults.class));
+        return response.getValue().toObject(ContentUnderstandingDefaults.class);
     }
 }
