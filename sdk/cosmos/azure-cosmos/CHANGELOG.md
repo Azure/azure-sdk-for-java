@@ -3,6 +3,7 @@
 ### 4.76.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `startTime` support for Change Feed Processor and `pointInTime` support query change feed in All Versions and Deletes Mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
 
 #### Breaking Changes
 
