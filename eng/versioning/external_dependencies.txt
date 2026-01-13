@@ -62,7 +62,6 @@ io.projectreactor:reactor-core;3.7.14
 io.vertx:vertx-codegen;4.5.23
 io.vertx:vertx-core;4.5.23
 javax.websocket:javax.websocket-api;1.1
-org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.15
 org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
@@ -140,7 +139,6 @@ org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
 org.eclipse.jetty:jetty-server;9.4.58.v20250814
 org.eclipse.jetty:jetty-servlet;9.4.58.v20250814
 org.eclipse.jetty.http2:http2-server;9.4.58.v20250814
-org.hamcrest:hamcrest-all;1.3
 org.junit.jupiter:junit-jupiter;5.13.4
 org.junit.jupiter:junit-jupiter-api;5.13.4
 org.junit.jupiter:junit-jupiter-engine;5.13.4
@@ -197,13 +195,13 @@ org.codehaus.mojo:exec-maven-plugin;3.5.1
 org.codehaus.mojo:xml-maven-plugin;1.1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.58.v20250814
 org.eclipse.m2e:lifecycle-mapping;1.0.0
-org.jacoco:jacoco-maven-plugin;0.8.13
-org.jacoco:org.jacoco.agent;0.8.13
+org.jacoco:jacoco-maven-plugin;0.8.14
+org.jacoco:org.jacoco.agent;0.8.14
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.owasp:dependency-check-maven;12.1.1
-org.ow2.asm:asm;9.8
+org.ow2.asm:asm;9.9.1
 org.revapi:revapi;0.15.1
 org.revapi:revapi-java;0.28.3
 org.revapi:revapi-java-spi;0.25.1
@@ -403,10 +401,3 @@ springboot3_ch.qos.logback:logback-classic;1.5.22
 # Used for Spring version updates
 springboot3_org.springframework.boot:spring-boot-dependencies;3.5.9
 springboot3_org.springframework.cloud:spring-cloud-dependencies;2025.0.1
-
-# Java 7 support
-
-# Jackson dropped support for Java 7 with the release of 2.14.0.
-# Add custom Jackson dependencies for Track 1 libraries using Jackson.
-org.mockito:mockito-junit-jupiter;4.11.0
-com.github.tomakehurst:wiremock-jre8;2.35.2
