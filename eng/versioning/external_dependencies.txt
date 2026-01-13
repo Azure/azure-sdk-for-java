@@ -98,7 +98,6 @@ org.openrewrite.recipe:rewrite-recipe-bom;3.22.0
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
 org.springframework.boot:spring-boot-starter;2.7.18
-org.springframework:spring-core;5.3.32
 org.springframework.boot:spring-boot-starter-parent;2.7.18
 
 
