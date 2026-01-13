@@ -20,7 +20,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -108,7 +107,7 @@ public final class ContainerRegistryAsyncClient {
     public PagedFlux<String> listRepositoryNames() {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listRepositoryNamesSinglePageAsync(pageSize, context)),
-            (token, pageSize) -> withContext(context -> listRepositoryNamesNextSinglePageAsync(token, context)));
+            (token, ignored) -> withContext(context -> listRepositoryNamesNextSinglePageAsync(token, context)));
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {

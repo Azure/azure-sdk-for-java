@@ -13,14 +13,12 @@ import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
 import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -43,7 +41,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -62,12 +59,11 @@ import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
-import static com.azure.core.test.implementation.TestingHelpers.AZURE_TEST_MODE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -87,10 +83,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     }
 
     @BeforeAll
-    static void beforeAll() throws InterruptedException {
-        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
-        importImage(testMode != null ? TestMode.valueOf(testMode.toUpperCase(Locale.US)) : TestMode.PLAYBACK,
-            REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"), REGISTRY_ENDPOINT);
+    public static void setupSharedResources() {
+        importImage(REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"), REGISTRY_ENDPOINT);
     }
 
     @AfterEach
@@ -396,12 +390,11 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
             = ManifestMediaType.fromString("application/vnd.oci.artifact.manifest.v1+json");
 
         BinaryData ociArtifact = BinaryData.fromString(
-            "{\"mediaType\": \"application/vnd.oci.artifact.manifest.v1+json\",\"artifactType\": \"application/vnd.example.sbom.v1\"}");
+            "{\"mediaType\":\"application/vnd.oci.artifact.manifest.v1+json\",\"artifactType\":\"application/vnd.example.sbom.v1\"}");
         SetManifestResult result
             = client.setManifestWithResponse(new SetManifestOptions(ociArtifact, ociArtifactType), Context.NONE)
                 .getValue();
-        assertThrows(ResourceNotFoundException.class,
-            () -> client.getManifestWithResponse(result.getDigest(), Context.NONE));
+        assertDoesNotThrow(() -> client.getManifestWithResponse(result.getDigest(), Context.NONE));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -576,7 +569,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         @Override
         public int read() {
             position++;
-            return position == size ? -1 : CHUNK[(int) (position % (long) CHUNK.length)];
+            return (position == size ? -1 : CHUNK[(int) (position % (long) CHUNK.length)]) & 0xFF;
         }
 
         @Override
