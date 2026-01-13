@@ -295,6 +295,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         Mono<Void> refreshLocationCompletable = this.refreshLocation(isReadRequest, forceRefresh, usePreferredLocations);
 
+        // if PPAF is enabled, mark pk-range as unavailable and force a retry
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+        }
+
         // Some requests may be in progress when the endpoint manager and client are closed.
         // In that case, the request won't succeed since the http client is closed.
         // Therefore just skip the retry here to avoid the delay because retrying won't go through in the end.

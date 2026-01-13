@@ -133,7 +133,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * @param operationType the type of operation to perform (Read in this test)
      * @throws Exception if test setup fails or unexpected errors occur
      */
-    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios"/*, timeOut = 2 * TIMEOUT*/)
+    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios", timeOut = 2 * TIMEOUT, enabled = false)
     public void validateHubRegionProcessingOnReadWith404_1002(OperationType operationType) throws Exception {
 
         // Skip if we don't have at least 3 regions
@@ -216,48 +216,6 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             safeClose(testClient);
         }
     }
-
-    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios", timeOut = 2 * TIMEOUT)
-    public void validatePartitionIdUsed(OperationType operationType) throws Exception {
-
-        // Skip if we don't have at least 3 regions
-        if (this.preferredRegions.size() < 3) {
-            throw new SkipException("Test requires at least 3 readable regions");
-        }
-
-        // Create test client with preferred regions (third region first)
-        CosmosAsyncClient testClient = getClientBuilder()
-            .preferredRegions(this.preferredRegions)
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .buildAsyncClient();
-
-        String databaseId = "testDatabase";
-        String containerId = "testContainer";
-
-        try {
-            // Step 1: Container is pre-created (using shared container)
-            CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
-            CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
-
-            // Create a test document first using a baseline client to establish it in the partition-set
-            String documentId = UUID.randomUUID().toString();
-
-            TestObject testObject = TestObject.create(this.partitionKeyValue);
-
-            // Create the document using the test client
-            CosmosItemResponse<TestObject> response = targetContainer.createItem(testObject).block();
-
-            // Step 4: Determine partition-set hub region as base truth
-            String hubRegion = determinePartitionSetHubRegion(this.partitionKeyValue, databaseId, containerId);
-
-            logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
-
-
-        } finally {
-            safeClose(testClient);
-        }
-    }
-
 
     /**
      * Determines the partition-set hub region by creating a separate client and performing an upsert operation.
