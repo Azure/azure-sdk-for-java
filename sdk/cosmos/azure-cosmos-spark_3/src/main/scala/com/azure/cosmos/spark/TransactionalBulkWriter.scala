@@ -3,19 +3,18 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException, models}
 import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.TransactionalBulkWriter._
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos._
+import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, getThreadInfo, transactionalBulkWriterRequestsBoundedElastic, transactonalBatchInputBoundedElastic, transactonalBulkWriterInputBoundedElastic}
 import reactor.core.Scannable
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scheduler.Scheduler
 
 import java.util.Objects
 import java.util.concurrent.ConcurrentHashMap
-import java.util.function.BiPredicate
 import scala.collection.mutable
 import scala.compat.java8.FunctionConverters.enrichAsJavaFunction
 import scala.concurrent.duration.Duration
@@ -44,95 +43,95 @@ import scala.collection.JavaConverters._
 //scalastyle:off file.size.limit
 private class TransactionalBulkWriter
 (
-  container: CosmosAsyncContainer,
-  containerConfig: CosmosContainerConfig,
-  writeConfig: CosmosWriteConfig,
-  diagnosticsConfig: DiagnosticsConfig,
-  outputMetricsPublisher: OutputMetricsPublisherTrait,
-  commitAttempt: Long = 1
+		container: CosmosAsyncContainer,
+		containerConfig: CosmosContainerConfig,
+		writeConfig: CosmosWriteConfig,
+		diagnosticsConfig: DiagnosticsConfig,
+		outputMetricsPublisher: OutputMetricsPublisherTrait,
+		commitAttempt: Long = 1
 ) extends AsyncItemWriter {
 
-  private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+		private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val verboseLoggingAfterReEnqueueingRetriesEnabled = new AtomicBoolean(false)
+		private val verboseLoggingAfterReEnqueueingRetriesEnabled = new AtomicBoolean(false)
 
-  private val cpuCount = SparkUtils.getNumberOfHostCPUCores
+		private val cpuCount = SparkUtils.getNumberOfHostCPUCores
 
-  // NOTE: The public API config property is "maxPendingOperations" for backward compatibility,
-  // but internally TransactionalBulkWriter limits concurrent *batches* not individual operations.
-  // This is semantically correct because transactional batches are atomic units.
-  // We convert maxPendingOperations to maxPendingBatches by assuming ~50 operations per batch.
-  private val maxPendingBatches = {
-    val maxOps = writeConfig.bulkMaxPendingOperations.getOrElse(DefaultMaxPendingOperationPerCore)
-    // Assume average batch size of 50 operations - limit concurrent batches accordingly
-    Math.max(1, maxOps / 50)
-  }
-  private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
-    .getOrElse(DefaultMaxPendingOperationPerCore)
-  private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
-    // using the provided maximum of concurrent partitions per Spark partition on the input data
-    // multiplied by 2 to leave space for partition splits during ingestion
-    case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
-    // using the total number of physical partitions
-    // multiplied by 2 to leave space for partition splits during ingestion
-    case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
-  }
+		// NOTE: The public API config property is "maxPendingOperations" for backward compatibility,
+		// but internally TransactionalBulkWriter limits concurrent *batches* not individual operations.
+		// This is semantically correct because transactional batches are atomic units.
+		// We convert maxPendingOperations to maxPendingBatches by assuming ~50 operations per batch.
+		private val maxPendingBatches = {
+				val maxOps = writeConfig.bulkMaxPendingOperations.getOrElse(DefaultMaxPendingOperationPerCore)
+				// Assume average batch size of 50 operations - limit concurrent batches accordingly
+				Math.max(1, maxOps / 50)
+		}
+		private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
+				.getOrElse(DefaultMaxPendingOperationPerCore)
+		private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
+				// using the provided maximum of concurrent partitions per Spark partition on the input data
+				// multiplied by 2 to leave space for partition splits during ingestion
+				case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
+				// using the total number of physical partitions
+				// multiplied by 2 to leave space for partition splits during ingestion
+				case None => 2 * ContainerFeedRangesCache.getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt).block().size
+		}
 
 		log.logInfo(
-    s"TransactionalBulkWriter instantiated (Host CPU count: $cpuCount, maxPendingBatches: $maxPendingBatches, " +
-  s"maxPendingOperations: $maxPendingOperations, maxConcurrentPartitions: $maxConcurrentPartitions ...")
+				s"TransactionalBulkWriter instantiated (Host CPU count: $cpuCount, maxPendingBatches: $maxPendingBatches, " +
+						s"maxPendingOperations: $maxPendingOperations, maxConcurrentPartitions: $maxConcurrentPartitions ...")
 
-	 private val closed = new AtomicBoolean(false)
-	 private val lock = new ReentrantLock
-	 private val pendingTasksCompleted = lock.newCondition
-	 private val pendingRetries = new AtomicLong(0)
-	 private val pendingBatchRetries = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
-	 private val activeBatchTasks = new AtomicInteger(0)
-	 private val activeBatches = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
-	 private val errorCaptureFirstException = new AtomicReference[Throwable]()
-	 private val transactionalBulkInputEmitter: Sinks.Many[TransactionalBulkItem] = Sinks.many().unicast().onBackpressureBuffer()
-	 private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
+		private val closed = new AtomicBoolean(false)
+		private val lock = new ReentrantLock
+		private val pendingTasksCompleted = lock.newCondition
+		private val pendingRetries = new AtomicLong(0)
+		private val pendingBatchRetries = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
+		private val activeBatchTasks = new AtomicInteger(0)
+		private val activeBatches = new ConcurrentHashMap[PartitionKey, CosmosBatchOperation].asScala
+		private val errorCaptureFirstException = new AtomicReference[Throwable]()
+		private val transactionalBulkInputEmitter: Sinks.Many[TransactionalBulkItem] = Sinks.many().unicast().onBackpressureBuffer()
+		private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatch] = Sinks.many().unicast().onBackpressureBuffer()
 
 		// for transactional batch, all rows/items from the dataframe should be grouped as one cosmos batch
 		private val transactionalBatchPartitionKeyScheduled = java.util.concurrent.ConcurrentHashMap.newKeySet[PartitionKey]().asScala
 
-	 private val semaphore = new Semaphore(maxPendingBatches)
+		private val semaphore = new Semaphore(maxPendingBatches)
 
-	 private val totalScheduledMetrics = new AtomicLong(0) // this will be for each operation
-	 private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
+		private val totalScheduledMetrics = new AtomicLong(0) // this will be for each operation
+		private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
-	 private val maxOperationTimeout = java.time.Duration.ofSeconds(CosmosConstants.batchOperationEndToEndTimeoutInSeconds)
-	 private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
-			 .enable(true)
-		  .build
-	 private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl(Map.empty[String, String].asJava)
-	 private val monotonicOperationCounter = new AtomicLong(0)
+		private val maxOperationTimeout = java.time.Duration.ofSeconds(CosmosConstants.batchOperationEndToEndTimeoutInSeconds)
+		private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
+				.enable(true)
+				.build
+		private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl(Map.empty[String, String].asJava)
+		private val monotonicOperationCounter = new AtomicLong(0)
 
-	 cosmosTransactionalBulkExecutionOptions.setSchedulerOverride(transactionalBulkWriterRequestsBoundedElastic)
-	 cosmosTransactionalBulkExecutionOptions.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
-	 cosmosTransactionalBulkExecutionOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndTimeoutPolicy)
+		cosmosTransactionalBulkExecutionOptions.setSchedulerOverride(transactionalBulkWriterRequestsBoundedElastic)
+		cosmosTransactionalBulkExecutionOptions.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
+		cosmosTransactionalBulkExecutionOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndTimeoutPolicy)
 
-	 private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
-		override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
-				val ctxOption = Option.apply(ctx)
-			 outputMetricsPublisher.trackWriteOperation(0, ctxOption)
-			 if (ctxOption.isDefined && verboseLoggingEnabled.get) {
-				 TransactionalBulkWriter.log.logWarning(s"Track transactional bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
-			 }
-		 }
+		private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
+				override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
+						val ctxOption = Option.apply(ctx)
+						outputMetricsPublisher.trackWriteOperation(0, ctxOption)
+						if (ctxOption.isDefined && verboseLoggingEnabled.get) {
+								TransactionalBulkWriter.log.logWarning(s"Track transactional bulk operation after re-enqueued retry: ${ctxOption.get.toJson}")
+						}
+				}
 
-		override def verboseLoggingAfterReEnqueueingRetriesEnabled(): Boolean = {
-			verboseLoggingEnabled.get()
+				override def verboseLoggingAfterReEnqueueingRetriesEnabled(): Boolean = {
+						verboseLoggingEnabled.get()
+				}
 		}
-	}
 
 		cosmosTransactionalBulkExecutionOptions.setDiagnosticsTracker(
-		 new ForwardingMetricTracker(verboseLoggingAfterReEnqueueingRetriesEnabled)
-	 )
+				new ForwardingMetricTracker(verboseLoggingAfterReEnqueueingRetriesEnabled)
+		)
 
-	 ThroughputControlHelper.populateThroughputControlGroupName(cosmosTransactionalBulkExecutionOptions, writeConfig.throughputControlConfig)
+		ThroughputControlHelper.populateThroughputControlGroupName(cosmosTransactionalBulkExecutionOptions, writeConfig.throughputControlConfig)
 
-	 private val operationContext = initializeOperationContext()
+		private val operationContext = initializeOperationContext()
 
 		private def initializeOperationContext(): SparkTaskContext = {
 				val taskContext = TaskContext.get
@@ -140,26 +139,26 @@ private class TransactionalBulkWriter
 				val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUIDs.nonBlockingRandomUUID(), "TransactionalBulkWriter")
 
 				if (taskContext != null) {
-					val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
-						taskContext.stageId(),
-						taskContext.partitionId(),
-						taskContext.taskAttemptId(),
-						"")
+						val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+								taskContext.stageId(),
+								taskContext.partitionId(),
+								taskContext.taskAttemptId(),
+								"")
 
-					val listener: OperationListener =
-						DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+						val listener: OperationListener =
+								DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
-					val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-					cosmosTransactionalBulkExecutionOptions
-						.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
+						val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+						cosmosTransactionalBulkExecutionOptions
+								.setOperationContextAndListenerTuple(operationContextAndListenerTuple)
 
-					taskDiagnosticsContext
+						taskDiagnosticsContext
 				} else{
-					SparkTaskContext(diagnosticsContext.correlationActivityId,
-						-1,
-						-1,
-						-1,
-						"")
+						SparkTaskContext(diagnosticsContext.correlationActivityId,
+								-1,
+								-1,
+								-1,
+								"")
 				}
 		}
 
@@ -172,17 +171,17 @@ private class TransactionalBulkWriter
 						this.pendingRetries.incrementAndGet()
 				}
 
-				 // this is to ensure the submission will happen on a different thread in background
-				 // and doesn't block the active thread
-				 val deferredRetryMono = SMono.defer(() => {
-						 scheduleBatchInternal(cosmosBatchOperation)
+				// this is to ensure the submission will happen on a different thread in background
+				// and doesn't block the active thread
+				val deferredRetryMono = SMono.defer(() => {
+						scheduleBatchInternal(cosmosBatchOperation)
 
-						 if (clearPendingRetryAction()) {
-								 this.pendingRetries.decrementAndGet()
-						 }
+						if (clearPendingRetryAction()) {
+								this.pendingRetries.decrementAndGet()
+						}
 
-						 SMono.empty
-				 })
+						SMono.empty
+				})
 
 				if (Exceptions.isTimeout(statusCode)) {
 						deferredRetryMono
@@ -260,63 +259,63 @@ private class TransactionalBulkWriter
 								try {
 										// all the operations in the batch will have the same partition key value
 										// get the partition key value from the first result
-									 val partitionKeyValue = resp.getResults.get(0).getOperation.getPartitionKeyValue
-									 val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
-									 val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
+										val partitionKeyValue = resp.getResults.get(0).getOperation.getPartitionKeyValue
+										val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
+										val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
 
-									 if (pendingBatchOperationRetriesOpt.isDefined) {
-										  pendingRetries.decrementAndGet()
-									 }
+										if (pendingBatchOperationRetriesOpt.isDefined) {
+												pendingRetries.decrementAndGet()
+										}
 
-									 if (activeBatchOperationOpt.isEmpty) {
-										  // can't find the batch operation in list of active operations!
-										  logInfoOrWarning(s"Cannot find active batch operation for '$partitionKeyValue'. This can happen when " +
-											  s"retries get re-enqueued.")
-										  shouldSkipTaskCompletion.set(true)
-									 }
+										if (activeBatchOperationOpt.isEmpty) {
+												// can't find the batch operation in list of active operations!
+												logInfoOrWarning(s"Cannot find active batch operation for '$partitionKeyValue'. This can happen when " +
+														s"retries get re-enqueued.")
+												shouldSkipTaskCompletion.set(true)
+										}
 
-									 if (activeBatchOperationOpt.isDefined || pendingBatchOperationRetriesOpt.isDefined) {
-										  val batchOperation = activeBatchOperationOpt.orElse(pendingBatchOperationRetriesOpt).get
+										if (activeBatchOperationOpt.isDefined || pendingBatchOperationRetriesOpt.isDefined) {
+												val batchOperation = activeBatchOperationOpt.orElse(pendingBatchOperationRetriesOpt).get
 
-										  if (isSuccessStatusCode(resp.getStatusCode)) {
-											   // no error cases
-											   outputMetricsPublisher.trackWriteOperation(resp.size(), None) // TODO[Annie]:verify the diagnostics
-											   totalSuccessfulIngestionMetrics.addAndGet(resp.size())
-										  } else {
-											   handleNonSuccessfulStatusCode(
-													   batchOperation.operationContext,
-													   batchOperation.cosmosBatch,
-													   resp,
-													   isGettingRetried,
-													   None)
-										  }
-									 }
+												if (isSuccessStatusCode(resp.getStatusCode)) {
+														// no error cases
+														outputMetricsPublisher.trackWriteOperation(resp.size(), None) // TODO[Annie]:verify the diagnostics
+														totalSuccessfulIngestionMetrics.addAndGet(resp.size())
+												} else {
+														handleNonSuccessfulStatusCode(
+																batchOperation.operationContext,
+																batchOperation.cosmosBatch,
+																resp,
+																isGettingRetried,
+																None)
+												}
+										}
 								}
 								finally {
-									 if (!isGettingRetried.get) {
-											 semaphore.release()
-									 }
+										if (!isGettingRetried.get) {
+												semaphore.release()
+										}
 								}
 
-								 if (!shouldSkipTaskCompletion.get) {
-										 markTaskCompletion()
-								 }
-					},
-					errorConsumer = Option.apply(
-						ex => {
-							log.logError(s"Unexpected failure code path in transactional batch ingestion, " +
-								s"Context: ${operationContext.toString} $getThreadInfo", ex)
-							// if there is any failure this closes the bulk.
-							// at this point bulk api doesn't allow any retrying
-							// we don't know the list of failed item-operations
-							// they only way to retry to keep a dictionary of pending operations outside
-							// so we know which operations failed and which ones can be retried.
-							// this is currently a kill scenario.
-							captureIfFirstFailure(ex)
-							cancelWork()
-							markTaskCompletion()
-						}
-					)
+								if (!shouldSkipTaskCompletion.get) {
+										markTaskCompletion()
+								}
+						},
+						errorConsumer = Option.apply(
+								ex => {
+										log.logError(s"Unexpected failure code path in transactional batch ingestion, " +
+												s"Context: ${operationContext.toString} $getThreadInfo", ex)
+										// if there is any failure this closes the bulk.
+										// at this point bulk api doesn't allow any retrying
+										// we don't know the list of failed item-operations
+										// they only way to retry to keep a dictionary of pending operations outside
+										// so we know which operations failed and which ones can be retried.
+										// this is currently a kill scenario.
+										captureIfFirstFailure(ex)
+										cancelWork()
+										markTaskCompletion()
+								}
+						)
 				)
 		}
 
@@ -396,15 +395,15 @@ private class TransactionalBulkWriter
 		}
 
 		//scalastyle:off method.length
-	 //scalastyle:off cyclomatic.complexity
+		//scalastyle:off cyclomatic.complexity
 		private[this] def handleNonSuccessfulStatusCode
 		(
 				operationContext: OperationContext,
 				cosmosBatch: CosmosBatch,
 				cosmosBatchResponse: CosmosBatchResponse,
-		  isGettingRetried: AtomicBoolean,
-		  responseException: Option[CosmosException]
-	 ) : Unit = {
+				isGettingRetried: AtomicBoolean,
+				responseException: Option[CosmosException]
+		) : Unit = {
 
 				val effectiveStatusCode = cosmosBatchResponse.getStatusCode
 				val effectiveSubStatusCode = cosmosBatchResponse.getSubStatusCode
@@ -433,7 +432,7 @@ private class TransactionalBulkWriter
 								clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatch.getPartitionKeyValue).isDefined,
 								batchOperationRetry,
 								effectiveStatusCode)
-							isGettingRetried.set(true)
+						isGettingRetried.set(true)
 
 				} else {
 						log.logError(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
@@ -458,7 +457,7 @@ private class TransactionalBulkWriter
 		}
 
 		//scalastyle:on method.length
-	 //scalastyle:on cyclomatic.complexity
+		//scalastyle:on cyclomatic.complexity
 		private[this] def throwIfCapturedExceptionExists(): Unit = {
 				val errorSnapshot = errorCaptureFirstException.get()
 				if (errorSnapshot != null) {
@@ -506,9 +505,9 @@ private class TransactionalBulkWriter
 										snapshot(partitionKey).cosmosBatch.getOperations.asScala.forall(itemOperationSnapshot => {
 												current(partitionKey).cosmosBatch.getOperations.asScala.exists(currentOperation =>
 														itemOperationSnapshot.getOperationType == currentOperation.getOperationType
-														&& itemOperationSnapshot.getPartitionKeyValue == currentOperation.getPartitionKeyValue
-														&& Objects.equals(itemOperationSnapshot.getId, currentOperation.getId)
-														&& Objects.equals(itemOperationSnapshot.getItem[Object], currentOperation.getItem[Object])
+																&& itemOperationSnapshot.getPartitionKeyValue == currentOperation.getPartitionKeyValue
+																&& Objects.equals(itemOperationSnapshot.getId, currentOperation.getId)
+																&& Objects.equals(itemOperationSnapshot.getItem[Object], currentOperation.getItem[Object])
 												)
 										})
 								}
@@ -586,8 +585,8 @@ private class TransactionalBulkWriter
 
 
 		// the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
-	 // scalastyle:off method.length
-	 // scalastyle:off cyclomatic.complexity
+		// scalastyle:off method.length
+		// scalastyle:off cyclomatic.complexity
 		override def flushAndClose(): Unit = {
 				this.synchronized {
 						try {
@@ -619,11 +618,11 @@ private class TransactionalBulkWriter
 														val awaitCompleted = pendingTasksCompleted.await(writeConfig.flushCloseIntervalInSeconds, TimeUnit.SECONDS)
 														if (!awaitCompleted) {
 																throwIfProgressStaled(
-																	"FlushAndClose",
-																	activeOperationsSnapshot,
-																	pendingOperationsSnapshot,
-																	numberOfIntervalsWithIdenticalActiveOperationSnapshots,
-																	allowRetryOnNewBulkWriterInstance = true
+																		"FlushAndClose",
+																		activeOperationsSnapshot,
+																		pendingOperationsSnapshot,
+																		numberOfIntervalsWithIdenticalActiveOperationSnapshots,
+																		allowRetryOnNewBulkWriterInstance = true
 																)
 
 																if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
@@ -657,13 +656,13 @@ private class TransactionalBulkWriter
 																						// re-validating whether the operation is still active - if so, just re-enqueue another retry
 																						// this is harmless - because all bulkItemOperations from Spark connector are always idempotent
 																						// For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-																						 transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatch, TransactionalBulkWriter.emitFailureHandler)
-																						 log.logWarning(s"Re-enqueued a retry for pending active batch task "
-																						 + s"(${operationPartitionKeyPair._1})' "
-																						 + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
-																						 + s"Context: ${operationContext.toString} $getThreadInfo")
-																						 }
-																						})
+																						transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatch, TransactionalBulkWriter.emitFailureHandler)
+																						log.logWarning(s"Re-enqueued a retry for pending active batch task "
+																								+ s"(${operationPartitionKeyPair._1})' "
+																								+ s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+																								+ s"Context: ${operationContext.toString} $getThreadInfo")
+																				}
+																		})
 																}
 														}
 
@@ -697,16 +696,16 @@ private class TransactionalBulkWriter
 										assume(activeBatches.isEmpty)
 										assume(semaphore.availablePermits() >= maxPendingBatches)
 
-									 if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
-											 log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
-												  s"scheduled metrics. This indicates that successful completion was only possible after re-enqueueing " +
-												  s"retries. totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
-													 s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
-									 } else {
-											 logInfoOrWarning(s"flushAndClose completed with no error. " +
-													 s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
-													 s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
-									 }
+										if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
+												log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
+														s"scheduled metrics. This indicates that successful completion was only possible after re-enqueueing " +
+														s"retries. totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
+														s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
+										} else {
+												logInfoOrWarning(s"flushAndClose completed with no error. " +
+														s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, " +
+														s"totalScheduled=$totalScheduledMetrics, Context: ${operationContext.toString} $getThreadInfo")
+										}
 								}
 						} finally {
 								bulkInputSubscriptionDisposable.dispose()
@@ -775,16 +774,16 @@ private class TransactionalBulkWriter
 		}
 
 		/**
-		* Don't wait for any remaining work but signal to the writer the ungraceful close
-		* Should not throw any exceptions
-		*/
+			* Don't wait for any remaining work but signal to the writer the ungraceful close
+			* Should not throw any exceptions
+			*/
 		override def abort(shouldThrow: Boolean): Unit = {
 				if (shouldThrow) {
 						log.logError(s"Abort, Context: ${operationContext.toString} $getThreadInfo")
 						// signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
 						// been registered
-			   captureIfFirstFailure(
-					   new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
+						captureIfFirstFailure(
+								new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
 				} else {
 						log.logWarning(s"TransactionalBulkWriter aborted and commit retried, Context: ${operationContext.toString} $getThreadInfo")
 				}
@@ -805,7 +804,7 @@ private class TransactionalBulkWriter
 				}
 		}
 
-	 private case class CosmosBatchOperation(cosmosBatch: CosmosBatch, operationContext: OperationContext)
+		private case class CosmosBatchOperation(cosmosBatch: CosmosBatch, operationContext: OperationContext)
 		private case class TransactionalBulkItem(partitionKey: PartitionKey, objectNode: ObjectNode)
 }
 
@@ -815,36 +814,36 @@ private object TransactionalBulkWriter {
 		private val maxDelayOn408RequestTimeoutInMs = 3000
 		private val minDelayOn408RequestTimeoutInMs = 500
 		private val maxItemOperationsToShowInErrorMessage = 10
-	 private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
-	 private val TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-input-bounded-elastic"
-	 private val TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-batch-input-bounded-elastic"
-	 private val TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-responses-bounded-elastic"
-	 private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
-	 //scalastyle:on magic.number
+		private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
+		private val TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-input-bounded-elastic"
+		private val TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-batch-input-bounded-elastic"
+		private val TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-responses-bounded-elastic"
+		private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
+		//scalastyle:on magic.number
 
-	 // let's say the spark executor VM has 16 CPU cores.
-	 // let's say we have a cosmos container with 1M RU which is 167 partitions
-	 // let's say we are ingesting items of size 1KB
-	 // let's say max request size is 1MB
-	 // hence we want 1MB/ 1KB items per partition to be buffered
-	 // 1024 * 167 items should get buffered on a 16 CPU core VM
-	 // so per CPU core we want (1024 * 167 / 16) max items to be buffered
-	 // Reduced the targeted buffer from 2MB per partition and core to 1 MB because
-	 // we had a few customers seeing to high CPU usage with the previous setting
-	 // Reason is that several customers use larger than 1 KB documents so we need
-	 // to be less aggressive with the buffering
-	 val DefaultMaxPendingOperationPerCore: Int = 1024 * 167 / 16
+		// let's say the spark executor VM has 16 CPU cores.
+		// let's say we have a cosmos container with 1M RU which is 167 partitions
+		// let's say we are ingesting items of size 1KB
+		// let's say max request size is 1MB
+		// hence we want 1MB/ 1KB items per partition to be buffered
+		// 1024 * 167 items should get buffered on a 16 CPU core VM
+		// so per CPU core we want (1024 * 167 / 16) max items to be buffered
+		// Reduced the targeted buffer from 2MB per partition and core to 1 MB because
+		// we had a few customers seeing to high CPU usage with the previous setting
+		// Reason is that several customers use larger than 1 KB documents so we need
+		// to be less aggressive with the buffering
+		val DefaultMaxPendingOperationPerCore: Int = 1024 * 167 / 16
 
-	 val emitFailureHandler: EmitFailureHandler =
-			 (signalType, emitResult) => {
-					 if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
-							 log.logDebug(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-							 true
-					 } else {
-							 log.logError(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
-							 false
-					 }
-			 }
+		val emitFailureHandler: EmitFailureHandler =
+				(signalType, emitResult) => {
+						if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
+								log.logDebug(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+								true
+						} else {
+								log.logError(s"emitFailureHandler - Signal: ${signalType.toString}, Result: ${emitResult.toString}")
+								false
+						}
+				}
 
 		val emitFailureHandlerForComplete: EmitFailureHandler =
 				(signalType, emitResult) => {
@@ -862,32 +861,32 @@ private object TransactionalBulkWriter {
 
 		private val maxPendingOperationsPerJVM: Int = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
 
-	 // Custom bounded elastic scheduler to consume input flux
+		// Custom bounded elastic scheduler to consume input flux
 		val transactionalBulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
 				TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
 				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
-	 // Custom bounded elastic scheduler to consume input flux
-	 val transactonalBulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
-			 Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-			 Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
-			 TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
-			 TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
-
-	 val transactonalBatchInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+		// Custom bounded elastic scheduler to consume input flux
+		val transactonalBulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-			 Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
-			 TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
-			 TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+				TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
+				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
-	 // Custom bounded elastic scheduler to switch off IO thread to process response.
-	 val transactionalBulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
-			 Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-			 Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
-			 TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
-			 TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+		val transactonalBatchInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
+				TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
+				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
+
+		// Custom bounded elastic scheduler to switch off IO thread to process response.
+		val transactionalBulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
+				TRANSACTIONAL_BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
+				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
 		def getThreadInfo: String = {
 				val t = Thread.currentThread()

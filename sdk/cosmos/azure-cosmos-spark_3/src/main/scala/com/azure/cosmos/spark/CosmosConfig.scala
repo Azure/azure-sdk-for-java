@@ -1781,7 +1781,7 @@ private object CosmosWriteConfig {
 
     assert(bulkEnabledOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteBulkEnabled}' is missing.")
 
-      // parsing above already validated this
+    // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteStrategy}' is missing.")
     assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
 

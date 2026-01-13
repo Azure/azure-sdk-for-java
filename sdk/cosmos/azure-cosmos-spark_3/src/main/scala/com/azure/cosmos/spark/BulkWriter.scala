@@ -1478,7 +1478,7 @@ private object BulkWriter {
   def getThreadInfo: String = {
     val t = Thread.currentThread()
     val group = Option.apply(t.getThreadGroup) match {
-	     case Some(group) => group.getName
+      case Some(group) => group.getName
       case None => "n/a"
     }
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
