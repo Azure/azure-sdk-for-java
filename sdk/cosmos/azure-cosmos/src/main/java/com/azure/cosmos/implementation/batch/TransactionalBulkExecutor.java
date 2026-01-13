@@ -7,9 +7,17 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
@@ -52,6 +60,9 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
 
+    private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor =
+      ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
     private final String operationContextText;
@@ -68,6 +79,7 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
     private final BulkExecutorDiagnosticsTracker diagnosticsTracker;
     private final CosmosItemSerializer effectiveItemSerializer;
     private final Scheduler executionScheduler;
+
 
     @SuppressWarnings({"unchecked"})
     public TransactionalBulkExecutor(
@@ -243,29 +255,28 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         CosmosBatchRequestOptions batchRequestOptions = new CosmosBatchRequestOptions();
         batchRequestOptions.setExcludedRegions(transactionalBulkExecutionOptions.getExcludedRegions());
         batchRequestOptions.setKeywordIdentifiers(transactionalBulkExecutionOptions.getKeywordIdentifiers());
-        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
-          .getCosmosBatchRequestOptionsAccessor()
-          .setThroughputControlGroupName(batchRequestOptions, transactionalBulkExecutionOptions.getThroughputControlGroupName());
+        cosmosBatchRequestOptionsAccessor
+          .setThroughputControlGroupName(
+            batchRequestOptions,
+            transactionalBulkExecutionOptions.getThroughputControlGroupName());
 
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             transactionalBulkExecutionOptions.getCosmosEndToEndLatencyPolicyConfig();
         if (e2eLatencyPolicySnapshot != null) {
-          ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
-            .getCosmosBatchRequestOptionsAccessor()
-            .setEndToEndOperationLatencyPolicyConfig(batchRequestOptions, e2eLatencyPolicySnapshot);
+          cosmosBatchRequestOptionsAccessor
+            .setEndToEndOperationLatencyPolicyConfig(
+              batchRequestOptions,
+              e2eLatencyPolicySnapshot);
         }
 
         Map<String, String> customOptions = transactionalBulkExecutionOptions.getHeaders();
         if (customOptions != null && !customOptions.isEmpty()) {
             for(Map.Entry<String, String> entry : customOptions.entrySet()) {
-                ImplementationBridgeHelpers
-                    .CosmosBatchRequestOptionsHelper
-                    .getCosmosBatchRequestOptionsAccessor()
+              cosmosBatchRequestOptionsAccessor
                     .setHeader(batchRequestOptions, entry.getKey(), entry.getValue());
             }
         }
-      ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
-        .getCosmosBatchRequestOptionsAccessor()
+      cosmosBatchRequestOptionsAccessor
         .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
         return batchRequestOptions;
