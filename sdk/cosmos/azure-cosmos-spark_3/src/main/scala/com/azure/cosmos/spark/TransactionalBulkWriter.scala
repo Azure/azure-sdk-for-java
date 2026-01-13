@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException, models}
 import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
 import com.azure.cosmos.models._
@@ -16,6 +16,7 @@ import reactor.core.scheduler.Scheduler
 import java.util.Objects
 import java.util.concurrent.ConcurrentHashMap
 import scala.collection.mutable
+import scala.compat.java8.FunctionConverters.enrichAsJavaFunction
 import scala.concurrent.duration.Duration
 // scalastyle:on underscore.import
 import com.azure.cosmos.implementation.guava25.base.Preconditions
@@ -202,6 +203,7 @@ private class TransactionalBulkWriter
 
 		private val bulkInputSubscriptionDisposable: Disposable = {
 				log.logTrace(s"bulkInputSubscriptionDisposable, Context: ${operationContext.toString} $getThreadInfo")
+				val selector = ((a: TransactionalBulkItem) => a.partitionKey).asInstanceOf[Function[TransactionalBulkItem, Object]]
 				transactionalBulkInputEmitter
 						.asFlux()
 						.onBackpressureBuffer()
@@ -549,12 +551,15 @@ private class TransactionalBulkWriter
 
 				if (maxAllowedIntervalWithoutAnyProgressExceeded) {
 						val exception = {
+								// order by batch sequence number
+								// then return all operations inside the batch
 								val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
 										Some(
 												(pendingRetriesSnapshot ++ activeOperationsSnapshot)
 														.toList
 														.sortBy(op => op._2.operationContext.sequenceNumber)
 														.map(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.cosmosBatch)
+														.flatMap(batch => batch.getOperations.asScala)
 										)
 								} else {
 										None
