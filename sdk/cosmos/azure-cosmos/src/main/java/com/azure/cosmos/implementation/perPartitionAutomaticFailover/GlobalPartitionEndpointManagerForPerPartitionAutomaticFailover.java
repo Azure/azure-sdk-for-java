@@ -336,13 +336,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         this.warnLevelLoggedCounts.set(0);
     }
 
-    public boolean shouldAddHubRegionProcessingOnlyHeader(RxDocumentServiceRequest request) {
-        return this.isPerPartitionAutomaticFailoverEnabled() &&
-            request != null &&
-            request.getOperationType().isReadOnlyOperation() &&
-            !request.isMetadataRequest();
-    }
-
     private static void logAsWarnOrDebug(String message, AtomicInteger warnLogThreshold) {
         // warnLogThreshold is not atomic still but with interleaved
         // updates there would be few extra warn logs in the worst case

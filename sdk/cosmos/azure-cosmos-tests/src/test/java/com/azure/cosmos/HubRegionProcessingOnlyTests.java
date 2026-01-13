@@ -263,7 +263,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             TreeSet<String> contactedRegionNames = (TreeSet<String>) diagnosticsContext.getContactedRegionNames();
 
-            return contactedRegionNames.getLast();
+            return contactedRegionNames.pollLast();
         } finally {
             safeClose(hubDiscoveryClient);
         }
