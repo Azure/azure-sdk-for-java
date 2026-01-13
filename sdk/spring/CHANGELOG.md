@@ -1,6 +1,6 @@
 # Release History
 
-## 7.0.0-beta.2 (Unreleased)
+## 7.0.0-beta.2 (unreleased)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.

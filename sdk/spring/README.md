@@ -228,7 +228,7 @@ jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
 
 ## Spring Boot 4 Support
 
-The source code of Spring Cloud Azure for Spring Boot 4.x can be found on the [feature/springcloudazure-7.x](https://github.com/Azure/azure-sdk-for-java/tree/feature/springcloudazure-7.x) branch.
+The source code of Spring Cloud Azure for Spring Boot 4.x can be found on the [main](https://github.com/Azure/azure-sdk-for-java/tree/main) branch.
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
