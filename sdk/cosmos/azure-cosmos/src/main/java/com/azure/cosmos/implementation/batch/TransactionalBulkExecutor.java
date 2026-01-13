@@ -70,9 +70,10 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
     private final Scheduler executionScheduler;
 
     @SuppressWarnings({"unchecked"})
-    public TransactionalBulkExecutor(CosmosAsyncContainer container,
-                        Flux<CosmosBatch> inputBatches,
-                        CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkOptions) {
+    public TransactionalBulkExecutor(
+            CosmosAsyncContainer container,
+            Flux<CosmosBatch> inputBatches,
+            CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkOptions) {
 
         checkNotNull(container, "expected non-null container");
         checkNotNull(inputBatches, "expected non-null inputOperations");

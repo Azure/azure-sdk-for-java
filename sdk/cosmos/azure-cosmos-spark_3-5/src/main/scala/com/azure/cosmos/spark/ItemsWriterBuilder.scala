@@ -3,11 +3,11 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.PartitionKeyDefinition
-import com.azure.cosmos.{CosmosAsyncClient, ReadConsistencyStrategy, SparkBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.{ReadConsistencyStrategy, SparkBridgeInternal}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.distributions.{Distribution, Distributions}
-import org.apache.spark.sql.connector.expressions.{Expression, Expressions, NullOrdering, SortDirection, SortOrder}
+import org.apache.spark.sql.connector.expressions._
 import org.apache.spark.sql.connector.metric.CustomMetric
 import org.apache.spark.sql.connector.write.streaming.StreamingWrite
 import org.apache.spark.sql.connector.write.{BatchWrite, RequiresDistributionAndOrdering, Write, WriteBuilder}

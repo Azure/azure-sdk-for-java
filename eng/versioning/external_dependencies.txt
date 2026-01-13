@@ -93,7 +93,7 @@ org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;6.2.0
 testdep_net.bytebuddy:byte-buddy;1.17.7
 testdep_net.bytebuddy:byte-buddy-agent;1.17.7
-org.openrewrite.recipe:rewrite-recipe-bom;3.9.0
+org.openrewrite.recipe:rewrite-recipe-bom;3.22.0
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
