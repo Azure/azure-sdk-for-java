@@ -15,6 +15,7 @@ import reactor.core.scheduler.Scheduler
 
 import java.util.Objects
 import java.util.concurrent.ConcurrentHashMap
+import java.util.function.BiPredicate
 import scala.collection.mutable
 import scala.compat.java8.FunctionConverters.enrichAsJavaFunction
 import scala.concurrent.duration.Duration
@@ -203,11 +204,14 @@ private class TransactionalBulkWriter
 
 		private val bulkInputSubscriptionDisposable: Disposable = {
 				log.logTrace(s"bulkInputSubscriptionDisposable, Context: ${operationContext.toString} $getThreadInfo")
-				val selector = ((a: TransactionalBulkItem) => a.partitionKey).asInstanceOf[Function[TransactionalBulkItem, Object]]
 				transactionalBulkInputEmitter
 						.asFlux()
 						.onBackpressureBuffer()
-						.bufferUntilChanged(transactionalBulkItem => transactionalBulkItem.partitionKey)
+						.bufferUntilChanged[PartitionKey](
+								new Function[TransactionalBulkItem, PartitionKey] {
+										override def apply(x: TransactionalBulkItem): PartitionKey = x.partitionKey
+								}.asJava
+						)
 						.flatMap(bulkItemsList => {
 								if (bulkItemsList.size() == 0) {
 										SMono.empty

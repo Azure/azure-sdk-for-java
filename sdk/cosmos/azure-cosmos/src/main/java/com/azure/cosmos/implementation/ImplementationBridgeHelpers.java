@@ -1166,6 +1166,15 @@ public class ImplementationBridgeHelpers {
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
             CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned);
+            CosmosBatchRequestOptions setThroughputControlGroupName(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              String throughputControlGroupName);
+            CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy);
+            CosmosBatchRequestOptions setOperationContextAndListenerTuple(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              OperationContextAndListenerTuple operationContextAndListenerTuple);
         }
     }
 

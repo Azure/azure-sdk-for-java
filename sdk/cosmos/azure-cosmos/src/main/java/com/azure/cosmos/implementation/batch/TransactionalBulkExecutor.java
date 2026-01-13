@@ -243,12 +243,16 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         CosmosBatchRequestOptions batchRequestOptions = new CosmosBatchRequestOptions();
         batchRequestOptions.setExcludedRegions(transactionalBulkExecutionOptions.getExcludedRegions());
         batchRequestOptions.setKeywordIdentifiers(transactionalBulkExecutionOptions.getKeywordIdentifiers());
-        batchRequestOptions.setThroughputControlGroupName(transactionalBulkExecutionOptions.getThroughputControlGroupName());
+        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
+          .getCosmosBatchRequestOptionsAccessor()
+          .setThroughputControlGroupName(batchRequestOptions, transactionalBulkExecutionOptions.getThroughputControlGroupName());
 
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             transactionalBulkExecutionOptions.getCosmosEndToEndLatencyPolicyConfig();
         if (e2eLatencyPolicySnapshot != null) {
-            batchRequestOptions.setEndToEndOperationLatencyPolicyConfig(e2eLatencyPolicySnapshot);
+          ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
+            .getCosmosBatchRequestOptionsAccessor()
+            .setEndToEndOperationLatencyPolicyConfig(batchRequestOptions, e2eLatencyPolicySnapshot);
         }
 
         Map<String, String> customOptions = transactionalBulkExecutionOptions.getHeaders();
@@ -260,7 +264,9 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
                     .setHeader(batchRequestOptions, entry.getKey(), entry.getValue());
             }
         }
-        batchRequestOptions.setOperationContextAndListenerTuple(operationListener);
+      ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper
+        .getCosmosBatchRequestOptionsAccessor()
+        .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
         return batchRequestOptions;
     }

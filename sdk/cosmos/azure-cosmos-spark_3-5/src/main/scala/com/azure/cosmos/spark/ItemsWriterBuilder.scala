@@ -141,7 +141,7 @@ private class ItemsWriterBuilder
               userConfigMap,
               containerConfig,
               clientCacheItems(0).get,
-              Some(clientCacheItems(1).get)
+		            clientCacheItems(1)
             )
 
             // Simplified retrieval using SparkBridgeInternal directly

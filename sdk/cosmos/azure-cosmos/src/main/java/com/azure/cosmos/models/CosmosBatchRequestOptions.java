@@ -134,6 +134,9 @@ public final class CosmosBatchRequestOptions {
         }
         requestOptions.setExcludedRegions(excludeRegions);
         requestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        requestOptions.setThroughputControlGroupName(this.throughputControlGroupName);
+        requestOptions.setCosmosEndToEndLatencyPolicyConfig(this.e2ePolicy);
+        requestOptions.setOperationContextAndListenerTuple(this.operationContextAndListenerTuple);
 
         return requestOptions;
     }
@@ -235,38 +238,19 @@ public final class CosmosBatchRequestOptions {
         return keywordIdentifiers;
     }
 
-    /**
-     * Get the throughput control group name.
-     * @return the throughput control group name.
-     */
-    public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
-    }
-
-    /**
-     * Set the throughput control group name.
-     *
-     * @param throughputControlGroupName the throughput control group name.
-     */
-    public void setThroughputControlGroupName(String throughputControlGroupName) {
+    CosmosBatchRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+        return this;
     }
 
-    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
-        return this.e2ePolicy;
-    }
-
-    public CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
+    CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
         this.e2ePolicy = e2ePolicy;
         return this;
     }
 
-    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
-        return operationContextAndListenerTuple;
-    }
-
-    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    CosmosBatchRequestOptions setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -300,6 +284,28 @@ public final class CosmosBatchRequestOptions {
                 public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
                     return new CosmosBatchRequestOptions(toBeCloned);
                 }
+
+              @Override
+              public CosmosBatchRequestOptions setThroughputControlGroupName(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                String throughputControlGroupName) {
+                return cosmosBatchRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
+              }
+
+              @Override
+              public CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
+                return cosmosBatchRequestOptions.setEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+              }
+
+              @Override
+              public CosmosBatchRequestOptions setOperationContextAndListenerTuple(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                return cosmosBatchRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+              }
+
 
             }
         );
