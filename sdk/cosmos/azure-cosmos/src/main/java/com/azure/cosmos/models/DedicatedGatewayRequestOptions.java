@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
 import java.io.Serializable;
 import java.time.Duration;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Dedicated Gateway Request Options
@@ -19,6 +24,13 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
      * A flag indicating whether the integrated cache is enabled or bypassed with the request in Azure CosmosDB service.
      */
     private boolean integratedCacheBypassed;
+
+    /**
+     * The shard key value associated with the request in the Azure CosmosDB service to optionally specify a shard key
+     * to use the new sharding feature in dedicated gateway. Sharding works only for dedicated gateway clients with http2
+     * enabled.
+     */
+    private String shardKey;
 
     /**
      * Constructor
@@ -81,5 +93,33 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
     public DedicatedGatewayRequestOptions setIntegratedCacheBypassed(boolean bypassIntegratedCache) {
         this.integratedCacheBypassed = bypassIntegratedCache;
         return this;
+    }
+
+    /**
+     * Gets the shard key value associated with the request in the Azure CosmosDB service to optionally specify a shard key
+     * to use the new sharding feature in dedicated gateway.
+     *
+     * @return shard key value
+     */
+    public String getShardKey() {
+        return shardKey;
+    }
+
+    /**
+     * Sets the shard key value associated with the request in the Azure CosmosDB service to optionally specify a shard key
+     * to use the new sharding feature in dedicated gateway.
+     *
+     * @param shardKey shard key value
+     * @return this DedicatedGatewayRequestOptions
+     */
+    public DedicatedGatewayRequestOptions setShardKey(String shardKey) {
+        checkArgument(StringUtils.isNotEmpty(shardKey), "shardKey must not be null or empty");
+        checkArgument(validateShardKey(shardKey), "shardKey contains invalid characters. Only alphanumeric and hyphen (-) are allowed.");
+        this.shardKey = shardKey;
+        return this;
+    }
+
+    private boolean validateShardKey(String shardKey){
+        return shardKey.matches("^[a-zA-Z0-9-]+$");
     }
 }
