@@ -61,7 +61,7 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
     private final static AtomicLong instanceCount = new AtomicLong(0);
 
     private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor =
-      ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
@@ -83,9 +83,9 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
 
     @SuppressWarnings({"unchecked"})
     public TransactionalBulkExecutor(
-            CosmosAsyncContainer container,
-            Flux<CosmosBatch> inputBatches,
-            CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkOptions) {
+        CosmosAsyncContainer container,
+        Flux<CosmosBatch> inputBatches,
+        CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkOptions) {
 
         checkNotNull(container, "expected non-null container");
         checkNotNull(inputBatches, "expected non-null inputOperations");
@@ -256,28 +256,28 @@ public final class TransactionalBulkExecutor<TContext> implements Disposable {
         batchRequestOptions.setExcludedRegions(transactionalBulkExecutionOptions.getExcludedRegions());
         batchRequestOptions.setKeywordIdentifiers(transactionalBulkExecutionOptions.getKeywordIdentifiers());
         cosmosBatchRequestOptionsAccessor
-          .setThroughputControlGroupName(
-            batchRequestOptions,
-            transactionalBulkExecutionOptions.getThroughputControlGroupName());
+            .setThroughputControlGroupName(
+                batchRequestOptions,
+                transactionalBulkExecutionOptions.getThroughputControlGroupName());
 
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             transactionalBulkExecutionOptions.getCosmosEndToEndLatencyPolicyConfig();
         if (e2eLatencyPolicySnapshot != null) {
-          cosmosBatchRequestOptionsAccessor
-            .setEndToEndOperationLatencyPolicyConfig(
-              batchRequestOptions,
-              e2eLatencyPolicySnapshot);
+            cosmosBatchRequestOptionsAccessor
+                .setEndToEndOperationLatencyPolicyConfig(
+                    batchRequestOptions,
+                    e2eLatencyPolicySnapshot);
         }
 
         Map<String, String> customOptions = transactionalBulkExecutionOptions.getHeaders();
         if (customOptions != null && !customOptions.isEmpty()) {
             for(Map.Entry<String, String> entry : customOptions.entrySet()) {
-              cosmosBatchRequestOptionsAccessor
+                cosmosBatchRequestOptionsAccessor
                     .setHeader(batchRequestOptions, entry.getKey(), entry.getValue());
             }
         }
-      cosmosBatchRequestOptionsAccessor
-        .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
+        cosmosBatchRequestOptionsAccessor
+            .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
         return batchRequestOptions;
     }

@@ -3,12 +3,12 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
 import com.azure.cosmos.models._
+import com.azure.cosmos.spark.TransactionalBulkWriter._
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
-import com.azure.cosmos._
-import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, getThreadInfo, transactionalBulkWriterRequestsBoundedElastic, transactonalBatchInputBoundedElastic, transactonalBulkWriterInputBoundedElastic}
 import reactor.core.Scannable
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scheduler.Scheduler
