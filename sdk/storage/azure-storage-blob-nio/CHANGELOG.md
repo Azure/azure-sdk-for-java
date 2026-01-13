@@ -3,12 +3,6 @@
 ## 12.0.0-beta.35 (2026-01-13)
 - Added support for service version 2026-02-06.
 
-### Other Changes
-
-#### Dependency Updates
-- Upgraded `azure-storage-blob` from `12.32.0` to version `12.33.0`.
-- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
-
 ## 12.0.0-beta.34 (2025-12-03)
 
 ### Features Added

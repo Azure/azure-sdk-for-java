@@ -5,8 +5,6 @@
 ### Features Added
 - Added support for service version 2026-02-06.
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Addressed a performance regression introduced in version 12.27.0+ of the Azure Storage SDK for Java, where token
   retrieval became thread-local, causing a consistent 4 to 5-second delay across threads during initial authorization.
