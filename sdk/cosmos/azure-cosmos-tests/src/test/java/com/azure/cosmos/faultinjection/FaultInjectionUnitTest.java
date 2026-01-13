@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.faultinjection;
 
+import com.azure.cosmos.*;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -11,12 +17,18 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertTrue;
 import static org.testng.AssertJUnit.fail;
@@ -150,5 +162,51 @@ public class FaultInjectionUnitTest {
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("STALED_ADDRESSES exception can not be injected for rule with gateway connection type"));
         }
+    }
+
+    @Test
+    public void transactionalBatch() {
+        CosmosAsyncClient client = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+
+        TestObject testItem = TestObject.create();
+
+        CosmosAsyncContainer container = client.getDatabase("testdb").getContainer("testcontainer");
+        CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(new PartitionKey(testItem.getId()));
+        cosmosBatch.createItemOperation(testItem);
+        cosmosBatch.deleteItemOperation(testItem.getId());
+        cosmosBatch.replaceItemOperation(testItem.getId(), testItem);
+
+        container.executeCosmosBatch(cosmosBatch)
+            .flatMapMany(response -> {
+                System.out.println("coming to normal response: " + response.getStatusCode());
+                return Flux.fromIterable(response.getResults());
+            })
+            .flatMap(operationResult -> {
+                System.out.println("opreation result: " + operationResult.getOperation().getOperationType() + ":" + operationResult.getStatusCode());
+                return Mono.empty();
+            })
+            .blockLast();
+    }
+
+    @Test
+    public void changeFeedTests() {
+        CosmosAsyncClient client = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer container = client.getDatabase("testdb").getContainer("testcontainer2");
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+            CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(Instant.ofEpochMilli(1767484800000l), FeedRange.forFullRange());
+        container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+            .byPage()
+            .flatMap(response -> {
+                System.out.println(response.getContinuationToken());
+                return Mono.empty();
+            })
+            .blockLast();
     }
 }

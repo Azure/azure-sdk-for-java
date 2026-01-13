@@ -56,7 +56,7 @@ private class ChangeFeedMicroBatchStream
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedMicroBatchStream(streamId $streamId)")
   private val throughputControlClientCacheItemOpt =
-    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      container.getThroughputControlClientCacheItem(
       config, clientCacheItem.context, Some(cosmosClientStateHandles), sparkEnvironmentInfo)
   private val container =
     ThroughputControlHelper.getContainer(
@@ -111,7 +111,6 @@ private class ChangeFeedMicroBatchStream
 
     val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
     log.logDebug(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
-
     val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
     log.logDebug(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
 

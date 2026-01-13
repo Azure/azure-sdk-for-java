@@ -5,10 +5,12 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +24,8 @@ import java.util.Set;
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
  */
 public final class CosmosBatchRequestOptions {
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
@@ -30,7 +34,9 @@ public final class CosmosBatchRequestOptions {
 
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
-    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+    private String throughputControlGroupName;
+    private CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -45,6 +51,7 @@ public final class CosmosBatchRequestOptions {
         this.customOptions = toBeCloned.customOptions;
         this.thresholds = toBeCloned.thresholds;
         this.customSerializer = toBeCloned.customSerializer;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
 
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
@@ -228,6 +235,40 @@ public final class CosmosBatchRequestOptions {
         return keywordIdentifiers;
     }
 
+    /**
+     * Get the throughput control group name.
+     * @return the throughput control group name.
+     */
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName the throughput control group name.
+     */
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.e2ePolicy;
+    }
+
+    public CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
+        this.e2ePolicy = e2ePolicy;
+        return this;
+    }
+
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return operationContextAndListenerTuple;
+    }
+
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -245,9 +286,9 @@ public final class CosmosBatchRequestOptions {
                 }
 
                 @Override
-                public CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions,
+                public CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosBatchRequestOptions,
                                                            String name, String value) {
-                    return cosmosItemRequestOptions.setHeader(name, value);
+                    return cosmosBatchRequestOptions.setHeader(name, value);
                 }
 
                 @Override

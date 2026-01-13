@@ -1781,11 +1781,17 @@ private object CosmosWriteConfig {
 
     assert(bulkEnabledOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteBulkEnabled}' is missing.")
 
-    // parsing above already validated this
+      // parsing above already validated this
     assert(itemWriteStrategyOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteStrategy}' is missing.")
     assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
 
-    itemWriteStrategyOpt.get match {
+    if (bulkTransactionalOpt.isDefined && bulkTransactionalOpt.get) {
+      // Validate write strategy for transactional batches
+      assert(itemWriteStrategyOpt.get == ItemWriteStrategy.ItemOverwrite,
+        s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${itemWriteStrategyOpt.get}")
+    }
+
+      itemWriteStrategyOpt.get match {
       case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)

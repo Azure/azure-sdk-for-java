@@ -69,7 +69,6 @@ private abstract class CosmosWriterBase(
         new TransactionalBulkWriter(
           container,
           cosmosTargetContainerConfig,
-          partitionKeyDefinition,
           cosmosWriteConfig,
           diagnosticsConfig,
           getOutputMetricsPublisher(),

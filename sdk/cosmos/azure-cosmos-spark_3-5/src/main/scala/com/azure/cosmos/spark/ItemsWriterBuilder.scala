@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.models.PartitionKeyDefinition
 import com.azure.cosmos.{CosmosAsyncClient, ReadConsistencyStrategy, SparkBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
@@ -131,25 +132,28 @@ private class ItemsWriterBuilder
       try {
         Loan(
           List[Option[CosmosClientCacheItem]](
-            Some(createClientForPartitionKeyLookup())
+            Some(createClientForPartitionKeyLookup()),
+            ThroughputControlHelper.getThroughputControlClientCacheItem(
+              userConfigMap, "ItemsWriterBuilder-PKLookup", Some(cosmosClientStateHandles), sparkEnvironmentInfo)
           ))
           .to(clientCacheItems => {
             val container = ThroughputControlHelper.getContainer(
               userConfigMap,
               containerConfig,
               clientCacheItems(0).get,
-              None
+              Some(clientCacheItems(1).get)
             )
 
             // Simplified retrieval using SparkBridgeInternal directly
             val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
             val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-            extractPartitionKeyPaths(partitionKeyDefinition)
+            extractPartitionKeyPaths(containerProperties.getId, partitionKeyDefinition)
           })
       } catch {
         case ex: Exception =>
-          log.logWarning(s"Failed to get partition key definition for transactional writes: ${ex.getMessage}")
+          log.logWarning(s"Failed to get partition key definition for transactional writes " +
+              s"for container ${containerConfig.container}: ${ex.getMessage}")
           Seq.empty[String]
       }
     }
@@ -166,18 +170,22 @@ private class ItemsWriterBuilder
       )
     }
 
-    private def extractPartitionKeyPaths(partitionKeyDefinition: com.azure.cosmos.models.PartitionKeyDefinition): Seq[String] = {
+    private def extractPartitionKeyPaths(
+                                            container: String,
+                                            partitionKeyDefinition: PartitionKeyDefinition): Seq[String] = {
       if (partitionKeyDefinition != null && partitionKeyDefinition.getPaths != null) {
         val paths = partitionKeyDefinition.getPaths.asScala
         if (paths.isEmpty) {
-          log.logError("Partition key definition has 0 columns - this should not happen for modern containers")
+          log.logError(
+              s"Partition key definition has 0 columns for container $container- this should not happen for modern containers")
         }
         paths.map(path => {
-          // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
-          if (path.startsWith("/")) path.substring(1) else path
-        }).toSeq
+            // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
+            if (path.startsWith("/")) path.substring(1) else path
+        })
       } else {
-        log.logError("Partition key definition is null - this should not happen for modern containers")
+        log.logError(
+            s"Partition key definition is null for container $container - this should not happen for modern containers")
         Seq.empty[String]
       }
     }

@@ -104,7 +104,7 @@ private class BulkWriter
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
-  private val activeBulkWriteOperations =java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
+  private val activeBulkWriteOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
   private val activeReadManyOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[ReadManyOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
@@ -619,7 +619,7 @@ private class BulkWriter
         }
         finally {
           if (!isGettingRetried.get) {
-            semaphore.release()
+		          semaphore.release()
           }
         }
 
@@ -1478,7 +1478,7 @@ private object BulkWriter {
   def getThreadInfo: String = {
     val t = Thread.currentThread()
     val group = Option.apply(t.getThreadGroup) match {
-      case Some(group) => group.getName
+	     case Some(group) => group.getName
       case None => "n/a"
     }
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
