@@ -187,7 +187,7 @@ class AppConfigurationReplicaClient {
      * 
      * @param settingSelector selector criteria for feature flags
      * @param context Azure SDK context for request correlation
-     * @return FeatureFlags containing the retrieved feature flags and match conditions
+     * @return CollectionMonitoring containing the retrieved feature flags and match conditions
      * @throws HttpResponseException if the request fails
      */
     CollectionMonitoring listFeatureFlags(SettingSelector settingSelector, Context context)
