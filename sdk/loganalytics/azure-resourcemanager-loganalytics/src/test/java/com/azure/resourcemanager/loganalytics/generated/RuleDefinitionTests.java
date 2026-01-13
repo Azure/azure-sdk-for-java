@@ -21,6 +21,7 @@ public final class RuleDefinitionTests {
         Assertions.assertEquals(36238226, model.binDelay());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T19:10:38Z"), model.binStartTime());
         Assertions.assertEquals(TimeSelectorEnum.TIME_GENERATED, model.timeSelector());
+        Assertions.assertEquals("ubwefqs", model.destinationTable());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +30,14 @@ public final class RuleDefinitionTests {
             .withBinSize(1717475306)
             .withBinDelay(36238226)
             .withBinStartTime(OffsetDateTime.parse("2021-06-22T19:10:38Z"))
-            .withTimeSelector(TimeSelectorEnum.TIME_GENERATED);
+            .withTimeSelector(TimeSelectorEnum.TIME_GENERATED)
+            .withDestinationTable("ubwefqs");
         model = BinaryData.fromObject(model).toObject(RuleDefinition.class);
         Assertions.assertEquals("hahzvechndbnwi", model.query());
         Assertions.assertEquals(1717475306, model.binSize());
         Assertions.assertEquals(36238226, model.binDelay());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T19:10:38Z"), model.binStartTime());
         Assertions.assertEquals(TimeSelectorEnum.TIME_GENERATED, model.timeSelector());
+        Assertions.assertEquals("ubwefqs", model.destinationTable());
     }
 }

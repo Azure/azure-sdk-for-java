@@ -2,11 +2,21 @@
 
 ## 2.59.0-beta.1 (Unreleased)
 
+### azure-resourcemanager-redis
+
+#### Features Added
+
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
+
+### Other Changes
+
 ### azure-resourcemanager-compute
 
 #### Dependency Updates
 
 - Updated `GalleryRP api-version` to `2025-03-03`.
+
+### Other Changes
 
 ## 2.58.0 (2025-12-22)
 

@@ -20,7 +20,7 @@ import java.util
 import java.util.UUID
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
 import scala.collection.mutable.ArrayBuffer
-import scala.jdk.CollectionConverters.asScalaBufferConverter
+import scala.jdk.CollectionConverters._
 
 class CosmosPartitionPlannerITest
   extends UnitSpec
@@ -386,7 +386,7 @@ class CosmosPartitionPlannerITest
 
     val alwaysThrow = false
     partitions.foreach {
-      case _: CosmosInputPartition => Unit
+      case _: CosmosInputPartition => ()
       case _ => assert(alwaysThrow, "Unexpected partition type")
     }
     partitions should have size expectedPartitionCount

@@ -12,73 +12,27 @@ import com.azure.core.util.Context;
  */
 public interface SubscriptionOperations {
     /**
-     * The operation to cancel a subscription.
+     * Get the status of the pending Microsoft.Subscription API operations.
      * 
-     * @param subscriptionId Subscription Id.
+     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
+     * response header.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the canceled subscription along with {@link Response}.
+     * @return the status of the pending Microsoft.Subscription API operations.
      */
-    Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context);
+    Response<SubscriptionCreationResult> getWithResponse(String operationId, Context context);
 
     /**
-     * The operation to cancel a subscription.
+     * Get the status of the pending Microsoft.Subscription API operations.
      * 
-     * @param subscriptionId Subscription Id.
+     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
+     * response header.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the canceled subscription.
+     * @return the status of the pending Microsoft.Subscription API operations.
      */
-    CanceledSubscriptionId cancel(String subscriptionId);
-
-    /**
-     * The operation to rename a subscription.
-     * 
-     * @param subscriptionId Subscription Id.
-     * @param body Subscription Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the subscriptions that is being renamed along with {@link Response}.
-     */
-    Response<RenamedSubscriptionId> renameWithResponse(String subscriptionId, SubscriptionName body, Context context);
-
-    /**
-     * The operation to rename a subscription.
-     * 
-     * @param subscriptionId Subscription Id.
-     * @param body Subscription Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the subscriptions that is being renamed.
-     */
-    RenamedSubscriptionId rename(String subscriptionId, SubscriptionName body);
-
-    /**
-     * The operation to enable a subscription.
-     * 
-     * @param subscriptionId Subscription Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the subscriptions that is being enabled along with {@link Response}.
-     */
-    Response<EnabledSubscriptionId> enableWithResponse(String subscriptionId, Context context);
-
-    /**
-     * The operation to enable a subscription.
-     * 
-     * @param subscriptionId Subscription Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ID of the subscriptions that is being enabled.
-     */
-    EnabledSubscriptionId enable(String subscriptionId);
+    SubscriptionCreationResult get(String operationId);
 }
