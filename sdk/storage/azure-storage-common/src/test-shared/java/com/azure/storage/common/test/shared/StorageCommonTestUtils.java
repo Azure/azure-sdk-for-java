@@ -422,4 +422,32 @@ public final class StorageCommonTestUtils {
         }
         throw new RuntimeException("Could not find oid in token");
     }
+
+    /**
+     * Extracts the TID (Tenant ID) from a token.
+     *
+     * @param credential The TokenCredential to extract the TID from.
+     * @return The TID extracted from the token.
+     */
+    public static String getTidFromToken(TokenCredential credential) {
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://storage.azure.com/.default"));
+        String[] chunks = accessToken.getToken().split("\\.");
+        if (chunks.length < 2) {
+            throw new RuntimeException("Malformed JWT: expected at least 2 parts, got " + chunks.length);
+        }
+        String payload;
+        try {
+            payload = new String(getUrlDecoder().decode(chunks[1]), StandardCharsets.UTF_8);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Malformed JWT: payload is not valid base64url", e);
+        }
+
+        Pattern pattern = Pattern.compile("\"tid\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(payload);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new RuntimeException("Could not find tid in token");
+    }
 }
