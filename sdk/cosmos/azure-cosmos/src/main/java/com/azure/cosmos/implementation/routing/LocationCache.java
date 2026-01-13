@@ -193,17 +193,20 @@ public class LocationCache {
             // first and the second writable region in DatabaseAccount (for manual failover)
             DatabaseAccountLocationsInfo currentLocationInfo =  this.locationInfo;
 
-            if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
+            if (this.enableEndpointDiscovery) {
 
                 if (isInHubRegionDiscoveryMode && !currentLocationInfo.availableReadLocations.isEmpty()) {
                     locationIndex = locationIndex % currentLocationInfo.availableReadLocations.size();
-                    String potentialWriteLocation = currentLocationInfo.availableReadLocations.get(locationIndex);
-                    return currentLocationInfo.availableReadRegionalRoutingContextsByRegionName.get(potentialWriteLocation);
+                    String potentialHubLocation = currentLocationInfo.availableReadLocations.get(locationIndex);
+                    return currentLocationInfo.availableReadRegionalRoutingContextsByRegionName.get(potentialHubLocation);
+                } else if (!currentLocationInfo.availableWriteLocations.isEmpty()) {
+                    locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
+                    String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
+                    return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
                 }
 
-                locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
-                String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
+                return this.defaultRoutingContext;
+
             } else {
                 return this.defaultRoutingContext;
             }
