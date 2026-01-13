@@ -259,7 +259,6 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             assertThat(diagnosticsContext).isNotNull();
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotEmpty();
-            assertThat(diagnosticsContext.getContactedRegionNames() instanceof TreeSet<String>).isTrue();
 
             TreeSet<String> contactedRegionNames = (TreeSet<String>) diagnosticsContext.getContactedRegionNames();
 
