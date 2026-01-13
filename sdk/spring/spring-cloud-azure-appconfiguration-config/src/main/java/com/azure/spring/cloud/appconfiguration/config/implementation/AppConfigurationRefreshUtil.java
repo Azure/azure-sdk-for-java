@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -14,7 +16,6 @@ import org.springframework.util.StringUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
@@ -81,7 +82,7 @@ public class AppConfigurationRefreshUtil {
                     pushRefresh = true;
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
-                
+
                 clientFactory.findActiveClients(originEndpoint);
 
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
@@ -140,14 +141,14 @@ public class AppConfigurationRefreshUtil {
      * @return the eventData if refresh is needed, null otherwise
      */
     private RefreshEventData executeRefreshWithRetry(
-            AppConfigurationReplicaClientFactory clientFactory,
-            String originEndpoint,
-            RefreshOperation operation,
-            RefreshEventData eventData,
-            Context context,
-            String checkType) {
+        AppConfigurationReplicaClientFactory clientFactory,
+        String originEndpoint,
+        RefreshOperation operation,
+        RefreshEventData eventData,
+        Context context,
+        String checkType) {
         AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
-        
+
         while (client != null) {
             try {
                 operation.execute(client, eventData, context);
@@ -225,7 +226,7 @@ public class AppConfigurationRefreshUtil {
         throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
-            
+
             // Check collection monitoring first if configured
             if (state.getCollectionWatchKeys() != null && !state.getCollectionWatchKeys().isEmpty()) {
                 refreshWithoutTimeCollectionMonitoring(client, state.getCollectionWatchKeys(), eventData, context);
