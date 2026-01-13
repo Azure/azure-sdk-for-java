@@ -6,8 +6,8 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
-import com.azure.cosmos.models._
-import com.azure.cosmos.spark.TransactionalBulkWriter._
+import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse}
+import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, getThreadInfo, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import reactor.core.Scannable
 import reactor.core.scala.publisher.SMono.PimpJFlux
@@ -227,7 +227,7 @@ private class TransactionalBulkWriter
 										SMono.empty
 								}
 						})
-						.publishOn(transactonalBulkWriterInputBoundedElastic)
+						.publishOn(transactionalBulkWriterInputBoundedElastic)
 						.doOnError(t => {
 								log.logError(s"Bulk input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
 						})
@@ -240,7 +240,7 @@ private class TransactionalBulkWriter
 				val batchInputFlux = transactionalBatchInputEmitter
 						.asFlux()
 						.onBackpressureBuffer()
-						.publishOn(transactonalBatchInputBoundedElastic)
+						.publishOn(transactionalBatchInputBoundedElastic)
 						.doOnError(t => {
 								log.logError(s"Batch input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
 						})
@@ -510,9 +510,9 @@ private class TransactionalBulkWriter
 																&& Objects.equals(itemOperationSnapshot.getItem[Object], currentOperation.getItem[Object])
 												)
 										})
+								} else {
+										false
 								}
-
-								false
 						})
 				}
 		}
@@ -869,13 +869,13 @@ private object TransactionalBulkWriter {
 				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
 		// Custom bounded elastic scheduler to consume input flux
-		val transactonalBulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+		val transactionalBulkWriterInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
 				TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
 				TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
-		val transactonalBatchInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+		val transactionalBatchInputBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
 				Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
 				TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME,
@@ -893,6 +893,7 @@ private object TransactionalBulkWriter {
 				val group = Option.apply(t.getThreadGroup) match {
 						case Some(group) => group.getName
 						case None => "n/a"
+				}
 				}
 
 				s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
