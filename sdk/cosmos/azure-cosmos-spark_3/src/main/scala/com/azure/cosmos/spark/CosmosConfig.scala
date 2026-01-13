@@ -1791,7 +1791,7 @@ private object CosmosWriteConfig {
         s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${itemWriteStrategyOpt.get}")
     }
 
-      itemWriteStrategyOpt.get match {
+    itemWriteStrategyOpt.get match {
       case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
