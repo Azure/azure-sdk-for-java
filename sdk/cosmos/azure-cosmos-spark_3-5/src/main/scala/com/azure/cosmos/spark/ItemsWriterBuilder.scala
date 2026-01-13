@@ -180,9 +180,9 @@ private class ItemsWriterBuilder
               s"Partition key definition has 0 columns for container $container- this should not happen for modern containers")
         }
         paths.map(path => {
-            // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
-            if (path.startsWith("/")) path.substring(1) else path
-        })
+          // Remove leading '/' from partition key path (e.g., "/pk" -> "pk")
+          if (path.startsWith("/")) path.substring(1) else path
+        }).toSeq
       } else {
         log.logError(
             s"Partition key definition is null for container $container - this should not happen for modern containers")

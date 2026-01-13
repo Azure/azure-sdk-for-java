@@ -111,6 +111,7 @@ private class ChangeFeedMicroBatchStream
 
     val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
     log.logDebug(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
+
     val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
     log.logDebug(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
 
