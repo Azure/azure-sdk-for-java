@@ -6,6 +6,7 @@ package com.azure.storage.file.share.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String SHARE_NAME = "stress-" + UUID.randomUUID();
+    private static final ClientLogger LOGGER = new ClientLogger(ShareScenarioBase.class);
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final ShareClient syncShareClient;
     private final ShareAsyncClient asyncShareClient;
@@ -74,8 +76,57 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
+        return cleanupShareWithRetry()
+            .then(super.globalCleanupAsync())
+            .onErrorResume(error -> {
+                // Log cleanup failure but don't fail the overall test
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Share cleanup failed");
+                return super.globalCleanupAsync();
+            });
+    }
+
+    /**
+     * Enhanced cleanup with timeout and retry logic to ensure shares are properly destroyed.
+     */
+    private Mono<Void> cleanupShareWithRetry() {
         return asyncNoFaultShareClient.deleteIfExists()
-            .then(super.globalCleanupAsync());
+            .then()  // Convert Mono<Boolean> to Mono<Void>
+            .timeout(java.time.Duration.ofSeconds(30))
+            .retry(3)
+            .onErrorResume(error -> {
+                // If share deletion fails, try to delete all files first then retry
+                return deleteAllFilesInShare()
+                    .then(asyncNoFaultShareClient.deleteIfExists())
+                    .then()  // Convert Mono<Boolean> to Mono<Void>
+                    .timeout(java.time.Duration.ofSeconds(30))
+                    .onErrorResume(finalError -> {
+                        // Log the error but don't fail the test
+                        LOGGER.atWarning()
+                            .addKeyValue("error", finalError.getMessage())
+                            .log("Final share cleanup failed after retries");
+                        return Mono.empty();
+                    });
+            });
+    }
+
+    /**
+     * Delete all files in the share to help with cleanup.
+     */
+    private Mono<Void> deleteAllFilesInShare() {
+        return asyncNoFaultShareClient.getDirectoryClient("").listFilesAndDirectories()
+            .flatMap(fileRef ->
+                asyncNoFaultShareClient.getFileClient(fileRef.getName()).delete())
+            .then()
+            .timeout(java.time.Duration.ofSeconds(60))
+            .onErrorResume(error -> {
+                // Log but continue - some files might have been deleted
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("File cleanup partially failed");
+                return Mono.empty();
+            });
     }
 
     @SuppressWarnings("try")
@@ -88,7 +139,12 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .onErrorResume(e -> Mono.empty());
+            .retry(3)  // Retry failed operations up to 3 times to handle transient faults
+            .onErrorMap(e -> {
+                // Log the error for debugging but let legitimate failures propagate
+                System.err.println("Share test operation failed after retries: " + e.getMessage());
+                return e;
+            });
     }
 
     protected abstract void runInternal(Context context) throws Exception;

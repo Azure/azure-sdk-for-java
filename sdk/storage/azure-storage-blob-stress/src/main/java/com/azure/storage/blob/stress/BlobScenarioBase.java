@@ -6,6 +6,7 @@ package com.azure.storage.blob.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
@@ -22,9 +23,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.time.Duration;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
+    private static final ClientLogger LOGGER = new ClientLogger(BlobScenarioBase.class);
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
@@ -72,8 +75,57 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
+        return cleanupContainerWithRetry()
+            .then(super.globalCleanupAsync())
+            .onErrorResume(error -> {
+                // Log cleanup failure but don't fail the overall test
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Container cleanup failed");
+                return super.globalCleanupAsync();
+            });
+    }
+
+    /**
+     * Enhanced cleanup with timeout and retry logic to ensure containers are properly destroyed.
+     */
+    private Mono<Void> cleanupContainerWithRetry() {
         return asyncNoFaultContainerClient.deleteIfExists()
-            .then(super.globalCleanupAsync());
+            .then()  // Convert Mono<Boolean> to Mono<Void>
+            .timeout(Duration.ofSeconds(30))
+            .retry(3)
+            .onErrorResume(error -> {
+                // If container deletion fails, try to delete all blobs first then retry container deletion
+                return deleteAllBlobsInContainer()
+                    .then(asyncNoFaultContainerClient.deleteIfExists())
+                    .then()  // Convert Mono<Boolean> to Mono<Void>
+                    .timeout(Duration.ofSeconds(30))
+                    .onErrorResume(finalError -> {
+                        // Log the error but don't fail the test
+                        LOGGER.atWarning()
+                            .addKeyValue("error", finalError.getMessage())
+                            .log("Final container cleanup failed after retries");
+                        return Mono.empty();
+                    });
+            });
+    }
+
+    /**
+     * Delete all blobs in the container to help with cleanup.
+     */
+    private Mono<Void> deleteAllBlobsInContainer() {
+        return asyncNoFaultContainerClient.listBlobs()
+            .flatMap(blobItem ->
+                asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName()).delete())
+            .then()
+            .timeout(Duration.ofSeconds(60))
+            .onErrorResume(error -> {
+                // Log but continue - some blobs might have been deleted
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Blob cleanup partially failed");
+                return Mono.empty();
+            });
     }
 
     @SuppressWarnings("try")
@@ -86,7 +138,15 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .onErrorResume(e -> Mono.empty());
+            .retry(3)  // Retry failed operations up to 3 times to handle transient faults
+            .onErrorMap(e -> {
+                // Log the error for debugging but let legitimate failures propagate
+                LOGGER.atError()
+                    .addKeyValue("error", e.getMessage())
+                    .addKeyValue("errorType", e.getClass().getSimpleName())
+                    .log("Test operation failed after retries");
+                return e;
+            });
     }
 
     protected abstract void runInternal(Context context) throws Exception;

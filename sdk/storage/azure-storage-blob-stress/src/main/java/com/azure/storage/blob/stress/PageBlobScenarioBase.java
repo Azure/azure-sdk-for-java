@@ -86,7 +86,12 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .onErrorResume(e -> Mono.empty());
+            .retry(3)  // Retry failed operations up to 3 times to handle transient faults
+            .onErrorMap(e -> {
+                // Log the error for debugging but let legitimate failures propagate
+                System.err.println("Test operation failed after retries: " + e.getMessage());
+                return e;
+            });
     }
 
     protected abstract void runInternal(Context context) throws Exception;
