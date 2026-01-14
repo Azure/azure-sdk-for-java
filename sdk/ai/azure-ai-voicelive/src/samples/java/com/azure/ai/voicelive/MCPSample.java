@@ -391,7 +391,6 @@ public final class MCPSample {
         boolean approved = getUserApproval();
 
         // Send approval response
-        @SuppressWarnings("unused")
         MCPApprovalResponseRequestItem approvalResponse =
             new MCPApprovalResponseRequestItem(approvalId, approved);
 
