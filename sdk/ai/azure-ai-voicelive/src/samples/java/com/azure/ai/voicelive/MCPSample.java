@@ -228,7 +228,7 @@ public final class MCPSample {
         // Create session options
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions(
-                "You are a helpful AI assistant with access to some MCP server. "
+                "You are a helpful AI assistant with access to some MCP servers. "
                 + "You can use MCP tools to search for information when needed. "
                 + "When calling MCP tools, explain what you're doing and present the results naturally."
             )
