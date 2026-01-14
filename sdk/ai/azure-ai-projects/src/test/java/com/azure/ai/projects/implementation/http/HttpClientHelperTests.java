@@ -36,9 +36,9 @@ class HttpClientHelperTests {
     @Test
     void executeAsyncCompletesSuccessfully() {
         RecordingHttpClient recordingClient
-                = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
+            = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
 
@@ -62,13 +62,13 @@ class HttpClientHelperTests {
             return createMockResponse(request, 200, new HttpHeaders(), "success");
         });
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.GET)
-                .baseUrl("https://example.com")
-                .addPathSegment("test")
-                .build();
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .addPathSegment("test")
+            .build();
 
         try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
             assertEquals(200, response.statusCode());
@@ -80,15 +80,15 @@ class HttpClientHelperTests {
     @Test
     void executeThrowsUncheckedIOExceptionOnBodyBufferingFailure() {
         RecordingHttpClient recordingClient
-                = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.POST)
-                .baseUrl("https://example.com")
-                .body(new FailingHttpRequestBody())
-                .build();
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .body(new FailingHttpRequestBody())
+            .build();
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             openAiClient.execute(openAiRequest);
@@ -102,14 +102,14 @@ class HttpClientHelperTests {
     @Test
     void executeThrowsExceptionOnMalformedUrl() {
         RecordingHttpClient recordingClient
-                = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.GET)
-                .baseUrl("not-a-valid-url")
-                .build();
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("not-a-valid-url")
+            .build();
 
         // Malformed URLs should throw an exception (typically IllegalArgumentException or IllegalStateException)
         assertThrows(RuntimeException.class, () -> {
@@ -121,15 +121,15 @@ class HttpClientHelperTests {
     @Test
     void executeAsyncPropagatesRequestBuildingErrors() {
         RecordingHttpClient recordingClient
-                = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
+            = new RecordingHttpClient(request -> createMockResponse(request, 200, new HttpHeaders(), ""));
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.POST)
-                .baseUrl("https://example.com")
-                .body(new FailingHttpRequestBody())
-                .build();
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .body(new FailingHttpRequestBody())
+            .build();
 
         CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
 
@@ -144,12 +144,12 @@ class HttpClientHelperTests {
     void executeAsyncPropagatesHttpClientFailures() {
         FailingHttpClient failingClient = new FailingHttpClient(new RuntimeException("Network error"));
         com.openai.core.http.HttpClient openAiClient
-                = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(failingClient).build());
+            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(failingClient).build());
 
         com.openai.core.http.HttpRequest openAiRequest = com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.GET)
-                .baseUrl("https://example.com")
-                .build();
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .build();
 
         CompletableFuture<com.openai.core.http.HttpResponse> future = openAiClient.executeAsync(openAiRequest);
 
@@ -162,19 +162,19 @@ class HttpClientHelperTests {
 
     private static com.openai.core.http.HttpRequest createOpenAiRequest() {
         return com.openai.core.http.HttpRequest.builder()
-                .method(com.openai.core.http.HttpMethod.POST)
-                .baseUrl("https://example.com")
-                .addPathSegment("path")
-                .addPathSegment("segment")
-                .putHeader("X-Test", "alpha")
-                .putHeaders("X-Multi", Arrays.asList("first", "second"))
-                .putQueryParam("q", "a b")
-                .body(new TestHttpRequestBody("payload", "text/plain"))
-                .build();
+            .method(com.openai.core.http.HttpMethod.POST)
+            .baseUrl("https://example.com")
+            .addPathSegment("path")
+            .addPathSegment("segment")
+            .putHeader("X-Test", "alpha")
+            .putHeaders("X-Multi", Arrays.asList("first", "second"))
+            .putQueryParam("q", "a b")
+            .body(new TestHttpRequestBody("payload", "text/plain"))
+            .build();
     }
 
     private static MockHttpResponse createMockResponse(HttpRequest request, int statusCode, HttpHeaders headers,
-                                                       String body) {
+        String body) {
         byte[] bytes = body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8);
         return new MockHttpResponse(request, statusCode, headers, bytes);
     }
