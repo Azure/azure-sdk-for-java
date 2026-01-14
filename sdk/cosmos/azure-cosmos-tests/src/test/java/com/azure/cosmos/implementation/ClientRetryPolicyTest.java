@@ -86,7 +86,7 @@ public class ClientRetryPolicyTest {
 
         Mockito
             .doReturn(new RegionalRoutingContext(new URI("http://localhost")))
-            .when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+            .when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
             mockDiagnosticsClientContext(),
@@ -156,7 +156,7 @@ public class ClientRetryPolicyTest {
     public void networkFailureOnRead() throws Exception {
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
 
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
@@ -213,7 +213,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
         ClientRetryPolicy clientRetryPolicy =
             new ClientRetryPolicy(
@@ -260,7 +260,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
@@ -318,7 +318,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
             mockDiagnosticsClientContext(),
@@ -363,7 +363,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
@@ -433,7 +433,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
             mockDiagnosticsClientContext(),
@@ -476,7 +476,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
@@ -522,7 +522,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
             mockDiagnosticsClientContext(),
@@ -566,7 +566,7 @@ public class ClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
             = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
@@ -651,7 +651,7 @@ public class ClientRetryPolicyTest {
         Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(true);
         Mockito.doThrow(cosmosEx).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).handleLocationExceptionForPartitionKeyRange(Mockito.any(), Mockito.any(), Mockito.anyBoolean());
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
         ClientRetryPolicy clientRetryPolicy =
             new ClientRetryPolicy(
