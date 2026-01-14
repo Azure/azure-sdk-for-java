@@ -771,6 +771,11 @@
           "code": "java.field.removed",
           "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
           "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.ExecutedValidation com.azure.resourcemanager.compute.models.ExecutedValidation::withStatus(com.azure.resourcemanager.compute.models.ValidationStatus)",
+          "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."
         }
       ]
     }
