@@ -118,7 +118,7 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-appconfiguration;1.8.5;1.9.0-beta.1
+com.azure:azure-data-appconfiguration;1.8.5;1.9.0
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;2.7.0;2.8.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.9;1.6.0-beta.1
@@ -547,7 +547,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-data-appconfiguration;1.9.0-beta.1
+unreleased_com.azure:azure-data-appconfiguration;1.9.0
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure:azure-core-test;1.27.0-beta.14
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
