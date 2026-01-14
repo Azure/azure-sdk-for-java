@@ -74,8 +74,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>Try asking:</strong></p>
  * <ul>
- *   <li>"Can you search for information about Azure?"</li>
- *   <li>"What can you tell me about Azure documentation?"</li>
+ *   <li>"Can you summary github repo azure sdk for java?"</li>
+ *   <li>"Can you summary azure docs about voice live?"</li>
  * </ul>
  *
  * <p><strong>Note:</strong> This sample requires MCP preview features to be enabled in the endpoint URL.</p>
@@ -180,8 +180,8 @@ public final class MCPSample {
                         System.out.println("  • azure_doc: Requires approval for tool calls");
                         System.out.println();
                         System.out.println("Try asking:");
-                        System.out.println("  • 'Can you search for information about Azure?'");
-                        System.out.println("  • 'What can you tell me about Azure documentation?'");
+                        System.out.println("  • 'Can you summary github repo azure sdk for java?'");
+                        System.out.println("  • 'Can you summary azure docs about voice live?'");
                         System.out.println("Press Ctrl+C to exit");
                         printSeparator();
                         System.out.println();
