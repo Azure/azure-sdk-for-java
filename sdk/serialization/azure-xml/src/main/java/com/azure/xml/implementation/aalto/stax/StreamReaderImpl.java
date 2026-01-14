@@ -16,30 +16,29 @@
 
 package com.azure.xml.implementation.aalto.stax;
 
-import java.util.Collections;
-import java.util.Objects;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import com.azure.xml.implementation.aalto.UncheckedStreamException;
-import com.azure.xml.implementation.aalto.WFCException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.in.InputBootstrapper;
 import com.azure.xml.implementation.aalto.in.PName;
 import com.azure.xml.implementation.aalto.in.ReaderConfig;
 import com.azure.xml.implementation.aalto.in.XmlScanner;
 import com.azure.xml.implementation.aalto.util.TextAccumulator;
 
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.util.Collections;
+import java.util.Objects;
+
 /**
  * Basic backend-independent {@link XMLStreamReader} implementation.
  * While the read implements Stax API, most of real work is delegated
  * to input (and thereby, encoding) specific backend implementations.
  */
-public class StreamReaderImpl implements XMLStreamReader {
+public final class StreamReaderImpl implements XMLStreamReader {
     // // // Main state constants
 
     final static int STATE_PROLOG = 0; // Before root element
@@ -56,11 +55,11 @@ public class StreamReaderImpl implements XMLStreamReader {
     /**
      * Underlying XML scanner
      */
-    protected final XmlScanner _scanner;
+    private final XmlScanner _scanner;
 
     // // // Config flags:
 
-    protected final boolean _cfgCoalesceText;
+    private final boolean _cfgCoalesceText;
 
     /*
     /**********************************************************************
@@ -68,17 +67,17 @@ public class StreamReaderImpl implements XMLStreamReader {
     /**********************************************************************
      */
 
-    protected int _currToken;
+    private int _currToken;
 
     /**
      * Main parsing/tokenization state (STATE_xxx)
      */
-    protected int _parseState;
+    private int _parseState;
 
     /**
      * Prefixed name associated with the current event, if any.
      */
-    protected PName _currName;
+    private PName _currName;
 
     /**
      * If the current event is <code>START_ELEMENT</code>, number
@@ -86,7 +85,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Updated by reader, to make index checks for other attribute
      * access methods simpler.
      */
-    protected int _attrCount;
+    private int _attrCount;
 
     /*
     /**********************************************************************
@@ -98,7 +97,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Prefixed root-name DOCTYPE declaration gave us, if any (note: also
      * serves as a marker to know if we have seen DOCTYPE yet)
      */
-    protected PName _dtdRootName;
+    private PName _dtdRootName;
 
     /*
     /**********************************************************************
@@ -153,7 +152,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Note: method name is rather confusing (compare to {@link #getEncoding}).
      */
     @Override
-    public final String getCharacterEncodingScheme() {
+    public String getCharacterEncodingScheme() {
         return _scanner.getConfig().getXmlDeclEncoding();
     }
 
@@ -164,7 +163,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * {@link java.io.Reader}), it should return null.
      */
     @Override
-    public final String getEncoding() {
+    public String getEncoding() {
         return _scanner.getConfig().getActualEncoding();
     }
 
@@ -174,12 +173,12 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final boolean isStandalone() {
+    public boolean isStandalone() {
         return (_scanner.getConfig().getXmlDeclStandalone() == ReaderConfig.STANDALONE_YES);
     }
 
     @Override
-    public final boolean standaloneSet() {
+    public boolean standaloneSet() {
         return (_scanner.getConfig().getXmlDeclStandalone() != ReaderConfig.STANDALONE_UNKNOWN);
     }
 
@@ -212,7 +211,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     // // // Attribute access:
 
     @Override
-    public final int getAttributeCount() {
+    public int getAttributeCount() {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -220,7 +219,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributeLocalName(int index) {
+    public String getAttributeLocalName(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -231,7 +230,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final QName getAttributeName(int index) {
+    public QName getAttributeName(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -242,7 +241,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributeNamespace(int index) {
+    public String getAttributeNamespace(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -254,7 +253,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributePrefix(int index) {
+    public String getAttributePrefix(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -266,7 +265,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributeType(int index) {
+    public String getAttributeType(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -277,7 +276,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributeValue(int index) {
+    public String getAttributeValue(int index) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -288,7 +287,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getAttributeValue(String nsURI, String localName) {
+    public String getAttributeValue(String nsURI, String localName) {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -307,7 +306,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      *</blockquote>
      */
     @Override
-    public final String getElementText() throws XMLStreamException {
+    public String getElementText() throws XMLStreamException {
         if (_currToken != START_ELEMENT) {
             throwWfe(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
@@ -351,7 +350,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * any events has been explicitly returned.
      */
     @Override
-    public final int getEventType() {
+    public int getEventType() {
         /* Only complication -- multi-part coalesced text is to be reported
          * as CHARACTERS always, never as CDATA (StAX specs).
          */
@@ -364,7 +363,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getLocalName() {
+    public String getLocalName() {
         // Note: for this we need not (yet) finish reading element
         if (_currToken == START_ELEMENT || _currToken == END_ELEMENT || _currToken == ENTITY_REFERENCE) {
             return _currName.getLocalName();
@@ -375,7 +374,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     // // // getLocation() defined in StreamScanner
 
     @Override
-    public final QName getName() {
+    public QName getName() {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -385,7 +384,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     // // // Namespace access
 
     @Override
-    public final NamespaceContext getNamespaceContext() {
+    public NamespaceContext getNamespaceContext() {
         /* Unlike other getNamespaceXxx methods, this is available
          * for all events.
          * Note that the context is "live", ie. remains active (but not
@@ -396,7 +395,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final int getNamespaceCount() {
+    public int getNamespaceCount() {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -404,7 +403,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getNamespacePrefix(int index) {
+    public String getNamespacePrefix(int index) {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -413,7 +412,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getNamespaceURI() {
+    public String getNamespaceURI() {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -422,7 +421,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getNamespaceURI(int index) {
+    public String getNamespaceURI(int index) {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -431,7 +430,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getNamespaceURI(String prefix) {
+    public String getNamespaceURI(String prefix) {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -442,27 +441,17 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getPIData() {
-        if (_currToken != PROCESSING_INSTRUCTION) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_PI);
-        }
-        try {
-            return _scanner.getText();
-        } catch (XMLStreamException sex) {
-            throw UncheckedStreamException.createFrom(sex);
-        }
+    public String getPIData() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public final String getPITarget() {
-        if (_currToken != PROCESSING_INSTRUCTION) {
-            throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_PI);
-        }
-        return _currName.getLocalName();
+    public String getPITarget() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public final String getPrefix() {
+    public String getPrefix() {
         if (_currToken != START_ELEMENT && _currToken != END_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_ELEM);
         }
@@ -472,7 +461,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final String getText() {
+    public String getText() {
         if (((1 << _currToken) & MASK_GET_TEXT) == 0) {
             throwNotTextual();
         }
@@ -484,7 +473,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final char[] getTextCharacters() {
+    public char[] getTextCharacters() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
             throwNotTextXxx();
         }
@@ -496,7 +485,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final int getTextCharacters(int srcStart, char[] target, int targetStart, int len) {
+    public int getTextCharacters(int srcStart, char[] target, int targetStart, int len) {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
             throwNotTextXxx();
         }
@@ -508,7 +497,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final int getTextLength() {
+    public int getTextLength() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
             throwNotTextXxx();
         }
@@ -520,7 +509,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final int getTextStart() {
+    public int getTextStart() {
         if (((1 << _currToken) & MASK_GET_TEXT_XXX) == 0) {
             throwNotTextXxx();
         }
@@ -531,22 +520,22 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final boolean hasName() {
+    public boolean hasName() {
         return (_currToken == START_ELEMENT) || (_currToken == END_ELEMENT);
     }
 
     @Override
-    public final boolean hasNext() {
+    public boolean hasNext() {
         return (_currToken != END_DOCUMENT);
     }
 
     @Override
-    public final boolean hasText() {
+    public boolean hasText() {
         return (((1 << _currToken) & MASK_GET_TEXT) != 0);
     }
 
     @Override
-    public final boolean isAttributeSpecified(int index) {
+    public boolean isAttributeSpecified(int index) {
         // No need to check for ATTRIBUTE since we never return that...
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
@@ -555,22 +544,22 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final boolean isCharacters() {
+    public boolean isCharacters() {
         return (getEventType() == CHARACTERS);
     }
 
     @Override
-    public final boolean isEndElement() {
+    public boolean isEndElement() {
         return (_currToken == END_ELEMENT);
     }
 
     @Override
-    public final boolean isStartElement() {
+    public boolean isStartElement() {
         return (_currToken == START_ELEMENT);
     }
 
     @Override
-    public final boolean isWhiteSpace() {
+    public boolean isWhiteSpace() {
         if (_currToken == CHARACTERS || _currToken == CDATA) {
             try {
                 return _scanner.isTextWhitespace();
@@ -582,7 +571,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final void require(int type, String nsUri, String localName) throws XMLStreamException {
+    public void require(int type, String nsUri, String localName) throws XMLStreamException {
         int curr = _currToken;
 
         /* There are some special cases; specifically, CDATA
@@ -609,7 +598,7 @@ public class StreamReaderImpl implements XMLStreamReader {
                         + ErrorConsts.tokenTypeDesc(_currToken) + ")");
             }
             String n = getLocalName();
-            if (!Objects.equals(n, localName) && !n.equals(localName)) {
+            if (!Objects.equals(n, localName)) {
                 throwWfe("Expected local name '" + localName + "'; current local name '" + n + "'.");
             }
         }
@@ -640,7 +629,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      */
 
     @Override
-    public final int next() throws XMLStreamException {
+    public int next() throws XMLStreamException {
         if (_parseState == STATE_TREE) {
             int type = _scanner.nextFromTree();
             if (type == XmlScanner.TOKEN_EOI) { // Not allowed here...
@@ -699,7 +688,7 @@ public class StreamReaderImpl implements XMLStreamReader {
     }
 
     @Override
-    public final int nextTag() throws XMLStreamException {
+    public int nextTag() throws XMLStreamException {
         while (true) {
             int next = next();
 
@@ -734,12 +723,12 @@ public class StreamReaderImpl implements XMLStreamReader {
      * set to true).
      */
     @Override
-    public final void close() throws XMLStreamException {
+    public void close() throws XMLStreamException {
         _closeScanner();
     }
 
     @Override
-    public final Location getLocation() {
+    public Location getLocation() {
         return _scanner.getStartLocation();
     }
 
@@ -753,16 +742,16 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Helper method called when {@link #getElementText} (et al) method encounters
      * a token type it should not, during text coalescing
      */
-    protected void _reportNonTextEvent(int type) throws XMLStreamException {
+    private void _reportNonTextEvent(int type) throws XMLStreamException {
         throwWfe("Expected a text token, got " + ErrorConsts.tokenTypeDesc(type) + ".");
     }
 
-    protected Location getLastCharLocation() {
+    private Location getLastCharLocation() {
         // !!! TBI
         return _scanner.getCurrentLocation();
     }
 
-    protected int handlePrologEoi(boolean isProlog) throws XMLStreamException {
+    private int handlePrologEoi(boolean isProlog) throws XMLStreamException {
         // Either way, we can now close the reader
         close();
 
@@ -777,7 +766,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Method called when hitting an end-of-input within tree, after
      * a valid token
      */
-    protected void handleTreeEoi() throws XMLStreamException {
+    private void handleTreeEoi() throws XMLStreamException {
         _currToken = END_DOCUMENT;
         // !!! Should indicate open tree etc.
         throwUnexpectedEOI(ErrorConsts.SUFFIX_IN_TREE);
@@ -787,8 +776,8 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Throws generic parse error with specified message and current parsing
      * location.
      */
-    protected void throwWfe(String msg) throws XMLStreamException {
-        throw new WFCException(msg, getLastCharLocation());
+    private void throwWfe(String msg) throws XMLStreamException {
+        throw new StreamExceptionBase(msg, getLastCharLocation());
     }
 
     private void throwNotTextual() {
@@ -800,11 +789,11 @@ public class StreamReaderImpl implements XMLStreamReader {
             "getTextXxx() methods can not be called on " + ErrorConsts.tokenTypeDesc(_currToken));
     }
 
-    protected void throwUnexpectedEOI(String msg) throws XMLStreamException {
+    private void throwUnexpectedEOI(String msg) throws XMLStreamException {
         throwWfe("Unexpected End-of-input" + msg);
     }
 
-    protected void reportInvalidAttrIndex(int index) {
+    private void reportInvalidAttrIndex(int index) {
         /* 24-Jun-2006, tatus: Stax API doesn't specify what (if anything)
          *   should be thrown. Although RI throws IndexOutOfBounds
          *   let's throw IllegalArgumentException: that's what StaxTest
@@ -824,7 +813,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      * Method called to close scanner, by asking it to release resource
      * it has, and potentially also close the underlying stream.
      */
-    protected void _closeScanner() throws XMLStreamException {
+    private void _closeScanner() throws XMLStreamException {
         if (_parseState != STATE_CLOSED) {
             _parseState = STATE_CLOSED;
             if (_currToken != END_DOCUMENT) {
@@ -841,7 +830,7 @@ public class StreamReaderImpl implements XMLStreamReader {
      */
 
     @Override
-    public final String toString() {
+    public String toString() {
         return "[Aalto stream reader, scanner: " + _scanner + "]";
     }
 }

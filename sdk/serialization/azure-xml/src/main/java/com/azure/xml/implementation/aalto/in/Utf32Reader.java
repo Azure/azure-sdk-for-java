@@ -24,36 +24,36 @@ import com.azure.xml.implementation.aalto.util.XmlConsts;
  * Since JDK does not come with UTF-32/UCS-4, let's implement a simple
  * decoder to use.
  */
-public class Utf32Reader extends Reader {
+public final class Utf32Reader extends Reader {
     private final static char NULL_CHAR = (char) 0;
 
-    protected final ReaderConfig mConfig;
+    private final ReaderConfig mConfig;
 
-    protected InputStream mIn;
+    private InputStream mIn;
 
-    protected byte[] mBuffer;
+    private byte[] mBuffer;
 
-    protected int mPtr;
-    protected int mLength;
+    private int mPtr;
+    private int mLength;
 
-    protected final boolean mBigEndian;
+    private final boolean mBigEndian;
 
     /**
      * Although input is fine with full Unicode set, Java still uses
      * 16-bit chars, so we may have to split high-order chars into
      * surrogate pairs.
      */
-    protected char mSurrogate = NULL_CHAR;
+    private char mSurrogate = NULL_CHAR;
 
     /**
      * Total read character count; used for error reporting purposes
      */
-    protected int mCharCount = 0;
+    private int mCharCount = 0;
 
     /**
      * Total read byte count; used for error reporting purposes
      */
-    protected int mByteCount = 0;
+    private int mByteCount = 0;
 
     /*
     /**********************************************************************
@@ -250,7 +250,7 @@ public class Utf32Reader extends Reader {
         return true;
     }
 
-    public final void freeBuffers() {
+    public void freeBuffers() {
         byte[] buf = mBuffer;
         if (buf != null) {
             mBuffer = null;
@@ -282,11 +282,11 @@ public class Utf32Reader extends Reader {
             + " at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
-    protected void reportBounds(char[] cbuf, int start, int len) {
+    private void reportBounds(char[] cbuf, int start, int len) {
         throw new ArrayIndexOutOfBoundsException("read(buf," + start + "," + len + "), cbuf[" + cbuf.length + "]");
     }
 
-    protected void reportStrangeStream() throws IOException {
+    private void reportStrangeStream() throws IOException {
         throw new IOException("Strange I/O stream, returned 0 bytes on read");
     }
 }

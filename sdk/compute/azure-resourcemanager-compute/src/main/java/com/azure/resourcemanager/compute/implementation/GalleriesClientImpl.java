@@ -167,7 +167,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -197,7 +197,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -282,7 +282,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -318,7 +318,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -419,7 +419,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -459,7 +459,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -557,7 +557,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -601,7 +601,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -796,7 +796,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
@@ -840,7 +840,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         } else {
             gallery.validate();
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -1025,7 +1025,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -1062,7 +1062,7 @@ public final class GalleriesClientImpl implements InnerSupportsGet<GalleryInner>
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-03";
+        final String apiVersion = "2025-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
