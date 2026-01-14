@@ -1,14 +1,10 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.5.1 (2026-01-14)
 
 ### Other Changes
+
+- Removed unused code to reduce library size and improve performance.
 
 ## 1.5.0 (2025-03-07)
 
