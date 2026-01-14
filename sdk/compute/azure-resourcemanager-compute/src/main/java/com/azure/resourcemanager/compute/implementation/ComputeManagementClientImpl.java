@@ -33,6 +33,8 @@ import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfileVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfilesClient;
+import com.azure.resourcemanager.compute.fluent.GalleryScriptVersionsClient;
+import com.azure.resourcemanager.compute.fluent.GalleryScriptsClient;
 import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
@@ -770,6 +772,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The GalleryScriptsClient object to access its operations.
+     */
+    private final GalleryScriptsClient galleryScripts;
+
+    /**
+     * Gets the GalleryScriptsClient object to access its operations.
+     * 
+     * @return the GalleryScriptsClient object.
+     */
+    public GalleryScriptsClient getGalleryScripts() {
+        return this.galleryScripts;
+    }
+
+    /**
+     * The GalleryScriptVersionsClient object to access its operations.
+     */
+    private final GalleryScriptVersionsClient galleryScriptVersions;
+
+    /**
+     * Gets the GalleryScriptVersionsClient object to access its operations.
+     * 
+     * @return the GalleryScriptVersionsClient object.
+     */
+    public GalleryScriptVersionsClient getGalleryScriptVersions() {
+        return this.galleryScriptVersions;
+    }
+
+    /**
      * The GallerySharingProfilesClient object to access its operations.
      */
     private final GallerySharingProfilesClient gallerySharingProfiles;
@@ -930,6 +960,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryInVMAccessControlProfiles = new GalleryInVMAccessControlProfilesClientImpl(this);
         this.galleryInVMAccessControlProfileVersions = new GalleryInVMAccessControlProfileVersionsClientImpl(this);
+        this.galleryScripts = new GalleryScriptsClientImpl(this);
+        this.galleryScriptVersions = new GalleryScriptVersionsClientImpl(this);
         this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
         this.softDeletedResources = new SoftDeletedResourcesClientImpl(this);
         this.cloudServiceRoleInstances = new CloudServiceRoleInstancesClientImpl(this);

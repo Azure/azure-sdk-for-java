@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
+@SuppressWarnings("deprecation")
 public class ProjectRepositoryIT {
 
     private static final String ID_0 = "id-0";
