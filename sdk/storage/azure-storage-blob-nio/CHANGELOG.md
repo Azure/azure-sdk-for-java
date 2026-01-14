@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.35 (2026-01-13)
+## 12.0.0-beta.35 (2026-01-14)
 - Added support for service version 2026-02-06.
 
 ## 12.0.0-beta.34 (2025-12-03)

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.26.0 (2026-01-13)
+## 12.26.0 (2026-01-14)
 
 ### Features Added
 - Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
