@@ -105,6 +105,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-5_2-13/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
     "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",

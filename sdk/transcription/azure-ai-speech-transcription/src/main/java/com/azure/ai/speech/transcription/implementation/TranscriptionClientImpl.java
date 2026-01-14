@@ -45,13 +45,13 @@ public final class TranscriptionClientImpl {
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com.
+     * https://westus.api.cognitive.microsoft.com).
      */
     private final String endpoint;
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com.
+     * https://westus.api.cognitive.microsoft.com).
      * 
      * @return the endpoint value.
      */
@@ -105,7 +105,7 @@ public final class TranscriptionClientImpl {
      * Initializes an instance of TranscriptionClient client.
      * 
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com.
+     * https://westus.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
     public TranscriptionClientImpl(String endpoint, TranscriptionServiceVersion serviceVersion) {
@@ -118,7 +118,7 @@ public final class TranscriptionClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com.
+     * https://westus.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
     public TranscriptionClientImpl(HttpPipeline httpPipeline, String endpoint,
@@ -132,7 +132,7 @@ public final class TranscriptionClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com.
+     * https://westus.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
      */
     public TranscriptionClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,

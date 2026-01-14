@@ -32,11 +32,11 @@ com.microsoft.azure:azure-client-authentication;1.7.14
 com.microsoft.azure:azure-client-runtime;1.7.14
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.6
-com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
+com.microsoft.sqlserver:mssql-jdbc;12.10.0.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
-com.openai:openai-java;4.6.1
+com.openai:openai-java;4.14.0
 com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
@@ -59,10 +59,9 @@ io.netty:netty-transport-native-unix-common;4.1.130.Final
 io.netty:netty-transport-native-kqueue;4.1.130.Final
 io.projectreactor.netty:reactor-netty-http;1.2.13
 io.projectreactor:reactor-core;3.7.14
-io.vertx:vertx-codegen;4.5.17
-io.vertx:vertx-core;4.5.17
+io.vertx:vertx-codegen;4.5.23
+io.vertx:vertx-core;4.5.23
 javax.websocket:javax.websocket-api;1.1
-org.apache.commons:commons-compress;1.26.0
 org.apache.ant:ant;1.10.15
 org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
@@ -93,12 +92,11 @@ org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;6.2.0
 testdep_net.bytebuddy:byte-buddy;1.17.7
 testdep_net.bytebuddy:byte-buddy-agent;1.17.7
-org.openrewrite.recipe:rewrite-recipe-bom;3.9.0
+org.openrewrite.recipe:rewrite-recipe-bom;3.22.0
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-maven-plugin;2.7.18
 org.springframework.boot:spring-boot-starter;2.7.18
-org.springframework:spring-core;5.3.32
 org.springframework.boot:spring-boot-starter-parent;2.7.18
 
 
@@ -140,7 +138,6 @@ org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
 org.eclipse.jetty:jetty-server;9.4.58.v20250814
 org.eclipse.jetty:jetty-servlet;9.4.58.v20250814
 org.eclipse.jetty.http2:http2-server;9.4.58.v20250814
-org.hamcrest:hamcrest-all;1.3
 org.junit.jupiter:junit-jupiter;5.13.4
 org.junit.jupiter:junit-jupiter-api;5.13.4
 org.junit.jupiter:junit-jupiter-engine;5.13.4
@@ -197,13 +194,13 @@ org.codehaus.mojo:exec-maven-plugin;3.5.1
 org.codehaus.mojo:xml-maven-plugin;1.1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.58.v20250814
 org.eclipse.m2e:lifecycle-mapping;1.0.0
-org.jacoco:jacoco-maven-plugin;0.8.13
-org.jacoco:org.jacoco.agent;0.8.13
+org.jacoco:jacoco-maven-plugin;0.8.14
+org.jacoco:org.jacoco.agent;0.8.14
 org.mockito:mockito-core;4.11.0
 org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.owasp:dependency-check-maven;12.1.1
-org.ow2.asm:asm;9.8
+org.ow2.asm:asm;9.9.1
 org.revapi:revapi;0.15.1
 org.revapi:revapi-java;0.28.3
 org.revapi:revapi-java-spi;0.25.1
@@ -256,9 +253,11 @@ cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
 cosmos_org.scala-lang:scala-library;2.12.19
-cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
+cosmos-scala213_org.scala-lang:scala-library;2.13.17
+cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.9.1
+cosmos-scala213_org.scala-lang.modules:scala-java8-compat_2.13;0.9.1
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
-cosmos_commons-io:commons-io;2.4
+cosmos-scala213_io.projectreactor:reactor-scala-extensions_2.13;0.8.0
 cosmos_com.microsoft.azure:applicationinsights-core;2.6.4
 cosmos_io.micrometer:micrometer-core;1.15.1
 cosmos_io.micrometer:micrometer-registry-azure-monitor;1.15.1
@@ -266,9 +265,13 @@ cosmos_io.micrometer:micrometer-registry-graphite;1.15.1
 
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2
+cosmos-scala213_org.scalatest:scalatest_2.13;3.2.2
 cosmos_org.scalatest:scalatest-flatspec_2.12;3.2.3
+cosmos-scala213_org.scalatest:scalatest-flatspec_2.13;3.2.3
 cosmos_org.scalactic:scalactic_2.12;3.2.3
+cosmos-scala213_org.scalactic:scalactic_2.13;3.2.3
 cosmos_org.scalamock:scalamock_2.12;5.0.0
+cosmos-scala213_org.scalamock:scalamock_2.13;5.0.0
 cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
 cosmos_org.mockito:mockito-core;4.8.1
 
@@ -396,10 +399,3 @@ springboot4_ch.qos.logback:logback-classic;1.5.21
 # Used for Spring version updates
 springboot4_org.springframework.boot:spring-boot-dependencies;4.0.0
 springboot4_org.springframework.cloud:spring-cloud-dependencies;2025.1.0
-
-# Java 7 support
-
-# Jackson dropped support for Java 7 with the release of 2.14.0.
-# Add custom Jackson dependencies for Track 1 libraries using Jackson.
-org.mockito:mockito-junit-jupiter;4.11.0
-com.github.tomakehurst:wiremock-jre8;2.35.2
