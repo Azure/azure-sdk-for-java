@@ -40,5 +40,11 @@ class AadJwtBearerGrantRequestParametersConverterTests {
         Assertions.assertNotNull(parameters);
         assertTrue(parameters.containsKey("requested_token_use"));
         assertEquals("on_behalf_of", parameters.getFirst("requested_token_use"));
+        // Verify that the converter does not add grant_type or other standard OAuth2 parameters
+        // to avoid duplication when composed with DefaultOAuth2TokenRequestParametersConverter
+        Assertions.assertFalse(parameters.containsKey("grant_type"), 
+            "Converter should not add grant_type to avoid duplication");
+        assertEquals(1, parameters.size(), 
+            "Converter should only add the Azure-specific parameter");
     }
 }
