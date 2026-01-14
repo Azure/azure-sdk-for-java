@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Operation Cancelled Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosOperationCancelledException extends CosmosAccessException {
 
     /**
