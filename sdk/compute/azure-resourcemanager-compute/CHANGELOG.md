@@ -1,14 +1,12 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.56.0 (2026-01-12)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
 
 ## 2.55.1 (2025-11-24)
 
