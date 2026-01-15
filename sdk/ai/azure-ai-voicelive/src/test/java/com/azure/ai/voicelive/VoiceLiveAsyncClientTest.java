@@ -149,4 +149,14 @@ class VoiceLiveAsyncClientTest {
             // The returned Mono should contain a VoiceLiveSessionAsyncClient when subscribed
         });
     }
+
+    @Test
+    void testStartSessionWithoutModel() {
+        // Test that startSession() without parameters works
+        assertDoesNotThrow(() -> {
+            Mono<VoiceLiveSessionAsyncClient> sessionMono = client.startSession();
+            assertNotNull(sessionMono);
+        });
+    }
+
 }
