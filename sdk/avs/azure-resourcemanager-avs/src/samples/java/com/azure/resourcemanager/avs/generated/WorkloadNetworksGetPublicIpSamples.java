@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksGetPublicIpSamples {
     /*
-     * x-ms-original-file: 2024-09-01/WorkloadNetworks_GetPublicIP.json
+     * x-ms-original-file: 2025-09-01/WorkloadNetworks_GetPublicIP.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPublicIP.

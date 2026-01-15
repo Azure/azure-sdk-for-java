@@ -21,7 +21,7 @@ public final class ProvisionedNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"addressPrefix\":\"k\",\"networkType\":\"vsan\"},\"id\":\"rwrweooxffi\",\"name\":\"hx\",\"type\":\"rsnewmozqvbubqma\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"addressPrefix\":\"nbnxwcdomm\",\"networkType\":\"vmotion\"},\"id\":\"awz\",\"name\":\"gbrt\",\"type\":\"uiaclkiexhajlfn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ProvisionedNetworksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProvisionedNetwork> response
-            = manager.provisionedNetworks().list("iauogphuartv", "iukyefchnmna", com.azure.core.util.Context.NONE);
+            = manager.provisionedNetworks().list("patlbijp", "gsksrfhf", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -380,9 +380,8 @@ public final class ContainerRegistryContentClientBuilder implements
         Tracer tracer = createTracer(clientOptions);
         HttpPipeline pipeline = getHttpPipeline(tracer);
 
-        ContainerRegistryContentAsyncClient client = new ContainerRegistryContentAsyncClient(repositoryName, pipeline,
-            endpoint, serviceVersion.getVersion(), tracer);
-        return client;
+        return new ContainerRegistryContentAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(),
+            tracer);
     }
 
     /**

@@ -12,9 +12,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.models.AdminCredentialsInner;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
+import com.azure.resourcemanager.avs.fluent.models.VcfLicenseInner;
 import com.azure.resourcemanager.avs.models.AdminCredentials;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
+import com.azure.resourcemanager.avs.models.VcfLicense;
 
 public final class PrivateCloudsImpl implements PrivateClouds {
     private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudsImpl.class);
@@ -109,6 +111,27 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         AdminCredentialsInner inner = this.serviceClient().listAdminCredentials(resourceGroupName, privateCloudName);
         if (inner != null) {
             return new AdminCredentialsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<VcfLicense> getVcfLicenseWithResponse(String resourceGroupName, String privateCloudName,
+        Context context) {
+        Response<VcfLicenseInner> inner
+            = this.serviceClient().getVcfLicenseWithResponse(resourceGroupName, privateCloudName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VcfLicenseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VcfLicense getVcfLicense(String resourceGroupName, String privateCloudName) {
+        VcfLicenseInner inner = this.serviceClient().getVcfLicense(resourceGroupName, privateCloudName);
+        if (inner != null) {
+            return new VcfLicenseImpl(inner, this.manager());
         } else {
             return null;
         }

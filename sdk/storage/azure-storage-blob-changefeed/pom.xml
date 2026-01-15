@@ -59,12 +59,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

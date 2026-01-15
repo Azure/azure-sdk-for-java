@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.messaging.servicebus.core.ServiceBusConsumerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -15,7 +17,7 @@ import com.azure.spring.messaging.servicebus.implementation.support.converter.Se
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -84,23 +86,25 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withoutObjectMapperShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultServiceBusMessageConverter");
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -109,12 +113,13 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("serviceBusMessageConverter");
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -123,13 +128,14 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withUserProvidedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withBean("userObjectMapper", ObjectMapper.class, ObjectMapper::new)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);
@@ -150,42 +156,34 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
-
-                // Verify that the properties contain the correct credential bean name
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
                 AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(serviceBusProperties).isNotNull();
-                assertThat(serviceBusProperties.getCredential()).isNotNull();
+
                 assertThat(serviceBusProperties.getCredential().getTokenCredentialBeanName())
-                    .as("The token-credential-bean-name property should be set to customTokenCredential")
                     .isEqualTo("customTokenCredential");
 
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
-                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
-
-                // Verify the ServiceBusProducerFactory has the tokenCredentialResolver configured
-                assertThat(context).hasSingleBean(ServiceBusProducerFactory.class);
                 ServiceBusProducerFactory producerFactory = context.getBean(ServiceBusProducerFactory.class);
-                assertThat(producerFactory).isNotNull();
+                ServiceBusProcessorFactory processorFactory = context.getBean(ServiceBusProcessorFactory.class);
+                ServiceBusConsumerFactory consumerFactory = context.getBean(ServiceBusConsumerFactory.class);
 
-                // Verify tokenCredentialResolver resolves to the custom credential
-                Field tokenCredentialResolverField =
-                    producerFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                tokenCredentialResolverField.setAccessible(true);
-                Object tokenCredentialResolver = tokenCredentialResolverField.get(producerFactory);
-                assertThat(tokenCredentialResolver)
-                    .as("TokenCredentialResolver should be configured").isNotNull();
-
-                // Cast to AzureCredentialResolver and invoke resolve() to verify it returns customTokenCredential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> resolver =
-                    (AzureCredentialResolver<TokenCredential>) tokenCredentialResolver;
-                TokenCredential resolvedCredential = resolver.resolve(serviceBusProperties);
-                assertThat(resolvedCredential)
-                    .as("The resolved credential should be the customTokenCredential bean")
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
                     .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+                assertThat(resolveCredential(consumerFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                producerFactory.createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
             });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureServiceBusProperties properties) throws Exception {
+        Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+        field.setAccessible(true);
+        AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+        return resolver.resolve(properties);
     }
 
     @Configuration

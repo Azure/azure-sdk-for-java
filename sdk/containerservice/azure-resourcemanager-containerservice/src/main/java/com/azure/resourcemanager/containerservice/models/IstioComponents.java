@@ -27,11 +27,6 @@ public final class IstioComponents implements JsonSerializable<IstioComponents> 
      */
     private List<IstioEgressGateway> egressGateways;
 
-    /*
-     * Mode of traffic redirection.
-     */
-    private ProxyRedirectionMechanism proxyRedirectionMechanism;
-
     /**
      * Creates an instance of IstioComponents class.
      */
@@ -79,26 +74,6 @@ public final class IstioComponents implements JsonSerializable<IstioComponents> 
     }
 
     /**
-     * Get the proxyRedirectionMechanism property: Mode of traffic redirection.
-     * 
-     * @return the proxyRedirectionMechanism value.
-     */
-    public ProxyRedirectionMechanism proxyRedirectionMechanism() {
-        return this.proxyRedirectionMechanism;
-    }
-
-    /**
-     * Set the proxyRedirectionMechanism property: Mode of traffic redirection.
-     * 
-     * @param proxyRedirectionMechanism the proxyRedirectionMechanism value to set.
-     * @return the IstioComponents object itself.
-     */
-    public IstioComponents withProxyRedirectionMechanism(ProxyRedirectionMechanism proxyRedirectionMechanism) {
-        this.proxyRedirectionMechanism = proxyRedirectionMechanism;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -122,8 +97,6 @@ public final class IstioComponents implements JsonSerializable<IstioComponents> 
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("egressGateways", this.egressGateways,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("proxyRedirectionMechanism",
-            this.proxyRedirectionMechanism == null ? null : this.proxyRedirectionMechanism.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -150,9 +123,6 @@ public final class IstioComponents implements JsonSerializable<IstioComponents> 
                     List<IstioEgressGateway> egressGateways
                         = reader.readArray(reader1 -> IstioEgressGateway.fromJson(reader1));
                     deserializedIstioComponents.egressGateways = egressGateways;
-                } else if ("proxyRedirectionMechanism".equals(fieldName)) {
-                    deserializedIstioComponents.proxyRedirectionMechanism
-                        = ProxyRedirectionMechanism.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
