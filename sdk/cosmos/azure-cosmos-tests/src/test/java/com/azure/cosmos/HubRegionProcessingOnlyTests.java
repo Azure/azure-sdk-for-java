@@ -210,6 +210,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
                 .as("Should contact multiple regions due to failover")
                 .isGreaterThan(1);
 
+            // Validate Create operation only contacts the hub region
+            TestObject createTestObject = TestObject.create(this.partitionKeyValue);
+            CosmosItemResponse<TestObject> createResponse = targetContainer.createItem(createTestObject).block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            CosmosDiagnostics createDiagnostics = createResponse.getDiagnostics();
+            assertThat(createDiagnostics).isNotNull();
+            CosmosDiagnosticsContext createDiagnosticsContext = createDiagnostics.getDiagnosticsContext();
+            assertThat(createDiagnosticsContext).isNotNull();
+            logger.info("Create contacted regions: {}", createDiagnosticsContext.getContactedRegionNames());
+            assertThat(createDiagnosticsContext.getContactedRegionNames())
+                .as("Create should only contact hub region")
+                .containsExactly(hubRegion);
+
         } finally {
             safeClose(testClient);
         }
@@ -304,6 +318,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
                 .as("Hub region should be contacted for Query")
                 .contains(hubRegion);
 
+            // Validate Create operation only contacts the hub region
+            TestObject createTestObject = TestObject.create(this.partitionKeyValue);
+            CosmosItemResponse<TestObject> createResponse = targetContainer.createItem(createTestObject).block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            CosmosDiagnostics createDiagnostics = createResponse.getDiagnostics();
+            assertThat(createDiagnostics).isNotNull();
+            CosmosDiagnosticsContext createDiagnosticsContext = createDiagnostics.getDiagnosticsContext();
+            assertThat(createDiagnosticsContext).isNotNull();
+            logger.info("Create contacted regions: {}", createDiagnosticsContext.getContactedRegionNames());
+            assertThat(createDiagnosticsContext.getContactedRegionNames())
+                .as("Create should only contact hub region")
+                .containsExactly(hubRegion);
+
         } finally {
             safeClose(testClient);
         }
@@ -397,6 +425,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
                 .as("Hub region should be contacted for Change Feed")
                 .contains(hubRegion);
 
+            // Validate Create operation only contacts the hub region
+            TestObject createTestObject = TestObject.create(this.partitionKeyValue);
+            CosmosItemResponse<TestObject> createResponse = targetContainer.createItem(createTestObject).block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            CosmosDiagnostics createDiagnostics = createResponse.getDiagnostics();
+            assertThat(createDiagnostics).isNotNull();
+            CosmosDiagnosticsContext createDiagnosticsContext = createDiagnostics.getDiagnosticsContext();
+            assertThat(createDiagnosticsContext).isNotNull();
+            logger.info("Create contacted regions: {}", createDiagnosticsContext.getContactedRegionNames());
+            assertThat(createDiagnosticsContext.getContactedRegionNames())
+                .as("Create should only contact hub region")
+                .containsExactly(hubRegion);
+
         } finally {
             safeClose(testClient);
         }
@@ -488,6 +530,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
                 .as("Hub region should be contacted for readMany")
                 .contains(hubRegion);
 
+            // Validate Create operation only contacts the hub region
+            TestObject createTestObject = TestObject.create(this.partitionKeyValue);
+            CosmosItemResponse<TestObject> createResponse = targetContainer.createItem(createTestObject).block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            CosmosDiagnostics createDiagnostics = createResponse.getDiagnostics();
+            assertThat(createDiagnostics).isNotNull();
+            CosmosDiagnosticsContext createDiagnosticsContext = createDiagnostics.getDiagnosticsContext();
+            assertThat(createDiagnosticsContext).isNotNull();
+            logger.info("Create contacted regions: {}", createDiagnosticsContext.getContactedRegionNames());
+            assertThat(createDiagnosticsContext.getContactedRegionNames())
+                .as("Create should only contact hub region")
+                .containsExactly(hubRegion);
+
         } finally {
             safeClose(testClient);
         }
@@ -577,6 +633,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             assertThat(readAllDiagnosticsContext.getContactedRegionNames())
                 .as("Hub region should be contacted for readAll")
                 .contains(hubRegion);
+
+            // Validate Create operation only contacts the hub region
+            TestObject createTestObject = TestObject.create(this.partitionKeyValue);
+            CosmosItemResponse<TestObject> createResponse = targetContainer.createItem(createTestObject).block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+            CosmosDiagnostics createDiagnostics = createResponse.getDiagnostics();
+            assertThat(createDiagnostics).isNotNull();
+            CosmosDiagnosticsContext createDiagnosticsContext = createDiagnostics.getDiagnosticsContext();
+            assertThat(createDiagnosticsContext).isNotNull();
+            logger.info("Create contacted regions: {}", createDiagnosticsContext.getContactedRegionNames());
+            assertThat(createDiagnosticsContext.getContactedRegionNames())
+                .as("Create should only contact hub region")
+                .containsExactly(hubRegion);
 
         } finally {
             safeClose(testClient);
