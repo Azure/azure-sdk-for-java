@@ -1,17 +1,13 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.3 (2026-01-15)
 
 ### Other Changes
 
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
 - Upgraded `vertx-codegen` from `4.5.17` to `4.5.23`.
 - Upgraded `vertx-core` from `4.5.17` to `4.5.23`.
 
