@@ -50,11 +50,18 @@
     "com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionVersionListResult": "Azure.ResourceManager.ResourceListResult",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionAttachment": "Microsoft.Cdn.EdgeActionAttachment",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterProperties": "Microsoft.Cdn.EdgeActionExecutionFilterProperties",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdate": "Azure.ResourceManager.Foundations.ResourceUpdateModel",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdateProperties": "Azure.ResourceManager.Foundations.ResourceUpdateModelProperties",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion": "Microsoft.Cdn.EdgeActionIsDefaultVersion",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionProperties": "Microsoft.Cdn.EdgeActionProperties",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionPropertiesUpdate": "Microsoft.Cdn.EdgeActionPropertiesUpdate",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionUpdate": "Microsoft.Cdn.EdgeActionUpdate",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType": "Microsoft.Cdn.EdgeActionVersionDeploymentType",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate": "Azure.ResourceManager.Foundations.ResourceUpdateModel",
+    "com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties": "Azure.ResourceManager.Foundations.ResourceUpdateModelProperties",
     "com.azure.resourcemanager.edgeactions.models.EdgeActionVersionValidationStatus": "Microsoft.Cdn.EdgeActionVersionValidationStatus",
     "com.azure.resourcemanager.edgeactions.models.ProvisioningState": "Microsoft.Cdn.ProvisioningState",
-    "com.azure.resourcemanager.edgeactions.models.SkuType": "Microsoft.Cdn.SkuType"
+    "com.azure.resourcemanager.edgeactions.models.SkuType": "Microsoft.Cdn.SkuType",
+    "com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate": "Microsoft.Cdn.SkuTypeUpdate"
   }
 }

@@ -12,6 +12,8 @@ import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionProp
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties;
 import com.azure.resourcemanager.edgeactions.models.VersionCode;
 import java.util.Collections;
 import java.util.Map;
@@ -86,6 +88,8 @@ public final class EdgeActionVersionImpl
 
     private String version;
 
+    private EdgeActionVersionUpdate updateProperties;
+
     public EdgeActionVersionImpl withExistingEdgeAction(String resourceGroupName, String edgeActionName) {
         this.resourceGroupName = resourceGroupName;
         this.edgeActionName = edgeActionName;
@@ -113,20 +117,21 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersionImpl update() {
+        this.updateProperties = new EdgeActionVersionUpdate();
         return this;
     }
 
     public EdgeActionVersion apply() {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActionVersions()
-            .update(resourceGroupName, edgeActionName, version, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, edgeActionName, version, updateProperties, Context.NONE);
         return this;
     }
 
     public EdgeActionVersion apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActionVersions()
-            .update(resourceGroupName, edgeActionName, version, this.innerModel(), context);
+            .update(resourceGroupName, edgeActionName, version, updateProperties, context);
         return this;
     }
 
@@ -191,12 +196,26 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersionImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public EdgeActionVersionImpl withProperties(EdgeActionVersionPropertiesInner properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public EdgeActionVersionImpl withProperties(EdgeActionVersionUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

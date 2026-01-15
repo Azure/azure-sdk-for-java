@@ -36,6 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionsClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionInner;
 import com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionListResult;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -117,7 +118,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") EdgeActionInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") EdgeActionUpdate properties,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}")
@@ -127,7 +128,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") EdgeActionInner properties,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") EdgeActionUpdate properties,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -479,7 +480,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String edgeActionName,
-        EdgeActionInner properties) {
+        EdgeActionUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -503,7 +504,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
-        EdgeActionInner properties) {
+        EdgeActionUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -526,7 +527,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
-        EdgeActionInner properties, Context context) {
+        EdgeActionUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -548,7 +549,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdateAsync(String resourceGroupName,
-        String edgeActionName, EdgeActionInner properties) {
+        String edgeActionName, EdgeActionUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, edgeActionName, properties);
         return this.client.<EdgeActionInner, EdgeActionInner>getLroResult(mono, this.client.getHttpPipeline(),
             EdgeActionInner.class, EdgeActionInner.class, this.client.getContext());
@@ -568,7 +569,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, EdgeActionInner properties) {
+        String edgeActionName, EdgeActionUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeActionName, properties);
         return this.client.<EdgeActionInner, EdgeActionInner>getLroResult(response, EdgeActionInner.class,
             EdgeActionInner.class, Context.NONE);
@@ -589,7 +590,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, EdgeActionInner properties, Context context) {
+        String edgeActionName, EdgeActionUpdate properties, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeActionName, properties, context);
         return this.client.<EdgeActionInner, EdgeActionInner>getLroResult(response, EdgeActionInner.class,
             EdgeActionInner.class, context);
@@ -609,7 +610,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeActionInner> updateAsync(String resourceGroupName, String edgeActionName,
-        EdgeActionInner properties) {
+        EdgeActionUpdate properties) {
         return beginUpdateAsync(resourceGroupName, edgeActionName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -626,7 +627,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionInner properties) {
+    public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties) {
         return beginUpdate(resourceGroupName, edgeActionName, properties).getFinalResult();
     }
 
@@ -643,7 +644,7 @@ public final class EdgeActionsClientImpl implements EdgeActionsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionInner properties,
+    public EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties,
         Context context) {
         return beginUpdate(resourceGroupName, edgeActionName, properties, context).getFinalResult();
     }

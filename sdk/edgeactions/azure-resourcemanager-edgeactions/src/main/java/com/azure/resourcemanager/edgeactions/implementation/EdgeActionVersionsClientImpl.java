@@ -39,6 +39,7 @@ import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInne
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
 import com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionVersionListResult;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -123,7 +124,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") EdgeActionVersionInner properties, Context context);
+            @BodyParam("application/json") EdgeActionVersionUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}")
         @ExpectedResponses({ 200, 202 })
@@ -133,7 +134,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") EdgeActionVersionInner properties, Context context);
+            @BodyParam("application/json") EdgeActionVersionUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}")
@@ -531,7 +532,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String edgeActionName,
-        String version, EdgeActionVersionInner properties) {
+        String version, EdgeActionVersionUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -556,7 +557,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties) {
+        EdgeActionVersionUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -580,7 +581,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties, Context context) {
+        EdgeActionVersionUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -603,7 +604,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdateAsync(
-        String resourceGroupName, String edgeActionName, String version, EdgeActionVersionInner properties) {
+        String resourceGroupName, String edgeActionName, String version, EdgeActionVersionUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, edgeActionName, version, properties);
         return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(mono,
@@ -626,7 +627,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, String version, EdgeActionVersionInner properties) {
+        String edgeActionName, String version, EdgeActionVersionUpdate properties) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeActionName, version, properties);
         return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(response,
             EdgeActionVersionInner.class, EdgeActionVersionInner.class, Context.NONE);
@@ -648,7 +649,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, String version, EdgeActionVersionInner properties, Context context) {
+        String edgeActionName, String version, EdgeActionVersionUpdate properties, Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, edgeActionName, version, properties, context);
         return this.client.<EdgeActionVersionInner, EdgeActionVersionInner>getLroResult(response,
@@ -670,7 +671,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeActionVersionInner> updateAsync(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties) {
+        EdgeActionVersionUpdate properties) {
         return beginUpdateAsync(resourceGroupName, edgeActionName, version, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -689,7 +690,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties) {
+        EdgeActionVersionUpdate properties) {
         return beginUpdate(resourceGroupName, edgeActionName, version, properties).getFinalResult();
     }
 
@@ -708,7 +709,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties, Context context) {
+        EdgeActionVersionUpdate properties, Context context) {
         return beginUpdate(resourceGroupName, edgeActionName, version, properties, context).getFinalResult();
     }
 

@@ -22,7 +22,7 @@ public final class EdgeActionsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"attachments\":[{\"id\":\"yggdtjixh\",\"attachedResourceId\":\"kuofqweykhme\"},{\"id\":\"vfyexfw\",\"attachedResourceId\":\"ybcibvyvdcsit\"},{\"id\":\"naamde\",\"attachedResourceId\":\"tehfiqscjeypvh\"}]},\"sku\":{\"name\":\"zrkgqhcjrefovg\",\"tier\":\"kqsleyyvxy\"},\"location\":\"pkc\",\"tags\":{\"ajvnysounqe\":\"pngjcrcczsqpjhvm\",\"oaeupfhyhltrpmo\":\"a\",\"uaodsfcpk\":\"jmcmatuokthfu\",\"xbezyiuokktwh\":\"xodpuozmyzydagfu\"},\"id\":\"dxwzywqsmbsurexi\",\"name\":\"o\",\"type\":\"yocf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"attachments\":[{\"id\":\"phrcgyncoc\",\"attachedResourceId\":\"ecfvmm\"},{\"id\":\"ofsx\",\"attachedResourceId\":\"zevgb\"},{\"id\":\"jqabcypmivkwlzuv\",\"attachedResourceId\":\"c\"}]},\"sku\":{\"name\":\"wnfnbacf\",\"tier\":\"onlebxetqgtzxdpn\"},\"location\":\"qqwx\",\"tags\":{\"mpmngnzscxaqwoo\":\"eallnwsubisnj\",\"njeaseipheofloke\":\"hcbonqvpkvlr\",\"enjbdlwtgrhp\":\"y\"},\"id\":\"jp\",\"name\":\"umasxazjpq\",\"type\":\"e\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class EdgeActionsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EdgeAction> response
-            = manager.edgeActions().listByResourceGroup("gujjugwdkcglh", com.azure.core.util.Context.NONE);
+            = manager.edgeActions().listByResourceGroup("ywgndrv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pkc", response.iterator().next().location());
-        Assertions.assertEquals("pngjcrcczsqpjhvm", response.iterator().next().tags().get("ajvnysounqe"));
-        Assertions.assertEquals("zrkgqhcjrefovg", response.iterator().next().sku().name());
-        Assertions.assertEquals("kqsleyyvxy", response.iterator().next().sku().tier());
+        Assertions.assertEquals("qqwx", response.iterator().next().location());
+        Assertions.assertEquals("eallnwsubisnj", response.iterator().next().tags().get("mpmngnzscxaqwoo"));
+        Assertions.assertEquals("wnfnbacf", response.iterator().next().sku().name());
+        Assertions.assertEquals("onlebxetqgtzxdpn", response.iterator().next().sku().tier());
     }
 }

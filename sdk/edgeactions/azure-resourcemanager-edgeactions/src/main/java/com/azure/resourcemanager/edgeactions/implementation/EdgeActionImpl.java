@@ -10,7 +10,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeAction;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionProperties;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionPropertiesUpdate;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionUpdate;
 import com.azure.resourcemanager.edgeactions.models.SkuType;
+import com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -80,6 +83,8 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
 
     private String edgeActionName;
 
+    private EdgeActionUpdate updateProperties;
+
     public EdgeActionImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -106,20 +111,21 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
     }
 
     public EdgeActionImpl update() {
+        this.updateProperties = new EdgeActionUpdate();
         return this;
     }
 
     public EdgeAction apply() {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActions()
-            .update(resourceGroupName, edgeActionName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, edgeActionName, updateProperties, Context.NONE);
         return this;
     }
 
     public EdgeAction apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActions()
-            .update(resourceGroupName, edgeActionName, this.innerModel(), context);
+            .update(resourceGroupName, edgeActionName, updateProperties, context);
         return this;
     }
 
@@ -163,12 +169,31 @@ public final class EdgeActionImpl implements EdgeAction, EdgeAction.Definition, 
     }
 
     public EdgeActionImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public EdgeActionImpl withProperties(EdgeActionProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public EdgeActionImpl withProperties(EdgeActionPropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    public EdgeActionImpl withSku(SkuTypeUpdate sku) {
+        this.updateProperties.withSku(sku);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionExecutionFilterInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilter;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterProperties;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdate;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,6 +80,8 @@ public final class EdgeActionExecutionFilterImpl
 
     private String executionFilter;
 
+    private EdgeActionExecutionFilterUpdate updateProperties;
+
     public EdgeActionExecutionFilterImpl withExistingEdgeAction(String resourceGroupName, String edgeActionName) {
         this.resourceGroupName = resourceGroupName;
         this.edgeActionName = edgeActionName;
@@ -106,20 +110,21 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilterImpl update() {
+        this.updateProperties = new EdgeActionExecutionFilterUpdate();
         return this;
     }
 
     public EdgeActionExecutionFilter apply() {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActionExecutionFilters()
-            .update(resourceGroupName, edgeActionName, executionFilter, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, edgeActionName, executionFilter, updateProperties, Context.NONE);
         return this;
     }
 
     public EdgeActionExecutionFilter apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getEdgeActionExecutionFilters()
-            .update(resourceGroupName, edgeActionName, executionFilter, this.innerModel(), context);
+            .update(resourceGroupName, edgeActionName, executionFilter, updateProperties, context);
         return this;
     }
 
@@ -159,12 +164,26 @@ public final class EdgeActionExecutionFilterImpl
     }
 
     public EdgeActionExecutionFilterImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public EdgeActionExecutionFilterImpl withProperties(EdgeActionExecutionFilterProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public EdgeActionExecutionFilterImpl withProperties(EdgeActionExecutionFilterUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

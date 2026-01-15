@@ -12,22 +12,21 @@ public final class EdgeActionExecutionFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeActionExecutionFilterProperties model = BinaryData.fromString(
-            "{\"versionId\":\"hcffcyddglmjthjq\",\"lastUpdateTime\":\"2021-03-29T20:34:14Z\",\"executionFilterIdentifierHeaderName\":\"yeicxmqciwqvhk\",\"executionFilterIdentifierHeaderValue\":\"ixuigdtopbobj\",\"provisioningState\":\"Upgrading\"}")
+            "{\"versionId\":\"zuckyfi\",\"lastUpdateTime\":\"2021-11-08T13:56:21Z\",\"executionFilterIdentifierHeaderName\":\"idf\",\"executionFilterIdentifierHeaderValue\":\"zwdzuh\",\"provisioningState\":\"Failed\"}")
             .toObject(EdgeActionExecutionFilterProperties.class);
-        Assertions.assertEquals("hcffcyddglmjthjq", model.versionId());
-        Assertions.assertEquals("yeicxmqciwqvhk", model.executionFilterIdentifierHeaderName());
-        Assertions.assertEquals("ixuigdtopbobj", model.executionFilterIdentifierHeaderValue());
+        Assertions.assertEquals("zuckyfi", model.versionId());
+        Assertions.assertEquals("idf", model.executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("zwdzuh", model.executionFilterIdentifierHeaderValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdgeActionExecutionFilterProperties model
-            = new EdgeActionExecutionFilterProperties().withVersionId("hcffcyddglmjthjq")
-                .withExecutionFilterIdentifierHeaderName("yeicxmqciwqvhk")
-                .withExecutionFilterIdentifierHeaderValue("ixuigdtopbobj");
+        EdgeActionExecutionFilterProperties model = new EdgeActionExecutionFilterProperties().withVersionId("zuckyfi")
+            .withExecutionFilterIdentifierHeaderName("idf")
+            .withExecutionFilterIdentifierHeaderValue("zwdzuh");
         model = BinaryData.fromObject(model).toObject(EdgeActionExecutionFilterProperties.class);
-        Assertions.assertEquals("hcffcyddglmjthjq", model.versionId());
-        Assertions.assertEquals("yeicxmqciwqvhk", model.executionFilterIdentifierHeaderName());
-        Assertions.assertEquals("ixuigdtopbobj", model.executionFilterIdentifierHeaderValue());
+        Assertions.assertEquals("zuckyfi", model.versionId());
+        Assertions.assertEquals("idf", model.executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("zwdzuh", model.executionFilterIdentifierHeaderValue());
     }
 }

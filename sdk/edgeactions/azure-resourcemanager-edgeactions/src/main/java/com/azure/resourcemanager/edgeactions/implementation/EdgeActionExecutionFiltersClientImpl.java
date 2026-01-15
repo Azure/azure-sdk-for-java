@@ -36,6 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.EdgeActionExecutionFiltersClient;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionExecutionFilterInner;
 import com.azure.resourcemanager.edgeactions.implementation.models.EdgeActionExecutionFilterListResult;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("executionFilter") String executionFilter,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") EdgeActionExecutionFilterInner properties, Context context);
+            @BodyParam("application/json") EdgeActionExecutionFilterUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}")
         @ExpectedResponses({ 200, 202 })
@@ -130,7 +131,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("executionFilter") String executionFilter,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") EdgeActionExecutionFilterInner properties, Context context);
+            @BodyParam("application/json") EdgeActionExecutionFilterUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}")
@@ -477,7 +478,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -502,7 +503,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -526,7 +527,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties, Context context) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -550,7 +551,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdateAsync(
         String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties) {
+        EdgeActionExecutionFilterUpdate properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, edgeActionName, executionFilter, properties);
         return this.client.<EdgeActionExecutionFilterInner, EdgeActionExecutionFilterInner>getLroResult(mono,
@@ -574,7 +575,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties) {
+        EdgeActionExecutionFilterUpdate properties) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, edgeActionName, executionFilter, properties);
         return this.client.<EdgeActionExecutionFilterInner, EdgeActionExecutionFilterInner>getLroResult(response,
@@ -598,7 +599,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties, Context context) {
+        EdgeActionExecutionFilterUpdate properties, Context context) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, edgeActionName, executionFilter, properties, context);
         return this.client.<EdgeActionExecutionFilterInner, EdgeActionExecutionFilterInner>getLroResult(response,
@@ -620,7 +621,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeActionExecutionFilterInner> updateAsync(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties) {
         return beginUpdateAsync(resourceGroupName, edgeActionName, executionFilter, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -639,7 +640,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties) {
         return beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties).getFinalResult();
     }
 
@@ -658,7 +659,7 @@ public final class EdgeActionExecutionFiltersClientImpl implements EdgeActionExe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName,
-        String executionFilter, EdgeActionExecutionFilterInner properties, Context context) {
+        String executionFilter, EdgeActionExecutionFilterUpdate properties, Context context) {
         return beginUpdate(resourceGroupName, edgeActionName, executionFilter, properties, context).getFinalResult();
     }
 

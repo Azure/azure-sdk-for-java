@@ -264,7 +264,7 @@ public interface EdgeAction {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(EdgeActionProperties properties);
+            Update withProperties(EdgeActionPropertiesUpdate properties);
         }
 
         /**
@@ -277,7 +277,7 @@ public interface EdgeAction {
              * @param sku The sku type of the edge action.
              * @return the next definition stage.
              */
-            Update withSku(SkuType sku);
+            Update withSku(SkuTypeUpdate sku);
         }
     }
 

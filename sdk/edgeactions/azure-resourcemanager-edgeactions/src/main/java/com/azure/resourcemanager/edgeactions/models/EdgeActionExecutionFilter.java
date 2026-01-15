@@ -245,7 +245,7 @@ public interface EdgeActionExecutionFilter {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(EdgeActionExecutionFilterProperties properties);
+            Update withProperties(EdgeActionExecutionFilterUpdateProperties properties);
         }
     }
 

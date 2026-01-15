@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class EdgeActionVersionsGetVersionCodeMockTests {
     @Test
     public void testGetVersionCode() throws Exception {
-        String responseStr = "{\"content\":\"ywbiexzfeyueax\",\"name\":\"bxu\"}";
+        String responseStr = "{\"content\":\"fuwutttxf\",\"name\":\"jrbirphxepcyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,10 +29,10 @@ public final class EdgeActionVersionsGetVersionCodeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VersionCode response = manager.edgeActionVersions()
-            .getVersionCode("thsu", "ocmnyyazttbtwwrq", "uedck", com.azure.core.util.Context.NONE);
+        VersionCode response
+            = manager.edgeActionVersions().getVersionCode("ctq", "jf", "ebrjcxe", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ywbiexzfeyueax", response.content());
-        Assertions.assertEquals("bxu", response.name());
+        Assertions.assertEquals("fuwutttxf", response.content());
+        Assertions.assertEquals("jrbirphxepcyv", response.name());
     }
 }

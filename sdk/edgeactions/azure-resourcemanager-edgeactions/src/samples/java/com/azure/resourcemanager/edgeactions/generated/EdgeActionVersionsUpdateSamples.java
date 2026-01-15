@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.edgeactions.generated;
 
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties;
 
 /**
  * Samples for EdgeActionVersions Update.
@@ -26,7 +26,7 @@ public final class EdgeActionVersionsUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
+                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
             .apply();
     }
 }

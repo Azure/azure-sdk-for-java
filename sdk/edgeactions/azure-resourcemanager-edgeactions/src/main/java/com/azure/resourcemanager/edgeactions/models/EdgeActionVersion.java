@@ -247,7 +247,7 @@ public interface EdgeActionVersion {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(EdgeActionVersionPropertiesInner properties);
+            Update withProperties(EdgeActionVersionUpdateProperties properties);
         }
     }
 

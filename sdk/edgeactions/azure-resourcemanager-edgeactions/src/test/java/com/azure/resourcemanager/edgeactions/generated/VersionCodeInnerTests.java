@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VersionCodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VersionCodeInner model = BinaryData.fromString("{\"content\":\"hbzhfepg\",\"name\":\"gqexzlocxs\"}")
-            .toObject(VersionCodeInner.class);
-        Assertions.assertEquals("hbzhfepg", model.content());
-        Assertions.assertEquals("gqexzlocxs", model.name());
+        VersionCodeInner model
+            = BinaryData.fromString("{\"content\":\"s\",\"name\":\"lgbquxig\"}").toObject(VersionCodeInner.class);
+        Assertions.assertEquals("s", model.content());
+        Assertions.assertEquals("lgbquxig", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionCodeInner model = new VersionCodeInner().withContent("hbzhfepg").withName("gqexzlocxs");
+        VersionCodeInner model = new VersionCodeInner().withContent("s").withName("lgbquxig");
         model = BinaryData.fromObject(model).toObject(VersionCodeInner.class);
-        Assertions.assertEquals("hbzhfepg", model.content());
-        Assertions.assertEquals("gqexzlocxs", model.name());
+        Assertions.assertEquals("s", model.content());
+        Assertions.assertEquals("lgbquxig", model.name());
     }
 }

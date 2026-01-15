@@ -15,29 +15,28 @@ public final class EdgeActionExecutionFilterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeActionExecutionFilterInner model = BinaryData.fromString(
-            "{\"properties\":{\"versionId\":\"aierhhb\",\"lastUpdateTime\":\"2021-09-21T03:23:52Z\",\"executionFilterIdentifierHeaderName\":\"l\",\"executionFilterIdentifierHeaderValue\":\"mmajtjaodx\",\"provisioningState\":\"Upgrading\"},\"location\":\"dxkqpx\",\"tags\":{\"odgmaajrmvdjwz\":\"jionpimexgstxgc\",\"ctbzaq\":\"lovmclwhijcoe\",\"dkexxppofm\":\"qsycbkbfkgu\",\"vpmouexhdzxib\":\"axcfjpgddtocjjx\"},\"id\":\"eojnxqbzvddn\",\"name\":\"wndeicbtwnp\",\"type\":\"aoqvuh\"}")
+            "{\"properties\":{\"versionId\":\"jgzjaoyfhrtx\",\"lastUpdateTime\":\"2021-10-31T08:55:11Z\",\"executionFilterIdentifierHeaderName\":\"erkujys\",\"executionFilterIdentifierHeaderValue\":\"l\",\"provisioningState\":\"Provisioning\"},\"location\":\"fqawrlyxw\",\"tags\":{\"ysszdnrujqguh\":\"prbnwbxgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}")
             .toObject(EdgeActionExecutionFilterInner.class);
-        Assertions.assertEquals("dxkqpx", model.location());
-        Assertions.assertEquals("jionpimexgstxgc", model.tags().get("odgmaajrmvdjwz"));
-        Assertions.assertEquals("aierhhb", model.properties().versionId());
-        Assertions.assertEquals("l", model.properties().executionFilterIdentifierHeaderName());
-        Assertions.assertEquals("mmajtjaodx", model.properties().executionFilterIdentifierHeaderValue());
+        Assertions.assertEquals("fqawrlyxw", model.location());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.tags().get("ysszdnrujqguh"));
+        Assertions.assertEquals("jgzjaoyfhrtx", model.properties().versionId());
+        Assertions.assertEquals("erkujys", model.properties().executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("l", model.properties().executionFilterIdentifierHeaderValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdgeActionExecutionFilterInner model = new EdgeActionExecutionFilterInner().withLocation("dxkqpx")
-            .withTags(mapOf("odgmaajrmvdjwz", "jionpimexgstxgc", "ctbzaq", "lovmclwhijcoe", "dkexxppofm", "qsycbkbfkgu",
-                "vpmouexhdzxib", "axcfjpgddtocjjx"))
-            .withProperties(new EdgeActionExecutionFilterProperties().withVersionId("aierhhb")
-                .withExecutionFilterIdentifierHeaderName("l")
-                .withExecutionFilterIdentifierHeaderValue("mmajtjaodx"));
+        EdgeActionExecutionFilterInner model = new EdgeActionExecutionFilterInner().withLocation("fqawrlyxw")
+            .withTags(mapOf("ysszdnrujqguh", "prbnwbxgjvtbv"))
+            .withProperties(new EdgeActionExecutionFilterProperties().withVersionId("jgzjaoyfhrtx")
+                .withExecutionFilterIdentifierHeaderName("erkujys")
+                .withExecutionFilterIdentifierHeaderValue("l"));
         model = BinaryData.fromObject(model).toObject(EdgeActionExecutionFilterInner.class);
-        Assertions.assertEquals("dxkqpx", model.location());
-        Assertions.assertEquals("jionpimexgstxgc", model.tags().get("odgmaajrmvdjwz"));
-        Assertions.assertEquals("aierhhb", model.properties().versionId());
-        Assertions.assertEquals("l", model.properties().executionFilterIdentifierHeaderName());
-        Assertions.assertEquals("mmajtjaodx", model.properties().executionFilterIdentifierHeaderValue());
+        Assertions.assertEquals("fqawrlyxw", model.location());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.tags().get("ysszdnrujqguh"));
+        Assertions.assertEquals("jgzjaoyfhrtx", model.properties().versionId());
+        Assertions.assertEquals("erkujys", model.properties().executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("l", model.properties().executionFilterIdentifierHeaderValue());
     }
 
     // Use "Map.of" if available

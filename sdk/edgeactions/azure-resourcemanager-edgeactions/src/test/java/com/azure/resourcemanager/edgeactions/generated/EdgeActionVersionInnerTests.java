@@ -17,26 +17,26 @@ public final class EdgeActionVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeActionVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-09-21T15:29:56Z\"},\"location\":\"yb\",\"tags\":{\"qytbciq\":\"e\",\"mmnkzsmodmgl\":\"ouf\",\"mutduqktaps\":\"ugpbkw\",\"rtumkdosvq\":\"wgcu\"},\"id\":\"hbmdgbbjfdd\",\"name\":\"mbmbexppbh\",\"type\":\"q\"}")
+            "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2021-09-09T12:13:43Z\"},\"location\":\"jrwzox\",\"tags\":{\"fpjkjlxofp\":\"felluwfzitonpe\",\"uybbkpodep\":\"vhpfxxypininmay\"},\"id\":\"oginuvamiheognar\",\"name\":\"zxtheotusivyevcc\",\"type\":\"qi\"}")
             .toObject(EdgeActionVersionInner.class);
-        Assertions.assertEquals("yb", model.location());
-        Assertions.assertEquals("e", model.tags().get("qytbciq"));
+        Assertions.assertEquals("jrwzox", model.location());
+        Assertions.assertEquals("felluwfzitonpe", model.tags().get("fpjkjlxofp"));
         Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, model.properties().deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, model.properties().isDefaultVersion());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, model.properties().isDefaultVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdgeActionVersionInner model = new EdgeActionVersionInner().withLocation("yb")
-            .withTags(mapOf("qytbciq", "e", "mmnkzsmodmgl", "ouf", "mutduqktaps", "ugpbkw", "rtumkdosvq", "wgcu"))
+        EdgeActionVersionInner model = new EdgeActionVersionInner().withLocation("jrwzox")
+            .withTags(mapOf("fpjkjlxofp", "felluwfzitonpe", "uybbkpodep", "vhpfxxypininmay"))
             .withProperties(
                 new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS)
-                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.FALSE));
+                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE));
         model = BinaryData.fromObject(model).toObject(EdgeActionVersionInner.class);
-        Assertions.assertEquals("yb", model.location());
-        Assertions.assertEquals("e", model.tags().get("qytbciq"));
+        Assertions.assertEquals("jrwzox", model.location());
+        Assertions.assertEquals("felluwfzitonpe", model.tags().get("fpjkjlxofp"));
         Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, model.properties().deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, model.properties().isDefaultVersion());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, model.properties().isDefaultVersion());
     }
 
     // Use "Map.of" if available

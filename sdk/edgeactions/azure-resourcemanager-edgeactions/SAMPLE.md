@@ -132,7 +132,7 @@ public final class EdgeActionExecutionFiltersListByEdgeActionSamples {
 
 ```java
 import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilter;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterProperties;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdateProperties;
 
 /**
  * Samples for EdgeActionExecutionFilters Update.
@@ -152,8 +152,8 @@ public final class EdgeActionExecutionFiltersUpdateSamples {
             .getWithResponse("testrg", "edgeAction1", "executionFilter1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new EdgeActionExecutionFilterProperties().withExecutionFilterIdentifierHeaderValue("header-value2"))
+            .withProperties(new EdgeActionExecutionFilterUpdateProperties()
+                .withExecutionFilterIdentifierHeaderValue("header-value2"))
             .apply();
     }
 }
@@ -328,9 +328,9 @@ public final class EdgeActionVersionsSwapDefaultSamples {
 ### EdgeActionVersions_Update
 
 ```java
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdateProperties;
 
 /**
  * Samples for EdgeActionVersions Update.
@@ -350,7 +350,7 @@ public final class EdgeActionVersionsUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
+                new EdgeActionVersionUpdateProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS))
             .apply();
     }
 }
@@ -473,7 +473,7 @@ public final class EdgeActionsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.edgeactions.models.EdgeAction;
-import com.azure.resourcemanager.edgeactions.models.SkuType;
+import com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate;
 
 /**
  * Samples for EdgeActions Update.
@@ -491,7 +491,7 @@ public final class EdgeActionsUpdateSamples {
         EdgeAction resource = manager.edgeActions()
             .getByResourceGroupWithResponse("testrg", "edgeAction1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSku(new SkuType().withName("Standard").withTier("Standard")).apply();
+        resource.update().withSku(new SkuTypeUpdate().withName("Standard").withTier("Standard")).apply();
     }
 }
 ```

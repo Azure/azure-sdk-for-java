@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.fluent.models.VersionCodeInner;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in EdgeActionVersionsClient.
@@ -132,7 +133,7 @@ public interface EdgeActionVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, String version, EdgeActionVersionInner properties);
+        String edgeActionName, String version, EdgeActionVersionUpdate properties);
 
     /**
      * Update a EdgeActionVersion.
@@ -150,7 +151,7 @@ public interface EdgeActionVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionVersionInner>, EdgeActionVersionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, String version, EdgeActionVersionInner properties, Context context);
+        String edgeActionName, String version, EdgeActionVersionUpdate properties, Context context);
 
     /**
      * Update a EdgeActionVersion.
@@ -166,7 +167,7 @@ public interface EdgeActionVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties);
+        EdgeActionVersionUpdate properties);
 
     /**
      * Update a EdgeActionVersion.
@@ -183,7 +184,7 @@ public interface EdgeActionVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionVersionInner update(String resourceGroupName, String edgeActionName, String version,
-        EdgeActionVersionInner properties, Context context);
+        EdgeActionVersionUpdate properties, Context context);
 
     /**
      * Delete a EdgeActionVersion.

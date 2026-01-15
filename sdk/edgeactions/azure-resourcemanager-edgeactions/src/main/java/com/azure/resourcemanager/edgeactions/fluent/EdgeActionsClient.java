@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionInner;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in EdgeActionsClient.
@@ -121,7 +122,7 @@ public interface EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, EdgeActionInner properties);
+        String edgeActionName, EdgeActionUpdate properties);
 
     /**
      * Update a EdgeAction.
@@ -138,7 +139,7 @@ public interface EdgeActionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionInner>, EdgeActionInner> beginUpdate(String resourceGroupName,
-        String edgeActionName, EdgeActionInner properties, Context context);
+        String edgeActionName, EdgeActionUpdate properties, Context context);
 
     /**
      * Update a EdgeAction.
@@ -152,7 +153,7 @@ public interface EdgeActionsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionInner properties);
+    EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties);
 
     /**
      * Update a EdgeAction.
@@ -167,7 +168,7 @@ public interface EdgeActionsClient {
      * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionInner properties,
+    EdgeActionInner update(String resourceGroupName, String edgeActionName, EdgeActionUpdate properties,
         Context context);
 
     /**

@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionExecutionFilterInner;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in EdgeActionExecutionFiltersClient.
@@ -133,7 +134,7 @@ public interface EdgeActionExecutionFiltersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties);
+        EdgeActionExecutionFilterUpdate properties);
 
     /**
      * Update a EdgeActionExecutionFilter.
@@ -152,7 +153,7 @@ public interface EdgeActionExecutionFiltersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EdgeActionExecutionFilterInner>, EdgeActionExecutionFilterInner> beginUpdate(
         String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties, Context context);
+        EdgeActionExecutionFilterUpdate properties, Context context);
 
     /**
      * Update a EdgeActionExecutionFilter.
@@ -168,7 +169,7 @@ public interface EdgeActionExecutionFiltersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties);
+        EdgeActionExecutionFilterUpdate properties);
 
     /**
      * Update a EdgeActionExecutionFilter.
@@ -185,7 +186,7 @@ public interface EdgeActionExecutionFiltersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EdgeActionExecutionFilterInner update(String resourceGroupName, String edgeActionName, String executionFilter,
-        EdgeActionExecutionFilterInner properties, Context context);
+        EdgeActionExecutionFilterUpdate properties, Context context);
 
     /**
      * Delete a EdgeActionExecutionFilter.

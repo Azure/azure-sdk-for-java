@@ -22,7 +22,7 @@ public final class EdgeActionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"attachments\":[{\"id\":\"ddystkiiuxhqy\",\"attachedResourceId\":\"dxorrqnbpoczv\"},{\"id\":\"fqrvkdvjsllrmvvd\",\"attachedResourceId\":\"watkpnpulexxb\"}]},\"sku\":{\"name\":\"zwtruwiqzbqjvsov\",\"tier\":\"yokacspkw\"},\"location\":\"zdobpxjmflbvvnch\",\"tags\":{\"ajiwkuo\":\"ciwwzjuqkhr\"},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"attachments\":[{\"id\":\"xxhejjzzvd\",\"attachedResourceId\":\"dgwdslfhot\"}]},\"sku\":{\"name\":\"mcy\",\"tier\":\"pwlbjnpg\"},\"location\":\"ftadehxnltyfs\",\"tags\":{\"nzwdejba\":\"usue\",\"xdn\":\"orxzdmohctbqvud\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class EdgeActionsListMockTests {
 
         PagedIterable<EdgeAction> response = manager.edgeActions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zdobpxjmflbvvnch", response.iterator().next().location());
-        Assertions.assertEquals("ciwwzjuqkhr", response.iterator().next().tags().get("ajiwkuo"));
-        Assertions.assertEquals("zwtruwiqzbqjvsov", response.iterator().next().sku().name());
-        Assertions.assertEquals("yokacspkw", response.iterator().next().sku().tier());
+        Assertions.assertEquals("ftadehxnltyfs", response.iterator().next().location());
+        Assertions.assertEquals("usue", response.iterator().next().tags().get("nzwdejba"));
+        Assertions.assertEquals("mcy", response.iterator().next().sku().name());
+        Assertions.assertEquals("pwlbjnpg", response.iterator().next().sku().tier());
     }
 }

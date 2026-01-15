@@ -23,7 +23,7 @@ public final class EdgeActionVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Provisioning\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2021-05-29T15:16:39Z\"},\"location\":\"fnljky\",\"tags\":{\"idokgjlj\":\"vuujq\"},\"id\":\"oxgvclt\",\"name\":\"gsncghkjeszz\",\"type\":\"bijhtxfvgxbf\"}";
+            = "{\"properties\":{\"deploymentType\":\"zip\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2021-08-31T22:03:19Z\"},\"location\":\"ez\",\"tags\":{\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\",\"dng\":\"nvudwtiukb\",\"g\":\"pocipazyxoegu\"},\"id\":\"npiucgygevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class EdgeActionVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionVersion response = manager.edgeActionVersions()
-            .getWithResponse("nkymuctqhjfbebrj", "xerf", "wutttxfvjrbi", com.azure.core.util.Context.NONE)
+            .getWithResponse("rfbyaosvexcso", "pclhocohslk", "vleggzfbuhfmvfax", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fnljky", response.location());
-        Assertions.assertEquals("vuujq", response.tags().get("idokgjlj"));
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.properties().deploymentType());
+        Assertions.assertEquals("ez", response.location());
+        Assertions.assertEquals("hxmzsbbzoggig", response.tags().get("xwburvjxxjns"));
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.ZIP, response.properties().deploymentType());
         Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, response.properties().isDefaultVersion());
     }
 }

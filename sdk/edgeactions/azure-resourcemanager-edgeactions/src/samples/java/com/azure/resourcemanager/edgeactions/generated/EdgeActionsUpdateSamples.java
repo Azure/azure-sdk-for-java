@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.edgeactions.generated;
 
 import com.azure.resourcemanager.edgeactions.models.EdgeAction;
-import com.azure.resourcemanager.edgeactions.models.SkuType;
+import com.azure.resourcemanager.edgeactions.models.SkuTypeUpdate;
 
 /**
  * Samples for EdgeActions Update.
@@ -23,6 +23,6 @@ public final class EdgeActionsUpdateSamples {
         EdgeAction resource = manager.edgeActions()
             .getByResourceGroupWithResponse("testrg", "edgeAction1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSku(new SkuType().withName("Standard").withTier("Standard")).apply();
+        resource.update().withSku(new SkuTypeUpdate().withName("Standard").withTier("Standard")).apply();
     }
 }

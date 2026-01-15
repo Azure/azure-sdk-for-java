@@ -14,19 +14,19 @@ public final class EdgeActionVersionPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EdgeActionVersionPropertiesInner model = BinaryData.fromString(
-            "{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-01-31T05:15:53Z\"}")
+            "{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Upgrading\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2021-10-16T10:08:26Z\"}")
             .toObject(EdgeActionVersionPropertiesInner.class);
         Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, model.deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, model.isDefaultVersion());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, model.isDefaultVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EdgeActionVersionPropertiesInner model
             = new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS)
-                .withIsDefaultVersion(EdgeActionIsDefaultVersion.FALSE);
+                .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE);
         model = BinaryData.fromObject(model).toObject(EdgeActionVersionPropertiesInner.class);
         Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, model.deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, model.isDefaultVersion());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, model.isDefaultVersion());
     }
 }

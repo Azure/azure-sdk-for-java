@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.edgeactions.generated;
 
 import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilter;
-import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterProperties;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionExecutionFilterUpdateProperties;
 
 /**
  * Samples for EdgeActionExecutionFilters Update.
@@ -25,8 +25,8 @@ public final class EdgeActionExecutionFiltersUpdateSamples {
             .getWithResponse("testrg", "edgeAction1", "executionFilter1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(
-                new EdgeActionExecutionFilterProperties().withExecutionFilterIdentifierHeaderValue("header-value2"))
+            .withProperties(new EdgeActionExecutionFilterUpdateProperties()
+                .withExecutionFilterIdentifierHeaderValue("header-value2"))
             .apply();
     }
 }

@@ -21,7 +21,7 @@ public final class EdgeActionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"attachments\":[{\"id\":\"lzu\",\"attachedResourceId\":\"ccfwnfnbacfion\"},{\"id\":\"bxetqgtzxdpn\",\"attachedResourceId\":\"bqqwxrj\"},{\"id\":\"al\",\"attachedResourceId\":\"nwsubisnj\"},{\"id\":\"pmng\",\"attachedResourceId\":\"zscxaqwo\"}]},\"sku\":{\"name\":\"chcbonqvpkvlrxnj\",\"tier\":\"ase\"},\"location\":\"heoflokeyyienjbd\",\"tags\":{\"asxazjpqyegualhb\":\"grhpdjpju\",\"wdslfhotwmcy\":\"xhejjzzvdud\",\"cftadeh\":\"pwlbjnpg\",\"dejbavo\":\"nltyfsoppusuesnz\"},\"id\":\"xzdmohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"attachments\":[{\"id\":\"ojnxqbzvdd\",\"attachedResourceId\":\"t\"},{\"id\":\"deicbtwnpzao\",\"attachedResourceId\":\"vuhrhcffcyddgl\"},{\"id\":\"t\",\"attachedResourceId\":\"jqkwpyeicx\"},{\"id\":\"ciwqvhk\",\"attachedResourceId\":\"ixuigdtopbobj\"}]},\"sku\":{\"name\":\"ghmewuam\",\"tier\":\"uhrzayvvt\"},\"location\":\"vdfgiotk\",\"tags\":{\"xlefgugnxkrx\":\"tqxln\",\"tthzrvqd\":\"qmi\"},\"id\":\"abhjybi\",\"name\":\"ehoqfbowskan\",\"type\":\"ktzlcuiywg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class EdgeActionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeAction response = manager.edgeActions()
-            .getByResourceGroupWithResponse("lzevgbmqjqab", "y", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("o", "exhd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("heoflokeyyienjbd", response.location());
-        Assertions.assertEquals("grhpdjpju", response.tags().get("asxazjpqyegualhb"));
-        Assertions.assertEquals("chcbonqvpkvlrxnj", response.sku().name());
-        Assertions.assertEquals("ase", response.sku().tier());
+        Assertions.assertEquals("vdfgiotk", response.location());
+        Assertions.assertEquals("tqxln", response.tags().get("xlefgugnxkrx"));
+        Assertions.assertEquals("ghmewuam", response.sku().name());
+        Assertions.assertEquals("uhrzayvvt", response.sku().tier());
     }
 }
