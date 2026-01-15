@@ -291,8 +291,15 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (request.isReadOnlyRequest() && !forceFailoverThroughReads) {
-            return false;
+        if (request.isReadOnlyRequest()) {
+
+            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRxDocumentServiceRequest =
+                request.requestContext.getCrossRegionAvailabilityContext();
+
+            if (!forceFailoverThroughReads
+                && (crossRegionAvailabilityContextForRxDocumentServiceRequest != null && !crossRegionAvailabilityContextForRxDocumentServiceRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable())) {
+                return false;
+            }
         }
 
         if (this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(Collections.emptyList()).size() <= 1) {

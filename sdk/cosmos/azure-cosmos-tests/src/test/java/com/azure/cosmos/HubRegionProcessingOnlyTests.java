@@ -9,11 +9,17 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
@@ -26,7 +32,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -93,14 +98,6 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
     public void afterClass() {
     }
 
-    @DataProvider(name = "hubRegionProcessingScenarios")
-    public static Object[][] hubRegionProcessingScenarios() {
-        return new Object[][]{
-            // Test read operation with 404-1002 injected in third preferred region (first in preferred list)
-            { OperationType.Read }
-        };
-    }
-
     /**
      * Validates that when a read operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
      * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
@@ -130,16 +127,17 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      *   <li>The CosmosDiagnosticsContext should show both the failed region and the hub region in contacted regions</li>
      * </ul>
      *
-     * @param operationType the type of operation to perform (Read in this test)
      * @throws Exception if test setup fails or unexpected errors occur
      */
-    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios", timeOut = 2 * TIMEOUT)
-    public void validateHubRegionProcessingOnReadWith404_1002(OperationType operationType) throws Exception {
+    @Test(groups = {"multi-region"})
+    public void validateHubRegionProcessingOnReadItemWith404_1002() throws Exception {
 
         // Skip if we don't have at least 3 regions
         if (this.preferredRegions.size() < 3) {
             throw new SkipException("Test requires at least 3 readable regions");
         }
+
+        System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
 
         // Create test client with preferred regions (third region first)
         CosmosAsyncClient testClient = getClientBuilder()
@@ -152,8 +150,6 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
 
         try {
-
-            System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
 
             String databaseId = "testDatabase";
             String containerId = "testContainer";
@@ -202,7 +198,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotNull();
             assertThat(diagnosticsContext.getContactedRegionNames()).isNotEmpty();
 
-            logger.info("Contacted regions: {}", diagnosticsContext.getContactedRegionNames());
+            logger.info("ReadItem contacted regions: {}", diagnosticsContext.getContactedRegionNames());
 
             // Validate that hub region was contacted
             assertThat(diagnosticsContext.getContactedRegionNames())
@@ -213,6 +209,374 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             assertThat(diagnosticsContext.getContactedRegionNames().size())
                 .as("Should contact multiple regions due to failover")
                 .isGreaterThan(1);
+
+        } finally {
+            safeClose(testClient);
+        }
+    }
+
+    /**
+     * Validates that when a Query operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
+     * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
+     *
+     * <p>The query is scoped to partition key "12345".</p>
+     *
+     * @throws Exception if test setup fails or unexpected errors occur
+     */
+    @Test(groups = {"multi-region"})
+    public void validateHubRegionProcessingOnQueryWith404_1002() throws Exception {
+
+        // Skip if we don't have at least 3 regions
+        if (this.preferredRegions.size() < 3) {
+            throw new SkipException("Test requires at least 3 readable regions");
+        }
+
+        System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+
+        // Create test client with preferred regions (third region first)
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+            .buildAsyncClient();
+
+        ConnectionMode connectionModeForTestClient
+            = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
+
+        try {
+
+            String databaseId = "testDatabase";
+            String containerId = "testContainer";
+
+            CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
+            CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
+
+            TestObject testObject = TestObject.create(this.partitionKeyValue);
+
+            // Create the document using the test client
+            targetContainer.createItem(testObject).block();
+
+            // Determine partition-set hub region as base truth
+            String hubRegion = determinePartitionSetHubRegion(this.partitionKeyValue, databaseId, containerId);
+
+            logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
+
+            // Inject 404-1002 fault in the third preferred region (first in list)
+            String thirdRegion = this.preferredRegions.get(0);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                thirdRegion,
+                FaultInjectionOperationType.QUERY_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            Thread.sleep(1000);
+
+            logger.info("Testing Query operation with partition key '{}'", this.partitionKeyValue);
+
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+            queryRequestOptions.setPartitionKey(new PartitionKey(this.partitionKeyValue));
+
+            String query = "SELECT * FROM c WHERE c.mypk = '" + this.partitionKeyValue + "'";
+            List<TestObject> queryResults = targetContainer
+                .queryItems(query, queryRequestOptions, TestObject.class)
+                .byPage()
+                .flatMapIterable(FeedResponse::getResults)
+                .collectList()
+                .block();
+
+            assertThat(queryResults).isNotNull();
+            assertThat(queryResults).isNotEmpty();
+
+            // Get diagnostics from query - need to use byPage to access diagnostics
+            CosmosDiagnostics queryDiagnostics = targetContainer
+                .queryItems(query, queryRequestOptions, TestObject.class)
+                .byPage()
+                .blockLast()
+                .getCosmosDiagnostics();
+
+            assertThat(queryDiagnostics).isNotNull();
+            CosmosDiagnosticsContext queryDiagnosticsContext = queryDiagnostics.getDiagnosticsContext();
+            assertThat(queryDiagnosticsContext).isNotNull();
+
+            logger.info("Query contacted regions: {}", queryDiagnosticsContext.getContactedRegionNames());
+
+            assertThat(queryDiagnosticsContext.getContactedRegionNames())
+                .as("Hub region should be contacted for Query")
+                .contains(hubRegion);
+
+        } finally {
+            safeClose(testClient);
+        }
+    }
+
+    /**
+     * Validates that when a Change Feed operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
+     * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
+     *
+     * <p>The Change Feed is read from the beginning and scoped to partition key "12345".</p>
+     *
+     * @throws Exception if test setup fails or unexpected errors occur
+     */
+    @Test(groups = {"multi-region"})
+    public void validateHubRegionProcessingOnChangeFeedWith404_1002() throws Exception {
+
+        // Skip if we don't have at least 3 regions
+        if (this.preferredRegions.size() < 3) {
+            throw new SkipException("Test requires at least 3 readable regions");
+        }
+
+        System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+
+        // Create test client with preferred regions (third region first)
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+            .buildAsyncClient();
+
+        ConnectionMode connectionModeForTestClient
+            = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
+
+        try {
+
+            String databaseId = "testDatabase";
+            String containerId = "testContainer";
+
+            CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
+            CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
+
+            TestObject testObject = TestObject.create(this.partitionKeyValue);
+
+            // Create the document using the test client
+            targetContainer.createItem(testObject).block();
+
+            // Determine partition-set hub region as base truth
+            String hubRegion = determinePartitionSetHubRegion(this.partitionKeyValue, databaseId, containerId);
+
+            logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
+
+            // Inject 404-1002 fault in the third preferred region (first in list)
+            String thirdRegion = this.preferredRegions.get(0);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                thirdRegion,
+                FaultInjectionOperationType.READ_FEED_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            Thread.sleep(1000);
+
+            logger.info("Testing Change Feed operation with partition key '{}'", this.partitionKeyValue);
+
+            // Create ChangeFeedRequestOptions scoped to the specific partition key
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(this.partitionKeyValue)));
+
+            List<JsonNode> changeFeedResults = new ArrayList<>();
+            FeedResponse<JsonNode> changeFeedResponse = targetContainer
+                .queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+                .byPage()
+                .blockLast();
+
+            assertThat(changeFeedResponse).isNotNull();
+            changeFeedResults.addAll(changeFeedResponse.getResults());
+
+            CosmosDiagnostics changeFeedDiagnostics = changeFeedResponse.getCosmosDiagnostics();
+            assertThat(changeFeedDiagnostics).isNotNull();
+            CosmosDiagnosticsContext changeFeedDiagnosticsContext = changeFeedDiagnostics.getDiagnosticsContext();
+            assertThat(changeFeedDiagnosticsContext).isNotNull();
+
+            logger.info("Change Feed contacted regions: {}", changeFeedDiagnosticsContext.getContactedRegionNames());
+
+            // Change Feed should return 200 or 304 (Not Modified if no changes)
+            int changeFeedStatusCode = changeFeedDiagnosticsContext.getStatusCode();
+            assertThat(changeFeedStatusCode)
+                .as("Change Feed should return 200 or 304")
+                .isIn(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
+
+            assertThat(changeFeedDiagnosticsContext.getContactedRegionNames())
+                .as("Hub region should be contacted for Change Feed")
+                .contains(hubRegion);
+
+        } finally {
+            safeClose(testClient);
+        }
+    }
+
+    /**
+     * Validates that when a readMany operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
+     * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
+     *
+     * <p>The readMany operation is scoped to partition key "12345".</p>
+     *
+     * @throws Exception if test setup fails or unexpected errors occur
+     */
+    @Test(groups = {"multi-region"})
+    public void validateHubRegionProcessingOnReadManyWith404_1002() throws Exception {
+
+        // Skip if we don't have at least 3 regions
+        if (this.preferredRegions.size() < 3) {
+            throw new SkipException("Test requires at least 3 readable regions");
+        }
+
+        System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+
+        // Create test client with preferred regions (third region first)
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+            .buildAsyncClient();
+
+        ConnectionMode connectionModeForTestClient
+            = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
+
+        try {
+
+            String databaseId = "testDatabase";
+            String containerId = "testContainer";
+
+            CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
+            CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
+
+            TestObject testObject = TestObject.create(this.partitionKeyValue);
+
+            // Create the document using the test client
+            targetContainer.createItem(testObject).block();
+
+            // Determine partition-set hub region as base truth
+            String hubRegion = determinePartitionSetHubRegion(this.partitionKeyValue, databaseId, containerId);
+
+            logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
+
+            // Inject 404-1002 fault in the third preferred region (first in list)
+            String thirdRegion = this.preferredRegions.get(0);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                thirdRegion,
+                FaultInjectionOperationType.READ_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            Thread.sleep(1000);
+
+            logger.info("Testing readMany operation with partition key '{}'", this.partitionKeyValue);
+
+            List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
+            itemIdentities.add(new CosmosItemIdentity(
+                new PartitionKey(this.partitionKeyValue),
+                testObject.getId()
+            ));
+
+            FeedResponse<TestObject> readManyResponse = targetContainer
+                .readMany(itemIdentities, new CosmosReadManyRequestOptions(), TestObject.class)
+                .block();
+
+            assertThat(readManyResponse).isNotNull();
+            assertThat(readManyResponse.getResults()).isNotEmpty();
+
+            CosmosDiagnostics readManyDiagnostics = readManyResponse.getCosmosDiagnostics();
+            assertThat(readManyDiagnostics).isNotNull();
+            CosmosDiagnosticsContext readManyDiagnosticsContext = readManyDiagnostics.getDiagnosticsContext();
+            assertThat(readManyDiagnosticsContext).isNotNull();
+
+            logger.info("ReadMany contacted regions: {}", readManyDiagnosticsContext.getContactedRegionNames());
+
+            assertThat(readManyDiagnosticsContext.getStatusCode())
+                .as("ReadMany should return 200")
+                .isEqualTo(HttpConstants.StatusCodes.OK);
+
+            assertThat(readManyDiagnosticsContext.getContactedRegionNames())
+                .as("Hub region should be contacted for readMany")
+                .contains(hubRegion);
+
+        } finally {
+            safeClose(testClient);
+        }
+    }
+
+    /**
+     * Validates that when a readAll operation encounters a 404-1002 (READ_SESSION_NOT_AVAILABLE) error
+     * in a non-hub region, the operation correctly identifies and contacts the partition-set level hub region.
+     *
+     * <p>The readAll operation is scoped to partition key "12345".</p>
+     *
+     * @throws Exception if test setup fails or unexpected errors occur
+     */
+    @Test(groups = {"multi-region"})
+    public void validateHubRegionProcessingOnReadAllWith404_1002() throws Exception {
+
+        // Skip if we don't have at least 3 regions
+        if (this.preferredRegions.size() < 3) {
+            throw new SkipException("Test requires at least 3 readable regions");
+        }
+
+        System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+
+        // Create test client with preferred regions (third region first)
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(this.preferredRegions)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+            .buildAsyncClient();
+
+        ConnectionMode connectionModeForTestClient
+            = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
+
+        try {
+
+            String databaseId = "testDatabase";
+            String containerId = "testContainer";
+
+            CosmosAsyncDatabase targetDatabase = testClient.getDatabase(databaseId);
+            CosmosAsyncContainer targetContainer = targetDatabase.getContainer(containerId);
+
+            TestObject testObject = TestObject.create(this.partitionKeyValue);
+
+            // Create the document using the test client
+            targetContainer.createItem(testObject).block();
+
+            // Determine partition-set hub region as base truth
+            String hubRegion = determinePartitionSetHubRegion(this.partitionKeyValue, databaseId, containerId);
+
+            logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
+
+            // Inject 404-1002 fault in the third preferred region (first in list)
+            // readAll uses QUERY_ITEM fault injection type
+            String thirdRegion = this.preferredRegions.get(0);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                thirdRegion,
+                FaultInjectionOperationType.QUERY_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            Thread.sleep(1000);
+
+            logger.info("Testing readAll operation with partition key '{}'", this.partitionKeyValue);
+
+            CosmosQueryRequestOptions readAllRequestOptions = new CosmosQueryRequestOptions();
+            readAllRequestOptions.setPartitionKey(new PartitionKey(this.partitionKeyValue));
+
+            FeedResponse<TestObject> readAllResponse = targetContainer
+                .readAllItems(readAllRequestOptions, TestObject.class)
+                .byPage()
+                .blockLast();
+
+            assertThat(readAllResponse).isNotNull();
+            assertThat(readAllResponse.getResults()).isNotEmpty();
+
+            CosmosDiagnostics readAllDiagnostics = readAllResponse.getCosmosDiagnostics();
+            assertThat(readAllDiagnostics).isNotNull();
+            CosmosDiagnosticsContext readAllDiagnosticsContext = readAllDiagnostics.getDiagnosticsContext();
+            assertThat(readAllDiagnosticsContext).isNotNull();
+
+            logger.info("ReadAll contacted regions: {}", readAllDiagnosticsContext.getContactedRegionNames());
+
+            assertThat(readAllDiagnosticsContext.getStatusCode())
+                .as("ReadAll should return 200")
+                .isEqualTo(HttpConstants.StatusCodes.OK);
+
+            assertThat(readAllDiagnosticsContext.getContactedRegionNames())
+                .as("Hub region should be contacted for readAll")
+                .contains(hubRegion);
 
         } finally {
             safeClose(testClient);

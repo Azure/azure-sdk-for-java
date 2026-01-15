@@ -2176,6 +2176,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
+        if (request.requestContext != null) {
+            request.requestContext.setCrossRegionAvailabilityContext(crossRegionContextForRequest);
+        }
+
         if (requestRetryPolicy != null) {
             requestRetryPolicy.onBeforeSendRequest(request);
         }
@@ -2236,6 +2240,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+
+        if (request.requestContext != null) {
+            request.requestContext.setCrossRegionAvailabilityContext(
+                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+                    null,
+                    new PointOperationContextForCircuitBreaker(
+                        new AtomicBoolean(false),
+                        false,
+                        documentCollectionLink,
+                        serializationDiagnosticsContext),
+                    null,
+                    shouldAddHubRegionProcessingOnlyHeader));
+        }
+
         // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
         // instance into 'request' amongst other things - this way metadataDiagnosticsContext is not
         // null and can be used for metadata-related telemetry (partition key range, container and server address lookups)
@@ -2244,20 +2263,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-
-        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
-
-        request.requestContext.setCrossRegionAvailabilityContext(
-
-            new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                null,
-                new PointOperationContextForCircuitBreaker(
-                    new AtomicBoolean(false),
-                    false,
-                    documentCollectionLink,
-                    serializationDiagnosticsContext),
-                null,
-                shouldAddHubRegionProcessingOnlyHeader));
 
         return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
             .flatMap(documentCollectionValueHolder -> {
@@ -2685,8 +2690,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
-
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
@@ -3068,7 +3071,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
@@ -3340,6 +3342,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
+        if (request.requestContext != null) {
+            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+        }
+
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -3368,8 +3374,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3559,6 +3563,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
+        if (request.requestContext != null) {
+            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+        }
+
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
@@ -3602,8 +3610,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 checkNotNull(options, "Argument 'options' cannot be null!");
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3756,6 +3762,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
+            if (request.requestContext != null) {
+                request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+            }
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -3776,8 +3786,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 checkNotNull(options, "Argument 'options' cannot be null!");
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3943,6 +3951,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestContext.setExcludeRegions(options.getExcludedRegions());
             requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
+            if (requestContext != null) {
+                requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+            }
+
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -3969,7 +3981,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
                                 req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
-                                PartitionKeyRange preResolvedPartionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
                                     collectionRoutingMapValueHolder.v,
@@ -3982,7 +3994,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     options,
                                     collectionRoutingMapValueHolder.v,
                                     retryPolicyInstance,
-                                    preResolvedPartionKeyRangeIfAny);
+                                    preResolvedPartitionKeyRangeIfAny);
 
                                 applyEndToEndLatencyPolicyCfgToRequestContext(request, options.getCosmosEndToEndLatencyPolicyConfig());
 
@@ -4703,6 +4715,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+            new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collection.getAltLink()),
+            null,
+            new AvailabilityStrategyContext(false, false),
+            shouldAddHubRegionProcessingOnlyHeader);
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -4711,7 +4730,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collection.getAltLink(),
             collection.getResourceId(),
             requestOptions,
-            diagnosticsClientContext);
+            diagnosticsClientContext,
+            crossRegionAvailabilityContextForRequest);
 
         return changeFeedQueryImpl.executeAsync();
     }

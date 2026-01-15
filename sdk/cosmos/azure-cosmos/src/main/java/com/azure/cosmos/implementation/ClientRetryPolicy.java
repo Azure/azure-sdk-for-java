@@ -97,7 +97,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         this.retryContext = null;
-        this.setPPAFOverrideForReads(this.request, false);
+        this.setPerPartitionAutomaticFailoverOverrideForReads(this.request, false);
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null && clientException.getDiagnostics() != null) {
@@ -108,7 +108,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
-            this.setPPAFOverrideForReads(this.request, true);
+            this.setPerPartitionAutomaticFailoverOverrideForReads(this.request, true);
             if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false, true)) {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
@@ -263,11 +263,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         checkNotNull(request, "Argument 'request' cannot be null!");
                         checkNotNull(request.requestContext, "Argument 'request' cannot be null!");
 
-                        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                            = request.requestContext.getCrossRegionAvailabilityContext();
-
                         checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
-                        this.setPPAFOverrideForReads(request, true);
+                        this.setPerPartitionAutomaticFailoverOverrideForReads(request, true);
                     }
 
                     if (!this.globalEndpointManager.canUseMultipleWriteLocations(request)) {
@@ -556,7 +553,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
     }
 
-    private void setPPAFOverrideForReads(RxDocumentServiceRequest request, boolean followPerPartitionHub) {
+    private void setPerPartitionAutomaticFailoverOverrideForReads(RxDocumentServiceRequest request, boolean followPerPartitionHub) {
 
         if (request == null) {
             return;
@@ -571,8 +568,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext =  request.requestContext.getCrossRegionAvailabilityContext();
+        request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = request.requestContext.resolvedPartitionKeyRange;
 
-        if  (crossRegionAvailabilityContext != null) {
+        if (crossRegionAvailabilityContext != null) {
             crossRegionAvailabilityContext.setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(followPerPartitionHub);
         }
     }

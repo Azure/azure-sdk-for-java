@@ -52,6 +52,7 @@ class ChangeFeedQueryImpl<T> {
     private final OperationContextAndListenerTuple operationContextAndListener;
     private final CosmosItemSerializer itemSerializer;
     private final DiagnosticsClientContext diagnosticsClientContext;
+    private final CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -60,7 +61,8 @@ class ChangeFeedQueryImpl<T> {
         String collectionLink,
         String collectionRid,
         CosmosChangeFeedRequestOptions requestOptions,
-        DiagnosticsClientContext diagnosticsClientContext) {
+        DiagnosticsClientContext diagnosticsClientContext, CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext) {
+        this.crossRegionAvailabilityContext = crossRegionAvailabilityContext;
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -180,17 +182,9 @@ class ChangeFeedQueryImpl<T> {
             options);
 
         if (request.requestContext != null) {
-
-            AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
-
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
-            request.requestContext.setCrossRegionAvailabilityContext(
-                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                    new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink),
-                    null,
-                    new AvailabilityStrategyContext(false, false),
-                    shouldAddHubRegionProcessingOnlyHeader));
+            request.requestContext.setCrossRegionAvailabilityContext(this.crossRegionAvailabilityContext);
         }
 
         return request;
