@@ -35,7 +35,7 @@ parameters:
   - name: JarReadOnlySasUri
     type: string
   - name: JarReadOnlySasUriIndex
-    type: int
+    type: number
   - name: JarStorageAccountName
     type: string
   - name: JarName
