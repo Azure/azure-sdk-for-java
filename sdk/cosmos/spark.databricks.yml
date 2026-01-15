@@ -112,6 +112,7 @@ stages:
             if [[ "${AVOID_DBFS,,}" == "true" ]]; then
               TMP_FILE="/tmp/${JAR_NAME}.$$"
               echo "[init] Downloading $JAR_NAME to validate checksum..."
+              echo "[URI] $JAR_URL"
               # Download with retries; fail non-zero on HTTP errors
               if command -v curl >/dev/null 2>&1; then
                 curl -fL --retry 8 --retry-connrefused --retry-delay 2 --max-time 600 \
