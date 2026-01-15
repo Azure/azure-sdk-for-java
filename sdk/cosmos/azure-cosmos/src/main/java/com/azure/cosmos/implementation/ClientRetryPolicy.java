@@ -267,7 +267,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                         this.setPerPartitionAutomaticFailoverOverrideForReads(request, true);
                     }
 
-                    if (!this.globalEndpointManager.canUseMultipleWriteLocations(request)) {
+                    if (!this.globalEndpointManager.canUseMultipleWriteLocations(request) && this.isReadRequest) {
 
                         if (request.requestContext != null) {
 
