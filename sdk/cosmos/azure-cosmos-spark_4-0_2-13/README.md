@@ -15,14 +15,6 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 - [Catalog API](https://aka.ms/azure-cosmos-spark-3-catalog-api)
 - [Configuration Parameter Reference](https://aka.ms/azure-cosmos-spark-3-config)
 
-[//]: # (//TODO: add more sections)
-[//]: # (//TODO: Enable Client Logging)
-[//]: # (//TODO: Examples)
-[//]: # (//TODO: Next steps)
-[//]: # (//TODO: Key concepts)
-[//]: # (//TODO: Azure Cosmos DB Partition)
-[//]: # (//TODO: Troubleshooting)
-
 ### Version Compatibility
 
 #### azure-cosmos-spark_4-0_2-13
@@ -33,39 +25,56 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 Note: Spark 4.0 requires Scala 2.13 and Java 17 or higher. When using the Scala API, it is necessary for applications
 to use Scala 2.13 that Spark 4.0 was compiled for.
 
-### Examples
-For examples please review our samples repository on [GitHub](https://github.com/Azure-Samples/azure-cosmos-spark-samples).
+### Download
 
-### Getting Help
-Please create [GitHub issues](https://github.com/Azure/azure-sdk-for-java/issues/new) for any questions and issues.
+You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime from Maven:
+`com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13:4.43.0`
 
-### Troubleshooting
+You can also integrate against Cosmos DB Spark Connector in your SBT project:
+```scala
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_4-0_2-13" % "4.43.0"
+```
 
-See the [Troubleshooting Guide](docs/troubleshooting.md) for detailed troubleshooting tips.
+Cosmos DB Spark Connector is available on [Maven Central Repo](https://central.sonatype.com/search?namespace=com.azure.cosmos.spark).
 
-### Release Notes
-See [CHANGELOG.md](CHANGELOG.md) for detailed release information.
+#### General
+
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues/new).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+### License
+This project is under MIT license and uses and repackages other third party libraries as an uber jar.
+See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/NOTICE.txt).
 
 ### Contributing
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
+to use your contribution.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
+do this once across all repos using our CLA.
 
-Please refer to our [Contribution guidelines](./CONTRIBUTING.md).
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq]
+or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
-<!-- external links -->
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+<!-- LINKS -->
+[source_code]: src
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-spark_4-0_2-13%2FREADME.png)
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+[azure_subscription]: https://azure.microsoft.com/free/
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[local_emulator]: https://learn.microsoft.com/azure/cosmos-db/local-emulator
+[local_emulator_export_ssl_certificates]: https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
+[azure_cosmos_db_partition]: https://learn.microsoft.com/azure/cosmos-db/partition-data
+[sql_queries_in_cosmos]: https://learn.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://learn.microsoft.com/azure/cosmos-db/sql-query-getting-started
