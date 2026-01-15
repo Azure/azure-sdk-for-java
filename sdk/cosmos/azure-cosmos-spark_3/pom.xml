@@ -296,6 +296,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[${spark34.version}]</include>
                 <include>org.apache.spark:spark-sql_2.12:[${spark35.version}]</include>
                 <include>org.apache.spark:spark-sql_2.13:[${spark35.version}]</include>
+                <include>org.apache.spark:spark-sql_2.13:[4.0.0]</include><!-- {x-include-update;cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;external_dependency} -->
                 <include>org.scala-lang:scala-library:[${scala.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[${scala-java8-compat.version}]</include>
                 <include>org.scala-lang.modules:scala-java8-compat_2.13:[${scala-java8-compat.version}]</include>
