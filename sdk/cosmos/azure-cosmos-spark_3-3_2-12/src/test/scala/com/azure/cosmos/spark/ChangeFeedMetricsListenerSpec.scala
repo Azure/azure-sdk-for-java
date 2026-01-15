@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+// scalastyle:off magic.number
+// scalastyle:off multiple.string.literals
 
 package com.azure.cosmos.spark
 
