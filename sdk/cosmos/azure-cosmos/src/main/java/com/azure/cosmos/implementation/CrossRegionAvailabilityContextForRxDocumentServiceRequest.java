@@ -47,16 +47,8 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
         return shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable.get();
     }
 
-    public void shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(boolean shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable) {
+    public void setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(boolean shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable) {
         this.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable.set(shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable);
-    }
-
-    public void setPerPartitionAutomaticFailoverAppliedStatusForReads(boolean perPartitionAutomaticFailoverAppliedStatus) {
-        this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.set(perPartitionAutomaticFailoverAppliedStatus);
-    }
-
-    public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
-        return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
     }
 
     public void setShouldAddHubRegionProcessingOnlyHeader(boolean shouldAddHubRegionProcessingOnlyHeader) {
@@ -65,5 +57,13 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public boolean shouldAddHubRegionProcessingOnlyHeader() {
         return this.shouldAddHubRegionProcessingOnlyHeader.get();
+    }
+
+    public void setPerPartitionAutomaticFailoverAppliedStatusForReads(boolean perPartitionAutomaticFailoverAppliedStatus) {
+        this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.set(perPartitionAutomaticFailoverAppliedStatus);
+    }
+
+    public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
+        return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
     }
 }

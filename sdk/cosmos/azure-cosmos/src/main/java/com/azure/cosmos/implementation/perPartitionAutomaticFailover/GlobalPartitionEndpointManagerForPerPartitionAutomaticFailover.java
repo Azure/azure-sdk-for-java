@@ -150,11 +150,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             if (!crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable()) {
                 return false;
             }
-
-            // apply PPAF override for reads once - in retry flows stick to applicable regions
-            if (crossRegionAvailabilityContextForRequest.hasPerPartitionAutomaticFailoverBeenAppliedForReads()) {
-                return false;
-            }
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
@@ -182,13 +177,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
 
+        return this.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, isEndToEndTimeoutHit, false);
+    }
+
+    public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit, boolean forceFailoverThroughReads) {
         boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
 
         if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
             return false;
         }
 
-        if (!isPerPartitionAutomaticFailoverApplicable(request)) {
+        if (!isPerPartitionAutomaticFailoverApplicable(request, forceFailoverThroughReads)) {
             return false;
         }
 
@@ -269,6 +268,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
 
+        return this.isPerPartitionAutomaticFailoverApplicable(request, false);
+    }
+
+    public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request, boolean forceFailoverThroughReads) {
+
         boolean isPerPartitionAutomaticFailoverEnabledSnapshot = this.isPerPartitionAutomaticFailoverEnabled.get();
 
         if (!isPerPartitionAutomaticFailoverEnabledSnapshot) {
@@ -287,7 +291,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (request.isReadOnlyRequest()) {
+        if (request.isReadOnlyRequest() && !forceFailoverThroughReads) {
             return false;
         }
 

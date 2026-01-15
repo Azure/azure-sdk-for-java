@@ -217,7 +217,6 @@ public class LocationCache {
         }
     }
 
-
     public UnmodifiableList<RegionalRoutingContext> getApplicableWriteRegionRoutingContexts(RxDocumentServiceRequest request) {
         return this.getApplicableWriteRegionRoutingContexts(request, request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
@@ -470,7 +469,7 @@ public class LocationCache {
             // user wishes to exclude all regions - use partition-set level primary region [or] account-level primary region
             // no cross region retries applicable
             if (!userConfiguredExcludeRegions.isEmpty() && regionalRoutingContextsRemovedByInternalExcludeRegions.isEmpty()) {
-                crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
                 return applicableRegionalRoutingContexts;
             }
 
@@ -479,10 +478,9 @@ public class LocationCache {
             if (effectivePreferredLocations != null && !effectivePreferredLocations.isEmpty()) {
 
                 if (crossRegionAvailabilityContextForRequest.hasPerPartitionAutomaticFailoverBeenAppliedForReads()) {
-                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(false);
                     modifiedRegionalRoutingContexts.add(firstApplicableRegionalRoutingContext);
                 } else {
-                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                    crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
                 }
             }
         }

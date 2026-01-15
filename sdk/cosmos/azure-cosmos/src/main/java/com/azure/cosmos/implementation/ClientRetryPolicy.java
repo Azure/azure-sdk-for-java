@@ -97,6 +97,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         this.retryContext = null;
+        this.setPPAFOverrideForReads(this.request, false);
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null && clientException.getDiagnostics() != null) {
@@ -107,7 +108,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
-            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false)) {
+            this.setPPAFOverrideForReads(this.request, true);
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false, true)) {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
@@ -265,7 +267,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                             = request.requestContext.getCrossRegionAvailabilityContext();
 
                         checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
-                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                        this.setPPAFOverrideForReads(request, true);
                     }
 
                     if (!this.globalEndpointManager.canUseMultipleWriteLocations(request)) {
@@ -552,6 +554,27 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
+    }
+
+    private void setPPAFOverrideForReads(RxDocumentServiceRequest request, boolean followPerPartitionHub) {
+
+        if (request == null) {
+            return;
+        }
+
+        if (request.requestContext == null) {
+            return;
+        }
+
+        if (!request.isReadOnlyRequest() || request.isMetadataRequest()) {
+            return;
+        }
+
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext =  request.requestContext.getCrossRegionAvailabilityContext();
+
+        if  (crossRegionAvailabilityContext != null) {
+            crossRegionAvailabilityContext.setShouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(followPerPartitionHub);
+        }
     }
 
     @Override

@@ -133,7 +133,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
      * @param operationType the type of operation to perform (Read in this test)
      * @throws Exception if test setup fails or unexpected errors occur
      */
-    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios", timeOut = 2 * TIMEOUT, enabled = false)
+    @Test(groups = {"multi-region"}, dataProvider = "hubRegionProcessingScenarios", timeOut = 2 * TIMEOUT)
     public void validateHubRegionProcessingOnReadWith404_1002(OperationType operationType) throws Exception {
 
         // Skip if we don't have at least 3 regions
@@ -152,6 +152,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
             = ConnectionMode.valueOf(cosmosAsyncClientAccessor.getConnectionMode(testClient));
 
         try {
+
+            System.setProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
 
             String databaseId = "testDatabase";
             String containerId = "testContainer";
