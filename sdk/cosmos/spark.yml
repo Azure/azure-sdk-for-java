@@ -24,6 +24,7 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
       JarReadOnlySasUriIndex: 0
@@ -45,6 +46,7 @@ stages:
       DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-4_2-12'
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
       JarReadOnlySasUriIndex: 0
@@ -67,6 +69,7 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2'
       AvoidDBFS: false
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
       JarReadOnlySasUriIndex: 0
@@ -89,6 +92,7 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-12'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4'
       AvoidDBFS: true
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
       JarReadOnlySasUriIndex: 0
@@ -111,6 +115,7 @@ stages:
       SparkVersion: 'azure-cosmos-spark_3-5_2-13'
       ClusterName: 'oltp-ci-spark35-2workers-ds3v2-16.4-scala_2.13'
       AvoidDBFS: true
+      JavaVersion: '1.11'
       JarStorageAccountKey: $(spark-databricks-cosmos-spn-clientIdCert)
       JarReadOnlySasUri: $(spark-databricks-cosmos-spn-clientCertBase64)
       JarReadOnlySasUriIndex: 1
