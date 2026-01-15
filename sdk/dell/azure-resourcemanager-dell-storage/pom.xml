@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-dell-storage</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dell-storage;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dell-storage;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Dell Storage Management</name>
-  <description>This package contains Microsoft Azure SDK for Dell Storage Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Dell Storage service. Package api-version 2025-03-21-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Dell Storage Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Dell Storage service. Package api-version 2025-03-21.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>

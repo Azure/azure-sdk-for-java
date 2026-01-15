@@ -14,6 +14,7 @@ import org.springframework.lang.Nullable;
  *
  * @param <T> the type of the event.
  */
+@SuppressWarnings("deprecation")
 public class CosmosMappingEvent<T> extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;

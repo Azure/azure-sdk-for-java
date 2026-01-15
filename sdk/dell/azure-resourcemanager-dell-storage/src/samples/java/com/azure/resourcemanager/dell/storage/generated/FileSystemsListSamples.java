@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dell.storage.generated;
  */
 public final class FileSystemsListSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class FileSystemsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_ListBySubscription_MaximumSet_Gen.

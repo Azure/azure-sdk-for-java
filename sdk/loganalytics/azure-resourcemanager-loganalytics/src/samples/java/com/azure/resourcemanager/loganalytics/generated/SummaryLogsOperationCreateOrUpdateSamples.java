@@ -30,7 +30,8 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
             .withRuleDefinition(new RuleDefinition().withQuery("MyTable_CL")
                 .withBinSize(180)
                 .withBinDelay(10)
-                .withBinStartTime(OffsetDateTime.parse("2020-02-03T04:05:06Z")))
+                .withBinStartTime(OffsetDateTime.parse("2020-02-03T04:05:06Z"))
+                .withDestinationTable("MyDestinationTable_CL"))
             .create();
     }
 }
