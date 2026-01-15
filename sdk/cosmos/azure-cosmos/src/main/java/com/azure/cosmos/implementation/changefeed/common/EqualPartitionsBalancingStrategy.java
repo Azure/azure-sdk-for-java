@@ -95,16 +95,16 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
             if (leasesToAcquire == 1) {
                 // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
                 Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
-                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount);
+                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} and maxLeasesToAcquirePerCycle {} ",
+                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount, this.maxLeasesToAcquirePerCycle);
 
                 return Collections.singletonList(expiredLease);
             }
 
             // For multiple acquisitions, shuffle and take a random subset.
             Collections.shuffle(expiredLeases, random);
-            this.logger.info("Found {} unused or expired leases; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                expiredLeases.size(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount);
+            this.logger.info("Found {} unused or expired leases; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} and maxLeasesToAcquirePerCycle {} ",
+                expiredLeases.size(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount, this.maxLeasesToAcquirePerCycle);
 
             return expiredLeases.subList(0, Math.min(leasesToAcquire, expiredLeases.size()));
         }
