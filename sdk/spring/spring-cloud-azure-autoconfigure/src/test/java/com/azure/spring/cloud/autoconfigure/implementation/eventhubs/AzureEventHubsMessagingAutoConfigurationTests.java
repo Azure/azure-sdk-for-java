@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.configuration.TestCheckpointStore;
@@ -17,7 +18,7 @@ import com.azure.spring.messaging.eventhubs.implementation.support.converter.Eve
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -88,10 +89,11 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withoutObjectMapperShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .withPropertyValues(
             "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
         )
@@ -100,11 +102,12 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("defaultEventHubsMessageConverter");
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
@@ -113,12 +116,13 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("eventHubsMessageConverter");
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
@@ -127,13 +131,14 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("removal")
     void withUserProvidedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean("userObjectMapper", ObjectMapper.class, ObjectMapper::new)
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
+            .withConfiguration(AutoConfigurations.of(Jackson2AutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);
@@ -148,46 +153,41 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 AzureTokenCredentialAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class))
             .withBean(EventHubsMessageConverter.class, EventHubsMessageConverter::new)
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.eventhubs.credential.token-credential-bean-name=customTokenCredential"
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
-
-                // Verify that the properties contain the correct credential bean name
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
                 AzureEventHubsProperties eventHubsProperties = context.getBean(AzureEventHubsProperties.class);
-                assertThat(eventHubsProperties).isNotNull();
-                assertThat(eventHubsProperties.getCredential()).isNotNull();
+
                 assertThat(eventHubsProperties.getCredential().getTokenCredentialBeanName())
-                    .as("The token-credential-bean-name property should be set to customTokenCredential")
                     .isEqualTo("customTokenCredential");
 
-                // Verify that the custom token credential bean exists
-                assertThat(context).hasBean("customTokenCredential");
-                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
-                assertThat(customCredential).isNotNull();
-
-                // Verify the EventHubsProducerFactory has the tokenCredentialResolver configured
-                assertThat(context).hasSingleBean(EventHubsProducerFactory.class);
                 EventHubsProducerFactory producerFactory = context.getBean(EventHubsProducerFactory.class);
-                assertThat(producerFactory).isNotNull();
+                EventHubsProcessorFactory processorFactory = context.getBean(EventHubsProcessorFactory.class);
 
-                // Verify tokenCredentialResolver resolves to the custom credential
-                Field tokenCredentialResolverField = producerFactory.getClass().getDeclaredField("tokenCredentialResolver");
-                tokenCredentialResolverField.setAccessible(true);
-                Object tokenCredentialResolver = tokenCredentialResolverField.get(producerFactory);
-                assertThat(tokenCredentialResolver).as("TokenCredentialResolver should be configured").isNotNull();
-
-                // Cast to AzureCredentialResolver and invoke resolve() to verify it returns customTokenCredential
-                @SuppressWarnings("unchecked")
-                AzureCredentialResolver<TokenCredential> resolver =
-                    (AzureCredentialResolver<TokenCredential>) tokenCredentialResolver;
-                TokenCredential resolvedCredential = resolver.resolve(eventHubsProperties);
-                assertThat(resolvedCredential)
-                    .as("The resolved credential should be the customTokenCredential bean")
+                // Validate credential resolution - without ApplicationContext propagation fix,
+                // tokenCredentialBeanName would be silently ignored and connection string would be used
+                assertThat(resolveCredential(producerFactory, eventHubsProperties))
                     .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, eventHubsProperties))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                EventHubProducerAsyncClient producer = producerFactory.createProducer("test-eventhub");
+                producer.close();
             });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureEventHubsProperties properties) throws Exception {
+        Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+        field.setAccessible(true);
+        AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+        return resolver.resolve(properties);
     }
 
     @Configuration

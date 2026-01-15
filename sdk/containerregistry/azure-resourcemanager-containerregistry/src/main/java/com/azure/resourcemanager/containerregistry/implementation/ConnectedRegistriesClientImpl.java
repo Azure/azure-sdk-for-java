@@ -175,11 +175,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, filter, accept, context))
             .<PagedResponse<ConnectedRegistryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -218,12 +217,11 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                registryName, filter, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -360,11 +358,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, connectedRegistryName, accept, context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -403,11 +399,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**
@@ -503,10 +498,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryCreateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName,
                 connectedRegistryCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -554,11 +548,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryCreateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, connectedRegistryCreateParameters, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, connectedRegistryCreateParameters, accept, context);
     }
 
     /**
@@ -776,10 +769,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName,
                 connectedRegistryUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -828,11 +820,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, connectedRegistryUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, connectedRegistryUpdateParameters, accept, context);
     }
 
     /**
@@ -1044,12 +1035,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, connectedRegistryName, accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1087,11 +1075,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**
@@ -1271,12 +1258,11 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.deactivate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, connectedRegistryName, accept, context))
+            .withContext(context -> service.deactivate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1314,11 +1300,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deactivate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, connectedRegistryName, accept, context);
+        return service.deactivate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**

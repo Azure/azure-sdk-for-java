@@ -25,6 +25,7 @@ import java.util.List;
  *  How to bind values to the query. if CosmosDb already has binding capability, if not we would have to do it here in
  *  some creative way.query creator are associated with part tree queries,
  */
+@SuppressWarnings("deprecation")
 public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;

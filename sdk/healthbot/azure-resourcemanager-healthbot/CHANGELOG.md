@@ -1,14 +1,51 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-01-05)
 
-### Features Added
+- Azure Resource Manager Healthbot client library for Java. This package contains Microsoft Azure SDK for Healthbot Management SDK. Azure Health Bot is a cloud platform that empowers developers in Healthcare organizations to build and deploy their compliant, AI-powered virtual health assistants and health bots, that help them improve processes and reduce costs. Package api-version 2025-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BotResponseList` was removed
 
-### Other Changes
+#### `models.AvailableOperations` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.HealthBotUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Identity` was modified
+
+* `validate()` was removed
+
+#### `models.KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.HealthBotProperties` was modified
+
+* `validate()` was removed
+
+#### `HealthbotManager` was modified
+
+* `fluent.HealthbotClient serviceClient()` -> `fluent.HealthbotManagementClient serviceClient()`
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
 
 ## 1.1.0 (2025-07-21)
 

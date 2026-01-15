@@ -23,9 +23,9 @@ public final class LanguageScope extends ExpandableStringEnum<LanguageScope> {
     public static final LanguageScope TRANSLITERATION = fromString("Transliteration");
 
     /**
-     * Static value Dictionary for LanguageScope.
+     * Static value Models for LanguageScope.
      */
-    public static final LanguageScope DICTIONARY = fromString("Dictionary");
+    public static final LanguageScope MODELS = fromString("Models");
 
     /**
      * Creates a new instance of LanguageScope value.

@@ -103,8 +103,9 @@ Farm hierarchy is a collection of below entities.
 
 ```java readme-sample-createFarmHierarchy
 // Create Party
-JSONObject object = new JSONObject().appendField("name", "party1");
-BinaryData party = BinaryData.fromObject(object);
+Map<String, String> partyData = new HashMap<>();
+partyData.put("name", "party1");
+BinaryData party = BinaryData.fromObject(partyData);
 partiesClient.createOrUpdateWithResponse("contoso-party", party, null).block();
 
 // Get Party

@@ -10,9 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.containerservice.models.AgentPoolRecentlyUsedVersion;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
-import com.azure.resourcemanager.containerservice.models.ComponentsByRelease;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import java.io.IOException;
 import java.util.List;
@@ -151,38 +149,6 @@ public final class AgentPoolUpgradeProfileInner implements JsonSerializable<Agen
         }
         this.innerProperties().withUpgrades(upgrades);
         return this;
-    }
-
-    /**
-     * Get the componentsByReleases property: List of components grouped by kubernetes major.minor version.
-     * 
-     * @return the componentsByReleases value.
-     */
-    public List<ComponentsByRelease> componentsByReleases() {
-        return this.innerProperties() == null ? null : this.innerProperties().componentsByReleases();
-    }
-
-    /**
-     * Set the componentsByReleases property: List of components grouped by kubernetes major.minor version.
-     * 
-     * @param componentsByReleases the componentsByReleases value to set.
-     * @return the AgentPoolUpgradeProfileInner object itself.
-     */
-    public AgentPoolUpgradeProfileInner withComponentsByReleases(List<ComponentsByRelease> componentsByReleases) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AgentPoolUpgradeProfileProperties();
-        }
-        this.innerProperties().withComponentsByReleases(componentsByReleases);
-        return this;
-    }
-
-    /**
-     * Get the recentlyUsedVersions property: List of historical good versions for rollback operations.
-     * 
-     * @return the recentlyUsedVersions value.
-     */
-    public List<AgentPoolRecentlyUsedVersion> recentlyUsedVersions() {
-        return this.innerProperties() == null ? null : this.innerProperties().recentlyUsedVersions();
     }
 
     /**

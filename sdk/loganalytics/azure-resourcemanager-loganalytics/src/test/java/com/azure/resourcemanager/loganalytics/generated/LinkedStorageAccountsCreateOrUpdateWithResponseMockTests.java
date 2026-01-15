@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
@@ -23,21 +23,21 @@ public final class LinkedStorageAccountsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataSourceType\":\"Alerts\",\"storageAccountIds\":[\"k\",\"jqirwrw\",\"ooxf\",\"i\"]},\"id\":\"hx\",\"name\":\"rsnewmozqvbubqma\",\"type\":\"hsycxhxzgaz\"}";
+            = "{\"properties\":{\"dataSourceType\":\"Query\",\"storageAccountIds\":[\"qogsfikayian\"]},\"id\":\"haru\",\"name\":\"t\",\"type\":\"iqxf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedStorageAccountsResource response = manager.linkedStorageAccounts()
             .define(DataSourceType.QUERY)
-            .withExistingWorkspace("jipnwj", "ujqlafcbahh")
-            .withStorageAccountIds(Arrays.asList("iyjwpfilkmkkho"))
+            .withExistingWorkspace("dirazf", "xejw")
+            .withStorageAccountIds(Arrays.asList("tmvcop", "xcmjurbu"))
             .create();
 
-        Assertions.assertEquals("k", response.storageAccountIds().get(0));
+        Assertions.assertEquals("qogsfikayian", response.storageAccountIds().get(0));
     }
 }

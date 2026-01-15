@@ -10,8 +10,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 public final class TablesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * TablesList.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
