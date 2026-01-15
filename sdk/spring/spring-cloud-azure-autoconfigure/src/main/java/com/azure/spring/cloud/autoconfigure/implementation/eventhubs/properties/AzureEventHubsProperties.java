@@ -44,7 +44,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     private final Processor processor = new Processor();
 
     public Producer buildProducerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Producer properties = new Producer();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
@@ -65,7 +65,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     }
 
     public Consumer buildConsumerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Consumer properties = new Consumer();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
@@ -88,7 +88,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     }
 
     public Processor buildProcessorProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Processor properties = new Processor();
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);

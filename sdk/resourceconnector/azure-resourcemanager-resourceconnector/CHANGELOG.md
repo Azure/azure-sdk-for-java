@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.2.0-beta.1 (2026-01-09)
 
 - Azure Resource Manager Resource Connector client library for Java. This package contains Microsoft Azure SDK for Resource Connector Management SDK. The appliances Rest API spec. Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
