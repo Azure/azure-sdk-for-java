@@ -120,14 +120,7 @@ private[cosmos] class CosmosRowConverter(private val objectMapper: ObjectMapper,
             Some(odt)
         }
         catch {
-            case _: Exception =>
-                try {
-                    val odt = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME)
-                    Some(odt) 
-                }
-                catch {
-                    case _: Exception => None
-                }
+            case _: Exception => None
         }
     }
 
