@@ -38,6 +38,9 @@ parameters:
     type: string
   - name: JarName
     type: string
+  - name: JavaVersion
+    type: string
+    default: '1.11'
 stages:
   - stage:
     displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
@@ -59,7 +62,7 @@ stages:
           goals: 'package'
           options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '${{ parameters.JavaVersion }}'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
       - task: UsePythonVersion@0
