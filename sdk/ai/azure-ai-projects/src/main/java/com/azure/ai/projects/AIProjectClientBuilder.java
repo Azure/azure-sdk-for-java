@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.AIProjectClientImpl;
 import com.azure.ai.projects.implementation.TokenUtils;
+import com.azure.ai.projects.implementation.http.HttpClientHelper;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -32,7 +33,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -41,7 +41,7 @@ import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-import java.time.Duration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -544,8 +544,9 @@ public final class AIProjectClientBuilder
      * @return an instance of EvaluationsClient
      */
     public EvaluationsClient buildEvaluationsClient() {
-        OpenAIOkHttpClient.Builder builder = getOpenAIClientBuilder();
-        return new EvaluationsClient(builder.build());
+        return new EvaluationsClient(getOpenAIClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**
@@ -554,7 +555,9 @@ public final class AIProjectClientBuilder
      * @return an instance of EvaluationsClientAsync
      */
     public EvaluationsAsyncClient buildEvaluationsAsyncClient() {
-        return new EvaluationsAsyncClient(getOpenAIAsyncClientBuilder().build());
+        return new EvaluationsAsyncClient(getOpenAIAsyncClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
@@ -562,12 +565,12 @@ public final class AIProjectClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         }
-        builder.timeout(Duration.ofSeconds(30));
+        // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
+        builder.maxRetries(0);
         return builder;
     }
 
@@ -576,22 +579,13 @@ public final class AIProjectClientBuilder
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.baseUrl(this.endpoint + (this.endpoint.endsWith("/") ? "openai" : "/openai"));
-        builder.replaceHeaders("User-Agent", getUserAgent());
         if (this.serviceVersion != null) {
             builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(this.serviceVersion.getVersion()));
             builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         }
-        builder.timeout(Duration.ofSeconds(30));
+        // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
+        builder.maxRetries(0);
         return builder;
-    }
-
-    private String getUserAgent() {
-        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        String sdkName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String sdkVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
-        return UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AIProjectClientBuilder.class);

@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation.http;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -169,7 +170,11 @@ public final class HttpClientHelper {
             } else if (throwable instanceof TimeoutException) {
                 return throwable;
             } else {
-                return new OpenAIException(throwable.getMessage(), throwable);
+                if (throwable instanceof AzureException) {
+                    return new OpenAIException(throwable.getMessage(), throwable.getCause());
+                } else {
+                    return new OpenAIException(throwable.getMessage(), throwable);
+                }
             }
         }
 
@@ -237,7 +242,7 @@ public final class HttpClientHelper {
         private static Context buildRequestContext(RequestOptions requestOptions) {
             Context context = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
-            // we use "read" as it's the closes thing to the "response timeout"
+            // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
                 context = context.addData("azure-response-timeout", timeout.read());
             }
