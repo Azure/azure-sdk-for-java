@@ -9,6 +9,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
@@ -92,42 +93,31 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Step 2: Grant copy authorization (requires target resource information)
-            // For cross-resource copying, you would use:
-            //
-            // String targetResourceId = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{name}";
-            // String targetRegion = "westus";
-            //
-            // BinaryData requestBody = BinaryData.fromString(String.format(
-            //     "{\"targetAzureResourceId\":\"%s\",\"targetRegion\":\"%s\"}",
-            //     targetResourceId, targetRegion));
-            //
-            // RequestOptions requestOptions = new RequestOptions();
-            // Response<BinaryData> authResponse = sourceClient.grantCopyAuthorizationWithResponse(
-            //     sourceAnalyzerId, requestBody, requestOptions);
-            //
-            // // Parse the authorization response
-            // String authJson = authResponse.getValue().toString();
-            // System.out.println("Copy authorization granted!");
-            // System.out.println("  Target Resource ID: " + targetResourceId);
-            // System.out.println("  Target Region: " + targetRegion);
-            //
-            // Step 3: Copy to target resource (from target client)
-            // ContentUnderstandingClient targetClient = new ContentUnderstandingClientBuilder()
-            //     .endpoint(targetEndpoint)
-            //     .credential(new AzureKeyCredential(targetKey))
-            //     .buildClient();
-            //
-            // String sourceResourceId = "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{name}";
-            // String sourceRegion = "eastus";
-            //
-            // BinaryData copyRequestBody = BinaryData.fromString(String.format(
-            //     "{\"sourceAnalyzerId\":\"%s\",\"sourceAzureResourceId\":\"%s\",\"sourceRegion\":\"%s\"}",
-            //     sourceAnalyzerId, sourceResourceId, sourceRegion));
-            //
-            // SyncPoller<BinaryData, BinaryData> copyPoller = targetClient.beginCopyAnalyzer(
-            //     targetAnalyzerId, copyRequestBody, requestOptions);
-            // BinaryData copyResult = copyPoller.getFinalResult();
-            // System.out.println("Analyzer copied to target resource successfully!");
+            // For cross-resource copying, the target resource ID is required
+            String targetResourceId = System.getenv("TARGET_RESOURCE_ID");
+            String targetRegion = System.getenv("TARGET_REGION");
+
+            if (targetResourceId != null && !targetResourceId.trim().isEmpty()) {
+                // Use convenience method to grant copy authorization
+                CopyAuthorization copyAuth;
+                if (targetRegion != null && !targetRegion.trim().isEmpty()) {
+                    copyAuth = contentUnderstandingClient.grantCopyAuthorization(sourceAnalyzerId, targetResourceId,
+                        targetRegion);
+                } else {
+                    copyAuth = contentUnderstandingClient.grantCopyAuthorization(sourceAnalyzerId, targetResourceId);
+                }
+
+                assertNotNull(copyAuth, "Copy authorization should not be null");
+                System.out.println("Copy authorization granted!");
+                System.out.println("  Target Resource ID: " + targetResourceId);
+                System.out.println("  Target Region: " + (targetRegion != null ? targetRegion : "(default)"));
+                System.out.println("  Authorization Expiry: " + copyAuth.getExpiresAt());
+            } else {
+                System.out.println("\nNote: TARGET_RESOURCE_ID not set. Skipping grantCopyAuthorization call.");
+                System.out.println("To test cross-resource copying, set these environment variables:");
+                System.out.println("  - TARGET_RESOURCE_ID: Azure resource ID of the target resource");
+                System.out.println("  - TARGET_REGION (optional): Azure region of the target resource");
+            }
             // END: com.azure.ai.contentunderstanding.grantCopyAuth
 
             // Verify source analyzer creation
@@ -143,19 +133,18 @@ public class Sample15_GrantCopyAuth extends ContentUnderstandingClientTestBase {
             System.out.println("  Fields: " + sourceResult.getFieldSchema().getFields().size());
 
             // Display API pattern information
-            System.out.println("\n📚 GrantCopyAuthorization API Pattern:");
+            System.out.println("\n📚 GrantCopyAuthorization API Usage:");
             System.out.println("   For cross-resource copying:");
             System.out.println("   1. Create source analyzer in source resource");
-            System.out.println("   2. Call grantCopyAuthorizationWithResponse on source client:");
-            System.out.println("      Request body: {\"targetAzureResourceId\":\"...\",\"targetRegion\":\"...\"}");
-            System.out.println("   3. Use target client to call beginCopyAnalyzer:");
+            System.out.println("   2. Call grantCopyAuthorization on source client:");
             System.out.println(
-                "      Request body: {\"sourceAnalyzerId\":\"...\",\"sourceAzureResourceId\":\"...\",\"sourceRegion\":\"...\"}");
+                "      CopyAuthorization auth = sourceClient.grantCopyAuthorization(analyzerId, targetResourceId);");
+            System.out
+                .println("      // Or with region: grantCopyAuthorization(analyzerId, targetResourceId, targetRegion)");
+            System.out.println("   3. Use target client to call beginCopyAnalyzer with the authorization");
             System.out.println("   4. Wait for copy operation to complete");
 
-            System.out.println("\n✅ GrantCopyAuth pattern demonstration completed");
-            System.out.println("   Note: This sample demonstrates the API pattern.");
-            System.out.println("   For actual cross-resource copying, provide resource IDs and regions.");
+            System.out.println("\n✅ GrantCopyAuth demonstration completed");
 
         } finally {
             // Cleanup
