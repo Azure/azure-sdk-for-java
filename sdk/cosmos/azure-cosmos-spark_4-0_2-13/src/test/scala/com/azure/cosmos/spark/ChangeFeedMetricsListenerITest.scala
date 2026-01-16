@@ -10,14 +10,14 @@ import com.azure.cosmos.implementation.guava25.collect.{HashBiMap, Maps}
 import org.apache.spark.Success
 import org.apache.spark.executor.{ExecutorMetrics, TaskMetrics}
 import org.apache.spark.scheduler.{SparkListenerTaskEnd, TaskInfo}
-import org.apache.spark.sql.execution.metric.SQLMetric
+import org.apache.spark.sql.execution.metric.{SQLMetric, SQLMetrics}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{mock, when}
 
 import java.lang.reflect.Field
 import java.util.concurrent.ConcurrentHashMap
 
-class ChangeFeedMetricsListenerSpec extends UnitSpec {
+class ChangeFeedMetricsListenerITest extends IntegrationSpec with SparkWithJustDropwizardAndNoSlf4jMetrics {
   "ChangeFeedMetricsListener" should "be able to capture changeFeed performance metrics" in {
    val taskEnd = SparkListenerTaskEnd(
     stageId = 1,
@@ -29,10 +29,17 @@ class ChangeFeedMetricsListenerSpec extends UnitSpec {
     taskMetrics = mock(classOf[TaskMetrics])
    )
 
+   val indexMetric = SQLMetrics.createMetric(spark.sparkContext, "index")
+   indexMetric.set(1)
+   val lsnMetric = SQLMetrics.createMetric(spark.sparkContext, "lsn")
+   lsnMetric.set(100)
+   val itemsMetric = SQLMetrics.createMetric(spark.sparkContext, "items")
+   itemsMetric.set(100)
+
    val metrics = Map[String, SQLMetric](
-    CosmosConstants.MetricNames.ChangeFeedPartitionIndex -> new SQLMetric("sum", "index", 1),
-    CosmosConstants.MetricNames.ChangeFeedLsnRange -> new SQLMetric("sum", "lsn", 100),
-    CosmosConstants.MetricNames.ChangeFeedItemsCnt -> new SQLMetric("sum", "items", 100)
+    CosmosConstants.MetricNames.ChangeFeedPartitionIndex -> indexMetric,
+    CosmosConstants.MetricNames.ChangeFeedLsnRange -> lsnMetric,
+    CosmosConstants.MetricNames.ChangeFeedItemsCnt -> itemsMetric
    )
 
    // create sparkInternalsBridge mock
@@ -71,10 +78,17 @@ class ChangeFeedMetricsListenerSpec extends UnitSpec {
    taskMetrics = mock(classOf[TaskMetrics])
   )
 
+  val indexMetric2 = SQLMetrics.createMetric(spark.sparkContext, "index")
+  indexMetric2.set(10)
+  val lsnMetric2 = SQLMetrics.createMetric(spark.sparkContext, "lsn")
+  lsnMetric2.set(100)
+  val itemsMetric2 = SQLMetrics.createMetric(spark.sparkContext, "items")
+  itemsMetric2.set(100)
+
   val metrics = Map[String, SQLMetric](
-   CosmosConstants.MetricNames.ChangeFeedPartitionIndex -> new SQLMetric("sum", "index", 10),
-   CosmosConstants.MetricNames.ChangeFeedLsnRange -> new SQLMetric("sum", "lsn", 100),
-   CosmosConstants.MetricNames.ChangeFeedItemsCnt -> new SQLMetric("sum", "items", 100)
+   CosmosConstants.MetricNames.ChangeFeedPartitionIndex -> indexMetric2,
+   CosmosConstants.MetricNames.ChangeFeedLsnRange -> lsnMetric2,
+   CosmosConstants.MetricNames.ChangeFeedItemsCnt -> itemsMetric2
   )
 
   // create sparkInternalsBridge mock
@@ -111,8 +125,11 @@ class ChangeFeedMetricsListenerSpec extends UnitSpec {
    taskMetrics = mock(classOf[TaskMetrics])
   )
 
+  val unknownMetric3 = SQLMetrics.createMetric(spark.sparkContext, "unknown")
+  unknownMetric3.set(10)
+
   val metrics = Map[String, SQLMetric](
-   "unknownMetrics" -> new SQLMetric("sum", "index", 10)
+   "unknownMetrics" -> unknownMetric3
   )
 
   // create sparkInternalsBridge mock
