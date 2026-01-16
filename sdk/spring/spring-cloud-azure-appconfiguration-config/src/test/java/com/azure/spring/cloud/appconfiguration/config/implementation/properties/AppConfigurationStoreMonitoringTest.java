@@ -18,14 +18,8 @@ public class AppConfigurationStoreMonitoringTest {
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.validateAndInit();
 
-        // Enabled throw error if no triggers
-        monitoring.setEnabled(true);
-        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
-
         List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         monitoring.setTriggers(triggers);
-
-        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
 
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
         trigger.setKey("sentinal");
@@ -55,8 +49,7 @@ public class AppConfigurationStoreMonitoringTest {
         // When refreshAll is enabled, triggers are not required
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        monitoring.setRefreshAll(true);
-        
+
         // Should not throw an exception even with no triggers
         monitoring.validateAndInit();
         
@@ -67,26 +60,10 @@ public class AppConfigurationStoreMonitoringTest {
     }
 
     @Test
-    public void refreshAllDisabledRequiresTriggersTest() {
-        // When refreshAll is disabled or null, triggers are required
-        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        monitoring.setEnabled(true);
-        monitoring.setRefreshAll(false);
-        
-        // Should throw an exception with no triggers
-        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
-        
-        // Setting refreshAll to null should also require triggers
-        monitoring.setRefreshAll(null);
-        assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
-    }
-
-    @Test
     public void refreshAllWithTriggersTest() {
         // Even when refreshAll is enabled, having triggers should still be valid
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        monitoring.setRefreshAll(true);
         
         List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
@@ -103,7 +80,6 @@ public class AppConfigurationStoreMonitoringTest {
         // When monitoring is disabled, refreshAll setting should not matter
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(false);
-        monitoring.setRefreshAll(true);
         
         // Should not throw an exception even with no triggers
         monitoring.validateAndInit();

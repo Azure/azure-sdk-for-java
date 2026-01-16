@@ -17,7 +17,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
@@ -228,8 +228,9 @@ public class AppConfigurationRefreshUtil {
             replicaLookUp.updateAutoFailoverEndpoints();
 
             // Check collection monitoring first if configured
-            if (state.getCollectionWatchKeys() != null && !state.getCollectionWatchKeys().isEmpty()) {
-                refreshWithoutTimeCollectionMonitoring(client, state.getCollectionWatchKeys(), eventData, context);
+            List<WatchedConfigurationSettings> watchedSettings = state.getCollectionWatchKeys();
+            if (watchedSettings != null && !watchedSettings.isEmpty()) {
+                refreshWithoutTimeCollectionMonitoring(client, watchedSettings, eventData, context);
             } else {
                 // Fall back to traditional watch key monitoring
                 refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
@@ -276,9 +277,9 @@ public class AppConfigurationRefreshUtil {
      * @throws AppConfigurationStatusException if there's an error during the refresh check
      */
     private static void refreshWithoutTimeCollectionMonitoring(AppConfigurationReplicaClient client,
-        List<CollectionMonitoring> collectionWatchKeys, RefreshEventData eventData, Context context)
+        List<WatchedConfigurationSettings> collectionWatchKeys, RefreshEventData eventData, Context context)
         throws AppConfigurationStatusException {
-        for (CollectionMonitoring collectionMonitoring : collectionWatchKeys) {
+        for (WatchedConfigurationSettings collectionMonitoring : collectionWatchKeys) {
             if (client.checkWatchKeys(collectionMonitoring.getSettingSelector(), context)) {
                 String eventDataInfo = collectionMonitoring.getSettingSelector().getKeyFilter();
 
@@ -311,7 +312,7 @@ public class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
-            for (CollectionMonitoring featureFlags : state.getWatchKeys()) {
+            for (WatchedConfigurationSettings featureFlags : state.getWatchKeys()) {
                 if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                     // Only one refresh event needs to be called to update all of the
                     // stores, not one for each.
@@ -340,7 +341,7 @@ public class AppConfigurationRefreshUtil {
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState watchKeys,
         RefreshEventData eventData, Context context) throws AppConfigurationStatusException {
 
-        for (CollectionMonitoring featureFlags : watchKeys.getWatchKeys()) {
+        for (WatchedConfigurationSettings featureFlags : watchKeys.getWatchKeys()) {
             if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                 // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.

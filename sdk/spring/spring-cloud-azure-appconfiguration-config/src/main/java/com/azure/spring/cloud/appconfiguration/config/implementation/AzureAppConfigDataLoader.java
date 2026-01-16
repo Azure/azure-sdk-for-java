@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,8 +24,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
@@ -153,7 +154,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
                     sourceList.addAll(createSettings(currentClient));
-                    List<CollectionMonitoring> featureFlags = createFeatureFlags(currentClient);
+                    List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
 
                     logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -163,9 +164,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                     if (monitoring.isEnabled()) {
                         // Check if refreshAll is enabled - if so, use collection monitoring
-                        if (Boolean.TRUE.equals(monitoring.getRefreshAll())) {
+                        if (monitoring.getTriggers().size() == 0) {
                             // Use collection monitoring for refresh
-                            List<CollectionMonitoring> collectionMonitoringList = createCollectionMonitoring(currentClient);
+                            List<WatchedConfigurationSettings> collectionMonitoringList = getWatchedConfigurationSettings(currentClient);
                             storeState.setState(resource.getEndpoint(), Collections.emptyList(), collectionMonitoringList, monitoring.getRefreshInterval());
                         } else {
                             // Use traditional watch key monitoring
@@ -270,13 +271,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * @return a list of CollectionMonitoring
      * @throws Exception creating feature flags failed
      */
-    private List<CollectionMonitoring> createFeatureFlags(AppConfigurationReplicaClient client)
+    private List<WatchedConfigurationSettings> createFeatureFlags(AppConfigurationReplicaClient client)
         throws Exception {
-        List<CollectionMonitoring> featureFlagWatchKeys = new ArrayList<>();
+        List<WatchedConfigurationSettings> featureFlagWatchKeys = new ArrayList<>();
         List<String> profiles = resource.getProfiles().getActive();
 
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
-            List<CollectionMonitoring> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+            List<WatchedConfigurationSettings> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
                 selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
@@ -292,9 +293,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * @return a list of CollectionMonitoring for configuration settings
      * @throws Exception creating collection monitoring failed
      */
-    private List<CollectionMonitoring> createCollectionMonitoring(AppConfigurationReplicaClient client)
+    private List<WatchedConfigurationSettings> getWatchedConfigurationSettings(AppConfigurationReplicaClient client)
         throws Exception {
-        List<CollectionMonitoring> collectionMonitoringList = new ArrayList<>();
+        List<WatchedConfigurationSettings> collectionMonitoringList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
         List<String> profiles = resource.getProfiles().getActive();
 
@@ -310,7 +311,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     .setKeyFilter(selectedKeys.getKeyFilter() + "*")
                     .setLabelFilter(label);
                 
-                CollectionMonitoring collectionMonitoring = client.collectionMonitoring(settingSelector, requestContext);
+                WatchedConfigurationSettings collectionMonitoring = client.collectionMonitoring(settingSelector, requestContext);
                 collectionMonitoringList.add(collectionMonitoring);
             }
         }

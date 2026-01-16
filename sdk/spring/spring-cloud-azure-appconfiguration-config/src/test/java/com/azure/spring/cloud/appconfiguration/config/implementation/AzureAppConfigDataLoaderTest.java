@@ -25,7 +25,7 @@ import org.springframework.boot.context.config.Profiles;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
@@ -38,7 +38,7 @@ public class AzureAppConfigDataLoaderTest {
     private AppConfigurationReplicaClient clientMock;
 
     @Mock
-    private CollectionMonitoring collectionMonitoringMock;
+    private WatchedConfigurationSettings collectionMonitoringMock;
 
     private AzureAppConfigDataResource resource;
 
@@ -93,7 +93,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Use reflection to test the private method
         AzureAppConfigDataLoader loader = createLoader();
-        List<CollectionMonitoring> result = invokeCreateCollectionMonitoring(loader, clientMock);
+        List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
         // Verify
         assertNotNull(result);
@@ -126,7 +126,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Test
         AzureAppConfigDataLoader loader = createLoader();
-        List<CollectionMonitoring> result = invokeCreateCollectionMonitoring(loader, clientMock);
+        List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
         // Verify - should create collection monitoring for both selectors
         assertNotNull(result);
@@ -153,7 +153,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Test
         AzureAppConfigDataLoader loader = createLoader();
-        List<CollectionMonitoring> result = invokeCreateCollectionMonitoring(loader, clientMock);
+        List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
         // Verify - snapshot should be skipped, only regular selector should be processed
         assertNotNull(result);
@@ -175,7 +175,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Test
         AzureAppConfigDataLoader loader = createLoader();
-        List<CollectionMonitoring> result = invokeCreateCollectionMonitoring(loader, clientMock);
+        List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
         // Verify - should create collection monitoring for each label
         assertNotNull(result);
@@ -188,7 +188,6 @@ public class AzureAppConfigDataLoaderTest {
         // Setup monitoring with refreshAll enabled
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        monitoring.setRefreshAll(true);
         configStore.setMonitoring(monitoring);
 
         // Setup selector
@@ -203,7 +202,7 @@ public class AzureAppConfigDataLoaderTest {
 
         // Test - verify that collection monitoring is created when refreshAll is enabled
         AzureAppConfigDataLoader loader = createLoader();
-        List<CollectionMonitoring> result = invokeCreateCollectionMonitoring(loader, clientMock);
+        List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
         
         // Verify collection monitoring was created
         assertNotNull(result);
@@ -216,7 +215,6 @@ public class AzureAppConfigDataLoaderTest {
         // Setup monitoring with refreshAll disabled (traditional watch keys)
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        monitoring.setRefreshAll(false);
         
         // Add trigger for traditional watch key
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
@@ -246,7 +244,7 @@ public class AzureAppConfigDataLoaderTest {
         return new AzureAppConfigDataLoader(logFactory);
     }
 
-    private List<CollectionMonitoring> invokeCreateCollectionMonitoring(
+    private List<WatchedConfigurationSettings> invokeGetWatchedConfigurationSettings(
         AzureAppConfigDataLoader loader, AppConfigurationReplicaClient client) throws Exception {
         // Set resource field in the loader using reflection
         java.lang.reflect.Field resourceField = AzureAppConfigDataLoader.class.getDeclaredField("resource");
@@ -260,10 +258,10 @@ public class AzureAppConfigDataLoaderTest {
 
         // Use reflection to invoke private method
         java.lang.reflect.Method method = AzureAppConfigDataLoader.class
-            .getDeclaredMethod("createCollectionMonitoring", AppConfigurationReplicaClient.class);
+            .getDeclaredMethod("getWatchedConfigurationSettings", AppConfigurationReplicaClient.class);
         method.setAccessible(true);
         @SuppressWarnings("unchecked")
-        List<CollectionMonitoring> result = (List<CollectionMonitoring>) method.invoke(loader, client);
+        List<WatchedConfigurationSettings> result = (List<WatchedConfigurationSettings>) method.invoke(loader, client);
         return result;
     }
 }

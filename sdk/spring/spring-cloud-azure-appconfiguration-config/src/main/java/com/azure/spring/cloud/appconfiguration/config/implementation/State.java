@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Immutable representation of the refresh state for an Azure App Configuration store.
@@ -24,7 +24,7 @@ class State {
     private final List<ConfigurationSetting> watchKeys;
 
     /** Collection monitoring configurations that can trigger refresh events. */
-    private final List<CollectionMonitoring> collectionWatchKeys;
+    private final List<WatchedConfigurationSettings> collectionWatchKeys;
 
     /** The next time this store should be checked for refresh. */
     private final Instant nextRefreshCheck;
@@ -56,7 +56,7 @@ class State {
      * @param refreshInterval refresh interval in seconds
      * @param originEndpoint the endpoint URL of the configuration store
      */
-    State(List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys, int refreshInterval, String originEndpoint) {
+    State(List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys, int refreshInterval, String originEndpoint) {
         this(watchKeys, collectionWatchKeys, refreshInterval, originEndpoint, Instant.now().plusSeconds(refreshInterval), 1);
     }
 
@@ -92,7 +92,7 @@ class State {
      * @param nextRefreshCheck the next time to check for refresh
      * @param refreshAttempt the current refresh attempt count
      */
-    private State(List<ConfigurationSetting> watchKeys, List<CollectionMonitoring> collectionWatchKeys,
+    private State(List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys,
                   int refreshInterval, String originEndpoint, Instant nextRefreshCheck, int refreshAttempt) {
         this.watchKeys = watchKeys;
         this.collectionWatchKeys = collectionWatchKeys;
@@ -114,7 +114,7 @@ class State {
      * Gets the collection monitoring configurations for this store.
      * @return the list of collection monitoring configurations, or null if not configured
      */
-    public List<CollectionMonitoring> getCollectionWatchKeys() {
+    public List<WatchedConfigurationSettings> getCollectionWatchKeys() {
         return collectionWatchKeys;
     }
 

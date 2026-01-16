@@ -21,7 +21,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -159,7 +159,7 @@ class AppConfigurationReplicaClient {
      * @return CollectionMonitoring containing the retrieved configuration settings and match conditions
      * @throws HttpResponseException if the request fails
      */
-    CollectionMonitoring collectionMonitoring(SettingSelector settingSelector, Context context) {
+    WatchedConfigurationSettings collectionMonitoring(SettingSelector settingSelector, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
@@ -174,7 +174,7 @@ class AppConfigurationReplicaClient {
             // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
             settingSelector.setMatchConditions(checks);
-            return new CollectionMonitoring(settingSelector, configurationSettings);
+            return new WatchedConfigurationSettings(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
             throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
@@ -190,7 +190,7 @@ class AppConfigurationReplicaClient {
      * @return CollectionMonitoring containing the retrieved feature flags and match conditions
      * @throws HttpResponseException if the request fails
      */
-    CollectionMonitoring listFeatureFlags(SettingSelector settingSelector, Context context)
+    WatchedConfigurationSettings listFeatureFlags(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
@@ -207,7 +207,7 @@ class AppConfigurationReplicaClient {
             // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
             settingSelector.setMatchConditions(checks);
-            return new CollectionMonitoring(settingSelector, configurationSettings);
+            return new WatchedConfigurationSettings(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
             throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {

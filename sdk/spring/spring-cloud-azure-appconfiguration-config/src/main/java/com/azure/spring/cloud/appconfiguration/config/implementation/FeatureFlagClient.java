@@ -37,7 +37,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
@@ -78,9 +78,9 @@ class FeatureFlagClient {
      * </p>
      *
      */
-    List<CollectionMonitoring> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    List<WatchedConfigurationSettings> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter, Context context) {
-        List<CollectionMonitoring> loadedFeatureFlags = new ArrayList<>();
+        List<WatchedConfigurationSettings> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
@@ -95,18 +95,15 @@ class FeatureFlagClient {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
             context.addData("FeatureFlagTracing", tracing);
 
-            CollectionMonitoring features = replicaClient.listFeatureFlags(settingSelector, context);
-            loadedFeatureFlags.addAll(proccessFeatureFlags(features, replicaClient.getOriginClient()));
+            WatchedConfigurationSettings features = replicaClient.listFeatureFlags(settingSelector, context);
+            loadedFeatureFlags.add(proccessFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    List<CollectionMonitoring> proccessFeatureFlags(CollectionMonitoring features, String endpoint) {
-        List<CollectionMonitoring> loadedFeatureFlags = new ArrayList<>();
-        loadedFeatureFlags.add(features);
-
+    WatchedConfigurationSettings proccessFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
         // Reading In Features
-        for (ConfigurationSetting setting : features.getConfigurations()) {
+        for (ConfigurationSetting setting : features.getConfigurationSettings()) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
@@ -114,7 +111,7 @@ class FeatureFlagClient {
                 properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
             }
         }
-        return loadedFeatureFlags;
+        return features;
     }
 
     /**

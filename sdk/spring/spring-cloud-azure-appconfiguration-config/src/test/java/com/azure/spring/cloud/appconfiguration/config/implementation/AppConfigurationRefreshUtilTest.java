@@ -34,7 +34,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
@@ -142,7 +142,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new WatchedConfigurationSettings(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
         // Config Store does return a watch key change.
@@ -190,7 +190,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new WatchedConfigurationSettings(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
         // Config Store doesn't return a watch key change.
@@ -210,7 +210,7 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
-        CollectionMonitoring featureFlags = new CollectionMonitoring(new SettingSelector(), watchKeysFeatureFlags);
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(new SettingSelector(), watchKeysFeatureFlags);
         FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags),
             Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
 
@@ -512,7 +512,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientOriginMock.checkWatchKeys(Mockito.any(), Mockito.any(Context.class))).thenReturn(false);
 
         FeatureFlagState newState = new FeatureFlagState(
-            List.of(new CollectionMonitoring(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
+            List.of(new WatchedConfigurationSettings(new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null)),
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
         // Config Store doesn't return a watch key change.
@@ -538,7 +538,7 @@ public class AppConfigurationRefreshUtilTest {
         setupFeatureFlagLoad();
         when(clientOriginMock.checkWatchKeys(Mockito.any(), Mockito.any(Context.class))).thenReturn(true);
 
-        CollectionMonitoring featureFlags = new CollectionMonitoring(new SettingSelector(), watchKeysFeatureFlags);
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(new SettingSelector(), watchKeysFeatureFlags);
 
         FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags),
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
@@ -600,14 +600,13 @@ public class AppConfigurationRefreshUtilTest {
         // Test that when refreshAll is enabled, collection monitoring is used instead of watch keys
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
-        monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
         // Set up collection monitoring state
-        CollectionMonitoring collectionMonitoring = new CollectionMonitoring(
+        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null);
         State state = new State(null, List.of(collectionMonitoring), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
@@ -640,7 +639,6 @@ public class AppConfigurationRefreshUtilTest {
         // Test that when refreshAll is enabled with null watchKeys, collection monitoring is still used
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
-        monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         FeatureFlagStore disabledFeatureStore = new FeatureFlagStore();
         disabledFeatureStore.setEnabled(false);
@@ -650,7 +648,7 @@ public class AppConfigurationRefreshUtilTest {
             .thenReturn(clientOriginMock);
 
         // Set up state with null watch keys but valid collection monitoring
-        CollectionMonitoring collectionMonitoring = new CollectionMonitoring(
+        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null);
         State state = new State(null, List.of(collectionMonitoring), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
@@ -678,7 +676,6 @@ public class AppConfigurationRefreshUtilTest {
         // Test that collection monitoring correctly detects no change
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
-        monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         FeatureFlagStore disabledFeatureStore = new FeatureFlagStore();
         disabledFeatureStore.setEnabled(false);
@@ -687,7 +684,7 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        CollectionMonitoring collectionMonitoring = new CollectionMonitoring(
+        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), 
             generateWatchKeys());
         State state = new State(null, List.of(collectionMonitoring), 
@@ -715,13 +712,12 @@ public class AppConfigurationRefreshUtilTest {
         // Test that collection monitoring correctly detects changes
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
-        monitoring.setRefreshAll(true);
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
         when(clientFactoryMock.getConnections()).thenReturn(Map.of(endpoint, connectionManagerMock));
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        CollectionMonitoring collectionMonitoring = new CollectionMonitoring(
+        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), 
             generateWatchKeys());
         State state = new State(null, List.of(collectionMonitoring), 

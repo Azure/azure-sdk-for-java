@@ -5,17 +5,17 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.feature;
 import java.time.Instant;
 import java.util.List;
 
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.CollectionMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 public class FeatureFlagState {
 
-    private final List<CollectionMonitoring> watchKeys;
+    private final List<WatchedConfigurationSettings> watchKeys;
 
     private final Instant nextRefreshCheck;
 
     private final String originEndpoint;
 
-    public FeatureFlagState(List<CollectionMonitoring> watchKeys, int refreshInterval, String originEndpoint) {
+    public FeatureFlagState(List<WatchedConfigurationSettings> watchKeys, int refreshInterval, String originEndpoint) {
         this.watchKeys = watchKeys;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
         this.originEndpoint = originEndpoint;
@@ -30,7 +30,7 @@ public class FeatureFlagState {
     /**
      * @return the watchKeys
      */
-    public List<CollectionMonitoring> getWatchKeys() {
+    public List<WatchedConfigurationSettings> getWatchKeys() {
         return watchKeys;
     }
 

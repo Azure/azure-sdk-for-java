@@ -7,15 +7,15 @@ import java.util.List;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-public class CollectionMonitoring {
+public class WatchedConfigurationSettings {
 
     private SettingSelector settingSelector;
 
-    private List<ConfigurationSetting> configurations;
+    private List<ConfigurationSetting> configurationSettings;
 
-    public CollectionMonitoring(SettingSelector settingSelector, List<ConfigurationSetting> configurations) {
+    public WatchedConfigurationSettings(SettingSelector settingSelector, List<ConfigurationSetting> configurationSettings) {
         this.settingSelector = settingSelector;
-        this.configurations = configurations;
+        this.configurationSettings = configurationSettings;
     }
 
     /**
@@ -35,15 +35,15 @@ public class CollectionMonitoring {
     /**
      * @return the featureFlags
      */
-    public List<ConfigurationSetting> getConfigurations() {
-        return configurations;
+    public List<ConfigurationSetting> getConfigurationSettings() {
+        return configurationSettings;
     }
 
     /**
      * @param configurations the configurations to set
      */
-    public void setConfigurations(List<ConfigurationSetting> configurations) {
-        this.configurations = configurations;
+    public void setConfigurationSettings(List<ConfigurationSetting> configurations) {
+        this.configurationSettings = configurations;
     }
 
 }
