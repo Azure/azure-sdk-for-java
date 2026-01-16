@@ -174,6 +174,17 @@ public class ClientSideRequestStatistics {
             storeResponseStatistics.perPartitionCircuitBreakerInfoHolder = request.requestContext.getPerPartitionCircuitBreakerInfoHolder();
             storeResponseStatistics.perPartitionFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
 
+            if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
+                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                    = request.requestContext.getCrossRegionAvailabilityContext();
+
+                if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
+                    storeResponseStatistics.isHubRegionProcessingOnly = "true";
+                } else {
+                    storeResponseStatistics.isHubRegionProcessingOnly = "false";
+                }
+            }
+
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
@@ -256,6 +267,14 @@ public class ClientSideRequestStatistics {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
                     gatewayStatistics.perPartitionCircuitBreakerInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder();
                     gatewayStatistics.perPartitionFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
+                    gatewayStatistics.isHubRegionProcessingOnly = "false";
+
+                    CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                        = rxDocumentServiceRequest.requestContext.getCrossRegionAvailabilityContext();
+
+                    if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
+                        gatewayStatistics.isHubRegionProcessingOnly = "true";
+                    }
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -703,6 +722,9 @@ public class ClientSideRequestStatistics {
         @JsonSerialize(using = PerPartitionFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
         private PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
+        @JsonSerialize
+        private String isHubRegionProcessingOnly;
+
         public String getExcludedRegions() {
             return this.excludedRegions;
         }
@@ -745,6 +767,14 @@ public class ClientSideRequestStatistics {
 
         public PerPartitionFailoverInfoHolder getPerPartitionFailoverInfoHolder() {
             return perPartitionFailoverInfoHolder;
+        }
+
+        public String getIsHubRegionProcessingOnly() {
+            return isHubRegionProcessingOnly;
+        }
+
+        public void setIsHubRegionProcessingOnly(String isHubRegionProcessingOnly) {
+            this.isHubRegionProcessingOnly = isHubRegionProcessingOnly;
         }
 
         @JsonIgnore
@@ -914,6 +944,7 @@ public class ClientSideRequestStatistics {
         private String endpoint;
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
+        private String isHubRegionProcessingOnly;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1016,6 +1047,7 @@ public class ClientSideRequestStatistics {
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());
                 this.writeNonNullStringField(jsonGenerator, "endpoint", gatewayStatistics.getEndpoint());
+                this.writeNonNullStringField(jsonGenerator, "isHubRegionProcessingOnly", gatewayStatistics.isHubRegionProcessingOnly);
 
                 if (StringUtils.isEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
                     this.writeNonEmptyStringArrayField(
