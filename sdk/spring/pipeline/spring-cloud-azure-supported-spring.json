@@ -4,6 +4,14 @@
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
     "supportStatus" : "TODO",
+    "spring-boot-version" : "4.1.0-SNAPSHOT",
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "SNAPSHOT",
+    "snapshot" : true,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "4.0.2-SNAPSHOT",
     "spring-cloud-version" : "2025.1.0"
   },

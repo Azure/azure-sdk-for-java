@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Remaps sub-status to 1003 for requests to child resources against non-existent container. - [PR 47604](https://github.com/Azure/azure-sdk-for-java/pull/47604)
 
 ### 4.76.0 (2025-12-09)
 
