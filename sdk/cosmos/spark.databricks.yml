@@ -124,7 +124,7 @@ stages:
               JAR_URL_SELECTED="$(echo "${JAR_URL_ARRAY[$JAR_URL_INDEX]}" | xargs)"
             
               echo "[init] Downloading $JAR_NAME to validate checksum..."
-              echo "[URI] $JAR_URL_SELECTED"
+
               # Download with retries; fail non-zero on HTTP errors
               if command -v curl >/dev/null 2>&1; then
                 curl -fL --retry 8 --retry-connrefused --retry-delay 2 --max-time 600 \
