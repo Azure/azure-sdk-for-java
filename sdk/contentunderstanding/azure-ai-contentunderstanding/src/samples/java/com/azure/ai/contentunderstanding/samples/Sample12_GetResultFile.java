@@ -10,7 +10,6 @@ import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -100,9 +99,9 @@ public class Sample12_GetResultFile {
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image
-            Response<BinaryData> fileResponse = client.getResultFileWithResponse(operationId, framePath, null);
-            byte[] imageBytes = fileResponse.getValue().toBytes();
+            // Retrieve the keyframe image using convenience method
+            BinaryData fileData = client.getResultFile(operationId, framePath);
+            byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
             // Save the keyframe image
@@ -132,8 +131,7 @@ public class Sample12_GetResultFile {
                 System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
             }
 
-            System.out.println("\n📥 File Response Verification:");
-            System.out.println("File response status: " + fileResponse.getStatusCode());
+            System.out.println("\n📥 File Data Retrieved");
 
             System.out.println("\nVerifying image data...");
             System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes ("
@@ -160,12 +158,11 @@ public class Sample12_GetResultFile {
                 long middleFrameTimeMs = keyFrameTimes.get(middleIndex);
                 String middleFramePath = "keyframes/" + middleFrameTimeMs;
 
-                Response<BinaryData> middleFileResponse
-                    = client.getResultFileWithResponse(operationId, middleFramePath, null);
+                BinaryData middleFileData = client.getResultFile(operationId, middleFramePath);
                 System.out.println(
                     "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
                 System.out.println(
-                    "  Size: " + String.format("%,d", middleFileResponse.getValue().toBytes().length) + " bytes");
+                    "  Size: " + String.format("%,d", middleFileData.toBytes().length) + " bytes");
             }
 
             // Summary
@@ -183,9 +180,9 @@ public class Sample12_GetResultFile {
             System.out.println("   For video analysis with keyframes:");
             System.out.println("   1. Analyze video with prebuilt-videoSearch");
             System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
-            System.out.println("   3. Retrieve keyframes using getResultFileWithResponse():");
-            System.out.println("      Response<BinaryData> response = client.getResultFileWithResponse(\"" + operationId
-                + "\", \"keyframes/1000\", null);");
+            System.out.println("   3. Retrieve keyframes using getResultFile():");
+            System.out.println("      BinaryData fileData = client.getResultFile(\"" + operationId
+                + "\", \"keyframes/1000\");");
             System.out.println("   4. Save or process the keyframe image");
 
             System.out.println("Operation ID available for GetResultFile API: " + operationId);

@@ -8,7 +8,6 @@ import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
@@ -97,10 +96,9 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image
-            Response<BinaryData> fileResponse
-                = contentUnderstandingClient.getResultFileWithResponse(operationId, framePath, null);
-            byte[] imageBytes = fileResponse.getValue().toBytes();
+            // Retrieve the keyframe image using convenience method
+            BinaryData fileData = contentUnderstandingClient.getResultFile(operationId, framePath);
+            byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
             // Save the keyframe image
@@ -142,12 +140,9 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
                 System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
             }
 
-            // Verify file response
-            System.out.println("\n📥 File Response Verification:");
-            assertNotNull(fileResponse, "File response should not be null");
-            assertNotNull(fileResponse.getValue(), "File response value should not be null");
-            assertEquals(200, fileResponse.getStatusCode(), "File response status should be 200");
-            System.out.println("File response status: " + fileResponse.getStatusCode());
+            // Verify file data
+            System.out.println("\n📥 File Data Verification:");
+            assertNotNull(fileData, "File data should not be null");
 
             // Verify image data
             System.out.println("\nVerifying image data...");
@@ -184,14 +179,12 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
                 long middleFrameTimeMs = keyFrameTimes.get(middleIndex);
                 String middleFramePath = "keyframes/" + middleFrameTimeMs;
 
-                Response<BinaryData> middleFileResponse
-                    = contentUnderstandingClient.getResultFileWithResponse(operationId, middleFramePath, null);
-                assertNotNull(middleFileResponse, "Middle keyframe response should not be null");
-                assertTrue(middleFileResponse.getValue().toBytes().length > 0, "Middle keyframe should have content");
+                BinaryData middleFileData = contentUnderstandingClient.getResultFile(operationId, middleFramePath);
+                assertNotNull(middleFileData, "Middle keyframe data should not be null");
+                assertTrue(middleFileData.toBytes().length > 0, "Middle keyframe should have content");
                 System.out.println(
                     "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
-                System.out.println(
-                    "  Size: " + String.format("%,d", middleFileResponse.getValue().toBytes().length) + " bytes");
+                System.out.println("  Size: " + String.format("%,d", middleFileData.toBytes().length) + " bytes");
             }
 
             // Summary
@@ -209,10 +202,9 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
             System.out.println("   For video analysis with keyframes:");
             System.out.println("   1. Analyze video with prebuilt-videoSearch");
             System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
-            System.out.println("   3. Retrieve keyframes using getResultFileWithResponse():");
-            System.out
-                .println("      Response<BinaryData> response = contentUnderstandingClient.getResultFileWithResponse(\""
-                    + operationId + "\", \"keyframes/1000\", null);");
+            System.out.println("   3. Retrieve keyframes using getResultFile():");
+            System.out.println("      BinaryData fileData = contentUnderstandingClient.getResultFile(\"" + operationId
+                + "\", \"keyframes/1000\");");
             System.out.println("   4. Save or process the keyframe image");
 
             // Verify content type
