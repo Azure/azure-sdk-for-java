@@ -22,12 +22,12 @@ import java.util.UUID;
 
 /**
  * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage.
- * 
+ *
  * Required environment variables:
  * - TRAINING_DATA_STORAGE_ACCOUNT: Azure Storage account name
  * - TRAINING_DATA_CONTAINER_NAME: Container name with training data
  * - TRAINING_DATA_SAS_URL: SAS URL for the container (optional, if not using managed identity)
- * 
+ *
  * Training data structure:
  * - Container should have labeled documents with .labels.json and .result.json files
  * - Example: receipt.pdf, receipt.pdf.labels.json, receipt.pdf.result.json
@@ -37,7 +37,7 @@ public class Sample16_CreateAnalyzerWithLabels {
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample16.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);

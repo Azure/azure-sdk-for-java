@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
  * 1. Using protocol method to get raw JSON response instead of strongly-typed objects
  * 2. Parsing raw JSON response
  * 3. Pretty-printing and saving JSON to file
- * 
+ *
  * Note: For production use, prefer the object model approach (beginAnalyzeBinary with typed parameters)
  * which returns AnalyzeResult objects that are easier to work with.
  */
@@ -37,7 +37,7 @@ public class Sample11_AnalyzeReturnRawJson {
     public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample11.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);

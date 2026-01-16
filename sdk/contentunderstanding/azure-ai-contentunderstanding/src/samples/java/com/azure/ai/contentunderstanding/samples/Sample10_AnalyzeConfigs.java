@@ -39,7 +39,7 @@ public class Sample10_AnalyzeConfigs {
     public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample10.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);

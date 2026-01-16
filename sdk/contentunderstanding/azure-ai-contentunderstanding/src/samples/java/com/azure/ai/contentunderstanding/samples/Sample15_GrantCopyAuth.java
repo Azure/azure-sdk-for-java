@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.CopyAuthorization;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
@@ -19,160 +20,152 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
- * Sample demonstrates how to grant copy authorization for cross-resource analyzer copying.
+ * Sample demonstrates how to grant copy authorization and copy an analyzer from a source
+ * Microsoft Foundry resource to a target Microsoft Foundry resource (cross-resource copying).
  *
- * Note: This sample demonstrates the API pattern for cross-resource copying.
- * For same-resource copying, see Sample14_CopyAnalyzer.
+ * <p>For same-resource copying, see Sample14_CopyAnalyzer.</p>
  *
- * Required environment variables for cross-resource copying:
- * - SOURCE_RESOURCE_ID: Azure resource ID of the source resource
- * - SOURCE_REGION: Region of the source resource
- * - TARGET_ENDPOINT: Endpoint of the target resource
- * - TARGET_RESOURCE_ID: Azure resource ID of the target resource
- * - TARGET_REGION: Region of the target resource
- * - TARGET_KEY (optional): API key for the target resource
+ * <p>Required environment variables:</p>
+ * <ul>
+ *   <li>CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint</li>
+ *   <li>CONTENTUNDERSTANDING_KEY (optional): API key for source resource</li>
+ *   <li>SOURCE_RESOURCE_ID: Azure resource ID of the source resource</li>
+ *   <li>SOURCE_REGION: Region of the source resource</li>
+ *   <li>TARGET_ENDPOINT: Endpoint of the target resource</li>
+ *   <li>TARGET_KEY (optional): API key for target resource</li>
+ *   <li>TARGET_RESOURCE_ID: Azure resource ID of the target resource</li>
+ *   <li>TARGET_REGION: Region of the target resource</li>
+ * </ul>
+ *
+ * <p>Note: If API keys are not provided, DefaultAzureCredential will be used.
+ * Cross-resource copying with DefaultAzureCredential requires 'Cognitive Services User' role
+ * on both source and target resources.</p>
  */
 public class Sample15_GrantCopyAuth {
 
     public static void main(String[] args) {
-        // BEGIN: com.azure.ai.contentunderstanding.sample15.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        // Get configuration from environment variables
+        String sourceEndpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String sourceKey = System.getenv("CONTENTUNDERSTANDING_KEY");
+        String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
+        String sourceRegion = System.getenv("SOURCE_REGION");
+        String targetEndpoint = System.getenv("TARGET_ENDPOINT");
+        String targetKey = System.getenv("TARGET_KEY");
+        String targetResourceId = System.getenv("TARGET_RESOURCE_ID");
+        String targetRegion = System.getenv("TARGET_REGION");
 
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient sourceClient;
-        if (key != null && !key.trim().isEmpty()) {
-            // Use API key authentication
-            sourceClient = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            // Use default Azure credential (for managed identity, Azure CLI, etc.)
-            sourceClient = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        // Validate required environment variables
+        if (sourceEndpoint == null || targetEndpoint == null || sourceResourceId == null
+            || targetResourceId == null || sourceRegion == null || targetRegion == null) {
+            System.out.println("Cross-resource copying requires the following environment variables:");
+            System.out.println("  - CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint");
+            System.out.println("  - CONTENTUNDERSTANDING_KEY (optional): API key for source resource");
+            System.out.println("  - SOURCE_RESOURCE_ID: Azure resource ID of the source resource");
+            System.out.println("  - SOURCE_REGION: Region of the source resource");
+            System.out.println("  - TARGET_ENDPOINT: Endpoint of the target resource");
+            System.out.println("  - TARGET_KEY (optional): API key for target resource");
+            System.out.println("  - TARGET_RESOURCE_ID: Azure resource ID of the target resource");
+            System.out.println("  - TARGET_REGION: Region of the target resource");
+            return;
         }
-        // END: com.azure.ai.contentunderstanding.sample15.buildClient
 
-        System.out.println("Client initialized successfully");
+        // BEGIN: com.azure.ai.contentunderstanding.grantCopyAuth
+        // Build source client with appropriate authentication
+        ContentUnderstandingClientBuilder sourceBuilder = new ContentUnderstandingClientBuilder()
+            .endpoint(sourceEndpoint);
+        ContentUnderstandingClient sourceClient;
+        if (sourceKey != null && !sourceKey.trim().isEmpty()) {
+            sourceClient = sourceBuilder.credential(new AzureKeyCredential(sourceKey)).buildClient();
+        } else {
+            sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
 
-        String sourceAnalyzerId = "test_grant_copy_source_" + UUID.randomUUID().toString().replace("-", "");
+        // Build target client with appropriate authentication
+        ContentUnderstandingClientBuilder targetBuilder = new ContentUnderstandingClientBuilder()
+            .endpoint(targetEndpoint);
+        ContentUnderstandingClient targetClient;
+        if (targetKey != null && !targetKey.trim().isEmpty()) {
+            targetClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildClient();
+        } else {
+            targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        String sourceAnalyzerId = "my_source_analyzer";
+        String targetAnalyzerId = "my_target_analyzer";
+
+        // Step 1: Create the source analyzer
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
+        config.setEnableLayout(true);
+        config.setEnableOcr(true);
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        ContentFieldDefinition companyNameField = new ContentFieldDefinition();
+        companyNameField.setType(ContentFieldType.STRING);
+        companyNameField.setMethod(GenerationMethod.EXTRACT);
+        companyNameField.setDescription("Name of the company");
+        fields.put("company_name", companyNameField);
+
+        ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
+        totalAmountField.setType(ContentFieldType.NUMBER);
+        totalAmountField.setMethod(GenerationMethod.EXTRACT);
+        totalAmountField.setDescription("Total amount on the document");
+        fields.put("total_amount", totalAmountField);
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema();
+        fieldSchema.setName("company_schema");
+        fieldSchema.setDescription("Schema for extracting company information");
+        fieldSchema.setFields(fields);
+
+        ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
+        sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
+        sourceAnalyzer.setDescription("Source analyzer for cross-resource copying");
+        sourceAnalyzer.setConfig(config);
+        sourceAnalyzer.setFieldSchema(fieldSchema);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", "gpt-4.1");
+        sourceAnalyzer.setModels(models);
+
+        SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+            = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+        ContentAnalyzer sourceResult = createPoller.getFinalResult();
+        System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
         try {
-            // BEGIN: com.azure.ai.contentunderstanding.grantCopyAuth
-            // Step 1: Create the source analyzer
-            ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-            config.setEnableLayout(true);
-            config.setEnableOcr(true);
+            // Step 2: Grant copy authorization on source client
+            CopyAuthorization copyAuth = sourceClient.grantCopyAuthorization(
+                sourceAnalyzerId, targetResourceId, targetRegion);
 
-            Map<String, ContentFieldDefinition> fields = new HashMap<>();
-            ContentFieldDefinition companyNameField = new ContentFieldDefinition();
-            companyNameField.setType(ContentFieldType.STRING);
-            companyNameField.setMethod(GenerationMethod.EXTRACT);
-            companyNameField.setDescription("Name of the company");
-            fields.put("company_name", companyNameField);
+            System.out.println("Copy authorization granted successfully!");
+            System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
+            System.out.println("  Expires at: " + copyAuth.getExpiresAt());
 
-            ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
-            totalAmountField.setType(ContentFieldType.NUMBER);
-            totalAmountField.setMethod(GenerationMethod.EXTRACT);
-            totalAmountField.setDescription("Total amount");
-            fields.put("total_amount", totalAmountField);
+            // Step 3: Copy analyzer to target resource using target client
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                = targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false,
+                    sourceResourceId, sourceRegion);
 
-            ContentFieldSchema fieldSchema = new ContentFieldSchema();
-            fieldSchema.setName("company_schema");
-            fieldSchema.setDescription("Schema for extracting company information");
-            fieldSchema.setFields(fields);
-
-            ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
-            sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
-            sourceAnalyzer.setDescription("Source analyzer for cross-resource copying");
-            sourceAnalyzer.setConfig(config);
-            sourceAnalyzer.setFieldSchema(fieldSchema);
-
-            Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
-            sourceAnalyzer.setModels(models);
-
-            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-            ContentAnalyzer sourceResult = createPoller.getFinalResult();
-            System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
-
-            // Step 2: Grant copy authorization (requires target resource information)
-            // For cross-resource copying, the target resource ID is required
-            String targetResourceId = System.getenv("TARGET_RESOURCE_ID");
-            String targetRegion = System.getenv("TARGET_REGION");
-
-            if (targetResourceId != null && !targetResourceId.trim().isEmpty()) {
-                // Use convenience method to grant copy authorization
-                CopyAuthorization copyAuth;
-                if (targetRegion != null && !targetRegion.trim().isEmpty()) {
-                    copyAuth = sourceClient.grantCopyAuthorization(sourceAnalyzerId, targetResourceId, targetRegion);
-                } else {
-                    copyAuth = sourceClient.grantCopyAuthorization(sourceAnalyzerId, targetResourceId);
-                }
-
-                System.out.println("Copy authorization granted!");
-                System.out.println("  Target Resource ID: " + targetResourceId);
-                System.out.println("  Target Region: " + (targetRegion != null ? targetRegion : "(default)"));
-                System.out.println("  Authorization Expiry: " + copyAuth.getExpiresAt());
-
-                // Step 3: Copy to target resource (from target client)
-                // To complete the copy, use the target client with beginCopyAnalyzer convenience method:
-                //
-                // String targetEndpoint = System.getenv("TARGET_ENDPOINT");
-                // String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
-                // String sourceRegion = System.getenv("SOURCE_REGION");
-                // String targetAnalyzerId = "copied_analyzer_id";
-                //
-                // ContentUnderstandingClient targetClient = new ContentUnderstandingClientBuilder()
-                //     .endpoint(targetEndpoint)
-                //     .credential(new DefaultAzureCredentialBuilder().build())
-                //     .buildClient();
-                //
-                // // Use convenience method - allowReplace=false, pass source resource info
-                // SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller =
-                //     targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false, sourceResourceId, sourceRegion);
-                // ContentAnalyzer copiedAnalyzer = copyPoller.getFinalResult();
-                // System.out.println("Analyzer copied to target resource successfully!");
-            } else {
-                System.out.println("\nNote: TARGET_RESOURCE_ID not set. Skipping grantCopyAuthorization call.");
-                System.out.println("To test cross-resource copying, set these environment variables:");
-                System.out.println("  - TARGET_RESOURCE_ID: Azure resource ID of the target resource");
-                System.out.println("  - TARGET_REGION (optional): Azure region of the target resource");
-            }
+            ContentAnalyzer targetResult = copyPoller.getFinalResult();
+            System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
+            System.out.println("  Description: " + targetResult.getDescription());
             // END: com.azure.ai.contentunderstanding.grantCopyAuth
 
-            // Verify source analyzer creation
-            System.out.println("\n📋 Source Analyzer Creation Verification:");
-            System.out.println("Source analyzer created successfully");
-            System.out.println("  ID: " + sourceAnalyzerId);
-            System.out.println("  Base: " + sourceResult.getBaseAnalyzerId());
-            System.out.println("  Fields: " + sourceResult.getFieldSchema().getFields().size());
-
-            // Display API pattern information
-            System.out.println("\n📚 GrantCopyAuthorization API Usage:");
-            System.out.println("   For cross-resource copying:");
-            System.out.println("   1. Create source analyzer in source resource");
-            System.out.println("   2. Call grantCopyAuthorization on source client:");
-            System.out.println("      CopyAuthorization auth = sourceClient.grantCopyAuthorization(analyzerId, targetResourceId);");
-            System.out.println("      // Or with region: grantCopyAuthorization(analyzerId, targetResourceId, targetRegion)");
-            System.out.println("   3. Use target client to call beginCopyAnalyzer with the authorization");
-            System.out.println("   4. Wait for copy operation to complete");
-
-            System.out.println("\n✅ GrantCopyAuth demonstration completed");
-
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         } finally {
-            // Cleanup
+            // Cleanup: delete both analyzers
             try {
                 sourceClient.deleteAnalyzer(sourceAnalyzerId);
-                System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
+                System.out.println("Source analyzer '" + sourceAnalyzerId + "' deleted.");
             } catch (Exception e) {
-                System.out.println("Note: Failed to delete source analyzer: " + e.getMessage());
+                // Ignore cleanup errors
+            }
+
+            try {
+                targetClient.deleteAnalyzer(targetAnalyzerId);
+                System.out.println("Target analyzer '" + targetAnalyzerId + "' deleted.");
+            } catch (Exception e) {
+                // Ignore cleanup errors
             }
         }
     }

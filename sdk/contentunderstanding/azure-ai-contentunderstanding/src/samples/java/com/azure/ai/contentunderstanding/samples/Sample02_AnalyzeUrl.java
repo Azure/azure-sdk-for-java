@@ -33,7 +33,7 @@ public class Sample02_AnalyzeUrl {
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02.buildClient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);

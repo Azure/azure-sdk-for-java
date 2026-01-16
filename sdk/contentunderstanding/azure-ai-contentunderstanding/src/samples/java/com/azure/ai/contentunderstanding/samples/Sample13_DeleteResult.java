@@ -25,7 +25,7 @@ public class Sample13_DeleteResult {
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample13.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("AZURE_CONTENT_UNDERSTANDING_KEY");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
