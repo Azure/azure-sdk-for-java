@@ -189,15 +189,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                 .getCustomDomains()
                 .listByEndpointAsync(this.parent().resourceGroupName(), this.parent().name(), this.name())
                 .filter(customDomain -> this.deletedCustomDomainHostnames.contains(customDomain.hostname()))
-                .flatMapDelayError(itemToDelete ->
-                    this.parent()
-                        .manager()
-                        .serviceClient()
-                        .getCustomDomains()
-                        .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
-                            itemToDelete.name())
-                        .then(Mono.just(itemToDelete)),
-                    32, 32);
+                .flatMapDelayError(itemToDelete -> this.parent()
+                    .manager()
+                    .serviceClient()
+                    .getCustomDomains()
+                    .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
+                        itemToDelete.name())
+                    .then(Mono.just(itemToDelete)), 32, 32);
         }
 
         Mono<EndpointInner> customDomainTask
