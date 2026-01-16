@@ -81,7 +81,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-docker-compose</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -101,13 +101,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.1</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.2</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -166,7 +166,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.20.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-docker-compose:[4.0.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-docker-compose:[4.0.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
