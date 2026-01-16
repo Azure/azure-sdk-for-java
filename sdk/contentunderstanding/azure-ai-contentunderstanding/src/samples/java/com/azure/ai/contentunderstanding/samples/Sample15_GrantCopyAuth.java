@@ -119,18 +119,21 @@ public class Sample15_GrantCopyAuth {
                 System.out.println("  Authorization Expiry: " + copyAuth.getExpiresAt());
 
                 // Step 3: Copy to target resource (from target client)
-                // To complete the copy, you would use the target client:
+                // To complete the copy, use the target client with beginCopyAnalyzer convenience method:
                 //
                 // String targetEndpoint = System.getenv("TARGET_ENDPOINT");
+                // String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
+                // String sourceRegion = System.getenv("SOURCE_REGION");
+                // String targetAnalyzerId = "copied_analyzer_id";
+                //
                 // ContentUnderstandingClient targetClient = new ContentUnderstandingClientBuilder()
                 //     .endpoint(targetEndpoint)
                 //     .credential(new DefaultAzureCredentialBuilder().build())
                 //     .buildClient();
                 //
-                // String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
-                // String sourceRegion = System.getenv("SOURCE_REGION");
+                // // Use convenience method - allowReplace=false, pass source resource info
                 // SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller =
-                //     targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, sourceResourceId, sourceRegion, copyAuth);
+                //     targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false, sourceResourceId, sourceRegion);
                 // ContentAnalyzer copiedAnalyzer = copyPoller.getFinalResult();
                 // System.out.println("Analyzer copied to target resource successfully!");
             } else {
