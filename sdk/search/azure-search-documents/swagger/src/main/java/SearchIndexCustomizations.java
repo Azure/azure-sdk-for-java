@@ -5,11 +5,8 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
@@ -92,10 +89,10 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
+            clazz.findAncestor(CompilationUnit.class).ifPresent(c -> c.addImport("com.azure.json.JsonSerializable")
+                .addImport("com.azure.json.JsonReader")
+                .addImport("com.azure.json.JsonWriter")
+                .addImport("com.azure.json.JsonToken"));
             clazz.tryAddImportToParentCompilationUnit(IOException.class);
 
             clazz.addImplementedType("JsonSerializable<AutocompleteOptions>");
@@ -157,10 +154,10 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
-            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
+            clazz.findAncestor(CompilationUnit.class).ifPresent(c -> c.addImport("com.azure.json.JsonSerializable")
+                .addImport("com.azure.json.JsonReader")
+                .addImport("com.azure.json.JsonWriter")
+                .addImport("com.azure.json.JsonToken"));
             clazz.tryAddImportToParentCompilationUnit(IOException.class);
 
             clazz.addImplementedType("JsonSerializable<SuggestOptions>");

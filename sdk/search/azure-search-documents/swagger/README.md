@@ -181,7 +181,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 enable-sync-stack: true
 generate-client-as-impl: true
 required-fields-as-ctor-args: true
