@@ -4,13 +4,11 @@
 package com.azure.ai.voicelive;
 
 import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
-import com.azure.core.credential.KeyCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -24,14 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for VoiceLiveRequestOptions feature in VoiceLive client.
  */
-@ExtendWith(MockitoExtension.class)
 class VoiceLiveRequestOptionsTest {
-
-    @Mock
-    private KeyCredential mockKeyCredential;
-
-    @Mock
-    private HttpHeaders mockHeaders;
+    private static final HttpHeaderName X_CUSTOM_HEADER = HttpHeaderName.fromString("X-Custom-Header");
+    private static final HttpHeaderName X_ANOTHER_HEADER = HttpHeaderName.fromString("X-Another-Header");
 
     private URI testEndpoint;
     private String apiVersion;
@@ -65,8 +58,8 @@ class VoiceLiveRequestOptionsTest {
 
         // Assert
         assertNotNull(options.getCustomHeaders());
-        assertEquals("custom-value", options.getCustomHeaders().getValue("X-Custom-Header"));
-        assertEquals("another-value", options.getCustomHeaders().getValue("X-Another-Header"));
+        assertEquals("custom-value", options.getCustomHeaders().getValue(X_CUSTOM_HEADER));
+        assertEquals("another-value", options.getCustomHeaders().getValue(X_ANOTHER_HEADER));
     }
 
     @Test
@@ -86,16 +79,16 @@ class VoiceLiveRequestOptionsTest {
     void testRequestOptionsSetCustomHeaders() {
         // Arrange
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Custom-Header", "value1");
-        headers.set("X-Another-Header", "value2");
+        headers.set(X_CUSTOM_HEADER, "value1");
+        headers.set(X_ANOTHER_HEADER, "value2");
 
         // Act
         VoiceLiveRequestOptions options = new VoiceLiveRequestOptions().setCustomHeaders(headers);
 
         // Assert
         assertNotNull(options.getCustomHeaders());
-        assertEquals("value1", options.getCustomHeaders().getValue("X-Custom-Header"));
-        assertEquals("value2", options.getCustomHeaders().getValue("X-Another-Header"));
+        assertEquals("value1", options.getCustomHeaders().getValue(X_CUSTOM_HEADER));
+        assertEquals("value2", options.getCustomHeaders().getValue(X_ANOTHER_HEADER));
     }
 
     @Test
@@ -106,7 +99,7 @@ class VoiceLiveRequestOptionsTest {
                 .addCustomQueryParameter("custom-param", "custom-value");
 
         VoiceLiveAsyncClient client
-            = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, apiVersion, mockHeaders);
+            = new VoiceLiveAsyncClient(testEndpoint, new MockTokenCredential(), apiVersion, new HttpHeaders());
 
         // Use reflection to access the private method
         Method method = VoiceLiveAsyncClient.class.getDeclaredMethod("convertToWebSocketEndpoint", URI.class,
@@ -135,7 +128,7 @@ class VoiceLiveRequestOptionsTest {
                 .addCustomQueryParameter("model", "custom-model-from-params");
 
         VoiceLiveAsyncClient client
-            = new VoiceLiveAsyncClient(testEndpoint, mockKeyCredential, apiVersion, mockHeaders);
+            = new VoiceLiveAsyncClient(testEndpoint, new MockTokenCredential(), apiVersion, new HttpHeaders());
 
         // Use reflection to access the private method
         Method method = VoiceLiveAsyncClient.class.getDeclaredMethod("convertToWebSocketEndpoint", URI.class,
@@ -163,7 +156,7 @@ class VoiceLiveRequestOptionsTest {
             = new VoiceLiveRequestOptions().addCustomQueryParameter("deployment-id", "test-deployment");
 
         VoiceLiveAsyncClient client
-            = new VoiceLiveAsyncClient(endpointWithQuery, mockKeyCredential, apiVersion, mockHeaders);
+            = new VoiceLiveAsyncClient(endpointWithQuery, new MockTokenCredential(), apiVersion, new HttpHeaders());
 
         // Use reflection to access the private method
         Method method = VoiceLiveAsyncClient.class.getDeclaredMethod("convertToWebSocketEndpoint", URI.class,
