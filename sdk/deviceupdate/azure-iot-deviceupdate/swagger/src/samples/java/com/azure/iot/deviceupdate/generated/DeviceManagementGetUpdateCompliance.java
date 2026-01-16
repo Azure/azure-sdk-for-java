@@ -18,9 +18,9 @@ public class DeviceManagementGetUpdateCompliance {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetupdatecompliance.devicemanagementgetupdatecompliance
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-get-update-compliance.device-management-get-update-compliance
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = deviceManagementClient.getUpdateComplianceWithResponse(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetupdatecompliance.devicemanagementgetupdatecompliance
+        // END:com.azure.iot.deviceupdate.generated.device-management-get-update-compliance.device-management-get-update-compliance
     }
 }

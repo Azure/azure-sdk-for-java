@@ -3,6 +3,7 @@
 
 package com.azure.ai.voicelive;
 
+import com.azure.ai.voicelive.models.VoiceLiveRequestOptions;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpHeaders;
@@ -69,7 +70,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullOptions() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
     }
 
     @Test
@@ -86,7 +87,7 @@ class VoiceLiveAsyncClientTest {
     @Test
     void testStartSessionWithNullModel() {
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
     }
 
     @Test
@@ -126,9 +127,8 @@ class VoiceLiveAsyncClientTest {
         });
 
         // Test null parameter validation for startSession methods
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
-
-        assertThrows(NullPointerException.class, () -> client.startSession(null));
+        assertThrows(NullPointerException.class, () -> client.startSession((String) null));
+        assertThrows(NullPointerException.class, () -> client.startSession((VoiceLiveRequestOptions) null));
     }
 
     @Test

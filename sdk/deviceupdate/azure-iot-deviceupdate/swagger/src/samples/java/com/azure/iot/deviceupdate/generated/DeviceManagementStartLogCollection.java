@@ -18,12 +18,12 @@ public class DeviceManagementStartLogCollection {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementstartlogcollection.devicemanagementstartlogcollection
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-start-log-collection.device-management-start-log-collection
         BinaryData logCollection = BinaryData.fromString(
             "{\"description\":\"Log collection description\",\"deviceList\":[{\"deviceId\":\"DeviceA\"},{\"deviceId\":\"DeviceB\",\"moduleId\":\"ModuleB\"}]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceManagementClient.startLogCollectionWithResponse("LogCollectionId", logCollection, requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementstartlogcollection.devicemanagementstartlogcollection
+        // END:com.azure.iot.deviceupdate.generated.device-management-start-log-collection.device-management-start-log-collection
     }
 }
