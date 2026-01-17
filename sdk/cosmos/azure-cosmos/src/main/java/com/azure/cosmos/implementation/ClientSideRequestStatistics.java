@@ -272,8 +272,10 @@ public class ClientSideRequestStatistics {
                     CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
                         = rxDocumentServiceRequest.requestContext.getCrossRegionAvailabilityContext();
 
-                    if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
-                        gatewayStatistics.isHubRegionProcessingOnly = "true";
+                    if (crossRegionAvailabilityContextForRequest != null) {
+                        if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
+                            gatewayStatistics.isHubRegionProcessingOnly = "true";
+                        }
                     }
                 }
             }

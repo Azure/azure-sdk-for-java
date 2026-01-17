@@ -237,6 +237,11 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+
+        if (this.crossRegionAvailabilityContextForRequest == null) {
+            return new PerPartitionCircuitBreakerInfoHolder();
+        }
+
         return this.crossRegionAvailabilityContextForRequest.getPerPartitionCircuitBreakerInfoHolder();
     }
 
@@ -247,6 +252,11 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public PerPartitionAutomaticFailoverInfoHolder getPerPartitionFailoverContextHolder() {
+
+        if (this.crossRegionAvailabilityContextForRequest == null) {
+            return new PerPartitionAutomaticFailoverInfoHolder();
+        }
+
         return this.crossRegionAvailabilityContextForRequest.getPerPartitionAutomaticFailoverInfoHolder();
     }
 
