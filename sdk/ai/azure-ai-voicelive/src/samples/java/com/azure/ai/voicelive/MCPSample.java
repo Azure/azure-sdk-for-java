@@ -63,7 +63,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <p><strong>Environment Variables Required:</strong></p>
  * <ul>
- *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL (must include features=mcp_preview:true)</li>
+ *   <li>AZURE_VOICELIVE_ENDPOINT - The VoiceLive service endpoint URL</li>
  *   <li>AZURE_VOICELIVE_API_KEY - The API key for authentication</li>
  * </ul>
  *
@@ -77,8 +77,6 @@ import java.util.concurrent.atomic.AtomicReference;
  *   <li>"Can you summary github repo azure sdk for java?"</li>
  *   <li>"Can you summary azure docs about voice live?"</li>
  * </ul>
- *
- * <p><strong>Note:</strong> This sample requires MCP preview features to be enabled in the endpoint URL.</p>
  */
 public final class MCPSample {
 
