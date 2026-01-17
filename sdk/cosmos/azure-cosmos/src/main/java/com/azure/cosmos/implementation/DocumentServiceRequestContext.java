@@ -8,14 +8,11 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.directconnectivity.*;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResult;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
@@ -66,6 +63,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
     private volatile Boolean nRegionSynchronousCommitEnabled;
+    private volatile BarrierType barrierType = BarrierType.NONE;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -274,6 +272,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setNRegionSynchronousCommitEnabled(Boolean nRegionSynchronousCommitEnabled) {
         this.nRegionSynchronousCommitEnabled = nRegionSynchronousCommitEnabled;
+    }
+
+    public BarrierType getBarrierType() {
+        return barrierType;
+    }
+
+    public void setBarrierType(BarrierType barrierType) {
+        this.barrierType = barrierType;
     }
 }
 

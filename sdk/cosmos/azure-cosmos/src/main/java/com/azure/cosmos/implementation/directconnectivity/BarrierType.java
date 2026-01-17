@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 public enum BarrierType {
-    None,
-    GlobalStrongWrite,
-    NRegionSynchronousCommit
+    NONE,
+    GLOBAL_STRONG_WRITE,
+    N_REGION_SYNCHRONOUS_COMMIT
 }
