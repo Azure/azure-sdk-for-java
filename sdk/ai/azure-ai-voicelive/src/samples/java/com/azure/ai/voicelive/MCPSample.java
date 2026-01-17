@@ -86,7 +86,6 @@ public final class MCPSample {
     private static final String DEFAULT_MODEL = "gpt-4o-realtime-preview";
     private static final String ENV_ENDPOINT = "AZURE_VOICELIVE_ENDPOINT";
     private static final String ENV_API_KEY = "AZURE_VOICELIVE_API_KEY";
-    private static final String DEFAULT_ENDPOINT = "wss://api.voicelive.com/v1?features=mcp_preview:true";
 
     // Audio format constants
     private static final int SAMPLE_RATE = 24000;
@@ -107,7 +106,9 @@ public final class MCPSample {
         // Get configuration from environment variables
         String endpoint = System.getenv(ENV_ENDPOINT);
         if (endpoint == null || endpoint.trim().isEmpty()) {
-            endpoint = DEFAULT_ENDPOINT;
+            System.err.println("❌ Error: No endpoint provided");
+            System.err.println("Please set the " + ENV_ENDPOINT + " environment variable.");
+            System.exit(1);
         }
 
         String apiKey = System.getenv(ENV_API_KEY);
