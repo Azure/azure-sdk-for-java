@@ -50,8 +50,10 @@ import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -2241,6 +2243,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+        PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+        PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder = new PerPartitionAutomaticFailoverInfoHolder();
 
         if (request.requestContext != null) {
             request.requestContext.setCrossRegionAvailabilityContext(
@@ -2252,7 +2256,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         documentCollectionLink,
                         serializationDiagnosticsContext),
                     null,
-                    shouldAddHubRegionProcessingOnlyHeader));
+                    shouldAddHubRegionProcessingOnlyHeader,
+                    perPartitionCircuitBreakerInfoHolder,
+                    perPartitionAutomaticFailoverInfoHolder));
         }
 
         // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
@@ -4716,12 +4722,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
         AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+        PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+        PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder = new PerPartitionAutomaticFailoverInfoHolder();
+
 
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
             new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collection.getAltLink()),
             null,
             new AvailabilityStrategyContext(false, false),
-            shouldAddHubRegionProcessingOnlyHeader);
+            shouldAddHubRegionProcessingOnlyHeader,
+            perPartitionCircuitBreakerInfoHolder,
+            perPartitionAutomaticFailoverInfoHolder);
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -7264,6 +7275,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
         AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+        PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+        PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder = new PerPartitionAutomaticFailoverInfoHolder();
+
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible
@@ -7282,7 +7296,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 null,
                 pointOperationContextForCircuitBreakerForMainRequest,
                 availabilityStrategyContextForMainRequest,
-                shouldAddHubRegionProcessingOnlyHeader);
+                shouldAddHubRegionProcessingOnlyHeader,
+                perPartitionCircuitBreakerInfoHolder,
+                perPartitionAutomaticFailoverInfoHolder);
 
             return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, crossRegionAvailabilityContextForMainRequest);
         }
@@ -7319,7 +7335,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         null,
                         pointOperationContextForCircuitBreakerForMainRequest,
                         availabilityStrategyContextForMainRequest,
-                        shouldAddHubRegionProcessingOnlyHeader);
+                        shouldAddHubRegionProcessingOnlyHeader,
+                        perPartitionCircuitBreakerInfoHolder,
+                        perPartitionAutomaticFailoverInfoHolder);
 
                     Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForMainRequest)
@@ -7364,7 +7382,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         null,
                         pointOperationContextForCircuitBreakerForHedgedRequest,
                         availabilityStrategyContextForHedgedRequest,
-                        shouldAddHubRegionProcessingOnlyHeader);
+                        shouldAddHubRegionProcessingOnlyHeader,
+                        perPartitionCircuitBreakerInfoHolder,
+                        perPartitionAutomaticFailoverInfoHolder);
 
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForHedgedRequest)
@@ -7687,6 +7707,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 req.requestContext.getEndToEndOperationLatencyPolicyConfig(), resourceType, operationType);
 
         AtomicBoolean shouldAddHubRegionProcessingOnlyHeader = new AtomicBoolean(false);
+        PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
+        PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder = new PerPartitionAutomaticFailoverInfoHolder();
 
         req.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
 
@@ -7716,7 +7738,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow,
                 null,
                 availabilityStrategyContext,
-                shouldAddHubRegionProcessingOnlyHeader);
+                shouldAddHubRegionProcessingOnlyHeader,
+                perPartitionCircuitBreakerInfoHolder,
+                perPartitionAutomaticFailoverInfoHolder);
 
             req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
@@ -7738,7 +7762,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow,
             null,
             availabilityStrategyContext,
-            shouldAddHubRegionProcessingOnlyHeader);
+            shouldAddHubRegionProcessingOnlyHeader,
+            perPartitionCircuitBreakerInfoHolder,
+            perPartitionAutomaticFailoverInfoHolder);
 
         req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
@@ -7770,7 +7796,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         feedOperationContextForCircuitBreakerForNonHedgedRequest,
                         null,
                         availabilityStrategyContextForNonHedgedRequest,
-                        shouldAddHubRegionProcessingOnlyHeader);
+                        shouldAddHubRegionProcessingOnlyHeader,
+                        perPartitionCircuitBreakerInfoHolder,
+                        perPartitionAutomaticFailoverInfoHolder);
 
                     clonedRequest.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequestForNonHedgedRequest);
 
@@ -7814,7 +7842,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             feedOperationContextForCircuitBreakerForHedgedRequest,
                         null,
                         availabilityStrategyContextForHedgedRequest,
-                        shouldAddHubRegionProcessingOnlyHeader);
+                        shouldAddHubRegionProcessingOnlyHeader,
+                        perPartitionCircuitBreakerInfoHolder,
+                        perPartitionAutomaticFailoverInfoHolder);
 
                     clonedRequest.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequestForHedgedRequest);
 

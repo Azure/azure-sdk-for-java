@@ -3,6 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
+
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
@@ -19,16 +25,24 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     private final AvailabilityStrategyContext availabilityStrategyContext;
 
+    private final PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
+
+    private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
+
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
         AvailabilityStrategyContext availabilityStrategyContext,
-        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader) {
+        AtomicBoolean shouldAddHubRegionProcessingOnlyHeader,
+        PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder,
+        PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder) {
 
         this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
         this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
         this.availabilityStrategyContext = availabilityStrategyContext;
         this.shouldAddHubRegionProcessingOnlyHeader = shouldAddHubRegionProcessingOnlyHeader;
+        this.perPartitionCircuitBreakerInfoHolder = perPartitionCircuitBreakerInfoHolder;
+        this.perPartitionAutomaticFailoverInfoHolder = perPartitionAutomaticFailoverInfoHolder;
     }
 
     public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
@@ -65,5 +79,21 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
         return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
+    }
+
+    public void setPerPartitionCircuitBreakerInfo(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
+        this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
+    }
+
+    public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
+        return this.perPartitionCircuitBreakerInfoHolder;
+    }
+
+    public void setPerPartitionFailoverInfo(PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo) {
+        this.perPartitionAutomaticFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelAutomaticFailoverInfo);
+    }
+
+    public PerPartitionAutomaticFailoverInfoHolder getPerPartitionAutomaticFailoverInfoHolder() {
+        return this.perPartitionAutomaticFailoverInfoHolder;
     }
 }

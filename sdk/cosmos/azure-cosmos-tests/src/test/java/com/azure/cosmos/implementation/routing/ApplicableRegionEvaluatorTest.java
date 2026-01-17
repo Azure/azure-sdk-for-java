@@ -24,7 +24,9 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -300,7 +302,9 @@ public class ApplicableRegionEvaluatorTest {
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
                     new AvailabilityStrategyContext(true, false),
-                    new AtomicBoolean(false)));
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         } else {
             request.requestContext.setCrossRegionAvailabilityContext(
                 new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
@@ -311,7 +315,9 @@ public class ApplicableRegionEvaluatorTest {
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
                     new AvailabilityStrategyContext(false, false),
-                    new AtomicBoolean(false)));
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         }
 
         return request;

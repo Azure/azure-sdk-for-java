@@ -28,7 +28,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
-    private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
+    private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelAutomaticFailoverInfo> partitionKeyRangeToFailoverInfo;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, EndToEndTimeoutErrorTracker> partitionKeyRangeToEndToEndTimeoutErrorTracker;
     private final GlobalEndpointManager globalEndpointManager;
     private final AtomicBoolean isPerPartitionAutomaticFailoverEnabled;
@@ -153,9 +153,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resolvedCollectionRid);
-        PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
+        PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
 
-        if (partitionLevelFailoverInfo != null) {
+        if (partitionLevelAutomaticFailoverInfo != null) {
 
             if (request.isReadOnlyRequest()) {
 
@@ -167,8 +167,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
                 crossRegionAvailabilityContextForRequest.setPerPartitionAutomaticFailoverAppliedStatusForReads(true);
             }
 
-            request.requestContext.routeToLocation(partitionLevelFailoverInfo.getCurrent());
-            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
+            request.requestContext.routeToLocation(partitionLevelAutomaticFailoverInfo.getCurrent());
+            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelAutomaticFailoverInfo);
             return true;
         }
 
@@ -235,13 +235,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        PartitionLevelFailoverInfo partitionLevelFailoverInfo
-            = this.partitionKeyRangeToFailoverInfo.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedRegionalRoutingContext, this.globalEndpointManager));
+        PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo
+            = this.partitionKeyRangeToFailoverInfo.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelAutomaticFailoverInfo(failedRegionalRoutingContext, this.globalEndpointManager));
 
         // Rely on account-level read endpoints for new write region discovery
         List<RegionalRoutingContext> accountLevelReadRoutingContexts = this.globalEndpointManager.getAvailableReadRoutingContexts();
 
-        if (partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext)) {
+        if (partitionLevelAutomaticFailoverInfo.tryMoveToNextLocation(accountLevelReadRoutingContexts, failedRegionalRoutingContext)) {
 
             if (logger.isWarnEnabled()) {
                 logger.warn("Marking region {} as failed for partition key range {} and collection rid {}",
@@ -250,7 +250,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
                     partitionKeyRangeWrapper.getCollectionResourceId());
             }
 
-            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelFailoverInfo);
+            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(partitionLevelAutomaticFailoverInfo);
 
             this.partitionKeyRangeToEndToEndTimeoutErrorTracker.remove(partitionKeyRangeWrapper);
             return true;
