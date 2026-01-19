@@ -10,7 +10,7 @@ import java.util.UUID
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class ChangeFeedOffsetSpec extends UnitSpec {
+class ChangeFeedOffsetUnitTest extends UnitSpec {
   private[this] def getOffsetJson(changeFeedState: String) = {
     // scala style rule flaky - even complaining on partial log messages
     // scalastyle:off multiple.string.literals

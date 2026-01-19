@@ -511,10 +511,7 @@
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
               <includes>
-                <include>**/*.*</include>
                 <include>**/*Test.*</include>
-                <include>**/*Suite.*</include>
-                <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
               <properties>

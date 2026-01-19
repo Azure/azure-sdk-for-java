@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Configs
 import java.lang.management.ManagementFactory
 import java.util.UUID
 
-class CosmosClientConfigurationSpec extends UnitSpec {
+class CosmosClientConfigurationUnitTest extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
   "CosmosClientConfiguration" should "parse configuration" in {

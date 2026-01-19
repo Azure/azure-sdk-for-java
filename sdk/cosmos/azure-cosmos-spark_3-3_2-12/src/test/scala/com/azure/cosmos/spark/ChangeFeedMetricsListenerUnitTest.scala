@@ -17,7 +17,7 @@ import org.mockito.Mockito.{mock, when}
 import java.lang.reflect.Field
 import java.util.concurrent.ConcurrentHashMap
 
-class ChangeFeedMetricsListenerSpec extends UnitSpec {
+class ChangeFeedMetricsListenerUnitTest extends UnitSpec {
   "ChangeFeedMetricsListener" should "be able to capture changeFeed performance metrics" in {
    val taskEnd = SparkListenerTaskEnd(
     stageId = 1,

@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 //scalastyle:off magic.number
 //scalastyle:off multiple.string.literals
-class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
+class TransientErrorsRetryPolicyUnitTest extends UnitSpec with BasicLoggingTrait {
   "TransientErrorsRetryPolicy" should "execute successfully when errorCount < maxRetryCount" in {
 
     val expected = UUID.randomUUID().toString

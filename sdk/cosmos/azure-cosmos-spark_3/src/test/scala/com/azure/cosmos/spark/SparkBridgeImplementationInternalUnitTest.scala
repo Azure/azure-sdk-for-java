@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 
-class SparkBridgeImplementationInternalSpec extends UnitSpec {
+class SparkBridgeImplementationInternalUnitTest extends UnitSpec {
   private[this] val rnd = scala.util.Random
   //scalastyle:off multiple.string.literals
 

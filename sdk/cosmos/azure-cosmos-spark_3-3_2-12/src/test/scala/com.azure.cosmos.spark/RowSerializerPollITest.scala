@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-class RowSerializerPollTest extends RowSerializerPollSpec {
+class RowSerializerPollITest extends RowSerializerPollUnitTest {
   //scalastyle:off multiple.string.literals
 
   "RowSerializer " should "be returned to the pool only a limited number of times" in {

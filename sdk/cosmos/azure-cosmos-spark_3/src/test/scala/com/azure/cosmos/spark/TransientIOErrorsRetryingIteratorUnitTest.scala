@@ -22,7 +22,7 @@ import scala.collection.JavaConverters._
 
 //scalastyle:off magic.number
 //scalastyle:off multiple.string.literals
-class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTrait {
+class TransientIOErrorsRetryingIteratorUnitTest extends UnitSpec with BasicLoggingTrait {
 
   private val injectedDelays = new AtomicLong(0)
   private val rnd = scala.util.Random

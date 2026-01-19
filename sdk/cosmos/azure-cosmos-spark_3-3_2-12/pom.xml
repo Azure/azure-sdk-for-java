@@ -125,10 +125,7 @@
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
               <includes>
-                <include>**/*.*</include>
                 <include>**/*Test.*</include>
-                <include>**/*Suite.*</include>
-                <include>**/*Spec.*</include>
               </includes>
               <skipTests>true</skipTests>
               <properties>
@@ -151,7 +148,7 @@
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
-              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
+              <suffixes>Test</suffixes> <!-- every test -->
             </configuration>
             <executions>
               <execution>

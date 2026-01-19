@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
 
-class CosmosItemIdentityHelperSpec extends UnitSpec {
+class CosmosItemIdentityHelperUnitTest extends UnitSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 

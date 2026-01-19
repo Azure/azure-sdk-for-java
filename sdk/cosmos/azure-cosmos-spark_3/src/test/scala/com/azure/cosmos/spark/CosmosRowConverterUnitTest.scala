@@ -23,7 +23,7 @@ import scala.util.Random
 import org.apache.spark.sql.types._
 // scalastyle:on underscore.import
 
-class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
+class CosmosRowConverterUnitTest extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
   //scalastyle:off file.size.limit

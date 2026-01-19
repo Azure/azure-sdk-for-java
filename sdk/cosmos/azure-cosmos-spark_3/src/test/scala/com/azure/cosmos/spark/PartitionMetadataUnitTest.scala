@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import java.util.{Base64, UUID}
 
-class PartitionMetadataSpec extends UnitSpec {
+class PartitionMetadataUnitTest extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   //scalastyle:off multiple.string.literals

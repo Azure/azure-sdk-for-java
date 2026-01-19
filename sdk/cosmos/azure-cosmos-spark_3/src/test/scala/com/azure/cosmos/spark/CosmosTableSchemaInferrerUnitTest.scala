@@ -8,7 +8,7 @@ import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DecimalTy
 
 import scala.language.postfixOps
 
-class CosmosTableSchemaInferrerSpec extends UnitSpec {
+class CosmosTableSchemaInferrerUnitTest extends UnitSpec {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
 

@@ -12,7 +12,7 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
-class CosmosPartitionPlannerSpec extends UnitSpec {
+class CosmosPartitionPlannerUnitTest extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   it should "calculateEndLsn without readLimit" in {

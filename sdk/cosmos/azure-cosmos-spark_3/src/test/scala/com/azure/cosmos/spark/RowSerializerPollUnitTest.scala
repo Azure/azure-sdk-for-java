@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-abstract class RowSerializerPollSpec extends UnitSpec with BasicLoggingTrait {
+abstract class RowSerializerPollUnitTest extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   "RowSerializer returned to the pool" should "be reused when capacity not exceeded" in {

@@ -8,7 +8,7 @@ import com.azure.cosmos.models.{DedicatedGatewayRequestOptions, PartitionKey, Sp
 import org.apache.spark.sql.sources.{EqualTo, Filter, In}
 import reactor.util.concurrent.Queues
 
-class ReadManyFilterAnalyzerSpec extends UnitSpec {
+class ReadManyFilterAnalyzerUnitTest extends UnitSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
   private[this] val readConfigWithoutCustomQuery =

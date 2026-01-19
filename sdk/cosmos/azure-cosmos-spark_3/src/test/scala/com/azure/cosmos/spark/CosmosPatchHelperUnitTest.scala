@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.node.{BooleanNode, DoubleNode, FloatNode, 
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable.ListBuffer
 
-class CosmosPatchHelperSpec extends UnitSpec {
+class CosmosPatchHelperUnitTest extends UnitSpec {
     val objectMapper = Utils.getSimpleObjectMapper()
 
     private case class PatchHelperParameterTest(path: String, value: JsonNode)

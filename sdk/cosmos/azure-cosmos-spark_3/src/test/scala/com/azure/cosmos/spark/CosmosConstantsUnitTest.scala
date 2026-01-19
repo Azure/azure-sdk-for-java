@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-class CosmosConstantsSpec extends UnitSpec {
+class CosmosConstantsUnitTest extends UnitSpec {
   "CurrentVersion" should "not be null" in {
     CosmosConstants.currentVersion == null shouldBe false
     CosmosConstants.currentVersion.startsWith("4.") shouldBe true

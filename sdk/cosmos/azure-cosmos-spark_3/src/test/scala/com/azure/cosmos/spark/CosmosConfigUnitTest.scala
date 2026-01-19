@@ -18,7 +18,7 @@ import java.util.UUID
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
-class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
+class CosmosConfigUnitTest extends UnitSpec with BasicLoggingTrait {
 //scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"

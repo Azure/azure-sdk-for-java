@@ -11,7 +11,7 @@ import reactor.util.concurrent.Queues
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class FilterAnalyzerSpec extends UnitSpec {
+class FilterAnalyzerUnitTest extends UnitSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
   private[this] val readConfigWithoutCustomQuery =

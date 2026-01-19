@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.changeFeedMetrics.ChangeFeedMetricsTracker
 
-class ChangeFeedMetricsTrackerSpec extends UnitSpec {
+class ChangeFeedMetricsTrackerUnitTest extends UnitSpec {
 
  it should "track weighted changes per lsn" in {
   val metricsTracker = ChangeFeedMetricsTracker(1, NormalizedRange("0", "FF"), 5, 0.5)

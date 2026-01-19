@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 
-class PartitionPlanningInfoSpec extends UnitSpec {
+class PartitionPlanningInfoUnitTest extends UnitSpec {
   private[this] val rnd = scala.util.Random
   private[this] val feedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val storageSizeInMB = rnd.nextDouble()
