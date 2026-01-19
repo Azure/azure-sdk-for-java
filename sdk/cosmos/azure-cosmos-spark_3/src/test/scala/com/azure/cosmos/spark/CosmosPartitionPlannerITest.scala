@@ -283,6 +283,8 @@ class CosmosPartitionPlannerITest
       )
 
     val container = this.cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val initialFeedRangesCount = container.getFeedRanges().block().size()
+
     createDocuments(container, 10)
 
     var initialOffset = getInitialOffset(changeFeedConfigWithPointInTime, container)
@@ -319,7 +321,10 @@ class CosmosPartitionPlannerITest
         .isReplacePending
     }
 
-    logInfo(s"Partition split has completed for container ${container.getId}")
+    val concurrentFeedRangesCount = container.getFeedRanges().block().size()
+    concurrentFeedRangesCount should not equal initialFeedRangesCount
+
+    logInfo(s"Partition split has completed for container ${container.getId}" )
     pointInTime = Instant.now()
     // creating few more docs
     createDocuments(container, 10)
