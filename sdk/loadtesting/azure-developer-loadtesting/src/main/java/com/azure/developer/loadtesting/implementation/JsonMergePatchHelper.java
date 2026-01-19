@@ -19,9 +19,11 @@ import com.azure.developer.loadtesting.models.ResourceMetric;
 import com.azure.developer.loadtesting.models.TargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestCertificate;
+import com.azure.developer.loadtesting.models.TestPreferences;
 import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
+import com.azure.developer.loadtesting.models.TestRunInsights;
 import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
@@ -194,6 +196,22 @@ public class JsonMergePatchHelper {
 
     public static RegionalConfigurationAccessor getRegionalConfigurationAccessor() {
         return regionalConfigurationAccessor;
+    }
+
+    private static TestPreferencesAccessor testPreferencesAccessor;
+
+    public interface TestPreferencesAccessor {
+        TestPreferences prepareModelForJsonMergePatch(TestPreferences testPreferences, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestPreferences testPreferences);
+    }
+
+    public static void setTestPreferencesAccessor(TestPreferencesAccessor accessor) {
+        testPreferencesAccessor = accessor;
+    }
+
+    public static TestPreferencesAccessor getTestPreferencesAccessor() {
+        return testPreferencesAccessor;
     }
 
     private static TestAppComponentsAccessor testAppComponentsAccessor;
@@ -382,5 +400,21 @@ public class JsonMergePatchHelper {
 
     public static TestProfileRunAccessor getTestProfileRunAccessor() {
         return testProfileRunAccessor;
+    }
+
+    private static TestRunInsightsAccessor testRunInsightsAccessor;
+
+    public interface TestRunInsightsAccessor {
+        TestRunInsights prepareModelForJsonMergePatch(TestRunInsights testRunInsights, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(TestRunInsights testRunInsights);
+    }
+
+    public static void setTestRunInsightsAccessor(TestRunInsightsAccessor accessor) {
+        testRunInsightsAccessor = accessor;
+    }
+
+    public static TestRunInsightsAccessor getTestRunInsightsAccessor() {
+        return testRunInsightsAccessor;
     }
 }

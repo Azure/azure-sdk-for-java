@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@azure-tools/typespec-java": "^0.38.3"
+  }
+}

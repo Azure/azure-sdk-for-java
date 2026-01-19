@@ -39,9 +39,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.loadtesting.LoadTestingServiceVersion;
+import com.azure.developer.loadtesting.models.TestRunInsights;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -231,7 +239,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestRun(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/test-runs/{testRunId}")
         @ExpectedResponses({ 204 })
@@ -241,7 +249,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/test-runs/{testRunId}/app-components")
         @ExpectedResponses({ 200 })
@@ -485,7 +493,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestProfileRun(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileRunId") String testProfileRunId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/test-profile-runs/{testProfileRunId}")
         @ExpectedResponses({ 204 })
@@ -495,7 +503,7 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteTestProfileRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileRunId") String testProfileRunId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("/test-profile-runs/{testProfileRunId}")
         @ExpectedResponses({ 200 })
@@ -555,6 +563,68 @@ public final class LoadTestRunClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> stopTestProfileRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("testProfileRunId") String testProfileRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/test-runs/{testRunId}/insights/latest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getLatestTestRunInsights(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/test-runs/{testRunId}/insights/latest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLatestTestRunInsightsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Patch("/test-runs/{testRunId}/insights/latest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> updateLatestTestRunInsights(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("testRunId") String testRunId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/merge-patch+json") BinaryData body, RequestOptions requestOptions, Context context);
+
+        @Patch("/test-runs/{testRunId}/insights/latest")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateLatestTestRunInsightsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
+            @PathParam("testRunId") String testRunId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/merge-patch+json") BinaryData body, RequestOptions requestOptions, Context context);
+
+        @Post("/test-runs/{testRunId}/insights:generate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateTestRunInsights(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/test-runs/{testRunId}/insights:generate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateTestRunInsightsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("testRunId") String testRunId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -688,6 +758,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -705,7 +776,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -759,7 +836,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -799,7 +876,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -845,6 +926,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -862,7 +944,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -916,7 +1004,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -956,7 +1044,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1034,6 +1126,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -1051,7 +1144,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -1105,7 +1204,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -1145,7 +1244,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1191,6 +1294,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -1208,7 +1312,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -1262,7 +1372,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -1302,7 +1412,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1639,9 +1753,8 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestRunWithResponseAsync(String testRunId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestRun(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testRunId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), testRunId, requestOptions, context));
     }
 
     /**
@@ -1660,8 +1773,7 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteTestRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId, accept,
+        return service.deleteTestRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId,
             requestOptions, Context.NONE);
     }
 
@@ -1885,6 +1997,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -1902,7 +2015,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -1956,7 +2075,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -1996,7 +2115,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2060,6 +2183,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -2077,7 +2201,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -2131,7 +2261,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -2171,7 +2301,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -2205,7 +2339,7 @@ public final class LoadTestRunClientImpl {
      * {
      *     fileName: String (Required)
      *     url: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
@@ -2240,7 +2374,7 @@ public final class LoadTestRunClientImpl {
      * {
      *     fileName: String (Required)
      *     url: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
@@ -2972,6 +3106,8 @@ public final class LoadTestRunClientImpl {
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
      * that have created the test run. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of test IDs. If you are using
+     * testIds, do not send a value for testId. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3011,6 +3147,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -3028,7 +3165,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -3082,7 +3225,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -3122,7 +3265,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -3171,6 +3318,8 @@ public final class LoadTestRunClientImpl {
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
      * that have created the test run. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of test IDs. If you are using
+     * testIds, do not send a value for testId. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3210,6 +3359,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -3227,7 +3377,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -3281,7 +3437,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -3321,7 +3477,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -3388,6 +3548,8 @@ public final class LoadTestRunClientImpl {
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
      * that have created the test run. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of test IDs. If you are using
+     * testIds, do not send a value for testId. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3427,6 +3589,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -3444,7 +3607,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -3498,7 +3667,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -3538,7 +3707,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -3585,6 +3758,8 @@ public final class LoadTestRunClientImpl {
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * <tr><td>createdByTypes</td><td>List&lt;String&gt;</td><td>No</td><td>Comma separated list of type of entities
      * that have created the test run. In the form of "," separated string.</td></tr>
+     * <tr><td>testIds</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of test IDs. If you are using
+     * testIds, do not send a value for testId. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3624,6 +3799,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -3641,7 +3817,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -3695,7 +3877,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -3735,7 +3917,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -3819,6 +4005,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -3836,7 +4023,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -3890,7 +4083,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -3930,7 +4123,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -3994,6 +4191,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -4011,7 +4209,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -4065,7 +4269,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -4105,7 +4309,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -4150,7 +4358,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4197,7 +4411,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4268,7 +4488,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4315,7 +4541,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4382,9 +4614,8 @@ public final class LoadTestRunClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestProfileRunWithResponseAsync(String testProfileRunId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteTestProfileRun(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), testProfileRunId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), testProfileRunId, requestOptions, context));
     }
 
     /**
@@ -4403,9 +4634,8 @@ public final class LoadTestRunClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTestProfileRunWithResponse(String testProfileRunId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteTestProfileRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            testProfileRunId, accept, requestOptions, Context.NONE);
+            testProfileRunId, requestOptions, Context.NONE);
     }
 
     /**
@@ -4428,7 +4658,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4499,7 +4735,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4594,7 +4836,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4689,7 +4937,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4802,7 +5056,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4895,7 +5155,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -4982,7 +5248,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -5050,7 +5322,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -5095,6 +5373,446 @@ public final class LoadTestRunClientImpl {
         final String accept = "application/json";
         return service.stopTestProfileRunSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             testProfileRunId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get the latest insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the latest insights for the test run along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLatestTestRunInsightsWithResponseAsync(String testRunId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getLatestTestRunInsights(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), testRunId, accept, requestOptions, context));
+    }
+
+    /**
+     * Get the latest insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the latest insights for the test run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLatestTestRunInsightsWithResponse(String testRunId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getLatestTestRunInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            testRunId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Update the latest insights for the test run.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body Test run insights model.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents insights for the test run along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateLatestTestRunInsightsWithResponseAsync(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "application/merge-patch+json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateLatestTestRunInsights(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, testRunId, accept, body, requestOptions, context));
+    }
+
+    /**
+     * Update the latest insights for the test run.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     columns (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             dataType: String (Required)
+     *         }
+     *     ]
+     *     rows (Optional): {
+     *         String (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     version: Long (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body Test run insights model.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents insights for the test run along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateLatestTestRunInsightsWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
+        final String contentType = "application/merge-patch+json";
+        final String accept = "application/json";
+        return service.updateLatestTestRunInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, testRunId, accept, body, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return status of a long running operation along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> generateTestRunInsightsWithResponseAsync(String testRunId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.generateTestRunInsights(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), testRunId, accept, requestOptions, context));
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return status of a long running operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> generateTestRunInsightsWithResponse(String testRunId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.generateTestRunInsightsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), testRunId,
+            accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of status of a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TestRunInsights, Void> beginGenerateTestRunInsightsWithModelAsync(String testRunId,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.generateTestRunInsightsWithResponseAsync(testRunId, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(TestRunInsights.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status of a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TestRunInsights, Void> beginGenerateTestRunInsightsWithModel(String testRunId,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.generateTestRunInsightsWithResponse(testRunId, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(TestRunInsights.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of status of a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginGenerateTestRunInsightsAsync(String testRunId,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.generateTestRunInsightsWithResponseAsync(testRunId, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Generate insights for the test run.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status of a long running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginGenerateTestRunInsights(String testRunId,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.generateTestRunInsightsWithResponse(testRunId, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -5286,6 +6004,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -5303,7 +6022,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -5357,7 +6082,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -5397,7 +6122,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -5467,6 +6196,7 @@ public final class LoadTestRunClientImpl {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
      *         errorRateTimeWindowInSeconds: Long (Optional)
+     *         maximumVirtualUsersPerEngine: Integer (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -5484,7 +6214,13 @@ public final class LoadTestRunClientImpl {
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     testRunStatistics (Optional): {
@@ -5538,7 +6274,7 @@ public final class LoadTestRunClientImpl {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG/TEST_SCRIPT/BROWSER_RECORDING/TEST_PLAN_RECOMMENDATIONS) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -5578,7 +6314,11 @@ public final class LoadTestRunClientImpl {
      *     requestDataLevel: String(NONE/ERRORS) (Optional)
      *     debugLogsEnabled: Boolean (Optional)
      *     publicIPDisabled: Boolean (Optional)
-     *     createdByType: String(User/ScheduledTrigger) (Optional)
+     *     createdByType: String(User/ScheduledTrigger/AzurePipelines/GitHubWorkflows) (Optional)
+     *     createdByUri: String (Optional)
+     *     estimatedVirtualUserHours: Double (Optional)
+     *     executionStartDateTime: OffsetDateTime (Optional)
+     *     executionEndDateTime: OffsetDateTime (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -5624,7 +6364,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
@@ -5694,7 +6440,13 @@ public final class LoadTestRunClientImpl {
      *     status: String(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED) (Optional)
      *     errorDetails (Optional): [
      *          (Optional){
+     *             code: String (Optional)
      *             message: String (Optional)
+     *             properties (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
      *         }
      *     ]
      *     startDateTime: OffsetDateTime (Optional)
