@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.GatewayTestUtils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -25,6 +24,7 @@ import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -377,11 +377,10 @@ public class RegionScopedSessionContainerTest {
         int numPartitionKeyRangeIds = 5;
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
@@ -441,11 +440,10 @@ public class RegionScopedSessionContainerTest {
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         ISessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(endpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -508,11 +506,10 @@ public class RegionScopedSessionContainerTest {
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -569,11 +566,10 @@ public class RegionScopedSessionContainerTest {
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
         RegionScopedSessionContainer sessionContainer = new RegionScopedSessionContainer("127.0.0.1", false, globalEndpointManagerMock);
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -601,11 +597,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -647,11 +642,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -695,11 +689,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -739,11 +732,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -788,11 +780,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -833,11 +824,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -876,11 +866,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -922,11 +911,10 @@ public class RegionScopedSessionContainerTest {
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -985,11 +973,10 @@ public class RegionScopedSessionContainerTest {
 
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1049,11 +1036,10 @@ public class RegionScopedSessionContainerTest {
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
         String unparsedSessionToken = "range_0:1#100#1=20#2=5#3=30";
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1108,11 +1094,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1150,11 +1135,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1197,11 +1181,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1251,11 +1234,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(LocationEastUsEndpointToLocationPair.getLeft()), Mockito.any())).thenReturn(regionContacted);
@@ -1319,11 +1301,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1367,11 +1348,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1414,11 +1394,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1510,11 +1489,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1562,11 +1540,10 @@ public class RegionScopedSessionContainerTest {
         String regionContacted = LocationEastUsEndpointToLocationPair.getRight();
         URI locationEndpointContacted = LocationEastUsEndpointToLocationPair.getLeft();
 
-        UnmodifiableList<RegionalRoutingContext> endpoints = new UnmodifiableList<>(
-            ImmutableList.of(
-                new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
-                new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft())));
+        List<RegionalRoutingContext> endpoints = ImmutableList.of(
+            new RegionalRoutingContext(LocationEastUsEndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getLeft()),
+            new RegionalRoutingContext(LocationCentralUsEndpointToLocationPair.getLeft()));
 
         Mockito.when(globalEndpointManagerMock.getReadEndpoints()).thenReturn(endpoints);
         Mockito.when(globalEndpointManagerMock.getRegionName(Mockito.eq(locationEndpointContacted), Mockito.any())).thenReturn(regionContacted);
@@ -1683,7 +1660,7 @@ public class RegionScopedSessionContainerTest {
                 .when(globalEndpointManagerMock.getLatestDatabaseAccount())
                 .thenReturn(databaseAccount);
 
-            UnmodifiableList<RegionalRoutingContext> readEndpointsInUnmodifiableList = new UnmodifiableList<>(consolidatedReadRegionalEndpointRoutingContexts);
+            List<RegionalRoutingContext> readEndpointsInUnmodifiableList = Collections.unmodifiableList(consolidatedReadRegionalEndpointRoutingContexts);
 
             Mockito
                 .when(globalEndpointManagerMock.getReadEndpoints())
@@ -1691,7 +1668,7 @@ public class RegionScopedSessionContainerTest {
 
             Mockito
                 .when(globalEndpointManagerMock.getApplicableWriteRegionalRoutingContexts(Mockito.anyList()))
-                .thenReturn(new UnmodifiableList<>(consolidatedWriteRegionalEndpointRoutingContexts));
+                .thenReturn(Collections.unmodifiableList(consolidatedWriteRegionalEndpointRoutingContexts));
 
             Mockito
                 .when(globalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any()))

@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
@@ -33,12 +32,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -308,7 +307,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         if (previousRoutingMap == null)
         {
             // Splits could have happened during change feed query and we might have a mix of gone and new ranges.
-            Set<String> goneRanges = new HashSet<>(ranges.stream().flatMap(range -> CollectionUtils.emptyIfNull(range.getParents()).stream()).collect(Collectors.toSet()));
+            Set<String> goneRanges = ranges.stream()
+                .flatMap(range -> range.getParents() == null ? Stream.of() :range.getParents().stream())
+                .collect(Collectors.toSet());
 
             routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
                 rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.getId())).collect(Collectors.toList()),

@@ -6,11 +6,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.VectorSessionToken;
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -21,6 +19,7 @@ import org.assertj.core.data.Offset;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
@@ -175,9 +174,9 @@ public abstract class BatchTestBase extends TestSuiteBase {
 
             Field fieldLocalLsnByRegion = VectorSessionToken.class.getDeclaredField("localLsnByRegion");
             fieldLocalLsnByRegion.setAccessible(true);
-            UnmodifiableMap<Integer, Long> localLsnByRegion = (UnmodifiableMap<Integer, Long>) fieldLocalLsnByRegion.get(fromSessionToken);
+            Map<Integer, Long> localLsnByRegion = (Map<Integer, Long>) fieldLocalLsnByRegion.get(fromSessionToken);
 
-            Constructor<VectorSessionToken> constructor = VectorSessionToken.class.getDeclaredConstructor(long.class, long.class, UnmodifiableMap.class);
+            Constructor<VectorSessionToken> constructor = VectorSessionToken.class.getDeclaredConstructor(long.class, long.class, Map.class);
             constructor.setAccessible(true);
             VectorSessionToken vectorSessionToken = constructor.newInstance(version, globalLSN, localLsnByRegion);
             return vectorSessionToken;

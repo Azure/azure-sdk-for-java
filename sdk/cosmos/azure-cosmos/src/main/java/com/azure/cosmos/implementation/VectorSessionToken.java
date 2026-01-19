@@ -3,13 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
-
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,42 +34,30 @@ public class VectorSessionToken implements ISessionToken {
 
     private final long version;
     private final long globalLsn;
-    private final UnmodifiableMap<Integer, Long> localLsnByRegion;
+    private final Map<Integer, Long> localLsnByRegion;
     private final String sessionToken;
 
     private final boolean isSessionTokenFalseProgressMergeEnabled = Configs.isSessionTokenFalseProgressMergeEnabled();
 
-    private VectorSessionToken(long version, long globalLsn, UnmodifiableMap<Integer, Long> localLsnByRegion) {
+    private VectorSessionToken(long version, long globalLsn, Map<Integer, Long> localLsnByRegion) {
         this(version, globalLsn, localLsnByRegion, null);
     }
 
-    private VectorSessionToken(long version, long globalLsn, UnmodifiableMap<Integer, Long> localLsnByRegion, String sessionToken) {
+    private VectorSessionToken(long version, long globalLsn, Map<Integer, Long> localLsnByRegion, String sessionToken) {
         this.version = version;
         this.globalLsn = globalLsn;
         this.localLsnByRegion = localLsnByRegion;
         if (sessionToken == null) {
-            String regionProgress = String.join(
-                    Character.toString(VectorSessionToken.SegmentSeparator),
-                    localLsnByRegion.
-                            entrySet()
-                            .stream()
-                            .map(kvp -> new StringBuilder().append(kvp.getKey()).append(VectorSessionToken.RegionProgressSeparator).append(kvp.getValue()))
-                            .collect(Collectors.toList()));
+            String regionProgress = localLsnByRegion.entrySet()
+                .stream()
+                .map(kvp -> "" + kvp.getKey() + VectorSessionToken.RegionProgressSeparator + kvp.getValue())
+                .collect(Collectors.joining(Character.toString(VectorSessionToken.SegmentSeparator)));
 
             if (Strings.isNullOrEmpty(regionProgress)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(this.version)
-                        .append(VectorSessionToken.SegmentSeparator)
-                        .append(this.globalLsn);
-                this.sessionToken = sb.toString();
+                this.sessionToken = String.valueOf(this.version) + VectorSessionToken.SegmentSeparator + this.globalLsn;
             } else {
-                StringBuilder sb = new StringBuilder();
-                sb.append(this.version)
-                        .append(VectorSessionToken.SegmentSeparator)
-                        .append(this.globalLsn)
-                        .append(VectorSessionToken.SegmentSeparator)
-                        .append(regionProgress);
-                this.sessionToken = sb.toString();
+                this.sessionToken = String.valueOf(this.version) + VectorSessionToken.SegmentSeparator + this.globalLsn
+                    + VectorSessionToken.SegmentSeparator + regionProgress;
             }
         } else {
             this.sessionToken = sessionToken;
@@ -81,7 +68,7 @@ public class VectorSessionToken implements ISessionToken {
         ValueHolder<Long> versionHolder = ValueHolder.initialize(-1l);
         ValueHolder<Long> globalLsnHolder = ValueHolder.initialize(-1l);
 
-        ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion = ValueHolder.initialize(null);
+        ValueHolder<Map<Integer, Long>> localLsnByRegion = ValueHolder.initialize(null);
 
         if (VectorSessionToken.tryParseSessionToken(
                 sessionToken,
@@ -233,7 +220,7 @@ public class VectorSessionToken implements ISessionToken {
         return new VectorSessionToken(
             Math.max(this.version, other.version),
             (!isSessionTokenFalseProgressMergeEnabled || this.version == other.version) ? Math.max(this.globalLsn, other.globalLsn) : sessionTokenWithHigherVersion.globalLsn,
-            (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(highestLocalLsnByRegion));
+            Collections.unmodifiableMap(highestLocalLsnByRegion));
     }
 
     public String convertToString() {
@@ -244,11 +231,11 @@ public class VectorSessionToken implements ISessionToken {
         return version;
     }
 
-    public UnmodifiableMap<Integer, Long> getLocalLsnByRegion() {
+    public Map<Integer, Long> getLocalLsnByRegion() {
         return localLsnByRegion;
     }
 
-    private boolean areRegionProgressEqual(UnmodifiableMap<Integer, Long> other) {
+    private boolean areRegionProgressEqual(Map<Integer, Long> other) {
         if (this.localLsnByRegion.size() != other.size()) {
             return false;
         }
@@ -272,7 +259,7 @@ public class VectorSessionToken implements ISessionToken {
             String sessionToken,
             ValueHolder<Long> version,
             ValueHolder<Long> globalLsn,
-            ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion) {
+            ValueHolder<Map<Integer, Long>> localLsnByRegion) {
         version.v = 0L;
         localLsnByRegion.v = null;
         globalLsn.v = -1L;
@@ -318,7 +305,7 @@ public class VectorSessionToken implements ISessionToken {
             lsnByRegion.put(regionId.v, localLsn.v);
         }
 
-        localLsnByRegion.v = (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(lsnByRegion);
+        localLsnByRegion.v = Collections.unmodifiableMap(lsnByRegion);
         return true;
     }
 

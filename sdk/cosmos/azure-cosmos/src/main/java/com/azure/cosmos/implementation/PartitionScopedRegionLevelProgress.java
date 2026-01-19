@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
@@ -100,7 +99,7 @@ public class PartitionScopedRegionLevelProgress {
                 checkNotNull(globalLevelProgress, "globalLevelProgress cannot be null!");
 
                 // identify whether regionRoutedTo has a regionId mapping in session token
-                Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion = new Utils.ValueHolder<>();
+                Utils.ValueHolder<Map<Integer, Long>> localLsnByRegion = new Utils.ValueHolder<>();
 
                 // if regionId to localLsn mappings cannot be extracted, the only mapping would be "global" to whatever is the session token corresponding to the globalLsn seen across all regions
                 if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(parsedSessionToken, localLsnByRegion)) {
@@ -331,7 +330,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 long globalLsn = -1;
 
-                Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion = new Utils.ValueHolder<>();
+                Utils.ValueHolder<Map<Integer, Long>> localLsnByRegion = new Utils.ValueHolder<>();
 
                 // return global merged progress of the session token for a given physical partition since regionId to localLsn mappings cannot be resolved
                 if (!SessionTokenHelper.tryEvaluateLocalLsnByRegionMappingWithNullSafety(globalSessionTokenAsVal, localLsnByRegion)) {

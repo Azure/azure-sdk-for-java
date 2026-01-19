@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -19,7 +18,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -39,6 +37,7 @@ import reactor.test.StepVerifier;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -82,13 +81,13 @@ public class GlobalAddressResolverTest {
         readEndPointList.add(new RegionalRoutingContext(urlforRead1));
         readEndPointList.add(new RegionalRoutingContext(urlforRead2));
         readEndPointList.add(new RegionalRoutingContext(urlforRead3));
-        UnmodifiableList<RegionalRoutingContext> readList = new UnmodifiableList<>(readEndPointList);
+        List<RegionalRoutingContext> readList = Collections.unmodifiableList(readEndPointList);
 
         List<RegionalRoutingContext> writeEndPointList = new ArrayList<>();
         writeEndPointList.add(new RegionalRoutingContext(urlforWrite1));
         writeEndPointList.add(new RegionalRoutingContext(urlforWrite2));
         writeEndPointList.add(new RegionalRoutingContext(urlforWrite3));
-        UnmodifiableList<RegionalRoutingContext> writeList = new UnmodifiableList<>(writeEndPointList);
+        List<RegionalRoutingContext> writeList = Collections.unmodifiableList(writeEndPointList);
 
         Mockito.when(endpointManager.getReadEndpoints()).thenReturn(readList);
         Mockito.when(endpointManager.getWriteEndpoints()).thenReturn(writeList);
@@ -157,7 +156,7 @@ public class GlobalAddressResolverTest {
 
         Mockito
             .when(endpointManager.getReadEndpoints())
-            .thenReturn(new UnmodifiableList<>(
+            .thenReturn(Collections.unmodifiableList(
                 Arrays.asList(new RegionalRoutingContext(urlforRead1), new RegionalRoutingContext(urlforRead2))));
 
         DocumentCollection documentCollection = new DocumentCollection();
