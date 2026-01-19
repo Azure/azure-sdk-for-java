@@ -281,6 +281,25 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             .queryChangeFeed(requestOptions, classOf[ObjectNode])
             .byPage()
             .next()
+            .onErrorResume(throwable => {
+              if (Exceptions.isPartitionKeyRangeGoneException(throwable)) {
+                logWarning(s"Getting partition key range gone exception for feed range $feedRange")
+
+                // try to find the new feed ranges and then retry again
+                ImplementationBridgeHelpers
+                  .CosmosAsyncContainerHelper
+                  .getCosmosAsyncContainerAccessor
+                  .getOverlappingFeedRanges(container, feedRange, true)
+                  .doOnNext(newChildRanges => {
+                    logInfo(s"Finding new child ranges [$newChildRanges] for feed range $feedRange")
+                    feedRangeList -= feedRange
+                    feedRangeList ++= newChildRanges.asScala
+                  })
+                  .`then`(Mono.error(throwable))
+              } else {
+                Mono.error(throwable)
+              }
+            })
             .doOnNext(r => {
               val lsnFromItems = getContinuationTokenLsnOfFirstItem(r.getElements.asScala)
               val continuation = if (lsnFromItems.isDefined) {
@@ -295,29 +314,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             .`then`(Mono.empty())
         }
       })
-      .onErrorResume(throwable => {
-        if (Exceptions.isPartitionKeyRangeGoneException(throwable)) {
-          // try to find the new feed ranges and then retry again
-          ImplementationBridgeHelpers
-            .CosmosAsyncContainerHelper
-            .getCosmosAsyncContainerAccessor
-            .getOverlappingFeedRanges(container, feedRange, true)
-            .doOnNext(newChildRanges => {
-              logInfo(s"Finding new child ranges [$newChildRanges] for feed range $feedRange")
-              feedRangeList -= feedRange
-              feedRangeList ++= newChildRanges.asScala
-            })
-          .`then`(Mono.error(throwable))
-        } else {
-          Mono.error(throwable)
-        }
-      })
       .retryWhen(
         Retry
           .indefinitely()
           .filter(ex => Exceptions.isPartitionKeyRangeGoneException(ex))
           .doBeforeRetry(_ => {
-            logWarning(s"Getting partition key range gone exception for feed range $feedRange, will retry")
+            logWarning(s"Getting partition key range gone exception, will retry")
           })
       )
       .`then`(Mono.just(feedRangeContinuationTokenMap.asScala))
