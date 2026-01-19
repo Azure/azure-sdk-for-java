@@ -18,10 +18,10 @@ public class DeviceManagementListInstallableUpdatesForDeviceClass {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistinstallableupdatesfordeviceclass.devicemanagementlistinstallableupdatesfordeviceclass
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-installable-updates-for-device-class.device-management-list-installable-updates-for-device-class
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response
             = deviceManagementClient.listInstallableUpdatesForDeviceClass("deviceClassId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistinstallableupdatesfordeviceclass.devicemanagementlistinstallableupdatesfordeviceclass
+        // END:com.azure.iot.deviceupdate.generated.device-management-list-installable-updates-for-device-class.device-management-list-installable-updates-for-device-class
     }
 }

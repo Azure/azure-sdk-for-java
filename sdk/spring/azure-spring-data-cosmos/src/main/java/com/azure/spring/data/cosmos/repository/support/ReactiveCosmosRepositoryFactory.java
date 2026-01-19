@@ -13,6 +13,7 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.ReactiveRepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
 import org.springframework.data.repository.query.RepositoryQuery;
+import org.springframework.data.repository.query.ValueExpressionDelegate;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -36,6 +37,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainType) {
         return new CosmosEntityInformation<>(domainType);
     }
@@ -53,19 +55,16 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
-    @SuppressWarnings({"deprecation", "removal"})
     protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
-        org.springframework.data.repository.query.QueryMethodEvaluationContextProvider evaluationContextProvider) {
+                                                                   ValueExpressionDelegate valueExpressionDelegate) {
         return Optional.of(new ReactiveCosmosQueryLookupStrategy(cosmosOperations,
-            evaluationContextProvider));
+            valueExpressionDelegate));
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 
-        ReactiveCosmosQueryLookupStrategy(ReactiveCosmosOperations operations,
-            org.springframework.data.repository.query.QueryMethodEvaluationContextProvider provider) {
+        ReactiveCosmosQueryLookupStrategy(ReactiveCosmosOperations operations, ValueExpressionDelegate delegate) {
             this.cosmosOperations = operations;
         }
 
