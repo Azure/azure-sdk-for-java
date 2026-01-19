@@ -37,6 +37,8 @@ public class PerPartitionAutomaticFailoverInfoHolder implements Serializable {
                 gen.writeObjectField("perPartitionAutomaticFailoverCtx", value.getPartitionLevelFailoverInfo());
 
                 gen.writeEndObject();
+            } else {
+                gen.writeNull();
             }
         }
     }

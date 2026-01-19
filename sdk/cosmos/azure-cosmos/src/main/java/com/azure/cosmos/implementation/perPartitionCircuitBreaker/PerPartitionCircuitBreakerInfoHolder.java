@@ -36,6 +36,8 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
                 gen.writePOJOField("locSpecificHealthCtx", locationToLocationSpecificHealthContext);
 
                 gen.writeEndObject();
+            } else {
+                gen.writeNull();
             }
         }
     }
