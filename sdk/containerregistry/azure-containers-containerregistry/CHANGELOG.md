@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `ContainerRegistryClient`'s handling of paging for `listRepositoryNames`. ([#47700](https://github.com/Azure/azure-sdk-for-java/pull/47700))
+
 ### Other Changes
 
 ## 1.2.21 (2025-10-27)

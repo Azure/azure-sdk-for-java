@@ -17,9 +17,9 @@ public class DeviceManagementDeleteDeviceClass {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeviceclass.devicemanagementdeletedeviceclass
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-delete-device-class.device-management-delete-device-class
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = deviceManagementClient.deleteDeviceClassWithResponse("deviceClass1", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeviceclass.devicemanagementdeletedeviceclass
+        // END:com.azure.iot.deviceupdate.generated.device-management-delete-device-class.device-management-delete-device-class
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 public final class GalleryImageVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
@@ -31,7 +31,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
      */
     /**
@@ -52,7 +52,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get.json
      */
     /**
@@ -71,7 +71,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
@@ -91,7 +91,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**
@@ -111,7 +111,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2025-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithValidationProfile.json
      */
     /**

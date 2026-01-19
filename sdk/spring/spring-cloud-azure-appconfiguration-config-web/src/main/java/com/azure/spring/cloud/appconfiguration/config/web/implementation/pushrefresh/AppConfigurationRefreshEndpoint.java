@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Endpoint for requesting new configurations to be loaded.
  */
 @Endpoint(id = APPCONFIGURATION_REFRESH)
+@SuppressWarnings("deprecation")
 public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);

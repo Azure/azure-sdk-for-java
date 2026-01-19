@@ -30,7 +30,7 @@ autorest README.md --java --v4
 
 ``` yaml
 tag: package-2025-06-15
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 require:
     - https://github.com/Azure/azure-rest-api-specs/blob/b359b43e76ee17d4f1c5aa83b58577653c0fb51b/specification/communication/data-plane/CallAutomation/readme.md
 java: true
