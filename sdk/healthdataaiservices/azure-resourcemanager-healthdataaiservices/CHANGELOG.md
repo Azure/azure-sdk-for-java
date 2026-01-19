@@ -1,14 +1,61 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
+## 1.1.0-beta.1 (2025-12-10)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PrivateEndpointConnection` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.DeidUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DeidServiceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `HealthDataAIServicesManager` was modified
+
+* `fluent.HealthDataAIServicesClient serviceClient()` -> `fluent.HealthDataAIServicesManagementClient serviceClient()`
+
+#### `models.DeidPropertiesUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentityUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
 
 ## 1.0.0 (2024-11-21)
 
