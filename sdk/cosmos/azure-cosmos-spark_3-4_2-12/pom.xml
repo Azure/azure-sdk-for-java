@@ -146,6 +146,10 @@
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+              <stdout>FDEF</stdout>
+              <stderr>FDEF</stderr>
+              <forkMode>once</forkMode>
+              <logForkedProcessCommand>true</logForkedProcessCommand>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
               <suffixes>Test</suffixes> <!-- every test -->

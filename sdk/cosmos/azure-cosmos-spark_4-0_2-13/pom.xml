@@ -139,15 +139,12 @@
               <argLine>${scalatest.argLine}</argLine>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
-
-              <!-- FIX: avoid silent forked‑JVM crashes -->
-              <forkMode>none</forkMode>
-
+              <forkMode>once</forkMode>
+              <logForkedProcessCommand>true</logForkedProcessCommand>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
               <suffixes>Test</suffixes> <!-- every test -->
-              <logForkedProcessCommand>true</logForkedProcessCommand>
             </configuration>
             <executions>
               <execution>
