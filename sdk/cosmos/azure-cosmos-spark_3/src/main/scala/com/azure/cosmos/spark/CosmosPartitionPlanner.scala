@@ -233,7 +233,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .block()
 
     if (shouldRefreshFeedRangesInCache.get()) {
-      logDebug("Feed range split has detected, force to refresh the feed ranges in cache")
+      logDebug("Feed range split has been detected, forcing refresh of the feed ranges in cache")
       ContainerFeedRangesCache.getFeedRanges(container, Some(0)) // force to refresh now
     }
 
@@ -253,17 +253,17 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
   private def queryChangeFeedForInitialOffset(
     changeFeedConfig: CosmosChangeFeedConfig,
-    feedRange: FeedRange,
+    feedRangeFromCache: FeedRange,
     container: CosmosAsyncContainer): SMono[mutable.Map[FeedRange, String]] = {
 
     // this method will ensure for each change feed query request,
     // it only targets a feed range that corresponds to a single physical partition at the time of the query,
     // else it could cause not all child ranges will be populated with continuation tokens correctly
 
-    val feedRangeList = ListBuffer(feedRange)
+    val feedRangeList = ListBuffer(feedRangeFromCache)
     val feedRangeContinuationTokenMap = new ConcurrentHashMap[FeedRange, String]()
 
-    Flux.defer(() => Flux.fromIterable(feedRangeList.asJava))
+    Flux.defer(() => Flux.fromIterable(feedRangeList.toList.asJava))
       .flatMap(feedRange => {
         if (feedRangeContinuationTokenMap.containsKey(feedRange)) {
           Mono.empty()

@@ -310,7 +310,7 @@ class CosmosPartitionPlannerITest
       .block()
     response.getStatusCode shouldEqual 200
 
-    val i = 0
+    var i = 0
     var throughputReplacePending = true
     while (i < 120 && throughputReplacePending) {
       logInfo(s"Waiting for split to complete for container ${container.getId}")
@@ -319,6 +319,8 @@ class CosmosPartitionPlannerITest
         .readThroughput()
         .block()
         .isReplacePending
+
+      i += 1
     }
 
     val concurrentFeedRangesCount = container.getFeedRanges().block().size()
@@ -354,7 +356,7 @@ class CosmosPartitionPlannerITest
   private[this] def createDocuments(container: CosmosAsyncContainer, docCount: Int): Unit = {
     for (i <- 0 until docCount) {
       val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("name", "Schrödinger's cat")
       objectNode.put("type", "cat")
       objectNode.put("age", 20)
       objectNode.put("index", i.toString)
