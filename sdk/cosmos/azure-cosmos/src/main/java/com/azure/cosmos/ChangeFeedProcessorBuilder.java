@@ -405,9 +405,6 @@ public class ChangeFeedProcessorBuilder {
         }
         //  Some extra checks for all versions and deletes mode
         if (ChangeFeedMode.FULL_FIDELITY.equals(changeFeedMode)) {
-            if (this.changeFeedProcessorOptions.getStartTime() != null) {
-                throw new IllegalStateException("changeFeedProcessorOptions: AllVersionsAndDeletes change feed mode is not supported for startTime option.");
-            }
 
             if (this.changeFeedProcessorOptions.isStartFromBeginning()) {
                 throw new IllegalStateException("changeFeedProcessorOptions: AllVersionsAndDeletes change feed mode is not supported for startFromBeginning option.");
