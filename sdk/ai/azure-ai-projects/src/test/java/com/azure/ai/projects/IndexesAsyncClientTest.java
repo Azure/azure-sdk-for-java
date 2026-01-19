@@ -21,40 +21,11 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class IndexesAsyncClientTest extends ClientTestBase {
 
-    private AIProjectClientBuilder clientBuilder;
-    private IndexesAsyncClient indexesAsyncClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        indexesAsyncClient = clientBuilder.buildIndexesAsyncClient();
-    }
-
-    /**
-     * Helper method to verify an Index has valid properties.
-     * @param index The index to validate
-     * @param expectedName The expected name of the index, or null if no specific name is expected
-     * @param expectedVersion The expected version of the index, or null if no specific version is expected
-     */
-    private void assertValidIndex(Index index, String expectedName, String expectedVersion) {
-        Assertions.assertNotNull(index);
-        Assertions.assertNotNull(index.getName());
-        Assertions.assertNotNull(index.getVersion());
-        Assertions.assertNotNull(index.getType());
-
-        if (expectedName != null) {
-            Assertions.assertEquals(expectedName, index.getName());
-        }
-
-        if (expectedVersion != null) {
-            Assertions.assertEquals(expectedVersion, index.getVersion());
-        }
-    }
-
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListIndexesAsync(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListIndexesAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Collect indexes into a list for verification
         List<Index> indexList = new ArrayList<>();
@@ -72,8 +43,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListIndexVersionsAsync(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListIndexVersionsAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         List<Index> versionList = new ArrayList<>();
@@ -97,8 +68,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetIndexAsync(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
@@ -120,8 +91,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testCreateOrUpdateIndexAsync(HttpClient httpClient) {
-        setup(httpClient);
+    public void testCreateOrUpdateIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Configuration for creating/updating an index
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
@@ -157,8 +128,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testDeleteIndexAsync(HttpClient httpClient) {
-        setup(httpClient);
+    public void testDeleteIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
