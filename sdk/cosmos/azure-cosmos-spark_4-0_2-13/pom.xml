@@ -146,6 +146,8 @@
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
               <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
+              <logForkedProcessCommand>true</logForkedProcessCommand>
+              <forkMode>once</forkMode>
             </configuration>
             <executions>
               <execution>
