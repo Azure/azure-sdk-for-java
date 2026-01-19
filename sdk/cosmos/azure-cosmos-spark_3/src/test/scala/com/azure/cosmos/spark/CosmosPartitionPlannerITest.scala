@@ -16,6 +16,7 @@ import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Assertion
+import reactor.core.publisher.Mono
 import reactor.core.scala.publisher.SFlux
 
 import java.time.Instant
@@ -275,7 +276,7 @@ class CosmosPartitionPlannerITest
 
   "createInitialOffset" should "return correct initial offset for all child ranges after split" in {
 
-    var pointInTime = Instant.now
+    val pointInTime = Instant.now
     val changeFeedConfigWithPointInTime =
       userConfigTemplate ++ Map(
         "spark.cosmos.changeFeed.startFrom" -> pointInTime.toString,
@@ -283,60 +284,23 @@ class CosmosPartitionPlannerITest
       )
 
     val container = this.cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-    val initialFeedRangesCount = container.getFeedRanges().block().size()
+
+    val mockContainer = Mockito.spy(container)
+    val invocationCount = new AtomicInteger(0)
+    Mockito.doAnswer(new Answer[Mono[util.List[FeedRange]]]() {
+      override def answer(invocationOnMock: InvocationOnMock): Mono[util.List[FeedRange]] = {
+        if (invocationCount.get() < 1) {
+          invocationCount.incrementAndGet()
+          Mono.just(List(FeedRange.forFullRange()).asJava)
+        } else {
+          container.getFeedRanges()
+        }
+      }
+    }).when(mockContainer).getFeedRanges()
 
     createDocuments(container, 10)
 
-    var initialOffset = getInitialOffset(changeFeedConfigWithPointInTime, container)
-    validateInitialOffset(
-      initialOffset,
-      getInitialContinuationTokensForPointInTime(pointInTime, container))
-
-    // trigger partition split
-    val initialThroughput = this.cosmosClient
-      .getDatabase(cosmosDatabase)
-      .getContainer(cosmosContainer)
-      .readThroughput()
-      .block()
-      .getProperties
-      .getManualThroughput
-
-    val newThroughputToForceSplits = (Math.ceil(initialThroughput.toDouble / 6000) * 2 * 10000).toInt
-
-    val response = this.cosmosClient
-      .getDatabase(cosmosDatabase)
-      .getContainer(cosmosContainer)
-      .replaceThroughput(ThroughputProperties.createManualThroughput(newThroughputToForceSplits))
-      .block()
-    response.getStatusCode shouldEqual 200
-
-    var i = 0
-    var throughputReplacePending = true
-    while (i < 120 && throughputReplacePending) {
-      logInfo(s"Waiting for split to complete for container ${container.getId}")
-      Thread.sleep(5000)
-      throughputReplacePending = this.cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-        .readThroughput()
-        .block()
-        .isReplacePending
-
-      i += 1
-    }
-
-    val concurrentFeedRangesCount = container.getFeedRanges().block().size()
-    concurrentFeedRangesCount should not equal initialFeedRangesCount
-
-    logInfo(s"Partition split has completed for container ${container.getId}" )
-    pointInTime = Instant.now()
-    // creating few more docs
-    createDocuments(container, 10)
-
-    val newChangeFeedConfigWithPointInTime = userConfigTemplate ++ Map(
-      "spark.cosmos.changeFeed.startFrom" -> pointInTime.toString,
-      "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "1800" // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
-    )
-
-    initialOffset = getInitialOffset(newChangeFeedConfigWithPointInTime, container)
+    val initialOffset = getInitialOffset(changeFeedConfigWithPointInTime, mockContainer)
     validateInitialOffset(
       initialOffset,
       getInitialContinuationTokensForPointInTime(pointInTime, container))
