@@ -24,6 +24,10 @@
     <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
     <cosmos-spark-version>3.5</cosmos-spark-version>
+    <scala.binary.version>2.12</scala.binary.version>
+    <spark35.version>3.5.0</spark35.version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
+    <spark-hive-version>3.5.0</spark-hive-version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;external_dependency} -->
+    <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
   </properties>
   <profiles>
     <profile>
@@ -93,8 +97,8 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.12</artifactId>
-      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <artifactId>spark-sql_${scala.binary.version}</artifactId>
+      <version>${spark35.version}</version>
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -109,8 +113,8 @@
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-hive_2.12</artifactId>
-      <version>3.5.0</version> <!-- {x-version-update;cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <artifactId>spark-hive_${scala.binary.version}</artifactId>
+      <version>${spark-hive-version}</version>
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -130,8 +134,8 @@
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-scala_2.12</artifactId>
-      <version>2.18.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+      <artifactId>jackson-module-scala_${scala.binary.version}</artifactId>
+      <version>${scala-jackson.version}</version>
     </dependency>
   </dependencies>
 </project>

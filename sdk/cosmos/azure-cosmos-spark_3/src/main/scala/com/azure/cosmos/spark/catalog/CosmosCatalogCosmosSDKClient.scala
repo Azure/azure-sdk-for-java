@@ -4,7 +4,8 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{CosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties => ModelsCosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.spark.catalog.{CosmosContainerProperties => CatalogCosmosContainerProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants, Exceptions}
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -20,6 +21,8 @@ import java.util.Collections
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
+
+
 
 private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: CosmosAsyncClient)
     extends CosmosCatalogClient
@@ -80,15 +83,15 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         val partitionKeyDefinition = getPartitionKeyDefinition(containerProperties)
         val indexingPolicy = getIndexingPolicy(containerProperties)
 
-        val cosmosContainerProperties = new CosmosContainerProperties(containerName, partitionKeyDefinition)
+        val cosmosContainerProperties = new ModelsCosmosContainerProperties(containerName, partitionKeyDefinition)
         cosmosContainerProperties.setIndexingPolicy(indexingPolicy)
 
-        CosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
+        CatalogCosmosContainerProperties.getDefaultTtlInSeconds(containerProperties) match {
             case Some(ttl) => cosmosContainerProperties.setDefaultTimeToLiveInSeconds(ttl)
             case None =>
         }
 
-        CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
+        CatalogCosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
             case Some(ttl) => cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(ttl)
             case None =>
         }
@@ -147,15 +150,15 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         cosmosAsyncClient.getDatabase(databaseName).read().asScala.`then`()
 
     private def getIndexingPolicy(containerProperties: Map[String, String]): IndexingPolicy = {
-        val indexingPolicySpecification = CosmosContainerProperties.getIndexingPolicy(containerProperties)
+        val indexingPolicySpecification = CatalogCosmosContainerProperties.getIndexingPolicy(containerProperties)
         //scalastyle:on multiple.string.literals
-        if (CosmosContainerProperties.AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+        if (CatalogCosmosContainerProperties.AllPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
             new IndexingPolicy()
                 .setAutomatic(true)
                 .setIndexingMode(IndexingMode.CONSISTENT)
                 .setIncludedPaths(util.Arrays.asList(new IncludedPath("/*")))
                 .setExcludedPaths(util.Arrays.asList(new ExcludedPath(raw"""/"_etag"/?""")))
-        } else if (CosmosContainerProperties.OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
+        } else if (CatalogCosmosContainerProperties.OnlySystemPropertiesIndexingPolicyName.equalsIgnoreCase(indexingPolicySpecification)) {
             new IndexingPolicy()
                 .setAutomatic(true)
                 .setIndexingMode(IndexingMode.CONSISTENT)
@@ -168,42 +171,38 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
     }
 
     private def getPartitionKeyDefinition(containerProperties: Map[String, String]): PartitionKeyDefinition = {
-        val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
+        val partitionKeyPath = CatalogCosmosContainerProperties.getPartitionKeyPath(containerProperties)
         val partitionKeyDef = new PartitionKeyDefinition
         val paths = new util.ArrayList[String]
         val pathList = partitionKeyPath.split(",").toList
         if (pathList.size >= 2) {
-            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
-                case Some(pkKind) => {
-                    if (pkKind == PartitionKind.HASH.toString) {
-                        throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
-                    }
-                    PartitionKind.MULTI_HASH
-                }
+            partitionKeyDef.setKind(CatalogCosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) =>
+                  if (pkKind == PartitionKind.HASH.toString) {
+                      throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
+                  }
+                  PartitionKind.MULTI_HASH
                 case None => PartitionKind.MULTI_HASH
             })
-            partitionKeyDef.setVersion(CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+            partitionKeyDef.setVersion(CatalogCosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
                 case Some(pkVersion) =>
-                    {
-                        if (pkVersion == PartitionKeyDefinitionVersion.V1.toString) {
-                            throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
-                        }
-                        PartitionKeyDefinitionVersion.V2
+                    if (pkVersion == PartitionKeyDefinitionVersion.V1.toString) {
+                        throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
                     }
+                  PartitionKeyDefinitionVersion.V2
                 case None => PartitionKeyDefinitionVersion.V2
             })
             pathList.foreach(path => paths.add(path.trim))
         } else {
-            partitionKeyDef.setKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
-                case Some(pkKind) => {
-                    if (pkKind == PartitionKind.MULTI_HASH.toString) {
-                        throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
-                    }
-                    PartitionKind.HASH
-                }
+            partitionKeyDef.setKind(CatalogCosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
+                case Some(pkKind) =>
+                  if (pkKind == PartitionKind.MULTI_HASH.toString) {
+                      throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
+                  }
+                  PartitionKind.HASH
                 case None => PartitionKind.HASH
             })
-            CosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
+            CatalogCosmosContainerProperties.getPartitionKeyVersion(containerProperties) match {
                 case Some(pkVersion) => partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.valueOf(pkVersion))
                 case None =>
             }
@@ -278,10 +277,10 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
     // scalastyle:off method.length
     private def generateTblProperties
     (
-        metadata: (CosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])
+        metadata: (ModelsCosmosContainerProperties, List[FeedRange], Option[(ThroughputProperties, Boolean)])
     ): util.HashMap[String, String] = {
 
-        val containerProperties: CosmosContainerProperties = metadata._1
+        val containerProperties: ModelsCosmosContainerProperties = metadata._1
         val feedRanges: List[FeedRange] = metadata._2
         val throughputPropertiesOption: Option[(ThroughputProperties, Boolean)] = metadata._3
 

@@ -13,13 +13,12 @@ import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import io.reactivex.subscribers.TestSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -28,7 +27,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.subscriber.TestSubscriber;
 import reactor.util.concurrent.Queues;
 
 import java.util.ArrayList;
@@ -112,13 +113,15 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = TestSubscriber.builder()
+            .initialRequest(1)
+            .build();
         queryObservable.byPage(maxItemCount).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 
         // use a test subscriber and request for more result and sleep in between
-        while (subscriber.completions() == 0 && subscriber.errorCount() == 0) {
+        while (!subscriber.isTerminated()) {
             log.debug("loop " + i);
 
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
@@ -126,24 +129,24 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
             if (sleepTimeInMillis > 4000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
 
-            log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
+            log.debug("subscriber.getValueCount(): " + subscriber.getReceivedOnNext().size());
             log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                 .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
 
             log.debug("requesting more");
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
-        assertThat(subscriber.values().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
+        assertThat(subscriber.getReceivedOnNext().stream().mapToInt(p -> p.getResults().size()).sum())
+            .isEqualTo(expectedNumberOfResults);
     }
 
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
@@ -156,13 +159,15 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
-        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<InternalObjectNode> subscriber = TestSubscriber.builder()
+            .initialRequest(1)
+            .build();
         queryObservable.publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 
         // use a test subscriber and request for more result and sleep in between
-        while (subscriber.completions() == 0 && subscriber.errorCount() == 0) {
+        while (!subscriber.isTerminated()) {
             log.debug("loop " + i);
 
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
@@ -170,24 +175,23 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
             if (sleepTimeInMillis > 4000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.valueCount() - i).isEqualTo(1);
+                assertThat(subscriber.getReceivedOnNext().size() - i).isEqualTo(1);
             }
 
-            log.debug("subscriber.getValueCount(): " + subscriber.valueCount());
+            log.debug("subscriber.getValueCount(): " + subscriber.getReceivedOnNext().size());
             log.debug("client.httpRequests.size(): " + rxClient.httpRequests.size());
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
+            assertThat(rxClient.httpRequests.size() - subscriber.getReceivedOnNext().size())
                 .isLessThanOrEqualTo(maxExpectedBufferedCountForBackPressure);
 
             log.debug("requesting more");
-            subscriber.requestMore(1);
+            subscriber.request(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
-        assertThat(Integer.valueOf(subscriber.values().size())).isEqualTo(expectedNumberOfResults);
+        assertThat(subscriber.expectTerminalSignal()).satisfies(Signal::isOnComplete);
+        assertThat(subscriber.getReceivedOnNext().size()).isEqualTo(expectedNumberOfResults);
     }
 
     @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)

@@ -23,6 +23,7 @@ import java.util.Map;
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractJacksonAzureMessageConverter<I, O> implements AzureMessageConverter<I, O> {
 
     /**
