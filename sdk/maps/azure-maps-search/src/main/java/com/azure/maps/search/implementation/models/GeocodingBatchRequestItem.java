@@ -40,7 +40,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * The official street line of an address relative to the area, as specified by the locality, or postalCode,
      * properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String addressLine;
@@ -49,7 +49,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String countryRegion;
@@ -82,7 +82,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /*
      * The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String adminDistrict;
@@ -90,7 +90,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /*
      * The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String adminDistrict2;
@@ -98,7 +98,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /*
      * The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String adminDistrict3;
@@ -106,7 +106,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /*
      * The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String locality;
@@ -114,7 +114,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /*
      * The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**
+     * This parameter should not be used when the `query` parameter is included in the request.
      */
     @Generated
     private String postalCode;
@@ -197,7 +197,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * locality, or postalCode, properties. Typical use of this element would be to provide a street address or any
      * official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the addressLine value.
      */
@@ -211,7 +211,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * locality, or postalCode, properties. Typical use of this element would be to provide a street address or any
      * official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param addressLine the addressLine value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -226,7 +226,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * Get the countryRegion property: Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the countryRegion value.
      */
@@ -239,7 +239,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
      * Set the countryRegion property: Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param countryRegion the countryRegion value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -337,7 +337,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Get the adminDistrict property: The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the adminDistrict value.
      */
@@ -349,7 +349,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Set the adminDistrict property: The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param adminDistrict the adminDistrict value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -363,7 +363,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Get the adminDistrict2 property: The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the adminDistrict2 value.
      */
@@ -375,7 +375,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Set the adminDistrict2 property: The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param adminDistrict2 the adminDistrict2 value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -389,7 +389,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Get the adminDistrict3 property: The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the adminDistrict3 value.
      */
@@ -401,7 +401,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Set the adminDistrict3 property: The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param adminDistrict3 the adminDistrict3 value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -415,7 +415,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Get the locality property: The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the locality value.
      */
@@ -427,7 +427,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Set the locality property: The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param locality the locality value to set.
      * @return the GeocodingBatchRequestItem object itself.
@@ -441,7 +441,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Get the postalCode property: The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @return the postalCode value.
      */
@@ -453,7 +453,7 @@ public final class GeocodingBatchRequestItem implements JsonSerializable<Geocodi
     /**
      * Set the postalCode property: The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * 
      * @param postalCode the postalCode value to set.
      * @return the GeocodingBatchRequestItem object itself.

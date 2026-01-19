@@ -18,10 +18,10 @@ public class DeviceUpdateGetOperationStatus {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdategetoperationstatus.deviceupdategetoperationstatus
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-update-get-operation-status.device-update-get-operation-status
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceUpdateClient.getOperationStatusWithResponse("e4491c54-916f-443d-9094-bcca546ace2f", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.deviceupdategetoperationstatus.deviceupdategetoperationstatus
+        // END:com.azure.iot.deviceupdate.generated.device-update-get-operation-status.device-update-get-operation-status
     }
 }
