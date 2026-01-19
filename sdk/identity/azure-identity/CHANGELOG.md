@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Renamed `enableAzureTokenProxy()` method in `WorkloadIdentityCredentialBuilder` to `enableAzureProxy()`. These changes only affect code written against beta version 1.19.0-beta.1.
 
 ### Bugs Fixed
 
