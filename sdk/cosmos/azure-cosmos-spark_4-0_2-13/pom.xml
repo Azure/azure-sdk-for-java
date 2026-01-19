@@ -140,14 +140,17 @@
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <argLine>${scalatest.argLine}</argLine>
-              <stdout>WDEF</stdout>
-              <stderr>WDEF</stderr>
+              <stdout>FDEF</stdout>
+              <stderr>FDEF</stderr>
+
+              <!-- FIX: avoid silent forked‑JVM crashes -->
+              <forkMode>none</forkMode>
+
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>
               <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
               <logForkedProcessCommand>true</logForkedProcessCommand>
-              <forkMode>once</forkMode>
             </configuration>
             <executions>
               <execution>
