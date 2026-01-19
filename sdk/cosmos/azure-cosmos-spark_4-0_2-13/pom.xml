@@ -160,6 +160,16 @@
       </build>
     </profile>
     <profile>
+      <!-- Disable unit tests for Java < 17 - Spark 4.0 dependencies require Java 17+ to run -->
+      <id>spark-4-0-disable-tests-java-lt-17</id>
+      <activation>
+        <jdk>(,17)</jdk>
+      </activation>
+      <properties>
+        <skipTests>true</skipTests>
+      </properties>
+    </profile>
+    <profile>
       <id>java9-plus</id>
       <activation>
         <jdk>[9,)</jdk>
