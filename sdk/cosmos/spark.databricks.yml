@@ -42,7 +42,7 @@ parameters:
     type: string
   - name: JavaVersion
     type: string
-    default: '1.11'
+    default: '11'
 stages:
   - stage:
     displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
