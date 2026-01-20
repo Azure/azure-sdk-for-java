@@ -118,7 +118,7 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.42.0;4.43.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-appconfiguration;1.8.5;1.9.0
+com.azure:azure-data-appconfiguration;1.9.0;1.10.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;2.7.0;2.8.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.9;1.6.0-beta.1
@@ -192,17 +192,17 @@ com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
 com.azure.v2:azure-sdk-template;1.0.1-beta.1;1.0.1-beta.1
 com.azure.v2:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure.v2:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.32.0;12.33.0-beta.2
-com.azure:azure-storage-blob-batch;12.28.0;12.29.0-beta.2
-com.azure:azure-storage-blob-changefeed;12.0.0-beta.33;12.0.0-beta.34
-com.azure:azure-storage-blob-cryptography;12.31.0;12.32.0-beta.2
-com.azure:azure-storage-blob-nio;12.0.0-beta.34;12.0.0-beta.35
-com.azure:azure-storage-common;12.31.0;12.32.0-beta.2
-com.azure:azure-storage-file-share;12.28.0;12.29.0-beta.2
-com.azure:azure-storage-file-datalake;12.25.0;12.26.0-beta.2
-com.azure:azure-storage-internal-avro;12.17.0;12.18.0-beta.2
+com.azure:azure-storage-blob;12.33.0;12.34.0-beta.1
+com.azure:azure-storage-blob-batch;12.29.0;12.30.0-beta.1
+com.azure:azure-storage-blob-changefeed;12.0.0-beta.34;12.0.0-beta.35
+com.azure:azure-storage-blob-cryptography;12.32.0;12.33.0-beta.1
+com.azure:azure-storage-blob-nio;12.0.0-beta.35;12.0.0-beta.36
+com.azure:azure-storage-common;12.32.0;12.33.0-beta.1
+com.azure:azure-storage-file-share;12.29.0;12.30.0-beta.1
+com.azure:azure-storage-file-datalake;12.26.0;12.27.0-beta.1
+com.azure:azure-storage-internal-avro;12.18.0;12.19.0-beta.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.27.0;12.28.0-beta.2
+com.azure:azure-storage-queue;12.28.0;12.29.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
@@ -495,7 +495,7 @@ com.azure.resourcemanager:azure-resourcemanager-lambdatesthyperexecute;1.0.0;1.1
 com.azure.resourcemanager:azure-resourcemanager-onlineexperimentation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-secretsstoreextension;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-programmableconnectivity;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-dell-storage;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sitemanager;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongodbatlas;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-purestorageblock;1.0.0;1.1.0-beta.1
@@ -547,7 +547,6 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
-unreleased_com.azure:azure-data-appconfiguration;1.9.0
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
