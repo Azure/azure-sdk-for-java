@@ -180,7 +180,7 @@ public final class AccessTokenUtil {
 
     public static boolean isFederatedTokenFileConfigured() {
         String federatedTokenFilePath = System.getenv(ENV_AZURE_FEDERATED_TOKEN_FILE);
-        return federatedTokenFilePath != null && !federatedTokenFilePath.isBlank();
+        return !isNullOrBlank(federatedTokenFilePath);
     }
 
     /**
@@ -218,7 +218,7 @@ public final class AccessTokenUtil {
         AccessToken result = null;
 
         String federatedToken = readFile(tokenFilePath);
-        if (federatedToken != null && !federatedToken.isBlank()) {
+        if (!isNullOrBlank(federatedToken)) {
             String requestUrl = addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
             String requestBody = "grant_type=client_credentials" +
                 "&client_id=" + urlEncode(clientId) +
@@ -238,17 +238,27 @@ public final class AccessTokenUtil {
     }
 
     private static String useDefaultIfBlank(String value, Supplier<String> defaultValueSupplier) {
-        if (value == null || value.isBlank()) {
+        if (isNullOrBlank(value)) {
             return defaultValueSupplier.get();
         }
         return value;
+    }
+
+    private static boolean isNullOrBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 
     private static String urlEncode(String text) {
         if (text == null) {
             return null;
         }
-        return URLEncoder.encode(text, StandardCharsets.UTF_8);
+
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.log(WARNING, "Failed to encode text.", e);
+            return null;
+        }
     }
 
     private static AccessToken parseAccessTokenResponse(String response) {
@@ -267,7 +277,7 @@ public final class AccessTokenUtil {
     static String readFile(String filePath) {
         try {
             Path path = Paths.get(filePath);
-            return Files.readString(path).trim();
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8).trim();
         } catch (IOException e) {
             LOGGER.log(WARNING, "Failed to read file.", e);
             return null;

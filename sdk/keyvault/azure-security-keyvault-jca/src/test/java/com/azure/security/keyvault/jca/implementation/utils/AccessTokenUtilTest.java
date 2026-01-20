@@ -54,7 +54,7 @@ public class AccessTokenUtilTest {
     void testReadFile(@TempDir Path tempDir) throws Exception {
         Path tempFile = Files.createTempFile(tempDir, "simple_text_file_", ".txt");
         String expectedContent = "Just a dummy string";
-        Files.writeString(tempFile, expectedContent, StandardCharsets.UTF_8);
+        Files.write(tempFile, expectedContent.getBytes(StandardCharsets.UTF_8));
 
         String actualContent = AccessTokenUtil.readFile(tempFile.toAbsolutePath().toString());
         assertNotNull(actualContent);
