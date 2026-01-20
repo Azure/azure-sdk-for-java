@@ -26,11 +26,11 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
-import com.azure.storage.file.share.models.KeyInfo;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
@@ -371,7 +371,6 @@ public final class ShareServiceClient {
     /**
      * Sets the properties for the storage account's File service. The properties range from storage analytics and
      * metric to CORS (Cross-Origin Resource Sharing).
-     *
      * To maintain the CORS in the Share service pass a {@code null} value for {@link ShareServiceProperties#getCors()
      * CORS}. To disable all CORS in the Share service pass an empty list for {@link ShareServiceProperties#getCors()
      * CORS}.

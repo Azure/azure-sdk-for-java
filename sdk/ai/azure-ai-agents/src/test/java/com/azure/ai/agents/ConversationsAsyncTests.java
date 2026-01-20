@@ -4,7 +4,11 @@
 package com.azure.ai.agents;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.openai.core.JsonValue;
+import com.openai.core.RequestOptions;
+import com.openai.core.Timeout;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.ConversationDeletedResource;
 import com.openai.models.conversations.ConversationUpdateParams;
@@ -16,13 +20,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.platform.commons.util.StringUtils;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConversationsAsyncTests extends ClientTestBase {
+
+    private final ClientLogger logger = new ClientLogger(ConversationsAsyncTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -35,6 +42,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
+        logger.log(LogLevel.INFORMATIONAL, () -> "Create completed");
 
         // update
         ConversationUpdateParams.Metadata metadata = ConversationUpdateParams.Metadata.builder()
@@ -128,5 +136,18 @@ public class ConversationsAsyncTests extends ClientTestBase {
         assertNotNull(conversationWithDeletedItem);
         assertEquals(conversationId, conversationWithDeletedItem.id());
 
+    }
+
+    @Disabled("Flaky test")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
+        RequestOptions requestOptions
+            = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
+
+        ExecutionException thrown = assertThrows(ExecutionException.class,
+            () -> client.getConversationServiceAsync().create(requestOptions).get());
+        assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 }

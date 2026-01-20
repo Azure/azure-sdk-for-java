@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.MANAGED_IDENTITY_ENABLED_DEFAULT;

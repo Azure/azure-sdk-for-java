@@ -3,26 +3,36 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.implementation.config;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.ServiceBusProvisioner;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder;
+import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.implementation.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
+import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 
 import static com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE;
@@ -252,6 +262,83 @@ class ServiceBusBinderConfigurationTests {
         @Override
         public void customize(Object builder) {
 
+        }
+    }
+
+    @Test
+    void testCustomTokenCredentialConfiguration() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CustomTokenCredentialConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + connectionString,
+                "spring.cloud.azure.servicebus.credential.token-credential-bean-name=customTokenCredential"
+            )
+            .run(context -> {
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
+                AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
+
+                assertThat(serviceBusProperties.getCredential().getTokenCredentialBeanName())
+                    .isEqualTo("customTokenCredential");
+
+                ServiceBusProducerFactoryCustomizer customizer = context.getBean(ServiceBusProducerFactoryCustomizer.class);
+                DefaultServiceBusNamespaceProducerFactory producerFactory =
+                    new DefaultServiceBusNamespaceProducerFactory(context.getBean(NamespaceProperties.class));
+                customizer.customize(producerFactory);
+
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                producerFactory.createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
+            });
+    }
+
+    @Test
+    void testCustomTokenCredentialConfigurationWithBinder() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CustomTokenCredentialConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + connectionString,
+                "spring.cloud.azure.servicebus.credential.token-credential-bean-name=customTokenCredential"
+            )
+            .run(context -> {
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
+                AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
+                ServiceBusMessageChannelBinder binder = context.getBean(ServiceBusMessageChannelBinder.class);
+
+                Object serviceBusTemplate = ReflectionTestUtils.invokeMethod(binder, "getServiceBusTemplate");
+                Field producerFactoryField = serviceBusTemplate.getClass().getDeclaredField("producerFactory");
+                producerFactoryField.setAccessible(true);
+                Object producerFactory = producerFactoryField.get(serviceBusTemplate);
+
+                Object processorFactory = ReflectionTestUtils.invokeMethod(binder, "getProcessorFactory");
+                Assertions.assertNotNull(processorFactory);
+
+                assertThat(resolveCredential(producerFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, serviceBusProperties))
+                    .isSameAs(customCredential);
+
+                ((ServiceBusProducerFactory) producerFactory).createProducer("test-queue", ServiceBusEntityType.QUEUE).close();
+            });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureServiceBusProperties properties) throws Exception {
+        Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+        field.setAccessible(true);
+        AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+        return resolver.resolve(properties);
+    }
+
+    @Configuration
+    public static class CustomTokenCredentialConfiguration {
+        @Bean
+        public TokenCredential customTokenCredential() {
+            return mock(TokenCredential.class);
         }
     }
 

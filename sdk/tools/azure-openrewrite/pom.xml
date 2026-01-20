@@ -60,7 +60,7 @@
       <dependency>
         <groupId>org.openrewrite.recipe</groupId>
         <artifactId>rewrite-recipe-bom</artifactId>
-        <version>3.9.0</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
+        <version>3.22.0</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -110,6 +110,12 @@
         <dependency>
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-java-21</artifactId>
+          <scope>test</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-25</artifactId>
           <scope>test</scope>
         </dependency>
 
@@ -188,7 +194,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+          <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -209,14 +215,14 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.32.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <version>12.33.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -237,7 +243,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.8.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -299,7 +305,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.8.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -344,14 +350,14 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.27.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
           <scope>provided</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.32.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <version>12.33.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>
@@ -489,7 +495,7 @@
           <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.8</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            <version>9.9.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>

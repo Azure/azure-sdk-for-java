@@ -21,7 +21,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.KeyInfo;
+import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
 import com.azure.storage.queue.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.queue.models.QueueCorsRule;

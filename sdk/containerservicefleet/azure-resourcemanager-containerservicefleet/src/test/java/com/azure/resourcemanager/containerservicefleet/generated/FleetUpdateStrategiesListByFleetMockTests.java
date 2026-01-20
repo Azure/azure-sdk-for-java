@@ -23,7 +23,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"klff\",\"groups\":[{\"name\":\"uwqlgzrfzeey\"}],\"afterStageWaitInSeconds\":32622439,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"ybbqwrv\",\"id\":\"dgmfpgvmpipasl\",\"name\":\"haq\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"wey\",\"groups\":[{\"name\":\"unvmnnr\"},{\"name\":\"rbior\"},{\"name\":\"talywjhhgdnhxms\"},{\"name\":\"v\"}],\"afterStageWaitInSeconds\":2010806413,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"iqndieuzaofj\",\"groups\":[{\"name\":\"cyyysfgdot\"}],\"afterStageWaitInSeconds\":1822085864,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"onmacjekniz\",\"groups\":[{\"name\":\"vcimpev\"}],\"afterStageWaitInSeconds\":716188449,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"dxsm\",\"id\":\"cwrwfs\",\"name\":\"jfnynszqujizdvoq\",\"type\":\"tiby\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies()
-            .listByFleet("jxbkzbzkdvn", "jabudurgkakmo", com.azure.core.util.Context.NONE);
+        PagedIterable<FleetUpdateStrategy> response
+            = manager.fleetUpdateStrategies().listByFleet("kwbqplhlvnuu", "pzlrphw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("klff", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("uwqlgzrfzeey",
+        Assertions.assertEquals("wey", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("unvmnnr",
             response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(32622439,
+        Assertions.assertEquals(2010806413,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
         Assertions.assertEquals(GateType.APPROVAL,
             response.iterator().next().strategy().stages().get(0).beforeGates().get(0).type());

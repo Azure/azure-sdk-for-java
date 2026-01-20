@@ -14,7 +14,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
+<<<<<<< HEAD
+use: '@autorest/java@4.1.62'
 input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/b065e5761916137a69bab14c0a83972d4bacc05e/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-04-06/queue.json
 java: true
 output-folder: ../
@@ -24,7 +25,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey,KeyInfo
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 use-input-stream-for-binary: true

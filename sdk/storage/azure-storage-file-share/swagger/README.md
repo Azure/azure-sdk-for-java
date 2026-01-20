@@ -15,7 +15,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.52'
+<<<<<<< HEAD
+use: '@autorest/java@4.1.2'
 input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/b065e5761916137a69bab14c0a83972d4bacc05e/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-04-06/file.json
 java: true
 output-folder: ../
@@ -26,7 +27,7 @@ enable-sync-stack: true
 default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,ShareFileHandleAccessRights,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode,UserDelegationKey,KeyInfo,ShareNfsSettingsEncryptionInTransit,ShareSmbSettingsEncryptionInTransit,ShareNfsSettings,FilePropertySemantics
+custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,ShareFileHandleAccessRights,FilePermissionFormat,NfsFileType,ModeCopyMode,OwnerCopyMode,UserDelegationKey,ShareNfsSettingsEncryptionInTransit,ShareSmbSettingsEncryptionInTransit,ShareNfsSettings,FilePropertySemantics
 customization-class: src/main/java/ShareStorageCustomization.java
 use-input-stream-for-binary: true
 disable-client-builder: true
