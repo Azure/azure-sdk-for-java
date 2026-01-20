@@ -404,11 +404,10 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(Mono.just(addressList)).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
         Mono<StoreResponse> result = spyWriter.writeAsync(request, timeoutHelper, false);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
-        result.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertNoErrors();
-        subscriber.assertValue(storeResponse);
+        StepVerifier.create(result)
+            .expectNext(storeResponse)
+            .expectComplete()
+            .verify();
     }
 
     @Test
@@ -484,21 +483,23 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(Mono.just(addressList)).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
         Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.any(Uri.class), Mockito.any(RxDocumentServiceRequest.class));
         Mono<StoreResponse> result = spyWriter.writeAsync(request, timeoutHelper, false);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
-        result.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
         if (!barrierMet) {
-            subscriber.assertError(GoneException.class);
-            FailureValidator failureValidator = FailureValidator.builder()
-                .instanceOf(GoneException.class)
-                .statusCode(GONE)
-                .subStatusCode(globalStrong? SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET : SubStatusCodes.GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET)
-                .build();
-            assertThat(subscriber.errorCount()).isEqualTo(1);
-            failureValidator.validate(subscriber.errors().getFirst());
+            StepVerifier.create(result)
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(GoneException.class);
+                    FailureValidator failureValidator = FailureValidator.builder()
+                        .instanceOf(GoneException.class)
+                        .statusCode(GONE)
+                        .subStatusCode(globalStrong ? SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET : SubStatusCodes.GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET)
+                        .build();
+                    failureValidator.validate(error);
+                })
+                .verify();
         } else {
-            subscriber.assertNoErrors();
-            subscriber.assertValue(storeResponse);
+            StepVerifier.create(result)
+                .expectNext(storeResponse)
+                .expectComplete()
+                .verify();
         }
     }
 
