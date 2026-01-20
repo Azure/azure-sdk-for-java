@@ -14,19 +14,19 @@ public final class DatabasePropertiesGeoReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabasePropertiesGeoReplication model = BinaryData.fromString(
-            "{\"groupNickname\":\"idf\",\"linkedDatabases\":[{\"id\":\"zuhtymwisdkfthwx\",\"state\":\"Linking\"},{\"id\":\"i\",\"state\":\"LinkFailed\"},{\"id\":\"vkmijcmmxdcuf\",\"state\":\"Unlinking\"}]}")
+            "{\"groupNickname\":\"ijcoejctb\",\"linkedDatabases\":[{\"id\":\"qsycbkbfkgu\",\"state\":\"UnlinkFailed\"},{\"id\":\"xxppofm\",\"state\":\"UnlinkFailed\"}]}")
             .toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("idf", model.groupNickname());
-        Assertions.assertEquals("zuhtymwisdkfthwx", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("ijcoejctb", model.groupNickname());
+        Assertions.assertEquals("qsycbkbfkgu", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("idf")
-            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("zuhtymwisdkfthwx"),
-                new LinkedDatabase().withId("i"), new LinkedDatabase().withId("vkmijcmmxdcuf")));
+        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("ijcoejctb")
+            .withLinkedDatabases(
+                Arrays.asList(new LinkedDatabase().withId("qsycbkbfkgu"), new LinkedDatabase().withId("xxppofm")));
         model = BinaryData.fromObject(model).toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("idf", model.groupNickname());
-        Assertions.assertEquals("zuhtymwisdkfthwx", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("ijcoejctb", model.groupNickname());
+        Assertions.assertEquals("qsycbkbfkgu", model.linkedDatabases().get(0).id());
     }
 }

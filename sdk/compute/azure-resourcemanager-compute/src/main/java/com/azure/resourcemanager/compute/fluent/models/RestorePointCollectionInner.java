@@ -170,6 +170,33 @@ public final class RestorePointCollectionInner extends Resource {
     }
 
     /**
+     * Get the instantAccess property: This property determines whether instant access snapshot is enabled for restore
+     * points created under this restore point collection for Premium SSD v2 or Ultra disk. Instant access snapshot for
+     * Premium SSD v2 or Ultra disk is instantaneously available for restoring disk with fast restore performance.
+     * 
+     * @return the instantAccess value.
+     */
+    public Boolean instantAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().instantAccess();
+    }
+
+    /**
+     * Set the instantAccess property: This property determines whether instant access snapshot is enabled for restore
+     * points created under this restore point collection for Premium SSD v2 or Ultra disk. Instant access snapshot for
+     * Premium SSD v2 or Ultra disk is instantaneously available for restoring disk with fast restore performance.
+     * 
+     * @param instantAccess the instantAccess value to set.
+     * @return the RestorePointCollectionInner object itself.
+     */
+    public RestorePointCollectionInner withInstantAccess(Boolean instantAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointCollectionProperties();
+        }
+        this.innerProperties().withInstantAccess(instantAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

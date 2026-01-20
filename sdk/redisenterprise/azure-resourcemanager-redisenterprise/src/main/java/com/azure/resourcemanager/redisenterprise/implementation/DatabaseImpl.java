@@ -337,6 +337,6 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

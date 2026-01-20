@@ -130,8 +130,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     private SharingScope sharingScope;
 
     /*
-     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
-     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet.
      */
     private Boolean defaultOutboundAccess;
 
@@ -487,8 +486,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
 
     /**
      * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @return the defaultOutboundAccess value.
      */
@@ -498,8 +496,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
 
     /**
      * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
-     * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
-     * existing subnet.
+     * all VMs in the subnet.
      * 
      * @param defaultOutboundAccess the defaultOutboundAccess value to set.
      * @return the SubnetPropertiesFormatInner object itself.

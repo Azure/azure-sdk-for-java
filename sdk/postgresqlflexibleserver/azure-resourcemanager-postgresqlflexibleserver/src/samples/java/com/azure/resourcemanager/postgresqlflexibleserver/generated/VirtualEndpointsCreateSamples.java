@@ -13,21 +13,21 @@ import java.util.Arrays;
 public final class VirtualEndpointsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
      * VirtualEndpointCreate.json
      */
     /**
-     * Sample code: Create a new virtual endpoint for a flexible server.
+     * Sample code: Create a pair of virtual endpoints for a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void createANewVirtualEndpointForAFlexibleServer(
+    public static void createAPairOfVirtualEndpointsForAServer(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.virtualEndpoints()
-            .define("pgVirtualEndpoint1")
-            .withExistingFlexibleServer("testrg", "pgtestsvc4")
+            .define("examplebasename")
+            .withExistingFlexibleServer("exampleresourcegroup", "exampleserver")
             .withEndpointType(VirtualEndpointType.READ_WRITE)
-            .withMembers(Arrays.asList("testPrimary1"))
+            .withMembers(Arrays.asList("exampleprimaryserver"))
             .create();
     }
 }

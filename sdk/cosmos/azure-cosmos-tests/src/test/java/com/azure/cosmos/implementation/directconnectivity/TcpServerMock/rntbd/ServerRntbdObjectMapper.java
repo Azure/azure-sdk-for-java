@@ -30,7 +30,6 @@ import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * The methods included in this class are copied from {@link RntbdObjectMapper}.
@@ -77,7 +76,7 @@ public final class ServerRntbdObjectMapper {
         } catch (final JsonProcessingException error) {
             logger.debug("could not convert {} value to JSON due to:", value.getClass(), error);
             try {
-                return lenientFormat("{\"error\":%s}", objectWriter.writeValueAsString(error.toString()));
+                return String.format("{\"error\":%s}", objectWriter.writeValueAsString(error.toString()));
             } catch (final JsonProcessingException exception) {
                 return "null";
             }
@@ -86,7 +85,7 @@ public final class ServerRntbdObjectMapper {
 
     public static String toString(final Object value) {
         final String name = simpleClassNames.computeIfAbsent(value.getClass(), Class::getSimpleName);
-        return lenientFormat("%s(%s)", name, toJson(value));
+        return String.format("%s(%s)", name, toJson(value));
     }
 
     public static ObjectWriter writer() {
@@ -113,7 +112,7 @@ public final class ServerRntbdObjectMapper {
             return (ObjectNode)node;
         }
 
-        final String cause = lenientFormat("Expected %s, not %s", JsonNodeType.OBJECT, node.getNodeType());
+        final String cause = String.format("Expected %s, not %s", JsonNodeType.OBJECT, node.getNodeType());
         throw new CorruptedFrameException(cause);
     }
 

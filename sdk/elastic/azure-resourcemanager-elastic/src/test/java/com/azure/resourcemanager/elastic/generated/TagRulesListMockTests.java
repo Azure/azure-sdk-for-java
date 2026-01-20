@@ -7,12 +7,11 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRules;
-import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import com.azure.resourcemanager.elastic.models.TagAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,27 +23,26 @@ public final class TagRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"mwzn\",\"value\":\"biknsorgjhxbld\",\"action\":\"Exclude\"},{\"name\":\"rlkdmtncvokotl\",\"value\":\"d\",\"action\":\"Include\"},{\"name\":\"y\",\"value\":\"ogjltdtbnnhad\",\"action\":\"Exclude\"},{\"name\":\"kvci\",\"value\":\"nvpamq\",\"action\":\"Include\"}]}},\"id\":\"u\",\"name\":\"zikywgg\",\"type\":\"kallatmel\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"fzdm\",\"value\":\"qtfihwhbotzinga\",\"action\":\"Include\"},{\"name\":\"ho\",\"value\":\"qzudphq\",\"action\":\"Exclude\"},{\"name\":\"kfwynw\",\"value\":\"tbvkayhmtnvyq\",\"action\":\"Exclude\"},{\"name\":\"zwpcnpwzcjaesg\",\"value\":\"sccyajguqf\",\"action\":\"Include\"}]}},\"id\":\"zlvdnkfxusemdw\",\"name\":\"rmuhapfcq\",\"type\":\"psqxq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MonitoringTagRules> response
-            = manager.tagRules().list("zynkedya", "rwyhqmibzyhwitsm", com.azure.core.util.Context.NONE);
+            = manager.tagRules().list("wspughftqsxhqx", "j", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ProvisioningState.DELETED, response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendAadLogs());
-        Assertions.assertEquals(false, response.iterator().next().properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(true, response.iterator().next().properties().logRules().sendActivityLogs());
-        Assertions.assertEquals("mwzn",
+        Assertions.assertTrue(response.iterator().next().properties().logRules().sendAadLogs());
+        Assertions.assertTrue(response.iterator().next().properties().logRules().sendSubscriptionLogs());
+        Assertions.assertFalse(response.iterator().next().properties().logRules().sendActivityLogs());
+        Assertions.assertEquals("fzdm",
             response.iterator().next().properties().logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("biknsorgjhxbld",
+        Assertions.assertEquals("qtfihwhbotzinga",
             response.iterator().next().properties().logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE,
+        Assertions.assertEquals(TagAction.INCLUDE,
             response.iterator().next().properties().logRules().filteringTags().get(0).action());
     }
 }

@@ -45,7 +45,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     /*
      * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
      * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
-     * optimistic concurrency per the normal etag convention.
+     * optimistic concurrency per the normal eTag convention.
      */
     private String etag;
 
@@ -113,7 +113,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @return the etag value.
      */
@@ -565,6 +565,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
+        super.withLocalDnsProfile(localDnsProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -614,6 +623,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         }
         if (status() != null) {
             status().validate();
+        }
+        if (localDnsProfile() != null) {
+            localDnsProfile().validate();
         }
     }
 
@@ -680,6 +692,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeArrayField("virtualMachineNodesStatus", virtualMachineNodesStatus(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", status());
+        jsonWriter.writeJsonField("localDNSProfile", localDnsProfile());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -833,6 +846,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                     deserializedManagedClusterAgentPoolProfile.withVirtualMachineNodesStatus(virtualMachineNodesStatus);
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withStatus(AgentPoolStatus.fromJson(reader));
+                } else if ("localDNSProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfile.withLocalDnsProfile(LocalDnsProfile.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

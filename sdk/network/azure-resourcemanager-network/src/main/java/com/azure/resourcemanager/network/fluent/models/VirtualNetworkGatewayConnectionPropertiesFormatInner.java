@@ -11,6 +11,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.CertificateAuthentication;
+import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -170,6 +172,16 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
      * must be enabled.
      */
     private Boolean enablePrivateLinkFastPath;
+
+    /*
+     * Gateway connection authentication type.
+     */
+    private ConnectionAuthenticationType authenticationType;
+
+    /*
+     * Certificate Authentication information for a certificate based authentication connection.
+     */
+    private CertificateAuthentication certificateAuthentication;
 
     /**
      * Creates an instance of VirtualNetworkGatewayConnectionPropertiesFormatInner class.
@@ -689,6 +701,50 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
     }
 
     /**
+     * Get the authenticationType property: Gateway connection authentication type.
+     * 
+     * @return the authenticationType value.
+     */
+    public ConnectionAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: Gateway connection authentication type.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner
+        withAuthenticationType(ConnectionAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the certificateAuthentication property: Certificate Authentication information for a certificate based
+     * authentication connection.
+     * 
+     * @return the certificateAuthentication value.
+     */
+    public CertificateAuthentication certificateAuthentication() {
+        return this.certificateAuthentication;
+    }
+
+    /**
+     * Set the certificateAuthentication property: Certificate Authentication information for a certificate based
+     * authentication connection.
+     * 
+     * @param certificateAuthentication the certificateAuthentication value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner
+        withCertificateAuthentication(CertificateAuthentication certificateAuthentication) {
+        this.certificateAuthentication = certificateAuthentication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -726,6 +782,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
         }
         if (trafficSelectorPolicies() != null) {
             trafficSelectorPolicies().forEach(e -> e.validate());
+        }
+        if (certificateAuthentication() != null) {
+            certificateAuthentication().validate();
         }
     }
 
@@ -768,6 +827,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("expressRouteGatewayBypass", this.expressRouteGatewayBypass);
         jsonWriter.writeBooleanField("enablePrivateLinkFastPath", this.enablePrivateLinkFastPath);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeJsonField("certificateAuthentication", this.certificateAuthentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -879,6 +941,12 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
                 } else if ("enablePrivateLinkFastPath".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.enablePrivateLinkFastPath
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.authenticationType
+                        = ConnectionAuthenticationType.fromString(reader.getString());
+                } else if ("certificateAuthentication".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.certificateAuthentication
+                        = CertificateAuthentication.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

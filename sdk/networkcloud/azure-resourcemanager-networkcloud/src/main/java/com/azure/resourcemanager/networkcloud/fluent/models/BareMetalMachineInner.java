@@ -11,12 +11,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonStatus;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachinePowerState;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReadyState;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
@@ -168,6 +170,16 @@ public final class BareMetalMachineInner extends Resource {
     }
 
     /**
+     * Get the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    public List<ActionState> actionStates() {
+        return this.innerProperties() == null ? null : this.innerProperties().actionStates();
+    }
+
+    /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
      * 
@@ -271,6 +283,17 @@ public final class BareMetalMachineInner extends Resource {
         }
         this.innerProperties().withBootMacAddress(bootMacAddress);
         return this;
+    }
+
+    /**
+     * Get the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the bare metal machine. Callers add this certificate to the trusted CA store on the Kubernetes
+     * control plane nodes to allow secure communication with the bare metal machine.
+     * 
+     * @return the caCertificate value.
+     */
+    public CertificateInfo caCertificate() {
+        return this.innerProperties() == null ? null : this.innerProperties().caCertificate();
     }
 
     /**

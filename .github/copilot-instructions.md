@@ -25,6 +25,49 @@ The Azure SDK for Java repository contains client libraries for Azure services, 
 ### Prerequisites
 
 - To use Azure MCP tool calls, users must have PowerShell installed. Provide [PowerShell installation instructions](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) if not installed, and recommend restarting the IDE to start the MCP server.
+- See the next section for how to set up the Azure SDK MCP server in your IDE for advanced Copilot features.
+- When using Copilot from IntelliJ, Visual Studio, VS Code (not applicable when using Coding Agent on Github.com):
+  - **Always run** the [`azsdk_verify_setup`](../eng/common/instructions/azsdk-tools/verify-setup.instructions.md) tool first to validate the user's development environment for SDK MCP tools.
+  - **Do not proceed** with any other tool execution until this step is complete.
+  - **Skip this check only** for queries that do not require tool execution.
+
+## Azure SDK MCP Server: Quick Start
+
+The Azure SDK MCP server enables advanced Copilot-powered automation, validation, and Azure-specific guidance in your IDE.
+
+| IDE      | Config File Location               | What to Do                |
+|----------|------------------------------------|---------------------------|
+| IntelliJ | `github-copilot/intellij/mcp.json` | Add the JSON config below |
+
+### Configuration Example
+
+#### IntelliJ (`github-copilot/intellij/mcp.json`)
+```json
+{
+  "servers": {
+    "azure-sdk-mcp": {
+      "type": "stdio",
+      "command": "pwsh",
+      "args": [
+        "<Path to azure-sdk-for-java repo>/eng/common/mcp/azure-sdk-mcp.ps1",
+        "-Run"
+      ]
+    }
+  }
+}
+```
+
+- Make sure PowerShell is installed and available in your system PATH.
+- Replace `<Path to azure-sdk-for-java repo>` with the absolute path to your local clone of the Azure SDK for Java repository.
+
+### Troubleshooting
+
+- If IntelliJ does not detect the MCP server, double-check the path and file name.
+- Start the server manually with:
+  ```powershell
+  eng/common/mcp/azure-sdk-mcp.ps1 -Run
+  ```
+- For more help, see [eng/common/mcp/README.md](../eng/common/mcp/README.md) or open an issue.
 
 ## Behavior
 
@@ -68,7 +111,7 @@ Always cite the specific sections of documentation you've referenced in your res
 ### Java Version Compatibility
 
 - Code should be compatible with Java 8 as the baseline
-- Testing and forward support should work up to the latest Java LTS release (currently Java 21)
+- Testing and forward support should work up to the latest Java LTS release
 
 ### Documentation Requirements
 
@@ -149,21 +192,18 @@ When facing issues, direct users to:
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - [Stack Overflow with azure-java-sdk tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
 
+## Local SDK Generation and Package Lifecycle (TypeSpec)
+
+### AUTHORITATIVE REFERENCE
+For all TypeSpec-based SDK workflows (generation, building, validation, testing, versioning, and release preparation), follow #file:../eng/common/instructions/azsdk-tools/local-sdk-workflow.instructions.md
+
+### DEFAULT BEHAVIORS
+- **Repository:** Use the current workspace as the local SDK repository unless the user specifies a different path.
+- **Configuration:** Identify `tsp-location.yaml` from files open in the editor. If unclear, ask the user.
+
+### REQUIRED CONFIRMATIONS
+Ask the user for clarification if repository path or configuration file is ambiguous.
+
 ## SDK release
 
-There are two tools to help with SDK releases:
-- Check SDK release readiness
-- Release SDK
-
-### Check SDK Release Readiness
-Run `CheckPackageReleaseReadiness` to verify if the package is ready for release. This tool checks:
-- API review status
-- Change log status
-- Package name approval (If package is new and releasing a preview version)
-- Release date is set in release tracker
-
-### Release SDK
-Run `ReleasePackage` to release the package. This tool requires package name and language as inputs. It will:- Check if the package is ready for release
-- Identify the release pipeline
-- Trigger the release pipeline.
-  User needs to approve the release stage in the pipeline after it is triggered.
+For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).

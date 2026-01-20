@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2025-10-15)
+
+- Azure Resource Manager HDInsight client library for Java. This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2025-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.EntraUserInfo` was added
+
+#### `models.UpdateGatewaySettingsParameters` was modified
+
+* `withRestAuthEntraUsers(java.util.List)` was added
+* `restAuthEntraUsers()` was added
+
+#### `models.GatewaySettings` was modified
+
+* `restAuthEntraUsers()` was added
 
 ## 1.1.0-beta.2 (2024-08-21)
 

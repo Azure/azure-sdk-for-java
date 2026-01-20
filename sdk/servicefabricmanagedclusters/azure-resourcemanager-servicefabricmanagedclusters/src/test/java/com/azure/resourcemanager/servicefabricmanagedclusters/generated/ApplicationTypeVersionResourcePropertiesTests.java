@@ -12,16 +12,16 @@ public final class ApplicationTypeVersionResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeVersionResourceProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"eh\",\"appPackageUrl\":\"pvecxgodeb\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"sfwxosowzxc\",\"appPackageUrl\":\"gicjooxdjeb\"}")
                 .toObject(ApplicationTypeVersionResourceProperties.class);
-        Assertions.assertEquals("pvecxgodeb", model.appPackageUrl());
+        Assertions.assertEquals("gicjooxdjeb", model.appPackageUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationTypeVersionResourceProperties model
-            = new ApplicationTypeVersionResourceProperties().withAppPackageUrl("pvecxgodeb");
+            = new ApplicationTypeVersionResourceProperties().withAppPackageUrl("gicjooxdjeb");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceProperties.class);
-        Assertions.assertEquals("pvecxgodeb", model.appPackageUrl());
+        Assertions.assertEquals("gicjooxdjeb", model.appPackageUrl());
     }
 }

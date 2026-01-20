@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * List of provisioning errors for a http route config object.
+ * List of provisioning errors for a Http Route Config object.
  */
 @Immutable
 public final class HttpRouteProvisioningErrors implements JsonSerializable<HttpRouteProvisioningErrors> {

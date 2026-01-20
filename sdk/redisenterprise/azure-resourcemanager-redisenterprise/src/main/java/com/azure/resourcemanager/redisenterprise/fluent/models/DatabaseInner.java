@@ -31,7 +31,7 @@ public final class DatabaseInner extends ProxyResource {
     /*
      * Other properties of the database.
      */
-    private DatabaseProperties innerProperties;
+    private DatabaseCreateProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -64,7 +64,7 @@ public final class DatabaseInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
-    private DatabaseProperties innerProperties() {
+    private DatabaseCreateProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -126,7 +126,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withClientProtocol(Protocol clientProtocol) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withClientProtocol(clientProtocol);
         return this;
@@ -151,7 +151,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withPort(Integer port) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withPort(port);
         return this;
@@ -196,7 +196,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withClusteringPolicy(ClusteringPolicy clusteringPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withClusteringPolicy(clusteringPolicy);
         return this;
@@ -219,7 +219,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withEvictionPolicy(EvictionPolicy evictionPolicy) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withEvictionPolicy(evictionPolicy);
         return this;
@@ -242,7 +242,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withPersistence(Persistence persistence) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withPersistence(persistence);
         return this;
@@ -267,7 +267,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withModules(List<Module> modules) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withModules(modules);
         return this;
@@ -290,7 +290,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withGeoReplication(geoReplication);
         return this;
@@ -324,7 +324,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withDeferUpgrade(deferUpgrade);
         return this;
@@ -349,7 +349,7 @@ public final class DatabaseInner extends ProxyResource {
      */
     public DatabaseInner withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseProperties();
+            this.innerProperties = new DatabaseCreateProperties();
         }
         this.innerProperties().withAccessKeysAuthentication(accessKeysAuthentication);
         return this;
@@ -399,7 +399,7 @@ public final class DatabaseInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedDatabaseInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedDatabaseInner.innerProperties = DatabaseProperties.fromJson(reader);
+                    deserializedDatabaseInner.innerProperties = DatabaseCreateProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedDatabaseInner.systemData = SystemData.fromJson(reader);
                 } else {

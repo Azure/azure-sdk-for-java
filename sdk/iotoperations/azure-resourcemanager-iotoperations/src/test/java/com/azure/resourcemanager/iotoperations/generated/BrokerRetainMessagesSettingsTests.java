@@ -16,19 +16,19 @@ public final class BrokerRetainMessagesSettingsTests {
     public void testDeserialize() throws Exception {
         BrokerRetainMessagesSettings model = BinaryData
             .fromString(
-                "{\"topics\":[\"xlzevgbmqjqabcy\",\"mivkwlzuvcc\",\"wnfnbacf\"],\"dynamic\":{\"mode\":\"Disabled\"}}")
+                "{\"topics\":[\"adehxnltyfsopp\",\"suesnzw\",\"ej\",\"avo\"],\"dynamic\":{\"mode\":\"Disabled\"}}")
             .toObject(BrokerRetainMessagesSettings.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.topics().get(0));
+        Assertions.assertEquals("adehxnltyfsopp", model.topics().get(0));
         Assertions.assertEquals(OperationalMode.DISABLED, model.dynamic().mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerRetainMessagesSettings model
-            = new BrokerRetainMessagesSettings().withTopics(Arrays.asList("xlzevgbmqjqabcy", "mivkwlzuvcc", "wnfnbacf"))
+            = new BrokerRetainMessagesSettings().withTopics(Arrays.asList("adehxnltyfsopp", "suesnzw", "ej", "avo"))
                 .withDynamic(new BrokerRetainMessagesDynamic().withMode(OperationalMode.DISABLED));
         model = BinaryData.fromObject(model).toObject(BrokerRetainMessagesSettings.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.topics().get(0));
+        Assertions.assertEquals("adehxnltyfsopp", model.topics().get(0));
         Assertions.assertEquals(OperationalMode.DISABLED, model.dynamic().mode());
     }
 }

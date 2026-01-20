@@ -10,14 +10,22 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Handle data from client.
  *
  */
 public class HttpProxyClientHandler extends ChannelInboundHandlerAdapter {
+
+    private static final ByteBuf TUNNEL_OK =
+        Unpooled.unreleasableBuffer(
+            Unpooled.copiedBuffer("HTTP/1.1 200 Connection Established\r\n\r\n", StandardCharsets.US_ASCII));
+
     private final Logger logger = LoggerFactory.getLogger(HttpProxyClientHandler.class);
     private final String id;
     private Channel clientChannel;
@@ -36,15 +44,27 @@ public class HttpProxyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (header.isComplete()) {
-            remoteChannel.writeAndFlush(msg); // just forward
+            if (remoteChannel != null && remoteChannel.isActive()) {
+                remoteChannel.writeAndFlush(msg); // just forward
+            } else {
+                ReferenceCountUtil.safeRelease(msg);
+                flushAndClose(clientChannel);
+            }
             return;
         }
 
         ByteBuf in = (ByteBuf) msg;
-        header.digest(in);
+
+        try {
+            header.digest(in);
+        } catch (Throwable t) {
+            ReferenceCountUtil.safeRelease(in);
+            flushAndClose(clientChannel);
+            throw t;
+        }
 
         if (!header.isComplete()) {
-            in.release();
+            ReferenceCountUtil.safeRelease(in);
             return;
         }
 
@@ -52,7 +72,7 @@ public class HttpProxyClientHandler extends ChannelInboundHandlerAdapter {
         clientChannel.config().setAutoRead(false); // disable AutoRead until remote connection is ready
 
         if (header.isHttps()) { // if https, respond 200 to create tunnel
-            clientChannel.writeAndFlush(Unpooled.wrappedBuffer("HTTP/1.1 200 Connection Established\r\n\r\n".getBytes()));
+            clientChannel.writeAndFlush(TUNNEL_OK.duplicate());
         }
 
         Bootstrap b = new Bootstrap();
@@ -71,20 +91,27 @@ public class HttpProxyClientHandler extends ChannelInboundHandlerAdapter {
 
                 remoteChannel.writeAndFlush(in);
             } else {
-                in.release();
-                clientChannel.close();
+                ReferenceCountUtil.safeRelease(in);
+                // release header buffer if retained/allocated
+                ReferenceCountUtil.safeRelease(header.getByteBuf());
+                flushAndClose(remoteChannel);
+                flushAndClose(clientChannel);
             }
         });
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+
         flushAndClose(remoteChannel);
+        remoteChannel = null;
+        clientChannel = null;
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) {
-        logger.error(id + " error occured", e);
+        logger.error(id + " error occurred", e);
+        flushAndClose(remoteChannel);
         flushAndClose(clientChannel);
     }
 

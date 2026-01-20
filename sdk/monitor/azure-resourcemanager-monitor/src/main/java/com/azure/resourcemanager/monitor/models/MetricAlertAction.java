@@ -18,7 +18,7 @@ import java.util.Map;
 @Fluent
 public final class MetricAlertAction implements JsonSerializable<MetricAlertAction> {
     /*
-     * the id of the action group to use.
+     * The id of the action group to use.
      */
     private String actionGroupId;
 
@@ -35,7 +35,7 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
     }
 
     /**
-     * Get the actionGroupId property: the id of the action group to use.
+     * Get the actionGroupId property: The id of the action group to use.
      * 
      * @return the actionGroupId value.
      */
@@ -44,7 +44,7 @@ public final class MetricAlertAction implements JsonSerializable<MetricAlertActi
     }
 
     /**
-     * Set the actionGroupId property: the id of the action group to use.
+     * Set the actionGroupId property: The id of the action group to use.
      * 
      * @param actionGroupId the actionGroupId value to set.
      * @return the MetricAlertAction object itself.

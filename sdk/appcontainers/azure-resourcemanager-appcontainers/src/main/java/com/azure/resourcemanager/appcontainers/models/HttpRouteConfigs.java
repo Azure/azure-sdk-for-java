@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface HttpRouteConfigs {
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -23,13 +23,13 @@ public interface HttpRouteConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config along with {@link Response}.
+     * @return the specified Http Route Config along with {@link Response}.
      */
     Response<HttpRouteConfig> getWithResponse(String resourceGroupName, String environmentName, String httpRouteName,
         Context context);
 
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -38,41 +38,37 @@ public interface HttpRouteConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config.
+     * @return the specified Http Route Config.
      */
     HttpRouteConfig get(String resourceGroupName, String environmentName, String httpRouteName);
 
     /**
-     * Deletes the specified Managed Http Route.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param httpRouteName Name of the Http Route Config Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String httpRouteName,
-        Context context);
-
-    /**
-     * Deletes the specified Managed Http Route.
+     * Deletes the specified Http Route Config.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
      * @param httpRouteName Name of the Http Route Config Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String environmentName, String httpRouteName);
 
     /**
-     * Get the Managed Http Routes in a given managed environment.
+     * Deletes the specified Http Route Config.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param environmentName Name of the Managed Environment.
+     * @param httpRouteName Name of the Http Route Config Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String environmentName, String httpRouteName, Context context);
+
+    /**
+     * List the Http Route Configs in a given managed environment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -80,12 +76,12 @@ public interface HttpRouteConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Http Routes in a given managed environment as paginated response with {@link PagedIterable}.
+     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HttpRouteConfig> list(String resourceGroupName, String environmentName);
 
     /**
-     * Get the Managed Http Routes in a given managed environment.
+     * List the Http Route Configs in a given managed environment.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -94,24 +90,24 @@ public interface HttpRouteConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Http Routes in a given managed environment as paginated response with {@link PagedIterable}.
+     * @return collection of rule based Http Route Config resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HttpRouteConfig> list(String resourceGroupName, String environmentName, Context context);
 
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config along with {@link Response}.
+     * @return the specified Http Route Config along with {@link Response}.
      */
     HttpRouteConfig getById(String id);
 
     /**
-     * Get the specified Managed Http Route Config.
+     * Get the specified Http Route Config.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -119,33 +115,30 @@ public interface HttpRouteConfigs {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Managed Http Route Config along with {@link Response}.
+     * @return the specified Http Route Config along with {@link Response}.
      */
     Response<HttpRouteConfig> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the specified Managed Http Route.
+     * Deletes the specified Http Route Config.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
-     * Deletes the specified Managed Http Route.
+     * Deletes the specified Http Route Config.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new HttpRouteConfig resource.

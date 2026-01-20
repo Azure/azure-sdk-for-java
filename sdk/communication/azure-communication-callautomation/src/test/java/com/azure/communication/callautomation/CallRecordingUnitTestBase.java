@@ -3,13 +3,10 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingKindInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStateResponseInternal;
 
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -41,11 +38,8 @@ public class CallRecordingUnitTestBase {
         ));
 
     private String serializeObject(RecordingStateResponseInternal o) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            o.toJson(writer);
-            writer.flush();
-            return outputStream.toString();
+        try {
+            return o.toJsonString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

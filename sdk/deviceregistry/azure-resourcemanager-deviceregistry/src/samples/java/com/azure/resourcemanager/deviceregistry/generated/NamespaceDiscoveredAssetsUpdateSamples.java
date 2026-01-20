@@ -12,7 +12,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetU
  */
 public final class NamespaceDiscoveredAssetsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Update_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: Update_NamespaceDiscoveredAsset.

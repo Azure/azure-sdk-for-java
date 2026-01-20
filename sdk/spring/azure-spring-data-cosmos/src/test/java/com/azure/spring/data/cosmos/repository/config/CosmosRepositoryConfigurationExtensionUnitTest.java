@@ -4,7 +4,7 @@
 package com.azure.spring.data.cosmos.repository.config;
 
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;

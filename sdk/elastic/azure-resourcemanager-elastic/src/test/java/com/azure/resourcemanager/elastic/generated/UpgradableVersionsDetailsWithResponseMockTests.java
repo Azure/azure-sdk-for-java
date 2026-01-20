@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.UpgradableVersionsList;
@@ -20,21 +20,20 @@ import reactor.core.publisher.Mono;
 public final class UpgradableVersionsDetailsWithResponseMockTests {
     @Test
     public void testDetailsWithResponse() throws Exception {
-        String responseStr
-            = "{\"currentVersion\":\"axhexiilivp\",\"upgradableVersions\":[\"irqtdqoa\",\"oruzfgsquyfxrxx\"]}";
+        String responseStr = "{\"currentVersion\":\"lrcoolsttpki\",\"upgradableVersions\":[\"bnujrywvtylbf\",\"ncu\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UpgradableVersionsList response = manager.upgradableVersions()
-            .detailsWithResponse("soibjudpfrx", "rthzvaytdwkqbrqu", com.azure.core.util.Context.NONE)
+            .detailsWithResponse("ixbjx", "fw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("axhexiilivp", response.currentVersion());
-        Assertions.assertEquals("irqtdqoa", response.upgradableVersions().get(0));
+        Assertions.assertEquals("lrcoolsttpki", response.currentVersion());
+        Assertions.assertEquals("bnujrywvtylbf", response.upgradableVersions().get(0));
     }
 }

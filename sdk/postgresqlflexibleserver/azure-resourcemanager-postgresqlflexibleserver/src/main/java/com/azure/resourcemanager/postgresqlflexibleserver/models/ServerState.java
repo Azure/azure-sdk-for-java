@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * A state of a server that is visible to user.
+ * Possible states of a server.
  */
 public final class ServerState extends ExpandableStringEnum<ServerState> {
     /**

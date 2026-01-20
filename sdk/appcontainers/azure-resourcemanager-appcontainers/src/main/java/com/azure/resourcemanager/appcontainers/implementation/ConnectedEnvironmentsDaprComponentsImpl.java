@@ -10,10 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsDaprComponentsClient;
-import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentDaprComponentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
-import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentDaprComponent;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentsDaprComponents;
+import com.azure.resourcemanager.appcontainers.models.DaprComponent;
 import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
 
 public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedEnvironmentsDaprComponents {
@@ -29,40 +29,35 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName,
-        String connectedEnvironmentName) {
-        PagedIterable<ConnectedEnvironmentDaprComponentInner> inner
+    public PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName) {
+        PagedIterable<DaprComponentInner> inner
             = this.serviceClient().list(resourceGroupName, connectedEnvironmentName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ConnectedEnvironmentDaprComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DaprComponentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ConnectedEnvironmentDaprComponent> list(String resourceGroupName,
-        String connectedEnvironmentName, Context context) {
-        PagedIterable<ConnectedEnvironmentDaprComponentInner> inner
+    public PagedIterable<DaprComponent> list(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
+        PagedIterable<DaprComponentInner> inner
             = this.serviceClient().list(resourceGroupName, connectedEnvironmentName, context);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ConnectedEnvironmentDaprComponentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DaprComponentImpl(inner1, this.manager()));
     }
 
-    public Response<ConnectedEnvironmentDaprComponent> getWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String componentName, Context context) {
-        Response<ConnectedEnvironmentDaprComponentInner> inner
+    public Response<DaprComponent> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, Context context) {
+        Response<DaprComponentInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConnectedEnvironmentDaprComponentImpl(inner.getValue(), this.manager()));
+                new DaprComponentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ConnectedEnvironmentDaprComponent get(String resourceGroupName, String connectedEnvironmentName,
-        String componentName) {
-        ConnectedEnvironmentDaprComponentInner inner
-            = this.serviceClient().get(resourceGroupName, connectedEnvironmentName, componentName);
+    public DaprComponent get(String resourceGroupName, String connectedEnvironmentName, String componentName) {
+        DaprComponentInner inner = this.serviceClient().get(resourceGroupName, connectedEnvironmentName, componentName);
         if (inner != null) {
-            return new ConnectedEnvironmentDaprComponentImpl(inner, this.manager());
+            return new DaprComponentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -100,7 +95,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
         }
     }
 
-    public ConnectedEnvironmentDaprComponent getById(String id) {
+    public DaprComponent getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -120,7 +115,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
             .getValue();
     }
 
-    public Response<ConnectedEnvironmentDaprComponent> getByIdWithResponse(String id, Context context) {
+    public Response<DaprComponent> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -185,7 +180,7 @@ public final class ConnectedEnvironmentsDaprComponentsImpl implements ConnectedE
         return this.serviceManager;
     }
 
-    public ConnectedEnvironmentDaprComponentImpl define(String name) {
-        return new ConnectedEnvironmentDaprComponentImpl(name, this.manager());
+    public DaprComponentImpl define(String name) {
+        return new DaprComponentImpl(name, this.manager());
     }
 }

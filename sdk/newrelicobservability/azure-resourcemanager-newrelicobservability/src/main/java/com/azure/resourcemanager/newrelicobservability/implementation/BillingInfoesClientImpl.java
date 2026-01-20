@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.newrelicobservability.fluent.BillingInfoesClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.BillingInfoResponseInner;
 import reactor.core.publisher.Mono;
@@ -55,7 +56,7 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NewRelicObservabilit")
+    @ServiceInterface(name = "NewRelicObservabilityBillingInfoes")
     public interface BillingInfoesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/getBillingInfo")
@@ -65,18 +66,29 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/getBillingInfo")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BillingInfoResponseInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return marketplace Subscription and Organization details to which resource gets billed into along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingInfoResponseInner>> getWithResponseAsync(String resourceGroupName,
@@ -104,50 +116,17 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
     }
 
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BillingInfoResponseInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, monitorName, accept, context);
-    }
-
-    /**
-     * Get marketplace info mapped to the given monitor.
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor on successful completion of {@link Mono}.
+     * @return marketplace Subscription and Organization details to which resource gets billed into on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingInfoResponseInner> getAsync(String resourceGroupName, String monitorName) {
@@ -155,7 +134,9 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
     }
 
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -163,26 +144,51 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor along with {@link Response}.
+     * @return marketplace Subscription and Organization details to which resource gets billed into along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingInfoResponseInner> getWithResponse(String resourceGroupName, String monitorName,
         Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, accept, context);
     }
 
     /**
-     * Get marketplace info mapped to the given monitor.
+     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace info mapped to the given monitor.
+     * @return marketplace Subscription and Organization details to which resource gets billed into.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingInfoResponseInner get(String resourceGroupName, String monitorName) {
         return getWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BillingInfoesClientImpl.class);
 }

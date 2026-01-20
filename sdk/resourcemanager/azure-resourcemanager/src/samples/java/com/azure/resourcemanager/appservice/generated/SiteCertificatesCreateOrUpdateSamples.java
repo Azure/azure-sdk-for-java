@@ -12,8 +12,8 @@ import java.util.Arrays;
  */
 public final class SiteCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateSiteCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * CreateOrUpdateSiteCertificate.json
      */
     /**
      * Sample code: Create Or Update Certificate.

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsTab.
+ * Represents a teams tab.
  */
 @Fluent
 public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {

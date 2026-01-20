@@ -1,12 +1,50 @@
 # Release History
 
-## 12.25.0-beta.2 (Unreleased)
+## 12.27.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.26.0 (2026-01-15)
+
+### Features Added
+- Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.32.0` to version `12.33.0`.
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+
+## 12.26.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for the StartFrom parameter on `DataLakeFileSystemClient.listPaths()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+## 12.25.0 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
 
 ## 12.24.3 (2025-09-25)
 

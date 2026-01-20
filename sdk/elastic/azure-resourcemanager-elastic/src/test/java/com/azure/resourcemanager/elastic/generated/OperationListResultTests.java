@@ -18,7 +18,7 @@ public final class OperationListResultTests {
             "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"ownoizhw\"},{\"name\":\"xybqsoqij\",\"isDataAction\":true,\"display\":{\"provider\":\"pazlobcufpdz\",\"resource\":\"btcqq\",\"operation\":\"qglhq\",\"description\":\"ufo\"},\"origin\":\"jywif\"},{\"name\":\"esaagdfm\",\"isDataAction\":true,\"display\":{\"provider\":\"j\",\"resource\":\"ifkwmrvktsizntoc\",\"operation\":\"a\",\"description\":\"ajpsquc\"},\"origin\":\"o\"}],\"nextLink\":\"dkfo\"}")
             .toObject(OperationListResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertTrue(model.value().get(0).isDataAction());
         Assertions.assertEquals("pbsphrupidgs", model.value().get(0).display().provider());
         Assertions.assertEquals("bejhphoycmsxa", model.value().get(0).display().resource());
         Assertions.assertEquals("hdxbmtqio", model.value().get(0).display().operation());
@@ -54,7 +54,7 @@ public final class OperationListResultTests {
             .withNextLink("dkfo");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
-        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertTrue(model.value().get(0).isDataAction());
         Assertions.assertEquals("pbsphrupidgs", model.value().get(0).display().provider());
         Assertions.assertEquals("bejhphoycmsxa", model.value().get(0).display().resource());
         Assertions.assertEquals("hdxbmtqio", model.value().get(0).display().operation());

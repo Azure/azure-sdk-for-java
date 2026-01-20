@@ -78,6 +78,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withRegion(region)
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.BASIC)
+            .disableLocalAuth()
             .create();
 
         ServiceBusNamespace namespace = serviceBusManager.namespaces().getByResourceGroup(rgName, namespaceDNSLabel);
@@ -137,6 +138,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withRegion(region)
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.STANDARD)
+            .disableLocalAuth()
             .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
@@ -209,6 +211,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.STANDARD)
             .withNewQueue(queueName, 1024)
+            .disableLocalAuth()
             .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
@@ -244,6 +247,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withRegion(region)
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.STANDARD)
+            .disableLocalAuth()
             .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
@@ -313,6 +317,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.STANDARD)
             .withNewTopic(topicName, 1024)
+            .disableLocalAuth()
             .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
@@ -476,6 +481,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withNewResourceGroup(rgCreatable)
             .withSku(NamespaceSku.STANDARD)
             .withNewTopic(topicName, 1024)
+            .disableLocalAuth()
             .create();
         // Create Topic subscriptions and list it
         //
@@ -523,6 +529,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withSku(NamespaceSku.BASIC)
+            .disableLocalAuth()
             .create();
 
         Queue queue = serviceBusNamespace.queues().define(queueName).create();

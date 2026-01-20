@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -15,13 +15,8 @@ import java.io.IOException;
 /**
  * A logic app extension resource.
  */
-@Fluent
+@Immutable
 public final class LogicAppInner extends ProxyResource {
-    /*
-     * The resource-specific properties for this resource.
-     */
-    private Object properties;
-
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
@@ -46,26 +41,6 @@ public final class LogicAppInner extends ProxyResource {
      * Creates an instance of LogicAppInner class.
      */
     public LogicAppInner() {
-    }
-
-    /**
-     * Get the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    public Object properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the LogicAppInner object itself.
-     */
-    public LogicAppInner withProperties(Object properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**
@@ -121,9 +96,6 @@ public final class LogicAppInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (this.properties != null) {
-            jsonWriter.writeUntypedField("properties", this.properties);
-        }
         return jsonWriter.writeEndObject();
     }
 
@@ -149,8 +121,6 @@ public final class LogicAppInner extends ProxyResource {
                     deserializedLogicAppInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedLogicAppInner.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedLogicAppInner.properties = reader.readUntyped();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedLogicAppInner.systemData = SystemData.fromJson(reader);
                 } else {

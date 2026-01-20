@@ -23,101 +23,93 @@ public final class NamespaceDiscoveredDeviceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredDeviceInner model = BinaryData.fromString(
-            "{\"properties\":{\"externalDeviceId\":\"xuvw\",\"endpoints\":{\"inbound\":{\"pwijnhy\":{\"endpointType\":\"hlmctlpdngitvgb\",\"address\":\"hrixkwmy\",\"version\":\"ejvegrhbpnaixex\",\"supportedAuthenticationMethods\":[\"UsernamePassword\"],\"additionalConfiguration\":\"eaxhcexdrrvqahqk\",\"lastUpdatedOn\":\"2021-04-01T21:28:03Z\"},\"reafxtsgumhjg\":{\"endpointType\":\"svfycxzbfv\",\"address\":\"owvrvmtgjqppyos\",\"version\":\"on\",\"supportedAuthenticationMethods\":[\"Anonymous\",\"Certificate\",\"Anonymous\"],\"additionalConfiguration\":\"pnsxkmcwaek\",\"lastUpdatedOn\":\"2021-01-29T01:52:27Z\"},\"znoigbrn\":{\"endpointType\":\"ikkx\",\"address\":\"slol\",\"version\":\"pvuzlmv\",\"supportedAuthenticationMethods\":[\"UsernamePassword\",\"Certificate\",\"Anonymous\",\"Anonymous\"],\"additionalConfiguration\":\"lcrpw\",\"lastUpdatedOn\":\"2021-11-19T13:53:17Z\"}},\"outbound\":{\"assigned\":{\"oqkag\":{\"endpointType\":\"kpnb\",\"address\":\"azej\"}}}},\"manufacturer\":\"sxtta\",\"model\":\"zxnfaaz\",\"operatingSystem\":\"dtnkdmkq\",\"operatingSystemVersion\":\"lwuenvrkp\",\"attributes\":{},\"discoveryId\":\"aibrebqaaysjkixq\",\"version\":7129303737344697098,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"ezl\",\"name\":\"fffiak\"},\"location\":\"pqqmted\",\"tags\":{\"auyqncygupkv\":\"mjihyeozphv\"},\"id\":\"p\",\"name\":\"dscwxqupevzhf\",\"type\":\"totxhojujb\"}")
+            "{\"properties\":{\"externalDeviceId\":\"tmr\",\"endpoints\":{\"inbound\":{\"rsre\":{\"endpointType\":\"ctymoxoftp\",\"address\":\"piwyczuhxacpqjl\",\"version\":\"hyus\",\"supportedAuthenticationMethods\":[\"Certificate\",\"UsernamePassword\"],\"additionalConfiguration\":\"vlmfwdgzxulucv\",\"lastUpdatedOn\":\"2021-09-17T07:51:38Z\"},\"pnfqntcyp\":{\"endpointType\":\"zvxurisjnhny\",\"address\":\"xifqjzgxm\",\"version\":\"ublwpcesutrg\",\"supportedAuthenticationMethods\":[\"Certificate\",\"UsernamePassword\"],\"additionalConfiguration\":\"tpwoqhihejq\",\"lastUpdatedOn\":\"2021-11-12T23:28:54Z\"}},\"outbound\":{\"assigned\":{\"vlhv\":{\"endpointType\":\"foimwkslircizjxv\",\"address\":\"dfcea\"}}}},\"manufacturer\":\"dyftumrtwna\",\"model\":\"slbi\",\"operatingSystem\":\"ojgcyzt\",\"operatingSystemVersion\":\"mznbaeqphch\",\"attributes\":{},\"discoveryId\":\"nrpxehuw\",\"version\":2363907746060609588,\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"aifmvikl\",\"name\":\"ydv\"},\"location\":\"bejdznxcv\",\"tags\":{\"v\":\"hnjivo\"},\"id\":\"novqfzge\",\"name\":\"jdftuljltd\",\"type\":\"ceamtm\"}")
             .toObject(NamespaceDiscoveredDeviceInner.class);
-        Assertions.assertEquals("pqqmted", model.location());
-        Assertions.assertEquals("mjihyeozphv", model.tags().get("auyqncygupkv"));
-        Assertions.assertEquals("xuvw", model.properties().externalDeviceId());
-        Assertions.assertEquals("hlmctlpdngitvgb",
-            model.properties().endpoints().inbound().get("pwijnhy").endpointType());
-        Assertions.assertEquals("hrixkwmy", model.properties().endpoints().inbound().get("pwijnhy").address());
-        Assertions.assertEquals("ejvegrhbpnaixex", model.properties().endpoints().inbound().get("pwijnhy").version());
-        Assertions.assertEquals(AuthenticationMethod.USERNAME_PASSWORD,
-            model.properties().endpoints().inbound().get("pwijnhy").supportedAuthenticationMethods().get(0));
-        Assertions.assertEquals("eaxhcexdrrvqahqk",
-            model.properties().endpoints().inbound().get("pwijnhy").additionalConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T21:28:03Z"),
-            model.properties().endpoints().inbound().get("pwijnhy").lastUpdatedOn());
-        Assertions.assertEquals("kpnb",
-            model.properties().endpoints().outbound().assigned().get("oqkag").endpointType());
-        Assertions.assertEquals("azej", model.properties().endpoints().outbound().assigned().get("oqkag").address());
-        Assertions.assertEquals("sxtta", model.properties().manufacturer());
-        Assertions.assertEquals("zxnfaaz", model.properties().model());
-        Assertions.assertEquals("dtnkdmkq", model.properties().operatingSystem());
-        Assertions.assertEquals("lwuenvrkp", model.properties().operatingSystemVersion());
-        Assertions.assertEquals("aibrebqaaysjkixq", model.properties().discoveryId());
-        Assertions.assertEquals(7129303737344697098L, model.properties().version());
-        Assertions.assertEquals("ezl", model.extendedLocation().type());
-        Assertions.assertEquals("fffiak", model.extendedLocation().name());
+        Assertions.assertEquals("bejdznxcv", model.location());
+        Assertions.assertEquals("hnjivo", model.tags().get("v"));
+        Assertions.assertEquals("tmr", model.properties().externalDeviceId());
+        Assertions.assertEquals("ctymoxoftp", model.properties().endpoints().inbound().get("rsre").endpointType());
+        Assertions.assertEquals("piwyczuhxacpqjl", model.properties().endpoints().inbound().get("rsre").address());
+        Assertions.assertEquals("hyus", model.properties().endpoints().inbound().get("rsre").version());
+        Assertions.assertEquals(AuthenticationMethod.CERTIFICATE,
+            model.properties().endpoints().inbound().get("rsre").supportedAuthenticationMethods().get(0));
+        Assertions.assertEquals("vlmfwdgzxulucv",
+            model.properties().endpoints().inbound().get("rsre").additionalConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T07:51:38Z"),
+            model.properties().endpoints().inbound().get("rsre").lastUpdatedOn());
+        Assertions.assertEquals("foimwkslircizjxv",
+            model.properties().endpoints().outbound().assigned().get("vlhv").endpointType());
+        Assertions.assertEquals("dfcea", model.properties().endpoints().outbound().assigned().get("vlhv").address());
+        Assertions.assertEquals("dyftumrtwna", model.properties().manufacturer());
+        Assertions.assertEquals("slbi", model.properties().model());
+        Assertions.assertEquals("ojgcyzt", model.properties().operatingSystem());
+        Assertions.assertEquals("mznbaeqphch", model.properties().operatingSystemVersion());
+        Assertions.assertEquals("nrpxehuw", model.properties().discoveryId());
+        Assertions.assertEquals(2363907746060609588L, model.properties().version());
+        Assertions.assertEquals("aifmvikl", model.extendedLocation().type());
+        Assertions.assertEquals("ydv", model.extendedLocation().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamespaceDiscoveredDeviceInner model
-            = new NamespaceDiscoveredDeviceInner().withLocation("pqqmted")
-                .withTags(mapOf("auyqncygupkv", "mjihyeozphv"))
-                .withProperties(new NamespaceDiscoveredDeviceProperties().withExternalDeviceId("xuvw")
-                    .withEndpoints(new DiscoveredMessagingEndpoints()
-                        .withInbound(mapOf("pwijnhy",
-                            new DiscoveredInboundEndpoints().withEndpointType("hlmctlpdngitvgb")
-                                .withAddress("hrixkwmy")
-                                .withVersion("ejvegrhbpnaixex")
-                                .withSupportedAuthenticationMethods(
-                                    Arrays.asList(AuthenticationMethod.USERNAME_PASSWORD))
-                                .withAdditionalConfiguration("eaxhcexdrrvqahqk")
-                                .withLastUpdatedOn(OffsetDateTime.parse("2021-04-01T21:28:03Z")),
-                            "reafxtsgumhjg",
-                            new DiscoveredInboundEndpoints().withEndpointType("svfycxzbfv")
-                                .withAddress("owvrvmtgjqppyos")
-                                .withVersion("on")
-                                .withSupportedAuthenticationMethods(Arrays.asList(AuthenticationMethod.ANONYMOUS,
-                                    AuthenticationMethod.CERTIFICATE, AuthenticationMethod.ANONYMOUS))
-                                .withAdditionalConfiguration("pnsxkmcwaek")
-                                .withLastUpdatedOn(OffsetDateTime.parse("2021-01-29T01:52:27Z")),
-                            "znoigbrn",
-                            new DiscoveredInboundEndpoints().withEndpointType("ikkx")
-                                .withAddress("slol")
-                                .withVersion("pvuzlmv")
-                                .withSupportedAuthenticationMethods(Arrays.asList(
-                                    AuthenticationMethod.USERNAME_PASSWORD, AuthenticationMethod.CERTIFICATE,
-                                    AuthenticationMethod.ANONYMOUS, AuthenticationMethod.ANONYMOUS))
-                                .withAdditionalConfiguration("lcrpw")
-                                .withLastUpdatedOn(OffsetDateTime.parse("2021-11-19T13:53:17Z"))))
-                        .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("oqkag",
-                            new DeviceMessagingEndpoint().withEndpointType("kpnb").withAddress("azej")))))
-                    .withManufacturer("sxtta")
-                    .withModel("zxnfaaz")
-                    .withOperatingSystem("dtnkdmkq")
-                    .withOperatingSystemVersion("lwuenvrkp")
-                    .withAttributes(mapOf())
-                    .withDiscoveryId("aibrebqaaysjkixq")
-                    .withVersion(7129303737344697098L))
-                .withExtendedLocation(new ExtendedLocation().withType("ezl").withName("fffiak"));
+            = new NamespaceDiscoveredDeviceInner().withLocation("bejdznxcv")
+                .withTags(mapOf("v", "hnjivo"))
+                .withProperties(
+                    new NamespaceDiscoveredDeviceProperties().withExternalDeviceId("tmr")
+                        .withEndpoints(
+                            new DiscoveredMessagingEndpoints()
+                                .withInbound(mapOf("rsre",
+                                    new DiscoveredInboundEndpoints().withEndpointType("ctymoxoftp")
+                                        .withAddress("piwyczuhxacpqjl")
+                                        .withVersion("hyus")
+                                        .withSupportedAuthenticationMethods(Arrays.asList(
+                                            AuthenticationMethod.CERTIFICATE, AuthenticationMethod.USERNAME_PASSWORD))
+                                        .withAdditionalConfiguration("vlmfwdgzxulucv")
+                                        .withLastUpdatedOn(OffsetDateTime.parse("2021-09-17T07:51:38Z")),
+                                    "pnfqntcyp",
+                                    new DiscoveredInboundEndpoints().withEndpointType("zvxurisjnhny")
+                                        .withAddress("xifqjzgxm")
+                                        .withVersion("ublwpcesutrg")
+                                        .withSupportedAuthenticationMethods(Arrays.asList(
+                                            AuthenticationMethod.CERTIFICATE, AuthenticationMethod.USERNAME_PASSWORD))
+                                        .withAdditionalConfiguration("tpwoqhihejq")
+                                        .withLastUpdatedOn(OffsetDateTime.parse("2021-11-12T23:28:54Z"))))
+                                .withOutbound(new DiscoveredOutboundEndpoints().withAssigned(mapOf("vlhv",
+                                    new DeviceMessagingEndpoint().withEndpointType("foimwkslircizjxv")
+                                        .withAddress("dfcea")))))
+                        .withManufacturer("dyftumrtwna")
+                        .withModel("slbi")
+                        .withOperatingSystem("ojgcyzt")
+                        .withOperatingSystemVersion("mznbaeqphch")
+                        .withAttributes(mapOf())
+                        .withDiscoveryId("nrpxehuw")
+                        .withVersion(2363907746060609588L))
+                .withExtendedLocation(new ExtendedLocation().withType("aifmvikl").withName("ydv"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredDeviceInner.class);
-        Assertions.assertEquals("pqqmted", model.location());
-        Assertions.assertEquals("mjihyeozphv", model.tags().get("auyqncygupkv"));
-        Assertions.assertEquals("xuvw", model.properties().externalDeviceId());
-        Assertions.assertEquals("hlmctlpdngitvgb",
-            model.properties().endpoints().inbound().get("pwijnhy").endpointType());
-        Assertions.assertEquals("hrixkwmy", model.properties().endpoints().inbound().get("pwijnhy").address());
-        Assertions.assertEquals("ejvegrhbpnaixex", model.properties().endpoints().inbound().get("pwijnhy").version());
-        Assertions.assertEquals(AuthenticationMethod.USERNAME_PASSWORD,
-            model.properties().endpoints().inbound().get("pwijnhy").supportedAuthenticationMethods().get(0));
-        Assertions.assertEquals("eaxhcexdrrvqahqk",
-            model.properties().endpoints().inbound().get("pwijnhy").additionalConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T21:28:03Z"),
-            model.properties().endpoints().inbound().get("pwijnhy").lastUpdatedOn());
-        Assertions.assertEquals("kpnb",
-            model.properties().endpoints().outbound().assigned().get("oqkag").endpointType());
-        Assertions.assertEquals("azej", model.properties().endpoints().outbound().assigned().get("oqkag").address());
-        Assertions.assertEquals("sxtta", model.properties().manufacturer());
-        Assertions.assertEquals("zxnfaaz", model.properties().model());
-        Assertions.assertEquals("dtnkdmkq", model.properties().operatingSystem());
-        Assertions.assertEquals("lwuenvrkp", model.properties().operatingSystemVersion());
-        Assertions.assertEquals("aibrebqaaysjkixq", model.properties().discoveryId());
-        Assertions.assertEquals(7129303737344697098L, model.properties().version());
-        Assertions.assertEquals("ezl", model.extendedLocation().type());
-        Assertions.assertEquals("fffiak", model.extendedLocation().name());
+        Assertions.assertEquals("bejdznxcv", model.location());
+        Assertions.assertEquals("hnjivo", model.tags().get("v"));
+        Assertions.assertEquals("tmr", model.properties().externalDeviceId());
+        Assertions.assertEquals("ctymoxoftp", model.properties().endpoints().inbound().get("rsre").endpointType());
+        Assertions.assertEquals("piwyczuhxacpqjl", model.properties().endpoints().inbound().get("rsre").address());
+        Assertions.assertEquals("hyus", model.properties().endpoints().inbound().get("rsre").version());
+        Assertions.assertEquals(AuthenticationMethod.CERTIFICATE,
+            model.properties().endpoints().inbound().get("rsre").supportedAuthenticationMethods().get(0));
+        Assertions.assertEquals("vlmfwdgzxulucv",
+            model.properties().endpoints().inbound().get("rsre").additionalConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T07:51:38Z"),
+            model.properties().endpoints().inbound().get("rsre").lastUpdatedOn());
+        Assertions.assertEquals("foimwkslircizjxv",
+            model.properties().endpoints().outbound().assigned().get("vlhv").endpointType());
+        Assertions.assertEquals("dfcea", model.properties().endpoints().outbound().assigned().get("vlhv").address());
+        Assertions.assertEquals("dyftumrtwna", model.properties().manufacturer());
+        Assertions.assertEquals("slbi", model.properties().model());
+        Assertions.assertEquals("ojgcyzt", model.properties().operatingSystem());
+        Assertions.assertEquals("mznbaeqphch", model.properties().operatingSystemVersion());
+        Assertions.assertEquals("nrpxehuw", model.properties().discoveryId());
+        Assertions.assertEquals(2363907746060609588L, model.properties().version());
+        Assertions.assertEquals("aifmvikl", model.extendedLocation().type());
+        Assertions.assertEquals("ydv", model.extendedLocation().name());
     }
 
     // Use "Map.of" if available

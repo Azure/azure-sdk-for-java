@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.SavedSearch;
@@ -23,37 +23,39 @@ public final class SavedSearchesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"refqy\",\"properties\":{\"category\":\"qotoihiqakydiwfb\",\"displayName\":\"kwpzdqtvh\",\"query\":\"spodaqax\",\"functionAlias\":\"pie\",\"functionParameters\":\"bebjfu\",\"version\":8153035996823274813,\"tags\":[{\"name\":\"h\",\"value\":\"lpnfpubntnb\"},{\"name\":\"tzviqsowsaaelcat\",\"value\":\"cjuhplrvkm\"},{\"name\":\"cwmjvlg\",\"value\":\"ggcvk\"}]},\"id\":\"y\",\"name\":\"izrzb\",\"type\":\"psfxsf\"}";
+            = "{\"etag\":\"nynkbwet\",\"properties\":{\"category\":\"juhpsprkzyau\",\"displayName\":\"ia\",\"query\":\"cxnafbwqrooh\",\"functionAlias\":\"ovmaonurjtum\",\"functionParameters\":\"ihpvecmslclblyj\",\"version\":1273828074911332298,\"tags\":[{\"name\":\"uscv\",\"value\":\"f\"},{\"name\":\"igctmgxuupbezq\",\"value\":\"cydrtceukdqkk\"}]},\"id\":\"ihztgeqmgqzgwldo\",\"name\":\"chillcecf\",\"type\":\"huwaoaguhic\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SavedSearch response = manager.savedSearches()
-            .define("ikcyyc")
-            .withExistingWorkspace("khlowkxxpv", "rdfjmzsyzfhotl")
-            .withCategory("hv")
-            .withDisplayName("uic")
-            .withQuery("hvtrrmhwrbfdpyf")
-            .withTags(Arrays.asList(new Tag().withName("ooclutnp").withValue("memczjkmmyk"),
-                new Tag().withName("ujxsglhsr").withValue("rye")))
-            .withEtag("nsjlpjrtws")
-            .withFunctionAlias("bhvjglr")
-            .withFunctionParameters("uyzlw")
-            .withVersion(5515716031108163936L)
+            .define("uzivensrpmeyyvp")
+            .withExistingWorkspace("lpdwwexymzvlazi", "bhpwvqsgnyy")
+            .withCategory("jp")
+            .withDisplayName("gsksrfhf")
+            .withQuery("olmk")
+            .withTags(Arrays.asList(new Tag().withName("uiaclkiexhajlfn").withValue("hiqfyuttdiy"),
+                new Tag().withName("b").withValue("vnwsw"),
+                new Tag().withName("txkyctwwgzwxjlm").withValue("cvogygzyvne"),
+                new Tag().withName("zaifghtmoqqtlff").withValue("zbkr")))
+            .withEtag("atlb")
+            .withFunctionAlias("nxwcdommpv")
+            .withFunctionParameters("awz")
+            .withVersion(371412437274292802L)
             .create();
 
-        Assertions.assertEquals("refqy", response.etag());
-        Assertions.assertEquals("qotoihiqakydiwfb", response.category());
-        Assertions.assertEquals("kwpzdqtvh", response.displayName());
-        Assertions.assertEquals("spodaqax", response.query());
-        Assertions.assertEquals("pie", response.functionAlias());
-        Assertions.assertEquals("bebjfu", response.functionParameters());
-        Assertions.assertEquals(8153035996823274813L, response.version());
-        Assertions.assertEquals("h", response.tags().get(0).name());
-        Assertions.assertEquals("lpnfpubntnb", response.tags().get(0).value());
+        Assertions.assertEquals("nynkbwet", response.etag());
+        Assertions.assertEquals("juhpsprkzyau", response.category());
+        Assertions.assertEquals("ia", response.displayName());
+        Assertions.assertEquals("cxnafbwqrooh", response.query());
+        Assertions.assertEquals("ovmaonurjtum", response.functionAlias());
+        Assertions.assertEquals("ihpvecmslclblyj", response.functionParameters());
+        Assertions.assertEquals(1273828074911332298L, response.version());
+        Assertions.assertEquals("uscv", response.tags().get(0).name());
+        Assertions.assertEquals("f", response.tags().get(0).value());
     }
 }

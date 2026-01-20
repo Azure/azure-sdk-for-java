@@ -21,69 +21,85 @@ public final class TablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableProperties model = BinaryData.fromString(
-            "{\"retentionInDays\":479918870,\"totalRetentionInDays\":2045022432,\"archiveRetentionInDays\":1783841206,\"searchResults\":{\"query\":\"o\",\"description\":\"vf\",\"limit\":1925116648,\"startSearchTime\":\"2021-10-04T03:30Z\",\"endSearchTime\":\"2021-11-05T03:00:16Z\",\"sourceTable\":\"f\",\"azureAsyncOperationId\":\"z\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-04-24T01:32:22Z\",\"endRestoreTime\":\"2021-11-03T23:30:17Z\",\"sourceTable\":\"cx\",\"azureAsyncOperationId\":\"t\"},\"resultStatistics\":{\"progress\":39.374405,\"ingestedRecords\":675680646,\"scannedGb\":64.79667},\"plan\":\"Basic\",\"lastPlanModifiedDate\":\"mldgxobfirc\",\"schema\":{\"name\":\"kciayzri\",\"displayName\":\"hya\",\"description\":\"vjlboxqvk\",\"columns\":[{\"name\":\"ho\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"wdigumbnraauz\",\"description\":\"tj\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"zwwva\",\"type\":\"boolean\",\"dataTypeHint\":\"uri\",\"displayName\":\"fonkphhqyikvyla\",\"description\":\"avluwmncs\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"bvpoekrsgsgbdhu\",\"type\":\"dynamic\",\"dataTypeHint\":\"uri\",\"displayName\":\"gkynscliqh\",\"description\":\"h\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"kubotppnvdxz\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"bbc\",\"description\":\"qagt\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"qojpy\"],\"labels\":[\"trdcnifmzzs\"],\"source\":\"microsoft\",\"tableType\":\"CustomLog\",\"tableSubType\":\"Any\",\"solutions\":[\"xmprafwg\"]},\"provisioningState\":\"Deleting\",\"retentionInDaysAsDefault\":true,\"totalRetentionInDaysAsDefault\":false}")
+            "{\"retentionInDays\":220532000,\"totalRetentionInDays\":103703544,\"archiveRetentionInDays\":830439521,\"searchResults\":{\"query\":\"wjue\",\"description\":\"eburu\",\"limit\":1850094254,\"startSearchTime\":\"2021-01-16T01:35:10Z\",\"endSearchTime\":\"2021-09-18T15:34:48Z\",\"sourceTable\":\"l\",\"azureAsyncOperationId\":\"ab\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-09-17T06:29:30Z\",\"endRestoreTime\":\"2021-03-04T19:19:07Z\",\"sourceTable\":\"frvtpuqu\",\"azureAsyncOperationId\":\"qlgkfbtn\"},\"resultStatistics\":{\"progress\":47.37398,\"ingestedRecords\":1440714343,\"scannedGb\":33.60299},\"plan\":\"Auxiliary\",\"lastPlanModifiedDate\":\"ujitcjedftww\",\"schema\":{\"name\":\"kojvd\",\"displayName\":\"zfoqouicybxar\",\"description\":\"szufoxciqopidoa\",\"columns\":[{\"name\":\"dhkha\",\"type\":\"boolean\",\"dataTypeHint\":\"uri\",\"displayName\":\"bon\",\"description\":\"ntoe\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"whkszzcmrvexztvb\",\"type\":\"dateTime\",\"dataTypeHint\":\"uri\",\"displayName\":\"aoyzkoow\",\"description\":\"mnguxawqaldsyu\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"qfobwyz\",\"type\":\"long\",\"dataTypeHint\":\"guid\",\"displayName\":\"t\",\"description\":\"fhpagmhrskdsnf\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"gtdlmk\",\"type\":\"long\",\"dataTypeHint\":\"guid\",\"displayName\":\"hewpusdsttwv\",\"description\":\"vbbejdcng\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"gm\",\"type\":\"int\",\"dataTypeHint\":\"guid\",\"displayName\":\"grtwae\",\"description\":\"uzkopbminrfd\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"ziuiefozbhdm\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"hoftr\",\"description\":\"equi\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"lfaoqzpiyylhaln\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"ph\",\"description\":\"ivwitqscywugg\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"bwemhairs\",\"rgzdwmsweyp\"],\"labels\":[\"xggicccnxqhuexmk\",\"tlstvlzywem\",\"zrncsdt\",\"lusiy\"],\"source\":\"customer\",\"tableType\":\"RestoredLogs\",\"tableSubType\":\"Classic\",\"solutions\":[\"sl\",\"eadcygqukyhejhz\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":true}")
             .toObject(TableProperties.class);
-        Assertions.assertEquals(479918870, model.retentionInDays());
-        Assertions.assertEquals(2045022432, model.totalRetentionInDays());
-        Assertions.assertEquals("o", model.searchResults().query());
-        Assertions.assertEquals("vf", model.searchResults().description());
-        Assertions.assertEquals(1925116648, model.searchResults().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T03:30Z"), model.searchResults().startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T03:00:16Z"), model.searchResults().endSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T01:32:22Z"), model.restoredLogs().startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T23:30:17Z"), model.restoredLogs().endRestoreTime());
-        Assertions.assertEquals("cx", model.restoredLogs().sourceTable());
-        Assertions.assertEquals(TablePlanEnum.BASIC, model.plan());
-        Assertions.assertEquals("kciayzri", model.schema().name());
-        Assertions.assertEquals("hya", model.schema().displayName());
-        Assertions.assertEquals("vjlboxqvk", model.schema().description());
-        Assertions.assertEquals("ho", model.schema().columns().get(0).name());
+        Assertions.assertEquals(220532000, model.retentionInDays());
+        Assertions.assertEquals(103703544, model.totalRetentionInDays());
+        Assertions.assertEquals("wjue", model.searchResults().query());
+        Assertions.assertEquals("eburu", model.searchResults().description());
+        Assertions.assertEquals(1850094254, model.searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T01:35:10Z"), model.searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T15:34:48Z"), model.searchResults().endSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T06:29:30Z"), model.restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T19:19:07Z"), model.restoredLogs().endRestoreTime());
+        Assertions.assertEquals("frvtpuqu", model.restoredLogs().sourceTable());
+        Assertions.assertEquals(TablePlanEnum.AUXILIARY, model.plan());
+        Assertions.assertEquals("kojvd", model.schema().name());
+        Assertions.assertEquals("zfoqouicybxar", model.schema().displayName());
+        Assertions.assertEquals("szufoxciqopidoa", model.schema().description());
+        Assertions.assertEquals("dhkha", model.schema().columns().get(0).name());
         Assertions.assertEquals(ColumnTypeEnum.BOOLEAN, model.schema().columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.schema().columns().get(0).dataTypeHint());
-        Assertions.assertEquals("wdigumbnraauz", model.schema().columns().get(0).displayName());
-        Assertions.assertEquals("tj", model.schema().columns().get(0).description());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.URI, model.schema().columns().get(0).dataTypeHint());
+        Assertions.assertEquals("bon", model.schema().columns().get(0).displayName());
+        Assertions.assertEquals("ntoe", model.schema().columns().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableProperties model = new TableProperties().withRetentionInDays(479918870)
-            .withTotalRetentionInDays(2045022432)
-            .withSearchResults(new SearchResults().withQuery("o")
-                .withDescription("vf")
-                .withLimit(1925116648)
-                .withStartSearchTime(OffsetDateTime.parse("2021-10-04T03:30Z"))
-                .withEndSearchTime(OffsetDateTime.parse("2021-11-05T03:00:16Z")))
-            .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-04-24T01:32:22Z"))
-                .withEndRestoreTime(OffsetDateTime.parse("2021-11-03T23:30:17Z"))
-                .withSourceTable("cx"))
-            .withPlan(TablePlanEnum.BASIC)
-            .withSchema(new Schema().withName("kciayzri")
-                .withDisplayName("hya")
-                .withDescription("vjlboxqvk")
-                .withColumns(Arrays.asList(new Column().withName("ho")
-                    .withType(ColumnTypeEnum.BOOLEAN)
-                    .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-                    .withDisplayName("wdigumbnraauz")
-                    .withDescription("tj"))));
+        TableProperties model = new TableProperties().withRetentionInDays(220532000)
+            .withTotalRetentionInDays(103703544)
+            .withSearchResults(new SearchResults().withQuery("wjue")
+                .withDescription("eburu")
+                .withLimit(1850094254)
+                .withStartSearchTime(OffsetDateTime.parse("2021-01-16T01:35:10Z"))
+                .withEndSearchTime(OffsetDateTime.parse("2021-09-18T15:34:48Z")))
+            .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-09-17T06:29:30Z"))
+                .withEndRestoreTime(OffsetDateTime.parse("2021-03-04T19:19:07Z"))
+                .withSourceTable("frvtpuqu"))
+            .withPlan(TablePlanEnum.AUXILIARY)
+            .withSchema(new Schema().withName("kojvd")
+                .withDisplayName("zfoqouicybxar")
+                .withDescription("szufoxciqopidoa")
+                .withColumns(Arrays.asList(
+                    new Column().withName("dhkha")
+                        .withType(ColumnTypeEnum.BOOLEAN)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.URI)
+                        .withDisplayName("bon")
+                        .withDescription("ntoe"),
+                    new Column().withName("whkszzcmrvexztvb")
+                        .withType(ColumnTypeEnum.DATE_TIME)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.URI)
+                        .withDisplayName("aoyzkoow")
+                        .withDescription("mnguxawqaldsyu"),
+                    new Column().withName("qfobwyz")
+                        .withType(ColumnTypeEnum.LONG)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
+                        .withDisplayName("t")
+                        .withDescription("fhpagmhrskdsnf"),
+                    new Column().withName("gtdlmk")
+                        .withType(ColumnTypeEnum.LONG)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
+                        .withDisplayName("hewpusdsttwv")
+                        .withDescription("vbbejdcng"))));
         model = BinaryData.fromObject(model).toObject(TableProperties.class);
-        Assertions.assertEquals(479918870, model.retentionInDays());
-        Assertions.assertEquals(2045022432, model.totalRetentionInDays());
-        Assertions.assertEquals("o", model.searchResults().query());
-        Assertions.assertEquals("vf", model.searchResults().description());
-        Assertions.assertEquals(1925116648, model.searchResults().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T03:30Z"), model.searchResults().startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T03:00:16Z"), model.searchResults().endSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T01:32:22Z"), model.restoredLogs().startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T23:30:17Z"), model.restoredLogs().endRestoreTime());
-        Assertions.assertEquals("cx", model.restoredLogs().sourceTable());
-        Assertions.assertEquals(TablePlanEnum.BASIC, model.plan());
-        Assertions.assertEquals("kciayzri", model.schema().name());
-        Assertions.assertEquals("hya", model.schema().displayName());
-        Assertions.assertEquals("vjlboxqvk", model.schema().description());
-        Assertions.assertEquals("ho", model.schema().columns().get(0).name());
+        Assertions.assertEquals(220532000, model.retentionInDays());
+        Assertions.assertEquals(103703544, model.totalRetentionInDays());
+        Assertions.assertEquals("wjue", model.searchResults().query());
+        Assertions.assertEquals("eburu", model.searchResults().description());
+        Assertions.assertEquals(1850094254, model.searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T01:35:10Z"), model.searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T15:34:48Z"), model.searchResults().endSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T06:29:30Z"), model.restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T19:19:07Z"), model.restoredLogs().endRestoreTime());
+        Assertions.assertEquals("frvtpuqu", model.restoredLogs().sourceTable());
+        Assertions.assertEquals(TablePlanEnum.AUXILIARY, model.plan());
+        Assertions.assertEquals("kojvd", model.schema().name());
+        Assertions.assertEquals("zfoqouicybxar", model.schema().displayName());
+        Assertions.assertEquals("szufoxciqopidoa", model.schema().description());
+        Assertions.assertEquals("dhkha", model.schema().columns().get(0).name());
         Assertions.assertEquals(ColumnTypeEnum.BOOLEAN, model.schema().columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.schema().columns().get(0).dataTypeHint());
-        Assertions.assertEquals("wdigumbnraauz", model.schema().columns().get(0).displayName());
-        Assertions.assertEquals("tj", model.schema().columns().get(0).description());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.URI, model.schema().columns().get(0).dataTypeHint());
+        Assertions.assertEquals("bon", model.schema().columns().get(0).displayName());
+        Assertions.assertEquals("ntoe", model.schema().columns().get(0).description());
     }
 }

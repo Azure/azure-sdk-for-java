@@ -15,7 +15,7 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.PlanDataRes
  */
 public interface PlansClient {
     /**
-     * List plans data.
+     * Lists the plans data linked to your organization, providing an overview of the available plans.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,7 +25,7 @@ public interface PlansClient {
     PagedIterable<PlanDataResourceInner> list();
 
     /**
-     * List plans data.
+     * Lists the plans data linked to your organization, providing an overview of the available plans.
      * 
      * @param accountId Account Id.
      * @param organizationId Organization Id.

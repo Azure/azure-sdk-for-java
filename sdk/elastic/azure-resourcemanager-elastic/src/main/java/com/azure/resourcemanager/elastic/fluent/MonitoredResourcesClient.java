@@ -15,7 +15,7 @@ import com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner;
  */
 public interface MonitoredResourcesClient {
     /**
-     * List the resources currently being monitored by the Elastic monitor resource.
+     * List all resources currently being monitored by the Elastic monitor resource, helping you manage observability.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -28,7 +28,7 @@ public interface MonitoredResourcesClient {
     PagedIterable<MonitoredResourceInner> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the resources currently being monitored by the Elastic monitor resource.
+     * List all resources currently being monitored by the Elastic monitor resource, helping you manage observability.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

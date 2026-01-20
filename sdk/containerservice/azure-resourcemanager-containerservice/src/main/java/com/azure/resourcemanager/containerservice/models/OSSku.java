@@ -48,6 +48,11 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     public static final OSSku UBUNTU2204 = fromString("Ubuntu2204");
 
     /**
+     * Static value Ubuntu2404 for OSSku.
+     */
+    public static final OSSku UBUNTU2404 = fromString("Ubuntu2404");
+
+    /**
      * Creates a new instance of OSSku value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

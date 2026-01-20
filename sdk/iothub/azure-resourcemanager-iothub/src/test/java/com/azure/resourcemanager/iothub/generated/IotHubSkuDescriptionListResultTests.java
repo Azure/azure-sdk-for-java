@@ -17,7 +17,7 @@ public final class IotHubSkuDescriptionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubSkuDescriptionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"clfp\",\"sku\":{\"name\":\"S2\",\"tier\":\"Free\",\"capacity\":4783074084944223804},\"capacity\":{\"minimum\":4751177504452360818,\"maximum\":8751195016646991326,\"default\":1457030135916183053,\"scaleType\":\"None\"}},{\"resourceType\":\"tazqugxywpmueefj\",\"sku\":{\"name\":\"B1\",\"tier\":\"Standard\",\"capacity\":833817548931918464},\"capacity\":{\"minimum\":2752624738826273376,\"maximum\":2895240290674738337,\"default\":722648832186407891,\"scaleType\":\"None\"}},{\"resourceType\":\"aocqxtccmgy\",\"sku\":{\"name\":\"B2\",\"tier\":\"Basic\",\"capacity\":6169817169504749618},\"capacity\":{\"minimum\":5036022727729954665,\"maximum\":5697722366346871182,\"default\":328428173774055677,\"scaleType\":\"Manual\"}}],\"nextLink\":\"ntxhdzhlrqjbhck\"}")
+            "{\"value\":[{\"resourceType\":\"clfp\",\"sku\":{\"name\":\"S2\",\"tier\":\"Generation2\",\"capacity\":4783074084944223804},\"capacity\":{\"minimum\":4751177504452360818,\"maximum\":8751195016646991326,\"default\":1457030135916183053,\"scaleType\":\"None\"}},{\"resourceType\":\"tazqugxywpmueefj\",\"sku\":{\"name\":\"S3\",\"tier\":\"Basic\",\"capacity\":833817548931918464},\"capacity\":{\"minimum\":2752624738826273376,\"maximum\":2895240290674738337,\"default\":722648832186407891,\"scaleType\":\"None\"}},{\"resourceType\":\"aocqxtccmgy\",\"sku\":{\"name\":\"S1\",\"tier\":\"Generation2\",\"capacity\":6169817169504749618},\"capacity\":{\"minimum\":5036022727729954665,\"maximum\":5697722366346871182,\"default\":328428173774055677,\"scaleType\":\"Manual\"}}],\"nextLink\":\"ntxhdzhlrqjbhck\"}")
             .toObject(IotHubSkuDescriptionListResult.class);
         Assertions.assertEquals(IotHubSku.S2, model.value().get(0).sku().name());
         Assertions.assertEquals(4783074084944223804L, model.value().get(0).sku().capacity());
@@ -30,10 +30,10 @@ public final class IotHubSkuDescriptionListResultTests {
                 .withSku(new IotHubSkuInfo().withName(IotHubSku.S2).withCapacity(4783074084944223804L))
                 .withCapacity(new IotHubCapacity()),
             new IotHubSkuDescriptionInner()
-                .withSku(new IotHubSkuInfo().withName(IotHubSku.B1).withCapacity(833817548931918464L))
+                .withSku(new IotHubSkuInfo().withName(IotHubSku.S3).withCapacity(833817548931918464L))
                 .withCapacity(new IotHubCapacity()),
             new IotHubSkuDescriptionInner()
-                .withSku(new IotHubSkuInfo().withName(IotHubSku.B2).withCapacity(6169817169504749618L))
+                .withSku(new IotHubSkuInfo().withName(IotHubSku.S1).withCapacity(6169817169504749618L))
                 .withCapacity(new IotHubCapacity())));
         model = BinaryData.fromObject(model).toObject(IotHubSkuDescriptionListResult.class);
         Assertions.assertEquals(IotHubSku.S2, model.value().get(0).sku().name());

@@ -17,17 +17,17 @@ import java.io.IOException;
 @Fluent
 public final class AuthConfig implements JsonSerializable<AuthConfig> {
     /*
-     * If Enabled, Microsoft Entra authentication is enabled.
+     * Indicates if the server supports Microsoft Entra authentication.
      */
-    private ActiveDirectoryAuthEnum activeDirectoryAuth;
+    private MicrosoftEntraAuth activeDirectoryAuth;
 
     /*
-     * If Enabled, Password authentication is enabled.
+     * Indicates if the server supports password based authentication.
      */
-    private PasswordAuthEnum passwordAuth;
+    private PasswordBasedAuth passwordAuth;
 
     /*
-     * Tenant id of the server.
+     * Identifier of the tenant of the delegated resource.
      */
     private String tenantId;
 
@@ -38,47 +38,47 @@ public final class AuthConfig implements JsonSerializable<AuthConfig> {
     }
 
     /**
-     * Get the activeDirectoryAuth property: If Enabled, Microsoft Entra authentication is enabled.
+     * Get the activeDirectoryAuth property: Indicates if the server supports Microsoft Entra authentication.
      * 
      * @return the activeDirectoryAuth value.
      */
-    public ActiveDirectoryAuthEnum activeDirectoryAuth() {
+    public MicrosoftEntraAuth activeDirectoryAuth() {
         return this.activeDirectoryAuth;
     }
 
     /**
-     * Set the activeDirectoryAuth property: If Enabled, Microsoft Entra authentication is enabled.
+     * Set the activeDirectoryAuth property: Indicates if the server supports Microsoft Entra authentication.
      * 
      * @param activeDirectoryAuth the activeDirectoryAuth value to set.
      * @return the AuthConfig object itself.
      */
-    public AuthConfig withActiveDirectoryAuth(ActiveDirectoryAuthEnum activeDirectoryAuth) {
+    public AuthConfig withActiveDirectoryAuth(MicrosoftEntraAuth activeDirectoryAuth) {
         this.activeDirectoryAuth = activeDirectoryAuth;
         return this;
     }
 
     /**
-     * Get the passwordAuth property: If Enabled, Password authentication is enabled.
+     * Get the passwordAuth property: Indicates if the server supports password based authentication.
      * 
      * @return the passwordAuth value.
      */
-    public PasswordAuthEnum passwordAuth() {
+    public PasswordBasedAuth passwordAuth() {
         return this.passwordAuth;
     }
 
     /**
-     * Set the passwordAuth property: If Enabled, Password authentication is enabled.
+     * Set the passwordAuth property: Indicates if the server supports password based authentication.
      * 
      * @param passwordAuth the passwordAuth value to set.
      * @return the AuthConfig object itself.
      */
-    public AuthConfig withPasswordAuth(PasswordAuthEnum passwordAuth) {
+    public AuthConfig withPasswordAuth(PasswordBasedAuth passwordAuth) {
         this.passwordAuth = passwordAuth;
         return this;
     }
 
     /**
-     * Get the tenantId property: Tenant id of the server.
+     * Get the tenantId property: Identifier of the tenant of the delegated resource.
      * 
      * @return the tenantId value.
      */
@@ -87,7 +87,7 @@ public final class AuthConfig implements JsonSerializable<AuthConfig> {
     }
 
     /**
-     * Set the tenantId property: Tenant id of the server.
+     * Set the tenantId property: Identifier of the tenant of the delegated resource.
      * 
      * @param tenantId the tenantId value to set.
      * @return the AuthConfig object itself.
@@ -134,9 +134,9 @@ public final class AuthConfig implements JsonSerializable<AuthConfig> {
                 reader.nextToken();
 
                 if ("activeDirectoryAuth".equals(fieldName)) {
-                    deserializedAuthConfig.activeDirectoryAuth = ActiveDirectoryAuthEnum.fromString(reader.getString());
+                    deserializedAuthConfig.activeDirectoryAuth = MicrosoftEntraAuth.fromString(reader.getString());
                 } else if ("passwordAuth".equals(fieldName)) {
-                    deserializedAuthConfig.passwordAuth = PasswordAuthEnum.fromString(reader.getString());
+                    deserializedAuthConfig.passwordAuth = PasswordBasedAuth.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedAuthConfig.tenantId = reader.getString();
                 } else {

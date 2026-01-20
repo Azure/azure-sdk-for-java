@@ -13,24 +13,24 @@ public final class DiagnosticRenderingTests {
     public void testDeserialize() throws Exception {
         DiagnosticRendering model = BinaryData
             .fromString(
-                "{\"type\":833975977,\"title\":\"auxofshfph\",\"description\":\"nulaiywzejywhsl\",\"isVisible\":true}")
+                "{\"type\":1077210175,\"title\":\"wwvaiqyuvvfonk\",\"description\":\"hqyikvy\",\"isVisible\":false}")
             .toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(833975977, model.type());
-        Assertions.assertEquals("auxofshfph", model.title());
-        Assertions.assertEquals("nulaiywzejywhsl", model.description());
-        Assertions.assertTrue(model.isVisible());
+        Assertions.assertEquals(1077210175, model.type());
+        Assertions.assertEquals("wwvaiqyuvvfonk", model.title());
+        Assertions.assertEquals("hqyikvy", model.description());
+        Assertions.assertFalse(model.isVisible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticRendering model = new DiagnosticRendering().withType(833975977)
-            .withTitle("auxofshfph")
-            .withDescription("nulaiywzejywhsl")
-            .withIsVisible(true);
+        DiagnosticRendering model = new DiagnosticRendering().withType(1077210175)
+            .withTitle("wwvaiqyuvvfonk")
+            .withDescription("hqyikvy")
+            .withIsVisible(false);
         model = BinaryData.fromObject(model).toObject(DiagnosticRendering.class);
-        Assertions.assertEquals(833975977, model.type());
-        Assertions.assertEquals("auxofshfph", model.title());
-        Assertions.assertEquals("nulaiywzejywhsl", model.description());
-        Assertions.assertTrue(model.isVisible());
+        Assertions.assertEquals(1077210175, model.type());
+        Assertions.assertEquals("wwvaiqyuvvfonk", model.title());
+        Assertions.assertEquals("hqyikvy", model.description());
+        Assertions.assertFalse(model.isVisible());
     }
 }

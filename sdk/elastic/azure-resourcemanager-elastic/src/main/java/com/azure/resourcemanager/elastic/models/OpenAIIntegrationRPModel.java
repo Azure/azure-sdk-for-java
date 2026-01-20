@@ -181,22 +181,26 @@ public interface OpenAIIntegrationRPModel {
     OpenAIIntegrationRPModel refresh(Context context);
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration along with {@link Response}.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance along with {@link Response}.
      */
     Response<OpenAIIntegrationStatusResponse> getStatusWithResponse(Context context);
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      */
     OpenAIIntegrationStatusResponse getStatus();
 }

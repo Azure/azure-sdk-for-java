@@ -13,6 +13,7 @@ import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
 import com.azure.resourcemanager.cosmos.models.DistanceFunction;
+import com.azure.resourcemanager.cosmos.models.FullTextIndexPath;
 import com.azure.resourcemanager.cosmos.models.FullTextPath;
 import com.azure.resourcemanager.cosmos.models.FullTextPolicy;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
@@ -39,7 +40,8 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2025-04-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -71,7 +73,10 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
                                 .withVectorIndexes(Arrays.asList(
                                     new VectorIndex().withPath("/vectorPath1").withType(VectorIndexType.FLAT),
                                     new VectorIndex().withPath("/vectorPath2").withType(VectorIndexType.QUANTIZED_FLAT),
-                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN))))
+                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN)))
+                                .withFullTextIndexes(Arrays.asList(new FullTextIndexPath().withPath("/ftPath1"),
+                                    new FullTextIndexPath().withPath("/ftPath2"),
+                                    new FullTextIndexPath().withPath("/ftPath3"))))
                             .withPartitionKey(new ContainerPartitionKey().withPaths(Arrays.asList("/AccountNumber"))
                                 .withKind(PartitionKind.HASH))
                             .withDefaultTtl(100)

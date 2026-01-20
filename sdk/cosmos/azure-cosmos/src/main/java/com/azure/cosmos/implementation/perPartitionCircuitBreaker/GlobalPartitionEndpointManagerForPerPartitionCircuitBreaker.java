@@ -3,8 +3,12 @@
 
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
@@ -28,6 +32,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -40,6 +45,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+    private static final Map<String, String> EMPTY_MAP = new HashMap<>();
+    private static final String BASE_EXCEPTION_MESSAGE = "FAILED IN Per-Partition Circuit Breaker: ";
 
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
@@ -48,6 +55,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicReference<GlobalAddressResolver> globalAddressResolverSnapshot;
     private final ConcurrentHashMap<RegionalRoutingContext, String> regionalRoutingContextToRegion;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
+    private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
     private final Scheduler partitionRecoveryScheduler = Schedulers.newSingle(
         "partition-availability-staleness-check",
         true);
@@ -65,116 +73,146 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     }
 
     public void init() {
-        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
-            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).subscribe();
+        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled() && !this.isPartitionRecoveryTaskRunning.get()) {
+            this.updateStaleLocationInfo().subscribeOn(this.partitionRecoveryScheduler).doOnSubscribe(ignore -> this.isPartitionRecoveryTaskRunning.set(true)).subscribe();
         }
     }
 
-    public void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest request, RegionalRoutingContext failedRegionalRoutingContext) {
+    public void handleLocationExceptionForPartitionKeyRange(
+        RxDocumentServiceRequest request,
+        RegionalRoutingContext failedRegionalRoutingContext,
+        boolean isCancellationException) {
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        try {
+            checkNotNull(request, "Argument 'request' cannot be null!");
+            checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
-        PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+            PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+            PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
 
-        // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
-        // no reason to circuit break a partition key range which is effectively won't be used in the future
-        if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
-            return;
-        }
-
-        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
-
-        String collectionResourceId = request.getResourceId();
-        checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
-
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, collectionResourceId);
-
-        AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
-        AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
-
-        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
-
-            if (partitionLevelLocationUnavailabilityInfoAsVal == null) {
-                partitionLevelLocationUnavailabilityInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+            // in scenarios where partition is splitting or invalid partition (name cache is stale) then resolvedPartitionKeyRange could be set to null
+            // no reason to circuit break a partition key range which is effectively won't be used in the future
+            if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+                logger.info("Skipping circuit breaking for partitionKeyRange which is splitting or invalid partition (name cache is stale), partitionKeyRange: " +
+                    resolvedPartitionKeyRangeForCircuitBreaker +
+                    " and operationType: " +
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
+                return;
             }
 
-            isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoAsVal.handleException(
-                partitionKeyRangeWrapperAsKey,
-                failedRegionalRoutingContext,
-                request.isReadOnlyRequest()));
-
-            if (isFailureThresholdBreached.get()) {
-
-                UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts = request.isReadOnlyRequest() ?
-                    this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request.requestContext.getExcludeRegions()) :
-                    this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request.requestContext.getExcludeRegions());
-
-                isFailoverPossible.set(
-                    partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableRegionalRoutingContexts));
+            // in scenarios where resolvedPartitionKeyRangeForCircuitBreaker is null, we cannot circuit break at partition level
+            // if the exception is due to a cancellation, then we don't have enough information to decide if we should circuit break or not
+            // so we skip circuit breaking in this case if cancellation kick in ungracefully (e.g. user cancelled the request, or end-to-end timeout on the operation before routing decision is made)
+            // if the exception is not due to a cancellation, then we should have enough information to decide if we should circuit break or not
+            // so we proceed with circuit breaking in this case
+            if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
+                logger.warn("Skipping circuit breaking for operation as partitionKeyRange information isn't available for an e2e timeout cancelled request with operationType: " +
+                    request.getOperationType() +
+                    " and collectionResourceId: " +
+                    request.getResourceId());
+                return;
             }
 
-            request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionLevelLocationUnavailabilityInfoAsVal.regionToLocationSpecificHealthContext);
-            return partitionLevelLocationUnavailabilityInfoAsVal;
-        });
+            checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
-        // set to true if and only if failure threshold exceeded for the region
-        // and if failover is possible
-        // a failover is only possible when there are available regions left to fail over to
-        if (isFailoverPossible.get()) {
-            return;
-        }
+            String collectionResourceId = request.getResourceId();
+            checkNotNull(request, collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
 
-        if (logger.isWarnEnabled()) {
-            logger.warn("It is not possible to mark region {} as Unavailable for partition key range {}-{} and collection rid {} " +
-                    "as all regions will be Unavailable in that case, will remove health status tracking for this partition!",
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, collectionResourceId);
+
+            AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
+            AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
+
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
+
+                if (partitionLevelLocationUnavailabilityInfoAsVal == null) {
+                    partitionLevelLocationUnavailabilityInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+                }
+
+                isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoAsVal.handleException(
+                    partitionKeyRangeWrapperAsKey,
+                    failedRegionalRoutingContext,
+                    request.isReadOnlyRequest()));
+
+                if (isFailureThresholdBreached.get()) {
+
+                    UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts = request.isReadOnlyRequest() ?
+                        this.globalEndpointManager.getApplicableReadRegionalRoutingContexts(request.requestContext.getExcludeRegions()) :
+                        this.globalEndpointManager.getApplicableWriteRegionalRoutingContexts(request.requestContext.getExcludeRegions());
+
+                    isFailoverPossible.set(
+                        partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableRegionalRoutingContexts));
+                }
+
+                request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionLevelLocationUnavailabilityInfoAsVal.regionToLocationSpecificHealthContext);
+                return partitionLevelLocationUnavailabilityInfoAsVal;
+            });
+
+            // set to true if and only if failure threshold exceeded for the region
+            // and if failover is possible
+            // a failover is only possible when there are available regions left to fail over to
+            if (isFailoverPossible.get()) {
+                return;
+            }
+
+            logger.warn("It is not possible to mark region " +
                 this.globalEndpointManager.getRegionName(
-                    failedRegionalRoutingContext.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create),
-                resolvedPartitionKeyRangeForCircuitBreaker.getMinInclusive(),
-                resolvedPartitionKeyRangeForCircuitBreaker.getMaxExclusive(),
-                collectionResourceId);
-        }
+                failedRegionalRoutingContext.getGatewayRegionalEndpoint(), request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create) + " as Unavailable as " +
+                " all regions will be Unavailable in that case, will remove health status tracking for this partitionKeyRange : " +
+                resolvedPartitionKeyRangeForCircuitBreaker +
+                " and collectionResourceId : " +
+                collectionResourceId +
+                " and operationType: " +
+                request.getOperationType());
 
-        // no regions to fail over to
-        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.remove(partitionKeyRangeWrapper);
+            // no regions to fail over to
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.remove(partitionKeyRangeWrapper);
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
+        }
     }
 
     public void handleLocationSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        try {
+            checkNotNull(request, "Argument 'request' cannot be null!");
+            checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
-        PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+            PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+            PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
 
-        // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
-        // no reason to circuit break a partition key range which is effectively won't be used in the future
-        if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
-            return;
-        }
-
-        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
-
-        String resourceId = request.getResourceId();
-
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, resourceId);
-        RegionalRoutingContext succeededRegionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
-
-        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionKeyRangeToFailoverInfoAsVal) -> {
-
-            if (partitionKeyRangeToFailoverInfoAsVal == null) {
-                partitionKeyRangeToFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+            // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
+            // no reason to circuit break a partition key range which is effectively won't be used in the future
+            if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+                return;
             }
 
-            partitionKeyRangeToFailoverInfoAsVal.handleSuccess(
-                partitionKeyRangeWrapper,
-                succeededRegionalRoutingContext,
-                request.isReadOnlyRequest());
+            checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
-            request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionKeyRangeToFailoverInfoAsVal.regionToLocationSpecificHealthContext);
-            return partitionKeyRangeToFailoverInfoAsVal;
-        });
+            String resourceId = request.getResourceId();
+
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, resourceId);
+            RegionalRoutingContext succeededRegionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
+
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionKeyRangeToFailoverInfoAsVal) -> {
+
+                if (partitionKeyRangeToFailoverInfoAsVal == null) {
+                    partitionKeyRangeToFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+                }
+
+                partitionKeyRangeToFailoverInfoAsVal.handleSuccess(
+                    partitionKeyRangeWrapper,
+                    succeededRegionalRoutingContext,
+                    request.isReadOnlyRequest());
+
+                request.requestContext.setPerPartitionCircuitBreakerInfoHolder(partitionKeyRangeToFailoverInfoAsVal.regionToLocationSpecificHealthContext);
+                return partitionKeyRangeToFailoverInfoAsVal;
+            });
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
+        }
     }
 
     public List<String> getUnavailableRegionsForPartitionKeyRange(
@@ -182,56 +220,60 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         String collectionResourceId,
         PartitionKeyRange partitionKeyRange) {
 
-        if (!this.isPerPartitionLevelCircuitBreakingApplicable(request)) {
-            return Collections.emptyList();
-        }
+        try {
+            if (!this.isPerPartitionLevelCircuitBreakingApplicable(request)) {
+                return Collections.emptyList();
+            }
 
-        checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
-        checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
+            checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
+            checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
 
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId);
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId);
 
-        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
-            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+            PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
+                this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
-        List<String> unavailableRegions = new ArrayList<>();
+            List<String> unavailableRegions = new ArrayList<>();
 
-        if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
-            Map<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
-                partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
+            if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
+                Map<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
+                    partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
 
-            PriorityQueue<RegionalRoutingContext> unavailableRoutingContexts = new PriorityQueue<>((endpoint1, endpoint2) -> {
+                PriorityQueue<RegionalRoutingContext> unavailableRoutingContexts = new PriorityQueue<>((endpoint1, endpoint2) -> {
 
-                LocationSpecificHealthContext locationSpecificHealthContextForEndpoint1
-                    = locationEndpointToFailureMetricsForPartition.get(endpoint1);
-                LocationSpecificHealthContext locationSpecificHealthContextForEndpoint2
-                    = locationEndpointToFailureMetricsForPartition.get(endpoint2);
+                    LocationSpecificHealthContext locationSpecificHealthContextForEndpoint1
+                        = locationEndpointToFailureMetricsForPartition.get(endpoint1);
+                    LocationSpecificHealthContext locationSpecificHealthContextForEndpoint2
+                        = locationEndpointToFailureMetricsForPartition.get(endpoint2);
 
-                if (locationSpecificHealthContextForEndpoint1 == null || locationSpecificHealthContextForEndpoint2 == null) {
-                    return 0;
+                    if (locationSpecificHealthContextForEndpoint1 == null || locationSpecificHealthContextForEndpoint2 == null) {
+                        return 0;
+                    }
+
+                    return locationSpecificHealthContextForEndpoint1.getUnavailableSince().compareTo(locationSpecificHealthContextForEndpoint2.getUnavailableSince());
+                });
+
+                for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+
+                    RegionalRoutingContext regionalRoutingContext = pair.getKey();
+                    LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
+
+                    if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                        unavailableRoutingContexts.add(regionalRoutingContext);
+                    }
                 }
 
-                return locationSpecificHealthContextForEndpoint1.getUnavailableSince().compareTo(locationSpecificHealthContextForEndpoint2.getUnavailableSince());
-            });
-
-            for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
-
-                RegionalRoutingContext regionalRoutingContext = pair.getKey();
-                LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
-
-                if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
-                    unavailableRoutingContexts.add(regionalRoutingContext);
+                while (!unavailableRoutingContexts.isEmpty()) {
+                    RegionalRoutingContext unavailableRegionalRoutingContext = unavailableRoutingContexts.poll();
+                    URI unavailableEndpoint = unavailableRegionalRoutingContext.getGatewayRegionalEndpoint();
+                    unavailableRegions.add(this.globalEndpointManager.getRegionName(unavailableEndpoint, request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create));
                 }
             }
 
-            while (!unavailableRoutingContexts.isEmpty()) {
-                RegionalRoutingContext unavailableRegionalRoutingContext = unavailableRoutingContexts.poll();
-                URI unavailableEndpoint = unavailableRegionalRoutingContext.getGatewayRegionalEndpoint();
-                unavailableRegions.add(this.globalEndpointManager.getRegionName(unavailableEndpoint, request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create));
-            }
+            return UnmodifiableList.unmodifiableList(unavailableRegions);
+        } catch (Exception e) {
+            throw wrapAsCosmosException(request, e);
         }
-
-        return UnmodifiableList.unmodifiableList(unavailableRegions);
     }
 
     private Flux<?> updateStaleLocationInfo() {
@@ -276,11 +318,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         return Mono.empty();
                     }
                 } catch (Exception e) {
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
-                    }
-
+                    logger.warn("An exception was thrown trying to recover an Unavailable partitionKeyRange!", e);
                     return Flux.empty();
                 }
             }, 1, 1)
@@ -307,12 +345,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                     .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                     .doOnComplete(() -> {
 
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("Partition health recovery query for partition key range : {} and " +
-                                                    "collection rid : {} has succeeded...",
-                                                partitionKeyRangeWrapper.getPartitionKeyRange(),
-                                                partitionKeyRangeWrapper.getCollectionResourceId());
-                                        }
+                                        logger.debug("Partition health recovery query for partitionKeyRange : " +
+                                            partitionKeyRangeWrapper.getPartitionKeyRange() +
+                                            " and collectionResourceId : "
+                                            + partitionKeyRangeWrapper.getCollectionResourceId() +
+                                            " has succeeded...");
 
                                         partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.compute(locationWithStaleUnavailabilityInfo, (locationWithStaleUnavailabilityInfoAsKey, locationSpecificContextAsVal) -> {
 
@@ -329,10 +366,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                         });
                                     })
                                     .onErrorResume(throwable -> {
-                                        if (logger.isDebugEnabled()) {
-                                            logger.debug("An exception : {} was thrown trying to recover an Unavailable partition key range!", throwable.getMessage());
-                                        }
-
+                                        logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", throwable);
                                         return Mono.empty();
                                     });
                             }
@@ -353,18 +387,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         }
                     }
                 } catch (Exception e) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("An exception {} was thrown trying to recover an Unavailable partition key range!", e.getMessage());
-                    }
+                    logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", e);
                     return Flux.empty();
                 }
 
                 return Flux.empty();
             }, 1, 1)
             .onErrorResume(throwable -> {
-                if (logger.isWarnEnabled()) {
-                    logger.warn("An exception : {} was thrown trying to recover an Unavailable partition key range!, fail-back flow won't be executed!", throwable.getMessage());
-                }
+                logger.warn("An exception : was thrown trying to recover an Unavailable partitionKeyRange!, fail-back flow won't be executed!", throwable);
                 return Flux.empty();
             });
     }
@@ -554,14 +584,45 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         return this.consecutiveExceptionBasedCircuitBreaker.getPartitionLevelCircuitBreakerConfig();
     }
 
-    public synchronized void resetCircuitBreakerConfig() {
-        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig
-            = Configs.getPartitionLevelCircuitBreakerConfig();
-
+    public synchronized void resetCircuitBreakerConfig(PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig) {
         this.consecutiveExceptionBasedCircuitBreaker
             = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
 
         this.locationSpecificHealthContextTransitionHandler
             = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
+
+        this.clear();
+    }
+
+    private void clear() {
+        this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.clear();
+        this.regionalRoutingContextToRegion.clear();
+    }
+
+    private static CosmosException wrapAsCosmosException(RxDocumentServiceRequest request, Exception innerException) {
+        CosmosDiagnostics cosmosDiagnostics = null;
+        String resourceAddress = null;
+
+        if (request != null) {
+
+            if (request.requestContext != null) {
+                cosmosDiagnostics = request.requestContext.cosmosDiagnostics;
+                resourceAddress = request.requestContext.resourcePhysicalAddress != null
+                    ? request.requestContext.resourcePhysicalAddress
+                    : "N/A";
+            }
+        }
+
+        CosmosException cosmosException = BridgeInternal.createCosmosException(
+            BASE_EXCEPTION_MESSAGE + innerException.getMessage(),
+            innerException,
+            EMPTY_MAP,
+            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+            resourceAddress);
+
+        cosmosException = BridgeInternal.setCosmosDiagnostics(cosmosException, cosmosDiagnostics);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PPCB_INVALID_STATE);
+
+        throw cosmosException;
     }
 }

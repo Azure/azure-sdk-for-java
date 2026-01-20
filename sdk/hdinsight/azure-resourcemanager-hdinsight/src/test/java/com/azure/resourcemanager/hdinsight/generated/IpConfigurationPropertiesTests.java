@@ -16,7 +16,7 @@ public final class IpConfigurationPropertiesTests {
         IpConfigurationProperties model = BinaryData.fromString(
             "{\"provisioningState\":\"Deleting\",\"primary\":false,\"privateIPAddress\":\"yq\",\"privateIPAllocationMethod\":\"dynamic\",\"subnet\":{\"id\":\"j\"}}")
             .toObject(IpConfigurationProperties.class);
-        Assertions.assertEquals(false, model.primary());
+        Assertions.assertFalse(model.primary());
         Assertions.assertEquals("yq", model.privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
         Assertions.assertEquals("j", model.subnet().id());
@@ -29,7 +29,7 @@ public final class IpConfigurationPropertiesTests {
             .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.DYNAMIC)
             .withSubnet(new ResourceId().withId("j"));
         model = BinaryData.fromObject(model).toObject(IpConfigurationProperties.class);
-        Assertions.assertEquals(false, model.primary());
+        Assertions.assertFalse(model.primary());
         Assertions.assertEquals("yq", model.privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
         Assertions.assertEquals("j", model.subnet().id());

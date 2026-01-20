@@ -14,21 +14,21 @@ public final class EnterpriseDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnterpriseDetailsInner model = BinaryData.fromString(
-            "{\"saasSubscriptionDetails\":{\"planId\":\"whybcib\",\"offerId\":\"vdcsitynn\",\"publisherId\":\"mdectehfiqscjey\",\"term\":{\"termUnit\":\"ezrkgqhcjrefo\",\"startDate\":\"2021-06-07T02:58Z\",\"endDate\":\"2021-10-26T09:37:04Z\"}},\"marketplaceTrialQuota\":{\"availablePromotion\":\"FreeTrial\",\"grafanaResourceId\":\"yvxyqjp\",\"trialStartAt\":\"2021-02-23T18:47:42Z\",\"trialEndAt\":\"2021-11-05T17:27:55Z\"}}")
+            "{\"saasSubscriptionDetails\":{\"planId\":\"acfta\",\"offerId\":\"h\",\"publisherId\":\"ltyfsop\",\"term\":{\"termUnit\":\"uesnzwdejbavo\",\"startDate\":\"2021-09-27T19:00:57Z\",\"endDate\":\"2021-03-31T13:31:51Z\"}},\"marketplaceTrialQuota\":{\"availablePromotion\":\"FreeTrial\",\"grafanaResourceId\":\"bqvudwxdndn\",\"trialStartAt\":\"2021-04-03T23:08:08Z\",\"trialEndAt\":\"2021-02-13T18:55:04Z\"}}")
             .toObject(EnterpriseDetailsInner.class);
-        Assertions.assertEquals("whybcib", model.saasSubscriptionDetails().planId());
-        Assertions.assertEquals("vdcsitynn", model.saasSubscriptionDetails().offerId());
-        Assertions.assertEquals("mdectehfiqscjey", model.saasSubscriptionDetails().publisherId());
-        Assertions.assertEquals("ezrkgqhcjrefo", model.saasSubscriptionDetails().term().termUnit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T02:58Z"),
+        Assertions.assertEquals("acfta", model.saasSubscriptionDetails().planId());
+        Assertions.assertEquals("h", model.saasSubscriptionDetails().offerId());
+        Assertions.assertEquals("ltyfsop", model.saasSubscriptionDetails().publisherId());
+        Assertions.assertEquals("uesnzwdejbavo", model.saasSubscriptionDetails().term().termUnit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T19:00:57Z"),
             model.saasSubscriptionDetails().term().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T09:37:04Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-31T13:31:51Z"),
             model.saasSubscriptionDetails().term().endDate());
         Assertions.assertEquals(AvailablePromotion.FREE_TRIAL, model.marketplaceTrialQuota().availablePromotion());
-        Assertions.assertEquals("yvxyqjp", model.marketplaceTrialQuota().grafanaResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T18:47:42Z"),
+        Assertions.assertEquals("bqvudwxdndn", model.marketplaceTrialQuota().grafanaResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-03T23:08:08Z"),
             model.marketplaceTrialQuota().trialStartAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T17:27:55Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T18:55:04Z"),
             model.marketplaceTrialQuota().trialEndAt());
     }
 }

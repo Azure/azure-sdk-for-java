@@ -82,6 +82,12 @@ public final class ConfigStore {
     private boolean replicaDiscoveryEnabled = true;
 
     /**
+     * If true, the Config Store will use load balancing to distribute requests
+     * across multiple endpoints.
+     */
+    private boolean loadBalancingEnabled = false;
+
+    /**
      * @return the endpoint
      */
     public String getEndpoint() {
@@ -228,6 +234,20 @@ public final class ConfigStore {
      */
     public void setReplicaDiscoveryEnabled(boolean replicaDiscoveryEnabled) {
         this.replicaDiscoveryEnabled = replicaDiscoveryEnabled;
+    }
+
+    /**
+     * @return the loadBalancingEnabled
+     */
+    public boolean isLoadBalancingEnabled() {
+        return loadBalancingEnabled;
+    }
+
+    /**
+     * @param loadBalancingEnabled the loadBalancingEnabled to set
+     */
+    public void setLoadBalancingEnabled(boolean loadBalancingEnabled) {
+        this.loadBalancingEnabled = loadBalancingEnabled;
     }
 
     /**

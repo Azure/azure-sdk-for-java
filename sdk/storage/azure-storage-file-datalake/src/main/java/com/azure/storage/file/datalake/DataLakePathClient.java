@@ -158,7 +158,7 @@ public class DataLakePathClient {
      * @return the URL.
      */
     String getPathUrl() {
-        return dataLakeStorage.getUrl() + "/" + fileSystemName + "/" + Utility.urlEncode(pathName);
+        return dataLakeStorage.getUrl() + "/" + Utility.urlEncode(fileSystemName) + "/" + Utility.urlEncode(pathName);
     }
 
     /**
@@ -1399,7 +1399,7 @@ public class DataLakePathClient {
 
         DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.getFileSystemName() + "/" + Utility.urlEncode(pathName);
+        String renameSource = "/" + Utility.urlEncode(this.getFileSystemName()) + "/" + Utility.urlEncode(pathName);
         String signature = null;
         if (this.getSasToken() != null) {
             if (this.getSasToken().getSignature().startsWith("?")) {

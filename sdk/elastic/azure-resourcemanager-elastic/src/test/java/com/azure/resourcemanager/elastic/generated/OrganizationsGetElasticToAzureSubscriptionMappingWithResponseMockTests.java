@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.ElasticOrganizationToAzureSubscriptionMappingResponse;
@@ -21,21 +21,21 @@ public final class OrganizationsGetElasticToAzureSubscriptionMappingWithResponse
     @Test
     public void testGetElasticToAzureSubscriptionMappingWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"billedAzureSubscriptionId\":\"kdgszywkbirr\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"lhkjoqrvqq\"},\"marketplaceName\":\"t\",\"marketplaceResourceId\":\"nrvgoupmfiibfgg\",\"marketplaceStatus\":\"ool\",\"billedAzureSubscriptionId\":\"wxkvtkkgll\",\"subscribed\":true},\"elasticOrganizationId\":\"gvjayvblmh\",\"elasticOrganizationName\":\"zuhbxvvyhgsopb\"}}";
+            = "{\"properties\":{\"billedAzureSubscriptionId\":\"yohpfkyrkdbdgiog\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"nwqjnoba\",\"publisherId\":\"hdd\",\"offerId\":\"acegfnmntf\"},\"marketplaceName\":\"vm\",\"marketplaceResourceId\":\"fnczdwvvbalx\",\"marketplaceStatus\":\"lchpodbzevwrdn\",\"billedAzureSubscriptionId\":\"ukuv\",\"subscribed\":true},\"elasticOrganizationId\":\"wsmystuluqypf\",\"elasticOrganizationName\":\"lerchpq\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticOrganizationToAzureSubscriptionMappingResponse response = manager.organizations()
             .getElasticToAzureSubscriptionMappingWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kdgszywkbirr", response.properties().billedAzureSubscriptionId());
-        Assertions.assertEquals("gvjayvblmh", response.properties().elasticOrganizationId());
-        Assertions.assertEquals("zuhbxvvyhgsopb", response.properties().elasticOrganizationName());
+        Assertions.assertEquals("yohpfkyrkdbdgiog", response.properties().billedAzureSubscriptionId());
+        Assertions.assertEquals("wsmystuluqypf", response.properties().elasticOrganizationId());
+        Assertions.assertEquals("lerchpq", response.properties().elasticOrganizationName());
     }
 }

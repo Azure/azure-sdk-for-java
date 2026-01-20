@@ -12,16 +12,14 @@ import java.util.Arrays;
 public final class SkuDetailsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDetailsListInner model = BinaryData
-            .fromString(
-                "{\"skus\":[{\"name\":\"kexxppof\",\"sizeInGB\":93.731895},{\"name\":\"c\",\"sizeInGB\":9.220636}]}")
-            .toObject(SkuDetailsListInner.class);
+        SkuDetailsListInner model
+            = BinaryData.fromString("{\"skus\":[{\"name\":\"xxhejjzzvd\",\"sizeInGB\":63.329147}]}")
+                .toObject(SkuDetailsListInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuDetailsListInner model
-            = new SkuDetailsListInner().withSkus(Arrays.asList(new SkuDetails(), new SkuDetails()));
+        SkuDetailsListInner model = new SkuDetailsListInner().withSkus(Arrays.asList(new SkuDetails()));
         model = BinaryData.fromObject(model).toObject(SkuDetailsListInner.class);
     }
 }

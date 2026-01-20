@@ -18,62 +18,42 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"cjznmwcpmg\",\"display\":{\"provider\":\"draufactkah\",\"resource\":\"v\",\"operation\":\"j\",\"description\":\"uxxpshne\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{}]}}},{\"name\":\"slqubkwdl\",\"display\":{\"provider\":\"d\",\"resource\":\"tujbazpju\",\"operation\":\"minyflnorwm\",\"description\":\"vwpklvxwmygdxp\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"sze\",\"display\":{\"provider\":\"bjcrxgibbdaxco\",\"resource\":\"ozauorsukokwb\",\"operation\":\"lhlv\",\"description\":\"uepzl\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{}]}}},{\"name\":\"oldweyuqdu\",\"display\":{\"provider\":\"nnrwrbiork\",\"resource\":\"lywjhh\",\"operation\":\"nhxmsi\",\"description\":\"omi\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{}]}}}],\"nextLink\":\"ufiqndieuzaof\"}")
+            "{\"value\":[{\"name\":\"wvrvmtg\",\"display\":{\"provider\":\"pyostronzmyhgfi\",\"resource\":\"sxkm\",\"operation\":\"a\",\"description\":\"rrjreafxtsgu\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}]}}},{\"name\":\"kkxwslol\",\"display\":{\"provider\":\"vuzlm\",\"resource\":\"elfk\",\"operation\":\"plcrpwjxeznoig\",\"description\":\"njwmwkpnbsazejj\"},\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}}],\"nextLink\":\"hsxttaugzxnf\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("cjznmwcpmg", model.value().get(0).name());
-        Assertions.assertEquals("draufactkah", model.value().get(0).display().provider());
-        Assertions.assertEquals("v", model.value().get(0).display().resource());
-        Assertions.assertEquals("j", model.value().get(0).display().operation());
-        Assertions.assertEquals("uxxpshne", model.value().get(0).display().description());
-        Assertions.assertEquals("ufiqndieuzaof", model.nextLink());
+        Assertions.assertEquals("wvrvmtg", model.value().get(0).name());
+        Assertions.assertEquals("pyostronzmyhgfi", model.value().get(0).display().provider());
+        Assertions.assertEquals("sxkm", model.value().get(0).display().resource());
+        Assertions.assertEquals("a", model.value().get(0).display().operation());
+        Assertions.assertEquals("rrjreafxtsgu", model.value().get(0).display().description());
+        Assertions.assertEquals("hsxttaugzxnf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model
-            = new OperationListResult()
-                .withValue(Arrays.asList(
-                    new OperationInner().withName("cjznmwcpmg")
-                        .withDisplay(new OperationDisplay().withProvider("draufactkah")
-                            .withResource("v")
-                            .withOperation("j")
-                            .withDescription("uxxpshne"))
-                        .withProperties(new OperationProperties().withServiceSpecification(
-                            new ServiceSpecification().withMetricSpecifications(Arrays.asList(
-                                new MetricSpecifications(), new MetricSpecifications(), new MetricSpecifications())))),
-                    new OperationInner()
-                        .withName("slqubkwdl")
-                        .withDisplay(new OperationDisplay().withProvider("d")
-                            .withResource("tujbazpju")
-                            .withOperation("minyflnorwm")
-                            .withDescription("vwpklvxwmygdxp"))
-                        .withProperties(new OperationProperties()
-                            .withServiceSpecification(new ServiceSpecification().withMetricSpecifications(
-                                Arrays.asList(new MetricSpecifications(), new MetricSpecifications(),
-                                    new MetricSpecifications(), new MetricSpecifications())))),
-                    new OperationInner().withName("sze")
-                        .withDisplay(new OperationDisplay().withProvider("bjcrxgibbdaxco")
-                            .withResource("ozauorsukokwb")
-                            .withOperation("lhlv")
-                            .withDescription("uepzl"))
-                        .withProperties(new OperationProperties().withServiceSpecification(
-                            new ServiceSpecification().withMetricSpecifications(
-                                Arrays.asList(new MetricSpecifications(), new MetricSpecifications())))),
-                    new OperationInner().withName("oldweyuqdu")
-                        .withDisplay(new OperationDisplay().withProvider("nnrwrbiork")
-                            .withResource("lywjhh")
-                            .withOperation("nhxmsi")
-                            .withDescription("omi"))
-                        .withProperties(new OperationProperties()
-                            .withServiceSpecification(new ServiceSpecification().withMetricSpecifications(
-                                Arrays.asList(new MetricSpecifications(), new MetricSpecifications()))))))
-                .withNextLink("ufiqndieuzaof");
+        OperationListResult model = new OperationListResult()
+            .withValue(Arrays.asList(
+                new OperationInner().withName("wvrvmtg")
+                    .withDisplay(new OperationDisplay().withProvider("pyostronzmyhgfi")
+                        .withResource("sxkm")
+                        .withOperation("a")
+                        .withDescription("rrjreafxtsgu"))
+                    .withProperties(new OperationProperties().withServiceSpecification(new ServiceSpecification()
+                        .withMetricSpecifications(Arrays.asList(new MetricSpecifications())))),
+                new OperationInner().withName("kkxwslol")
+                    .withDisplay(new OperationDisplay().withProvider("vuzlm")
+                        .withResource("elfk")
+                        .withOperation("plcrpwjxeznoig")
+                        .withDescription("njwmwkpnbsazejj"))
+                    .withProperties(new OperationProperties().withServiceSpecification(
+                        new ServiceSpecification().withMetricSpecifications(Arrays.asList(new MetricSpecifications(),
+                            new MetricSpecifications(), new MetricSpecifications(), new MetricSpecifications()))))))
+            .withNextLink("hsxttaugzxnf");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("cjznmwcpmg", model.value().get(0).name());
-        Assertions.assertEquals("draufactkah", model.value().get(0).display().provider());
-        Assertions.assertEquals("v", model.value().get(0).display().resource());
-        Assertions.assertEquals("j", model.value().get(0).display().operation());
-        Assertions.assertEquals("uxxpshne", model.value().get(0).display().description());
-        Assertions.assertEquals("ufiqndieuzaof", model.nextLink());
+        Assertions.assertEquals("wvrvmtg", model.value().get(0).name());
+        Assertions.assertEquals("pyostronzmyhgfi", model.value().get(0).display().provider());
+        Assertions.assertEquals("sxkm", model.value().get(0).display().resource());
+        Assertions.assertEquals("a", model.value().get(0).display().operation());
+        Assertions.assertEquals("rrjreafxtsgu", model.value().get(0).display().description());
+        Assertions.assertEquals("hsxttaugzxnf", model.nextLink());
     }
 }

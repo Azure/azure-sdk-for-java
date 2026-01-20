@@ -12,6 +12,21 @@ import java.util.Collection;
  */
 public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEnum<KnownSyslogDataSourceFacilityNames> {
     /**
+     * Static value * for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames ASTERISK = fromString("*");
+
+    /**
+     * Static value alert for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames ALERT = fromString("alert");
+
+    /**
+     * Static value audit for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames AUDIT = fromString("audit");
+
+    /**
      * Static value auth for KnownSyslogDataSourceFacilityNames.
      */
     public static final KnownSyslogDataSourceFacilityNames AUTH = fromString("auth");
@@ -20,6 +35,11 @@ public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEn
      * Static value authpriv for KnownSyslogDataSourceFacilityNames.
      */
     public static final KnownSyslogDataSourceFacilityNames AUTHPRIV = fromString("authpriv");
+
+    /**
+     * Static value clock for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames CLOCK = fromString("clock");
 
     /**
      * Static value cron for KnownSyslogDataSourceFacilityNames.
@@ -32,44 +52,14 @@ public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEn
     public static final KnownSyslogDataSourceFacilityNames DAEMON = fromString("daemon");
 
     /**
+     * Static value ftp for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames FTP = fromString("ftp");
+
+    /**
      * Static value kern for KnownSyslogDataSourceFacilityNames.
      */
     public static final KnownSyslogDataSourceFacilityNames KERN = fromString("kern");
-
-    /**
-     * Static value lpr for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames LPR = fromString("lpr");
-
-    /**
-     * Static value mail for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames MAIL = fromString("mail");
-
-    /**
-     * Static value mark for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames MARK = fromString("mark");
-
-    /**
-     * Static value news for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames NEWS = fromString("news");
-
-    /**
-     * Static value syslog for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames SYSLOG = fromString("syslog");
-
-    /**
-     * Static value user for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames USER = fromString("user");
-
-    /**
-     * Static value uucp for KnownSyslogDataSourceFacilityNames.
-     */
-    public static final KnownSyslogDataSourceFacilityNames UUCP = fromString("uucp");
 
     /**
      * Static value local0 for KnownSyslogDataSourceFacilityNames.
@@ -112,9 +102,49 @@ public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEn
     public static final KnownSyslogDataSourceFacilityNames LOCAL7 = fromString("local7");
 
     /**
-     * Static value * for KnownSyslogDataSourceFacilityNames.
+     * Static value lpr for KnownSyslogDataSourceFacilityNames.
      */
-    public static final KnownSyslogDataSourceFacilityNames ASTERISK = fromString("*");
+    public static final KnownSyslogDataSourceFacilityNames LPR = fromString("lpr");
+
+    /**
+     * Static value mail for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames MAIL = fromString("mail");
+
+    /**
+     * Static value mark for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames MARK = fromString("mark");
+
+    /**
+     * Static value news for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames NEWS = fromString("news");
+
+    /**
+     * Static value nopri for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames NOPRI = fromString("nopri");
+
+    /**
+     * Static value ntp for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames NTP = fromString("ntp");
+
+    /**
+     * Static value syslog for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames SYSLOG = fromString("syslog");
+
+    /**
+     * Static value user for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames USER = fromString("user");
+
+    /**
+     * Static value uucp for KnownSyslogDataSourceFacilityNames.
+     */
+    public static final KnownSyslogDataSourceFacilityNames UUCP = fromString("uucp");
 
     /**
      * Creates a new instance of KnownSyslogDataSourceFacilityNames value.

@@ -4,17 +4,19 @@
 
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hdinsight.models.EntraUserInfo;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Gateway settings.
  */
-@Immutable
+@Fluent
 public final class GatewaySettingsInner implements JsonSerializable<GatewaySettingsInner> {
     /*
      * Indicates whether or not the gateway settings based authorization is enabled.
@@ -30,6 +32,11 @@ public final class GatewaySettingsInner implements JsonSerializable<GatewaySetti
      * The gateway settings user password.
      */
     private String password;
+
+    /*
+     * List of Entra users for gateway access.
+     */
+    private List<EntraUserInfo> restAuthEntraUsers;
 
     /**
      * Creates an instance of GatewaySettingsInner class.
@@ -66,11 +73,34 @@ public final class GatewaySettingsInner implements JsonSerializable<GatewaySetti
     }
 
     /**
+     * Get the restAuthEntraUsers property: List of Entra users for gateway access.
+     * 
+     * @return the restAuthEntraUsers value.
+     */
+    public List<EntraUserInfo> restAuthEntraUsers() {
+        return this.restAuthEntraUsers;
+    }
+
+    /**
+     * Set the restAuthEntraUsers property: List of Entra users for gateway access.
+     * 
+     * @param restAuthEntraUsers the restAuthEntraUsers value to set.
+     * @return the GatewaySettingsInner object itself.
+     */
+    public GatewaySettingsInner withRestAuthEntraUsers(List<EntraUserInfo> restAuthEntraUsers) {
+        this.restAuthEntraUsers = restAuthEntraUsers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (restAuthEntraUsers() != null) {
+            restAuthEntraUsers().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -79,6 +109,8 @@ public final class GatewaySettingsInner implements JsonSerializable<GatewaySetti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("restAuthEntraUsers", this.restAuthEntraUsers,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +135,10 @@ public final class GatewaySettingsInner implements JsonSerializable<GatewaySetti
                     deserializedGatewaySettingsInner.username = reader.getString();
                 } else if ("restAuthCredential.password".equals(fieldName)) {
                     deserializedGatewaySettingsInner.password = reader.getString();
+                } else if ("restAuthEntraUsers".equals(fieldName)) {
+                    List<EntraUserInfo> restAuthEntraUsers
+                        = reader.readArray(reader1 -> EntraUserInfo.fromJson(reader1));
+                    deserializedGatewaySettingsInner.restAuthEntraUsers = restAuthEntraUsers;
                 } else {
                     reader.skipChildren();
                 }

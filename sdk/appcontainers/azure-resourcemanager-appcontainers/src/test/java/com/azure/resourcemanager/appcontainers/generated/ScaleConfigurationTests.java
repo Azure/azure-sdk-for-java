@@ -12,18 +12,18 @@ public final class ScaleConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleConfiguration model
-            = BinaryData.fromString("{\"maxConcurrentSessions\":783211000,\"readySessionInstances\":1089083662}")
+            = BinaryData.fromString("{\"maxConcurrentSessions\":924054610,\"readySessionInstances\":1523023612}")
                 .toObject(ScaleConfiguration.class);
-        Assertions.assertEquals(783211000, model.maxConcurrentSessions());
-        Assertions.assertEquals(1089083662, model.readySessionInstances());
+        Assertions.assertEquals(924054610, model.maxConcurrentSessions());
+        Assertions.assertEquals(1523023612, model.readySessionInstances());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScaleConfiguration model
-            = new ScaleConfiguration().withMaxConcurrentSessions(783211000).withReadySessionInstances(1089083662);
+            = new ScaleConfiguration().withMaxConcurrentSessions(924054610).withReadySessionInstances(1523023612);
         model = BinaryData.fromObject(model).toObject(ScaleConfiguration.class);
-        Assertions.assertEquals(783211000, model.maxConcurrentSessions());
-        Assertions.assertEquals(1089083662, model.readySessionInstances());
+        Assertions.assertEquals(924054610, model.maxConcurrentSessions());
+        Assertions.assertEquals(1523023612, model.readySessionInstances());
     }
 }

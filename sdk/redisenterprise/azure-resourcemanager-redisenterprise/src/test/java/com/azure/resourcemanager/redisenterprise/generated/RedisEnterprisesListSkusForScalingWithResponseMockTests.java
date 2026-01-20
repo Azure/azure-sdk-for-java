@@ -20,7 +20,7 @@ public final class RedisEnterprisesListSkusForScalingWithResponseMockTests {
     @Test
     public void testListSkusForScalingWithResponse() throws Exception {
         String responseStr
-            = "{\"skus\":[{\"name\":\"nuqszfkbey\",\"sizeInGB\":80.61801},{\"name\":\"mjmwvvjektcx\",\"sizeInGB\":86.37973},{\"name\":\"wlrsffrzpwv\",\"sizeInGB\":91.72675},{\"name\":\"gbiqylihkaet\",\"sizeInGB\":56.222622}]}";
+            = "{\"skus\":[{\"name\":\"ttxfvjr\",\"sizeInGB\":8.868826},{\"name\":\"hxepcyvahfnlj\",\"sizeInGB\":13.063425},{\"name\":\"j\",\"sizeInGB\":45.996456},{\"name\":\"qgidokgjljyo\",\"sizeInGB\":65.12365}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class RedisEnterprisesListSkusForScalingWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SkuDetailsList response = manager.redisEnterprises()
-            .listSkusForScalingWithResponse("noc", "koklya", com.azure.core.util.Context.NONE)
+            .listSkusForScalingWithResponse("qhjfbebr", "cxerf", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

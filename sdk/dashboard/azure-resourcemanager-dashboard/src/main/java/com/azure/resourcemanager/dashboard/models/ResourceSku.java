@@ -21,6 +21,11 @@ public final class ResourceSku implements JsonSerializable<ResourceSku> {
      */
     private String name;
 
+    /*
+     * Specifies the capacity tier of the Grafana instance.
+     */
+    private Size size;
+
     /**
      * Creates an instance of ResourceSku class.
      */
@@ -48,12 +53,33 @@ public final class ResourceSku implements JsonSerializable<ResourceSku> {
     }
 
     /**
+     * Get the size property: Specifies the capacity tier of the Grafana instance.
+     * 
+     * @return the size value.
+     */
+    public Size size() {
+        return this.size;
+    }
+
+    /**
+     * Set the size property: Specifies the capacity tier of the Grafana instance.
+     * 
+     * @param size the size value to set.
+     * @return the ResourceSku object itself.
+     */
+    public ResourceSku withSize(Size size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("size", this.size == null ? null : this.size.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -75,6 +101,8 @@ public final class ResourceSku implements JsonSerializable<ResourceSku> {
 
                 if ("name".equals(fieldName)) {
                     deserializedResourceSku.name = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedResourceSku.size = Size.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

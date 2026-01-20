@@ -10,23 +10,28 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfigForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForUpdate;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForUpdate;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
@@ -85,7 +90,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().administratorLoginPassword();
     }
 
-    public ServerVersion version() {
+    public PostgresMajorVersion version() {
         return this.innerModel().version();
     }
 
@@ -196,7 +201,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     private String serverName;
 
-    private ServerForUpdate updateParameters;
+    private ServerForPatch updateParameters;
 
     public ServerImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -206,14 +211,14 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     public Server create() {
         this.innerObject = serviceManager.serviceClient()
             .getServers()
-            .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, serverName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getServers()
-            .create(resourceGroupName, serverName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, serverName, this.innerModel(), context);
         return this;
     }
 
@@ -224,7 +229,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl update() {
-        this.updateParameters = new ServerForUpdate();
+        this.updateParameters = new ServerForPatch();
         return this;
     }
 
@@ -311,13 +316,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
+        this.innerModel().withSku(sku);
+        return this;
     }
 
     public ServerImpl withIdentity(UserAssignedIdentity identity) {
@@ -331,13 +331,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withAdministratorLogin(String administratorLogin) {
-        if (isInCreateMode()) {
-            this.innerModel().withAdministratorLogin(administratorLogin);
-            return this;
-        } else {
-            this.updateParameters.withAdministratorLogin(administratorLogin);
-            return this;
-        }
+        this.innerModel().withAdministratorLogin(administratorLogin);
+        return this;
     }
 
     public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {
@@ -350,7 +345,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withVersion(ServerVersion version) {
+    public ServerImpl withVersion(PostgresMajorVersion version) {
         if (isInCreateMode()) {
             this.innerModel().withVersion(version);
             return this;
@@ -371,13 +366,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withAuthConfig(AuthConfig authConfig) {
-        if (isInCreateMode()) {
-            this.innerModel().withAuthConfig(authConfig);
-            return this;
-        } else {
-            this.updateParameters.withAuthConfig(authConfig);
-            return this;
-        }
+        this.innerModel().withAuthConfig(authConfig);
+        return this;
     }
 
     public ServerImpl withDataEncryption(DataEncryption dataEncryption) {
@@ -391,13 +381,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withBackup(Backup backup) {
-        if (isInCreateMode()) {
-            this.innerModel().withBackup(backup);
-            return this;
-        } else {
-            this.updateParameters.withBackup(backup);
-            return this;
-        }
+        this.innerModel().withBackup(backup);
+        return this;
     }
 
     public ServerImpl withNetwork(Network network) {
@@ -411,13 +396,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withHighAvailability(HighAvailability highAvailability) {
-        if (isInCreateMode()) {
-            this.innerModel().withHighAvailability(highAvailability);
-            return this;
-        } else {
-            this.updateParameters.withHighAvailability(highAvailability);
-            return this;
-        }
+        this.innerModel().withHighAvailability(highAvailability);
+        return this;
     }
 
     public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
@@ -431,8 +411,13 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withAvailabilityZone(String availabilityZone) {
-        this.innerModel().withAvailabilityZone(availabilityZone);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAvailabilityZone(availabilityZone);
+            return this;
+        } else {
+            this.updateParameters.withAvailabilityZone(availabilityZone);
+            return this;
+        }
     }
 
     public ServerImpl withReplicationRole(ReplicationRole replicationRole) {
@@ -460,12 +445,32 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
+    public ServerImpl withSku(SkuForPatch sku) {
+        this.updateParameters.withSku(sku);
+        return this;
+    }
+
+    public ServerImpl withBackup(BackupForPatch backup) {
+        this.updateParameters.withBackup(backup);
+        return this;
+    }
+
+    public ServerImpl withHighAvailability(HighAvailabilityForPatch highAvailability) {
+        this.updateParameters.withHighAvailability(highAvailability);
+        return this;
+    }
+
+    public ServerImpl withMaintenanceWindow(MaintenanceWindowForPatch maintenanceWindow) {
         this.updateParameters.withMaintenanceWindow(maintenanceWindow);
         return this;
     }
 
-    public ServerImpl withCreateMode(CreateModeForUpdate createMode) {
+    public ServerImpl withAuthConfig(AuthConfigForPatch authConfig) {
+        this.updateParameters.withAuthConfig(authConfig);
+        return this;
+    }
+
+    public ServerImpl withCreateMode(CreateModeForPatch createMode) {
         this.updateParameters.withCreateMode(createMode);
         return this;
     }
@@ -476,6 +481,6 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

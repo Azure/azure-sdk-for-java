@@ -33,6 +33,11 @@ public final class KnownDataCollectionRuleProvisioningState
     public static final KnownDataCollectionRuleProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Static value Canceled for KnownDataCollectionRuleProvisioningState.
+     */
+    public static final KnownDataCollectionRuleProvisioningState CANCELED = fromString("Canceled");
+
+    /**
      * Static value Failed for KnownDataCollectionRuleProvisioningState.
      */
     public static final KnownDataCollectionRuleProvisioningState FAILED = fromString("Failed");

@@ -25,7 +25,7 @@ public final class ServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"dqns\",\"serviceTypeName\":\"fzpbgtgkyl\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"rjeuut\",\"placementConstraints\":\"xezw\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"vbwnhhtq\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"ehgpp\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"ifhpf\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"ajvgcxtxjcsheafi\"}],\"serviceLoadMetrics\":[{\"name\":\"ugsresmkssjhoi\",\"weight\":\"High\",\"primaryDefaultLoad\":1451676187,\"secondaryDefaultLoad\":1606818470,\"defaultLoad\":753800849},{\"name\":\"prhptillu\",\"weight\":\"Low\",\"primaryDefaultLoad\":1656639409,\"secondaryDefaultLoad\":1467633348,\"defaultLoad\":2010820897},{\"name\":\"hm\",\"weight\":\"High\",\"primaryDefaultLoad\":484782271,\"secondaryDefaultLoad\":1561127811,\"defaultLoad\":379885454},{\"name\":\"tpwb\",\"weight\":\"Low\",\"primaryDefaultLoad\":1155046174,\"secondaryDefaultLoad\":1996411708,\"defaultLoad\":1970354054}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Low\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"ankjpdnjzh\":\"a\",\"lmuoyxprimrsopte\":\"joylh\",\"wxdzaumweoohgu\":\"cjmeislstvasy\",\"emwmdxmebwjs\":\"fuzboyjathwtzolb\"},\"location\":\"p\",\"id\":\"lxveabfqx\",\"name\":\"mwmqtibx\",\"type\":\"ijddtvqc\"}";
+            = "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"amqu\",\"serviceTypeName\":\"iosrsjuivfcdis\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"xzhczexrxz\",\"placementConstraints\":\"jrtrhqvwrevk\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"nzonzl\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"i\"},{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"wncvjtszcofiz\"}],\"serviceLoadMetrics\":[{\"name\":\"dhgbjkvre\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1414987705,\"secondaryDefaultLoad\":615677000,\"defaultLoad\":601956231},{\"name\":\"mlovuanashcxl\",\"weight\":\"High\",\"primaryDefaultLoad\":613917704,\"secondaryDefaultLoad\":513286022,\"defaultLoad\":1754763241},{\"name\":\"lvidizozs\",\"weight\":\"Low\",\"primaryDefaultLoad\":1441551440,\"secondaryDefaultLoad\":1920486563,\"defaultLoad\":1331407717}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Medium\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"ltv\":\"puuw\",\"zhmkdasvflyh\":\"qjctzenkeif\",\"oldforobw\":\"xcudchxgsr\",\"hfovvacqpbtu\":\"lvizb\"},\"location\":\"xesz\",\"id\":\"belawumuaslzkwr\",\"name\":\"woycqucwyha\",\"type\":\"nomdrkywuhpsv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,26 @@ public final class ServicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceResource response = manager.services()
-            .getWithResponse("c", "xgccknfnw", "btmvpdvjdhttza", "fedxihchrphkm", com.azure.core.util.Context.NONE)
+            .getWithResponse("ybpmzznrtffyaq", "tmhheioqa", "hvseufuqyrx", "dlcgqlsismjqfr",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xezw", response.properties().placementConstraints());
+        Assertions.assertEquals("jrtrhqvwrevk", response.properties().placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
             response.properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("vbwnhhtq", response.properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("ugsresmkssjhoi", response.properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH,
+        Assertions.assertEquals("nzonzl", response.properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("dhgbjkvre", response.properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
             response.properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1451676187, response.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1606818470, response.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(753800849, response.properties().serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.LOW, response.properties().defaultMoveCost());
-        Assertions.assertEquals("fzpbgtgkyl", response.properties().serviceTypeName());
-        Assertions.assertEquals(ServicePackageActivationMode.EXCLUSIVE_PROCESS,
+        Assertions.assertEquals(1414987705, response.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(615677000, response.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(601956231, response.properties().serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.MEDIUM, response.properties().defaultMoveCost());
+        Assertions.assertEquals("iosrsjuivfcdis", response.properties().serviceTypeName());
+        Assertions.assertEquals(ServicePackageActivationMode.SHARED_PROCESS,
             response.properties().servicePackageActivationMode());
-        Assertions.assertEquals("rjeuut", response.properties().serviceDnsName());
-        Assertions.assertEquals("a", response.tags().get("ankjpdnjzh"));
-        Assertions.assertEquals("p", response.location());
+        Assertions.assertEquals("xzhczexrxz", response.properties().serviceDnsName());
+        Assertions.assertEquals("puuw", response.tags().get("ltv"));
+        Assertions.assertEquals("xesz", response.location());
     }
 }

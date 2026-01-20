@@ -394,7 +394,15 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges) {
+            public CollectionRoutingMap tryCombine(
+                List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
+                String changeFeedIfNoneMatch,
+                String collectionRid) {
+                return null;
+            }
+
+            @Override
+            public String getChangeFeedNextIfNoneMatch() {
                 return null;
             }
         };

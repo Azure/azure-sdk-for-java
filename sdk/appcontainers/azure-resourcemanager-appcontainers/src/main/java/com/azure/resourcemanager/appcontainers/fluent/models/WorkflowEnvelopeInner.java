@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.WorkflowEnvelopeProperties;
+import com.azure.resourcemanager.appcontainers.models.WorkflowKind;
 import java.io.IOException;
 
 /**
- * Workflow properties definition.
+ * Schema for the workflow object.
  */
 @Fluent
-public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnvelopeInner> {
+public final class WorkflowEnvelopeInner extends ProxyResource {
     /*
-     * The resource id.
+     * Gets the logic app hybrid workflow kind.
      */
-    private String id;
-
-    /*
-     * Gets the resource name.
-     */
-    private String name;
-
-    /*
-     * Gets the resource type.
-     */
-    private String type;
-
-    /*
-     * The resource kind.
-     */
-    private String kind;
-
-    /*
-     * The resource location.
-     */
-    private String location;
+    private WorkflowKind kind;
 
     /*
      * Additional workflow properties.
      */
     private WorkflowEnvelopeProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of WorkflowEnvelopeInner class.
@@ -54,69 +56,22 @@ public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnv
     }
 
     /**
-     * Get the id property: The resource id.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: Gets the resource name.
-     * 
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: Gets the resource type.
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the kind property: The resource kind.
+     * Get the kind property: Gets the logic app hybrid workflow kind.
      * 
      * @return the kind value.
      */
-    public String kind() {
+    public WorkflowKind kind() {
         return this.kind;
     }
 
     /**
-     * Set the kind property: The resource kind.
+     * Set the kind property: Gets the logic app hybrid workflow kind.
      * 
      * @param kind the kind value to set.
      * @return the WorkflowEnvelopeInner object itself.
      */
-    public WorkflowEnvelopeInner withKind(String kind) {
+    public WorkflowEnvelopeInner withKind(WorkflowKind kind) {
         this.kind = kind;
-        return this;
-    }
-
-    /**
-     * Get the location property: The resource location.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The resource location.
-     * 
-     * @param location the location value to set.
-     * @return the WorkflowEnvelopeInner object itself.
-     */
-    public WorkflowEnvelopeInner withLocation(String location) {
-        this.location = location;
         return this;
     }
 
@@ -141,6 +96,45 @@ public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnv
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -157,8 +151,7 @@ public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnv
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -169,6 +162,7 @@ public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnv
      * @param jsonReader The JsonReader being read.
      * @return An instance of WorkflowEnvelopeInner if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WorkflowEnvelopeInner.
      */
     public static WorkflowEnvelopeInner fromJson(JsonReader jsonReader) throws IOException {
@@ -185,11 +179,11 @@ public final class WorkflowEnvelopeInner implements JsonSerializable<WorkflowEnv
                 } else if ("type".equals(fieldName)) {
                     deserializedWorkflowEnvelopeInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
-                    deserializedWorkflowEnvelopeInner.kind = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedWorkflowEnvelopeInner.location = reader.getString();
+                    deserializedWorkflowEnvelopeInner.kind = WorkflowKind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedWorkflowEnvelopeInner.properties = WorkflowEnvelopeProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkflowEnvelopeInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

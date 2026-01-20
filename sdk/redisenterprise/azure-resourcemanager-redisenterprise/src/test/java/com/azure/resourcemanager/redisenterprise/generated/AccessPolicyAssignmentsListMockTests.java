@@ -22,7 +22,7 @@ public final class AccessPolicyAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"accessPolicyName\":\"xzvlvqhjkbegib\",\"user\":{\"objectId\":\"mxiebw\"}},\"id\":\"aloayqcgwrtzju\",\"name\":\"gwyzm\",\"type\":\"txon\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"accessPolicyName\":\"yqbexrmcqibycno\",\"user\":{\"objectId\":\"knme\"}},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class AccessPolicyAssignmentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AccessPolicyAssignment> response = manager.accessPolicyAssignments()
-            .list("xobbcswsrt", "riplrbpbewtg", "fgb", com.azure.core.util.Context.NONE);
+            .list("wxqpsrknftguvri", "hprwmdyv", "qtayri", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xzvlvqhjkbegib", response.iterator().next().accessPolicyName());
-        Assertions.assertEquals("mxiebw", response.iterator().next().user().objectId());
+        Assertions.assertEquals("yqbexrmcqibycno", response.iterator().next().accessPolicyName());
+        Assertions.assertEquals("knme", response.iterator().next().user().objectId());
     }
 }

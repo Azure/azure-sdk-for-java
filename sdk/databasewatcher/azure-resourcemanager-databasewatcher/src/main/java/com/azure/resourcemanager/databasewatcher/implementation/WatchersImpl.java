@@ -76,40 +76,20 @@ public final class WatchersImpl implements Watchers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WatcherImpl(inner1, this.manager()));
     }
 
-    public Watcher start(String resourceGroupName, String watcherName) {
-        WatcherInner inner = this.serviceClient().start(resourceGroupName, watcherName);
-        if (inner != null) {
-            return new WatcherImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void start(String resourceGroupName, String watcherName) {
+        this.serviceClient().start(resourceGroupName, watcherName);
     }
 
-    public Watcher start(String resourceGroupName, String watcherName, Context context) {
-        WatcherInner inner = this.serviceClient().start(resourceGroupName, watcherName, context);
-        if (inner != null) {
-            return new WatcherImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void start(String resourceGroupName, String watcherName, Context context) {
+        this.serviceClient().start(resourceGroupName, watcherName, context);
     }
 
-    public Watcher stop(String resourceGroupName, String watcherName) {
-        WatcherInner inner = this.serviceClient().stop(resourceGroupName, watcherName);
-        if (inner != null) {
-            return new WatcherImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void stop(String resourceGroupName, String watcherName) {
+        this.serviceClient().stop(resourceGroupName, watcherName);
     }
 
-    public Watcher stop(String resourceGroupName, String watcherName, Context context) {
-        WatcherInner inner = this.serviceClient().stop(resourceGroupName, watcherName, context);
-        if (inner != null) {
-            return new WatcherImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void stop(String resourceGroupName, String watcherName, Context context) {
+        this.serviceClient().stop(resourceGroupName, watcherName, context);
     }
 
     public Watcher getById(String id) {

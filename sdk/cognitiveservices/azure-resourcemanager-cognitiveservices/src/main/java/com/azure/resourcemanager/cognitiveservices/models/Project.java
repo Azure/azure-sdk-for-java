@@ -43,18 +43,18 @@ public interface Project {
     String etag();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the identity property: Identity for the resource.
      * 
      * @return the identity value.
      */
     Identity identity();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the tags property: Resource tags.

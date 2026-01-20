@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ModuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Module model
-            = BinaryData.fromString("{\"name\":\"hmuouqfprwzwbn\",\"args\":\"itnwuizgazxufi\",\"version\":\"ckyfih\"}")
-                .toObject(Module.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.name());
-        Assertions.assertEquals("itnwuizgazxufi", model.args());
+        Module model = BinaryData.fromString("{\"name\":\"gmaajrm\",\"args\":\"jwzrl\",\"version\":\"mcl\"}")
+            .toObject(Module.class);
+        Assertions.assertEquals("gmaajrm", model.name());
+        Assertions.assertEquals("jwzrl", model.args());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Module model = new Module().withName("hmuouqfprwzwbn").withArgs("itnwuizgazxufi");
+        Module model = new Module().withName("gmaajrm").withArgs("jwzrl");
         model = BinaryData.fromObject(model).toObject(Module.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.name());
-        Assertions.assertEquals("itnwuizgazxufi", model.args());
+        Assertions.assertEquals("gmaajrm", model.name());
+        Assertions.assertEquals("jwzrl", model.args());
     }
 }

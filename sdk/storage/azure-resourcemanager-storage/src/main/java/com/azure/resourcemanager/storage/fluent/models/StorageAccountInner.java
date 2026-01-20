@@ -19,6 +19,7 @@ import com.azure.resourcemanager.storage.models.DualStackEndpointPreference;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.ExtendedLocation;
+import com.azure.resourcemanager.storage.models.GeoPriorityReplicationStatus;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
 import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
@@ -968,6 +969,32 @@ public final class StorageAccountInner extends Resource {
      */
     public Boolean accountMigrationInProgress() {
         return this.innerProperties() == null ? null : this.innerProperties().accountMigrationInProgress();
+    }
+
+    /**
+     * Get the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @return the geoPriorityReplicationStatus value.
+     */
+    public GeoPriorityReplicationStatus geoPriorityReplicationStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoPriorityReplicationStatus();
+    }
+
+    /**
+     * Set the geoPriorityReplicationStatus property: Status indicating whether Geo Priority Replication is enabled for
+     * the account.
+     * 
+     * @param geoPriorityReplicationStatus the geoPriorityReplicationStatus value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner
+        withGeoPriorityReplicationStatus(GeoPriorityReplicationStatus geoPriorityReplicationStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withGeoPriorityReplicationStatus(geoPriorityReplicationStatus);
+        return this;
     }
 
     /**

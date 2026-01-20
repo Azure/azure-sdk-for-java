@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NfsAzureFilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NfsAzureFileProperties model = BinaryData
-            .fromString("{\"server\":\"thzodubtlmjtgbl\",\"accessMode\":\"ReadOnly\",\"shareName\":\"kfmkmfdjxyxgbk\"}")
-            .toObject(NfsAzureFileProperties.class);
-        Assertions.assertEquals("thzodubtlmjtgbl", model.server());
-        Assertions.assertEquals(AccessMode.READ_ONLY, model.accessMode());
-        Assertions.assertEquals("kfmkmfdjxyxgbk", model.shareName());
+        NfsAzureFileProperties model
+            = BinaryData.fromString("{\"server\":\"rd\",\"accessMode\":\"ReadWrite\",\"shareName\":\"xrdcqtj\"}")
+                .toObject(NfsAzureFileProperties.class);
+        Assertions.assertEquals("rd", model.server());
+        Assertions.assertEquals(AccessMode.READ_WRITE, model.accessMode());
+        Assertions.assertEquals("xrdcqtj", model.shareName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsAzureFileProperties model = new NfsAzureFileProperties().withServer("thzodubtlmjtgbl")
-            .withAccessMode(AccessMode.READ_ONLY)
-            .withShareName("kfmkmfdjxyxgbk");
+        NfsAzureFileProperties model = new NfsAzureFileProperties().withServer("rd")
+            .withAccessMode(AccessMode.READ_WRITE)
+            .withShareName("xrdcqtj");
         model = BinaryData.fromObject(model).toObject(NfsAzureFileProperties.class);
-        Assertions.assertEquals("thzodubtlmjtgbl", model.server());
-        Assertions.assertEquals(AccessMode.READ_ONLY, model.accessMode());
-        Assertions.assertEquals("kfmkmfdjxyxgbk", model.shareName());
+        Assertions.assertEquals("rd", model.server());
+        Assertions.assertEquals(AccessMode.READ_WRITE, model.accessMode());
+        Assertions.assertEquals("xrdcqtj", model.shareName());
     }
 }

@@ -12,33 +12,33 @@ public final class AaddsResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AaddsResourceDetails model = BinaryData.fromString(
-            "{\"domainName\":\"gzslesjcbhernnti\",\"initialSyncComplete\":false,\"ldapsEnabled\":false,\"ldapsPublicCertificateInBase64\":\"bquwrbehw\",\"resourceId\":\"o\",\"subnetId\":\"uffkmrqemvvh\",\"tenantId\":\"tdrjfutacoebj\"}")
+            "{\"domainName\":\"mhrixkwmyijejve\",\"initialSyncComplete\":true,\"ldapsEnabled\":false,\"ldapsPublicCertificateInBase64\":\"aixexccbdreaxh\",\"resourceId\":\"xdrrvqahqkghtp\",\"subnetId\":\"jnhyjsvf\",\"tenantId\":\"xzb\"}")
             .toObject(AaddsResourceDetails.class);
-        Assertions.assertEquals("gzslesjcbhernnti", model.domainName());
-        Assertions.assertEquals(false, model.initialSyncComplete());
-        Assertions.assertEquals(false, model.ldapsEnabled());
-        Assertions.assertEquals("bquwrbehw", model.ldapsPublicCertificateInBase64());
-        Assertions.assertEquals("o", model.resourceId());
-        Assertions.assertEquals("uffkmrqemvvh", model.subnetId());
-        Assertions.assertEquals("tdrjfutacoebj", model.tenantId());
+        Assertions.assertEquals("mhrixkwmyijejve", model.domainName());
+        Assertions.assertTrue(model.initialSyncComplete());
+        Assertions.assertFalse(model.ldapsEnabled());
+        Assertions.assertEquals("aixexccbdreaxh", model.ldapsPublicCertificateInBase64());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.resourceId());
+        Assertions.assertEquals("jnhyjsvf", model.subnetId());
+        Assertions.assertEquals("xzb", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AaddsResourceDetails model = new AaddsResourceDetails().withDomainName("gzslesjcbhernnti")
-            .withInitialSyncComplete(false)
+        AaddsResourceDetails model = new AaddsResourceDetails().withDomainName("mhrixkwmyijejve")
+            .withInitialSyncComplete(true)
             .withLdapsEnabled(false)
-            .withLdapsPublicCertificateInBase64("bquwrbehw")
-            .withResourceId("o")
-            .withSubnetId("uffkmrqemvvh")
-            .withTenantId("tdrjfutacoebj");
+            .withLdapsPublicCertificateInBase64("aixexccbdreaxh")
+            .withResourceId("xdrrvqahqkghtp")
+            .withSubnetId("jnhyjsvf")
+            .withTenantId("xzb");
         model = BinaryData.fromObject(model).toObject(AaddsResourceDetails.class);
-        Assertions.assertEquals("gzslesjcbhernnti", model.domainName());
-        Assertions.assertEquals(false, model.initialSyncComplete());
-        Assertions.assertEquals(false, model.ldapsEnabled());
-        Assertions.assertEquals("bquwrbehw", model.ldapsPublicCertificateInBase64());
-        Assertions.assertEquals("o", model.resourceId());
-        Assertions.assertEquals("uffkmrqemvvh", model.subnetId());
-        Assertions.assertEquals("tdrjfutacoebj", model.tenantId());
+        Assertions.assertEquals("mhrixkwmyijejve", model.domainName());
+        Assertions.assertTrue(model.initialSyncComplete());
+        Assertions.assertFalse(model.ldapsEnabled());
+        Assertions.assertEquals("aixexccbdreaxh", model.ldapsPublicCertificateInBase64());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.resourceId());
+        Assertions.assertEquals("jnhyjsvf", model.subnetId());
+        Assertions.assertEquals("xzb", model.tenantId());
     }
 }

@@ -54,6 +54,16 @@ public final class DeploymentInfoResponseInner implements JsonSerializable<Deplo
      */
     private MarketplaceSaaSInfo marketplaceSaasInfo;
 
+    /*
+     * Project Type - Applicable for Serverless only.
+     */
+    private String projectType;
+
+    /*
+     * ConfigurationType Type - Applicable for Serverless only.
+     */
+    private String configurationType;
+
     /**
      * Creates an instance of DeploymentInfoResponseInner class.
      */
@@ -125,6 +135,24 @@ public final class DeploymentInfoResponseInner implements JsonSerializable<Deplo
     }
 
     /**
+     * Get the projectType property: Project Type - Applicable for Serverless only.
+     * 
+     * @return the projectType value.
+     */
+    public String projectType() {
+        return this.projectType;
+    }
+
+    /**
+     * Get the configurationType property: ConfigurationType Type - Applicable for Serverless only.
+     * 
+     * @return the configurationType value.
+     */
+    public String configurationType() {
+        return this.configurationType;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -174,6 +202,10 @@ public final class DeploymentInfoResponseInner implements JsonSerializable<Deplo
                     deserializedDeploymentInfoResponseInner.deploymentUrl = reader.getString();
                 } else if ("marketplaceSaasInfo".equals(fieldName)) {
                     deserializedDeploymentInfoResponseInner.marketplaceSaasInfo = MarketplaceSaaSInfo.fromJson(reader);
+                } else if ("projectType".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.projectType = reader.getString();
+                } else if ("configurationType".equals(fieldName)) {
+                    deserializedDeploymentInfoResponseInner.configurationType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

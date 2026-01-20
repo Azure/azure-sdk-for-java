@@ -123,7 +123,7 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
                 } else if (field.getValue() instanceof ArrayNode
-                    && (field.getValue()).size() > 0
+                    && !(field.getValue()).isEmpty()
                     && (field.getValue()).get(0) instanceof ObjectNode) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();

@@ -170,6 +170,20 @@ public final class WorkloadNetworkSegmentProperties implements JsonSerializable<
     }
 
     /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnet() != null) {
+            subnet().validate();
+        }
+        if (portVif() != null) {
+            portVif().forEach(e -> e.validate());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -21,7 +21,7 @@ public final class PrivateLinkConfigurationTests {
         Assertions.assertEquals("xxjnspydptk", model.name());
         Assertions.assertEquals("udwtiukbl", model.groupId());
         Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions.assertFalse(model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
             model.ipConfigurations().get(0).privateIpAllocationMethod());
@@ -41,7 +41,7 @@ public final class PrivateLinkConfigurationTests {
         Assertions.assertEquals("xxjnspydptk", model.name());
         Assertions.assertEquals("udwtiukbl", model.groupId());
         Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
-        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions.assertFalse(model.ipConfigurations().get(0).primary());
         Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
             model.ipConfigurations().get(0).privateIpAllocationMethod());

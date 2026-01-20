@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class ManagedPrivateEndpointsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_List.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_List.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_List.

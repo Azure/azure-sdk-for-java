@@ -6,7 +6,6 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
-import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
@@ -205,11 +204,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .byPage()
             .collectList()).assertNext(pages -> {
                 SearchPagedResponse page1 = pages.get(0);
-                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
-                assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
-                assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
-                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
-                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
+                assertNotNull(page1.getSemanticResults().getQueryAnswers());
+                assertEquals(1, page1.getSemanticResults().getQueryAnswers().size());
+                assertEquals("9", page1.getSemanticResults().getQueryAnswers().get(0).getKey());
+                assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getHighlights());
+                assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getText());
 
                 List<SearchResult> results = new ArrayList<>();
                 for (SearchPagedResponse page : pages) {
@@ -246,11 +245,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .collect(Collectors.toList());
 
         SearchPagedResponse page1 = pages.get(0);
-        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
-        assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
-        assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
-        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
-        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
+        assertNotNull(page1.getSemanticResults().getQueryAnswers());
+        assertEquals(1, page1.getSemanticResults().getQueryAnswers().size());
+        assertEquals("9", page1.getSemanticResults().getQueryAnswers().get(0).getKey());
+        assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getHighlights());
+        assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getText());
 
         List<SearchResult> results = new ArrayList<>();
         for (SearchPagedResponse page : pages) {

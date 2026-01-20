@@ -20,11 +20,6 @@ import java.util.Map;
 @Fluent
 public final class RaiBlocklistItemInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -38,6 +33,11 @@ public final class RaiBlocklistItemInner extends ProxyResource {
      * Properties of Cognitive Services RaiBlocklist Item.
      */
     private RaiBlocklistItemProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -58,15 +58,6 @@ public final class RaiBlocklistItemInner extends ProxyResource {
      * Creates an instance of RaiBlocklistItemInner class.
      */
     public RaiBlocklistItemInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -116,6 +107,15 @@ public final class RaiBlocklistItemInner extends ProxyResource {
     public RaiBlocklistItemInner withProperties(RaiBlocklistItemProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -192,8 +192,6 @@ public final class RaiBlocklistItemInner extends ProxyResource {
                     deserializedRaiBlocklistItemInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedRaiBlocklistItemInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedRaiBlocklistItemInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedRaiBlocklistItemInner.etag = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -201,6 +199,8 @@ public final class RaiBlocklistItemInner extends ProxyResource {
                     deserializedRaiBlocklistItemInner.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedRaiBlocklistItemInner.properties = RaiBlocklistItemProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRaiBlocklistItemInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

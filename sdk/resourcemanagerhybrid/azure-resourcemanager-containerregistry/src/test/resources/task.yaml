@@ -1,6 +1,0 @@
-version: v1.0.0
-steps:
-  - build: -t {{.Run.Registry}}/java-sample:{{.Run.ID}} .
-    workingDirectory: samples/java/task
-  - push:
-      - {{.Run.Registry}}/java-sample:{{.Run.ID}}

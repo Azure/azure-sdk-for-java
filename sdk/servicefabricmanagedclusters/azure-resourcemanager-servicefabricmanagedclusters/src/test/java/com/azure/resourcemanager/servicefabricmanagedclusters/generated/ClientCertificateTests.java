@@ -11,25 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientCertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientCertificate model = BinaryData.fromString(
-            "{\"isAdmin\":true,\"thumbprint\":\"iizynkedyatrwyh\",\"commonName\":\"ibzyhwitsmyp\",\"issuerThumbprint\":\"npcdpumnzgm\"}")
+        ClientCertificate model = BinaryData
+            .fromString(
+                "{\"isAdmin\":true,\"thumbprint\":\"yf\",\"commonName\":\"dgqggebdu\",\"issuerThumbprint\":\"g\"}")
             .toObject(ClientCertificate.class);
         Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("iizynkedyatrwyh", model.thumbprint());
-        Assertions.assertEquals("ibzyhwitsmyp", model.commonName());
-        Assertions.assertEquals("npcdpumnzgm", model.issuerThumbprint());
+        Assertions.assertEquals("yf", model.thumbprint());
+        Assertions.assertEquals("dgqggebdu", model.commonName());
+        Assertions.assertEquals("g", model.issuerThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientCertificate model = new ClientCertificate().withIsAdmin(true)
-            .withThumbprint("iizynkedyatrwyh")
-            .withCommonName("ibzyhwitsmyp")
-            .withIssuerThumbprint("npcdpumnzgm");
+            .withThumbprint("yf")
+            .withCommonName("dgqggebdu")
+            .withIssuerThumbprint("g");
         model = BinaryData.fromObject(model).toObject(ClientCertificate.class);
         Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("iizynkedyatrwyh", model.thumbprint());
-        Assertions.assertEquals("ibzyhwitsmyp", model.commonName());
-        Assertions.assertEquals("npcdpumnzgm", model.issuerThumbprint());
+        Assertions.assertEquals("yf", model.thumbprint());
+        Assertions.assertEquals("dgqggebdu", model.commonName());
+        Assertions.assertEquals("g", model.issuerThumbprint());
     }
 }

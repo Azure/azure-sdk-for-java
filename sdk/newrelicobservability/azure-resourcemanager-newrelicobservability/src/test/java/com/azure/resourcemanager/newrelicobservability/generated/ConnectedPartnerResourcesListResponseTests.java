@@ -15,13 +15,13 @@ public final class ConnectedPartnerResourcesListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedPartnerResourcesListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"accountName\":\"ggd\",\"accountId\":\"ixhbkuofqweykhm\",\"azureResourceId\":\"evfyexfwhybcib\",\"location\":\"vdcsitynn\"}},{\"properties\":{\"accountName\":\"dectehfiqsc\",\"accountId\":\"ypvhezrkg\",\"azureResourceId\":\"c\",\"location\":\"efovgmk\"}},{\"properties\":{\"accountName\":\"eyyvxyqjpkcat\",\"accountId\":\"ngj\",\"azureResourceId\":\"cczsq\",\"location\":\"hvmdajvnysounq\"}}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"properties\":{\"accountName\":\"gwdkcglhsl\",\"accountId\":\"jdyggdtji\",\"azureResourceId\":\"b\",\"location\":\"ofqweykhmenevfye\"}},{\"properties\":{\"accountName\":\"hybcibv\",\"accountId\":\"dcsi\",\"azureResourceId\":\"nnaamdectehfiqsc\",\"location\":\"ypvhezrkg\"}},{\"properties\":{\"accountName\":\"jrefovgmkqsle\",\"accountId\":\"vxyqjpkcattpngjc\",\"azureResourceId\":\"czsqpjhvm\",\"location\":\"jvnysounqe\"}},{\"properties\":{\"accountName\":\"oaeupfhyhltrpmo\",\"accountId\":\"mcmatuokthfuiu\",\"azureResourceId\":\"dsfcpkvxodpuoz\",\"location\":\"zydagfuaxbezyiuo\"}}],\"nextLink\":\"twhrdxwzywqsm\"}")
             .toObject(ConnectedPartnerResourcesListResponse.class);
-        Assertions.assertEquals("ggd", model.value().get(0).properties().accountName());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.value().get(0).properties().accountId());
-        Assertions.assertEquals("evfyexfwhybcib", model.value().get(0).properties().azureResourceId());
-        Assertions.assertEquals("vdcsitynn", model.value().get(0).properties().location());
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("gwdkcglhsl", model.value().get(0).properties().accountName());
+        Assertions.assertEquals("jdyggdtji", model.value().get(0).properties().accountId());
+        Assertions.assertEquals("b", model.value().get(0).properties().azureResourceId());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).properties().location());
+        Assertions.assertEquals("twhrdxwzywqsm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,26 +29,31 @@ public final class ConnectedPartnerResourcesListResponseTests {
         ConnectedPartnerResourcesListResponse model
             = new ConnectedPartnerResourcesListResponse().withValue(Arrays.asList(
                 new ConnectedPartnerResourcesListFormatInner()
-                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("ggd")
-                        .withAccountId("ixhbkuofqweykhm")
-                        .withAzureResourceId("evfyexfwhybcib")
-                        .withLocation("vdcsitynn")),
+                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("gwdkcglhsl")
+                        .withAccountId("jdyggdtji")
+                        .withAzureResourceId("b")
+                        .withLocation("ofqweykhmenevfye")),
                 new ConnectedPartnerResourcesListFormatInner()
-                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("dectehfiqsc")
-                        .withAccountId("ypvhezrkg")
-                        .withAzureResourceId("c")
-                        .withLocation("efovgmk")),
+                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("hybcibv")
+                        .withAccountId("dcsi")
+                        .withAzureResourceId("nnaamdectehfiqsc")
+                        .withLocation("ypvhezrkg")),
                 new ConnectedPartnerResourcesListFormatInner()
-                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("eyyvxyqjpkcat")
-                        .withAccountId("ngj")
-                        .withAzureResourceId("cczsq")
-                        .withLocation("hvmdajvnysounq"))))
-                .withNextLink("a");
+                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("jrefovgmkqsle")
+                        .withAccountId("vxyqjpkcattpngjc")
+                        .withAzureResourceId("czsqpjhvm")
+                        .withLocation("jvnysounqe")),
+                new ConnectedPartnerResourcesListFormatInner()
+                    .withProperties(new ConnectedPartnerResourceProperties().withAccountName("oaeupfhyhltrpmo")
+                        .withAccountId("mcmatuokthfuiu")
+                        .withAzureResourceId("dsfcpkvxodpuoz")
+                        .withLocation("zydagfuaxbezyiuo"))))
+                .withNextLink("twhrdxwzywqsm");
         model = BinaryData.fromObject(model).toObject(ConnectedPartnerResourcesListResponse.class);
-        Assertions.assertEquals("ggd", model.value().get(0).properties().accountName());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.value().get(0).properties().accountId());
-        Assertions.assertEquals("evfyexfwhybcib", model.value().get(0).properties().azureResourceId());
-        Assertions.assertEquals("vdcsitynn", model.value().get(0).properties().location());
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("gwdkcglhsl", model.value().get(0).properties().accountName());
+        Assertions.assertEquals("jdyggdtji", model.value().get(0).properties().accountId());
+        Assertions.assertEquals("b", model.value().get(0).properties().azureResourceId());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).properties().location());
+        Assertions.assertEquals("twhrdxwzywqsm", model.nextLink());
     }
 }

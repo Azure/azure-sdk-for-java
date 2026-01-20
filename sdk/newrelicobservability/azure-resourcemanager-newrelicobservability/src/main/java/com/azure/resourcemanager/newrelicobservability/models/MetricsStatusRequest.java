@@ -24,7 +24,7 @@ public final class MetricsStatusRequest implements JsonSerializable<MetricsStatu
     private List<String> azureResourceIds;
 
     /*
-     * User Email
+     * Reusable representation of an email address
      */
     private String userEmail;
 
@@ -55,7 +55,7 @@ public final class MetricsStatusRequest implements JsonSerializable<MetricsStatu
     }
 
     /**
-     * Get the userEmail property: User Email.
+     * Get the userEmail property: Reusable representation of an email address.
      * 
      * @return the userEmail value.
      */
@@ -64,7 +64,7 @@ public final class MetricsStatusRequest implements JsonSerializable<MetricsStatu
     }
 
     /**
-     * Set the userEmail property: User Email.
+     * Set the userEmail property: Reusable representation of an email address.
      * 
      * @param userEmail the userEmail value to set.
      * @return the MetricsStatusRequest object itself.

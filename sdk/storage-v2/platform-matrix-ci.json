@@ -5,7 +5,7 @@
   "include": [
     {
       "Agent": { "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" } },
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.25",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "RunAggregateReports": false,

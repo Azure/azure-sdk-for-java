@@ -55,7 +55,7 @@ public final class ManagedClusterInner extends Resource {
     /*
      * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
      * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
-     * optimistic concurrency per the normal etag convention.
+     * optimistic concurrency per the normal eTag convention.
      */
     private String etag;
 
@@ -113,7 +113,7 @@ public final class ManagedClusterInner extends Resource {
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @return the etag value.
      */

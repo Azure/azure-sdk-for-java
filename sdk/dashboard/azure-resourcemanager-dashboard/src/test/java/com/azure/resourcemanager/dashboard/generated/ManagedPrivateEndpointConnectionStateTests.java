@@ -11,7 +11,7 @@ public final class ManagedPrivateEndpointConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointConnectionState model
-            = BinaryData.fromString("{\"status\":\"Pending\",\"description\":\"cwif\"}")
+            = BinaryData.fromString("{\"status\":\"Disconnected\",\"description\":\"uo\"}")
                 .toObject(ManagedPrivateEndpointConnectionState.class);
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoResponse;
@@ -20,17 +20,17 @@ public final class DeploymentInfoesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"status\":\"Healthy\",\"version\":\"uflrwd\",\"memoryCapacity\":\"dlxyjrxs\",\"diskCapacity\":\"afcnih\",\"elasticsearchEndPoint\":\"qapnedgfbcv\",\"deploymentUrl\":\"vq\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"qdcvdrhvoo\"},\"marketplaceName\":\"otbobzdopcj\",\"marketplaceResourceId\":\"nhdldwmgxcx\",\"marketplaceStatus\":\"lpmutwuoegrpkhj\",\"billedAzureSubscriptionId\":\"iyq\",\"subscribed\":false}}";
+            = "{\"status\":\"Healthy\",\"version\":\"ewpusdsttwvogvb\",\"memoryCapacity\":\"jdcngqqm\",\"diskCapacity\":\"kufgmj\",\"elasticsearchEndPoint\":\"wr\",\"deploymentUrl\":\"rtwaenuuzko\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"nrfdw\",\"publisherId\":\"uhhziuiefozbhdm\",\"offerId\":\"l\"},\"marketplaceName\":\"qhoftrmaequiah\",\"marketplaceResourceId\":\"cslfaoqzpiyylha\",\"marketplaceStatus\":\"swhccsphk\",\"billedAzureSubscriptionId\":\"vwitqscyw\",\"subscribed\":false},\"projectType\":\"oluhczbwemh\",\"configurationType\":\"rsbrgzdwm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentInfoResponse response = manager.deploymentInfoes()
-            .listWithResponse("swacffgdkzz", "wkfvhqcrailvp", com.azure.core.util.Context.NONE)
+            .listWithResponse("kdsnfdsdoakgtdl", "kkze", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

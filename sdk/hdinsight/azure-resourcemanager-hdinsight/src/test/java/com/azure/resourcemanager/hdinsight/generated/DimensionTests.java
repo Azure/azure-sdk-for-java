@@ -12,24 +12,24 @@ public final class DimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Dimension model = BinaryData.fromString(
-            "{\"name\":\"gg\",\"displayName\":\"pijrajcivmmghf\",\"internalName\":\"iwrxgkn\",\"toBeExportedForShoebox\":false}")
+            "{\"name\":\"prafwgckhoc\",\"displayName\":\"d\",\"internalName\":\"fwafqrouda\",\"toBeExportedForShoebox\":true}")
             .toObject(Dimension.class);
-        Assertions.assertEquals("gg", model.name());
-        Assertions.assertEquals("pijrajcivmmghf", model.displayName());
-        Assertions.assertEquals("iwrxgkn", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("prafwgckhoc", model.name());
+        Assertions.assertEquals("d", model.displayName());
+        Assertions.assertEquals("fwafqrouda", model.internalName());
+        Assertions.assertTrue(model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dimension model = new Dimension().withName("gg")
-            .withDisplayName("pijrajcivmmghf")
-            .withInternalName("iwrxgkn")
-            .withToBeExportedForShoebox(false);
+        Dimension model = new Dimension().withName("prafwgckhoc")
+            .withDisplayName("d")
+            .withInternalName("fwafqrouda")
+            .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(Dimension.class);
-        Assertions.assertEquals("gg", model.name());
-        Assertions.assertEquals("pijrajcivmmghf", model.displayName());
-        Assertions.assertEquals("iwrxgkn", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("prafwgckhoc", model.name());
+        Assertions.assertEquals("d", model.displayName());
+        Assertions.assertEquals("fwafqrouda", model.internalName());
+        Assertions.assertTrue(model.toBeExportedForShoebox());
     }
 }

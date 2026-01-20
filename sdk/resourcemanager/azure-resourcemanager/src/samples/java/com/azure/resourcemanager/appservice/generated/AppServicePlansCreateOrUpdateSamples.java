@@ -12,8 +12,8 @@ import com.azure.resourcemanager.appservice.models.SkuDescription;
  */
 public final class AppServicePlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateAppServicePlan.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * CreateOrUpdateAppServicePlan.json
      */
     /**
      * Sample code: Create Or Update App Service plan.

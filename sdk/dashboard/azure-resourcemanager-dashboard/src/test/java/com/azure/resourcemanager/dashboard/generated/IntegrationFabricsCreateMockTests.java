@@ -25,7 +25,7 @@ public final class IntegrationFabricsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"ow\",\"dataSourceResourceId\":\"przqlveu\",\"scenarios\":[\"pjmkhfxobbc\"]},\"location\":\"s\",\"tags\":{\"fgb\":\"riplrbpbewtg\",\"wxzvlvqhjkb\":\"c\",\"iebwwaloayqcgwrt\":\"gibtnm\",\"zg\":\"j\"},\"id\":\"yzm\",\"name\":\"txon\",\"type\":\"mtsavjcbpwxqp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"obbc\",\"dataSourceResourceId\":\"s\",\"scenarios\":[\"riplrbpbewtg\",\"fgb\",\"c\",\"wxzvlvqhjkb\"]},\"location\":\"ibtnmxiebwwaloay\",\"tags\":{\"uzgwyzmhtx\":\"wrtz\",\"wxqpsrknftguvri\":\"ngmtsavjcb\"},\"id\":\"hprwmdyv\",\"name\":\"qtayri\",\"type\":\"wroyqbexrmcq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,20 +35,20 @@ public final class IntegrationFabricsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationFabric response = manager.integrationFabrics()
-            .define("xcug")
-            .withRegion("ni")
-            .withExistingGrafana("urqhaka", "hashsfwxosow")
-            .withTags(mapOf("cg", "fbkp"))
-            .withProperties(new IntegrationFabricProperties().withTargetResourceId("xdje")
-                .withDataSourceResourceId("pucwwfvovbvme")
-                .withScenarios(Arrays.asList("ivyhzceuojgjrwju", "iotwmcdytdxwit", "nrjawgqwg")))
+            .define("urqhaka")
+            .withRegion("rw")
+            .withExistingGrafana("bnbbeldawkz", "ali")
+            .withTags(mapOf("nrjawgqwg", "iotwmcdytdxwit", "klwndnhjdauwhv", "hniskxfbkpyc", "zbtd", "l"))
+            .withProperties(new IntegrationFabricProperties().withTargetResourceId("sfwxosowzxc")
+                .withDataSourceResourceId("i")
+                .withScenarios(Arrays.asList("oxdjebwpuc", "wfvovbv", "euecivyhzceuoj")))
             .create();
 
-        Assertions.assertEquals("s", response.location());
-        Assertions.assertEquals("riplrbpbewtg", response.tags().get("fgb"));
-        Assertions.assertEquals("ow", response.properties().targetResourceId());
-        Assertions.assertEquals("przqlveu", response.properties().dataSourceResourceId());
-        Assertions.assertEquals("pjmkhfxobbc", response.properties().scenarios().get(0));
+        Assertions.assertEquals("ibtnmxiebwwaloay", response.location());
+        Assertions.assertEquals("wrtz", response.tags().get("uzgwyzmhtx"));
+        Assertions.assertEquals("obbc", response.properties().targetResourceId());
+        Assertions.assertEquals("s", response.properties().dataSourceResourceId());
+        Assertions.assertEquals("riplrbpbewtg", response.properties().scenarios().get(0));
     }
 
     // Use "Map.of" if available

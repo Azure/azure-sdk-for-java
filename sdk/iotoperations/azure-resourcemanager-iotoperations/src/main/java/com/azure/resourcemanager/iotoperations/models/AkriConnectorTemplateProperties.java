@@ -47,6 +47,16 @@ public final class AkriConnectorTemplateProperties implements JsonSerializable<A
      */
     private AkriConnectorsMqttConnectionConfiguration mqttConnectionConfiguration;
 
+    /*
+     * A reference to a connector metadata document reference in a container registry.
+     */
+    private String connectorMetadataRef;
+
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of AkriConnectorTemplateProperties class.
      */
@@ -166,6 +176,37 @@ public final class AkriConnectorTemplateProperties implements JsonSerializable<A
     }
 
     /**
+     * Get the connectorMetadataRef property: A reference to a connector metadata document reference in a container
+     * registry.
+     * 
+     * @return the connectorMetadataRef value.
+     */
+    public String connectorMetadataRef() {
+        return this.connectorMetadataRef;
+    }
+
+    /**
+     * Set the connectorMetadataRef property: A reference to a connector metadata document reference in a container
+     * registry.
+     * 
+     * @param connectorMetadataRef the connectorMetadataRef value to set.
+     * @return the AkriConnectorTemplateProperties object itself.
+     */
+    public AkriConnectorTemplateProperties withConnectorMetadataRef(String connectorMetadataRef) {
+        this.connectorMetadataRef = connectorMetadataRef;
+        return this;
+    }
+
+    /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -177,6 +218,7 @@ public final class AkriConnectorTemplateProperties implements JsonSerializable<A
         jsonWriter.writeJsonField("aioMetadata", this.aioMetadata);
         jsonWriter.writeJsonField("diagnostics", this.diagnostics);
         jsonWriter.writeJsonField("mqttConnectionConfiguration", this.mqttConnectionConfiguration);
+        jsonWriter.writeStringField("connectorMetadataRef", this.connectorMetadataRef);
         return jsonWriter.writeEndObject();
     }
 
@@ -216,6 +258,11 @@ public final class AkriConnectorTemplateProperties implements JsonSerializable<A
                 } else if ("mqttConnectionConfiguration".equals(fieldName)) {
                     deserializedAkriConnectorTemplateProperties.mqttConnectionConfiguration
                         = AkriConnectorsMqttConnectionConfiguration.fromJson(reader);
+                } else if ("connectorMetadataRef".equals(fieldName)) {
+                    deserializedAkriConnectorTemplateProperties.connectorMetadataRef = reader.getString();
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedAkriConnectorTemplateProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

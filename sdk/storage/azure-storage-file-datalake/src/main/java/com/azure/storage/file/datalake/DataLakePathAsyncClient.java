@@ -183,7 +183,7 @@ public class DataLakePathAsyncClient {
      * @return the URL.
      */
     String getPathUrl() {
-        return dataLakeStorage.getUrl() + "/" + fileSystemName + "/" + Utility.urlEncode(pathName);
+        return dataLakeStorage.getUrl() + "/" + Utility.urlEncode(fileSystemName) + "/" + Utility.urlEncode(pathName);
     }
 
     /**
@@ -1715,7 +1715,7 @@ public class DataLakePathAsyncClient {
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        String renameSource = "/" + Utility.urlEncode(this.fileSystemName) + "/" + Utility.urlEncode(pathName);
         //String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         String signature = null;

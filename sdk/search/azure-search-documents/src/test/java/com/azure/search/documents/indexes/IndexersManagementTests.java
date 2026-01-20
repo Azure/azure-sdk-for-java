@@ -1128,6 +1128,27 @@ public class IndexersManagementTests extends SearchTestBase {
         createAndValidateIndexerAsync(indexer);
     }
 
+    @Test
+    public void canCreateIndexerWithAllowSkillsetToReadFileDataSync() {
+        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+            .setSkillsetName(sharedSkillset.getName())
+            .setParameters(new IndexingParameters()
+                .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
+
+        createAndValidateIndexerSync(indexer);
+
+    }
+
+    @Test
+    public void canCreateIndexerWithAllowSkillsetToReadFileDataAsync() {
+        SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
+            .setSkillsetName(sharedSkillset.getName())
+            .setParameters(new IndexingParameters()
+                .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
+
+        createAndValidateIndexerAsync(indexer);
+    }
+
     /**
      * Create a new valid skillset object
      *

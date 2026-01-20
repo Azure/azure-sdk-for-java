@@ -22,6 +22,16 @@ public final class MarketplaceSaaSInfoMarketplaceSubscription
      */
     private String id;
 
+    /*
+     * Publisher Id of the Marketplace offer.
+     */
+    private String publisherId;
+
+    /*
+     * Offer Id of the Marketplace offer,
+     */
+    private String offerId;
+
     /**
      * Creates an instance of MarketplaceSaaSInfoMarketplaceSubscription class.
      */
@@ -49,6 +59,46 @@ public final class MarketplaceSaaSInfoMarketplaceSubscription
     }
 
     /**
+     * Get the publisherId property: Publisher Id of the Marketplace offer.
+     * 
+     * @return the publisherId value.
+     */
+    public String publisherId() {
+        return this.publisherId;
+    }
+
+    /**
+     * Set the publisherId property: Publisher Id of the Marketplace offer.
+     * 
+     * @param publisherId the publisherId value to set.
+     * @return the MarketplaceSaaSInfoMarketplaceSubscription object itself.
+     */
+    public MarketplaceSaaSInfoMarketplaceSubscription withPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+        return this;
+    }
+
+    /**
+     * Get the offerId property: Offer Id of the Marketplace offer,.
+     * 
+     * @return the offerId value.
+     */
+    public String offerId() {
+        return this.offerId;
+    }
+
+    /**
+     * Set the offerId property: Offer Id of the Marketplace offer,.
+     * 
+     * @param offerId the offerId value to set.
+     * @return the MarketplaceSaaSInfoMarketplaceSubscription object itself.
+     */
+    public MarketplaceSaaSInfoMarketplaceSubscription withOfferId(String offerId) {
+        this.offerId = offerId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +113,8 @@ public final class MarketplaceSaaSInfoMarketplaceSubscription
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeStringField("offerId", this.offerId);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +136,10 @@ public final class MarketplaceSaaSInfoMarketplaceSubscription
 
                 if ("id".equals(fieldName)) {
                     deserializedMarketplaceSaaSInfoMarketplaceSubscription.id = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfoMarketplaceSubscription.publisherId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedMarketplaceSaaSInfoMarketplaceSubscription.offerId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

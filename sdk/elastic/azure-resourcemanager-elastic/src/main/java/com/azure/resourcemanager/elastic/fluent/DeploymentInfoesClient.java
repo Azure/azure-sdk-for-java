@@ -15,7 +15,7 @@ import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInn
  */
 public interface DeploymentInfoesClient {
     /**
-     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
+     * Fetch detailed information about Elastic cloud deployments corresponding to the Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -31,7 +31,7 @@ public interface DeploymentInfoesClient {
         Context context);
 
     /**
-     * Fetch information regarding Elastic cloud deployment corresponding to the Elastic monitor resource.
+     * Fetch detailed information about Elastic cloud deployments corresponding to the Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

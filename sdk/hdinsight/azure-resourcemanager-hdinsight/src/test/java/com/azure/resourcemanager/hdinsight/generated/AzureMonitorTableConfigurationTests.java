@@ -12,14 +12,14 @@ public final class AzureMonitorTableConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorTableConfiguration model
-            = BinaryData.fromString("{\"name\":\"gj\"}").toObject(AzureMonitorTableConfiguration.class);
-        Assertions.assertEquals("gj", model.name());
+            = BinaryData.fromString("{\"name\":\"orgjhxbldt\"}").toObject(AzureMonitorTableConfiguration.class);
+        Assertions.assertEquals("orgjhxbldt", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMonitorTableConfiguration model = new AzureMonitorTableConfiguration().withName("gj");
+        AzureMonitorTableConfiguration model = new AzureMonitorTableConfiguration().withName("orgjhxbldt");
         model = BinaryData.fromObject(model).toObject(AzureMonitorTableConfiguration.class);
-        Assertions.assertEquals("gj", model.name());
+        Assertions.assertEquals("orgjhxbldt", model.name());
     }
 }

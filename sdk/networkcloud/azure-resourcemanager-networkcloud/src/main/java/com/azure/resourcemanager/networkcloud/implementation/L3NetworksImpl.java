@@ -34,8 +34,8 @@ public final class L3NetworksImpl implements L3Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L3Network> list(Context context) {
-        PagedIterable<L3NetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<L3Network> list(Integer top, String skipToken, Context context) {
+        PagedIterable<L3NetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class L3NetworksImpl implements L3Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<L3NetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<L3NetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 

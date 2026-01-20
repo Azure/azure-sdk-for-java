@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public final class GrafanaUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Update.json
+     * x-ms-original-file: 2025-08-01/Grafana_Update.json
      */
     /**
      * Sample code: Grafana_Update.
