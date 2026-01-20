@@ -220,11 +220,11 @@ public final class AccessTokenUtil {
         String federatedToken = readFile(tokenFilePath);
         if (!isNullOrBlank(federatedToken)) {
             String requestUrl = addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
-            String requestBody = "grant_type=client_credentials" +
-                "&client_id=" + urlEncode(clientId) +
-                "&client_assertion_type=" + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer") +
-                "&client_assertion=" + urlEncode(federatedToken) +
-                "&scope=" + urlEncode(keyVaultBaseUri);
+            String requestBody = "grant_type=client_credentials"
+                 + "&client_id=" + urlEncode(clientId)
+                 + "&client_assertion_type=" + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
+                 + "&client_assertion=" + urlEncode(federatedToken)
+                 + "&scope=" + urlEncode(keyVaultBaseUri);
 
             String response = HttpUtil.post(requestUrl, requestBody, "application/x-www-form-urlencoded");
             result = parseAccessTokenResponse(response);
