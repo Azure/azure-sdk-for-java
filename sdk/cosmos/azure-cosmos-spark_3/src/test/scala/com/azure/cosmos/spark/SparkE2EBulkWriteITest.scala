@@ -260,7 +260,7 @@ class SparkE2EBulkWriteITest
       // wait for a second to allow replication is completed.
       Thread.sleep(1000)
 
-      // the item with the same id/pk will be persisted based on the upsert config
+      // the item with the same id/pk will be updated based on the patch config
       val quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
       quarks should have size 1
 
