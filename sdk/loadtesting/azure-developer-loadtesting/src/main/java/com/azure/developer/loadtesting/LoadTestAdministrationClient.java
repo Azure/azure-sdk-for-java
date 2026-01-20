@@ -16,14 +16,20 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl;
+import com.azure.developer.loadtesting.implementation.models.CloneTestRequest1;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
+import com.azure.developer.loadtesting.models.OperationStatus;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.Trigger;
+import com.azure.developer.loadtesting.models.TriggerState;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -1141,6 +1147,443 @@ public final class LoadTestAdministrationClient {
     }
 
     /**
+     * Create or update operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(ScheduleTestsTrigger) (Required)
+     *     triggerId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     description: String (Optional)
+     *     state: String(Active/Paused/Completed/Disabled) (Optional)
+     *     stateDetails (Optional): {
+     *         message: String (Optional)
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(ScheduleTestsTrigger) (Required)
+     *     triggerId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     description: String (Optional)
+     *     state: String(Active/Paused/Completed/Disabled) (Optional)
+     *     stateDetails (Optional): {
+     *         message: String (Optional)
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @param body The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return trigger model along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateTriggerWithResponse(String triggerId, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateTriggerWithResponse(triggerId, body, requestOptions);
+    }
+
+    /**
+     * Resource delete operation template.
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTriggerWithResponse(String triggerId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTriggerWithResponse(triggerId, requestOptions);
+    }
+
+    /**
+     * Resource read operation template.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(ScheduleTestsTrigger) (Required)
+     *     triggerId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     description: String (Optional)
+     *     state: String(Active/Paused/Completed/Disabled) (Optional)
+     *     stateDetails (Optional): {
+     *         message: String (Optional)
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return trigger model along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getTriggerWithResponse(String triggerId, RequestOptions requestOptions) {
+        return this.serviceClient.getTriggerWithResponse(triggerId, requestOptions);
+    }
+
+    /**
+     * Resource list operation template.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>testIds</td><td>String</td><td>No</td><td>Search based on triggers associated with the provided test
+     * ids.</td></tr>
+     * <tr><td>states</td><td>String</td><td>No</td><td>Filter triggers based on a comma separated list of states.
+     * Allowed values: "Active", "Paused", "Completed", "Disabled".</td></tr>
+     * <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(RFC 3339 literal format)
+     * of the last updated time range to filter triggers.</td></tr>
+     * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
+     * the last updated time range to filter triggers.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response. Default page size is
+     * 50.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(ScheduleTestsTrigger) (Required)
+     *     triggerId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     description: String (Optional)
+     *     state: String(Active/Paused/Completed/Disabled) (Optional)
+     *     stateDetails (Optional): {
+     *         message: String (Optional)
+     *     }
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of Trigger items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listTriggers(RequestOptions requestOptions) {
+        return this.serviceClient.listTriggers(requestOptions);
+    }
+
+    /**
+     * Create or update operation template.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String(Tests) (Required)
+     *     notificationRuleId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     actionGroupIds (Optional, Required on create): [
+     *         String (Optional, Required on create)
+     *     ]
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String(Tests) (Required)
+     *     notificationRuleId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     actionGroupIds (Optional, Required on create): [
+     *         String (Optional, Required on create)
+     *     ]
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @param body The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return notification rule model along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateNotificationRuleWithResponse(String notificationRuleId, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateNotificationRuleWithResponse(notificationRuleId, body, requestOptions);
+    }
+
+    /**
+     * Resource delete operation template.
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteNotificationRuleWithResponse(String notificationRuleId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteNotificationRuleWithResponse(notificationRuleId, requestOptions);
+    }
+
+    /**
+     * Resource read operation template.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String(Tests) (Required)
+     *     notificationRuleId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     actionGroupIds (Optional, Required on create): [
+     *         String (Optional, Required on create)
+     *     ]
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return notification rule model along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getNotificationRuleWithResponse(String notificationRuleId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getNotificationRuleWithResponse(notificationRuleId, requestOptions);
+    }
+
+    /**
+     * Resource list operation template.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>testIds</td><td>String</td><td>No</td><td>Search based on notification rules associated with the provided
+     * test ids.</td></tr>
+     * <tr><td>scopes</td><td>String</td><td>No</td><td>Search based on notification rules for the provided
+     * scopes.</td></tr>
+     * <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(RFC 3339 literal format)
+     * of the last updated time range to filter notification rules.</td></tr>
+     * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(RFC 3339 literal format) of
+     * the last updated time range to filter notification rules.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response. Default page size is
+     * 50.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String(Tests) (Required)
+     *     notificationRuleId: String (Required)
+     *     displayName: String (Optional, Required on create)
+     *     actionGroupIds (Optional, Required on create): [
+     *         String (Optional, Required on create)
+     *     ]
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of NotificationRule items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listNotificationRules(RequestOptions requestOptions) {
+        return this.serviceClient.listNotificationRules(requestOptions);
+    }
+
+    /**
+     * Clone a load test.
+     * 
+     * Clone the given test with optional overrides applied to the clone test.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     newTestId: String (Required)
+     *     displayName: String (Optional)
+     *     description: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCloneTest(String testId, BinaryData cloneTestRequest1,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginCloneTest(testId, cloneTestRequest1, requestOptions);
+    }
+
+    /**
+     * Generate load test plan recommendations.
+     * 
+     * Generate AI Recommendations to author a load test plan using the uploaded browser recording file.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginGenerateTestPlanRecommendations(String testId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginGenerateTestPlanRecommendations(testId, requestOptions);
+    }
+
+    /**
+     * Get the status of a long running operation.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     kind: String(CloneTest/GenerateTestRunInsights/TestPlanRecommendations) (Required)
+     *     error (Optional): {
+     *         error (Required): (recursive schema, see error above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param operationId The unique ID of the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of a long running operation along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationStatusWithResponse(operationId, requestOptions);
+    }
+
+    /**
      * Create a new test or update an existing test by providing the test Id.
      * 
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
@@ -1641,5 +2084,354 @@ public final class LoadTestAdministrationClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listTestProfiles(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(TestProfile.class));
+    }
+
+    /**
+     * Create or update operation template.
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @param body The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Trigger createOrUpdateTrigger(String triggerId, Trigger body) {
+        // Generated convenience method for createOrUpdateTriggerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getTriggerAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getTriggerAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateTriggerWithResponse(triggerId, bodyInBinaryData, requestOptions).getValue()
+            .toObject(Trigger.class);
+    }
+
+    /**
+     * Resource delete operation template.
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTrigger(String triggerId) {
+        // Generated convenience method for deleteTriggerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteTriggerWithResponse(triggerId, requestOptions).getValue();
+    }
+
+    /**
+     * Resource read operation template.
+     * 
+     * @param triggerId The unique identifier of the trigger.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Trigger getTrigger(String triggerId) {
+        // Generated convenience method for getTriggerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTriggerWithResponse(triggerId, requestOptions).getValue().toObject(Trigger.class);
+    }
+
+    /**
+     * Resource list operation template.
+     * 
+     * @param testIds Search based on triggers associated with the provided test ids.
+     * @param states Filter triggers based on a comma separated list of states.
+     * @param lastModifiedStartTime Start DateTime(RFC 3339 literal format) of the last updated time range to filter
+     * triggers.
+     * @param lastModifiedEndTime End DateTime(RFC 3339 literal format) of the last updated time range to filter
+     * triggers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Trigger items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Trigger> listTriggers(String testIds, TriggerState states,
+        OffsetDateTime lastModifiedStartTime, OffsetDateTime lastModifiedEndTime) {
+        // Generated convenience method for listTriggers
+        RequestOptions requestOptions = new RequestOptions();
+        if (testIds != null) {
+            requestOptions.addQueryParam("testIds", testIds, false);
+        }
+        if (states != null) {
+            requestOptions.addQueryParam("states", states.toString(), false);
+        }
+        if (lastModifiedStartTime != null) {
+            requestOptions.addQueryParam("lastModifiedStartTime", String.valueOf(lastModifiedStartTime), false);
+        }
+        if (lastModifiedEndTime != null) {
+            requestOptions.addQueryParam("lastModifiedEndTime", String.valueOf(lastModifiedEndTime), false);
+        }
+        return serviceClient.listTriggers(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Trigger.class));
+    }
+
+    /**
+     * Resource list operation template.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Trigger items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Trigger> listTriggers() {
+        // Generated convenience method for listTriggers
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTriggers(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Trigger.class));
+    }
+
+    /**
+     * Create or update operation template.
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @param body The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification rule model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotificationRule createOrUpdateNotificationRule(String notificationRuleId, NotificationRule body) {
+        // Generated convenience method for createOrUpdateNotificationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getNotificationRuleAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getNotificationRuleAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateNotificationRuleWithResponse(notificationRuleId, bodyInBinaryData, requestOptions)
+            .getValue()
+            .toObject(NotificationRule.class);
+    }
+
+    /**
+     * Resource delete operation template.
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteNotificationRule(String notificationRuleId) {
+        // Generated convenience method for deleteNotificationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteNotificationRuleWithResponse(notificationRuleId, requestOptions).getValue();
+    }
+
+    /**
+     * Resource read operation template.
+     * 
+     * @param notificationRuleId The unique identifier of the notification rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification rule model.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotificationRule getNotificationRule(String notificationRuleId) {
+        // Generated convenience method for getNotificationRuleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getNotificationRuleWithResponse(notificationRuleId, requestOptions).getValue()
+            .toObject(NotificationRule.class);
+    }
+
+    /**
+     * Resource list operation template.
+     * 
+     * @param testIds Search based on notification rules associated with the provided test ids.
+     * @param scopes Search based on notification rules for the provided scopes.
+     * @param lastModifiedStartTime Start DateTime(RFC 3339 literal format) of the last updated time range to filter
+     * notification rules.
+     * @param lastModifiedEndTime End DateTime(RFC 3339 literal format) of the last updated time range to filter
+     * notification rules.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of NotificationRule items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NotificationRule> listNotificationRules(String testIds, String scopes,
+        OffsetDateTime lastModifiedStartTime, OffsetDateTime lastModifiedEndTime) {
+        // Generated convenience method for listNotificationRules
+        RequestOptions requestOptions = new RequestOptions();
+        if (testIds != null) {
+            requestOptions.addQueryParam("testIds", testIds, false);
+        }
+        if (scopes != null) {
+            requestOptions.addQueryParam("scopes", scopes, false);
+        }
+        if (lastModifiedStartTime != null) {
+            requestOptions.addQueryParam("lastModifiedStartTime", String.valueOf(lastModifiedStartTime), false);
+        }
+        if (lastModifiedEndTime != null) {
+            requestOptions.addQueryParam("lastModifiedEndTime", String.valueOf(lastModifiedEndTime), false);
+        }
+        return serviceClient.listNotificationRules(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(NotificationRule.class));
+    }
+
+    /**
+     * Resource list operation template.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of NotificationRule items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NotificationRule> listNotificationRules() {
+        // Generated convenience method for listNotificationRules
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listNotificationRules(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(NotificationRule.class));
+    }
+
+    /**
+     * Clone a load test.
+     * 
+     * Clone the given test with optional overrides applied to the clone test.
+     * 
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param newTestId Unique identifier for the new test that will be created.
+     * @param displayName Display Name override for the newly created test.
+     * @param description Description override for the newly created test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationStatus, LoadTest> beginCloneTest(String testId, String newTestId, String displayName,
+        String description) {
+        // Generated convenience method for beginCloneTestWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        CloneTestRequest1 cloneTestRequest1Obj
+            = new CloneTestRequest1(newTestId).setDisplayName(displayName).setDescription(description);
+        BinaryData cloneTestRequest1 = BinaryData.fromObject(cloneTestRequest1Obj);
+        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest1, requestOptions);
+    }
+
+    /**
+     * Clone a load test.
+     * 
+     * Clone the given test with optional overrides applied to the clone test.
+     * 
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param newTestId Unique identifier for the new test that will be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationStatus, LoadTest> beginCloneTest(String testId, String newTestId) {
+        // Generated convenience method for beginCloneTestWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        CloneTestRequest1 cloneTestRequest1Obj = new CloneTestRequest1(newTestId);
+        BinaryData cloneTestRequest1 = BinaryData.fromObject(cloneTestRequest1Obj);
+        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest1, requestOptions);
+    }
+
+    /**
+     * Generate load test plan recommendations.
+     * 
+     * Generate AI Recommendations to author a load test plan using the uploaded browser recording file.
+     * 
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<OperationStatus, LoadTest> beginGenerateTestPlanRecommendations(String testId) {
+        // Generated convenience method for beginGenerateTestPlanRecommendationsWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginGenerateTestPlanRecommendationsWithModel(testId, requestOptions);
+    }
+
+    /**
+     * Get the status of a long running operation.
+     * 
+     * @param operationId The unique ID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of a long running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatus getOperationStatus(String operationId) {
+        // Generated convenience method for getOperationStatusWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getOperationStatusWithResponse(operationId, requestOptions).getValue().toObject(OperationStatus.class);
     }
 }
