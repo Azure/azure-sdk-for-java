@@ -1,23 +1,16 @@
 # Release History
 
-## 1.19.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.18.2 (2026-01-20)
 
 ### Other Changes
 - Removed unused jetty, redisson, and lettuce-core dependencies.
 
-## 1.19.0-beta.1 (2025-11-14)
+#### Dependency Updates
 
-### Features Added
-- Added `enableAzureTokenProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`).
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
 
-### Other Changes
-- Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
 
 ## 1.18.1 (2025-10-13)
 
