@@ -10,6 +10,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -116,5 +117,38 @@ public class SasImplUtils {
         }
 
         return retVals;
+    }
+
+    public static String formatRequestHeadersForSasSigning(Map<String, String> requestHeaders) {
+        if (requestHeaders == null || requestHeaders.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        requestHeaders.forEach((key, value) -> sb.append(key).append(":").append(value).append("\n"));
+        return sb.toString();
+    }
+
+    public static String formatRequestQueryParametersForSasSigning(Map<String, String> requestQueryParameters) {
+        if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        requestQueryParameters.forEach((key, value) -> sb.append("\n").append(key).append(":").append(value));
+        return sb.toString();
+    }
+
+    public static Map<String, String> parseRequestHeadersAndQueryParameterString(String rawString) {
+        if (CoreUtils.isNullOrEmpty(rawString)) {
+            return null;
+        }
+        Map<String, String> valueMap = new HashMap<>();
+        String[] pairs = rawString.split("\n");
+        for (String pair : pairs) {
+            if (!CoreUtils.isNullOrEmpty(pair)) {
+                String[] keyValue = pair.split(":", 2);
+                valueMap.put(keyValue[0].trim(), keyValue[1].trim());
+            }
+        }
+        return valueMap;
     }
 }

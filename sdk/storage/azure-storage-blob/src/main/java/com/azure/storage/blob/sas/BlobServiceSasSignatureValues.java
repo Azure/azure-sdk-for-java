@@ -16,6 +16,7 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the
@@ -83,6 +84,8 @@ public final class BlobServiceSasSignatureValues {
     private String correlationId;
     private String encryptionScope;
     private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates an object with empty values for all fields.
@@ -601,6 +604,50 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * @return The custom request headers to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * @param requestHeaders The custom request headers to be set when the SAS is used.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * @return The custom query parameters to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestQueryParameters() {
+        return requestQueryParameters;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * @param requestQueryParameters The custom query parameters to be set when the SAS is used.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setRequestQueryParameters(Map<String, String> requestQueryParameters) {
+        this.requestQueryParameters = requestQueryParameters;
+        return this;
+    }
+
+    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
@@ -713,8 +760,8 @@ public final class BlobServiceSasSignatureValues {
      * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      * <p>
      * Taken from:
-     * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
-     * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     * <a href="https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33">sas_service.go</a>
+     * <a href="https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs">BlobSasBuilder.cs</a>
      */
     private void ensureState() {
         if (CoreUtils.isNullOrEmpty(blobName)) {
