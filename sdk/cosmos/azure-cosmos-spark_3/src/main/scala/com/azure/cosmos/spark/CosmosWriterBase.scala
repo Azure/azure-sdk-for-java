@@ -69,7 +69,6 @@ private abstract class CosmosWriterBase(
         new TransactionalBulkWriter(
           container,
           cosmosTargetContainerConfig,
-          partitionKeyDefinition,
           cosmosWriteConfig,
           diagnosticsConfig,
           getOutputMetricsPublisher(),
@@ -147,15 +146,28 @@ private abstract class CosmosWriterBase(
             log.logWarning(s"Error indicating stuck writer when $operationName write job. Retry will be attempted for "
               + s"the outstanding ${remainingWriteOperations.size} write operations.", bulkWriterStaleError)
 
-            val bulkWriterForRetry =
-              new BulkWriter(
-                container,
-                cosmosTargetContainerConfig,
-                partitionKeyDefinition,
-                cosmosWriteConfig,
-                diagnosticsConfig,
-                getOutputMetricsPublisher(),
-                commitAttempt.getAndIncrement())
+            val bulkWriterForRetry = {
+              val useTransactional = cosmosWriteConfig.bulkTransactional
+
+              if (useTransactional) {
+                new TransactionalBulkWriter(
+                  container,
+                  cosmosTargetContainerConfig,
+                  cosmosWriteConfig,
+                  diagnosticsConfig,
+                  getOutputMetricsPublisher(),
+                  commitAttempt.getAndIncrement())
+              } else {
+                new BulkWriter(
+                  container,
+                  cosmosTargetContainerConfig,
+                  partitionKeyDefinition,
+                  cosmosWriteConfig,
+                  diagnosticsConfig,
+                  getOutputMetricsPublisher(),
+                  commitAttempt.getAndIncrement())
+              }
+            }
             val oldBulkWriter = writer.getAndSet(bulkWriterForRetry)
 
             cosmosWriteConfig.retryCommitInterceptor match {
