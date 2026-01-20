@@ -194,7 +194,8 @@ public final class AccessTokenUtil {
      * @param clientId Client ID of the managed identity to use. If blank fallback to environment variable <code>AZURE_CLIENT_ID</code>
      * @return An access token.
      */
-    public static AccessToken getAccessTokenUsingWorkloadIdentity(String keyVaultBaseUri, String tenantId, String clientId) {
+    public static AccessToken getAccessTokenUsingWorkloadIdentity(String keyVaultBaseUri, String tenantId,
+        String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenUsingWorkloadIdentity",
             new Object[] { keyVaultBaseUri, tenantId, clientId });
         LOGGER.info("Getting access token using federated Workload Identity token");
@@ -212,19 +213,16 @@ public final class AccessTokenUtil {
         }
 
         // allow override of authority host via environment variable
-        String authorityHost = useDefaultIfBlank(System.getenv(ENV_AZURE_AUTHORITY_HOST),
-                () -> OAUTH2_TOKEN_BASE_URL);
+        String authorityHost = useDefaultIfBlank(System.getenv(ENV_AZURE_AUTHORITY_HOST), () -> OAUTH2_TOKEN_BASE_URL);
 
         AccessToken result = null;
 
         String federatedToken = readFile(tokenFilePath);
         if (!isNullOrBlank(federatedToken)) {
             String requestUrl = addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
-            String requestBody = "grant_type=client_credentials"
-                 + "&client_id=" + urlEncode(clientId)
-                 + "&client_assertion_type=" + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
-                 + "&client_assertion=" + urlEncode(federatedToken)
-                 + "&scope=" + urlEncode(keyVaultBaseUri);
+            String requestBody = "grant_type=client_credentials" + "&client_id=" + urlEncode(clientId)
+                + "&client_assertion_type=" + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer")
+                + "&client_assertion=" + urlEncode(federatedToken) + "&scope=" + urlEncode(keyVaultBaseUri);
 
             String response = HttpUtil.post(requestUrl, requestBody, "application/x-www-form-urlencoded");
             result = parseAccessTokenResponse(response);
