@@ -596,8 +596,8 @@ public class AppConfigurationRefreshUtilTest {
     }
 
     @Test
-    public void refreshAllWithCollectionMonitoringTest(TestInfo testInfo) {
-        // Test that when refreshAll is enabled, collection monitoring is used instead of watch keys
+    public void refreshAllWithWatchedConfigurationSettingsTest(TestInfo testInfo) {
+        // Test that when refreshAll is enabled, watched configuration settings are used instead of watch keys
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
@@ -605,13 +605,13 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        // Set up collection monitoring state
-        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
+        // Set up watched configuration settings state
+        WatchedConfigurationSettings watchedConfigurationSettings = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null);
-        State state = new State(null, List.of(collectionMonitoring), 
+        State state = new State(null, List.of(watchedConfigurationSettings), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
-        // Config Store returns a change via collection monitoring
+        // Config Store returns a change via watched configuration settings
         when(clientOriginMock.checkWatchKeys(Mockito.any(SettingSelector.class), Mockito.any(Context.class)))
             .thenReturn(true);
 
@@ -625,7 +625,7 @@ public class AppConfigurationRefreshUtilTest {
             
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
-            // Verify checkWatchKeys is called (collection monitoring path)
+            // Verify checkWatchKeys is called (watched configuration settings path)
             verify(clientOriginMock, times(1)).checkWatchKeys(Mockito.any(SettingSelector.class), 
                 Mockito.any(Context.class));
             // Verify getWatchKey is NOT called (traditional watch key path)
@@ -636,7 +636,7 @@ public class AppConfigurationRefreshUtilTest {
 
     @Test
     public void refreshAllWithNullWatchKeysTest(TestInfo testInfo) {
-        // Test that when refreshAll is enabled with null watchKeys, collection monitoring is still used
+        // Test that when refreshAll is enabled with null watchKeys, watched configuration settings are still used
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
@@ -647,10 +647,10 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        // Set up state with null watch keys but valid collection monitoring
-        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
+        // Set up state with null watch keys but valid watched configuration settings
+        WatchedConfigurationSettings watchedConfigurationSettings = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), null);
-        State state = new State(null, List.of(collectionMonitoring), 
+        State state = new State(null, List.of(watchedConfigurationSettings), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
         when(clientOriginMock.checkWatchKeys(Mockito.any(SettingSelector.class), Mockito.any(Context.class)))
@@ -672,8 +672,8 @@ public class AppConfigurationRefreshUtilTest {
     }
 
     @Test
-    public void collectionMonitoringNoChangeTest(TestInfo testInfo) {
-        // Test that collection monitoring correctly detects no change
+    public void watchedConfigurationSettingsNoChangeTest(TestInfo testInfo) {
+        // Test that watched configuration settings correctly detect no change
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
@@ -684,10 +684,10 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
+        WatchedConfigurationSettings watchedConfigurationSettings = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), 
             generateWatchKeys());
-        State state = new State(null, List.of(collectionMonitoring), 
+        State state = new State(null, List.of(watchedConfigurationSettings), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
         // Return false indicating no changes detected
@@ -708,8 +708,8 @@ public class AppConfigurationRefreshUtilTest {
     }
 
     @Test
-    public void collectionMonitoringWithChangeDetectedTest(TestInfo testInfo) {
-        // Test that collection monitoring correctly detects changes
+    public void watchedConfigurationSettingsWithChangeDetectedTest(TestInfo testInfo) {
+        // Test that watched configuration settings correctly detect changes
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         
         when(connectionManagerMock.getMonitoring()).thenReturn(monitoring);
@@ -717,10 +717,10 @@ public class AppConfigurationRefreshUtilTest {
         when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
             .thenReturn(clientOriginMock);
 
-        WatchedConfigurationSettings collectionMonitoring = new WatchedConfigurationSettings(
+        WatchedConfigurationSettings watchedConfigurationSettings = new WatchedConfigurationSettings(
             new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL), 
             generateWatchKeys());
-        State state = new State(null, List.of(collectionMonitoring), 
+        State state = new State(null, List.of(watchedConfigurationSettings), 
             Math.toIntExact(Duration.ofMinutes(-1).getSeconds()), endpoint);
 
         // Return true indicating changes detected

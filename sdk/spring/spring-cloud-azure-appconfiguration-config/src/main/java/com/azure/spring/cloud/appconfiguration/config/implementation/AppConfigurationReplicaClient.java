@@ -151,15 +151,15 @@ class AppConfigurationReplicaClient {
     }
 
     /**
-     * Gets configuration settings using collection monitoring. This method retrieves all settings matching
+     * Gets configuration settings using watched configuration settings. This method retrieves all settings matching
      * the selector and captures ETags for collection-based refresh monitoring.
      * 
      * @param settingSelector selector criteria for configuration settings
      * @param context Azure SDK context for request correlation
-     * @return CollectionMonitoring containing the retrieved configuration settings and match conditions
+     * @return WatchedConfigurationSettings containing the retrieved configuration settings and match conditions
      * @throws HttpResponseException if the request fails
      */
-    WatchedConfigurationSettings collectionMonitoring(SettingSelector settingSelector, Context context) {
+    WatchedConfigurationSettings watchedConfigurationSettings(SettingSelector settingSelector, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {

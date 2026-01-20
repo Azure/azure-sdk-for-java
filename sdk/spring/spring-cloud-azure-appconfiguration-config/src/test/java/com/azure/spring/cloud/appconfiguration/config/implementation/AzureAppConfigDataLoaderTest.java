@@ -38,7 +38,7 @@ public class AzureAppConfigDataLoaderTest {
     private AppConfigurationReplicaClient clientMock;
 
     @Mock
-    private WatchedConfigurationSettings collectionMonitoringMock;
+    private WatchedConfigurationSettings watchedConfigurationSettingsMock;
 
     private AzureAppConfigDataResource resource;
 
@@ -80,7 +80,7 @@ public class AzureAppConfigDataLoaderTest {
     }
 
     @Test
-    public void createCollectionMonitoringWithSingleSelectorTest() throws Exception {
+    public void createWatchedConfigurationSettingsWithSingleSelectorTest() throws Exception {
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
@@ -88,9 +88,8 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.collectionMonitoring(any(SettingSelector.class), any(Context.class)))
-            .thenReturn(collectionMonitoringMock);
-
+        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+            .thenReturn(watchedConfigurationSettingsMock);
         // Use reflection to test the private method
         AzureAppConfigDataLoader loader = createLoader();
         List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
@@ -100,7 +99,7 @@ public class AzureAppConfigDataLoaderTest {
         assertEquals(1, result.size());
         
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        verify(clientMock, times(1)).collectionMonitoring(selectorCaptor.capture(), any(Context.class));
+        verify(clientMock, times(1)).watchedConfigurationSettings(selectorCaptor.capture(), any(Context.class));
         
         SettingSelector capturedSelector = selectorCaptor.getValue();
         assertEquals(KEY_FILTER + "*", capturedSelector.getKeyFilter());
@@ -108,7 +107,7 @@ public class AzureAppConfigDataLoaderTest {
     }
 
     @Test
-    public void createCollectionMonitoringWithMultipleSelectorsTest() throws Exception {
+    public void createWatchedConfigurationSettingsWithMultipleSelectorsTest() throws Exception {
         // Setup multiple selectors
         AppConfigurationKeyValueSelector selector1 = new AppConfigurationKeyValueSelector();
         selector1.setKeyFilter("/app1/*");
@@ -121,21 +120,21 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector2);
 
         // Setup mocks
-        when(clientMock.collectionMonitoring(any(SettingSelector.class), any(Context.class)))
-            .thenReturn(collectionMonitoringMock);
+        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+            .thenReturn(watchedConfigurationSettingsMock);
 
         // Test
         AzureAppConfigDataLoader loader = createLoader();
         List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
-        // Verify - should create collection monitoring for both selectors
+        // Verify - should create watched configuration settings for both selectors
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(clientMock, times(2)).collectionMonitoring(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(2)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
-    public void createCollectionMonitoringSkipsSnapshotsTest() throws Exception {
+    public void createWatchedConfigurationSettingsSkipsSnapshotsTest() throws Exception {
         // Setup selector with snapshot
         AppConfigurationKeyValueSelector snapshotSelector = new AppConfigurationKeyValueSelector();
         snapshotSelector.setSnapshotName("my-snapshot");
@@ -148,8 +147,8 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(regularSelector);
 
         // Setup mocks
-        when(clientMock.collectionMonitoring(any(SettingSelector.class), any(Context.class)))
-            .thenReturn(collectionMonitoringMock);
+        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+            .thenReturn(watchedConfigurationSettingsMock);
 
         // Test
         AzureAppConfigDataLoader loader = createLoader();
@@ -158,11 +157,11 @@ public class AzureAppConfigDataLoaderTest {
         // Verify - snapshot should be skipped, only regular selector should be processed
         assertNotNull(result);
         assertEquals(1, result.size());
-        verify(clientMock, times(1)).collectionMonitoring(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(1)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
-    public void createCollectionMonitoringWithMultipleLabelsTest() throws Exception {
+    public void createWatchedConfigurationSettingsWithMultipleLabelsTest() throws Exception {
         // Setup selector with multiple labels
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
         selector.setKeyFilter(KEY_FILTER);
@@ -170,21 +169,20 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.collectionMonitoring(any(SettingSelector.class), any(Context.class)))
-            .thenReturn(collectionMonitoringMock);
-
+        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+            .thenReturn(watchedConfigurationSettingsMock);
         // Test
         AzureAppConfigDataLoader loader = createLoader();
         List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
 
-        // Verify - should create collection monitoring for each label
+        // Verify - should create watched configuration settings for each label
         assertNotNull(result);
         assertEquals(3, result.size());
-        verify(clientMock, times(3)).collectionMonitoring(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(3)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
-    public void refreshAllEnabledUsesCollectionMonitoringTest() throws Exception {
+    public void refreshAllEnabledUsesWatchedConfigurationSettingsTest() throws Exception {
         // Setup monitoring with refreshAll enabled
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
@@ -197,17 +195,17 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.collectionMonitoring(any(SettingSelector.class), any(Context.class)))
-            .thenReturn(collectionMonitoringMock);
+        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+            .thenReturn(watchedConfigurationSettingsMock);
 
-        // Test - verify that collection monitoring is created when refreshAll is enabled
+        // Test - verify that watched configuration settings are created when refreshAll is enabled
         AzureAppConfigDataLoader loader = createLoader();
         List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
         
-        // Verify collection monitoring was created
+        // Verify watched configuration settings were created
         assertNotNull(result);
         assertEquals(1, result.size());
-        verify(clientMock, times(1)).collectionMonitoring(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(1)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test

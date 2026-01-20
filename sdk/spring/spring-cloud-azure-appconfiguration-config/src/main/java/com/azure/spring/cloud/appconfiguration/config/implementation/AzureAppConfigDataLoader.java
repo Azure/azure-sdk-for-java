@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
@@ -163,11 +162,11 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         monitoring.getFeatureFlagRefreshInterval());
 
                     if (monitoring.isEnabled()) {
-                        // Check if refreshAll is enabled - if so, use collection monitoring
+                        // Check if refreshAll is enabled - if so, use watched configuration settings
                         if (monitoring.getTriggers().size() == 0) {
-                            // Use collection monitoring for refresh
-                            List<WatchedConfigurationSettings> collectionMonitoringList = getWatchedConfigurationSettings(currentClient);
-                            storeState.setState(resource.getEndpoint(), Collections.emptyList(), collectionMonitoringList, monitoring.getRefreshInterval());
+                            // Use watched configuration settings for refresh
+                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(currentClient);
+                            storeState.setState(resource.getEndpoint(), Collections.emptyList(), watchedConfigurationSettingsList, monitoring.getRefreshInterval());
                         } else {
                             // Use traditional watch key monitoring
                             List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()

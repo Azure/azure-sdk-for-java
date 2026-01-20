@@ -351,7 +351,7 @@ public class AppConfigurationReplicaClientTest {
     }
 
     @Test
-    public void collectionMonitoringTest() {
+    public void watchedConfigurationSettingsTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
 
         ConfigurationSetting setting1 = new ConfigurationSetting().setKey("key1").setLabel("label1");
@@ -368,7 +368,7 @@ public class AppConfigurationReplicaClientTest {
             .thenReturn(new PagedIterable<>(pagedFlux));
 
         SettingSelector selector = new SettingSelector().setKeyFilter("*");
-        WatchedConfigurationSettings result = client.collectionMonitoring(selector, contextMock);
+        WatchedConfigurationSettings result = client.watchedConfigurationSettings(selector, contextMock);
 
         assertEquals(2, result.getConfigurationSettings().size());
         assertEquals("key1", result.getConfigurationSettings().get(0).getKey());
@@ -379,7 +379,7 @@ public class AppConfigurationReplicaClientTest {
     }
 
     @Test
-    public void collectionMonitoringErrorTest() {
+    public void watchedConfigurationSettingsErrorTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
@@ -387,30 +387,30 @@ public class AppConfigurationReplicaClientTest {
         when(responseMock.getStatusCode()).thenReturn(429);
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class,
-            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
     }
 
     @Test
-    public void collectionMonitoringUncheckedIOExceptionTest() {
+    public void watchedConfigurationSettingsUncheckedIOExceptionTest() {
         AppConfigurationReplicaClient client = new AppConfigurationReplicaClient(endpoint, endpoint, clientMock);
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenThrow(new UncheckedIOException(new IOException("Network error")));
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.collectionMonitoring(new SettingSelector(), contextMock));
+            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
     }
 
 }

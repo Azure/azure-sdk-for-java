@@ -33,7 +33,7 @@ class State {
     private final String originEndpoint;
 
     /** Number of refresh attempts for exponential backoff calculation. */
-    private final int refreshAttempt;
+    private int refreshAttempt;
 
     /** The refresh interval in seconds. */
     private final int refreshInterval;
@@ -143,13 +143,12 @@ class State {
     }
 
     /**
-     * Creates a new State with an incremented refresh attempt count.
-     * This method follows the immutable pattern by returning a new instance rather than
-     * modifying the current state. Used when a refresh fails to track attempts for backoff logic.
-     * @return a new State instance with refreshAttempt incremented by 1
+     * Increments refresh attempt count. Used when a refresh fails to track attempts for backoff logic.
+     * @return the State instance with refreshAttempt incremented by 1
      */
-    public State withIncrementedRefreshAttempt() {
-        return new State(this, this.nextRefreshCheck, this.refreshAttempt + 1);
+    public State incrementRefreshAttempt() {
+        this.refreshAttempt += 1;
+        return this;
     }
 
     /**

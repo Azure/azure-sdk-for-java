@@ -33,7 +33,7 @@ public class WatchedConfigurationSettings {
     }
 
     /**
-     * @return the featureFlags
+     * @return the configurationSettings
      */
     public List<ConfigurationSetting> getConfigurationSettings() {
         return configurationSettings;

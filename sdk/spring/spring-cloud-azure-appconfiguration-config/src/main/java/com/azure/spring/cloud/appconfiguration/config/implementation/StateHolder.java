@@ -239,7 +239,7 @@ final class StateHolder {
 
             State updatedState;
             if (newRefresh.compareTo(storeState.getNextRefreshCheck()) != 0) {
-                updatedState = new State(storeState.withIncrementedRefreshAttempt(), newRefresh);
+                updatedState = new State(storeState.incrementRefreshAttempt(), newRefresh);
             } else {
                 updatedState = new State(storeState, newRefresh);
             }

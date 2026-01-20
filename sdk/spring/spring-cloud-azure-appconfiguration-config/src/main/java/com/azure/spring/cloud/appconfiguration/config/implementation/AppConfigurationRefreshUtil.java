@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
@@ -30,7 +29,7 @@ public class AppConfigurationRefreshUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshUtil.class);
 
-    private static final String FEATURE_FLAG_PATTERN = ".appconfig.featureflag/*";
+    private static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/*";
 
     /**
      * Functional interface for refresh operations that can throw AppConfigurationStatusException.
@@ -227,10 +226,10 @@ public class AppConfigurationRefreshUtil {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
-            // Check collection monitoring first if configured
+            // Check watched configuration settings first if configured
             List<WatchedConfigurationSettings> watchedSettings = state.getCollectionWatchKeys();
             if (watchedSettings != null && !watchedSettings.isEmpty()) {
-                refreshWithoutTimeCollectionMonitoring(client, watchedSettings, eventData, context);
+                refreshWithoutTimeWatchedConfigurationSettings(client, watchedSettings, eventData, context);
             } else {
                 // Fall back to traditional watch key monitoring
                 refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
@@ -267,25 +266,25 @@ public class AppConfigurationRefreshUtil {
     }
 
     /**
-     * Checks configuration collection monitoring for etag changes without time validation. This method immediately
-     * checks all collection monitoring selectors for changes regardless of refresh intervals.
+     * Checks configuration watched configuration settings for etag changes without time validation. This method immediately
+     * checks all watched configuration settings selectors for changes regardless of refresh intervals.
      *
      * @param client the App Configuration client to use for checking
-     * @param collectionWatchKeys the list of collection monitoring configurations to watch for changes
+     * @param watchedSettings the list of watched configuration settings to watch for changes
      * @param eventData the refresh event data to update if changes are detected
      * @param context the operation context
      * @throws AppConfigurationStatusException if there's an error during the refresh check
      */
-    private static void refreshWithoutTimeCollectionMonitoring(AppConfigurationReplicaClient client,
-        List<WatchedConfigurationSettings> collectionWatchKeys, RefreshEventData eventData, Context context)
+    private static void refreshWithoutTimeWatchedConfigurationSettings(AppConfigurationReplicaClient client,
+        List<WatchedConfigurationSettings> watchedSettings, RefreshEventData eventData, Context context)
         throws AppConfigurationStatusException {
-        for (WatchedConfigurationSettings collectionMonitoring : collectionWatchKeys) {
-            if (client.checkWatchKeys(collectionMonitoring.getSettingSelector(), context)) {
-                String eventDataInfo = collectionMonitoring.getSettingSelector().getKeyFilter();
+        for (WatchedConfigurationSettings watchedSetting : watchedSettings) {
+            if (client.checkWatchKeys(watchedSetting.getSettingSelector(), context)) {
+                String eventDataInfo = watchedSetting.getSettingSelector().getKeyFilter();
 
                 // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by collection monitoring: {}", eventDataInfo);
+                LOGGER.info("Configuration Refresh Event triggered by watched configuration settings: {}", eventDataInfo);
 
                 eventData.setMessage(eventDataInfo);
                 return;
@@ -316,9 +315,9 @@ public class AppConfigurationRefreshUtil {
                 if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                     // Only one refresh event needs to be called to update all of the
                     // stores, not one for each.
-                    LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PATTERN);
+                    LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PREFIX);
 
-                    eventData.setMessage(FEATURE_FLAG_PATTERN);
+                    eventData.setMessage(FEATURE_FLAG_PREFIX);
                     return;
                 }
 
@@ -345,9 +344,9 @@ public class AppConfigurationRefreshUtil {
             if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                 // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PATTERN);
+                LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PREFIX);
 
-                eventData.setMessage(FEATURE_FLAG_PATTERN);
+                eventData.setMessage(FEATURE_FLAG_PREFIX);
             }
 
         }
