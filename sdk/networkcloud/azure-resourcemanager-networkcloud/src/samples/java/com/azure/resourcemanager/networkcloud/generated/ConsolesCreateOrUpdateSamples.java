@@ -17,8 +17,8 @@ import java.util.Map;
 public final class ConsolesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
-     * Consoles_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/Consoles_Create.
+     * json
      */
     /**
      * Sample code: Create or update virtual machine console.

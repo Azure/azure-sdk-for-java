@@ -103,6 +103,12 @@ public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapVie
     public static final LocalizedMapView SY = fromString("SY");
 
     /**
+     * United States of America.
+     */
+    @Generated
+    public static final LocalizedMapView US = fromString("US");
+
+    /**
      * Yemen (Arabic View).
      */
     @Generated

@@ -13,7 +13,23 @@ import com.azure.resourcemanager.containerservicefleet.models.GateState;
  */
 public final class GatesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Gates_Update.json
+     * x-ms-original-file: 2025-08-01-preview/Gates_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Gates_Update_MaximumSet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void
+        gatesUpdateMaximumSet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.gates()
+            .update("rgfleets", "fleet-1", "12345678-910a-bcde-f000-000000000000",
+                new GatePatch().withProperties(new GatePatchProperties().withState(GateState.PENDING)),
+                "jqongzwjguenncptggiqzxxycakgrj", "fsyp", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/Gates_Update.json
      */
     /**
      * Sample code: Updates a Gate resource.

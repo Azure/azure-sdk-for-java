@@ -26,10 +26,10 @@ import java.util.Map;
  * CloudServicesNetwork represents additional egress information that will be used by associated virtual machines or
  * hybrid AKS clusters.
  * 
- * Upon creation, the additional services that are provided by the platform will be allocated and
- * represented in the status of this resource. All resources associated with this cloud services network will be part
- * of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
- * virtual machines and/or Hybrid AKS clusters.
+ * Upon creation, the additional services that are provided by the platform will be allocated and represented in the
+ * status of this resource. All resources associated with this cloud services network will be part of the same layer 2
+ * (L2) isolation domain. At least one service network must be created but may be reused across many virtual machines
+ * and/or Hybrid AKS clusters.
  */
 @Fluent
 public final class CloudServicesNetworkInner extends Resource {

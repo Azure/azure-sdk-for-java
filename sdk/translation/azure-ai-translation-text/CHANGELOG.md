@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.0.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0-beta.1 (2026-01-08)
+
+### Features Added
+
+- Added support for the Azure AI Translator API 2025-10-01-preview, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
+- Added `TranslationTarget` class for configuring translation options.
+
+### Breaking Changes
+
+- Added `Models` property to `GetSupportedLanguagesResult` to include the list of LLM models available for translations.
+- Changed the name of `TargetLanguage` property to `Language` in `TranslationText`.
+- Changed the name of `Confidence` property to `Score` in `DetectedLanguage`.
+- Removed `SourceText` and `Transliteration` properties in translation responses.
+- Dictionary, sentence boundaries and text alignments features have been deprecated and relevant classes and properties have been removed.
 
 ## 1.1.7 (2025-10-27)
 

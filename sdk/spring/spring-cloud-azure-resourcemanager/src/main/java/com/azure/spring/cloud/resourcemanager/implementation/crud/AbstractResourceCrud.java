@@ -19,6 +19,7 @@ import org.springframework.util.StopWatch;
  * @param <K> The type of resource key.
  * @param <P> Azure resource properties.
  */
+@SuppressWarnings("deprecation")
 public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K, P> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractResourceCrud.class);
