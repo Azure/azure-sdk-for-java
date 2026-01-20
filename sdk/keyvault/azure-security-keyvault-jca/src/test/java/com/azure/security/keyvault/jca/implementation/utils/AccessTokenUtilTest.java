@@ -1,20 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.PropertyConvertorUtils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
-import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The JUnit test for the AuthClient.
@@ -45,5 +48,16 @@ public class AccessTokenUtilTest {
 
         assertNotNull(result);
         assertDoesNotThrow(() -> new URI(result));
+    }
+
+    @Test
+    void testReadFile(@TempDir Path tempDir) throws Exception {
+        Path tempFile = Files.createTempFile(tempDir, "simple_text_file_", ".txt");
+        String expectedContent = "Just a dummy string";
+        Files.writeString(tempFile, expectedContent, StandardCharsets.UTF_8);
+
+        String actualContent = AccessTokenUtil.readFile(tempFile.toAbsolutePath().toString());
+        assertNotNull(actualContent);
+        assertEquals(expectedContent, actualContent);
     }
 }

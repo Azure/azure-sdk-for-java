@@ -3,6 +3,7 @@
 ## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Add support for Workload Identity authentication in Azure Kubernetes Service (AKS).
 
 ### Breaking Changes
 

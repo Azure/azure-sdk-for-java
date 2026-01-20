@@ -10,10 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
@@ -77,6 +82,11 @@ public final class AccessTokenUtil {
 
     private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
     private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+
+    private static final String ENV_AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
+    private static final String ENV_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
+    private static final String ENV_AZURE_TENANT_ID = "AZURE_TENANT_ID";
+    private static final String ENV_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
 
     /**
      * Get an access token for a managed identity.
@@ -166,6 +176,102 @@ public final class AccessTokenUtil {
         LOGGER.exiting("AccessTokenUtil", "getAccessToken", result);
 
         return result;
+    }
+
+    public static boolean isFederatedTokenFileConfigured() {
+        String federatedTokenFilePath = System.getenv(ENV_AZURE_FEDERATED_TOKEN_FILE);
+        return federatedTokenFilePath != null && !federatedTokenFilePath.isBlank();
+    }
+
+    /**
+     * Get an access token via <a href="https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#third-case-access-token-request-with-a-federated-credential">client creds grant flow</a>
+     * using <a href="https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview">Microsoft Entra Workload ID with AKS</a>.
+     * Uses the federate token in file located at environment variable <code>AZURE_FEDERATED_TOKEN_FILE</code>
+     * and provided <code>clientId</code> and <code>tenantId</code> to issue an access token HTTP request.
+     *
+     * @param keyVaultBaseUri Base URI of the keyvault.
+     * @param tenantId Tenant ID to use. If blank fallback to environment variable <code>AZURE_TENANT_ID</code>
+     * @param clientId Client ID of the managed identity to use. If blank fallback to environment variable <code>AZURE_CLIENT_ID</code>
+     * @return An access token.
+     */
+    public static AccessToken getAccessTokenUsingWorkloadIdentity(String keyVaultBaseUri, String tenantId, String clientId) {
+        LOGGER.entering("AccessTokenUtil", "getAccessTokenUsingWorkloadIdentity",
+            new Object[] { keyVaultBaseUri, tenantId, clientId });
+        LOGGER.info("Getting access token using federated Workload Identity token");
+
+        String tokenFilePath = System.getenv(ENV_AZURE_FEDERATED_TOKEN_FILE);
+        LOGGER.log(INFO, "Using federated token file: {0}", tokenFilePath);
+
+        tenantId = useDefaultIfBlank(tenantId, () -> System.getenv(ENV_AZURE_TENANT_ID));
+        clientId = useDefaultIfBlank(clientId, () -> System.getenv(ENV_AZURE_CLIENT_ID));
+        LOGGER.log(INFO, "Using clientId {0} in tenantId {1}", new Object[] { clientId, tenantId });
+
+        // scope is required to end with "/.default"
+        if (!keyVaultBaseUri.endsWith(".default")) {
+            keyVaultBaseUri = addTrailingSlashIfRequired(keyVaultBaseUri) + ".default";
+        }
+
+        // allow override of authority host via environment variable
+        String authorityHost = useDefaultIfBlank(System.getenv(ENV_AZURE_AUTHORITY_HOST),
+                () -> OAUTH2_TOKEN_BASE_URL);
+
+        AccessToken result = null;
+
+        String federatedToken = readFile(tokenFilePath);
+        if (federatedToken != null && !federatedToken.isBlank()) {
+            String requestUrl = addTrailingSlashIfRequired(authorityHost) + tenantId + "/oauth2/v2.0/token";
+            String requestBody = "grant_type=client_credentials" +
+                "&client_id=" + urlEncode(clientId) +
+                "&client_assertion_type=" + urlEncode("urn:ietf:params:oauth:client-assertion-type:jwt-bearer") +
+                "&client_assertion=" + urlEncode(federatedToken) +
+                "&scope=" + urlEncode(keyVaultBaseUri);
+
+            String response = HttpUtil.post(requestUrl, requestBody, "application/x-www-form-urlencoded");
+            result = parseAccessTokenResponse(response);
+        } else {
+            LOGGER.log(WARNING, "Failed to read federated token from file: {0}", tokenFilePath);
+        }
+
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenUsingWorkloadIdentity", result);
+
+        return result;
+    }
+
+    private static String useDefaultIfBlank(String value, Supplier<String> defaultValueSupplier) {
+        if (value == null || value.isBlank()) {
+            return defaultValueSupplier.get();
+        }
+        return value;
+    }
+
+    private static String urlEncode(String text) {
+        if (text == null) {
+            return null;
+        }
+        return URLEncoder.encode(text, StandardCharsets.UTF_8);
+    }
+
+    private static AccessToken parseAccessTokenResponse(String response) {
+        if (response == null) {
+            return null;
+        }
+
+        try {
+            return JsonConverterUtil.fromJson(AccessToken::fromJson, response);
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to parse access token from response.", e);
+            return null;
+        }
+    }
+
+    static String readFile(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            return Files.readString(path).trim();
+        } catch (IOException e) {
+            LOGGER.log(WARNING, "Failed to read file.", e);
+            return null;
+        }
     }
 
     /**
