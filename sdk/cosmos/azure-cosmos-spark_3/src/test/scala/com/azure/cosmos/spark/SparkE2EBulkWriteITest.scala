@@ -114,7 +114,7 @@ class SparkE2EBulkWriteITest
         toBeIngested += s"record_$i"
       }
 
-      val df = toBeIngested.toDF("id")
+      val df = toBeIngested.toSeq.toDF("id")
 
       var bytesWrittenSnapshot = 0L
       var recordsWrittenSnapshot = 0L

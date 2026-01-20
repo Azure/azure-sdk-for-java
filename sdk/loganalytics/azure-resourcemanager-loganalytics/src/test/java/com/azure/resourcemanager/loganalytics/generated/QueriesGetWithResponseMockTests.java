@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuery;
@@ -21,25 +21,25 @@ public final class QueriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"woycqucwyha\",\"displayName\":\"nomdrkywuhpsv\",\"timeCreated\":\"2021-05-26T05:35:58Z\",\"timeModified\":\"2021-01-31T05:51:43Z\",\"author\":\"lwexxwl\",\"description\":\"niexzsrzpgepq\",\"body\":\"yb\",\"related\":{\"categories\":[\"gdakchz\",\"vl\",\"xqnrkcxk\"],\"resourceTypes\":[\"nxm\"],\"solutions\":[\"xs\",\"qrntv\",\"wijpsttexoqqpwc\"]},\"tags\":{\"ndy\":[\"mhruncuwm\",\"spkcdqzh\",\"ctddun\"],\"boxjumvq\":[\"chrqb\",\"jjrcgegydc\"]},\"properties\":\"datalihrraiouaubr\"},\"id\":\"loqxfuojrngif\",\"name\":\"z\",\"type\":\"sccbiuimzd\"}";
+            = "{\"properties\":{\"id\":\"rtws\",\"displayName\":\"hv\",\"timeCreated\":\"2021-09-06T01:44:02Z\",\"timeModified\":\"2021-03-26T17:24:30Z\",\"author\":\"vtrrmhwrbfdpyflu\",\"description\":\"vjglrocuyzlwhhme\",\"body\":\"hoocl\",\"related\":{\"categories\":[\"qmemc\",\"jk\"],\"resourceTypes\":[\"kyujxsglhsrrr\",\"ejylmbkzu\"],\"solutions\":[\"grfihotjewlp\",\"uzzjgnrefq\",\"hqo\"]},\"tags\":{\"tgbebj\":[\"iqakydiwfbr\",\"wpzdqtvhcspo\",\"aqa\",\"sipi\"],\"uhplrvkmjcwmjv\":[\"lbmoichd\",\"pnfpubntnbat\",\"viqsowsaaelcattc\"],\"idqlvhu\":[\"fggc\",\"kyylizr\",\"bjpsfxsfuztlvtm\",\"agb\"]},\"properties\":\"dataveo\"},\"id\":\"zrvjfnmjmvlwyzgi\",\"name\":\"lkujrllfojui\",\"type\":\"jpu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogAnalyticsQueryPackQuery response = manager.queries()
-            .getWithResponse("cqpbtuo", "xesz", "bbelawumuaslzk", com.azure.core.util.Context.NONE)
+            .getWithResponse("mtkhlowkxxpvbr", "fjmzsyzfho", "lhikcyychunsj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nomdrkywuhpsv", response.displayName());
-        Assertions.assertEquals("niexzsrzpgepq", response.description());
-        Assertions.assertEquals("yb", response.body());
-        Assertions.assertEquals("gdakchz", response.related().categories().get(0));
-        Assertions.assertEquals("nxm", response.related().resourceTypes().get(0));
-        Assertions.assertEquals("xs", response.related().solutions().get(0));
-        Assertions.assertEquals("mhruncuwm", response.tags().get("ndy").get(0));
+        Assertions.assertEquals("hv", response.displayName());
+        Assertions.assertEquals("vjglrocuyzlwhhme", response.description());
+        Assertions.assertEquals("hoocl", response.body());
+        Assertions.assertEquals("qmemc", response.related().categories().get(0));
+        Assertions.assertEquals("kyujxsglhsrrr", response.related().resourceTypes().get(0));
+        Assertions.assertEquals("grfihotjewlp", response.related().solutions().get(0));
+        Assertions.assertEquals("iqakydiwfbr", response.tags().get("tgbebj").get(0));
     }
 }

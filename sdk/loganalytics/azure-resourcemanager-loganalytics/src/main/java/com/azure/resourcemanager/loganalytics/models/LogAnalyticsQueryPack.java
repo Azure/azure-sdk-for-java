@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
 import java.time.OffsetDateTime;
@@ -48,6 +49,13 @@ public interface LogAnalyticsQueryPack {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the queryPackId property: The unique ID of your application. This field cannot be changed.

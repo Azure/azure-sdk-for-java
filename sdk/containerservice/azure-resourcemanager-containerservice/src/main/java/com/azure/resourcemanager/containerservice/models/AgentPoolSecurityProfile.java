@@ -17,11 +17,6 @@ import java.io.IOException;
 @Fluent
 public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoolSecurityProfile> {
     /*
-     * SSH access method of an agent pool.
-     */
-    private AgentPoolSshAccess sshAccess;
-
-    /*
      * vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys and measurements held locally
      * on the node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the default is false.
      */
@@ -33,30 +28,15 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
      */
     private Boolean enableSecureBoot;
 
+    /*
+     * SSH access method of an agent pool.
+     */
+    private AgentPoolSshAccess sshAccess;
+
     /**
      * Creates an instance of AgentPoolSecurityProfile class.
      */
     public AgentPoolSecurityProfile() {
-    }
-
-    /**
-     * Get the sshAccess property: SSH access method of an agent pool.
-     * 
-     * @return the sshAccess value.
-     */
-    public AgentPoolSshAccess sshAccess() {
-        return this.sshAccess;
-    }
-
-    /**
-     * Set the sshAccess property: SSH access method of an agent pool.
-     * 
-     * @param sshAccess the sshAccess value to set.
-     * @return the AgentPoolSecurityProfile object itself.
-     */
-    public AgentPoolSecurityProfile withSshAccess(AgentPoolSshAccess sshAccess) {
-        this.sshAccess = sshAccess;
-        return this;
     }
 
     /**
@@ -108,6 +88,26 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
     }
 
     /**
+     * Get the sshAccess property: SSH access method of an agent pool.
+     * 
+     * @return the sshAccess value.
+     */
+    public AgentPoolSshAccess sshAccess() {
+        return this.sshAccess;
+    }
+
+    /**
+     * Set the sshAccess property: SSH access method of an agent pool.
+     * 
+     * @param sshAccess the sshAccess value to set.
+     * @return the AgentPoolSecurityProfile object itself.
+     */
+    public AgentPoolSecurityProfile withSshAccess(AgentPoolSshAccess sshAccess) {
+        this.sshAccess = sshAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -121,9 +121,9 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sshAccess", this.sshAccess == null ? null : this.sshAccess.toString());
         jsonWriter.writeBooleanField("enableVTPM", this.enableVtpm);
         jsonWriter.writeBooleanField("enableSecureBoot", this.enableSecureBoot);
+        jsonWriter.writeStringField("sshAccess", this.sshAccess == null ? null : this.sshAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -142,12 +142,12 @@ public final class AgentPoolSecurityProfile implements JsonSerializable<AgentPoo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sshAccess".equals(fieldName)) {
-                    deserializedAgentPoolSecurityProfile.sshAccess = AgentPoolSshAccess.fromString(reader.getString());
-                } else if ("enableVTPM".equals(fieldName)) {
+                if ("enableVTPM".equals(fieldName)) {
                     deserializedAgentPoolSecurityProfile.enableVtpm = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableSecureBoot".equals(fieldName)) {
                     deserializedAgentPoolSecurityProfile.enableSecureBoot = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sshAccess".equals(fieldName)) {
+                    deserializedAgentPoolSecurityProfile.sshAccess = AgentPoolSshAccess.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

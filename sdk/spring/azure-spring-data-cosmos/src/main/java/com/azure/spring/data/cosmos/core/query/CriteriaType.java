@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * Enum of criteria type
  */
+@SuppressWarnings("deprecation")
 public enum CriteriaType {
 
     /**

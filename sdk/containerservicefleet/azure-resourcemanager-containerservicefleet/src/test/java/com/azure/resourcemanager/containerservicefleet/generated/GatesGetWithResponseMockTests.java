@@ -24,7 +24,7 @@ public final class GatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kcdyhbpk\",\"gateType\":\"Approval\",\"target\":{\"id\":\"wdreqnovvqfovl\",\"updateRunProperties\":{\"name\":\"ywsuwsy\",\"stage\":\"ndsytgadg\",\"group\":\"aeaeneqnzarrw\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"ijfqkacewiipfp\",\"id\":\"ji\",\"name\":\"wwiftohqkvpuv\",\"type\":\"sgplsakn\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"zqzudph\",\"gateType\":\"Approval\",\"target\":{\"id\":\"mvdk\",\"updateRunProperties\":{\"name\":\"ynwcvtbv\",\"stage\":\"yhmtnvyqiat\",\"group\":\"wp\",\"timing\":\"After\"}},\"state\":\"Completed\"},\"eTag\":\"zcjaesgvvsccy\",\"id\":\"g\",\"name\":\"qfhwyg\",\"type\":\"lvdnkfx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class GatesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Gate response = manager.gates()
-            .getWithResponse("erpqlpqwcciuqg", "dbutauvfbtkuwhh", "hykojoxafnndlpic", com.azure.core.util.Context.NONE)
-            .getValue();
+        Gate response
+            = manager.gates().getWithResponse("yqtfihwh", "otzi", "gamv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("kcdyhbpk", response.displayName());
+        Assertions.assertEquals("zqzudph", response.displayName());
         Assertions.assertEquals(GateType.APPROVAL, response.gateType());
-        Assertions.assertEquals("wdreqnovvqfovl", response.target().id());
-        Assertions.assertEquals(Timing.BEFORE, response.target().updateRunProperties().timing());
+        Assertions.assertEquals("mvdk", response.target().id());
+        Assertions.assertEquals(Timing.AFTER, response.target().updateRunProperties().timing());
         Assertions.assertEquals(GateState.COMPLETED, response.state());
     }
 }

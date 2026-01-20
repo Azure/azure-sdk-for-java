@@ -2174,7 +2174,7 @@ public final class CustomModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation along with {@link PagedResponse} on successful completion of
+     * @return information about all custom models along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2195,7 +2195,7 @@ public final class CustomModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation along with {@link PagedResponse} on successful completion of
+     * @return information about all custom models along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2213,7 +2213,7 @@ public final class CustomModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation along with {@link PagedResponse}.
+     * @return information about all custom models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ModelInfo> listNextSinglePage(String nextLink) {
@@ -2228,7 +2228,7 @@ public final class CustomModelsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation along with {@link PagedResponse}.
+     * @return information about all custom models along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ModelInfo> listNextSinglePage(String nextLink, Context context) {

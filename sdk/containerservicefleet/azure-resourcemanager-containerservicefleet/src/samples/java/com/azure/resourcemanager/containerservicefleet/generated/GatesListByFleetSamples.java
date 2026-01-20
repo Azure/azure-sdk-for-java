@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class GatesListByFleetSamples {
     /*
-     * x-ms-original-file: 2025-04-01-preview/Gates_ListByFleet.json
+     * x-ms-original-file: 2025-08-01-preview/Gates_ListByFleet.json
      */
     /**
      * Sample code: Lists the Gates of a Fleet.
@@ -19,5 +19,18 @@ public final class GatesListByFleetSamples {
     public static void
         listsTheGatesOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.gates().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/Gates_ListByFleet_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Gates_ListByFleet_MaximumSet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void gatesListByFleetMaximumSet(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.gates().listByFleet("rgfleets", "fleet-1", com.azure.core.util.Context.NONE);
     }
 }

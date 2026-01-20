@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
 import java.util.HashMap;
@@ -16,8 +15,8 @@ import java.util.Map;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * ClustersCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
@@ -27,11 +26,10 @@ public final class ClustersCreateOrUpdateSamples {
     public static void clustersCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager.clusters()
             .define("oiautorest6685")
-            .withRegion("australiasoutheast")
+            .withRegion("eastus")
             .withExistingResourceGroup("oiautorest6685")
             .withTags(mapOf("tag1", "val1"))
-            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(100L).withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .create();
     }
 

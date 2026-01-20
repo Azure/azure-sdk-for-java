@@ -3632,7 +3632,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         setupDirectoryForListing(dir);
 
         ListPathsOptions options = new ListPathsOptions().setRecursive(true).setStartFrom("foo");
-        List<PathItem> pathsFromFoo = dir.listPaths(options, null).stream().collect(Collectors.toList());
+        List<PathItem> pathsFromFoo = dir.listPaths(options, null, Context.NONE).stream().collect(Collectors.toList());
 
         assertEquals(3, pathsFromFoo.size());
     }

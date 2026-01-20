@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -263,26 +263,6 @@
                 </moduleInfoFile>
               </module>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>

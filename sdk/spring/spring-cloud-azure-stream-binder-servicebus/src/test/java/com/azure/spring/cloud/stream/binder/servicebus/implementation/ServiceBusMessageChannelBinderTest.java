@@ -64,6 +64,7 @@ class ServiceBusMessageChannelBinderTest {
     void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
     }
 
