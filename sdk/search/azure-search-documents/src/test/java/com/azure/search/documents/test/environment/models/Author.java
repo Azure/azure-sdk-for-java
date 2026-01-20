@@ -2,9 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Author {
+import java.io.IOException;
+
+public class Author implements JsonSerializable<Author> {
     @JsonProperty(value = "FirstName")
     private String firstName;
 
@@ -27,5 +33,34 @@ public class Author {
     public Author lastName(String lastName) {
         this.lastName = lastName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("FirstName", firstName)
+            .writeStringField("LastName", lastName)
+            .writeEndObject();
+    }
+
+    public static Author fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Author author = new Author();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("FirstName".equals(fieldName)) {
+                    author.firstName = reader.getString();
+                } else if ("LastName".equals(fieldName)) {
+                    author.lastName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return author;
+        });
     }
 }

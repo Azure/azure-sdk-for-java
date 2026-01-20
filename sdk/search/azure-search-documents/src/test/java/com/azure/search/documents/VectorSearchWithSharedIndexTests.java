@@ -6,6 +6,7 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
@@ -24,6 +25,9 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
@@ -80,7 +84,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
 
         searchIndexClient.createIndex(getVectorIndex());
 
-        searchIndexClient.getSearchClient(HOTEL_INDEX_NAME).uploadDocuments(VECTORIZED_HOTELS);
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(VECTORIZED_HOTELS.stream()
+            .map(hotel -> new IndexAction().setActionType(IndexActionType.UPLOAD)
+                .setAdditionalProperties())
+            .collect(Collectors.toList()));
+        searchIndexClient.getSearchClient(HOTEL_INDEX_NAME).index(batch);
 
         waitForIndexing();
     }
@@ -102,11 +110,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void singleVectorSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery()))
-            .setSelect("HotelId", "HotelName");
+        SearchPostOptions searchOptions = new SearchPostOptions()
+            .setVectorQueries(Collections.singletonList(createDescriptionVectorQuery()))
+            .setSelect(Arrays.asList("HotelId", "HotelName"));
 
-        StepVerifier.create(searchClient.search(null, searchOptions).collectList())
+        StepVerifier.create(searchClient.searchPost(searchOptions).collectList())
             .assertNext(results -> assertKeysEqual(results,
                 r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "3", "5", "1"))
             .verifyComplete();

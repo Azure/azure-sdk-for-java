@@ -89,7 +89,7 @@ public class IndexManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
-        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
+        sharedSynonymMap = new SynonymMap("sharedhotelmotel", Collections.singletonList("hotel,motel"));
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -170,14 +170,16 @@ public class IndexManagementTests extends SearchTestBase {
     public void createAndGetIndexReturnsCorrectDefinitionWithResponseAsync() {
         SearchIndex index = createTestIndex("hotel2");
 
-        StepVerifier.create(asyncClient.createIndexWithResponse(index)).assertNext(response -> {
-            indexesToDelete.add(response.getValue().getName());
+        StepVerifier.create(asyncClient.createIndexWithResponse(BinaryData.fromObject(index), null))
+            .assertNext(response -> {
+                SearchIndex created = response.getValue().toObject(SearchIndex.class);
+                indexesToDelete.add(created.getName());
 
-            assertObjectEquals(index, response.getValue(), true, "etag");
-        }).verifyComplete();
+                assertObjectEquals(index, created, true, "etag");
+            }).verifyComplete();
 
-        StepVerifier.create(asyncClient.getIndexWithResponse(index.getName()))
-            .assertNext(response -> assertObjectEquals(index, response.getValue(), true, "etag"))
+        StepVerifier.create(asyncClient.getIndexWithResponse(index.getName(), null))
+            .assertNext(response -> assertObjectEquals(index, response.getValue().toObject(SearchIndex.class), true, "etag"))
             .verifyComplete();
     }
 

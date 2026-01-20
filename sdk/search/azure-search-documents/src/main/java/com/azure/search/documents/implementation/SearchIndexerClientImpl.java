@@ -1678,7 +1678,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1689,7 +1689,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -1759,7 +1759,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1770,7 +1770,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -1881,7 +1881,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1892,7 +1892,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -1962,7 +1962,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -1973,7 +1973,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2118,7 +2118,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2129,7 +2129,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2216,7 +2216,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2227,7 +2227,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2325,7 +2325,7 @@ public final class SearchIndexerClientImpl {
      *                     executionEnvironment: String(standard/private) (Optional)
      *                     queryTimeout: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -2336,7 +2336,7 @@ public final class SearchIndexerClientImpl {
      *                     mappingFunction (Optional): {
      *                         name: String (Required)
      *                         parameters (Optional): {
-     *                             String: BinaryData (Required)
+     *                             String: Object (Required)
      *                         }
      *                     }
      *                 }
@@ -2436,7 +2436,7 @@ public final class SearchIndexerClientImpl {
      *                     executionEnvironment: String(standard/private) (Optional)
      *                     queryTimeout: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -2447,7 +2447,7 @@ public final class SearchIndexerClientImpl {
      *                     mappingFunction (Optional): {
      *                         name: String (Required)
      *                         parameters (Optional): {
-     *                             String: BinaryData (Required)
+     *                             String: Object (Required)
      *                         }
      *                     }
      *                 }
@@ -2535,7 +2535,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2546,7 +2546,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2616,7 +2616,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2627,7 +2627,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2716,7 +2716,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2727,7 +2727,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -2797,7 +2797,7 @@ public final class SearchIndexerClientImpl {
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -2808,7 +2808,7 @@ public final class SearchIndexerClientImpl {
      *             mappingFunction (Optional): {
      *                 name: String (Required)
      *                 parameters (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         }
@@ -3137,7 +3137,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3155,7 +3155,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3257,7 +3257,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3275,7 +3275,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3418,7 +3418,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3436,7 +3436,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3538,7 +3538,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3556,7 +3556,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3733,7 +3733,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3751,7 +3751,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3870,7 +3870,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -3888,7 +3888,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4018,7 +4018,7 @@ public final class SearchIndexerClientImpl {
      *                 parameters (Optional): {
      *                     synthesizeGeneratedKeyName: Boolean (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4036,7 +4036,7 @@ public final class SearchIndexerClientImpl {
      *                 parameters (Optional): {
      *                     projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4168,7 +4168,7 @@ public final class SearchIndexerClientImpl {
      *                 parameters (Optional): {
      *                     synthesizeGeneratedKeyName: Boolean (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4186,7 +4186,7 @@ public final class SearchIndexerClientImpl {
      *                 parameters (Optional): {
      *                     projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             }
@@ -4306,7 +4306,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4324,7 +4324,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4426,7 +4426,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4444,7 +4444,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4565,7 +4565,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4583,7 +4583,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4685,7 +4685,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             synthesizeGeneratedKeyName: Boolean (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }
@@ -4703,7 +4703,7 @@ public final class SearchIndexerClientImpl {
      *         parameters (Optional): {
      *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     }

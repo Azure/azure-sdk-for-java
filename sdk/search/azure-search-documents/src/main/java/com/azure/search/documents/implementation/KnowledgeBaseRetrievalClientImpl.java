@@ -253,7 +253,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                      (Optional){
      *                         type: String (Optional)
      *                         info (Optional): {
-     *                             String: BinaryData (Required)
+     *                             String: Object (Required)
      *                         }
      *                     }
      *                 ]
@@ -266,7 +266,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             rerankerScore: Double (Optional)
      *         }
@@ -377,7 +377,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                      (Optional){
      *                         type: String (Optional)
      *                         info (Optional): {
-     *                             String: BinaryData (Required)
+     *                             String: Object (Required)
      *                         }
      *                     }
      *                 ]
@@ -390,7 +390,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *             rerankerScore: Double (Optional)
      *         }

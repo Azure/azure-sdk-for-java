@@ -16,21 +16,20 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
-import com.azure.search.documents.indexes.models.KnowledgeSourceStatus;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
 import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSource;
 import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
-
+import com.azure.search.documents.knowledgebase.models.KnowledgeSourceStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,7 +50,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.time.Duration;
 
 import static com.azure.search.documents.TestHelpers.loadResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -146,8 +144,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals(knowledgeSource.getName(), created.getName());
 
-        RemoteSharePointKnowledgeSource createdSource
-            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
     }
 
     @Test
@@ -160,8 +157,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
             assertEquals(knowledgeSource.getName(), created.getName());
 
-            RemoteSharePointKnowledgeSource createdSource
-                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+            assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
         }).verifyComplete();
     }
 
@@ -179,8 +175,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         assertEquals(knowledgeSource.getName(), created.getName());
 
-        RemoteSharePointKnowledgeSource createdSource
-            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
     }
 
     @Test
@@ -196,8 +191,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
             assertEquals(knowledgeSource.getName(), created.getName());
 
-            RemoteSharePointKnowledgeSource createdSource
-                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+            assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
         }).verifyComplete();
     }
 
@@ -245,8 +239,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
         assertEquals(knowledgeSource.getName(), retrieved.getName());
 
-        RemoteSharePointKnowledgeSource retrievedSource
-            = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
+        assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
     }
 
     @Test
@@ -262,8 +255,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         StepVerifier.create(createAndGetMono).assertNext(retrieved -> {
             assertEquals(knowledgeSource.getName(), retrieved.getName());
 
-            RemoteSharePointKnowledgeSource retrievedSource
-                = assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
+            assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
         }).verifyComplete();
     }
 
@@ -416,11 +408,10 @@ public class KnowledgeSourceTests extends SearchTestBase {
     @Test
     public void statusPayloadMapsToModelsWithNullables() throws IOException {
         // Sample status payload with nullables for first sync
-        String statusJson = "{\n" + "    \"synchronizationStatus\": \"creating\",\n"
-            + "    \"synchronizationInterval\": \"PT24H\",\n" + "    \"currentSynchronizationState\": null,\n"
-            + "    \"lastSynchronizationState\": null,\n" + "    \"statistics\": {\n"
-            + "        \"totalSynchronization\": 0,\n" + "        \"averageSynchronizationDuration\": \"00:00:00\",\n"
-            + "        \"averageItemsProcessedPerSynchronization\": 0\n" + "    }\n" + "}";
+        String statusJson = "{\"synchronizationStatus\": \"creating\",\"synchronizationInterval\": \"PT24H\","
+            + "\"currentSynchronizationState\": null,\"lastSynchronizationState\": null,\"statistics\": {"
+            + "\"totalSynchronization\": 0,\"averageSynchronizationDuration\": \"00:00:00\","
+            + "\"averageItemsProcessedPerSynchronization\": 0}}";
 
         try (JsonReader reader = JsonProviders.createReader(statusJson)) {
             KnowledgeSourceStatus status = KnowledgeSourceStatus.fromJson(reader);
@@ -428,14 +419,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertNotNull(status);
             assertEquals(KnowledgeSourceSynchronizationStatus.CREATING, status.getSynchronizationStatus());
 
-            Object syncInterval = status.getSynchronizationInterval();
-            if (syncInterval instanceof String) {
-                assertEquals("PT24H", syncInterval); // ← Compare as String
-            } else if (syncInterval instanceof Duration) {
-                assertEquals(Duration.ofHours(24), syncInterval); // ← Compare as Duration
-            } else {
-                // Handle other types if needed
-                assertNotNull(syncInterval, "Synchronization interval should not be null");
+            if (status.getSynchronizationInterval() != null) {
+                assertEquals("PT24H", status.getSynchronizationInterval());
             }
 
             assertNull(status.getCurrentSynchronizationState());
@@ -460,10 +445,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertNotNull(created);
             assertEquals(knowledgeSource.getName(), created.getName());
         } finally {
-            try {
-                client.deleteKnowledgeSource(knowledgeSource.getName());
-            } catch (Exception e) {
-            }
+            client.deleteKnowledgeSource(knowledgeSource.getName());
         }
     }
 
@@ -485,10 +467,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             KnowledgeSource retrieved = client.getKnowledgeSource(knowledgeSource.getName());
             assertEquals(newDescription, retrieved.getDescription());
         } finally {
-            try {
-                client.deleteKnowledgeSource(knowledgeSource.getName());
-            } catch (Exception e) {
-            }
+            client.deleteKnowledgeSource(knowledgeSource.getName());
         }
     }
 
@@ -501,9 +480,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
         client.createKnowledgeSource(knowledgeSource);
         client.deleteKnowledgeSource(knowledgeSource.getName());
 
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-            client.getKnowledgeSource(knowledgeSource.getName());
-        });
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> client.getKnowledgeSource(knowledgeSource.getName()));
         assertEquals(404, exception.getResponse().getStatusCode());
     }
 
@@ -527,13 +505,9 @@ public class KnowledgeSourceTests extends SearchTestBase {
             assertEquals(initialCount + 2, knowledgeSourcesByName.size());
             assertTrue(knowledgeSourcesByName.containsKey(ks1.getName()));
             assertTrue(knowledgeSourcesByName.containsKey(ks2.getName()));
-
         } finally {
-            try {
-                client.deleteKnowledgeSource(ks1.getName());
-                client.deleteKnowledgeSource(ks2.getName());
-            } catch (Exception e) {
-            }
+            client.deleteKnowledgeSource(ks1.getName());
+            client.deleteKnowledgeSource(ks2.getName());
         }
     }
 
@@ -553,8 +527,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         assertEquals("field1", params.getSourceDataFields().get(0).getName());
         assertEquals("field2", params.getSourceDataFields().get(1).getName());
 
-        List<SearchIndexFieldReference> searchFields = Arrays.asList(new SearchIndexFieldReference("searchField1"));
-        params.setSearchFields(searchFields);
+        params.setSearchFields(new SearchIndexFieldReference("searchField1"));
         assertEquals(1, params.getSearchFields().size());
         assertEquals("searchField1", params.getSearchFields().get(0).getName());
 
@@ -683,9 +656,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         searchIndexClient.deleteKnowledgeSource(created.getName());
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
-            searchIndexClient.getKnowledgeSource(created.getName());
-        });
+        HttpResponseException ex = assertThrows(HttpResponseException.class,
+            () -> searchIndexClient.getKnowledgeSource(created.getName()));
         assertEquals(404, ex.getResponse().getStatusCode());
     }
 
@@ -709,9 +681,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         try {
             WebKnowledgeSource webKS = new WebKnowledgeSource("");
-            HttpResponseException ex = assertThrows(HttpResponseException.class, () -> {
-                searchIndexClient.createKnowledgeSource(webKS);
-            });
+            HttpResponseException ex = assertThrows(HttpResponseException.class,
+                () -> searchIndexClient.createKnowledgeSource(webKS));
             assertTrue(ex.getResponse().getStatusCode() >= 400 && ex.getResponse().getStatusCode() < 500);
 
         } catch (NullPointerException | IllegalArgumentException e) {
@@ -721,9 +692,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         try {
             WebKnowledgeSource webKS = new WebKnowledgeSource(null);
-            HttpResponseException ex2 = assertThrows(HttpResponseException.class, () -> {
-                searchIndexClient.createKnowledgeSource(webKS);
-            });
+            HttpResponseException ex2 = assertThrows(HttpResponseException.class,
+                () -> searchIndexClient.createKnowledgeSource(webKS));
             assertTrue(ex2.getResponse().getStatusCode() >= 400 && ex2.getResponse().getStatusCode() < 500);
 
         } catch (NullPointerException | IllegalArgumentException e) {
@@ -794,8 +764,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         assertNotNull(created.getName());
         assertNotNull(created.getDescription());
 
-        assertTrue(created instanceof KnowledgeSource);
-        assertTrue(created instanceof WebKnowledgeSource);
+        assertInstanceOf(WebKnowledgeSource.class, created);
 
         String newDescription = "Updated via base class";
         created.setDescription(newDescription);

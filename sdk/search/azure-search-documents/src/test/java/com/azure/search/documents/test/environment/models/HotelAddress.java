@@ -2,33 +2,39 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class HotelAddress {
-    @SimpleField(isFacetable = true)
+import java.io.IOException;
+
+public class HotelAddress implements JsonSerializable<HotelAddress> {
+    @SimpleField(name = "StreetAddress", isFacetable = true)
     @JsonProperty(value = "StreetAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String streetAddress;
 
-    @SearchableField(isFilterable = true)
+    @SearchableField(name = "City", isFilterable = true)
     @JsonProperty(value = "City")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String city;
 
-    @SearchableField
+    @SearchableField(name = "StateProvince")
     @JsonProperty(value = "StateProvince")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stateProvince;
 
-    @SearchableField(synonymMapNames = { "fieldbuilder" })
+    @SearchableField(name = "Country", synonymMapNames = { "fieldbuilder" })
     @JsonProperty(value = "Country")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String country;
 
-    @SimpleField
+    @SimpleField(name = "PostalCode")
     @JsonProperty(value = "PostalCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String postalCode;
@@ -76,5 +82,43 @@ public class HotelAddress {
     public HotelAddress postalCode(String postalCode) {
         this.postalCode = postalCode;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("StreetAddress", streetAddress)
+            .writeStringField("City", city)
+            .writeStringField("StateProvince", stateProvince)
+            .writeStringField("Country", country)
+            .writeStringField("PostalCode", postalCode)
+            .writeEndObject();
+    }
+
+    public static HotelAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HotelAddress hotelAddress = new HotelAddress();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("StreetAddress".equals(fieldName)) {
+                    hotelAddress.streetAddress = reader.getString();
+                } else if ("City".equals(fieldName)) {
+                    hotelAddress.city = reader.getString();
+                } else if ("StateProvince".equals(fieldName)) {
+                    hotelAddress.stateProvince = reader.getString();
+                } else if ("Country".equals(fieldName)) {
+                    hotelAddress.country = reader.getString();
+                } else if ("PostalCode".equals(fieldName)) {
+                    hotelAddress.postalCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return hotelAddress;
+        });
     }
 }

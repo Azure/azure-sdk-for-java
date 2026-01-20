@@ -19,6 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.search.documents.knowledgebase.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.SearchKnowledgeBaseClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
@@ -191,8 +192,9 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected SearchKnowledgeBaseClientBuilder getSearchKnowledgeBaseClientBuilder(boolean isSync) {
-        SearchKnowledgeBaseClientBuilder builder = new SearchKnowledgeBaseClientBuilder().endpoint(SEARCH_ENDPOINT)
+    protected KnowledgeBaseRetrievalClientBuilder getKnowledgeBaseRetrievalClientBuilder(boolean isSync) {
+        KnowledgeBaseRetrievalClientBuilder builder = new KnowledgeBaseRetrievalClientBuilder()
+            .endpoint(SEARCH_ENDPOINT)
             .credential(getTestTokenCredential())
             .httpClient(getHttpClient(interceptorManager, isSync))
             .retryOptions(SERVICE_THROTTLE_SAFE_RETRY_OPTIONS);
@@ -289,26 +291,26 @@ public abstract class SearchTestBase extends TestProxyTestBase {
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Description", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setAnalyzerName(LexicalAnalyzerName.EN_LUCENE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("DescriptionFr", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setAnalyzerName(LexicalAnalyzerName.FR_LUCENE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Description_Custom", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setSearchAnalyzerName(LexicalAnalyzerName.STOP)
                     .setIndexAnalyzerName(LexicalAnalyzerName.STOP)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Category", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
@@ -317,22 +319,22 @@ public abstract class SearchTestBase extends TestProxyTestBase {
                 new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN).setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN).setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET).setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Rating", SearchFieldDataType.INT32).setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
-                    .setHidden(Boolean.FALSE),
+                    .setSearchable(Boolean.TRUE),
                 new SearchField("Address", SearchFieldDataType.COMPLEX).setFields(
                     new SearchField("StreetAddress", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
-                        .setHidden(Boolean.FALSE),
+                        .setSearchable(Boolean.TRUE),
                     new SearchField("City", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setSortable(Boolean.TRUE)

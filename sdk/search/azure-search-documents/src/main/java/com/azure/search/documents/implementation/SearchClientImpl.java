@@ -558,7 +558,7 @@ public final class SearchClientImpl {
      *                     ]
      *                 }
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -570,7 +570,7 @@ public final class SearchClientImpl {
      *             text: String (Optional)
      *             highlights: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -668,7 +668,7 @@ public final class SearchClientImpl {
      *                     text: String (Optional)
      *                     highlights: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -720,7 +720,7 @@ public final class SearchClientImpl {
      *                 }
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -891,7 +891,7 @@ public final class SearchClientImpl {
      *                     ]
      *                 }
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -903,7 +903,7 @@ public final class SearchClientImpl {
      *             text: String (Optional)
      *             highlights: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1001,7 +1001,7 @@ public final class SearchClientImpl {
      *                     text: String (Optional)
      *                     highlights: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -1053,7 +1053,7 @@ public final class SearchClientImpl {
      *                 }
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1186,7 +1186,7 @@ public final class SearchClientImpl {
      *                     ]
      *                 }
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -1198,7 +1198,7 @@ public final class SearchClientImpl {
      *             text: String (Optional)
      *             highlights: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1296,7 +1296,7 @@ public final class SearchClientImpl {
      *                     text: String (Optional)
      *                     highlights: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -1348,7 +1348,7 @@ public final class SearchClientImpl {
      *                 }
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1486,7 +1486,7 @@ public final class SearchClientImpl {
      *                     ]
      *                 }
      *                  (Optional): {
-     *                     String: BinaryData (Required)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -1498,7 +1498,7 @@ public final class SearchClientImpl {
      *             text: String (Optional)
      *             highlights: String (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1596,7 +1596,7 @@ public final class SearchClientImpl {
      *                     text: String (Optional)
      *                     highlights: String (Optional)
      *                      (Optional): {
-     *                         String: BinaryData (Required)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -1648,7 +1648,7 @@ public final class SearchClientImpl {
      *                 }
      *             }
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1703,7 +1703,7 @@ public final class SearchClientImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1752,7 +1752,7 @@ public final class SearchClientImpl {
      * {@code
      * {
      *      (Optional): {
-     *         String: BinaryData (Required)
+     *         String: Object (Required)
      *     }
      * }
      * }
@@ -1817,7 +1817,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.text: String (Required)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1891,7 +1891,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.text: String (Required)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1956,7 +1956,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.text: String (Required)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2021,7 +2021,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.text: String (Required)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2057,7 +2057,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.action: String(upload/merge/mergeOrUpload/delete) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2110,7 +2110,7 @@ public final class SearchClientImpl {
      *          (Required){
      *             &#64;search.action: String(upload/merge/mergeOrUpload/delete) (Optional)
      *              (Optional): {
-     *                 String: BinaryData (Required)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]

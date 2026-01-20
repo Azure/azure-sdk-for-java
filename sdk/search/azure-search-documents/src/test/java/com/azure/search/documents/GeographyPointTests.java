@@ -6,13 +6,19 @@ package com.azure.search.documents;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Context;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.AfterAll;
@@ -23,6 +29,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +37,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.azure.search.documents.TestHelpers.convertFromMapStringObject;
 
 /**
  * This class tests indexes using OData type GeographyPoint.
@@ -72,7 +81,10 @@ public class GeographyPointTests extends SearchTestBase {
                 .buildClient();
 
             searchIndexClient.createIndex(new SearchIndex(INDEX_NAME, SEARCH_FIELDS));
-            searchIndexClient.getSearchClient(INDEX_NAME).uploadDocuments(getDocuments());
+            searchIndexClient.getSearchClient(INDEX_NAME).index(new IndexDocumentsBatch(getDocuments().stream()
+                .map(document -> new IndexAction().setActionType(IndexActionType.UPLOAD)
+                    .setAdditionalProperties(TestHelpers.convertToMapStringObject(document)))
+                .collect(Collectors.toList())));
 
             TestHelpers.sleepIfRunningAgainstService(2000);
         }
@@ -98,16 +110,21 @@ public class GeographyPointTests extends SearchTestBase {
         Map<String, SimpleDocument> expectedDocuments = getExpectedDocuments();
         Map<String, SimpleDocument> actualDocuments = new HashMap<>();
 
-        actualDocuments.put("1", searchClient.getDocument("1", SimpleDocument.class));
-        actualDocuments.put("2", searchClient.getDocument("2", SimpleDocument.class));
-        actualDocuments.put("3", searchClient.getDocument("3", SimpleDocument.class));
-        actualDocuments.put("4", searchClient.getDocument("4", SimpleDocument.class));
+        actualDocuments.put("1", convertFromMapStringObject(searchClient.getDocument("1").getAdditionalProperties(),
+            SimpleDocument::fromJson));
+        actualDocuments.put("2", convertFromMapStringObject(searchClient.getDocument("2").getAdditionalProperties(),
+            SimpleDocument::fromJson));
+        actualDocuments.put("3", convertFromMapStringObject(searchClient.getDocument("3").getAdditionalProperties(),
+            SimpleDocument::fromJson));
+        actualDocuments.put("4", convertFromMapStringObject(searchClient.getDocument("4").getAdditionalProperties(),
+            SimpleDocument::fromJson));
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), Context.NONE)
+        actualDocuments = searchClient.search(new SearchPostOptions().setSearchText("Tourist location")
+                .setOrderBy("id"))
             .stream()
-            .map(doc -> doc.getDocument(SimpleDocument.class))
+            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
             .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
@@ -118,24 +135,25 @@ public class GeographyPointTests extends SearchTestBase {
         Map<String, SimpleDocument> expectedDocuments = getExpectedDocuments();
 
         Mono<Map<String, SimpleDocument>> getDocumentsByIdMono = Flux.just("1", "2", "3", "4")
-            .flatMap(id -> searchAsyncClient.getDocument(id, SimpleDocument.class))
+            .flatMap(id -> searchAsyncClient.getDocument(id))
+            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
             .collectMap(SimpleDocument::getId);
 
         StepVerifier.create(getDocumentsByIdMono)
             .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
             .verifyComplete();
 
-        Mono<Map<String, SimpleDocument>> searchDocumentsMono
-            = searchAsyncClient.search("Tourist location", new SearchOptions().setOrderBy("id"))
-                .map(doc -> doc.getDocument(SimpleDocument.class))
-                .collectMap(SimpleDocument::getId);
+        Mono<Map<String, SimpleDocument>> searchDocumentsMono = searchAsyncClient.search(new SearchPostOptions()
+                .setSearchText("Tourist location").setOrderBy("id"))
+            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
+            .collectMap(SimpleDocument::getId);
 
         StepVerifier.create(searchDocumentsMono)
             .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
             .verifyComplete();
     }
 
-    public static final class SimpleDocument {
+    public static final class SimpleDocument implements JsonSerializable<SimpleDocument> {
         @JsonProperty("id")
         private final String id;
 
@@ -184,6 +202,40 @@ public class GeographyPointTests extends SearchTestBase {
         @Override
         public int hashCode() {
             return Objects.hash(id, geoPoint.getCoordinates(), description);
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeStringField("id", id)
+                .writeJsonField("geography_point", geoPoint)
+                .writeStringField("description", description)
+                .writeEndObject();
+        }
+
+        public static SimpleDocument fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String id = null;
+                GeoPoint geoPoint = null;
+                String description = null;
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("id".equals(fieldName)) {
+                        id = reader.getString();
+                    } else if ("geography_point".equals(fieldName)) {
+                        geoPoint = GeoPoint.fromJson(reader);
+                    } else if ("description".equals(fieldName)) {
+                        description = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return new SimpleDocument(id, geoPoint, description);
+            });
         }
     }
 }

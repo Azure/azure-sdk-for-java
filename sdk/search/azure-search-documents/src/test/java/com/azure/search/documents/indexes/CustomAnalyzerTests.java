@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
@@ -43,7 +43,6 @@ import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLangu
 import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
 import com.azure.search.documents.indexes.models.NGramTokenFilter;
 import com.azure.search.documents.indexes.models.NGramTokenizer;
-import com.azure.search.documents.indexes.models.PathHierarchyTokenizer;
 import com.azure.search.documents.indexes.models.PatternAnalyzer;
 import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
 import com.azure.search.documents.indexes.models.PatternReplaceCharFilter;
@@ -72,7 +71,9 @@ import com.azure.search.documents.indexes.models.TruncateTokenFilter;
 import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
 import com.azure.search.documents.indexes.models.UniqueTokenFilter;
 import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -87,8 +88,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -136,7 +139,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
         SearchAsyncClient searchAsyncClient = searchIndexAsyncClient.getSearchAsyncClient(searchClient.getIndexName());
 
         Iterator<SearchResult> iterator
-            = searchClient.search("someone@somewhere.something", new SearchOptions(), Context.NONE).iterator();
+            = searchClient.searchPost("someone@somewhere.something", new SearchOptions(), Context.NONE).iterator();
 
         assertEquals("1", iterator.next().getDocument(SearchDocument.class).get("id"));
         assertFalse(iterator.hasNext());
@@ -150,28 +153,30 @@ public class CustomAnalyzerTests extends SearchTestBase {
         final LexicalAnalyzerName customLexicalAnalyzerName = LexicalAnalyzerName.fromString("my_email_analyzer");
         final CharFilterName customCharFilterName = CharFilterName.fromString("my_email_filter");
 
-        SearchIndex index = new SearchIndex(randomIndexName("testindex"))
-            .setFields(new SearchField("id", SearchFieldDataType.STRING).setKey(true),
-                new SearchField("message", SearchFieldDataType.STRING).setAnalyzerName(customLexicalAnalyzerName)
-                    .setSearchable(true))
-            .setAnalyzers(new CustomAnalyzer(customLexicalAnalyzerName.toString(), LexicalTokenizerName.STANDARD)
-                .setCharFilters(customCharFilterName))
-            .setCharFilters(new PatternReplaceCharFilter(customCharFilterName.toString(), "@", "_"));
+        SearchIndex index = new SearchIndex(randomIndexName("testindex"),
+            Arrays.asList(new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+            new SearchField("message", SearchFieldDataType.STRING).setAnalyzerName(customLexicalAnalyzerName)
+                .setSearchable(true)))
+            .setAnalyzers(Collections.singletonList(new CustomAnalyzer(customLexicalAnalyzerName.toString(), LexicalTokenizerName.STANDARD)
+                .setCharFilters(Collections.singletonList(customCharFilterName))))
+            .setCharFilters(Collections.singletonList(new PatternReplaceCharFilter(customCharFilterName.toString(), "@", "_")));
 
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
         SearchClient searchClient = searchIndexClient.getSearchClient(index.getName());
 
-        SearchDocument document1 = new SearchDocument();
-        document1.put("id", "1");
-        document1.put("message", "My email is someone@somewhere.something.");
-        SearchDocument document2 = new SearchDocument();
-        document2.put("id", "2");
-        document2.put("message", "His email is someone@nowhere.nothing.");
+        Map<String, BinaryData> document1 = new HashMap<>();
+        document1.put("id", BinaryData.fromString("1"));
+        document1.put("message", BinaryData.fromString("My email is someone@somewhere.something."));
+        Map<String, BinaryData> document2 = new HashMap<>();
+        document2.put("id", BinaryData.fromString("2"));
+        document2.put("message", BinaryData.fromString("His email is someone@nowhere.nothing."));
 
-        List<SearchDocument> documents = Arrays.asList(document1, document2);
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(Arrays.asList(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(document1),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(document2)));
 
-        searchClient.uploadDocuments(documents);
+        searchClient.index(batch);
         waitForIndexing();
 
         return clientCreator.apply(index.getName());
@@ -202,35 +207,39 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two").setAnalyzerName(LexicalAnalyzerName.WHITESPACE);
 
         // sync
-        PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
-        Iterator<AnalyzedTokenInfo> iterator = results.iterator();
-        assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
-        assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
-        assertFalse(iterator.hasNext());
+        AnalyzeResult results = searchIndexClient.analyzeText(index.getName(), request);
+        assertEquals(2, results.getTokens().size());
+        assertTokenInfoEqual("One", 0, 3, 0, results.getTokens().get(0));
+        assertTokenInfoEqual("two", 4, 7, 1, results.getTokens().get(1));
 
         // async
         StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
-            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 3, 0, analyzedTokenInfo))
-            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("two", 4, 7, 1, analyzedTokenInfo))
+            .assertNext(analyzeResults -> {
+                assertEquals(2, analyzeResults.getTokens().size());
+                assertTokenInfoEqual("One", 0, 3, 0, analyzeResults.getTokens().get(0));
+                assertTokenInfoEqual("two", 4, 7, 1, analyzeResults.getTokens().get(1));
+            })
             .verifyComplete();
 
-        request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TokenFilterName.APOSTROPHE)
-            .setCharFilters(CharFilterName.HTML_STRIP);
+        request = new AnalyzeTextOptions("One's <two/>").setTokenizerName(LexicalTokenizerName.WHITESPACE)
+            .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
+            .setCharFilters(Collections.singletonList(CharFilterName.HTML_STRIP));
 
         // sync
         results = searchIndexClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
-        iterator = results.iterator();
-        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
-        assertFalse(iterator.hasNext());
+        assertEquals(1, results.getTokens().size());
+        assertTokenInfoEqual("One", 0, 5, 0, results.getTokens().get(0));
 
         // async
         StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
-            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 5, 0, analyzedTokenInfo))
+            .assertNext(analyzeResults -> {
+                assertEquals(1, analyzeResults.getTokens().size());
+                assertTokenInfoEqual("One", 0, 5, 0, analyzeResults.getTokens().get(0));
+            })
             .verifyComplete();
     }
 

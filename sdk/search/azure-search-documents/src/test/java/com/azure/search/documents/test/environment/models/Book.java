@@ -2,11 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
-public class Book {
+public class Book implements JsonSerializable<Book> {
     @JsonProperty(value = "ISBN")
     private String ISBN;
 
@@ -53,5 +60,40 @@ public class Book {
     public Book publishDate(OffsetDateTime publishDate) {
         this.publishDate = publishDate;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("ISBN", ISBN)
+            .writeStringField("Title", title)
+            .writeJsonField("Author", author)
+            .writeStringField("PublishDate", Objects.toString(publishDate, null))
+            .writeEndObject();
+    }
+
+    public static Book fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Book book = new Book();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ISBN".equals(fieldName)) {
+                    book.ISBN = reader.getString();
+                } else if ("Title".equals(fieldName)) {
+                    book.title = reader.getString();
+                } else if ("Author".equals(fieldName)) {
+                    book.author = Author.fromJson(reader);
+                } else if ("PublishDate".equals(fieldName)) {
+                    book.publishDate = reader.getNullable(nonNull -> CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return book;
+        });
     }
 }

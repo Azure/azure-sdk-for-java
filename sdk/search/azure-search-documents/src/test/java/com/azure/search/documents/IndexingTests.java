@@ -4,15 +4,16 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
+import com.azure.json.JsonSerializable;
+import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexDocumentsOptions;
-import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
@@ -48,6 +49,8 @@ import java.util.function.BiConsumer;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertToIndexAction;
+import static com.azure.search.documents.TestHelpers.convertToMapStringObject;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -130,9 +133,10 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
-        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(expectedHotelId), IndexActionType.UPLOAD));
 
-        List<IndexingResult> result = client.uploadDocuments(hotels).getResults();
+        List<IndexingResult> result = client.index(batch).getResults();
         assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
     }
 
@@ -146,9 +150,10 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
-        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(expectedHotelId), IndexActionType.UPLOAD));
 
-        StepVerifier.create(asyncClient.uploadDocuments(hotels))
+        StepVerifier.create(asyncClient.index(batch))
             .assertNext(result -> assertIndexActionSucceeded(expectedHotelId, result.getResults().get(0), 201))
             .verifyComplete();
     }
@@ -163,12 +168,11 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
-        List<Book> books = new ArrayList<>();
-        books.add(new Book().ISBN(isbn)
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")), IndexActionType.UPLOAD));
 
-        List<IndexingResult> result = client.uploadDocuments(books).getResults();
+        List<IndexingResult> result = client.index(batch).getResults();
         assertIndexActionSucceeded(isbn, result.get(0), 201);
     }
 
@@ -182,12 +186,11 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
-        List<Book> books = new ArrayList<>();
-        books.add(new Book().ISBN(isbn)
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")), IndexActionType.UPLOAD));
 
-        StepVerifier.create(asyncClient.uploadDocuments(books))
+        StepVerifier.create(asyncClient.index(batch))
             .assertNext(result -> assertIndexActionSucceeded(isbn, result.getResults().get(0), 201))
             .verifyComplete();
     }
@@ -204,14 +207,17 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Key = getRandomDocumentKey();
         String hotel2Key = getRandomDocumentKey();
 
-        client.uploadDocuments(Arrays.asList(new Hotel().hotelId(hotel1Key), new Hotel().hotelId(hotel2Key)));
+        client.index(new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(hotel1Key), IndexActionType.UPLOAD),
+            convertToIndexAction(new Hotel().hotelId(hotel2Key), IndexActionType.UPLOAD)));
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch
-            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch deleteBatch = new IndexDocumentsBatch(
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel1Key)),
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel2Key)));
 
-        IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
+        IndexDocumentsResult documentIndexResult = client.index(deleteBatch);
 
         assertEquals(2, documentIndexResult.getResults().size());
         assertIndexActionSucceeded(hotel1Key, documentIndexResult.getResults().get(0), 200);
@@ -230,15 +236,18 @@ public class IndexingTests extends SearchTestBase {
         String hotel1Key = getRandomDocumentKey();
         String hotel2Key = getRandomDocumentKey();
 
-        asyncClient.uploadDocuments(Arrays.asList(new Hotel().hotelId(hotel1Key), new Hotel().hotelId(hotel2Key)))
+        asyncClient.index(new IndexDocumentsBatch(
+            convertToIndexAction(new Hotel().hotelId(hotel1Key), IndexActionType.UPLOAD),
+            convertToIndexAction(new Hotel().hotelId(hotel2Key), IndexActionType.UPLOAD)))
             .block();
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch
-            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch deleteBatch = new IndexDocumentsBatch(
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel1Key)),
+            createIndexAction(IndexActionType.DELETE, Collections.singletonMap("HotelId", hotel2Key)));
 
-        StepVerifier.create(asyncClient.indexDocuments(deleteBatch)).assertNext(result -> {
+        StepVerifier.create(asyncClient.index(deleteBatch)).assertNext(result -> {
             assertEquals(2, result.getResults().size());
             assertIndexActionSucceeded(hotel1Key, result.getResults().get(0), 200);
             assertIndexActionSucceeded(hotel2Key, result.getResults().get(1), 200);
@@ -256,13 +265,13 @@ public class IndexingTests extends SearchTestBase {
 
         String hotelId = getRandomDocumentKey();
         Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
-        List<Hotel> hotels = Collections.singletonList(hotel);
 
-        client.uploadDocuments(hotels);
+        client.index(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.UPLOAD)));
         waitForIndexing();
 
         hotel.category("ignored");
-        IndexDocumentsResult documentIndexResult = client.deleteDocuments(hotels);
+        IndexDocumentsResult documentIndexResult = client.index(new IndexDocumentsBatch(
+            convertToIndexAction(hotel, IndexActionType.DELETE)));
 
         assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded(hotelId, documentIndexResult.getResults().get(0), 200);
@@ -279,17 +288,17 @@ public class IndexingTests extends SearchTestBase {
 
         String hotelId = getRandomDocumentKey();
         Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
-        List<Hotel> hotels = Collections.singletonList(hotel);
 
-        asyncClient.uploadDocuments(hotels).block();
+        asyncClient.index(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.UPLOAD))).block();
         waitForIndexing();
 
         hotel.category("ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(hotels)).assertNext(result -> {
-            assertEquals(1, result.getResults().size());
-            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-        }).verifyComplete();
+        StepVerifier.create(asyncClient.index(new IndexDocumentsBatch(convertToIndexAction(hotel, IndexActionType.DELETE))))
+            .assertNext(result -> {
+                assertEquals(1, result.getResults().size());
+                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+            }).verifyComplete();
     }
 
     @Test
@@ -302,17 +311,17 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument searchDocument = new SearchDocument();
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("HotelId", hotelId);
         searchDocument.put("Category", "Luxury");
-        List<SearchDocument> docs = Collections.singletonList(searchDocument);
 
-        client.uploadDocuments(docs);
+        client.index(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, searchDocument)));
 
         waitForIndexing();
 
         searchDocument.put("Category", "ignored");
-        IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
+        IndexDocumentsResult documentIndexResult = client.index(
+            new IndexDocumentsBatch(createIndexAction(IndexActionType.DELETE, searchDocument)));
 
         assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded(hotelId, documentIndexResult.getResults().get(0), 200);
@@ -328,20 +337,20 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        SearchDocument searchDocument = new SearchDocument();
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("HotelId", hotelId);
         searchDocument.put("Category", "Luxury");
-        List<SearchDocument> docs = Collections.singletonList(searchDocument);
 
-        asyncClient.uploadDocuments(docs).block();
+        asyncClient.index(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, searchDocument))).block();
         waitForIndexing();
 
         searchDocument.put("Category", "ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(docs)).assertNext(result -> {
-            assertEquals(1, result.getResults().size());
-            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-        }).verifyComplete();
+        StepVerifier.create(asyncClient.index(new IndexDocumentsBatch(createIndexAction(IndexActionType.DELETE, searchDocument))))
+            .assertNext(result -> {
+                assertEquals(1, result.getResults().size());
+                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+            }).verifyComplete();
     }
 
     @Test
@@ -362,12 +371,11 @@ public class IndexingTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non-existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch
-            = new IndexDocumentsBatch<Hotel>().addUploadActions(Collections.singletonList(hotel1))
-                .addDeleteActions(Collections.singletonList(randomHotel))
-                .addMergeActions(Collections.singletonList(nonExistingHotel))
-                .addMergeOrUploadActions(Collections.singletonList(hotel3))
-                .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(convertToIndexAction(hotel1, IndexActionType.UPLOAD),
+            convertToIndexAction(randomHotel, IndexActionType.DELETE),
+            convertToIndexAction(nonExistingHotel, IndexActionType.MERGE),
+            convertToIndexAction(hotel3, IndexActionType.MERGE_OR_UPLOAD),
+            convertToIndexAction(hotel2, IndexActionType.UPLOAD));
 
         IndexBatchException ex = assertThrows(IndexBatchException.class, () -> client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE));
@@ -1041,6 +1049,14 @@ public class IndexingTests extends SearchTestBase {
             (expected, actual) -> assertEquals(4, actual.get("Rating")));
     }
 
+    private static IndexAction createIndexAction(IndexActionType actionType, Map<String, Object> additionalProperties) {
+        return new IndexAction().setActionType(actionType).setAdditionalProperties(additionalProperties);
+    }
+
+    private static IndexAction convertToIndexAction(JsonSerializable<?> pojo, IndexActionType actionType) {
+        return new IndexAction().setActionType(actionType).setAdditionalProperties(convertToMapStringObject(pojo));
+    }
+
     private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key, Class<T> type,
         T expected, BiConsumer<T, T> comparator) {
         StepVerifier.create(asyncClient.getDocument(key, type))
@@ -1083,9 +1099,9 @@ public class IndexingTests extends SearchTestBase {
                 .country("United States"));
     }
 
-    SearchDocument prepareDynamicallyTypedHotel(String hotelId) {
+    Map<String, Object> prepareDynamicallyTypedHotel(String hotelId) {
 
-        SearchDocument room1 = new SearchDocument();
+        Map<String, Object> room1 = new LinkedHashMap<>();
         room1.put("Description", "Budget Room, 1 Queen Bed");
         room1.put("Description_fr", null);
         room1.put("Type", "Budget Room");
@@ -1095,7 +1111,7 @@ public class IndexingTests extends SearchTestBase {
         room1.put("SmokingAllowed", true);
         room1.put("Tags", Arrays.asList("vcr/dvd", "great view"));
 
-        SearchDocument room2 = new SearchDocument();
+        Map<String, Object> room2 = new LinkedHashMap<>();
         room2.put("Description", "Budget Room, 1 King Bed");
         room2.put("Description_fr", null);
         room2.put("Type", "Budget Room");
@@ -1105,9 +1121,9 @@ public class IndexingTests extends SearchTestBase {
         room2.put("SmokingAllowed", true);
         room2.put("Tags", Arrays.asList("vcr/dvd", "seaside view"));
 
-        List<SearchDocument> rooms = Arrays.asList(room1, room2);
+        List<Map<String, Object>> rooms = Arrays.asList(room1, room2);
 
-        SearchDocument address = new SearchDocument();
+        Map<String, Object> address = new LinkedHashMap<>();
         address.put("StreetAddress", "One Microsoft way");
         address.put("City", "Redmond");
         address.put("StateProvince", "Washington");
@@ -1115,19 +1131,19 @@ public class IndexingTests extends SearchTestBase {
         address.put("Country", "US");
 
         // TODO (alzimmer): Determine if this should be used to create the hotel document.
-        SearchDocument location = new SearchDocument();
+        Map<String, Object> location = new LinkedHashMap<>();
         location.put("type", "Point");
         location.put("coordinates", Arrays.asList(-122.131577, 47.678581));
         location.put("crs", null);
 
-        SearchDocument hotel = new SearchDocument();
+        Map<String, Object> hotel = new LinkedHashMap<>();
         hotel.put("HotelId", hotelId);
         hotel.put("HotelName", "Fancy Stay Hotel");
         hotel.put("Description",
             "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");
         hotel.put("Description_fr", null);
         hotel.put("Address", address);
-        hotel.put("Location", null);
+        hotel.put("Location", location);
         hotel.put("Category", "Luxury");
         hotel.put("Tags", Arrays.asList("pool", "view", "wifi", "concierge"));
         hotel.put("LastRenovationDate", OffsetDateTime.parse("2019-01-30T00:00:00Z"));
@@ -1390,8 +1406,8 @@ public class IndexingTests extends SearchTestBase {
                     .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
-    private static SearchDocument canMergeDynamicDocumentsOriginal(String key) {
-        SearchDocument originalDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsOriginal(String key) {
+        Map<String, Object> originalDoc = new LinkedHashMap<>();
         originalDoc.put("HotelId", key);
         originalDoc.put("HotelName", "Secret Point Motel");
         originalDoc.put("Description",
@@ -1406,7 +1422,7 @@ public class IndexingTests extends SearchTestBase {
         originalDoc.put("Rating", 4);
         originalDoc.put("Location", new GeoPoint(-73.965403, 40.760586));
 
-        SearchDocument originalAddress = new SearchDocument();
+        Map<String, Object> originalAddress = new LinkedHashMap<>();
         originalAddress.put("StreetAddress", "677 5th Ave");
         originalAddress.put("City", "New York");
         originalAddress.put("StateProvince", "NY");
@@ -1414,7 +1430,7 @@ public class IndexingTests extends SearchTestBase {
         originalAddress.put("Country", "USA");
         originalDoc.put("Address", originalAddress);
 
-        SearchDocument originalRoom1 = new SearchDocument();
+        Map<String, Object> originalRoom1 = new LinkedHashMap<>();
         originalRoom1.put("Description", "Budget Room, 1 Queen Bed (Cityside)");
         originalRoom1.put("Description_fr", "Chambre Économique, 1 grand lit (côté ville)");
         originalRoom1.put("Type", "Budget Room");
@@ -1424,7 +1440,7 @@ public class IndexingTests extends SearchTestBase {
         originalRoom1.put("SmokingAllowed", true);
         originalRoom1.put("Tags", Collections.singletonList("vcr/dvd"));
 
-        SearchDocument originalRoom2 = new SearchDocument();
+        Map<String, Object> originalRoom2 = new LinkedHashMap<>();
         originalRoom2.put("Description", "Budget Room, 1 King Bed (Mountain View)");
         originalRoom2.put("Description_fr", "Chambre Économique, 1 très grand lit (Mountain View)");
         originalRoom2.put("Type", "Budget Room");
@@ -1439,8 +1455,8 @@ public class IndexingTests extends SearchTestBase {
         return originalDoc;
     }
 
-    private static SearchDocument canMergeDynamicDocumentsUpdated(String key) {
-        SearchDocument updatedDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsUpdated(String key) {
+        Map<String, Object> updatedDoc = new LinkedHashMap<>();
         updatedDoc.put("HotelId", key);
         updatedDoc.put("Description", null);
         updatedDoc.put("Category", "Economy");
@@ -1449,9 +1465,9 @@ public class IndexingTests extends SearchTestBase {
         updatedDoc.put("LastRenovationDate", null);
         updatedDoc.put("Rating", 3);
         updatedDoc.put("Location", null);
-        updatedDoc.put("Address", new SearchDocument());
+        updatedDoc.put("Address", new LinkedHashMap<>());
 
-        SearchDocument updatedRoom1 = new SearchDocument();
+        Map<String, Object> updatedRoom1 = new LinkedHashMap<>();
         updatedRoom1.put("Description", null);
         updatedRoom1.put("Type", "Budget Room");
         updatedRoom1.put("BaseRate", 10.5);
@@ -1464,8 +1480,8 @@ public class IndexingTests extends SearchTestBase {
         return updatedDoc;
     }
 
-    private static SearchDocument canMergeDynamicDocumentsExpected(String key) {
-        SearchDocument expectedDoc = new SearchDocument();
+    private static Map<String, Object> canMergeDynamicDocumentsExpected(String key) {
+        Map<String, Object> expectedDoc = new LinkedHashMap<>();
         expectedDoc.put("HotelId", key);
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put("Description", null);

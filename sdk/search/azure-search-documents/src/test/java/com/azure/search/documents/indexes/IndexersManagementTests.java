@@ -138,7 +138,7 @@ public class IndexersManagementTests extends SearchTestBase {
             .buildClient();
 
         sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
-        sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
+        sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource.getName(), sharedDatasource);
         sharedIndex = sharedIndexClient.createIndex(sharedIndex);
     }
 

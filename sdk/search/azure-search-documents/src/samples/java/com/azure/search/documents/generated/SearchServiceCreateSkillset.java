@@ -4,7 +4,6 @@
 
 package com.azure.search.documents.generated;
 
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
@@ -38,7 +37,6 @@ import com.azure.search.documents.indexes.models.SplitSkillEncoderModelName;
 import com.azure.search.documents.indexes.models.SplitSkillUnit;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 import com.azure.search.documents.indexes.models.WebApiSkill;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -139,8 +137,7 @@ public class SearchServiceCreateSkillset {
                                                 .setTemperature(0.0D)
                                                 .setSeed(0)
                                                 .setStop(Arrays.asList()))
-                                        .setExtraParameters(mapOf("safe_mode",
-                                            BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))))
+                                        .setExtraParameters(mapOf("safe_mode", true))
                                         .setExtraParametersBehavior(ChatCompletionExtraParametersBehavior.ERROR)
                                         .setResponseFormat(new ChatCompletionResponseFormat()
                                             .setType(ChatCompletionResponseFormatType.JSON_SCHEMA)

@@ -26,9 +26,12 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 
 import java.io.ByteArrayOutputStream;
@@ -344,6 +347,30 @@ public final class TestHelpers {
         waitForIndexing();
     }
 
+    public static Map<String, Object> convertToMapStringObject(JsonSerializable<?> pojo) {
+        try (JsonReader jsonReader = JsonProviders.createReader(pojo.toJsonBytes())) {
+            return jsonReader.readMap(JsonReader::readUntyped);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    public static <T> T convertFromMapStringObject(Map<String, Object> additionalProperties,
+        ReadValueCallback<JsonReader, T> converter) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeMap(additionalProperties, JsonWriter::writeUntyped);
+            }
+
+            try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+                return converter.read(jsonReader);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
     public static List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
         uploadDocuments(client, documents);
@@ -396,7 +423,7 @@ public final class TestHelpers {
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
-            searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
+            searchIndexClient.createIndex(createTestIndex(indexName, baseIndex));
 
             if (indexData != null) {
                 uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), indexData);
@@ -456,7 +483,7 @@ public final class TestHelpers {
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
-        return new SearchIndex(testIndexName).setFields(baseIndex.getFields())
+        return new SearchIndex(testIndexName, baseIndex.getFields())
             .setScoringProfiles(baseIndex.getScoringProfiles())
             .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
             .setCorsOptions(baseIndex.getCorsOptions())
@@ -472,7 +499,7 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).skipRequest((httpRequest, context) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignoredRequest, ignoredContext) -> false)
             .assertSync()
             .build();
     }
@@ -506,7 +533,7 @@ public final class TestHelpers {
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fileName).toURI();
+                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fName).toURI();
 
                 return Files.readAllBytes(Paths.get(fileUri));
             } catch (Exception ex) {
