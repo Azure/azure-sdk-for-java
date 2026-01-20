@@ -4,6 +4,15 @@
 
 ### Features Added
 
+- Added `VoiceLiveRequestOptions` class for per-request customization:
+  - Supports custom query parameters via `addCustomQueryParameter(String key, String value)` method
+  - Supports custom headers via `addCustomHeader(String name, String value)` and `setCustomHeaders(HttpHeaders)` methods
+  - Custom parameters and headers can be passed to session creation methods
+- Enhanced session creation with new overloads:
+  - Added `startSession(String model, VoiceLiveRequestOptions requestOptions)` for model with custom options
+  - Added `startSession(VoiceLiveRequestOptions requestOptions)` for custom options without explicit model parameter
+  - Original `startSession(String model)` and `startSession()` methods preserved for backward compatibility
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
+
+### Other Changes
+
 ## 2.58.0 (2025-12-22)
 
 ### azure-resourcemanager-containerservice
