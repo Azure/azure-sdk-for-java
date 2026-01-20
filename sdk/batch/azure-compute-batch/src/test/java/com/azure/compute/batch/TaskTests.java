@@ -227,7 +227,8 @@ public class TaskTests extends BatchClientTestBase {
 
         // CREATE
         BatchTaskCreateParameters taskToCreate
-            = new BatchTaskCreateParameters(taskId, String.format("type %s", blobFileName)).setResourceFiles(files);
+            = new BatchTaskCreateParameters(taskId, String.format("cmd /c type %s", blobFileName))
+                .setResourceFiles(files);
         SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
             () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
@@ -292,7 +293,7 @@ public class TaskTests extends BatchClientTestBase {
             }
             // UPLOAD LOG
             UploadBatchServiceLogsParameters logsParameters
-                = new UploadBatchServiceLogsParameters(outputSas, OffsetDateTime.now().minusMinutes(-10));
+                = new UploadBatchServiceLogsParameters(outputSas, OffsetDateTime.now().minusMinutes(10));
             UploadBatchServiceLogsResult uploadBatchServiceLogsResult = SyncAsyncExtension.execute(
                 () -> batchClient.uploadNodeLogs(liveIaasPoolId, taskAfterUpdate2.getNodeInfo().getNodeId(),
                     logsParameters),
@@ -765,7 +766,7 @@ public class TaskTests extends BatchClientTestBase {
             new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
                 new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
-        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "echo hello");
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
         taskToCreate.setOutputFiles(outputs);
 
         SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
