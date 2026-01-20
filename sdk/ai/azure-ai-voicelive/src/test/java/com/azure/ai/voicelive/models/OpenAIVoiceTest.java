@@ -78,10 +78,10 @@ class OpenAIVoiceTest {
             assertNotEquals(voice1, voice3);
 
             // Test with null
-            assertNotEquals(voice1, null);
+            assertNotNull(voice1);
 
             // Test with different type
-            assertNotEquals(voice1, "not a voice");
+            assertNotEquals("not a voice", voice1);
         }
     }
 

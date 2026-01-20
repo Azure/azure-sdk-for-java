@@ -14,7 +14,7 @@ import java.util.Map;
 public final class BareMetalMachinesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * BareMetalMachines_Patch.json
      */
     /**

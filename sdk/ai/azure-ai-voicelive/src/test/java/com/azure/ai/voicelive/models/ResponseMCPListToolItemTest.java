@@ -6,7 +6,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ResponseMCPListToolItemTest {
 
     @Test
-    void testFromJsonWithEmptyTools() throws IOException {
+    void testFromJsonWithEmptyTools() {
         // Arrange
         String json = "{" + "\"id\":\"list-1\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_list_tools\","
             + "\"tools\":[]," + "\"server_label\":\"test-server\"" + "}";
@@ -37,7 +36,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testFromJsonWithMultipleTools() throws IOException {
+    void testFromJsonWithMultipleTools() {
         // Arrange
         String json = "{" + "\"id\":\"list-2\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_list_tools\","
             + "\"server_label\":\"production-server\"," + "\"tools\":[" + "  {" + "    \"name\":\"get_weather\","
@@ -63,7 +62,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testTypeIsAlwaysMcpListTools() throws IOException {
+    void testTypeIsAlwaysMcpListTools() {
         // Arrange
         String json = "{" + "\"id\":\"list-3\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_list_tools\","
             + "\"tools\":[]," + "\"server_label\":\"test\"" + "}";
@@ -76,7 +75,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testJsonRoundTrip() throws IOException {
+    void testJsonRoundTrip() {
         // Arrange
         String originalJson = "{" + "\"id\":\"round-trip-list\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_list_tools\"," + "\"server_label\":\"my-server\"," + "\"tools\":[" + "  {"
@@ -98,7 +97,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testToolsWithComplexSchema() throws IOException {
+    void testToolsWithComplexSchema() {
         // Arrange
         String json = "{" + "\"id\":\"complex-tools\"," + "\"object\":\"session.item\","
             + "\"type\":\"mcp_list_tools\"," + "\"server_label\":\"api-server\"," + "\"tools\":[" + "  {"
@@ -121,7 +120,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testToolsWithAnnotations() throws IOException {
+    void testToolsWithAnnotations() {
         // Arrange
         String json
             = "{" + "\"id\":\"annotated-tools\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_list_tools\","
@@ -141,7 +140,7 @@ class ResponseMCPListToolItemTest {
     }
 
     @Test
-    void testMultipleToolsFromSameServer() throws IOException {
+    void testMultipleToolsFromSameServer() {
         // Arrange
         String json = "{" + "\"id\":\"many-tools\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_list_tools\","
             + "\"server_label\":\"utility-server\"," + "\"tools\":["

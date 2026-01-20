@@ -18,10 +18,10 @@ public class DeviceManagementListBestUpdatesForDeviceClassSubgroup {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetbestupdatesfordeviceclasssubgroup.devicemanagementlistbestupdatesfordeviceclasssubgroup
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-get-best-updates-for-device-class-subgroup.device-management-list-best-updates-for-device-class-subgroup
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = deviceManagementClient
             .getBestUpdatesForDeviceClassSubgroupWithResponse("group1", "deviceClassId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetbestupdatesfordeviceclasssubgroup.devicemanagementlistbestupdatesfordeviceclasssubgroup
+        // END:com.azure.iot.deviceupdate.generated.device-management-get-best-updates-for-device-class-subgroup.device-management-list-best-updates-for-device-class-subgroup
     }
 }

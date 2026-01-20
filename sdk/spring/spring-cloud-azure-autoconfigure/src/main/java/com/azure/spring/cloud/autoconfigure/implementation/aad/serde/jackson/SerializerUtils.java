@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2M
 import java.util.Collections;
 import java.util.Map;
 
+@SuppressWarnings("removal")
 public final class SerializerUtils {
     private static final ObjectMapper OBJECT_MAPPER;
     private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE = new TypeReference<>() { };

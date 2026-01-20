@@ -336,7 +336,13 @@ public class VectorIndexTest extends TestSuiteBase {
         cosmosVectorIndexSpec3.setIndexingSearchListSize(30);
         cosmosVectorIndexSpec3.setVectorIndexShardKeys(Arrays.asList("/country/city"));
 
-        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3);
+        CosmosVectorIndexSpec cosmosVectorIndexSpec4 = new CosmosVectorIndexSpec();
+        cosmosVectorIndexSpec4.setPath("/vector4");
+        cosmosVectorIndexSpec4.setType(CosmosVectorIndexType.QUANTIZED_FLAT.toString());
+        cosmosVectorIndexSpec4.setQuantizationSizeInBytes(2);
+        cosmosVectorIndexSpec4.setVectorIndexShardKeys(Arrays.asList("/zipCode"));
+
+        return Arrays.asList(cosmosVectorIndexSpec1, cosmosVectorIndexSpec2, cosmosVectorIndexSpec3, cosmosVectorIndexSpec4);
     }
 
     private List<CosmosVectorEmbedding> populateEmbeddings() {
@@ -357,14 +363,21 @@ public class VectorIndexTest extends TestSuiteBase {
         embedding3.setDataType(CosmosVectorDataType.UINT8);
         embedding3.setEmbeddingDimensions(3);
         embedding3.setDistanceFunction(CosmosVectorDistanceFunction.EUCLIDEAN);
-        return Arrays.asList(embedding1, embedding2, embedding3);
+
+        CosmosVectorEmbedding embedding4 = new CosmosVectorEmbedding();
+        embedding4.setPath("/vector4");
+        embedding4.setDataType(CosmosVectorDataType.FLOAT16);
+        embedding4.setEmbeddingDimensions(3);
+        embedding4.setDistanceFunction(CosmosVectorDistanceFunction.DOT_PRODUCT);
+        return Arrays.asList(embedding1, embedding2, embedding3, embedding4);
     }
 
     private String getVectorEmbeddingPolicyAsString() {
         return "{\"vectorEmbeddings\":[" +
             "{\"path\":\"/vector1\",\"dataType\":\"int8\",\"dimensions\":3,\"distanceFunction\":\"cosine\"}," +
             "{\"path\":\"/vector2\",\"dataType\":\"float32\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}," +
-            "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}" +
+            "{\"path\":\"/vector3\",\"dataType\":\"uint8\",\"dimensions\":3,\"distanceFunction\":\"euclidean\"}," +
+            "{\"path\":\"/vector4\",\"dataType\":\"float16\",\"dimensions\":3,\"distanceFunction\":\"dotproduct\"}" +
             "]}";
     }
 }
