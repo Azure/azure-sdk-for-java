@@ -140,6 +140,7 @@
               <argLine>${scalatest.argLine}</argLine>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
+              <forkMode>once</forkMode>
               <logForkedProcessCommand>true</logForkedProcessCommand>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
