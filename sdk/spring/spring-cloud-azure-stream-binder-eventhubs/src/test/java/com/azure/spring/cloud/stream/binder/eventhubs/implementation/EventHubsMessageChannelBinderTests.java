@@ -42,7 +42,9 @@ class EventHubsMessageChannelBinderTests {
     void init() {
         MockitoAnnotations.openMocks(this);
         when(producerDestination.getName()).thenReturn("producer-test");
-        binder.setApplicationContext(new GenericApplicationContext());
+        GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
+        binder.setApplicationContext(context);
     }
 
     @Test

@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -168,7 +167,7 @@ public class StoreReader {
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
                             } catch (Exception e) {
-                                // RxJava1 doesn't allow throwing checked exception from Observable operators
+                                // Reactor doesn't allow throwing checked exception from flatMap operators
                                 return Flux.error(e);
                             }
                         }
@@ -399,7 +398,7 @@ public class StoreReader {
                              responseResult.size(),
                              replicaCountToRead,
                              resolvedAddressCount,
-                             String.join(";", responseResult.stream().map(r -> r.toString()).collect(Collectors.toList())));
+                             responseResult.stream().map(Object::toString).collect(Collectors.joining(";")));
             }
 
             if (hasGoneException) {
@@ -572,14 +571,10 @@ public class StoreReader {
                     }
                 }
         ).flatMap(readQuorumResult -> {
+            // Reactor doesn't allow throwing Typed Exception from Map.flatMap(.).
 
-            // RxJava1 doesn't allow throwing Typed Exception from Observable.map(.)
-            // this is a design flaw which was fixed in RxJava2.
-
-            // as our core is built on top of RxJava1 here we had to use Observable.flatMap(.) not map(.)
-            // once we switch to RxJava2 we can move to Observable.map(.)
-            // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#functional-interfaces
-            if (readQuorumResult.responses.size() == 0) {
+            // as our core is built on top of Reactor here we had to use Mono.flatMap(.) not map(.)
+            if (readQuorumResult.responses.isEmpty()) {
                 return Mono.error(new GoneException(RMResources.Gone,
                     HttpConstants.SubStatusCodes.NO_VALID_STORE_RESPONSE));
             }
@@ -643,7 +638,7 @@ public class StoreReader {
                                     try {
                                         StoreResult storeResult = this.createAndRecordStoreResult(
                                             entity,
-                                            storeResponse != null ? storeResponse : null,
+                                            storeResponse,
                                             null,
                                             requiresValidLsn,
                                             true,
@@ -659,7 +654,7 @@ public class StoreReader {
                         );
 
                     } catch (CosmosException e) {
-                        // RxJava1 doesn't allow throwing checked exception from Observable:map
+                        // Reactor doesn't allow throwing checked exception from Mono.flatMap
                         return Mono.error(e);
                     }
 
@@ -693,7 +688,7 @@ public class StoreReader {
 
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
-                // RxJava1 doesn't allow throwing checked exception from Observable operators
+                // Reactor doesn't allow throwing checked exception from Mono operators
                 return Mono.error(e);
             }
         })
@@ -1028,7 +1023,7 @@ public class StoreReader {
                 }
 
                 return new StoreResult(
-                        /* storeResponse: */     (StoreResponse) null,
+                        /* storeResponse: */ null,
                         /* exception: */ cosmosException,
                         /* partitionKeyRangeId: */BridgeInternal.getPartitionKeyRangeId(cosmosException),
                         /* lsn: */ lsn,
@@ -1061,7 +1056,7 @@ public class StoreReader {
                                             com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
                                             responseException,
                                             HttpConstants.SubStatusCodes.INVALID_RESULT),
-                        /* partitionKeyRangeId: */ (String) null,
+                        /* partitionKeyRangeId: */ null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
@@ -1118,8 +1113,6 @@ public class StoreReader {
         if (result != null && result == 1) {
             throw ex;
         }
-
-        return;
     }
 
     private static class ReadReplicaResult {

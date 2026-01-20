@@ -10,6 +10,19 @@
 
 ### Other Changes
 
+## 1.13.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed a bug where `OkHttpFluxRequestBody` didn't propagate the exception properly. ([#47170](https://github.com/Azure/azure-sdk-for-java/pull/47170))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
 ## 1.13.2 (2025-10-06)
 
 ### Other Changes
