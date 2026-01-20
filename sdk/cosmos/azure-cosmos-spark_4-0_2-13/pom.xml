@@ -232,5 +232,11 @@
       <version>10.17.1.0</version> <!-- {x-version-update;cosmos-spark_4-0_org.apache.derby:derby;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbytools</artifactId>
+      <version>10.17.1.0</version> <!-- {x-version-update;cosmos-spark_4-0_org.apache.derby:derbytools;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
