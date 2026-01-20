@@ -44,6 +44,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +64,9 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
     private static final String REALLY_LONG_STRING
         = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
-    private static final List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<>();
+    private static final List<ShareCorsRule> TOO_MANY_RULES
+        = Collections.unmodifiableList(Arrays.asList(new ShareCorsRule(), new ShareCorsRule(), new ShareCorsRule(),
+            new ShareCorsRule(), new ShareCorsRule(), new ShareCorsRule()));
     private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER
         = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER
@@ -77,9 +80,6 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     public void setup() {
         shareName = generateShareName();
         primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient();
-        for (int i = 0; i < 6; i++) {
-            TOO_MANY_RULES.add(new ShareCorsRule());
-        }
     }
 
     @Test
