@@ -267,7 +267,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * Creates a list of feature flags from Azure App Configuration.
      *
      * @param client client for connecting to App Configuration
-     * @return a list of CollectionMonitoring
+     * @return a list of WatchedConfigurationSettings
      * @throws Exception creating feature flags failed
      */
     private List<WatchedConfigurationSettings> createFeatureFlags(AppConfigurationReplicaClient client)
@@ -285,37 +285,37 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     }
 
     /**
-     * Creates a list of collection monitoring for configuration settings from Azure App Configuration.
+     * Creates a list of watched configuration settings for configuration settings from Azure App Configuration.
      * This is used for collection-based refresh monitoring as an alternative to individual watch keys.
      *
      * @param client client for connecting to App Configuration
-     * @return a list of CollectionMonitoring for configuration settings
-     * @throws Exception creating collection monitoring failed
+     * @return a list of WatchedConfigurationSettings for configuration settings
+     * @throws Exception creating watched configuration settings failed
      */
     private List<WatchedConfigurationSettings> getWatchedConfigurationSettings(AppConfigurationReplicaClient client)
         throws Exception {
-        List<WatchedConfigurationSettings> collectionMonitoringList = new ArrayList<>();
+        List<WatchedConfigurationSettings> watchedConfigurationSettingsList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
         List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            // Skip snapshots - they don't support collection monitoring
+            // Skip snapshots - they don't support watched configuration settings
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 continue;
             }
 
-            // Create collection monitoring for each label
+            // Create watched configuration settings for each label
             for (String label : selectedKeys.getLabelFilter(profiles)) {
                 SettingSelector settingSelector = new SettingSelector()
                     .setKeyFilter(selectedKeys.getKeyFilter() + "*")
                     .setLabelFilter(label);
                 
-                WatchedConfigurationSettings collectionMonitoring = client.collectionMonitoring(settingSelector, requestContext);
-                collectionMonitoringList.add(collectionMonitoring);
+                WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector, requestContext);
+                watchedConfigurationSettingsList.add(watchedConfigurationSettings);
             }
         }
 
-        return collectionMonitoringList;
+        return watchedConfigurationSettingsList;
     }
 
     /**

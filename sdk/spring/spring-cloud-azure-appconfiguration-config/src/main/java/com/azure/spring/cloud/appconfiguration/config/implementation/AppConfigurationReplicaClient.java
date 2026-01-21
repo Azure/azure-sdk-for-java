@@ -159,7 +159,7 @@ class AppConfigurationReplicaClient {
      * @return WatchedConfigurationSettings containing the retrieved configuration settings and match conditions
      * @throws HttpResponseException if the request fails
      */
-    WatchedConfigurationSettings watchedConfigurationSettings(SettingSelector settingSelector, Context context) {
+    WatchedConfigurationSettings loadWatchedSettings(SettingSelector settingSelector, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
@@ -187,7 +187,7 @@ class AppConfigurationReplicaClient {
      * 
      * @param settingSelector selector criteria for feature flags
      * @param context Azure SDK context for request correlation
-     * @return CollectionMonitoring containing the retrieved feature flags and match conditions
+     * @return WatchedConfigurationSettings containing the retrieved feature flags and match conditions
      * @throws HttpResponseException if the request fails
      */
     WatchedConfigurationSettings listFeatureFlags(SettingSelector settingSelector, Context context)

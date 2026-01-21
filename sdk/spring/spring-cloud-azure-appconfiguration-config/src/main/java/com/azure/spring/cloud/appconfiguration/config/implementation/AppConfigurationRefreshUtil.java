@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -14,7 +16,6 @@ import org.springframework.util.StringUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
@@ -36,6 +37,7 @@ public class AppConfigurationRefreshUtil {
      */
     @FunctionalInterface
     private interface RefreshOperation {
+
         void execute(AppConfigurationReplicaClient client, RefreshEventData eventData, Context context)
             throws AppConfigurationStatusException;
     }
@@ -130,7 +132,7 @@ public class AppConfigurationRefreshUtil {
 
     /**
      * Executes a refresh operation with automatic retry logic across replica clients.
-     * 
+     *
      * @param clientFactory factory for accessing App Configuration clients
      * @param originEndpoint the endpoint of the origin configuration store
      * @param operation the refresh operation to execute
@@ -189,7 +191,7 @@ public class AppConfigurationRefreshUtil {
     /**
      * Performs a feature flag refresh check for a specific store client. This method is used for refresh failure
      * scenarios only.
-     * 
+     *
      * @param featureStoreEnabled whether feature store is enabled
      * @param client the client for checking refresh status
      * @param context the operation context
@@ -266,8 +268,8 @@ public class AppConfigurationRefreshUtil {
     }
 
     /**
-     * Checks configuration watched configuration settings for etag changes without time validation. This method immediately
-     * checks all watched configuration settings selectors for changes regardless of refresh intervals.
+     * Checks configuration watched configuration settings for etag changes without time validation. This method
+     * immediately checks all watched configuration settings selectors for changes regardless of refresh intervals.
      *
      * @param client the App Configuration client to use for checking
      * @param watchedSettings the list of watched configuration settings to watch for changes
@@ -284,7 +286,8 @@ public class AppConfigurationRefreshUtil {
 
                 // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by watched configuration settings: {}", eventDataInfo);
+                LOGGER.info("Configuration Refresh Event triggered by watched configuration settings: {}",
+                    eventDataInfo);
 
                 eventData.setMessage(eventDataInfo);
                 return;
@@ -354,7 +357,7 @@ public class AppConfigurationRefreshUtil {
 
     /**
      * Checks the etag values between watched and current configuration settings to determine if a refresh is needed.
-     * 
+     *
      * @param watchSetting the configuration setting being watched for changes
      * @param currentTriggerConfiguration the current configuration setting from the store
      * @param endpoint the endpoint of the configuration store
@@ -402,7 +405,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Sets the refresh message using the standard message template.
-         * 
+         *
          * @param prefix the prefix to include in the message (typically a key name)
          * @return this RefreshEventData instance for method chaining
          */
@@ -413,7 +416,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Sets the full refresh message and marks that a refresh should occur.
-         * 
+         *
          * @param message the complete message describing the refresh event
          * @return this RefreshEventData instance for method chaining
          */
@@ -425,7 +428,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Gets the refresh event message.
-         * 
+         *
          * @return the message describing what triggered the refresh
          */
         public String getMessage() {
@@ -434,7 +437,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Indicates whether a refresh should be performed.
-         * 
+         *
          * @return true if a refresh is needed, false otherwise
          */
         public boolean getDoRefresh() {
