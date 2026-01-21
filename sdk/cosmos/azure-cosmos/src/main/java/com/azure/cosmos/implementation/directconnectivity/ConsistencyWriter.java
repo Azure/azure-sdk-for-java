@@ -112,16 +112,17 @@ public class ConsistencyWriter {
     }
 
     /**
-     * Constructor for ConsistencyWriter with StoreReader parameter for dependency injection in unit tests
-     * @param diagnosticsClientContext
-     * @param addressSelector
-     * @param sessionContainer
-     * @param transportClient
-     * @param authorizationTokenProvider
-     * @param serviceConfigReader
-     * @param useMultipleWriteLocations
-     * @param reader
-     * @param sessionRetryOptions
+     * Constructor for ConsistencyWriter with StoreReader parameter for dependency injection in unit tests.
+     *
+     * @param diagnosticsClientContext the diagnostics client context used to capture diagnostics for requests.
+     * @param addressSelector the address selector used to resolve physical replica addresses for requests.
+     * @param sessionContainer the session container used for managing and maintaining session tokens.
+     * @param transportClient the transport client used to send requests to the backend replicas.
+     * @param authorizationTokenProvider the authorization token provider used to authenticate requests.
+     * @param serviceConfigReader the gateway service configuration reader providing service configuration settings.
+     * @param useMultipleWriteLocations flag indicating whether multiple write locations are enabled for the account.
+     * @param reader the StoreReader instance to use, injected for testing instead of creating a new StoreReader.
+     * @param sessionRetryOptions the session retry options used to handle session token mismatch retries.
      */
     public ConsistencyWriter(
         DiagnosticsClientContext diagnosticsClientContext,
