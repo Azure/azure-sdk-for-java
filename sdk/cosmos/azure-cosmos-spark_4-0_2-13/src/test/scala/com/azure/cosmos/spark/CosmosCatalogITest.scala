@@ -8,7 +8,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.NonEmptyNamespaceException
 
 class CosmosCatalogITest
-    extends CosmosCatalogITestBase {
+    extends CosmosCatalogITestBase(skipHive = true) {
 
     //scalastyle:off magic.number
 
@@ -31,8 +31,6 @@ class CosmosCatalogITest
     }
 
     it can "drop an non-empty database with cascade true" in {
-        assume(!Platform.isWindows)
-
         val databaseName = getAutoCleanableDatabaseName
         spark.catalog.databaseExists(databaseName) shouldEqual false
 
@@ -46,6 +44,9 @@ class CosmosCatalogITest
         spark.catalog.databaseExists(databaseName) shouldEqual false
     }
 
+    // TODO: spark on windows has issue with this test.
+    // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
+    // once we move Linux CI re-enable the test:
     "drop an non-empty database with cascade false" should "throw NonEmptyNamespaceException" in {
         assume(!Platform.isWindows)
 
