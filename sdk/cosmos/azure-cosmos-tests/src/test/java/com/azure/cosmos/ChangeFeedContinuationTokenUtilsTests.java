@@ -159,7 +159,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
     @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
-        safeCloseAsync(this.client);
+        safeClose(this.client);
     }
 
     private static class TestItem {

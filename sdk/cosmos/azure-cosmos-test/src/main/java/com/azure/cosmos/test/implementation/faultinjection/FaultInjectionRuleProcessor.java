@@ -351,6 +351,8 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.ReadFeed;
             case METADATA_REQUEST_ADDRESS_REFRESH: // address refresh can happen for any operations: read, write, query etc
                 return null;
+            case HEAD_COLLECTION:
+                return OperationType.Head;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
@@ -374,6 +376,7 @@ public class FaultInjectionRuleProcessor {
             case METADATA_REQUEST_QUERY_PLAN:
                 return ResourceType.Document;
             case METADATA_REQUEST_CONTAINER:
+            case HEAD_COLLECTION:
                 return ResourceType.DocumentCollection;
             case METADATA_REQUEST_DATABASE_ACCOUNT:
                 return ResourceType.DatabaseAccount;

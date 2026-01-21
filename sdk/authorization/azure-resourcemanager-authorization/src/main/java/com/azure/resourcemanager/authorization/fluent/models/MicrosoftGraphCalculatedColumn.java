@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * calculatedColumn.
+ * Represents a calculated column.
  */
 @Fluent
 public final class MicrosoftGraphCalculatedColumn implements JsonSerializable<MicrosoftGraphCalculatedColumn> {

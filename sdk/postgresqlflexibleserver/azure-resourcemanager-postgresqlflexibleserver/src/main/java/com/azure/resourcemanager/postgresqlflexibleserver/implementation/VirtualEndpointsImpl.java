@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointResourceInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoints;
 
 public final class VirtualEndpointsImpl implements VirtualEndpoints {
@@ -35,42 +35,39 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
         this.serviceClient().delete(resourceGroupName, serverName, virtualEndpointName, context);
     }
 
-    public Response<VirtualEndpointResource> getWithResponse(String resourceGroupName, String serverName,
+    public Response<VirtualEndpoint> getWithResponse(String resourceGroupName, String serverName,
         String virtualEndpointName, Context context) {
-        Response<VirtualEndpointResourceInner> inner
+        Response<VirtualEndpointInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualEndpointResourceImpl(inner.getValue(), this.manager()));
+                new VirtualEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public VirtualEndpointResource get(String resourceGroupName, String serverName, String virtualEndpointName) {
-        VirtualEndpointResourceInner inner
-            = this.serviceClient().get(resourceGroupName, serverName, virtualEndpointName);
+    public VirtualEndpoint get(String resourceGroupName, String serverName, String virtualEndpointName) {
+        VirtualEndpointInner inner = this.serviceClient().get(resourceGroupName, serverName, virtualEndpointName);
         if (inner != null) {
-            return new VirtualEndpointResourceImpl(inner, this.manager());
+            return new VirtualEndpointImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<VirtualEndpointResourceInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualEndpointResourceImpl(inner1, this.manager()));
+    public PagedIterable<VirtualEndpoint> listByServer(String resourceGroupName, String serverName) {
+        PagedIterable<VirtualEndpointInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName,
-        Context context) {
-        PagedIterable<VirtualEndpointResourceInner> inner
+    public PagedIterable<VirtualEndpoint> listByServer(String resourceGroupName, String serverName, Context context) {
+        PagedIterable<VirtualEndpointInner> inner
             = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualEndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualEndpointImpl(inner1, this.manager()));
     }
 
-    public VirtualEndpointResource getById(String id) {
+    public VirtualEndpoint getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -89,7 +86,7 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
         return this.getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE).getValue();
     }
 
-    public Response<VirtualEndpointResource> getByIdWithResponse(String id, Context context) {
+    public Response<VirtualEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -154,7 +151,7 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
         return this.serviceManager;
     }
 
-    public VirtualEndpointResourceImpl define(String name) {
-        return new VirtualEndpointResourceImpl(name, this.manager());
+    public VirtualEndpointImpl define(String name) {
+        return new VirtualEndpointImpl(name, this.manager());
     }
 }

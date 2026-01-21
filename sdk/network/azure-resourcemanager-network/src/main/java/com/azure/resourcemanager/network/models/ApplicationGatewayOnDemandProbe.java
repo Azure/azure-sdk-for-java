@@ -44,6 +44,12 @@ public final class ApplicationGatewayOnDemandProbe implements JsonSerializable<A
     private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
+     * Whether to send Proxy Protocol header along with the Health Probe over TCP or TLS protocol. Default value is
+     * false.
+     */
+    private Boolean enableProbeProxyProtocolHeader;
+
+    /*
      * Criterion for classifying a healthy probe response.
      */
     private ApplicationGatewayProbeHealthResponseMatch match;
@@ -172,6 +178,28 @@ public final class ApplicationGatewayOnDemandProbe implements JsonSerializable<A
     }
 
     /**
+     * Get the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @return the enableProbeProxyProtocolHeader value.
+     */
+    public Boolean enableProbeProxyProtocolHeader() {
+        return this.enableProbeProxyProtocolHeader;
+    }
+
+    /**
+     * Set the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @param enableProbeProxyProtocolHeader the enableProbeProxyProtocolHeader value to set.
+     * @return the ApplicationGatewayOnDemandProbe object itself.
+     */
+    public ApplicationGatewayOnDemandProbe withEnableProbeProxyProtocolHeader(Boolean enableProbeProxyProtocolHeader) {
+        this.enableProbeProxyProtocolHeader = enableProbeProxyProtocolHeader;
+        return this;
+    }
+
+    /**
      * Get the match property: Criterion for classifying a healthy probe response.
      * 
      * @return the match value.
@@ -257,6 +285,7 @@ public final class ApplicationGatewayOnDemandProbe implements JsonSerializable<A
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeNumberField("timeout", this.timeout);
         jsonWriter.writeBooleanField("pickHostNameFromBackendHttpSettings", this.pickHostnameFromBackendHttpSettings);
+        jsonWriter.writeBooleanField("enableProbeProxyProtocolHeader", this.enableProbeProxyProtocolHeader);
         jsonWriter.writeJsonField("match", this.match);
         jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
         jsonWriter.writeJsonField("backendHttpSettings", this.backendHttpSettings);
@@ -290,6 +319,9 @@ public final class ApplicationGatewayOnDemandProbe implements JsonSerializable<A
                     deserializedApplicationGatewayOnDemandProbe.timeout = reader.getNullable(JsonReader::getInt);
                 } else if ("pickHostNameFromBackendHttpSettings".equals(fieldName)) {
                     deserializedApplicationGatewayOnDemandProbe.pickHostnameFromBackendHttpSettings
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableProbeProxyProtocolHeader".equals(fieldName)) {
+                    deserializedApplicationGatewayOnDemandProbe.enableProbeProxyProtocolHeader
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("match".equals(fieldName)) {
                     deserializedApplicationGatewayOnDemandProbe.match

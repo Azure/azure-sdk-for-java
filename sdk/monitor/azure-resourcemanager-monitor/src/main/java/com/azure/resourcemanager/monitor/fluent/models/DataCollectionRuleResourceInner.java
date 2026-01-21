@@ -10,9 +10,16 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleAgentSettings;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleDirectDataSources;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleEndpoints;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleIngestionQuotas;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleMetadata;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleReferences;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleResourceIdentity;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleResourceSku;
 import com.azure.resourcemanager.monitor.models.DataFlow;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleResourceKind;
@@ -27,7 +34,7 @@ import java.util.Map;
 @Fluent
 public final class DataCollectionRuleResourceInner extends Resource {
     /*
-     * Resource properties.
+     * The properties property.
      */
     private DataCollectionRuleResourceProperties innerProperties;
 
@@ -35,6 +42,16 @@ public final class DataCollectionRuleResourceInner extends Resource {
      * The kind of the resource.
      */
     private KnownDataCollectionRuleResourceKind kind;
+
+    /*
+     * The SKU of the resource.
+     */
+    private DataCollectionRuleResourceSku sku;
+
+    /*
+     * Managed service identity of the resource.
+     */
+    private DataCollectionRuleResourceIdentity identity;
 
     /*
      * Resource entity tag (ETag).
@@ -47,9 +64,9 @@ public final class DataCollectionRuleResourceInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -57,9 +74,9 @@ public final class DataCollectionRuleResourceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DataCollectionRuleResourceInner class.
@@ -68,7 +85,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the innerProperties property: The properties property.
      * 
      * @return the innerProperties value.
      */
@@ -97,6 +114,46 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the sku property: The SKU of the resource.
+     * 
+     * @return the sku value.
+     */
+    public DataCollectionRuleResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU of the resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withSku(DataCollectionRuleResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed service identity of the resource.
+     * 
+     * @return the identity value.
+     */
+    public DataCollectionRuleResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity of the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withIdentity(DataCollectionRuleResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the etag property: Resource entity tag (ETag).
      * 
      * @return the etag value.
@@ -115,13 +172,13 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -135,13 +192,13 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -229,6 +286,61 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the endpoints property: Defines the ingestion endpoints to send data to via this rule.
+     * 
+     * @return the endpoints value.
+     */
+    public DataCollectionRuleEndpoints endpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
+    }
+
+    /**
+     * Get the references property: Defines all the references that may be used in other sections of the DCR.
+     * 
+     * @return the references value.
+     */
+    public DataCollectionRuleReferences references() {
+        return this.innerProperties() == null ? null : this.innerProperties().references();
+    }
+
+    /**
+     * Set the references property: Defines all the references that may be used in other sections of the DCR.
+     * 
+     * @param references the references value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withReferences(DataCollectionRuleReferences references) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withReferences(references);
+        return this;
+    }
+
+    /**
+     * Get the agentSettings property: Agent settings used to modify agent behavior on a given host.
+     * 
+     * @return the agentSettings value.
+     */
+    public DataCollectionRuleAgentSettings agentSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentSettings();
+    }
+
+    /**
+     * Set the agentSettings property: Agent settings used to modify agent behavior on a given host.
+     * 
+     * @param agentSettings the agentSettings value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner withAgentSettings(DataCollectionRuleAgentSettings agentSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withAgentSettings(agentSettings);
+        return this;
+    }
+
+    /**
      * Get the streamDeclarations property: Declaration of custom streams used in this rule.
      * 
      * @return the streamDeclarations value.
@@ -279,6 +391,32 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the directDataSources property: The specification of direct data sources.
+     * This property is optional and can be omitted.
+     * 
+     * @return the directDataSources value.
+     */
+    public DataCollectionRuleDirectDataSources directDataSources() {
+        return this.innerProperties() == null ? null : this.innerProperties().directDataSources();
+    }
+
+    /**
+     * Set the directDataSources property: The specification of direct data sources.
+     * This property is optional and can be omitted.
+     * 
+     * @param directDataSources the directDataSources value to set.
+     * @return the DataCollectionRuleResourceInner object itself.
+     */
+    public DataCollectionRuleResourceInner
+        withDirectDataSources(DataCollectionRuleDirectDataSources directDataSources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionRuleResourceProperties();
+        }
+        this.innerProperties().withDirectDataSources(directDataSources);
+        return this;
+    }
+
+    /**
      * Get the destinations property: The specification of destinations.
      * 
      * @return the destinations value.
@@ -325,6 +463,15 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the ingestionQuotas property: The specification for ingestion limits.
+     * 
+     * @return the ingestionQuotas value.
+     */
+    public DataCollectionRuleIngestionQuotas ingestionQuotas() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingestionQuotas();
+    }
+
+    /**
      * Get the provisioningState property: The resource provisioning state.
      * 
      * @return the provisioningState value.
@@ -342,6 +489,12 @@ public final class DataCollectionRuleResourceInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -354,6 +507,8 @@ public final class DataCollectionRuleResourceInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -391,6 +546,11 @@ public final class DataCollectionRuleResourceInner extends Resource {
                 } else if ("kind".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceInner.kind
                         = KnownDataCollectionRuleResourceKind.fromString(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.sku = DataCollectionRuleResourceSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.identity
+                        = DataCollectionRuleResourceIdentity.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedDataCollectionRuleResourceInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

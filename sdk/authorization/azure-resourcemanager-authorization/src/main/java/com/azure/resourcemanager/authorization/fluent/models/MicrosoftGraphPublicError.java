@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * publicError.
+ * Represents a public error.
  */
 @Fluent
 public final class MicrosoftGraphPublicError implements JsonSerializable<MicrosoftGraphPublicError> {

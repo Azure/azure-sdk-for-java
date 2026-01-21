@@ -45,8 +45,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile
     private Boolean ignoreDaemonsetsUtilization;
 
     /*
-     * Type of node group expander to be used in scale up. Set to be deprecated, please use 'expanders' flag in the
-     * future. Available values are: 'least-waste', 'most-pods', 'priority', 'random'.
+     * The expander to use when scaling up. If not specified, the default is 'random'. See
+     * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders)
+     * for more information.
      */
     private Expander expander;
 
@@ -250,8 +251,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile
     }
 
     /**
-     * Get the expander property: Type of node group expander to be used in scale up. Set to be deprecated, please use
-     * 'expanders' flag in the future. Available values are: 'least-waste', 'most-pods', 'priority', 'random'.
+     * Get the expander property: The expander to use when scaling up. If not specified, the default is 'random'. See
+     * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders)
+     * for more information.
      * 
      * @return the expander value.
      */
@@ -260,8 +262,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile
     }
 
     /**
-     * Set the expander property: Type of node group expander to be used in scale up. Set to be deprecated, please use
-     * 'expanders' flag in the future. Available values are: 'least-waste', 'most-pods', 'priority', 'random'.
+     * Set the expander property: The expander to use when scaling up. If not specified, the default is 'random'. See
+     * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders)
+     * for more information.
      * 
      * @param expander the expander value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.

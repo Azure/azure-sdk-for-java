@@ -15,8 +15,8 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 public final class WorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesUpdate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesUpdate.json
      */
     /**
      * Sample code: WorkspacesPatch.

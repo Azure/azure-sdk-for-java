@@ -60,7 +60,7 @@ public final class RestorableGremlinDatabasesClientImpl implements RestorableGre
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientRestorableGremlinDatabases")
     public interface RestorableGremlinDatabasesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGremlinDatabases")

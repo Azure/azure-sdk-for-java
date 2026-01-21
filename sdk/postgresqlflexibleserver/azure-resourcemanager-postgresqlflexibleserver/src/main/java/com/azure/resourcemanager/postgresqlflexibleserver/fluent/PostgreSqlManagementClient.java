@@ -47,46 +47,53 @@ public interface PostgreSqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AdministratorsClient object to access its operations.
+     * Gets the AdministratorsMicrosoftEntrasClient object to access its operations.
      * 
-     * @return the AdministratorsClient object.
+     * @return the AdministratorsMicrosoftEntrasClient object.
      */
-    AdministratorsClient getAdministrators();
+    AdministratorsMicrosoftEntrasClient getAdministratorsMicrosoftEntras();
 
     /**
-     * Gets the BackupsClient object to access its operations.
+     * Gets the AdvancedThreatProtectionSettingsClient object to access its operations.
      * 
-     * @return the BackupsClient object.
+     * @return the AdvancedThreatProtectionSettingsClient object.
      */
-    BackupsClient getBackups();
+    AdvancedThreatProtectionSettingsClient getAdvancedThreatProtectionSettings();
 
     /**
-     * Gets the LocationBasedCapabilitiesClient object to access its operations.
+     * Gets the ServerThreatProtectionSettingsClient object to access its operations.
      * 
-     * @return the LocationBasedCapabilitiesClient object.
+     * @return the ServerThreatProtectionSettingsClient object.
      */
-    LocationBasedCapabilitiesClient getLocationBasedCapabilities();
+    ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
 
     /**
-     * Gets the ServerCapabilitiesClient object to access its operations.
+     * Gets the BackupsAutomaticAndOnDemandsClient object to access its operations.
      * 
-     * @return the ServerCapabilitiesClient object.
+     * @return the BackupsAutomaticAndOnDemandsClient object.
      */
-    ServerCapabilitiesClient getServerCapabilities();
+    BackupsAutomaticAndOnDemandsClient getBackupsAutomaticAndOnDemands();
 
     /**
-     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     * Gets the CapabilitiesByLocationsClient object to access its operations.
      * 
-     * @return the CheckNameAvailabilitiesClient object.
+     * @return the CapabilitiesByLocationsClient object.
      */
-    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
+    CapabilitiesByLocationsClient getCapabilitiesByLocations();
 
     /**
-     * Gets the CheckNameAvailabilityWithLocationsClient object to access its operations.
+     * Gets the CapabilitiesByServersClient object to access its operations.
      * 
-     * @return the CheckNameAvailabilityWithLocationsClient object.
+     * @return the CapabilitiesByServersClient object.
      */
-    CheckNameAvailabilityWithLocationsClient getCheckNameAvailabilityWithLocations();
+    CapabilitiesByServersClient getCapabilitiesByServers();
+
+    /**
+     * Gets the CapturedLogsClient object to access its operations.
+     * 
+     * @return the CapturedLogsClient object.
+     */
+    CapturedLogsClient getCapturedLogs();
 
     /**
      * Gets the ConfigurationsClient object to access its operations.
@@ -110,25 +117,11 @@ public interface PostgreSqlManagementClient {
     FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the ServersClient object to access its operations.
+     * Gets the BackupsLongTermRetentionsClient object to access its operations.
      * 
-     * @return the ServersClient object.
+     * @return the BackupsLongTermRetentionsClient object.
      */
-    ServersClient getServers();
-
-    /**
-     * Gets the FlexibleServersClient object to access its operations.
-     * 
-     * @return the FlexibleServersClient object.
-     */
-    FlexibleServersClient getFlexibleServers();
-
-    /**
-     * Gets the LtrBackupOperationsClient object to access its operations.
-     * 
-     * @return the LtrBackupOperationsClient object.
-     */
-    LtrBackupOperationsClient getLtrBackupOperations();
+    BackupsLongTermRetentionsClient getBackupsLongTermRetentions();
 
     /**
      * Gets the MigrationsClient object to access its operations.
@@ -138,11 +131,11 @@ public interface PostgreSqlManagementClient {
     MigrationsClient getMigrations();
 
     /**
-     * Gets the ResourceProvidersClient object to access its operations.
+     * Gets the NameAvailabilitiesClient object to access its operations.
      * 
-     * @return the ResourceProvidersClient object.
+     * @return the NameAvailabilitiesClient object.
      */
-    ResourceProvidersClient getResourceProviders();
+    NameAvailabilitiesClient getNameAvailabilities();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -152,11 +145,11 @@ public interface PostgreSqlManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
+     * Gets the PrivateDnsZoneSuffixesClient object to access its operations.
      * 
-     * @return the GetPrivateDnsZoneSuffixesClient object.
+     * @return the PrivateDnsZoneSuffixesClient object.
      */
-    GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes();
+    PrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -164,13 +157,6 @@ public interface PostgreSqlManagementClient {
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
-
-    /**
-     * Gets the PrivateEndpointConnectionOperationsClient object to access its operations.
-     * 
-     * @return the PrivateEndpointConnectionOperationsClient object.
-     */
-    PrivateEndpointConnectionOperationsClient getPrivateEndpointConnectionOperations();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
@@ -194,39 +180,18 @@ public interface PostgreSqlManagementClient {
     ReplicasClient getReplicas();
 
     /**
-     * Gets the LogFilesClient object to access its operations.
+     * Gets the ServersClient object to access its operations.
      * 
-     * @return the LogFilesClient object.
+     * @return the ServersClient object.
      */
-    LogFilesClient getLogFiles();
+    ServersClient getServers();
 
     /**
-     * Gets the ServerThreatProtectionSettingsClient object to access its operations.
+     * Gets the TuningOptionsOperationsClient object to access its operations.
      * 
-     * @return the ServerThreatProtectionSettingsClient object.
+     * @return the TuningOptionsOperationsClient object.
      */
-    ServerThreatProtectionSettingsClient getServerThreatProtectionSettings();
-
-    /**
-     * Gets the TuningOptionsClient object to access its operations.
-     * 
-     * @return the TuningOptionsClient object.
-     */
-    TuningOptionsClient getTuningOptions();
-
-    /**
-     * Gets the TuningIndexesClient object to access its operations.
-     * 
-     * @return the TuningIndexesClient object.
-     */
-    TuningIndexesClient getTuningIndexes();
-
-    /**
-     * Gets the TuningConfigurationsClient object to access its operations.
-     * 
-     * @return the TuningConfigurationsClient object.
-     */
-    TuningConfigurationsClient getTuningConfigurations();
+    TuningOptionsOperationsClient getTuningOptionsOperations();
 
     /**
      * Gets the VirtualEndpointsClient object to access its operations.

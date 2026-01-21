@@ -6,6 +6,9 @@ package com.azure.identity;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyConfiguration;
+import com.azure.identity.implementation.customtokenproxy.CustomTokenProxyHttpClient;
+import com.azure.identity.implementation.customtokenproxy.ProxyConfig;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
@@ -47,6 +50,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
+    private boolean enableTokenProxy;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
@@ -63,6 +67,19 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredentialBuilder tokenFilePath(String tokenFilePath) {
         this.tokenFilePath = tokenFilePath;
+        return this;
+    }
+
+    /**
+     * Enables the custom token proxy feature for clusters running in Azure.
+     * When enabled, the credential will attempt to use a custom token proxy configured through
+     * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
+     * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME).
+     *
+     * @return An updated instance of this builder with Azure token proxy enabled.
+     */
+    public WorkloadIdentityCredentialBuilder enableAzureTokenProxy() {
+        this.enableTokenProxy = true;
         return this;
     }
 
@@ -87,6 +104,13 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
 
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
+
+        if (enableTokenProxy) {
+            ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
+            if (proxyConfig != null) {
+                identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
+            }
+        }
 
         return new WorkloadIdentityCredential(tenantIdInput, clientIdInput, federatedTokenFilePathInput,
             identityClientOptions.clone());

@@ -34,8 +34,8 @@ public final class RacksImpl implements Racks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Rack> list(Context context) {
-        PagedIterable<RackInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Rack> list(Integer top, String skipToken, Context context) {
+        PagedIterable<RackInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class RacksImpl implements Racks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Rack> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<RackInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Rack> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<RackInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 

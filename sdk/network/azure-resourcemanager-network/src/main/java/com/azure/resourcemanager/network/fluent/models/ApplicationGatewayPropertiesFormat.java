@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -225,6 +226,12 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * Load distribution policies of the application gateway resource.
      */
     private List<ApplicationGatewayLoadDistributionPolicy> loadDistributionPolicies;
+
+    /*
+     * Entra JWT validation configurations for the application gateway resource. For default limits, see [Application
+     * Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     */
+    private List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs;
 
     /*
      * Global Configuration.
@@ -957,6 +964,31 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     }
 
     /**
+     * Get the entraJwtValidationConfigs property: Entra JWT validation configurations for the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the entraJwtValidationConfigs value.
+     */
+    public List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs() {
+        return this.entraJwtValidationConfigs;
+    }
+
+    /**
+     * Set the entraJwtValidationConfigs property: Entra JWT validation configurations for the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param entraJwtValidationConfigs the entraJwtValidationConfigs value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat
+        withEntraJwtValidationConfigs(List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs) {
+        this.entraJwtValidationConfigs = entraJwtValidationConfigs;
+        return this;
+    }
+
+    /**
      * Get the globalConfiguration property: Global Configuration.
      * 
      * @return the globalConfiguration value.
@@ -1074,6 +1106,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         if (loadDistributionPolicies() != null) {
             loadDistributionPolicies().forEach(e -> e.validate());
         }
+        if (entraJwtValidationConfigs() != null) {
+            entraJwtValidationConfigs().forEach(e -> e.validate());
+        }
         if (globalConfiguration() != null) {
             globalConfiguration().validate();
         }
@@ -1129,6 +1164,8 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("forceFirewallPolicyAssociation", this.forceFirewallPolicyAssociation);
         jsonWriter.writeArrayField("loadDistributionPolicies", this.loadDistributionPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entraJWTValidationConfigs", this.entraJwtValidationConfigs,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("globalConfiguration", this.globalConfiguration);
         return jsonWriter.writeEndObject();
@@ -1279,6 +1316,11 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                     List<ApplicationGatewayLoadDistributionPolicy> loadDistributionPolicies
                         = reader.readArray(reader1 -> ApplicationGatewayLoadDistributionPolicy.fromJson(reader1));
                     deserializedApplicationGatewayPropertiesFormat.loadDistributionPolicies = loadDistributionPolicies;
+                } else if ("entraJWTValidationConfigs".equals(fieldName)) {
+                    List<ApplicationGatewayEntraJwtValidationConfig> entraJwtValidationConfigs
+                        = reader.readArray(reader1 -> ApplicationGatewayEntraJwtValidationConfig.fromJson(reader1));
+                    deserializedApplicationGatewayPropertiesFormat.entraJwtValidationConfigs
+                        = entraJwtValidationConfigs;
                 } else if ("globalConfiguration".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.globalConfiguration
                         = ApplicationGatewayGlobalConfiguration.fromJson(reader);

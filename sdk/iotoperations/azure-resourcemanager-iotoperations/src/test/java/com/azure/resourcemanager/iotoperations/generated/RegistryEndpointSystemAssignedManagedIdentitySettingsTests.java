@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistryEndpointSystemAssignedManagedIdentitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistryEndpointSystemAssignedManagedIdentitySettings model = BinaryData.fromString("{\"audience\":\"qhuexm\"}")
+        RegistryEndpointSystemAssignedManagedIdentitySettings model = BinaryData.fromString("{\"audience\":\"gzd\"}")
             .toObject(RegistryEndpointSystemAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("qhuexm", model.audience());
+        Assertions.assertEquals("gzd", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointSystemAssignedManagedIdentitySettings model
-            = new RegistryEndpointSystemAssignedManagedIdentitySettings().withAudience("qhuexm");
+            = new RegistryEndpointSystemAssignedManagedIdentitySettings().withAudience("gzd");
         model = BinaryData.fromObject(model).toObject(RegistryEndpointSystemAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("qhuexm", model.audience());
+        Assertions.assertEquals("gzd", model.audience());
     }
 }

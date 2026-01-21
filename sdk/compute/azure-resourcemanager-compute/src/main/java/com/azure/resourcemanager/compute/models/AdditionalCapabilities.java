@@ -28,6 +28,12 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
      */
     private Boolean hibernationEnabled;
 
+    /*
+     * The flag enables the usage of FIPS 140-3 compliant cryptography on the protectedSettings of an extension. Learn
+     * more at: https://aka.ms/linuxagentfipssupport.
+     */
+    private Boolean enableFips1403Encryption;
+
     /**
      * Creates an instance of AdditionalCapabilities class.
      */
@@ -79,6 +85,28 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
     }
 
     /**
+     * Get the enableFips1403Encryption property: The flag enables the usage of FIPS 140-3 compliant cryptography on the
+     * protectedSettings of an extension. Learn more at: https://aka.ms/linuxagentfipssupport.
+     * 
+     * @return the enableFips1403Encryption value.
+     */
+    public Boolean enableFips1403Encryption() {
+        return this.enableFips1403Encryption;
+    }
+
+    /**
+     * Set the enableFips1403Encryption property: The flag enables the usage of FIPS 140-3 compliant cryptography on the
+     * protectedSettings of an extension. Learn more at: https://aka.ms/linuxagentfipssupport.
+     * 
+     * @param enableFips1403Encryption the enableFips1403Encryption value to set.
+     * @return the AdditionalCapabilities object itself.
+     */
+    public AdditionalCapabilities withEnableFips1403Encryption(Boolean enableFips1403Encryption) {
+        this.enableFips1403Encryption = enableFips1403Encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,6 +122,7 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("ultraSSDEnabled", this.ultraSsdEnabled);
         jsonWriter.writeBooleanField("hibernationEnabled", this.hibernationEnabled);
+        jsonWriter.writeBooleanField("enableFips1403Encryption", this.enableFips1403Encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -116,6 +145,9 @@ public final class AdditionalCapabilities implements JsonSerializable<Additional
                     deserializedAdditionalCapabilities.ultraSsdEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("hibernationEnabled".equals(fieldName)) {
                     deserializedAdditionalCapabilities.hibernationEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableFips1403Encryption".equals(fieldName)) {
+                    deserializedAdditionalCapabilities.enableFips1403Encryption
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

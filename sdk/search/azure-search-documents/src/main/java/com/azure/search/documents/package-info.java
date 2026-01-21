@@ -5,7 +5,7 @@
  * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure AI Search", provides secure information retrieval at scale over
  * user-owned content in traditional and conversational search applications.</p>
  *
- * <p>The Azure AI Search service provides:/p>
+ * <p>The Azure AI Search service provides:</p>
  *
  * <ul>
  *     <li>A search engine for vector search, full text, and hybrid search over a search index.</li>

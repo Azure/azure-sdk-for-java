@@ -8,13 +8,24 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.1.37 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-communication-common` from `1.4.3` to version `1.4.4`.
+
 ## 1.1.36 (2025-09-25)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-communication-common` from `1.4.1` to version `1.4.3`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
 ## 1.1.35 (2025-08-21)
@@ -23,7 +34,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.1`.
+- Upgraded `azure-communication-common` from `1.4.0` to version `1.4.2`.
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 
 ## 1.1.34 (2025-07-29)

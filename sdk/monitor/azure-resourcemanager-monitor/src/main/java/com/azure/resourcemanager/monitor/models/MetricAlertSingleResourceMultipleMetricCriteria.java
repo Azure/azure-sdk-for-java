@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public final class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*
-     * specifies the type of the alert criteria.
+     * Specifies the type of the alert criteria. Previously undocumented values might be returned
      */
     private Odatatype odataType = Odatatype.MICROSOFT_AZURE_MONITOR_SINGLE_RESOURCE_MULTIPLE_METRIC_CRITERIA;
 
@@ -35,7 +35,8 @@ public final class MetricAlertSingleResourceMultipleMetricCriteria extends Metri
     }
 
     /**
-     * Get the odataType property: specifies the type of the alert criteria.
+     * Get the odataType property: Specifies the type of the alert criteria. Previously undocumented values might be
+     * returned.
      * 
      * @return the odataType value.
      */
@@ -71,7 +72,6 @@ public final class MetricAlertSingleResourceMultipleMetricCriteria extends Metri
      */
     @Override
     public void validate() {
-        super.validate();
         if (allOf() != null) {
             allOf().forEach(e -> e.validate());
         }

@@ -20,6 +20,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
@@ -793,5 +794,158 @@ public class BatchApiTests extends BlobBatchTestBase {
         BlobBatchStorageException ex
             = assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
         assertEquals(2, getIterableSize(ex.getBatchExceptions()));
+    }
+
+    // Tests container name encoding for BlobBatch.deleteBlob. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void deleteBlobContainerNameEncoding() {
+        String containerName = "my container";
+        String blobName = generateBlobName();
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        Response<Void> response = batch.deleteBlob(containerName, blobName);
+
+        assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
+        BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
+
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
+    }
+
+    // Tests blob name encoding for BlobBatch.deleteBlob.
+    @Test
+    public void deleteBlobNameEncoding() {
+        String containerName = generateContainerName();
+        String blobName = generateBlobName() + "enc!";
+        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
+        containerClient.getBlobClient(blobName).getPageBlobClient().create(0);
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        Response<Void> response = batch.deleteBlob(containerName, blobName);
+        batchClient.submitBatch(batch);
+
+        assertEquals(202, response.getStatusCode());
+    }
+
+    // Tests container name encoding for BlobBatch.setBlobAccessTier. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void setTierContainerNameEncoding() {
+        String containerName = "my container";
+        String blobName = generateBlobName();
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        Response<Void> response = batch.setBlobAccessTier(containerName, blobName, AccessTier.HOT);
+
+        assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
+        BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
+
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
+    }
+
+    // Tests blob name encoding for BlobBatch.setBlobAccessTier
+    @Test
+    public void setTierBlobNameEncoding() {
+        String containerName = generateContainerName();
+        String blobName = generateBlobName() + "enc!";
+        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
+        containerClient.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultBinaryData());
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        Response<Void> response = batch.setBlobAccessTier(containerName, blobName, AccessTier.HOT);
+        batchClient.submitBatch(batch);
+
+        assertEquals(200, response.getStatusCode());
+    }
+
+    // Tests container name encoding for BlobBatchSetBlobAccessTierOptions constructor. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void setTierContainerNameEncodingOptionsConstructor() {
+        String containerName = "my container";
+        String blobName = generateBlobName();
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        BlobBatchSetBlobAccessTierOptions options
+            = new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT);
+        Response<Void> response = batch.setBlobAccessTier(options);
+
+        assertThrows(BlobBatchStorageException.class, () -> batchClient.submitBatch(batch));
+        BlobStorageException temp = assertThrows(BlobStorageException.class, response::getRequest);
+
+        assertTrue(temp.getResponse().getRequest().getUrl().toString().contains("my%20container"));
+    }
+
+    //Tests blob name encoding for BlobBatchSetBlobAccessTierOptions constructor
+    @Test
+    public void setTierBlobNameEncodingOptionsConstructor() {
+        String containerName = generateContainerName();
+        String blobName = generateBlobName() + "enc!";
+        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
+        containerClient.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultBinaryData());
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        BlobBatchSetBlobAccessTierOptions options
+            = new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT);
+        Response<Void> response = batch.setBlobAccessTier(options);
+        batchClient.submitBatch(batch);
+
+        assertEquals(200, response.getStatusCode());
+        String identifier = options.getBlobIdentifier();
+        assertTrue(identifier.contains(Utility.urlEncode(blobName)));
+    }
+
+    // Tests getters return unencoded names (constructor with separate names)
+    @Test
+    public void getBlobNameAndContainerNameOptionsConstructor() {
+        String containerName = "my container";
+        String blobName = "my blob";
+
+        BlobBatchSetBlobAccessTierOptions options
+            = new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT);
+
+        assertEquals(containerName, options.getBlobContainerName());
+        assertEquals(blobName, options.getBlobName());
+
+        String identifier = options.getBlobIdentifier();
+        assertTrue(identifier.contains("my%20container"));
+        assertTrue(identifier.contains("my%20blob"));
+    }
+
+    // Tests getters return unencoded names (constructor with full blob URL)
+    @Test
+    public void getBlobNameAndContainerNameUrlConstructor() {
+        String containerName = "my container";
+        String blobName = "my blob";
+        BlockBlobClient blockBlobClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
+            .getBlobClient(blobName)
+            .getBlockBlobClient();
+
+        BlobBatchSetBlobAccessTierOptions options
+            = new BlobBatchSetBlobAccessTierOptions(blockBlobClient.getBlobUrl(), AccessTier.HOT);
+
+        assertEquals(containerName, options.getBlobContainerName());
+        assertEquals(blobName, options.getBlobName());
+
+        String identifier = options.getBlobIdentifier();
+        assertTrue(identifier.contains("my%20container"));
+        assertTrue(identifier.contains("my%20blob"));
+    }
+
+    @Test
+    public void blobBatchSetBlobAccessTierOptionsHandlesSpecialChars() {
+        String blobName = "my blob";
+        String containerName = generateContainerName();
+
+        BlobBatch batch = batchClient.getBlobBatch();
+        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(containerName);
+
+        BlobClient blobClient1 = containerClient.getBlobClient(blobName);
+        blobClient1.getBlockBlobClient().upload(DATA.getDefaultBinaryData());
+
+        Response<Void> response
+            = batch.setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(containerName, blobName, AccessTier.HOT));
+        batchClient.submitBatch(batch);
+        assertEquals(200, response.getStatusCode());
     }
 }

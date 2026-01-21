@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * the types of identities associated with this resource.
+ * Types of identities associated with a server.
  */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
     /**

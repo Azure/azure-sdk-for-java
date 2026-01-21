@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class DataflowProfileDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/DataflowProfile_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/DataflowProfile_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Delete.

@@ -16,7 +16,6 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
@@ -47,6 +46,8 @@ public class CosmosSourceTask extends SourceTask {
     private CosmosSourceTaskConfig taskConfig;
     private CosmosClientCacheItem cosmosClientItem;
     private CosmosClientCacheItem throughputControlCosmosClientItem;
+    private MetadataKafkaStorageManager kafkaOffsetStorageReader;
+
     private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     private long lastLogTimeMs = System.currentTimeMillis();
@@ -76,7 +77,13 @@ public class CosmosSourceTask extends SourceTask {
                 this.taskConfig.getFeedRangeTaskUnits().size(),
                 this.taskConfig.getTaskId());
 
-            this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
+            this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context.offsetStorageReader());
+
+            for (FeedRangeTaskUnit taskUnit : this.taskConfig.getFeedRangeTaskUnits()) {
+                this.applyContinuationStateFromOffsetIfExists(taskUnit);
+                this.taskUnitsQueue.add(taskUnit);
+            }
+
             LOGGER.info("Creating the cosmos client");
 
             this.cosmosClientItem =
@@ -90,6 +97,55 @@ public class CosmosSourceTask extends SourceTask {
             this.cleanup();
             throw ex;
         }
+    }
+
+    private void applyContinuationStateFromOffsetIfExists(FeedRangeTaskUnit feedRangeTaskUnit) {
+        // populate the changeFeedState if offset exists for the feed range
+
+        // In task level, we will try to find the EXACT offset matching for the feed range.
+        // The task config used here is only a snapshot of the config assigned; when there is a task level rebalance,
+        // the new task will keep using the snapshot which could contain stale feed range or change feed state
+
+        KafkaCosmosChangeFeedState changeFeedState =
+            this.getContinuationStateFromOffset(
+                feedRangeTaskUnit.getDatabaseName(),
+                feedRangeTaskUnit.getContainerRid(),
+                feedRangeTaskUnit.getFeedRange());
+
+        if (changeFeedState != null) {
+            LOGGER.debug(
+                "Find continuation state from offset {} for feed range {} in task {}. ",
+                changeFeedState,
+                feedRangeTaskUnit.getFeedRange(),
+                this.taskConfig.getTaskId());
+            feedRangeTaskUnit.setContinuationState(changeFeedState);
+        } else {
+            LOGGER.debug(
+                "Can not find continuation state from offset for feed range {} in task {}. ",
+                feedRangeTaskUnit.getFeedRange(),
+                this.taskConfig.getTaskId());
+        }
+    }
+
+    private KafkaCosmosChangeFeedState getContinuationStateFromOffset(
+        String databaseName,
+        String containerRid,
+        FeedRange feedRange) {
+
+        FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
+            this.kafkaOffsetStorageReader.getFeedRangeContinuationOffset(
+                databaseName,
+                containerRid,
+                feedRange);
+
+        if (feedRangeContinuationTopicOffset == null) {
+            return null;
+        }
+
+        return new KafkaCosmosChangeFeedState(
+            feedRangeContinuationTopicOffset.getResponseContinuation(),
+            feedRange,
+            feedRangeContinuationTopicOffset.getItemLsn());
     }
 
     private CosmosClientCacheItem getThroughputControlCosmosClientItem() {
@@ -147,7 +203,7 @@ public class CosmosSourceTask extends SourceTask {
                     return loggingContext;
                 });
 
-                logFeedRangeCounts();
+                logFeedRangeCounts(false);
             }
 
             return results;
@@ -160,10 +216,10 @@ public class CosmosSourceTask extends SourceTask {
         }
     }
 
-    private void logFeedRangeCounts() {
+    private void logFeedRangeCounts(boolean flushLogs) {
         long currentTimeInMs = System.currentTimeMillis();
         long durationInMs = currentTimeInMs - lastLogTimeMs;
-        if (durationInMs >= CosmosSourceTaskConfig.LOG_INTERVAL_MS) {
+        if (flushLogs || durationInMs >= CosmosSourceTaskConfig.LOG_INTERVAL_MS) {
             // Log accumulated counts for all feed ranges
             for (Map.Entry<String, FeedRangeLoggingContext> entry : feedRangeCounts.entrySet()) {
                 LOGGER.info(
@@ -266,7 +322,10 @@ public class CosmosSourceTask extends SourceTask {
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
-        ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+        ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .disableSplitHandling(changeFeedRequestOptions);
         CosmosThroughputControlHelper
             .tryPopulateThroughputControlGroupName(
                 changeFeedRequestOptions,
@@ -370,6 +429,8 @@ public class CosmosSourceTask extends SourceTask {
                                 pkRange,
                                 getChildRangeChangeFeedState(feedRangeTaskUnit.getContinuationState(), pkRange),
                                 feedRangeTaskUnit.getTopic());
+                        applyContinuationStateFromOffsetIfExists(childTaskUnit);
+
                         this.taskUnitsQueue.add(childTaskUnit);
                     }
 
@@ -476,6 +537,7 @@ public class CosmosSourceTask extends SourceTask {
     @Override
     public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
+        this.logFeedRangeCounts(true);
         this.cleanup();
     }
 

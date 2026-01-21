@@ -22,6 +22,11 @@ public final class ResourceForUpdate implements JsonSerializable<ResourceForUpda
      */
     private Map<String, String> tags;
 
+    /*
+     * Managed Service Identity.
+     */
+    private ResourceForUpdateIdentity identity;
+
     /**
      * Creates an instance of ResourceForUpdate class.
      */
@@ -49,11 +54,34 @@ public final class ResourceForUpdate implements JsonSerializable<ResourceForUpda
     }
 
     /**
+     * Get the identity property: Managed Service Identity.
+     * 
+     * @return the identity value.
+     */
+    public ResourceForUpdateIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed Service Identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the ResourceForUpdate object itself.
+     */
+    public ResourceForUpdate withIdentity(ResourceForUpdateIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -63,6 +91,7 @@ public final class ResourceForUpdate implements JsonSerializable<ResourceForUpda
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +113,8 @@ public final class ResourceForUpdate implements JsonSerializable<ResourceForUpda
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedResourceForUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedResourceForUpdate.identity = ResourceForUpdateIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

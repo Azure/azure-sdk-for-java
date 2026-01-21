@@ -10,15 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class DatabasesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * DatabaseDelete.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/DatabasesDelete.
+     * json
      */
     /**
-     * Sample code: Delete a database.
+     * Sample code: Delete an existing database.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void deleteADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.databases().delete("TestGroup", "testserver", "db1", com.azure.core.util.Context.NONE);
+    public static void
+        deleteAnExistingDatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.databases()
+            .delete("exampleresourcegroup", "exampleserver", "exampledatabase", com.azure.core.util.Context.NONE);
     }
 }

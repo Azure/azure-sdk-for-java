@@ -17,11 +17,11 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
-import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -65,20 +66,16 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
@@ -86,8 +83,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.extractConfigs;
@@ -96,19 +95,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
-@Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosAsyncClientTest {
+public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
 
-    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
@@ -153,6 +149,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static {
+        CosmosNettyLeakDetectorFactory.ingestIntoNetty();
         accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         desiredConsistencies = immutableListOrNull(
             ObjectUtils.defaultIfNull(parseDesiredConsistencies(TestConfigurations.DESIRED_CONSISTENCIES),
@@ -207,7 +204,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator",
         "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SETUP_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -223,16 +220,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"unit"})
-    public static void parallelizeUnitTests(ITestContext context) {
-        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
-    }
-
     @AfterSuite(groups = {"thinclient", "fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master",
         "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct",
-        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+        "circuit-breaker-read-all-read-many", "fi-multi-master", "long-emulator", "fi-thinclient-multi-region", "fi-thinclient-multi-master", "multi-region-strong"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -289,28 +279,51 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
-        int i = 0;
-        while (i < 100) {
-            try {
-                truncateCollectionInternal(cosmosContainer);
-                return;
-            } catch (CosmosException exception) {
-                if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
-                    || exception.getSubStatusCode() != 3200) {
 
-                    logger.error("No retry of exception", exception);
-                    throw exception;
-                }
-
-                i++;
-                logger.info("Retrying truncation after 100ms - iteration " + i);
+        try {
+            int i = 0;
+            while (i < 100) {
                 try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    truncateCollectionInternal(cosmosContainer);
+                    return;
+                } catch (CosmosException exception) {
+                    if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
+                        || exception.getSubStatusCode() != 3200) {
+
+                        logger.error("No retry of exception", exception);
+                        throw exception;
+                    }
+
+                    i++;
+                    logger.info("Retrying truncation after 100ms - iteration " + i);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
+        } finally {
+            // TODO @fabianm - Resetting leak detection - there is some flakiness when tests
+            // truncate collection and hit throttling - this will need to be investigated
+            // separately
+            CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
         }
+    }
+
+    protected static void expectCount(CosmosAsyncContainer cosmosContainer, int expectedCount) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        List<Integer> counts = cosmosContainer
+            .queryItems("SELECT VALUE COUNT(0) FROM root", options, Integer.class)
+            .collectList()
+            .block();
+        assertThat(counts).hasSize(1);
+        assertThat(counts.get(0)).isEqualTo(expectedCount);
     }
 
     private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
@@ -351,6 +364,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
                            return cosmosContainer.deleteItem(doc.getId(), partitionKey);
                        }).then().block();
+
+        expectCount(cosmosContainer, 0);
+
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
@@ -926,15 +942,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeCloseAsync(CosmosAsyncClient client) {
-        if (client != null) {
-            new Thread(() -> {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    logger.error("failed to close client", e);
-                }
-            }).start();
+    static protected void safeClose(QueryFeedOperationState state) {
+        if (state != null) {
+            safeClose(state.getClient());
         }
     }
 
@@ -973,15 +983,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @SuppressWarnings("rawtypes")
     public static <T extends CosmosResponse> void validateSuccess(Flux<T> flowable,
                                                                   CosmosResponseValidator<T> validator, long timeout) {
-
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-
-        flowable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(flowable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     @SuppressWarnings("rawtypes")
@@ -993,40 +998,26 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @SuppressWarnings("rawtypes")
     public static <T extends Resource, U extends CosmosResponse> void validateFailure(Flux<U> flowable,
                                                                                       FailureValidator validator, long timeout) throws InterruptedException {
-
-        TestSubscriber<CosmosResponse> testSubscriber = new TestSubscriber<>();
-
-        flowable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errors()).hasSize(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(flowable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     @SuppressWarnings("rawtypes")
     public <T extends CosmosItemResponse> void validateItemSuccess(
         Mono<T> responseMono, CosmosItemResponseValidator validator) {
-
-        TestSubscriber<CosmosItemResponse> testSubscriber = new TestSubscriber<>();
-        responseMono.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(responseMono)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
     @SuppressWarnings("rawtypes")
     public <T extends CosmosItemResponse> void validateItemFailure(
         Mono<T> responseMono, FailureValidator validator) {
-        TestSubscriber<CosmosItemResponse> testSubscriber = new TestSubscriber<>();
-        responseMono.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(subscriberValidationTimeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errors()).hasSize(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(responseMono)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
     public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
@@ -1036,14 +1027,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
-
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        flowable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        validator.validate(testSubscriber.values());
+        StepVerifier.create(flowable.collectList())
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static <T> void validateQuerySuccessWithContinuationTokenAndSizes(
@@ -1074,14 +1061,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<T> queryObservable = container.queryItems(query, options, classType);
 
-            TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
-            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertNoErrors();
-            testSubscriber.assertComplete();
+            AtomicReference<FeedResponse<T>> value = new AtomicReference<>();
+            StepVerifier.create(queryObservable.byPage(requestContinuation, pageSize))
+                .assertNext(value::set)
+                .thenConsumeWhile(Objects::nonNull)
+                .expectComplete()
+                .verify(Duration.ofMillis(TIMEOUT));
 
-            @SuppressWarnings("unchecked")
-            FeedResponse<T> firstPage = (FeedResponse<T>) testSubscriber.getEvents().get(0).get(0);
+            FeedResponse<T> firstPage = value.get();
             requestContinuation = firstPage.getContinuationToken();
             responseList.add(firstPage);
 
@@ -1097,15 +1084,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
                                                                  FailureValidator validator, long timeout) {
-
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
-
-        flowable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.getEvents().get(1)).hasSize(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(flowable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     @DataProvider
@@ -1582,4 +1563,28 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
         return outputStream.toByteArray();
     }
+
+    public static String captureNettyLeaks() {
+        System.gc();
+        try {
+            Thread.sleep(5_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        List<String> nettyLeaks = CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
+        if (nettyLeaks.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\n");
+            for (String leak : nettyLeaks) {
+                sb.append(leak).append("\n");
+            }
+
+            return "NETTY LEAKS detected: "
+                + "\n\n"
+                + sb;
+        }
+
+        return "";
+    }
+
 }

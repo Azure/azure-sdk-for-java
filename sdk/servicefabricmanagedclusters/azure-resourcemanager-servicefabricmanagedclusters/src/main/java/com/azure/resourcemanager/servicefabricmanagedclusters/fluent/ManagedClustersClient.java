@@ -120,15 +120,30 @@ public interface ManagedClustersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
      * @param parameters The managed cluster resource updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
+        String clusterName, ManagedClusterUpdateParameters parameters);
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed cluster resource along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of the managed cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
-        ManagedClusterUpdateParameters parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdate(String resourceGroupName,
+        String clusterName, ManagedClusterUpdateParameters parameters, Context context);
 
     /**
      * Update the tags of of a Service Fabric managed cluster resource with the specified name.
@@ -143,6 +158,22 @@ public interface ManagedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedClusterInner update(String resourceGroupName, String clusterName, ManagedClusterUpdateParameters parameters);
+
+    /**
+     * Update the tags of of a Service Fabric managed cluster resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters The managed cluster resource updated tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedClusterInner update(String resourceGroupName, String clusterName, ManagedClusterUpdateParameters parameters,
+        Context context);
 
     /**
      * Delete a Service Fabric managed cluster resource with the specified name.
@@ -318,7 +349,38 @@ public interface ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters);
+
+    /**
+     * Starts a fault simulation on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters parameters describing the fault simulation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters, Context context);
+
+    /**
+     * Starts a fault simulation on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters parameters describing the fault simulation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters);
 
     /**
@@ -331,39 +393,11 @@ public interface ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters, Context context);
-
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void startFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters);
-
-    /**
-     * Starts a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameters describing the fault simulation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void startFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationContentWrapper parameters,
-        Context context);
 
     /**
      * Stops a fault simulation on the cluster.
@@ -377,7 +411,38 @@ public interface ManagedClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner>
+        beginStopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters);
+
+    /**
+     * Stops a fault simulation on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters parameter with fault simulation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, FaultSimulationIdContent parameters, Context context);
+
+    /**
+     * Stops a fault simulation on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param parameters parameter with fault simulation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters);
 
     /**
@@ -390,37 +455,9 @@ public interface ManagedClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationIdContent parameters, Context context);
-
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters);
-
-    /**
-     * Stops a fault simulation on the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters,
-        Context context);
 }

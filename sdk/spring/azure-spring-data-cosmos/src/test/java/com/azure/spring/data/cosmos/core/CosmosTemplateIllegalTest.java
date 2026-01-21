@@ -8,12 +8,12 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.Person;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.util.Assert;
 
@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CosmosTemplateIllegalTest {
     private static final String NULL_STR = null;
     private static final String DUMMY_COLL = "dummy";
@@ -35,7 +35,7 @@ public class CosmosTemplateIllegalTest {
     private CosmosTemplate cosmosTemplate;
     private Class<?> cosmosTemplateClass;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         cosmosTemplateClass = cosmosTemplate.getClass();
     }

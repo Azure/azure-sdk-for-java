@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
@@ -24,23 +24,24 @@ public final class QueryPacksCreateOrUpdateWithoutNameWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithoutNameWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"queryPackId\":\"xukuqgsj\",\"timeCreated\":\"2021-08-01T00:57:39Z\",\"timeModified\":\"2021-06-29T21:31:03Z\",\"provisioningState\":\"gketwzhhzjhf\"},\"location\":\"mhv\",\"tags\":{\"qsxvmhf\":\"vgpmun\"},\"id\":\"uzjyihsasbhudypo\",\"name\":\"yue\",\"type\":\"slynsqyrpfoo\"}";
+            = "{\"properties\":{\"queryPackId\":\"rgmsplzga\",\"timeCreated\":\"2021-02-13T02:42:05Z\",\"timeModified\":\"2021-02-02T09:58:56Z\",\"provisioningState\":\"vnewgnxkympqanx\"},\"location\":\"kixtwbtaoy\",\"tags\":{\"pxycphdr\":\"ghshxcylhkgmnsg\"},\"id\":\"jjkhvyomaclu\",\"name\":\"vxnqmhrpqpd\",\"type\":\"wmkoisq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogAnalyticsQueryPack response = manager.queryPacks()
-            .createOrUpdateWithoutNameWithResponse("fiwrxgkn",
-                new LogAnalyticsQueryPackInner().withLocation("gzdjtxvzf").withTags(mapOf("aqvlgafcqusr", "v")),
+            .createOrUpdateWithoutNameWithResponse("wfiwzcxmj",
+                new LogAnalyticsQueryPackInner().withLocation("cabvnuil")
+                    .withTags(mapOf("ugmrmf", "aswlp", "oauk", "lrxw", "moaedsxj", "fkvcisi")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mhv", response.location());
-        Assertions.assertEquals("vgpmun", response.tags().get("qsxvmhf"));
+        Assertions.assertEquals("kixtwbtaoy", response.location());
+        Assertions.assertEquals("ghshxcylhkgmnsg", response.tags().get("pxycphdr"));
     }
 
     // Use "Map.of" if available

@@ -60,7 +60,7 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientRestorableGremlinGraphs")
     public interface RestorableGremlinGraphsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs")

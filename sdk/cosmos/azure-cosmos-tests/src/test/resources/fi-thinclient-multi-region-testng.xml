@@ -22,6 +22,9 @@
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="fi-thinclient-multi-region">
+  <listeners>
+    <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+  </listeners>
   <test name="fi-thinclient-multi-region" group-by-instances="true">
     <groups>
       <run>

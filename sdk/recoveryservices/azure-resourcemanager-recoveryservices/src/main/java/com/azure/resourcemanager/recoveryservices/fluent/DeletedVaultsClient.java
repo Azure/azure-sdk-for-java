@@ -83,7 +83,7 @@ public interface DeletedVaultsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedVaultInner>, DeletedVaultInner> beginUndelete(String location, String deletedVaultName,
+    SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
         DeletedVaultUndeleteInput body);
 
     /**
@@ -99,7 +99,7 @@ public interface DeletedVaultsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeletedVaultInner>, DeletedVaultInner> beginUndelete(String location, String deletedVaultName,
+    SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
         DeletedVaultUndeleteInput body, Context context);
 
     /**
@@ -111,10 +111,9 @@ public interface DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedVaultInner undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body);
+    void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body);
 
     /**
      * Start undelete of a deleted vault.
@@ -126,11 +125,9 @@ public interface DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedVaultInner undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body,
-        Context context);
+    void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context);
 
     /**
      * Get the operation status of a deleted vault.

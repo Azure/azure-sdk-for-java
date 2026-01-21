@@ -12,27 +12,27 @@ public final class AverageServiceLoadScalingTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AverageServiceLoadScalingTrigger model = BinaryData.fromString(
-            "{\"kind\":\"AverageServiceLoadTrigger\",\"metricName\":\"c\",\"lowerLoadThreshold\":65.33544191967107,\"upperLoadThreshold\":79.37105398505092,\"scaleInterval\":\"lvqhjkbegibtnmx\",\"useOnlyPrimaryLoad\":true}")
+            "{\"kind\":\"AverageServiceLoadTrigger\",\"metricName\":\"qzeqqkdltfzxm\",\"lowerLoadThreshold\":54.37658882164613,\"upperLoadThreshold\":25.287367109549173,\"scaleInterval\":\"ur\",\"useOnlyPrimaryLoad\":false}")
             .toObject(AverageServiceLoadScalingTrigger.class);
-        Assertions.assertEquals("c", model.metricName());
-        Assertions.assertEquals(65.33544191967107, model.lowerLoadThreshold());
-        Assertions.assertEquals(79.37105398505092, model.upperLoadThreshold());
-        Assertions.assertEquals("lvqhjkbegibtnmx", model.scaleInterval());
-        Assertions.assertTrue(model.useOnlyPrimaryLoad());
+        Assertions.assertEquals("qzeqqkdltfzxm", model.metricName());
+        Assertions.assertEquals(54.37658882164613, model.lowerLoadThreshold());
+        Assertions.assertEquals(25.287367109549173, model.upperLoadThreshold());
+        Assertions.assertEquals("ur", model.scaleInterval());
+        Assertions.assertFalse(model.useOnlyPrimaryLoad());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AverageServiceLoadScalingTrigger model = new AverageServiceLoadScalingTrigger().withMetricName("c")
-            .withLowerLoadThreshold(65.33544191967107)
-            .withUpperLoadThreshold(79.37105398505092)
-            .withScaleInterval("lvqhjkbegibtnmx")
-            .withUseOnlyPrimaryLoad(true);
+        AverageServiceLoadScalingTrigger model = new AverageServiceLoadScalingTrigger().withMetricName("qzeqqkdltfzxm")
+            .withLowerLoadThreshold(54.37658882164613)
+            .withUpperLoadThreshold(25.287367109549173)
+            .withScaleInterval("ur")
+            .withUseOnlyPrimaryLoad(false);
         model = BinaryData.fromObject(model).toObject(AverageServiceLoadScalingTrigger.class);
-        Assertions.assertEquals("c", model.metricName());
-        Assertions.assertEquals(65.33544191967107, model.lowerLoadThreshold());
-        Assertions.assertEquals(79.37105398505092, model.upperLoadThreshold());
-        Assertions.assertEquals("lvqhjkbegibtnmx", model.scaleInterval());
-        Assertions.assertTrue(model.useOnlyPrimaryLoad());
+        Assertions.assertEquals("qzeqqkdltfzxm", model.metricName());
+        Assertions.assertEquals(54.37658882164613, model.lowerLoadThreshold());
+        Assertions.assertEquals(25.287367109549173, model.upperLoadThreshold());
+        Assertions.assertEquals("ur", model.scaleInterval());
+        Assertions.assertFalse(model.useOnlyPrimaryLoad());
     }
 }

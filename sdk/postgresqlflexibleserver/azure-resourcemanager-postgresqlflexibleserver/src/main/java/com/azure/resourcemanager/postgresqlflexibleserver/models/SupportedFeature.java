@@ -12,19 +12,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The supported features.
+ * Features supported.
  */
 @Immutable
 public final class SupportedFeature implements JsonSerializable<SupportedFeature> {
     /*
-     * Name of feature
+     * Name of the feature.
      */
     private String name;
 
     /*
-     * Status of feature
+     * Status of the feature. Indicates if the feature is enabled or not.
      */
-    private SupportedFeatureStatusEnum status;
+    private FeatureStatus status;
 
     /**
      * Creates an instance of SupportedFeature class.
@@ -33,7 +33,7 @@ public final class SupportedFeature implements JsonSerializable<SupportedFeature
     }
 
     /**
-     * Get the name property: Name of feature.
+     * Get the name property: Name of the feature.
      * 
      * @return the name value.
      */
@@ -42,11 +42,11 @@ public final class SupportedFeature implements JsonSerializable<SupportedFeature
     }
 
     /**
-     * Get the status property: Status of feature.
+     * Get the status property: Status of the feature. Indicates if the feature is enabled or not.
      * 
      * @return the status value.
      */
-    public SupportedFeatureStatusEnum status() {
+    public FeatureStatus status() {
         return this.status;
     }
 
@@ -85,7 +85,7 @@ public final class SupportedFeature implements JsonSerializable<SupportedFeature
                 if ("name".equals(fieldName)) {
                     deserializedSupportedFeature.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedSupportedFeature.status = SupportedFeatureStatusEnum.fromString(reader.getString());
+                    deserializedSupportedFeature.status = FeatureStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

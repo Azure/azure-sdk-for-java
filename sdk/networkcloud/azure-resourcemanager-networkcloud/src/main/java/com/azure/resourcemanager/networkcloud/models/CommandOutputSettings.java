@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * CommandOutputSettings represents the settings for commands run within the cluster such as bare metal machine run
@@ -27,6 +28,12 @@ public final class CommandOutputSettings implements JsonSerializable<CommandOutp
      * The URL of the storage account container that is to be used by the specified identities.
      */
     private String containerUrl;
+
+    /*
+     * The list of optional overrides allowing for association of storage containers and identities to specific types of
+     * command output. If a type is not overridden, the default identity and storage container will be utilized.
+     */
+    private List<CommandOutputOverride> overrides;
 
     /**
      * Creates an instance of CommandOutputSettings class.
@@ -79,6 +86,30 @@ public final class CommandOutputSettings implements JsonSerializable<CommandOutp
     }
 
     /**
+     * Get the overrides property: The list of optional overrides allowing for association of storage containers and
+     * identities to specific types of command output. If a type is not overridden, the default identity and storage
+     * container will be utilized.
+     * 
+     * @return the overrides value.
+     */
+    public List<CommandOutputOverride> overrides() {
+        return this.overrides;
+    }
+
+    /**
+     * Set the overrides property: The list of optional overrides allowing for association of storage containers and
+     * identities to specific types of command output. If a type is not overridden, the default identity and storage
+     * container will be utilized.
+     * 
+     * @param overrides the overrides value to set.
+     * @return the CommandOutputSettings object itself.
+     */
+    public CommandOutputSettings withOverrides(List<CommandOutputOverride> overrides) {
+        this.overrides = overrides;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -86,6 +117,9 @@ public final class CommandOutputSettings implements JsonSerializable<CommandOutp
     public void validate() {
         if (associatedIdentity() != null) {
             associatedIdentity().validate();
+        }
+        if (overrides() != null) {
+            overrides().forEach(e -> e.validate());
         }
     }
 
@@ -97,6 +131,7 @@ public final class CommandOutputSettings implements JsonSerializable<CommandOutp
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("associatedIdentity", this.associatedIdentity);
         jsonWriter.writeStringField("containerUrl", this.containerUrl);
+        jsonWriter.writeArrayField("overrides", this.overrides, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -119,6 +154,10 @@ public final class CommandOutputSettings implements JsonSerializable<CommandOutp
                     deserializedCommandOutputSettings.associatedIdentity = IdentitySelector.fromJson(reader);
                 } else if ("containerUrl".equals(fieldName)) {
                     deserializedCommandOutputSettings.containerUrl = reader.getString();
+                } else if ("overrides".equals(fieldName)) {
+                    List<CommandOutputOverride> overrides
+                        = reader.readArray(reader1 -> CommandOutputOverride.fromJson(reader1));
+                    deserializedCommandOutputSettings.overrides = overrides;
                 } else {
                     reader.skipChildren();
                 }

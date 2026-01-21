@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * deviceCompliancePolicyState
- * 
- * Device Compliance Policy State for a given device.
+ * Represents a device compliance policy state.
+ * <p>
+ * Device compliance policy State for a given device.
  */
 @Fluent
 public final class MicrosoftGraphDeviceCompliancePolicyState extends MicrosoftGraphEntity {

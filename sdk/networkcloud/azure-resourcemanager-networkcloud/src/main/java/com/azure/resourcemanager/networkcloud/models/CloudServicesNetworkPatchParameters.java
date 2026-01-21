@@ -118,6 +118,30 @@ public final class CloudServicesNetworkPatchParameters
     }
 
     /**
+     * Get the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    public CloudServicesNetworkStorageOptionsPatch storageOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageOptions();
+    }
+
+    /**
+     * Set the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @param storageOptions the storageOptions value to set.
+     * @return the CloudServicesNetworkPatchParameters object itself.
+     */
+    public CloudServicesNetworkPatchParameters
+        withStorageOptions(CloudServicesNetworkStorageOptionsPatch storageOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CloudServicesNetworkPatchProperties();
+        }
+        this.innerProperties().withStorageOptions(storageOptions);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

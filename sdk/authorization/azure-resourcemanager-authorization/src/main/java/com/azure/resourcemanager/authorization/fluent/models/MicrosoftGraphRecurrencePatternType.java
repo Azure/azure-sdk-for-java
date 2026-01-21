@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * recurrencePatternType.
+ * Represents a recurrence pattern type.
  */
 public final class MicrosoftGraphRecurrencePatternType
     extends ExpandableStringEnum<MicrosoftGraphRecurrencePatternType> {

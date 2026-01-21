@@ -37,6 +37,42 @@ public final class RiskCategory extends ExpandableStringEnum<RiskCategory> {
     public static final RiskCategory SELF_HARM = fromString("SelfHarm");
 
     /**
+     * Represents content that involves illegal activities.
+     */
+    @Generated
+    public static final RiskCategory PROTECTED_MATERIAL = fromString("ProtectedMaterial");
+
+    /**
+     * Represents content that contains vulnerabilities in code.
+     */
+    @Generated
+    public static final RiskCategory CODE_VULNERABILITY = fromString("CodeVulnerability");
+
+    /**
+     * Represents content that lacks a solid grounding in fact.
+     */
+    @Generated
+    public static final RiskCategory UNGROUNDED_ATTRIBUTES = fromString("UngroundedAttributes");
+
+    /**
+     * Represents content that involves prohibited actions.
+     */
+    @Generated
+    public static final RiskCategory PROHIBITED_ACTIONS = fromString("ProhibitedActions");
+
+    /**
+     * Represents content that involves sensitive data leakage.
+     */
+    @Generated
+    public static final RiskCategory SENSITIVE_DATA_LEAKAGE = fromString("SensitiveDataLeakage");
+
+    /**
+     * Represents content that involves task adherence.
+     */
+    @Generated
+    public static final RiskCategory TASK_ADHERENCE = fromString("TaskAdherence");
+
+    /**
      * Creates a new instance of RiskCategory value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

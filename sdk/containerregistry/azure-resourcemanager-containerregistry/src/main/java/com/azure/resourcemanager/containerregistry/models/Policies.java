@@ -37,7 +37,7 @@ public final class Policies implements JsonSerializable<Policies> {
     private ExportPolicy exportPolicy;
 
     /*
-     * The policy for using ARM audience token for a container registry.
+     * The policy for using Azure Resource Manager audience token for a container registry.
      */
     private AzureADAuthenticationAsArmPolicy azureADAuthenticationAsArmPolicy;
 
@@ -128,8 +128,8 @@ public final class Policies implements JsonSerializable<Policies> {
     }
 
     /**
-     * Get the azureADAuthenticationAsArmPolicy property: The policy for using ARM audience token for a container
-     * registry.
+     * Get the azureADAuthenticationAsArmPolicy property: The policy for using Azure Resource Manager audience token for
+     * a container registry.
      * 
      * @return the azureADAuthenticationAsArmPolicy value.
      */
@@ -138,8 +138,8 @@ public final class Policies implements JsonSerializable<Policies> {
     }
 
     /**
-     * Set the azureADAuthenticationAsArmPolicy property: The policy for using ARM audience token for a container
-     * registry.
+     * Set the azureADAuthenticationAsArmPolicy property: The policy for using Azure Resource Manager audience token for
+     * a container registry.
      * 
      * @param azureADAuthenticationAsArmPolicy the azureADAuthenticationAsArmPolicy value to set.
      * @return the Policies object itself.

@@ -27,7 +27,7 @@ autorest
 ```
 
 ```yaml
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsAppDefinition.
+ * Represents a teams app definition.
  */
 @Fluent
 public final class MicrosoftGraphTeamsAppDefinition extends MicrosoftGraphEntity {

@@ -14,25 +14,25 @@ public final class NewRelicSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NewRelicSingleSignOnProperties model = BinaryData.fromString(
-            "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"o\",\"singleSignOnUrl\":\"si\",\"provisioningState\":\"Deleting\"}")
+            "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"cjdkwtnhxbnjbi\",\"singleSignOnUrl\":\"qrglssainqpjwn\",\"provisioningState\":\"Canceled\"}")
             .toObject(NewRelicSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
-        Assertions.assertEquals("o", model.enterpriseAppId());
-        Assertions.assertEquals("si", model.singleSignOnUrl());
-        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
+        Assertions.assertEquals("cjdkwtnhxbnjbi", model.enterpriseAppId());
+        Assertions.assertEquals("qrglssainqpjwn", model.singleSignOnUrl());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NewRelicSingleSignOnProperties model
-            = new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
-                .withEnterpriseAppId("o")
-                .withSingleSignOnUrl("si")
-                .withProvisioningState(ProvisioningState.DELETING);
+            = new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                .withEnterpriseAppId("cjdkwtnhxbnjbi")
+                .withSingleSignOnUrl("qrglssainqpjwn")
+                .withProvisioningState(ProvisioningState.CANCELED);
         model = BinaryData.fromObject(model).toObject(NewRelicSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
-        Assertions.assertEquals("o", model.enterpriseAppId());
-        Assertions.assertEquals("si", model.singleSignOnUrl());
-        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
+        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
+        Assertions.assertEquals("cjdkwtnhxbnjbi", model.enterpriseAppId());
+        Assertions.assertEquals("qrglssainqpjwn", model.singleSignOnUrl());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.provisioningState());
     }
 }

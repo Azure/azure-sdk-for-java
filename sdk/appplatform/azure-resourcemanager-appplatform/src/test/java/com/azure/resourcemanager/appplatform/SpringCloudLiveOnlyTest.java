@@ -20,10 +20,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.utils.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -317,7 +313,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
                 OutputStream outputStream = new FileOutputStream(downloaded)) {
-                IOUtils.copy(inputStream, outputStream);
+                copy(inputStream, outputStream);
             } finally {
                 connection.disconnect();
             }
@@ -325,28 +321,12 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         return downloaded;
     }
 
-    private void extraTarGzSource(File folder, URL url) throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
-        try (TarArchiveInputStream inputStream
-            = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
-            TarArchiveEntry entry;
-            while ((entry = inputStream.getNextTarEntry()) != null) {
-                if (entry.isDirectory()) {
-                    continue;
-                }
-                File file = new File(folder, entry.getName());
-                File parent = file.getParentFile();
-                if (parent.exists() || parent.mkdirs()) {
-                    try (OutputStream outputStream = new FileOutputStream(file)) {
-                        IOUtils.copy(inputStream, outputStream);
-                    }
-                } else {
-                    throw new IllegalStateException("Cannot create directory: " + parent.getAbsolutePath());
-                }
-            }
-        } finally {
-            connection.disconnect();
+    private static void copy(InputStream source, OutputStream destination) throws IOException {
+        byte[] buffer = new byte[8192];
+        int read;
+
+        while ((read = source.read(buffer, 0, buffer.length)) != -1) {
+            destination.write(buffer, 0, read);
         }
     }
 

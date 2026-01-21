@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * managedAppRegistration
- * 
+ * Represents a managed app registration.
+ * <p>
  * The ManagedAppEntity is the base entity type for all other entity types under app management workflow.
  */
 @Fluent

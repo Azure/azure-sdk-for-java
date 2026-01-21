@@ -63,7 +63,6 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVE
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVER_GENERATED_503;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TIMEOUT_GENERATED_410;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
@@ -134,7 +133,7 @@ public class CosmosExceptionTest {
             assertEquals(instance.getStatusCode(), expectedStatusCode);
             assertThat(instance.toString()).contains("\"userAgent\":\"" + Utils.getUserAgent());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
-            String message = lenientFormat("could not create instance of %s due to %s", type, error);
+            String message = String.format("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);
         }
     }
@@ -149,7 +148,7 @@ public class CosmosExceptionTest {
             assertEquals(instance.getSubStatusCode(), expectedSubStatusCode);
             assertThat(instance.toString()).contains("\"userAgent\":\"" + Utils.getUserAgent());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
-            String message = lenientFormat("could not create instance of %s due to %s", type, error);
+            String message = String.format("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);
         }
     }

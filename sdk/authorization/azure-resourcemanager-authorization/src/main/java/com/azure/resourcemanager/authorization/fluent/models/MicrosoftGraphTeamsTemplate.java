@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsTemplate.
+ * Represents a teams template.
  */
 @Fluent
 public final class MicrosoftGraphTeamsTemplate extends MicrosoftGraphEntity {
