@@ -30,8 +30,13 @@ class CosmosCatalogITest
         }
     }
 
+    // TODO: spark on windows has issue with this test.
+    // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
+    // once we move Linux CI re-enable the test:
     it can "drop an non-empty database with cascade true" in {
-        val databaseName = getAutoCleanableDatabaseName
+      assume(!Platform.isWindows)
+
+      val databaseName = getAutoCleanableDatabaseName
         spark.catalog.databaseExists(databaseName) shouldEqual false
 
         createDatabase(spark, databaseName)

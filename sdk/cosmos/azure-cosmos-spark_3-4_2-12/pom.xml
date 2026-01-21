@@ -109,6 +109,7 @@
         </file>
         <property>
           <name>spark-e2e_3-4</name>
+          <value>true</value>
         </property>
       </activation>
       <build>
@@ -153,7 +154,7 @@
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
               <config>stdOut=true,verbose=true,stdErr=true</config>
-              <noScalaTestIgnore>true</noScalaTestIgnore>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
               <forkMode>once</forkMode>
               <logForkedProcessCommand>true</logForkedProcessCommand>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>

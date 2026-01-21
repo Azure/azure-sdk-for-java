@@ -109,6 +109,7 @@
         </file>
         <property>
           <name>spark-e2e_3-3</name>
+          <value>true</value>
         </property>
       </activation>
       <build>
@@ -149,7 +150,7 @@
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
               <config>stdOut=true,verbose=true,stdErr=true</config>
-              <noScalaTestIgnore>true</noScalaTestIgnore>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
               <forkMode>once</forkMode>

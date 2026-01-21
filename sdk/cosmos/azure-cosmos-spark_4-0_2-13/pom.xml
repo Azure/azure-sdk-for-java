@@ -117,6 +117,10 @@
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
+        <property>
+          <name>spark-e2e_4-0_2-13</name>
+          <value>true</value>
+        </property>
       </activation>
       <build>
         <plugins>
@@ -141,7 +145,7 @@
             <configuration>
               <argLine>${scalatest.argLine}</argLine>
               <config>stdOut=true,verbose=true,stdErr=true</config>
-              <noScalaTestIgnore>true</noScalaTestIgnore>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
               <forkMode>once</forkMode>

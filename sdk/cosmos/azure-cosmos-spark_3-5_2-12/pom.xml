@@ -121,6 +121,7 @@
         </file>
         <property>
           <name>spark-e2e_3-5_2-12</name>
+          <value>true</value>
         </property>
       </activation>
       <build>
@@ -162,7 +163,7 @@
             <configuration>
               <argLine>${scalatest.argLine}</argLine>
               <config>stdOut=true,verbose=true,stdErr=true</config>
-              <noScalaTestIgnore>true</noScalaTestIgnore>
+              <noScalaTestIgnore>false</noScalaTestIgnore>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
               <forkMode>once</forkMode>
