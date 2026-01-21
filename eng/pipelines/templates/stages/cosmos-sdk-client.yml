@@ -210,5 +210,3 @@ extends:
                 - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                   - ${{ artifact }}
             TestPipeline: false
-
-
