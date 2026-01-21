@@ -61,12 +61,6 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static final ItemType REASONING = fromString("reasoning");
 
     /**
-     * Static value item_reference for ItemType.
-     */
-    @Generated
-    public static final ItemType ITEM_REFERENCE = fromString("item_reference");
-
-    /**
      * Static value image_generation_call for ItemType.
      */
     @Generated
@@ -168,4 +162,52 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
     public static Collection<ItemType> values() {
         return values(ItemType.class);
     }
+
+    /**
+     * Static value output_message for ItemType.
+     */
+    @Generated
+    public static final ItemType OUTPUT_MESSAGE = fromString("output_message");
+
+    /**
+     * Static value compaction for ItemType.
+     */
+    @Generated
+    public static final ItemType COMPACTION = fromString("compaction");
+
+    /**
+     * Static value shell_call for ItemType.
+     */
+    @Generated
+    public static final ItemType SHELL_CALL = fromString("shell_call");
+
+    /**
+     * Static value shell_call_output for ItemType.
+     */
+    @Generated
+    public static final ItemType SHELL_CALL_OUTPUT = fromString("shell_call_output");
+
+    /**
+     * Static value apply_patch_call for ItemType.
+     */
+    @Generated
+    public static final ItemType APPLY_PATCH_CALL = fromString("apply_patch_call");
+
+    /**
+     * Static value apply_patch_call_output for ItemType.
+     */
+    @Generated
+    public static final ItemType APPLY_PATCH_CALL_OUTPUT = fromString("apply_patch_call_output");
+
+    /**
+     * Static value custom_tool_call_output for ItemType.
+     */
+    @Generated
+    public static final ItemType CUSTOM_TOOL_CALL_OUTPUT = fromString("custom_tool_call_output");
+
+    /**
+     * Static value custom_tool_call for ItemType.
+     */
+    @Generated
+    public static final ItemType CUSTOM_TOOL_CALL = fromString("custom_tool_call");
 }

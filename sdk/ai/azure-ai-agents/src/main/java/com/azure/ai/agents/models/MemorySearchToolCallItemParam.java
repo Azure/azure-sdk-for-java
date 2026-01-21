@@ -15,7 +15,7 @@ import java.util.List;
  * The MemorySearchToolCallItemParam model.
  */
 @Fluent
-public final class MemorySearchToolCallItemParam extends ItemParam {
+public final class MemorySearchToolCallItemParam extends Item {
 
     /*
      * The type property.

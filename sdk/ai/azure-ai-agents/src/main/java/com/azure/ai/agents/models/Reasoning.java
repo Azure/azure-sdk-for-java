@@ -12,9 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * **o-series models only**
+ * Reasoning
  *
- * Configuration options for [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+ * **gpt-5 and o-series models only**
+ * Configuration options for
+ * [reasoning models](https://platform.openai.com/docs/guides/reasoning).
  */
 @Fluent
 public final class Reasoning implements JsonSerializable<Reasoning> {
@@ -26,16 +28,13 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     private ReasoningEffort effort;
 
     /*
-     * A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * The summary property.
      */
     @Generated
     private ReasoningSummary summary;
 
     /*
-     * **Deprecated**: use `summary` instead. A summary of the reasoning performed by the model. This can be useful for
-     * debugging and understanding the model's reasoning process. One of `auto`, `concise`, or `detailed`.
+     * The generate_summary property.
      */
     @Generated
     private ReasoningGenerateSummary generateSummary;
@@ -58,21 +57,7 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Set the effort property: The effort property.
-     *
-     * @param effort the effort value to set.
-     * @return the Reasoning object itself.
-     */
-    @Generated
-    public Reasoning setEffort(ReasoningEffort effort) {
-        this.effort = effort;
-        return this;
-    }
-
-    /**
-     * Get the summary property: A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * Get the summary property: The summary property.
      *
      * @return the summary value.
      */
@@ -82,9 +67,7 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Set the summary property: A summary of the reasoning performed by the model. This can be
-     * useful for debugging and understanding the model's reasoning process.
-     * One of `auto`, `concise`, or `detailed`.
+     * Set the summary property: The summary property.
      *
      * @param summary the summary value to set.
      * @return the Reasoning object itself.
@@ -96,9 +79,7 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Get the generateSummary property: **Deprecated**: use `summary` instead. A summary of the reasoning performed by
-     * the model. This can be useful for debugging and understanding the model's reasoning process. One of `auto`,
-     * `concise`, or `detailed`.
+     * Get the generateSummary property: The generate_summary property.
      *
      * @return the generateSummary value.
      */
@@ -108,9 +89,7 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
     }
 
     /**
-     * Set the generateSummary property: **Deprecated**: use `summary` instead. A summary of the reasoning performed by
-     * the model. This can be useful for debugging and understanding the model's reasoning process. One of `auto`,
-     * `concise`, or `detailed`.
+     * Set the generateSummary property: The generate_summary property.
      *
      * @param generateSummary the generateSummary value to set.
      * @return the Reasoning object itself.
@@ -162,5 +141,17 @@ public final class Reasoning implements JsonSerializable<Reasoning> {
             }
             return deserializedReasoning;
         });
+    }
+
+    /**
+     * Set the effort property: The effort property.
+     *
+     * @param effort the effort value to set.
+     * @return the Reasoning object itself.
+     */
+    @Generated
+    public Reasoning setEffort(ReasoningEffort effort) {
+        this.effort = effort;
+        return this;
     }
 }

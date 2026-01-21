@@ -21,7 +21,7 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
      * The type property.
      */
     @Generated
-    private ComputerActionType type;
+    private ComputerActionType type = ComputerActionType.fromString("ComputerAction");
 
     /**
      * Creates an instance of ComputerAction class.
@@ -78,23 +78,23 @@ public class ComputerAction implements JsonSerializable<ComputerAction> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("click".equals(discriminatorValue)) {
-                    return ComputerActionClick.fromJson(readerToUse.reset());
+                    return ClickParam.fromJson(readerToUse.reset());
                 } else if ("double_click".equals(discriminatorValue)) {
-                    return ComputerActionDoubleClick.fromJson(readerToUse.reset());
+                    return DoubleClickAction.fromJson(readerToUse.reset());
                 } else if ("drag".equals(discriminatorValue)) {
-                    return ComputerActionDrag.fromJson(readerToUse.reset());
-                } else if ("move".equals(discriminatorValue)) {
-                    return ComputerActionMove.fromJson(readerToUse.reset());
-                } else if ("screenshot".equals(discriminatorValue)) {
-                    return ComputerActionScreenshot.fromJson(readerToUse.reset());
-                } else if ("scroll".equals(discriminatorValue)) {
-                    return ComputerActionScroll.fromJson(readerToUse.reset());
-                } else if ("type".equals(discriminatorValue)) {
-                    return ComputerActionTypeKeys.fromJson(readerToUse.reset());
-                } else if ("wait".equals(discriminatorValue)) {
-                    return ComputerActionWait.fromJson(readerToUse.reset());
+                    return Drag.fromJson(readerToUse.reset());
                 } else if ("keypress".equals(discriminatorValue)) {
-                    return ComputerActionKeyPress.fromJson(readerToUse.reset());
+                    return KeyPressAction.fromJson(readerToUse.reset());
+                } else if ("move".equals(discriminatorValue)) {
+                    return Move.fromJson(readerToUse.reset());
+                } else if ("screenshot".equals(discriminatorValue)) {
+                    return Screenshot.fromJson(readerToUse.reset());
+                } else if ("scroll".equals(discriminatorValue)) {
+                    return Scroll.fromJson(readerToUse.reset());
+                } else if ("type".equals(discriminatorValue)) {
+                    return Type.fromJson(readerToUse.reset());
+                } else if ("wait".equals(discriminatorValue)) {
+                    return Wait.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

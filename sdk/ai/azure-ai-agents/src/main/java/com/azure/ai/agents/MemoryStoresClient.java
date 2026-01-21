@@ -10,8 +10,7 @@ import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
 import com.azure.ai.agents.models.DeleteMemoryStoreResponse;
-import com.azure.ai.agents.models.ItemParam;
-import com.azure.ai.agents.models.ListAgentsRequestOrder;
+import com.azure.ai.agents.models.Item;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
@@ -19,6 +18,7 @@ import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
+import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -292,7 +292,7 @@ public final class MemoryStoresClient {
      *     scope: String (Required)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_search_id: String (Optional)
@@ -322,15 +322,15 @@ public final class MemoryStoresClient {
      *     ]
      *     usage (Required): {
      *         embedding_tokens: int (Required)
-     *         input_tokens: int (Required)
+     *         input_tokens: long (Required)
      *         input_tokens_details (Required): {
-     *             cached_tokens: int (Required)
+     *             cached_tokens: long (Required)
      *         }
-     *         output_tokens: int (Required)
+     *         output_tokens: long (Required)
      *         output_tokens_details (Required): {
-     *             reasoning_tokens: int (Required)
+     *             reasoning_tokens: long (Required)
      *         }
-     *         total_tokens: int (Required)
+     *         total_tokens: long (Required)
      *     }
      * }
      * }
@@ -362,7 +362,7 @@ public final class MemoryStoresClient {
      *     scope: String (Required)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/file_search_call/function_call/function_call_output/computer_call/computer_call_output/web_search_call/reasoning/item_reference/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -394,15 +394,15 @@ public final class MemoryStoresClient {
      *         ]
      *         usage (Required): {
      *             embedding_tokens: int (Required)
-     *             input_tokens: int (Required)
+     *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
-     *                 cached_tokens: int (Required)
+     *                 cached_tokens: long (Required)
      *             }
-     *             output_tokens: int (Required)
+     *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
-     *                 reasoning_tokens: int (Required)
+     *                 reasoning_tokens: long (Required)
      *             }
-     *             total_tokens: int (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     error (Optional): {
@@ -465,15 +465,15 @@ public final class MemoryStoresClient {
      *         ]
      *         usage (Required): {
      *             embedding_tokens: int (Required)
-     *             input_tokens: int (Required)
+     *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
-     *                 cached_tokens: int (Required)
+     *                 cached_tokens: long (Required)
      *             }
-     *             output_tokens: int (Required)
+     *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
-     *                 reasoning_tokens: int (Required)
+     *                 reasoning_tokens: long (Required)
      *             }
-     *             total_tokens: int (Required)
+     *             total_tokens: long (Required)
      *         }
      *     }
      *     error (Optional): {
@@ -581,49 +581,6 @@ public final class MemoryStoresClient {
         // Generated convenience method for getMemoryStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMemoryStoreWithResponse(name, requestOptions).getValue().toObject(MemoryStoreDetails.class);
-    }
-
-    /**
-     * List all memory stores.
-     *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, ListAgentsRequestOrder order, String after,
-        String before) {
-        // Generated convenience method for listMemoryStores
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listMemoryStores(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 
     /**
@@ -868,7 +825,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreSearchResponse searchMemories(String name, String scope, List<ItemParam> items,
+    public MemoryStoreSearchResponse searchMemories(String name, String scope, List<Item> items,
         String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -903,7 +860,7 @@ public final class MemoryStoresClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
-        String scope, List<ItemParam> items, String previousUpdateId, Integer updateDelay) {
+        String scope, List<Item> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)
@@ -911,5 +868,48 @@ public final class MemoryStoresClient {
             .setUpdateDelay(updateDelay);
         BinaryData updateMemoriesRequest = BinaryData.fromObject(updateMemoriesRequestObj);
         return serviceClient.beginUpdateMemoriesWithModel(name, updateMemoriesRequest, requestOptions);
+    }
+
+    /**
+     * List all memory stores.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listMemoryStores
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listMemoryStores(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 }

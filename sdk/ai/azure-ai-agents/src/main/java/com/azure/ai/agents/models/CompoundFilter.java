@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Compound Filter
+ *
  * Combine multiple filters using `and` or `or`.
  */
 @Immutable
