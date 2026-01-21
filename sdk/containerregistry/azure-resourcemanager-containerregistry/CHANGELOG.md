@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.2 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Breaking Changes
 
