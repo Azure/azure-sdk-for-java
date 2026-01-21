@@ -8,16 +8,6 @@
         "maven": {
           "groupId": "com.google.guava",
           "artifactId": "guava",
-          "version": "27.0.1-jre"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "com.google.guava",
-          "artifactId": "guava",
           "version": "25.0-jre"
         }
       }
@@ -49,36 +39,6 @@
           "groupId": "org.apache.commons",
           "artifactId": "commons-lang3",
           "version": "3.8.1"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "org.apache.commons",
-          "artifactId": "commons-math3",
-          "version": "3.6.1"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "com.fasterxml.uuid",
-          "artifactId": "java-uuid-generator",
-          "version": "4.0.1"
-        }
-      }
-    },
-    {
-      "component": {
-        "type": "maven",
-        "maven": {
-          "groupId": "commons-codec",
-          "artifactId": "commons-codec",
-          "version": "1.14"
         }
       }
     }

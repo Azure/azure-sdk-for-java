@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * itemActionStat.
+ * Represents an item action stat.
  */
 @Fluent
 public final class MicrosoftGraphItemActionStat implements JsonSerializable<MicrosoftGraphItemActionStat> {

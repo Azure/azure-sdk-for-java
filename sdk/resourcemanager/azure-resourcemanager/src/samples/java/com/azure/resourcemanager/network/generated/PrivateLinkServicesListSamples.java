@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class PrivateLinkServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/PrivateLinkServiceListAll.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/PrivateLinkServiceListAll.
      * json
      */
     /**

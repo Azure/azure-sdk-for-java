@@ -179,8 +179,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeleteAsync(String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -194,8 +194,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String vaultName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -210,8 +210,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDelete(String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -225,8 +225,7 @@ public interface PrivateEndpointConnectionsClient {
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName);
+    Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -237,11 +236,9 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner delete(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName);
+    void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the key vault.
@@ -253,11 +250,9 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner delete(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context);
 
     /**
      * The List operation gets information about the private endpoint connections associated with the vault.

@@ -25,9 +25,9 @@ public final class PlanData implements JsonSerializable<PlanData> {
     private UsageType usageType;
 
     /*
-     * Different billing cycles like MONTHLY/WEEKLY. this could be enum
+     * Different billing cycles like Monthly/Weekly.
      */
-    private BillingCycle billingCycle;
+    private String billingCycle;
 
     /*
      * plan id as published by NewRelic
@@ -66,21 +66,21 @@ public final class PlanData implements JsonSerializable<PlanData> {
     }
 
     /**
-     * Get the billingCycle property: Different billing cycles like MONTHLY/WEEKLY. this could be enum.
+     * Get the billingCycle property: Different billing cycles like Monthly/Weekly.
      * 
      * @return the billingCycle value.
      */
-    public BillingCycle billingCycle() {
+    public String billingCycle() {
         return this.billingCycle;
     }
 
     /**
-     * Set the billingCycle property: Different billing cycles like MONTHLY/WEEKLY. this could be enum.
+     * Set the billingCycle property: Different billing cycles like Monthly/Weekly.
      * 
      * @param billingCycle the billingCycle value to set.
      * @return the PlanData object itself.
      */
-    public PlanData withBillingCycle(BillingCycle billingCycle) {
+    public PlanData withBillingCycle(String billingCycle) {
         this.billingCycle = billingCycle;
         return this;
     }
@@ -140,7 +140,7 @@ public final class PlanData implements JsonSerializable<PlanData> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("usageType", this.usageType == null ? null : this.usageType.toString());
-        jsonWriter.writeStringField("billingCycle", this.billingCycle == null ? null : this.billingCycle.toString());
+        jsonWriter.writeStringField("billingCycle", this.billingCycle);
         jsonWriter.writeStringField("planDetails", this.planDetails);
         jsonWriter.writeStringField("effectiveDate",
             this.effectiveDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.effectiveDate));
@@ -165,7 +165,7 @@ public final class PlanData implements JsonSerializable<PlanData> {
                 if ("usageType".equals(fieldName)) {
                     deserializedPlanData.usageType = UsageType.fromString(reader.getString());
                 } else if ("billingCycle".equals(fieldName)) {
-                    deserializedPlanData.billingCycle = BillingCycle.fromString(reader.getString());
+                    deserializedPlanData.billingCycle = reader.getString();
                 } else if ("planDetails".equals(fieldName)) {
                     deserializedPlanData.planDetails = reader.getString();
                 } else if ("effectiveDate".equals(fieldName)) {

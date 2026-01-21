@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * websiteType.
+ * Represents a website type.
  */
 public final class MicrosoftGraphWebsiteType extends ExpandableStringEnum<MicrosoftGraphWebsiteType> {
     /**

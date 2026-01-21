@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Supported types of migration request include Validate, Migrate and ValidateAndMigrate.
+ * Supported option for a migration.
  */
 public final class MigrationOption extends ExpandableStringEnum<MigrationOption> {
     /**

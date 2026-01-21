@@ -42,23 +42,6 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
     private final CachedTokenDetails cachedTokensDetails;
 
     /**
-     * Creates an instance of InputTokenDetails class.
-     *
-     * @param cachedTokens the cachedTokens value to set.
-     * @param textTokens the textTokens value to set.
-     * @param audioTokens the audioTokens value to set.
-     * @param cachedTokensDetails the cachedTokensDetails value to set.
-     */
-    @Generated
-    private InputTokenDetails(int cachedTokens, int textTokens, int audioTokens,
-        CachedTokenDetails cachedTokensDetails) {
-        this.cachedTokens = cachedTokens;
-        this.textTokens = textTokens;
-        this.audioTokens = audioTokens;
-        this.cachedTokensDetails = cachedTokensDetails;
-    }
-
-    /**
      * Get the cachedTokens property: Number of cached tokens used in the input.
      *
      * @return the cachedTokens value.
@@ -108,6 +91,7 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
         jsonWriter.writeIntField("cached_tokens", this.cachedTokens);
         jsonWriter.writeIntField("text_tokens", this.textTokens);
         jsonWriter.writeIntField("audio_tokens", this.audioTokens);
+        jsonWriter.writeIntField("image_tokens", this.imageTokens);
         jsonWriter.writeJsonField("cached_tokens_details", this.cachedTokensDetails);
         return jsonWriter.writeEndObject();
     }
@@ -127,6 +111,7 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
             int cachedTokens = 0;
             int textTokens = 0;
             int audioTokens = 0;
+            int imageTokens = 0;
             CachedTokenDetails cachedTokensDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -137,13 +122,50 @@ public final class InputTokenDetails implements JsonSerializable<InputTokenDetai
                     textTokens = reader.getInt();
                 } else if ("audio_tokens".equals(fieldName)) {
                     audioTokens = reader.getInt();
+                } else if ("image_tokens".equals(fieldName)) {
+                    imageTokens = reader.getInt();
                 } else if ("cached_tokens_details".equals(fieldName)) {
                     cachedTokensDetails = CachedTokenDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new InputTokenDetails(cachedTokens, textTokens, audioTokens, cachedTokensDetails);
+            return new InputTokenDetails(cachedTokens, textTokens, audioTokens, imageTokens, cachedTokensDetails);
         });
+    }
+
+    /*
+     * Number of image tokens used in the input.
+     */
+    @Generated
+    private final int imageTokens;
+
+    /**
+     * Creates an instance of InputTokenDetails class.
+     *
+     * @param cachedTokens the cachedTokens value to set.
+     * @param textTokens the textTokens value to set.
+     * @param audioTokens the audioTokens value to set.
+     * @param imageTokens the imageTokens value to set.
+     * @param cachedTokensDetails the cachedTokensDetails value to set.
+     */
+    @Generated
+    private InputTokenDetails(int cachedTokens, int textTokens, int audioTokens, int imageTokens,
+        CachedTokenDetails cachedTokensDetails) {
+        this.cachedTokens = cachedTokens;
+        this.textTokens = textTokens;
+        this.audioTokens = audioTokens;
+        this.imageTokens = imageTokens;
+        this.cachedTokensDetails = cachedTokensDetails;
+    }
+
+    /**
+     * Get the imageTokens property: Number of image tokens used in the input.
+     *
+     * @return the imageTokens value.
+     */
+    @Generated
+    public int getImageTokens() {
+        return this.imageTokens;
     }
 }

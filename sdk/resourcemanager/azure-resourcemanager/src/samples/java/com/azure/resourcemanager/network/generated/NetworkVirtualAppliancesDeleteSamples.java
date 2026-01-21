@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class NetworkVirtualAppliancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceDelete
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceDelete
      * .json
      */
     /**

@@ -11,8 +11,8 @@ import com.azure.spring.data.cosmos.domain.NoDBAnnotationPerson;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
 
@@ -20,7 +20,7 @@ public class CosmosAnnotationUnitTest {
     private CosmosEntityInformation<NoDBAnnotationPerson, String> personInfo;
     private CosmosEntityInformation<Role, String> roleInfo;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         personInfo = new CosmosEntityInformation<>(NoDBAnnotationPerson.class);
         roleInfo = new CosmosEntityInformation<>(Role.class);

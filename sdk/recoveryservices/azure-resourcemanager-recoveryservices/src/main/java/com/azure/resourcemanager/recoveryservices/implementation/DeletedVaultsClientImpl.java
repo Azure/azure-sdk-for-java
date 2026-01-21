@@ -405,11 +405,11 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeletedVaultInner>, DeletedVaultInner> beginUndeleteAsync(String location,
-        String deletedVaultName, DeletedVaultUndeleteInput body) {
+    private PollerFlux<PollResult<Void>, Void> beginUndeleteAsync(String location, String deletedVaultName,
+        DeletedVaultUndeleteInput body) {
         Mono<Response<Flux<ByteBuffer>>> mono = undeleteWithResponseAsync(location, deletedVaultName, body);
-        return this.client.<DeletedVaultInner, DeletedVaultInner>getLroResult(mono, this.client.getHttpPipeline(),
-            DeletedVaultInner.class, DeletedVaultInner.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -424,11 +424,10 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeletedVaultInner>, DeletedVaultInner> beginUndelete(String location,
-        String deletedVaultName, DeletedVaultUndeleteInput body) {
+    public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
+        DeletedVaultUndeleteInput body) {
         Response<BinaryData> response = undeleteWithResponse(location, deletedVaultName, body);
-        return this.client.<DeletedVaultInner, DeletedVaultInner>getLroResult(response, DeletedVaultInner.class,
-            DeletedVaultInner.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -444,11 +443,10 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeletedVaultInner>, DeletedVaultInner> beginUndelete(String location,
-        String deletedVaultName, DeletedVaultUndeleteInput body, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
+        DeletedVaultUndeleteInput body, Context context) {
         Response<BinaryData> response = undeleteWithResponse(location, deletedVaultName, body, context);
-        return this.client.<DeletedVaultInner, DeletedVaultInner>getLroResult(response, DeletedVaultInner.class,
-            DeletedVaultInner.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -460,11 +458,10 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeletedVaultInner> undeleteAsync(String location, String deletedVaultName,
-        DeletedVaultUndeleteInput body) {
+    private Mono<Void> undeleteAsync(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
         return beginUndeleteAsync(location, deletedVaultName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -478,11 +475,10 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedVaultInner undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
-        return beginUndelete(location, deletedVaultName, body).getFinalResult();
+    public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {
+        beginUndelete(location, deletedVaultName, body).getFinalResult();
     }
 
     /**
@@ -495,12 +491,10 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedVaultInner undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body,
-        Context context) {
-        return beginUndelete(location, deletedVaultName, body, context).getFinalResult();
+    public void undelete(String location, String deletedVaultName, DeletedVaultUndeleteInput body, Context context) {
+        beginUndelete(location, deletedVaultName, body, context).getFinalResult();
     }
 
     /**

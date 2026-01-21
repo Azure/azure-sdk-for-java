@@ -13,7 +13,6 @@ import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -293,7 +292,7 @@ public interface DiagnosticsClientContext {
 
         public String otherConnectionConfig() {
             if (this.otherCfgAsString == null) {
-                this.otherCfgAsString = Strings.lenientFormat("(ed: %s, cs: %s, rv: %s)",
+                this.otherCfgAsString = String.format("(ed: %s, cs: %s, rv: %s)",
                     this.endpointDiscoveryEnabled,
                     this.connectionSharingAcrossClientsEnabled,
                     this.replicaValidationEnabled);
@@ -313,7 +312,7 @@ public interface DiagnosticsClientContext {
         }
 
         private String consistencyRelatedConfigInternal() {
-            return Strings.lenientFormat("(consistency: %s, readConsistencyStrategy: %s,  mm: %s, prgns: [%s])",
+            return String.format("(consistency: %s, readConsistencyStrategy: %s,  mm: %s, prgns: [%s])",
                 this.consistencyLevel,
                 this.readConsistencyStrategy,
                 this.multipleWriteRegionsEnabled,

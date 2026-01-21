@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * site.
+ * Represents a site.
  */
 @Fluent
 public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {

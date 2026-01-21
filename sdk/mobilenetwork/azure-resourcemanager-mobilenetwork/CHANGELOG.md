@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.3.1 (2025-12-16)
+
+- Please note, this package has been deprecated and will no longer be maintained after 09-30-2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
+### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 09-30-2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 ## 1.3.0 (2024-12-23)
 
 - Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

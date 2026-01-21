@@ -20,7 +20,7 @@ import java.util.Map;
 public final class ManagedNamespacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-09-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2025-10-01/examples/
      * ManagedNamespacesCreate_Update.json
      */
     /**

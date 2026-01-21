@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookChartSeriesFormat.
+ * Represents a workbook chart series format.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartSeriesFormat extends MicrosoftGraphEntity {

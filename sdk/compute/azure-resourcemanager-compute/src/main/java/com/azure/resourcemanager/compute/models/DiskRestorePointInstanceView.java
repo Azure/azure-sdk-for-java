@@ -22,6 +22,11 @@ public final class DiskRestorePointInstanceView implements JsonSerializable<Disk
     private String id;
 
     /*
+     * The state of snapshot which determines the access availability of the snapshot.
+     */
+    private SnapshotAccessState snapshotAccessState;
+
+    /*
      * The disk restore point replication status information.
      */
     private DiskRestorePointReplicationStatus replicationStatus;
@@ -49,6 +54,28 @@ public final class DiskRestorePointInstanceView implements JsonSerializable<Disk
      */
     public DiskRestorePointInstanceView withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.snapshotAccessState;
+    }
+
+    /**
+     * Set the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @param snapshotAccessState the snapshotAccessState value to set.
+     * @return the DiskRestorePointInstanceView object itself.
+     */
+    public DiskRestorePointInstanceView withSnapshotAccessState(SnapshotAccessState snapshotAccessState) {
+        this.snapshotAccessState = snapshotAccessState;
         return this;
     }
 
@@ -90,6 +117,8 @@ public final class DiskRestorePointInstanceView implements JsonSerializable<Disk
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("snapshotAccessState",
+            this.snapshotAccessState == null ? null : this.snapshotAccessState.toString());
         jsonWriter.writeJsonField("replicationStatus", this.replicationStatus);
         return jsonWriter.writeEndObject();
     }
@@ -111,6 +140,9 @@ public final class DiskRestorePointInstanceView implements JsonSerializable<Disk
 
                 if ("id".equals(fieldName)) {
                     deserializedDiskRestorePointInstanceView.id = reader.getString();
+                } else if ("snapshotAccessState".equals(fieldName)) {
+                    deserializedDiskRestorePointInstanceView.snapshotAccessState
+                        = SnapshotAccessState.fromString(reader.getString());
                 } else if ("replicationStatus".equals(fieldName)) {
                     deserializedDiskRestorePointInstanceView.replicationStatus
                         = DiskRestorePointReplicationStatus.fromJson(reader);

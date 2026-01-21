@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
+import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
@@ -30,7 +30,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 
 /**
  * Azure App Configuration data loader implementation for Spring Boot's ConfigDataLoader.
- * 
+ *
  * @since 6.0.0
  */
 
@@ -185,6 +185,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 } catch (Exception e) {
                     // Store the exception to potentially use if all replicas fail
                     lastException = e; // Log the specific replica failure with context
+                    replicaClientFactory.backoffClient(resource.getEndpoint(), currentClient.getEndpoint());
                     AppConfigurationReplicaClient nextClient = replicaClientFactory
                         .getNextActiveClient(resource.getEndpoint(), false);
                     logReplicaFailure(currentClient, "exception", nextClient != null, e);

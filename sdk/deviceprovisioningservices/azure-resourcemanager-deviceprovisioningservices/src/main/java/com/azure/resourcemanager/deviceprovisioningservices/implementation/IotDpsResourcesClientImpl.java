@@ -2272,13 +2272,11 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the {@link PollerFlux} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeletePrivateEndpointConnectionAsync(String resourceGroupName, String resourceName,
-            String privateEndpointConnectionName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName,
             resourceName, privateEndpointConnectionName);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
 
@@ -2294,13 +2292,11 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeletePrivateEndpointConnection(String resourceGroupName, String resourceName,
-            String privateEndpointConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName) {
         Response<BinaryData> response = deletePrivateEndpointConnectionWithResponse(resourceGroupName, resourceName,
             privateEndpointConnectionName);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2316,13 +2312,11 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginDeletePrivateEndpointConnection(String resourceGroupName, String resourceName,
-            String privateEndpointConnectionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName, Context context) {
         Response<BinaryData> response = deletePrivateEndpointConnectionWithResponse(resourceGroupName, resourceName,
             privateEndpointConnectionName, context);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -2337,8 +2331,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the private endpoint connection of a provisioning service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> deletePrivateEndpointConnectionAsync(String resourceGroupName,
-        String resourceName, String privateEndpointConnectionName) {
+    private Mono<Void> deletePrivateEndpointConnectionAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, resourceName, privateEndpointConnectionName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2353,12 +2347,11 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName) {
-        return beginDeletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName)
+        beginDeletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName)
             .getFinalResult();
     }
 
@@ -2372,13 +2365,12 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    public void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context) {
-        return beginDeletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName,
-            context).getFinalResult();
+        beginDeletePrivateEndpointConnection(resourceGroupName, resourceName, privateEndpointConnectionName, context)
+            .getFinalResult();
     }
 
     /**

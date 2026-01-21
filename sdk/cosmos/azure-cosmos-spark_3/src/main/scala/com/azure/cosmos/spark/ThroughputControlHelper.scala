@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, ImplementationBridgeHelpers}
+import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, CosmosTransactionalBulkExecutionOptionsImpl, ImplementationBridgeHelpers}
 import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ReadConsistencyStrategy, ThroughputControlGroupConfigBuilder}
@@ -46,6 +46,15 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         }
 
         container
+    }
+
+    def populateThroughputControlGroupName(
+                                              transactionalBulkExecutionOptions: CosmosTransactionalBulkExecutionOptionsImpl,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            transactionalBulkExecutionOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
     }
 
     def populateThroughputControlGroupName(

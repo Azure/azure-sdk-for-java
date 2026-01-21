@@ -44,7 +44,7 @@
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
     "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
-    "location": "westcentralus"
+    "location": "[resourceGroup().location]"
   },
   "resources": [
     {

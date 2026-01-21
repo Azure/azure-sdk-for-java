@@ -25,7 +25,10 @@ public class ActionGroupsTests extends MonitorManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        // Check if resource group exists before deletion to avoid errors.
+        if (resourceManager.resourceGroups().contain(rgName)) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
+        }
     }
 
     @Test

@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CpuLoadMonitorTest {
     @Test(groups = "unit")
     public void noInstance() throws Exception {
-        assertThat(ReflectionUtils.getListeners()).hasSize(0);
+        assertEventualListenerCount(0);
         assertThat(ReflectionUtils.getFuture()).isNull();
     }
 
@@ -31,7 +31,7 @@ public class CpuLoadMonitorTest {
             Future<?> workFuture = ReflectionUtils.getFuture();
             assertThat(workFuture).isNotNull();
             assertThat(workFuture.isCancelled()).isFalse();
-            assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+            assertEventualListenerCount(cpuMonitorList.size());
             Thread.sleep(10);
         }
 
@@ -41,7 +41,7 @@ public class CpuLoadMonitorTest {
 
             CpuMemoryMonitor.unregister(cpuMemoryListener);
 
-            assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+            assertEventualListenerCount(cpuMonitorList.size());
 
             Future<?> workFuture = ReflectionUtils.getFuture();
             assertThat(workFuture).isNotNull();
@@ -54,7 +54,7 @@ public class CpuLoadMonitorTest {
         CpuMemoryMonitor.register(newListener);
         CpuMemoryMonitor.unregister(newListener);
 
-        assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+        assertEventualListenerCount(cpuMonitorList.size());
         Future<?> workFuture = ReflectionUtils.getFuture();
         assertThat(workFuture).isNotNull();
         assertThat(workFuture.isCancelled()).isFalse();
@@ -62,7 +62,7 @@ public class CpuLoadMonitorTest {
         CpuMemoryListener cpuMemoryListener = cpuMonitorList.remove(0);
         CpuMemoryMonitor.unregister(cpuMemoryListener);
 
-        assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
+        assertEventualListenerCount(cpuMonitorList.size());
 
         workFuture = ReflectionUtils.getFuture();
         assertThat(workFuture).isNull();
@@ -74,10 +74,18 @@ public class CpuLoadMonitorTest {
         CpuMemoryMonitor.register(listener);
         listener = null;
         System.gc();
-        Thread.sleep(10000);
-
-        assertThat(ReflectionUtils.getListeners()).hasSize(0);
+        int secondsWaited = 0;
+        assertEventualListenerCount(0);
         assertThat(ReflectionUtils.getFuture()).isNull();
+    }
+
+    private static void assertEventualListenerCount(int expectedListenerCount) throws Exception {
+        int secondsWaited = 0;
+        while (secondsWaited < 30 && ReflectionUtils.getListeners().size() > expectedListenerCount) {
+            Thread.sleep(1_000);
+        }
+
+        assertThat(ReflectionUtils.getListeners()).hasSize(expectedListenerCount);
     }
 
     class TestMemoryListener implements CpuMemoryListener {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0 (2025-09-29)
+## 1.6.0 (2025-11-18)
 
 - Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2025-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -18,10 +18,11 @@
 
 #### `models.ClientDiscoveryForLogSpecification` was modified
 
+* `ClientDiscoveryForLogSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
 * `validate()` was removed
 * `withBlobDuration(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 
 #### `models.CapabilitiesProperties` was modified
 
@@ -49,6 +50,7 @@
 
 #### `models.PrivateLinkServiceConnectionState` was modified
 
+* `PrivateLinkServiceConnectionState()` was changed to private access
 * `validate()` was removed
 
 #### `models.Sku` was modified
@@ -69,13 +71,15 @@
 
 #### `models.JobsSummary` was modified
 
-* `validate()` was removed
+* `JobsSummary()` was changed to private access
 * `withFailedJobs(java.lang.Integer)` was removed
+* `validate()` was removed
 * `withSuspendedJobs(java.lang.Integer)` was removed
 * `withInProgressJobs(java.lang.Integer)` was removed
 
 #### `models.PrivateEndpointConnectionVaultProperties` was modified
 
+* `PrivateEndpointConnectionVaultProperties()` was changed to private access
 * `validate()` was removed
 
 #### `models.ClassicAlertSettings` was modified
@@ -88,15 +92,15 @@
 
 #### `models.ResourceCertificateDetails` was modified
 
-* `models.ResourceCertificateDetails withIssuer(java.lang.String)` -> `models.ResourceCertificateDetails withIssuer(java.lang.String)`
+* `models.ResourceCertificateDetails withResourceId(java.lang.Long)` -> `models.ResourceCertificateDetails withResourceId(java.lang.Long)`
 * `validate()` was removed
 * `models.ResourceCertificateDetails withFriendlyName(java.lang.String)` -> `models.ResourceCertificateDetails withFriendlyName(java.lang.String)`
-* `models.ResourceCertificateDetails withSubject(java.lang.String)` -> `models.ResourceCertificateDetails withSubject(java.lang.String)`
-* `models.ResourceCertificateDetails withThumbprint(java.lang.String)` -> `models.ResourceCertificateDetails withThumbprint(java.lang.String)`
-* `models.ResourceCertificateDetails withValidFrom(java.time.OffsetDateTime)` -> `models.ResourceCertificateDetails withValidFrom(java.time.OffsetDateTime)`
-* `models.ResourceCertificateDetails withResourceId(java.lang.Long)` -> `models.ResourceCertificateDetails withResourceId(java.lang.Long)`
 * `models.ResourceCertificateDetails withValidTo(java.time.OffsetDateTime)` -> `models.ResourceCertificateDetails withValidTo(java.time.OffsetDateTime)`
 * `models.ResourceCertificateDetails withCertificate(byte[])` -> `models.ResourceCertificateDetails withCertificate(byte[])`
+* `models.ResourceCertificateDetails withThumbprint(java.lang.String)` -> `models.ResourceCertificateDetails withThumbprint(java.lang.String)`
+* `models.ResourceCertificateDetails withSubject(java.lang.String)` -> `models.ResourceCertificateDetails withSubject(java.lang.String)`
+* `models.ResourceCertificateDetails withIssuer(java.lang.String)` -> `models.ResourceCertificateDetails withIssuer(java.lang.String)`
+* `models.ResourceCertificateDetails withValidFrom(java.time.OffsetDateTime)` -> `models.ResourceCertificateDetails withValidFrom(java.time.OffsetDateTime)`
 
 #### `models.SoftDeleteSettings` was modified
 
@@ -124,22 +128,23 @@
 
 #### `models.ResourceCertificateAndAadDetails` was modified
 
-* `withAadTenantId(java.lang.String)` was removed
-* `withServicePrincipalObjectId(java.lang.String)` was removed
-* `validate()` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withValidFrom(java.time.OffsetDateTime)` was removed
-* `withAzureManagementEndpointAudience(java.lang.String)` was removed
+* `ResourceCertificateAndAadDetails()` was changed to private access
 * `withSubject(java.lang.String)` was removed
-* `withIssuer(java.lang.String)` was removed
-* `withAadAuthority(java.lang.String)` was removed
-* `withCertificate(byte[])` was removed
 * `withThumbprint(java.lang.String)` was removed
-* `withAadAudience(java.lang.String)` was removed
-* `withServiceResourceId(java.lang.String)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withServicePrincipalObjectId(java.lang.String)` was removed
 * `withValidTo(java.time.OffsetDateTime)` was removed
-* `withServicePrincipalClientId(java.lang.String)` was removed
 * `withResourceId(java.lang.Long)` was removed
+* `withValidFrom(java.time.OffsetDateTime)` was removed
+* `withAadAudience(java.lang.String)` was removed
+* `withAadAuthority(java.lang.String)` was removed
+* `withIssuer(java.lang.String)` was removed
+* `withServicePrincipalClientId(java.lang.String)` was removed
+* `withServiceResourceId(java.lang.String)` was removed
+* `validate()` was removed
+* `withAadTenantId(java.lang.String)` was removed
+* `withAzureManagementEndpointAudience(java.lang.String)` was removed
+* `withCertificate(byte[])` was removed
 
 #### `models.Vault$Update` was modified
 
@@ -159,11 +164,12 @@
 
 #### `models.ClientDiscoveryDisplay` was modified
 
-* `withOperation(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
+* `ClientDiscoveryDisplay()` was changed to private access
+* `withResource(java.lang.String)` was removed
 * `validate()` was removed
 * `withDescription(java.lang.String)` was removed
-* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 
 #### `models.MonitoringSettings` was modified
 
@@ -171,19 +177,19 @@
 
 #### `models.ResourceCertificateAndAcsDetails` was modified
 
-* `withResourceId(java.lang.Long)` was removed
-* `withThumbprint(java.lang.String)` was removed
-* `withSubject(java.lang.String)` was removed
-* `withGlobalAcsNamespace(java.lang.String)` was removed
-* `withValidFrom(java.time.OffsetDateTime)` was removed
-* `withIssuer(java.lang.String)` was removed
-* `withGlobalAcsHostname(java.lang.String)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withValidTo(java.time.OffsetDateTime)` was removed
-* `globalAcsHostname()` was removed
-* `withGlobalAcsRPRealm(java.lang.String)` was removed
-* `validate()` was removed
+* `ResourceCertificateAndAcsDetails()` was changed to private access
 * `withCertificate(byte[])` was removed
+* `withThumbprint(java.lang.String)` was removed
+* `withFriendlyName(java.lang.String)` was removed
+* `withGlobalAcsRPRealm(java.lang.String)` was removed
+* `withResourceId(java.lang.Long)` was removed
+* `validate()` was removed
+* `withGlobalAcsNamespace(java.lang.String)` was removed
+* `withIssuer(java.lang.String)` was removed
+* `withValidTo(java.time.OffsetDateTime)` was removed
+* `withValidFrom(java.time.OffsetDateTime)` was removed
+* `withGlobalAcsHostname(java.lang.String)` was removed
+* `withSubject(java.lang.String)` was removed
 
 #### `models.VaultPropertiesEncryption` was modified
 
@@ -191,11 +197,13 @@
 
 #### `models.ClientDiscoveryForProperties` was modified
 
-* `withServiceSpecification(models.ClientDiscoveryForServiceSpecification)` was removed
+* `ClientDiscoveryForProperties()` was changed to private access
 * `validate()` was removed
+* `withServiceSpecification(models.ClientDiscoveryForServiceSpecification)` was removed
 
 #### `models.PrivateEndpointConnection` was modified
 
+* `PrivateEndpointConnection()` was changed to private access
 * `withGroupIds(java.util.List)` was removed
 * `validate()` was removed
 
@@ -205,6 +213,7 @@
 
 #### `models.NameInfo` was modified
 
+* `NameInfo()` was changed to private access
 * `withLocalizedValue(java.lang.String)` was removed
 * `withValue(java.lang.String)` was removed
 * `validate()` was removed
@@ -219,19 +228,21 @@
 
 #### `models.MonitoringSummary` was modified
 
-* `withUnHealthyVmCount(java.lang.Integer)` was removed
+* `MonitoringSummary()` was changed to private access
+* `withUnHealthyProviderCount(java.lang.Integer)` was removed
 * `validate()` was removed
+* `withSupportedProviderCount(java.lang.Integer)` was removed
 * `withEventsCount(java.lang.Integer)` was removed
 * `withUnsupportedProviderCount(java.lang.Integer)` was removed
-* `withUnHealthyProviderCount(java.lang.Integer)` was removed
+* `withUnHealthyVmCount(java.lang.Integer)` was removed
 * `withDeprecatedProviderCount(java.lang.Integer)` was removed
-* `withSupportedProviderCount(java.lang.Integer)` was removed
 
 #### `models.DnsZoneResponse` was modified
 
-* `withSubResource(models.VaultSubResourceType)` was removed
+* `DnsZoneResponse()` was changed to private access
 * `validate()` was removed
 * `withRequiredZoneNames(java.util.List)` was removed
+* `withSubResource(models.VaultSubResourceType)` was removed
 
 #### `models.CmkKekIdentity` was modified
 
@@ -239,8 +250,9 @@
 
 #### `models.CapabilitiesResponseProperties` was modified
 
-* `withDnsZones(java.util.List)` was removed
+* `CapabilitiesResponseProperties()` was changed to private access
 * `validate()` was removed
+* `withDnsZones(java.util.List)` was removed
 
 #### `models.AssociatedIdentity` was modified
 
@@ -252,12 +264,14 @@
 
 #### `models.PrivateEndpoint` was modified
 
+* `PrivateEndpoint()` was changed to private access
 * `validate()` was removed
 
 #### `models.ClientDiscoveryForServiceSpecification` was modified
 
-* `validate()` was removed
+* `ClientDiscoveryForServiceSpecification()` was changed to private access
 * `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
 
 #### `models.VaultProperties` was modified
 
@@ -286,10 +300,6 @@
 #### `RecoveryServicesManager` was modified
 
 * `deletedVaults()` was added
-
-#### `models.ResourceCertificateAndAcsDetails` was modified
-
-* `globalAcsHostName()` was added
 
 #### `models.PatchVault` was modified
 

@@ -87,7 +87,7 @@ public final class AppServiceCertificateOrdersClientImpl
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientAppServiceCertificateOrders")
     public interface AppServiceCertificateOrdersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
@@ -336,10 +336,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -367,11 +368,10 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -465,9 +465,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             appServiceCertificateOrder.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.validatePurchaseInformation(this.client.getEndpoint(),
-            this.client.getSubscriptionId(), this.client.getApiVersion(), appServiceCertificateOrder, accept, context))
+        return FluxUtil
+            .withContext(context -> service.validatePurchaseInformation(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, appServiceCertificateOrder, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -500,10 +502,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             appServiceCertificateOrder.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validatePurchaseInformation(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), appServiceCertificateOrder, accept, context);
+            apiVersion, appServiceCertificateOrder, accept, context);
     }
 
     /**
@@ -583,10 +586,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AppServiceCertificateOrderInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -620,11 +624,12 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -730,10 +735,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -769,10 +775,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -868,11 +875,12 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                certificateDistinguishedName, accept, context))
+            .withContext(
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                    this.client.getSubscriptionId(), apiVersion, certificateDistinguishedName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -915,11 +923,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, certificateDistinguishedName, accept, context);
     }
 
     /**
@@ -1128,10 +1136,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1167,10 +1176,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1262,11 +1272,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
-                context))
+                this.client.getSubscriptionId(), apiVersion, certificateDistinguishedName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1310,11 +1320,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             certificateDistinguishedName.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateDistinguishedName, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, certificateDistinguishedName, accept, context);
     }
 
     /**
@@ -1411,10 +1421,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCertificates(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<AppServiceCertificateResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1453,11 +1464,12 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCertificates(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1574,11 +1586,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                    name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getCertificate(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1619,10 +1631,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1729,11 +1742,12 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateCertificate(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                keyVaultCertificate, accept, context))
+                certificateOrderName, name, this.client.getSubscriptionId(), apiVersion, keyVaultCertificate, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1782,10 +1796,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            name, this.client.getSubscriptionId(), this.client.getApiVersion(), keyVaultCertificate, accept, context);
+            name, this.client.getSubscriptionId(), apiVersion, keyVaultCertificate, accept, context);
     }
 
     /**
@@ -2018,11 +2033,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.deleteCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                    name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.deleteCertificate(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2062,10 +2077,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2168,11 +2184,12 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateCertificate(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                keyVaultCertificate, accept, context))
+            .withContext(
+                context -> service.updateCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
+                    name, this.client.getSubscriptionId(), apiVersion, keyVaultCertificate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2221,10 +2238,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             keyVaultCertificate.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateCertificate(this.client.getEndpoint(), resourceGroupName, certificateOrderName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), keyVaultCertificate, accept, context);
+            this.client.getSubscriptionId(), apiVersion, keyVaultCertificate, accept, context);
     }
 
     /**
@@ -2332,11 +2350,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             reissueCertificateOrderRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reissue(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), reissueCertificateOrderRequest, accept,
-                context))
+                this.client.getSubscriptionId(), apiVersion, reissueCertificateOrderRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2379,11 +2397,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             reissueCertificateOrderRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reissue(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), reissueCertificateOrderRequest, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, reissueCertificateOrderRequest, accept, context);
     }
 
     /**
@@ -2483,11 +2501,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             renewCertificateOrderRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.renew(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), renewCertificateOrderRequest, accept,
-                context))
+                this.client.getSubscriptionId(), apiVersion, renewCertificateOrderRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2530,11 +2548,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             renewCertificateOrderRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.renew(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), renewCertificateOrderRequest, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, renewCertificateOrderRequest, accept, context);
     }
 
     /**
@@ -2626,10 +2644,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resendEmail(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2665,10 +2684,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resendEmail(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2761,11 +2781,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             nameIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resendRequestEmails(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), nameIdentifier,
-                accept, context))
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, nameIdentifier, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2808,10 +2828,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             nameIdentifier.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resendRequestEmails(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), nameIdentifier, accept, context);
+            this.client.getSubscriptionId(), apiVersion, nameIdentifier, accept, context);
     }
 
     /**
@@ -2920,11 +2941,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             siteSealRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.retrieveSiteSeal(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-                    this.client.getSubscriptionId(), this.client.getApiVersion(), siteSealRequest, accept, context))
+            .withContext(context -> service.retrieveSiteSeal(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, siteSealRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2973,10 +2994,11 @@ public final class AppServiceCertificateOrdersClientImpl
         } else {
             siteSealRequest.validate();
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveSiteSeal(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), siteSealRequest, accept, context);
+            this.client.getSubscriptionId(), apiVersion, siteSealRequest, accept, context);
     }
 
     /**
@@ -3089,10 +3111,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.verifyDomainOwnership(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                certificateOrderName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3128,10 +3151,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.verifyDomainOwnership(this.client.getEndpoint(), resourceGroupName, certificateOrderName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3217,10 +3241,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveCertificateActions(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3255,10 +3280,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveCertificateActions(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3346,10 +3372,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieveCertificateEmailHistory(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3384,10 +3411,11 @@ public final class AppServiceCertificateOrdersClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.retrieveCertificateEmailHistory(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3446,6 +3474,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * List all certificate orders in a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3472,6 +3502,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * List all certificate orders in a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3500,6 +3532,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * Get certificate orders in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3529,6 +3563,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * Get certificate orders in a resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3557,6 +3593,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * List all certificates associated with a certificate order.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3585,6 +3623,8 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
+     * List all certificates associated with a certificate order.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

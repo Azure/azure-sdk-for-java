@@ -90,4 +90,16 @@ public final class OpenAIVoiceName extends ExpandableStringEnum<OpenAIVoiceName>
     public static Collection<OpenAIVoiceName> values() {
         return values(OpenAIVoiceName.class);
     }
+
+    /**
+     * Marin voice.
+     */
+    @Generated
+    public static final OpenAIVoiceName MARIN = fromString("marin");
+
+    /**
+     * Cedar voice.
+     */
+    @Generated
+    public static final OpenAIVoiceName CEDAR = fromString("cedar");
 }

@@ -49,4 +49,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static Collection<ToolType> values() {
         return values(ToolType.class);
     }
+
+    /**
+     * Static value mcp for ToolType.
+     */
+    @Generated
+    public static final ToolType MCP = fromString("mcp");
 }

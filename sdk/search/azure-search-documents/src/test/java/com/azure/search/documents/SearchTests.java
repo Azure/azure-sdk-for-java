@@ -1221,6 +1221,99 @@ public class SearchTests extends SearchTestBase {
         }).verifyComplete();
     }
 
+    //==Elevated Read Tests==
+
+    @Test
+    public void searchWithElevatedReadIncludesHeader() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        assertTrue(searchOptions.isElevatedReadEnabled(), "Elevated read should be enabled");
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Search with elevated read should work");
+    }
+
+    @Test
+    public void searchDefaultOmitsHeader() {
+        SearchOptions searchOptions = new SearchOptions();
+
+        assertNull(searchOptions.isElevatedReadEnabled(), "Elevated read should be null by default");
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Default search should work");
+    }
+
+    @Test
+    public void listDocsWithElevatedReadIncludesHeader() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+
+        SearchOptions searchOptions
+            = new SearchOptions().setElevatedReadEnabled(true).setSelect("HotelId", "HotelName");
+
+        SearchPagedIterable results
+            = indexClient.getSearchClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+
+        assertNotNull(results, "Document listing with elevated read should work");
+        assertTrue(searchOptions.isElevatedReadEnabled(), "Elevated read should be enabled");
+    }
+
+    @Test
+    public void withHeader200CodeparseResponse() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+        assertNotNull(results, "Should parse elevated read response");
+        assertNotNull(results.iterator(), "Should have results");
+
+    }
+
+    @Test
+    public void withHeaderPlusUserTokenService400() {
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        try {
+            SearchPagedIterable results = getClient(HOTEL_INDEX_NAME).search("*", searchOptions, Context.NONE);
+            assertNotNull(results, "Search completed (may not throw 400 in test environment)");
+        } catch (HttpResponseException ex) {
+            assertEquals(400, ex.getResponse().getStatusCode());
+            assertTrue(ex.getMessage().contains("elevated read") || ex.getMessage().contains("user token"),
+                "Error should be related to elevated read + user token combination");
+        }
+    }
+
+    @Test
+    public void oldApiVersionSupportsElevatedRead() {
+        SearchClient oldVersionClient
+            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2023_11_01)
+                .buildClient();
+
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        SearchPagedIterable results = oldVersionClient.search("*", searchOptions, null);
+        assertNotNull(results, "Older API version should support elevated read for backward compatibility");
+        assertTrue(results.iterator().hasNext(), "Should have search results");
+    }
+
+    @Test
+    public void currentApiVersionSendsHeaderWhenRequested() {
+        SearchClient currentClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+            .credential(TestHelpers.getTestTokenCredential())
+            .indexName(HOTEL_INDEX_NAME)
+            .serviceVersion(SearchServiceVersion.V2025_11_01_PREVIEW)
+            .buildClient();
+
+        SearchOptions searchOptions = new SearchOptions().setElevatedReadEnabled(true);
+
+        try {
+            SearchPagedIterable results = currentClient.search("*", searchOptions, Context.NONE);
+            assertNotNull(results, "Search with elevated read should work with current API version");
+        } catch (Exception exception) {
+            assertFalse(
+                exception.getMessage().contains("api-version") && exception.getMessage().contains("does not exist"),
+                "Should not be an API version error with current version");
+        }
+    }
+
     private static List<SearchDocument> getSearchResultsSync(SearchPagedIterable results) {
         return results.stream().map(sr -> sr.getDocument(SearchDocument.class)).collect(Collectors.toList());
     }

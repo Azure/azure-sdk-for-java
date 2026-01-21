@@ -14,23 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscoveredOutboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscoveredOutboundEndpoints model = BinaryData.fromString(
-            "{\"assigned\":{\"qgaifmviklbydv\":{\"endpointType\":\"cyztsfmznbaeqp\",\"address\":\"chqnrnrpxehuwry\"},\"v\":{\"endpointType\":\"bejdznxcv\",\"address\":\"srhnjivo\"},\"ceamtm\":{\"endpointType\":\"ovqfzge\",\"address\":\"jdftuljltd\"},\"jw\":{\"endpointType\":\"u\",\"address\":\"m\"}}}")
-            .toObject(DiscoveredOutboundEndpoints.class);
-        Assertions.assertEquals("cyztsfmznbaeqp", model.assigned().get("qgaifmviklbydv").endpointType());
-        Assertions.assertEquals("chqnrnrpxehuwry", model.assigned().get("qgaifmviklbydv").address());
+        DiscoveredOutboundEndpoints model
+            = BinaryData.fromString("{\"assigned\":{\"biorktal\":{\"endpointType\":\"yuqdu\",\"address\":\"vmnnrw\"}}}")
+                .toObject(DiscoveredOutboundEndpoints.class);
+        Assertions.assertEquals("yuqdu", model.assigned().get("biorktal").endpointType());
+        Assertions.assertEquals("vmnnrw", model.assigned().get("biorktal").address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveredOutboundEndpoints model = new DiscoveredOutboundEndpoints().withAssigned(mapOf("qgaifmviklbydv",
-            new DeviceMessagingEndpoint().withEndpointType("cyztsfmznbaeqp").withAddress("chqnrnrpxehuwry"), "v",
-            new DeviceMessagingEndpoint().withEndpointType("bejdznxcv").withAddress("srhnjivo"), "ceamtm",
-            new DeviceMessagingEndpoint().withEndpointType("ovqfzge").withAddress("jdftuljltd"), "jw",
-            new DeviceMessagingEndpoint().withEndpointType("u").withAddress("m")));
+        DiscoveredOutboundEndpoints model = new DiscoveredOutboundEndpoints().withAssigned(
+            mapOf("biorktal", new DeviceMessagingEndpoint().withEndpointType("yuqdu").withAddress("vmnnrw")));
         model = BinaryData.fromObject(model).toObject(DiscoveredOutboundEndpoints.class);
-        Assertions.assertEquals("cyztsfmznbaeqp", model.assigned().get("qgaifmviklbydv").endpointType());
-        Assertions.assertEquals("chqnrnrpxehuwry", model.assigned().get("qgaifmviklbydv").address());
+        Assertions.assertEquals("yuqdu", model.assigned().get("biorktal").endpointType());
+        Assertions.assertEquals("vmnnrw", model.assigned().get("biorktal").address());
     }
 
     // Use "Map.of" if available

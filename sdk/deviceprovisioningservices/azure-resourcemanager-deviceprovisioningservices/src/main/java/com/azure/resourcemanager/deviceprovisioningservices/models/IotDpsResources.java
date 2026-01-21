@@ -344,9 +344,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
-    PrivateEndpointConnection deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName);
 
     /**
@@ -360,9 +359,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
-    PrivateEndpointConnection deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
+    void deletePrivateEndpointConnection(String resourceGroupName, String resourceName,
         String privateEndpointConnectionName, Context context);
 
     /**
@@ -506,9 +504,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
-    PrivateEndpointConnection deletePrivateEndpointConnectionById(String id);
+    void deletePrivateEndpointConnectionById(String id);
 
     /**
      * Delete private endpoint connection with the specified name.
@@ -519,9 +516,8 @@ public interface IotDpsResources {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection of a provisioning service.
      */
-    PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(String id, Context context);
+    void deletePrivateEndpointConnectionByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new ProvisioningServiceDescription resource.

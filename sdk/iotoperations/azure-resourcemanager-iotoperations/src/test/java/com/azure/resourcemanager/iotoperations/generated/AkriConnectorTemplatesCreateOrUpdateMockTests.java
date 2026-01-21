@@ -11,7 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iotoperations.IoTOperationsManager;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateAioMetadata;
-import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDiagnostics;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateProperties;
@@ -36,7 +35,7 @@ public final class AkriConnectorTemplatesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"aioMetadata\":{\"aioMinVersion\":\"nwieholewjw\",\"aioMaxVersion\":\"ubwefqs\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"aqtferr\"}},\"deviceInboundEndpointTypes\":[{\"description\":\"x\",\"endpointType\":\"kmfx\",\"version\":\"jwogqqnobpudc\",\"configurationSchemaRefs\":{\"defaultDatasetConfigSchemaRef\":\"tqwpwya\",\"defaultEventsConfigSchemaRef\":\"zasqbucljgkyexao\",\"defaultProcessControlConfigSchemaRef\":\"yaipidsda\",\"defaultStreamsConfigSchemaRef\":\"tx\",\"additionalConfigSchemaRef\":\"jumfqwazlnq\"}},{\"description\":\"cjngzqdqxtbjwgny\",\"endpointType\":\"usfzsvtuikzha\",\"version\":\"glcfhmlrqryxyn\",\"configurationSchemaRefs\":{\"defaultDatasetConfigSchemaRef\":\"rd\",\"defaultEventsConfigSchemaRef\":\"ovw\",\"defaultProcessControlConfigSchemaRef\":\"nptgoeiybba\",\"defaultStreamsConfigSchemaRef\":\"fhvfsl\",\"additionalConfigSchemaRef\":\"ntjlr\"}},{\"description\":\"jkskyr\",\"endpointType\":\"oov\",\"version\":\"dsxwaab\",\"configurationSchemaRefs\":{\"defaultDatasetConfigSchemaRef\":\"frygznmmax\",\"defaultEventsConfigSchemaRef\":\"zkzobgopxlhslnel\",\"defaultProcessControlConfigSchemaRef\":\"eixynllxecwcroj\",\"defaultStreamsConfigSchemaRef\":\"slhcawjutifd\",\"additionalConfigSchemaRef\":\"mvi\"}},{\"description\":\"rqjb\",\"endpointType\":\"tzh\",\"version\":\"glka\",\"configurationSchemaRefs\":{\"defaultDatasetConfigSchemaRef\":\"n\",\"defaultEventsConfigSchemaRef\":\"ujeickp\",\"defaultProcessControlConfigSchemaRef\":\"cpopmxel\",\"defaultStreamsConfigSchemaRef\":\"clt\",\"additionalConfigSchemaRef\":\"edexxmlfm\"}}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"azuawx\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":810465454,\"maxInflightMessages\":400870213,\"sessionExpirySeconds\":1288092956,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"vxcushsphaivmx\"}}},\"extendedLocation\":{\"name\":\"sflvgsgzwywakoih\",\"type\":\"CustomLocation\"},\"id\":\"mjblmljhlny\",\"name\":\"zotqyryuzcb\",\"type\":\"qqvxmvwfgtayxons\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"aioMetadata\":{\"aioMinVersion\":\"izetpw\",\"aioMaxVersion\":\"a\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"ibph\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"mizak\",\"endpointType\":\"kan\",\"version\":\"p\"},{\"displayName\":\"jzhajoy\",\"endpointType\":\"hjlmu\",\"version\":\"xprimrsop\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"jme\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1157129881,\"maxInflightMessages\":1491198323,\"sessionExpirySeconds\":605795253,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"zaum\"}},\"connectorMetadataRef\":\"oohgu\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"boyjathwt\",\"type\":\"CustomLocation\"},\"id\":\"b\",\"name\":\"emwmdxmebwjs\",\"type\":\"jpahlxvea\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -46,114 +45,50 @@ public final class AkriConnectorTemplatesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AkriConnectorTemplateResource response = manager.akriConnectorTemplates()
-            .define("afgaoqlt")
-            .withExistingInstance("nw", "acevehjkuyx")
+            .define("btmvpdvjdhttza")
+            .withExistingInstance("c", "xgccknfnw")
             .withProperties(new AkriConnectorTemplateProperties()
-                .withAioMetadata(
-                    new AkriConnectorTemplateAioMetadata().withAioMinVersion("nm").withAioMaxVersion("vxirpghriypo"))
+                .withAioMetadata(new AkriConnectorTemplateAioMetadata().withAioMinVersion("hchrphkmcrjdqn")
+                    .withAioMaxVersion("fzpbgtgkyl"))
                 .withRuntimeConfiguration(new AkriConnectorTemplateRuntimeConfiguration())
                 .withDiagnostics(new AkriConnectorTemplateDiagnostics()
-                    .withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("hlqhykprlpy")))
-                .withDeviceInboundEndpointTypes(Arrays.asList(new AkriConnectorTemplateDeviceInboundEndpointType()
-                    .withDescription("ciqdsme")
-                    .withEndpointType("iitdfuxt")
-                    .withVersion("siibmiybnnustgn")
-                    .withConfigurationSchemaRefs(new AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs()
-                        .withDefaultDatasetConfigSchemaRef("nmgixh")
-                        .withDefaultEventsConfigSchemaRef("avmqfoudor")
-                        .withDefaultProcessControlConfigSchemaRef("gyyprotwy")
-                        .withDefaultStreamsConfigSchemaRef("ndm")
-                        .withAdditionalConfigSchemaRef("hu")),
-                    new AkriConnectorTemplateDeviceInboundEndpointType().withDescription("mjkavlgorbmft")
-                        .withEndpointType("mdtzfjltfvnzc")
-                        .withVersion("t")
-                        .withConfigurationSchemaRefs(
-                            new AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs()
-                                .withDefaultDatasetConfigSchemaRef("vopvp")
-                                .withDefaultEventsConfigSchemaRef("bzqgqqi")
-                                .withDefaultProcessControlConfigSchemaRef("dsvqwt")
-                                .withDefaultStreamsConfigSchemaRef("ky")
-                                .withAdditionalConfigSchemaRef("cysihs")),
-                    new AkriConnectorTemplateDeviceInboundEndpointType().withDescription("cw")
-                        .withEndpointType("hohsd")
-                        .withVersion("cdzsu")
-                        .withConfigurationSchemaRefs(
-                            new AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs()
-                                .withDefaultDatasetConfigSchemaRef("hdxbzlm")
-                                .withDefaultEventsConfigSchemaRef("uapcvhdbevwqqxe")
-                                .withDefaultProcessControlConfigSchemaRef("ko")
-                                .withDefaultStreamsConfigSchemaRef("zinkfkbgbzbowxeq")
-                                .withAdditionalConfigSchemaRef("ljmygvkzqkjjeokb")),
-                    new AkriConnectorTemplateDeviceInboundEndpointType().withDescription("fezrx")
-                        .withEndpointType("czurtlei")
-                        .withVersion("xbkwv")
-                        .withConfigurationSchemaRefs(
-                            new AkriConnectorTemplateDeviceInboundEndpointConfigurationSchemaRefs()
-                                .withDefaultDatasetConfigSchemaRef("zvd")
-                                .withDefaultEventsConfigSchemaRef("zdix")
-                                .withDefaultProcessControlConfigSchemaRef("q")
-                                .withDefaultStreamsConfigSchemaRef("odawopqhewjptmcg")
-                                .withAdditionalConfigSchemaRef("ostzelndlatu"))))
+                    .withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("hrjeuutlw")))
+                .withDeviceInboundEndpointTypes(
+                    Arrays.asList(new AkriConnectorTemplateDeviceInboundEndpointType().withDisplayName("w")
+                        .withEndpointType("hokvbwnh")
+                        .withVersion("qlgehg")))
                 .withMqttConnectionConfiguration(new AkriConnectorsMqttConnectionConfiguration()
                     .withAuthentication(new AkriConnectorsMqttAuthentication())
-                    .withHost("biojlvf")
+                    .withHost("ifhpf")
                     .withProtocol(AkriConnectorsMqttProtocolType.MQTT)
-                    .withKeepAliveSeconds(438246123)
-                    .withMaxInflightMessages(1573372478)
-                    .withSessionExpirySeconds(1669443889)
-                    .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
-                        .withTrustedCaCertificateConfigMapRef("yurmochpprprs"))))
+                    .withKeepAliveSeconds(1569556006)
+                    .withMaxInflightMessages(1451951552)
+                    .withSessionExpirySeconds(1335624442)
+                    .withTls(new TlsProperties().withMode(OperationalMode.DISABLED)
+                        .withTrustedCaCertificateConfigMapRef("heafidlt")))
+                .withConnectorMetadataRef("sr"))
             .withExtendedLocation(
-                new ExtendedLocation().withName("okayzejnhlbkp").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("ssjhoiftxfkf").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("nwieholewjw", response.properties().aioMetadata().aioMinVersion());
-        Assertions.assertEquals("ubwefqs", response.properties().aioMetadata().aioMaxVersion());
-        Assertions.assertEquals("aqtferr", response.properties().diagnostics().logs().level());
-        Assertions.assertEquals("x", response.properties().deviceInboundEndpointTypes().get(0).description());
-        Assertions.assertEquals("kmfx", response.properties().deviceInboundEndpointTypes().get(0).endpointType());
-        Assertions.assertEquals("jwogqqnobpudc", response.properties().deviceInboundEndpointTypes().get(0).version());
-        Assertions.assertEquals("tqwpwya",
-            response.properties()
-                .deviceInboundEndpointTypes()
-                .get(0)
-                .configurationSchemaRefs()
-                .defaultDatasetConfigSchemaRef());
-        Assertions.assertEquals("zasqbucljgkyexao",
-            response.properties()
-                .deviceInboundEndpointTypes()
-                .get(0)
-                .configurationSchemaRefs()
-                .defaultEventsConfigSchemaRef());
-        Assertions.assertEquals("yaipidsda",
-            response.properties()
-                .deviceInboundEndpointTypes()
-                .get(0)
-                .configurationSchemaRefs()
-                .defaultProcessControlConfigSchemaRef());
-        Assertions.assertEquals("tx",
-            response.properties()
-                .deviceInboundEndpointTypes()
-                .get(0)
-                .configurationSchemaRefs()
-                .defaultStreamsConfigSchemaRef());
-        Assertions.assertEquals("jumfqwazlnq",
-            response.properties()
-                .deviceInboundEndpointTypes()
-                .get(0)
-                .configurationSchemaRefs()
-                .additionalConfigSchemaRef());
-        Assertions.assertEquals("azuawx", response.properties().mqttConnectionConfiguration().host());
+        Assertions.assertEquals("izetpw", response.properties().aioMetadata().aioMinVersion());
+        Assertions.assertEquals("a", response.properties().aioMetadata().aioMaxVersion());
+        Assertions.assertEquals("ibph", response.properties().diagnostics().logs().level());
+        Assertions.assertEquals("mizak", response.properties().deviceInboundEndpointTypes().get(0).displayName());
+        Assertions.assertEquals("kan", response.properties().deviceInboundEndpointTypes().get(0).endpointType());
+        Assertions.assertEquals("p", response.properties().deviceInboundEndpointTypes().get(0).version());
+        Assertions.assertEquals("jme", response.properties().mqttConnectionConfiguration().host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT,
             response.properties().mqttConnectionConfiguration().protocol());
-        Assertions.assertEquals(810465454, response.properties().mqttConnectionConfiguration().keepAliveSeconds());
-        Assertions.assertEquals(400870213, response.properties().mqttConnectionConfiguration().maxInflightMessages());
-        Assertions.assertEquals(1288092956, response.properties().mqttConnectionConfiguration().sessionExpirySeconds());
-        Assertions.assertEquals(OperationalMode.DISABLED,
+        Assertions.assertEquals(1157129881, response.properties().mqttConnectionConfiguration().keepAliveSeconds());
+        Assertions.assertEquals(1491198323, response.properties().mqttConnectionConfiguration().maxInflightMessages());
+        Assertions.assertEquals(605795253, response.properties().mqttConnectionConfiguration().sessionExpirySeconds());
+        Assertions.assertEquals(OperationalMode.ENABLED,
             response.properties().mqttConnectionConfiguration().tls().mode());
-        Assertions.assertEquals("vxcushsphaivmx",
+        Assertions.assertEquals("zaum",
             response.properties().mqttConnectionConfiguration().tls().trustedCaCertificateConfigMapRef());
-        Assertions.assertEquals("sflvgsgzwywakoih", response.extendedLocation().name());
+        Assertions.assertEquals("oohgu", response.properties().connectorMetadataRef());
+        Assertions.assertEquals("boyjathwt", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

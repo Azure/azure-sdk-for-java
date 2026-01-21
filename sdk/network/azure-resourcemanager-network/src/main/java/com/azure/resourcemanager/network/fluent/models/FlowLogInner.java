@@ -235,6 +235,37 @@ public final class FlowLogInner extends Resource {
     }
 
     /**
+     * Get the recordTypes property: Optional field to filter network traffic logs based on flow states. Value of this
+     * field could be any comma separated combination string of letters B,C,E or D. B represents Begin, when a flow is
+     * created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End,
+     * when a flow is terminated. D represents Deny, when a flow is denied. If not specified, all network traffic will
+     * be logged.
+     * 
+     * @return the recordTypes value.
+     */
+    public String recordTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().recordTypes();
+    }
+
+    /**
+     * Set the recordTypes property: Optional field to filter network traffic logs based on flow states. Value of this
+     * field could be any comma separated combination string of letters B,C,E or D. B represents Begin, when a flow is
+     * created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End,
+     * when a flow is terminated. D represents Deny, when a flow is denied. If not specified, all network traffic will
+     * be logged.
+     * 
+     * @param recordTypes the recordTypes value to set.
+     * @return the FlowLogInner object itself.
+     */
+    public FlowLogInner withRecordTypes(String recordTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogPropertiesFormat();
+        }
+        this.innerProperties().withRecordTypes(recordTypes);
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
      * 
      * @return the enabled value.

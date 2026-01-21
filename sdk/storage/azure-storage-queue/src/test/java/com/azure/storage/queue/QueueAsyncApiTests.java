@@ -897,7 +897,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2025-07-05")
     public void getSetAccessPolicyOAuth() {
         // Arrange
-        QueueServiceAsyncClient service = getOAuthQueueAsyncServiceClient();
+        QueueServiceAsyncClient service = getOAuthQueueServiceAsyncClient();
         Mono<Boolean> createQueue = queueAsyncClient.createIfNotExists();
         queueAsyncClient = service.getQueueAsyncClient(queueName);
 

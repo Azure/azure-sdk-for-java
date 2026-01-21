@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
 public final class AppServicePlansUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchAppServicePlan.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchAppServicePlan.json
      */
     /**
      * Sample code: Patch Service plan.

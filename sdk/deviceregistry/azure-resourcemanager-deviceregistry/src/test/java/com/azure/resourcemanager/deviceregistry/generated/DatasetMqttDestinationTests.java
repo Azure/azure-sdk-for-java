@@ -15,25 +15,25 @@ public final class DatasetMqttDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetMqttDestination model = BinaryData.fromString(
-            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"wzbaiue\",\"retain\":\"Keep\",\"qos\":\"Qos0\",\"ttl\":7484019295322681584}}")
+            "{\"target\":\"Mqtt\",\"configuration\":{\"topic\":\"obbc\",\"retain\":\"Keep\",\"qos\":\"Qos0\",\"ttl\":4282365131498375699}}")
             .toObject(DatasetMqttDestination.class);
-        Assertions.assertEquals("wzbaiue", model.configuration().topic());
+        Assertions.assertEquals("obbc", model.configuration().topic());
         Assertions.assertEquals(TopicRetainType.KEEP, model.configuration().retain());
         Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
-        Assertions.assertEquals(7484019295322681584L, model.configuration().ttl());
+        Assertions.assertEquals(4282365131498375699L, model.configuration().ttl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatasetMqttDestination model
-            = new DatasetMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("wzbaiue")
+            = new DatasetMqttDestination().withConfiguration(new MqttDestinationConfiguration().withTopic("obbc")
                 .withRetain(TopicRetainType.KEEP)
                 .withQos(MqttDestinationQos.QOS0)
-                .withTtl(7484019295322681584L));
+                .withTtl(4282365131498375699L));
         model = BinaryData.fromObject(model).toObject(DatasetMqttDestination.class);
-        Assertions.assertEquals("wzbaiue", model.configuration().topic());
+        Assertions.assertEquals("obbc", model.configuration().topic());
         Assertions.assertEquals(TopicRetainType.KEEP, model.configuration().retain());
         Assertions.assertEquals(MqttDestinationQos.QOS0, model.configuration().qos());
-        Assertions.assertEquals(7484019295322681584L, model.configuration().ttl());
+        Assertions.assertEquals(4282365131498375699L, model.configuration().ttl());
     }
 }

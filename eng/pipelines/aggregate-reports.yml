@@ -48,7 +48,7 @@ extends:
               displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
               inputs:
                 mavenPomFile: pom.xml
-                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,!com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,!com.azure.cosmos.kafka:azure-cosmos-kafka-connect,!com.microsoft.azure:azure-batch,!com.microsoft.azure:azure-media'
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dshade.skip=true -Dspotless.skip=true -pl !com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,!com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,!com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,!com.azure.cosmos.kafka:azure-cosmos-kafka-connect,!com.microsoft.azure:azure-batch'
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: $(JavaBuildVersion)
@@ -60,7 +60,7 @@ extends:
               displayName: 'Build remaining libraries with Java $(FallbackJavaBuildVersion)'
               inputs:
                 mavenPomFile: pom.xml
-                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,com.azure.cosmos.kafka:azure-cosmos-kafka-connect,com.microsoft.azure:azure-batch,com.microsoft.azure:azure-media'
+                options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Dspotless.skip=true -pl com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12,com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12,com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample,com.azure.cosmos.kafka:azure-cosmos-kafka-connect,com.microsoft.azure:azure-batch'
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: $(FallbackJavaBuildVersion)

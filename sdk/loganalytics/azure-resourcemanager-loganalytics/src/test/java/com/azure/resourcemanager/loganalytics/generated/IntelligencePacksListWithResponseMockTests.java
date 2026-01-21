@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.IntelligencePack;
@@ -21,22 +21,21 @@ import reactor.core.publisher.Mono;
 public final class IntelligencePacksListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        String responseStr
-            = "[{\"name\":\"zvoamktc\",\"enabled\":false,\"displayName\":\"mgbzahgxqdlyrtl\"},{\"name\":\"ap\",\"enabled\":false,\"displayName\":\"katbhjm\"},{\"name\":\"nbsoqeqalarv\",\"enabled\":true,\"displayName\":\"nbtgfebwl\"}]";
+        String responseStr = "[{\"name\":\"tvczkcnyxr\",\"enabled\":false,\"displayName\":\"jdxvglnkvxlxpa\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<IntelligencePack> response = manager.intelligencePacks()
-            .listWithResponse("pndfcpfnznt", "jtwkjaos", com.azure.core.util.Context.NONE)
+            .listWithResponse("sp", "pssdfppyogtie", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zvoamktc", response.get(0).name());
-        Assertions.assertEquals(false, response.get(0).enabled());
-        Assertions.assertEquals("mgbzahgxqdlyrtl", response.get(0).displayName());
+        Assertions.assertEquals("tvczkcnyxr", response.get(0).name());
+        Assertions.assertFalse(response.get(0).enabled());
+        Assertions.assertEquals("jdxvglnkvxlxpa", response.get(0).displayName());
     }
 }

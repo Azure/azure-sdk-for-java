@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Migration state.
+ * State of migration.
  */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
     /**

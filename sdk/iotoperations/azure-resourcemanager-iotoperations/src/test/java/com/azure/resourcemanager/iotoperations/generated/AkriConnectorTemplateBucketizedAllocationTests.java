@@ -12,16 +12,16 @@ public final class AkriConnectorTemplateBucketizedAllocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateBucketizedAllocation model
-            = BinaryData.fromString("{\"policy\":\"Bucketized\",\"bucketSize\":1345680301}")
+            = BinaryData.fromString("{\"policy\":\"Bucketized\",\"bucketSize\":1616110653}")
                 .toObject(AkriConnectorTemplateBucketizedAllocation.class);
-        Assertions.assertEquals(1345680301, model.bucketSize());
+        Assertions.assertEquals(1616110653, model.bucketSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateBucketizedAllocation model
-            = new AkriConnectorTemplateBucketizedAllocation().withBucketSize(1345680301);
+            = new AkriConnectorTemplateBucketizedAllocation().withBucketSize(1616110653);
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateBucketizedAllocation.class);
-        Assertions.assertEquals(1345680301, model.bucketSize());
+        Assertions.assertEquals(1616110653, model.bucketSize());
     }
 }

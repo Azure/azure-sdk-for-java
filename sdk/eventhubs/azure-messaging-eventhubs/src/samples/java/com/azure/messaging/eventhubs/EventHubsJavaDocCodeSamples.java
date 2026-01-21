@@ -61,6 +61,20 @@ public class EventHubsJavaDocCodeSamples {
     }
 
     /**
+     * Code sample for creating a synchronous Event Hub producer using a connection string.
+     */
+    public void createProducerWithConnectionString() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.connectionstring
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .connectionString(connectionString)
+            .buildProducerClient();
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.connectionstring
+    }
+
+    /**
      * Code sample for creating an async Event Hub producer.
      */
     public void createProducerAsync() {

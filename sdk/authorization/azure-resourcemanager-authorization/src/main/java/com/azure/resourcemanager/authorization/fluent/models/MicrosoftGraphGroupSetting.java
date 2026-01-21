@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * groupSetting.
+ * Represents a group setting.
  */
 @Fluent
 public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {

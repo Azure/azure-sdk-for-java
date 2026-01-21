@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * userSettings.
+ * Represents an user settings.
  */
 @Fluent
 public final class MicrosoftGraphUserSettings extends MicrosoftGraphEntity {

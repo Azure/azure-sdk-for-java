@@ -53,6 +53,11 @@ public final class CertificateProperties implements JsonSerializable<Certificate
      */
     private String certificate;
 
+    /*
+     * The reference to policy stored in Azure Device Registry (ADR).
+     */
+    private String policyResourceId;
+
     /**
      * Creates an instance of CertificateProperties class.
      */
@@ -154,6 +159,26 @@ public final class CertificateProperties implements JsonSerializable<Certificate
     }
 
     /**
+     * Get the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * 
+     * @return the policyResourceId value.
+     */
+    public String policyResourceId() {
+        return this.policyResourceId;
+    }
+
+    /**
+     * Set the policyResourceId property: The reference to policy stored in Azure Device Registry (ADR).
+     * 
+     * @param policyResourceId the policyResourceId value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withPolicyResourceId(String policyResourceId) {
+        this.policyResourceId = policyResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -169,6 +194,7 @@ public final class CertificateProperties implements JsonSerializable<Certificate
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("isVerified", this.isVerified);
         jsonWriter.writeStringField("certificate", this.certificate);
+        jsonWriter.writeStringField("policyResourceId", this.policyResourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -204,6 +230,8 @@ public final class CertificateProperties implements JsonSerializable<Certificate
                         = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("certificate".equals(fieldName)) {
                     deserializedCertificateProperties.certificate = reader.getString();
+                } else if ("policyResourceId".equals(fieldName)) {
+                    deserializedCertificateProperties.policyResourceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

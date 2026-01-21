@@ -12,18 +12,18 @@ public final class ClusterHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterHealthPolicy model = BinaryData
-            .fromString("{\"maxPercentUnhealthyNodes\":1789990861,\"maxPercentUnhealthyApplications\":155471033}")
+            .fromString("{\"maxPercentUnhealthyNodes\":726747953,\"maxPercentUnhealthyApplications\":576385447}")
             .toObject(ClusterHealthPolicy.class);
-        Assertions.assertEquals(1789990861, model.maxPercentUnhealthyNodes());
-        Assertions.assertEquals(155471033, model.maxPercentUnhealthyApplications());
+        Assertions.assertEquals(726747953, model.maxPercentUnhealthyNodes());
+        Assertions.assertEquals(576385447, model.maxPercentUnhealthyApplications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterHealthPolicy model = new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(1789990861)
-            .withMaxPercentUnhealthyApplications(155471033);
+        ClusterHealthPolicy model = new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(726747953)
+            .withMaxPercentUnhealthyApplications(576385447);
         model = BinaryData.fromObject(model).toObject(ClusterHealthPolicy.class);
-        Assertions.assertEquals(1789990861, model.maxPercentUnhealthyNodes());
-        Assertions.assertEquals(155471033, model.maxPercentUnhealthyApplications());
+        Assertions.assertEquals(726747953, model.maxPercentUnhealthyNodes());
+        Assertions.assertEquals(576385447, model.maxPercentUnhealthyApplications());
     }
 }

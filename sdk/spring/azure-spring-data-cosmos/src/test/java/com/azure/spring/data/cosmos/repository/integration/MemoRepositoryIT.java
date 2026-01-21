@@ -11,16 +11,15 @@ import com.azure.spring.data.cosmos.domain.Memo;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.MemoRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,8 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class MemoRepositoryIT {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(TestConstants.DATE_FORMAT);
@@ -47,7 +47,7 @@ public class MemoRepositoryIT {
     private static Memo testMemo2;
     private static Memo testMemo3;
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -56,7 +56,7 @@ public class MemoRepositoryIT {
     @Autowired
     MemoRepository repository;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws ParseException {
         memoDate = DATE_FORMAT.parse(TestConstants.DATE_STRING);
         memoDateBefore = DATE_FORMAT.parse(TestConstants.DATE_BEFORE_STRING);
@@ -68,7 +68,7 @@ public class MemoRepositoryIT {
         testMemo3 = new Memo(TestConstants.ID_3, TestConstants.NEW_MESSAGE, memoDateAfter, Importance.LOW);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Memo.class);
         repository.saveAll(Arrays.asList(testMemo1, testMemo2, testMemo3));
@@ -108,12 +108,12 @@ public class MemoRepositoryIT {
     public void testFindByBefore() {
         List<Memo> memos = TestUtils.toList(this.repository.findByDateBefore(memoDateBefore));
 
-        Assert.assertTrue(memos.isEmpty());
+        Assertions.assertTrue(memos.isEmpty());
 
         memos = TestUtils.toList(this.repository.findByDateBefore(memoDate));
 
-        Assert.assertEquals(1, memos.size());
-        Assert.assertEquals(testMemo1, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo1, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateBefore(memoDateAfter));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
@@ -121,8 +121,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assert.assertEquals(reference.size(), memos.size());
-        Assert.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -130,12 +130,12 @@ public class MemoRepositoryIT {
         List<Memo> memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate,
             TestConstants.NEW_MESSAGE));
 
-        Assert.assertTrue(memos.isEmpty());
+        Assertions.assertTrue(memos.isEmpty());
 
         memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.MESSAGE));
 
-        Assert.assertEquals(1, memos.size());
-        Assert.assertEquals(testMemo1, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo1, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateBeforeOrMessage(memoDateAfter, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
@@ -143,20 +143,20 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assert.assertEquals(reference.size(), memos.size());
-        Assert.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
     public void testFindByAfter() {
         List<Memo> memos = TestUtils.toList(this.repository.findByDateAfter(memoDateAfter));
 
-        Assert.assertTrue(memos.isEmpty());
+        Assertions.assertTrue(memos.isEmpty());
 
         memos = TestUtils.toList(this.repository.findByDateAfter(memoDate));
 
-        Assert.assertEquals(1, memos.size());
-        Assert.assertEquals(testMemo3, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo3, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateAfter(memoDateBefore));
         final List<Memo> reference = Arrays.asList(testMemo2, testMemo3);
@@ -164,20 +164,20 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assert.assertEquals(reference.size(), memos.size());
-        Assert.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
     public void testFindByAfterWithAndOr() {
         List<Memo> memos = TestUtils.toList(this.repository.findByDateAfterAndMessage(memoDate, TestConstants.MESSAGE));
 
-        Assert.assertTrue(memos.isEmpty());
+        Assertions.assertTrue(memos.isEmpty());
 
         memos = TestUtils.toList(this.repository.findByDateAfterAndMessage(memoDate, TestConstants.NEW_MESSAGE));
 
-        Assert.assertEquals(1, memos.size());
-        Assert.assertEquals(testMemo3, memos.get(0));
+        assertEquals(1, memos.size());
+        assertEquals(testMemo3, memos.get(0));
 
         memos = TestUtils.toList(this.repository.findByDateAfterOrMessage(memoDateBefore, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2, testMemo3);
@@ -185,8 +185,8 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assert.assertEquals(reference.size(), memos.size());
-        Assert.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
     @Test
@@ -226,22 +226,22 @@ public class MemoRepositoryIT {
         memos.sort(Comparator.comparing(Memo::getId));
         reference.sort(Comparator.comparing(Memo::getId));
 
-        Assert.assertEquals(reference.size(), memos.size());
-        Assert.assertEquals(reference, memos);
+        assertEquals(reference.size(), memos.size());
+        assertEquals(reference, memos);
     }
 
-    @Test(expected = CosmosAccessException.class)
-    @Ignore // TODO(pan): Ignore this test case for now, will update this from service update.
+    @Test
+    @Disabled // TODO(pan): Ignore this test case for now, will update this from service update.
     public void testFindByStartsWithWithException() {
-        repository.findByMessageStartsWith(testMemo1.getMessage());
+        assertThrows(CosmosAccessException.class, () -> repository.findByMessageStartsWith(testMemo1.getMessage()));
     }
 
     @Test
     public void testFindByStartsWith() {
         final List<Memo> result =
             TestUtils.toList(repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10)));
-        Assert.assertEquals(testMemo1, result.get(0));
-        Assert.assertEquals(1, result.size());
+        assertEquals(testMemo1, result.get(0));
+        assertEquals(1, result.size());
     }
 
 }

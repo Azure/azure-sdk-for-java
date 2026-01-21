@@ -14,7 +14,8 @@ import java.util.Map;
 public final class IotHubResourceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_patch.json
+     * specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_patch.
+     * json
      */
     /**
      * Sample code: IotHubResource_Update.

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * domainDnsRecord.
+ * Represents a domain dns record.
  */
 @Fluent
 public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {

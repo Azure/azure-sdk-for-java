@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfileOperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.FleetManagedNamespacesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
@@ -176,6 +177,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The FleetManagedNamespacesClient object to access its operations.
+     */
+    private final FleetManagedNamespacesClient fleetManagedNamespaces;
+
+    /**
+     * Gets the FleetManagedNamespacesClient object to access its operations.
+     * 
+     * @return the FleetManagedNamespacesClient object.
+     */
+    public FleetManagedNamespacesClient getFleetManagedNamespaces() {
+        return this.fleetManagedNamespaces;
+    }
+
+    /**
      * The GatesClient object to access its operations.
      */
     private final GatesClient gates;
@@ -262,10 +277,11 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-08-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
+        this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
         this.gates = new GatesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);

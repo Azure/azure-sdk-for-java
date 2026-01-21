@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInner;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RemoteVendorManagementFeature;
@@ -19,6 +20,7 @@ import com.azure.resourcemanager.networkcloud.models.StorageApplianceDetailedSta
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,10 @@ public final class StorageApplianceImpl
 
     public AdministrativeCredentials administratorCredentials() {
         return this.innerModel().administratorCredentials();
+    }
+
+    public CertificateInfo caCertificate() {
+        return this.innerModel().caCertificate();
     }
 
     public Long capacity() {
@@ -273,6 +279,19 @@ public final class StorageApplianceImpl
         return serviceManager.storageAppliances()
             .enableRemoteVendorManagement(resourceGroupName, storageApplianceName,
                 storageApplianceEnableRemoteVendorManagementParameters, context);
+    }
+
+    public OperationStatusResult
+        runReadCommands(StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        return serviceManager.storageAppliances()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
+    }
+
+    public OperationStatusResult runReadCommands(
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        return serviceManager.storageAppliances()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+                context);
     }
 
     public StorageApplianceImpl withRegion(Region location) {
