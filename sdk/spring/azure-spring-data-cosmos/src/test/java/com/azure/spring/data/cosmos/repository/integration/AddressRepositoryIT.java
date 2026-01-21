@@ -3,6 +3,8 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -44,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
+@Execution(ExecutionMode.SAME_THREAD)
 public class AddressRepositoryIT {
 
 
