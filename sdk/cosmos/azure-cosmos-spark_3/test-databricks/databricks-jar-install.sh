@@ -39,7 +39,7 @@ JAR_CHECK_SUM="$(sha256sum -- "$JARPATH/$JARFILE")" || {
                 exit 1
               }
 JAR_CHECK_SUM="${JAR_CHECK_SUM%% *}"
-echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
+echo "CHECKSUM of the jar $JARPATH/$JARFILE (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
 echo "##vso[task.setvariable variable=JarCheckSum]$JAR_CHECK_SUM"
 
 echo "CLUSTER_NAME: $CLUSTER_NAME"

@@ -92,6 +92,20 @@
         "JavaTestVersion": "1.17",
         "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       },
+      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 17'": {
+        "ProfileFlag": "-Dspark-e2e_4-0_2-13",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.17",
+        "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+      },
+      "Spark 4.0, Scala 2.13 Integration Tests targeting Cosmos Emulator - Java 21'": {
+        "ProfileFlag": "-Dspark-e2e_4-0_2-13",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.21",
+        "AdditionalArgs": "-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop -DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+      },
       "Kafka Integration Tests targeting Cosmos Emulator - Java 11": {
         "ProfileFlag": "-Pkafka-emulator",
         "PROTOCOLS": "[\"Tcp\"]",
