@@ -55,8 +55,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -103,8 +103,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -145,8 +145,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -192,8 +192,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-//             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-//             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -251,6 +251,8 @@ public class ThinClientE2ETest {
         assertThat(requests).isNotNull();
         assertThat(requests.size()).isPositive();
 
+        int requestCountAgainstThinClientEndpoint = 0;
+
         for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
             logger.info(
                 "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
@@ -259,12 +261,15 @@ public class ThinClientE2ETest {
                 requestInfo.getPartitionId(),
                 requestInfo.getPartitionKeyRangeId(),
                 requestInfo.getActivityId());
+
             if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
-                return;
+                requestCountAgainstThinClientEndpoint++;
             }
         }
 
-        fail("No request targeting thin client proxy endpoint.");
+//        fail("No request targeting thin client proxy endpoint.");
+
+        assertThat(requestCountAgainstThinClientEndpoint).isEqualTo(requests.size());
     }
 
 
@@ -384,8 +389,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+              System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+              System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)

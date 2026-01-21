@@ -265,7 +265,8 @@ public final class RntbdConstants {
         PreReplaceValidation((short) 0x0020, OperationType.PreReplaceValidation),
         AddComputeGatewayRequestCharges((short) 0x0021, OperationType.AddComputeGatewayRequestCharges),
         MigratePartition((short) 0x0022, OperationType.MigratePartition),
-        Batch((short) 0x0025, OperationType.Batch);
+        Batch((short) 0x0025, OperationType.Batch),
+        QueryPlan((short) 0x0042, OperationType.QueryPlan);
 
         private final short id;
         private final OperationType type;

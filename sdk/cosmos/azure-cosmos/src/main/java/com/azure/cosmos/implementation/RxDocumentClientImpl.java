@@ -8020,7 +8020,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     || operationType == OperationType.Query
                     || operationType == OperationType.Batch
                     || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode()
-                    || request.isExecuteStoredProcedureBasedRequest();
+                    || request.isExecuteStoredProcedureBasedRequest()
+                    || operationType == OperationType.QueryPlan;
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(

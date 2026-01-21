@@ -201,10 +201,13 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
         } else if (request.requestContext.resolvedPartitionKeyRange == null) {
-            throw new IllegalStateException(
-                "Resolved partition key range should not be null at this point. ResourceType: "
-                + request.getResourceType() + ", OperationType: "
-                + request.getOperationType());
+
+            if (!(request.getResourceType() == ResourceType.Document && request.getOperationType() == OperationType.QueryPlan)) {
+                throw new IllegalStateException(
+                    "Resolved partition key range should not be null at this point. ResourceType: "
+                        + request.getResourceType() + ", OperationType: "
+                        + request.getOperationType());
+            }
         } else {
             PartitionKeyRange pkRange = request.requestContext.resolvedPartitionKeyRange;
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash, HexConvert.hexToBytes(pkRange.getMinInclusive()));
