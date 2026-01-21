@@ -384,7 +384,7 @@ public class ConsistencyWriterTest {
         runWriteAsyncBarrierableRequestTest(false, false);
     }
 
-    @Test
+    @Test(groups = "unit")
     public void writeAsyncNoBarrierRequest() {
         initializeConsistencyWriter(false);
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
