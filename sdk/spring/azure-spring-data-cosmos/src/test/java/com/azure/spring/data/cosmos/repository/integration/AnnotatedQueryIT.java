@@ -49,6 +49,7 @@ public class AnnotatedQueryIT {
 
     @Autowired
     private AuditableRepository auditableRepository;
+    
 
     @Autowired
     private AddressRepository addressRepository;
