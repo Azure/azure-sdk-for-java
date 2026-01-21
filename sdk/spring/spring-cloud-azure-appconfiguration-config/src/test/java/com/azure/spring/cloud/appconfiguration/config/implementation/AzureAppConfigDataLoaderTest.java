@@ -89,7 +89,7 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+        when(clientMock.loadWatchedSettings(any(SettingSelector.class), any(Context.class)))
             .thenReturn(watchedConfigurationSettingsMock);
         // Use reflection to test the private method
         AzureAppConfigDataLoader loader = createLoader();
@@ -100,7 +100,7 @@ public class AzureAppConfigDataLoaderTest {
         assertEquals(1, result.size());
 
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
-        verify(clientMock, times(1)).watchedConfigurationSettings(selectorCaptor.capture(), any(Context.class));
+        verify(clientMock, times(1)).loadWatchedSettings(selectorCaptor.capture(), any(Context.class));
 
         SettingSelector capturedSelector = selectorCaptor.getValue();
         assertEquals(KEY_FILTER + "*", capturedSelector.getKeyFilter());
@@ -121,7 +121,7 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector2);
 
         // Setup mocks
-        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+        when(clientMock.loadWatchedSettings(any(SettingSelector.class), any(Context.class)))
             .thenReturn(watchedConfigurationSettingsMock);
 
         // Test
@@ -131,7 +131,7 @@ public class AzureAppConfigDataLoaderTest {
         // Verify - should create watched configuration settings for both selectors
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(clientMock, times(2)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(2)).loadWatchedSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(regularSelector);
 
         // Setup mocks
-        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+        when(clientMock.loadWatchedSettings(any(SettingSelector.class), any(Context.class)))
             .thenReturn(watchedConfigurationSettingsMock);
 
         // Test
@@ -158,7 +158,7 @@ public class AzureAppConfigDataLoaderTest {
         // Verify - snapshot should be skipped, only regular selector should be processed
         assertNotNull(result);
         assertEquals(1, result.size());
-        verify(clientMock, times(1)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(1)).loadWatchedSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+        when(clientMock.loadWatchedSettings(any(SettingSelector.class), any(Context.class)))
             .thenReturn(watchedConfigurationSettingsMock);
         // Test
         AzureAppConfigDataLoader loader = createLoader();
@@ -179,7 +179,7 @@ public class AzureAppConfigDataLoaderTest {
         // Verify - should create watched configuration settings for each label
         assertNotNull(result);
         assertEquals(3, result.size());
-        verify(clientMock, times(3)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(3)).loadWatchedSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test
@@ -196,7 +196,7 @@ public class AzureAppConfigDataLoaderTest {
         configStore.getSelects().add(selector);
 
         // Setup mocks
-        when(clientMock.watchedConfigurationSettings(any(SettingSelector.class), any(Context.class)))
+        when(clientMock.loadWatchedSettings(any(SettingSelector.class), any(Context.class)))
             .thenReturn(watchedConfigurationSettingsMock);
 
         // Test - verify that watched configuration settings are created when refreshAll is enabled
@@ -206,7 +206,7 @@ public class AzureAppConfigDataLoaderTest {
         // Verify watched configuration settings were created
         assertNotNull(result);
         assertEquals(1, result.size());
-        verify(clientMock, times(1)).watchedConfigurationSettings(any(SettingSelector.class), any(Context.class));
+        verify(clientMock, times(1)).loadWatchedSettings(any(SettingSelector.class), any(Context.class));
     }
 
     @Test

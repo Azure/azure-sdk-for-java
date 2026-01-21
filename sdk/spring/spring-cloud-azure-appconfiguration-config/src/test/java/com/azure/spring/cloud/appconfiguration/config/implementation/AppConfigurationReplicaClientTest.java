@@ -380,7 +380,7 @@ public class AppConfigurationReplicaClientTest {
             .thenReturn(new PagedIterable<>(pagedFlux));
 
         SettingSelector selector = new SettingSelector().setKeyFilter("*");
-        WatchedConfigurationSettings result = client.watchedConfigurationSettings(selector, contextMock);
+        WatchedConfigurationSettings result = client.loadWatchedSettings(selector, contextMock);
 
         assertEquals(2, result.getConfigurationSettings().size());
         assertEquals("key1", result.getConfigurationSettings().get(0).getKey());
@@ -399,19 +399,19 @@ public class AppConfigurationReplicaClientTest {
         when(responseMock.getStatusCode()).thenReturn(429);
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
+            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
+            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
+            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
         assertThrows(HttpResponseException.class,
-            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
+            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -422,7 +422,7 @@ public class AppConfigurationReplicaClientTest {
             .thenThrow(new UncheckedIOException(new IOException("Network error")));
 
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.watchedConfigurationSettings(new SettingSelector(), contextMock));
+            () -> client.loadWatchedSettings(new SettingSelector(), contextMock));
     }
 
 }

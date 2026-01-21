@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
+import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
