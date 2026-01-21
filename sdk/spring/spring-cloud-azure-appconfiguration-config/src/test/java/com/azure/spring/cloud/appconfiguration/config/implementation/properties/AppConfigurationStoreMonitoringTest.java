@@ -52,7 +52,7 @@ public class AppConfigurationStoreMonitoringTest {
 
         // Should not throw an exception even with no triggers
         monitoring.validateAndInit();
-        
+
         // Verify refresh interval validation still applies
         monitoring.setRefreshInterval(Duration.ofSeconds(0));
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> monitoring.validateAndInit());
@@ -64,13 +64,13 @@ public class AppConfigurationStoreMonitoringTest {
         // Even when refreshAll is enabled, having triggers should still be valid
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        
+
         List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
         trigger.setKey("sentinel");
         triggers.add(trigger);
         monitoring.setTriggers(triggers);
-        
+
         // Should not throw an exception
         monitoring.validateAndInit();
     }
@@ -80,7 +80,7 @@ public class AppConfigurationStoreMonitoringTest {
         // When monitoring is disabled, refreshAll setting should not matter
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(false);
-        
+
         // Should not throw an exception even with no triggers
         monitoring.validateAndInit();
     }

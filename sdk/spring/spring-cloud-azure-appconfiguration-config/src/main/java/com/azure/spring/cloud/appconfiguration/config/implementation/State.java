@@ -11,12 +11,15 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.configurati
 /**
  * Immutable representation of the refresh state for an Azure App Configuration store.
  * 
- * <p>Holds configuration watch keys, collection monitoring settings, refresh timing, and
- * attempt tracking for a single configuration store endpoint. All fields are final to ensure
- * thread-safety and immutability.</p>
+ * <p>
+ * Holds configuration watch keys, collection monitoring settings, refresh timing, and attempt tracking for a single
+ * configuration store endpoint. All fields are final to ensure thread-safety and immutability.
+ * </p>
  * 
- * <p>State changes are made by creating new instances rather than mutating existing ones,
- * following an immutable design pattern.</p>
+ * <p>
+ * State changes are made by creating new instances rather than mutating existing ones, following an immutable design
+ * pattern.
+ * </p>
  */
 class State {
 
@@ -49,20 +52,22 @@ class State {
     }
 
     /**
-     * Creates a new State with both configuration watch keys and collection monitoring.
-     * Sets the initial refresh attempt to 1 and calculates next refresh time from now.
+     * Creates a new State with both configuration watch keys and collection monitoring. Sets the initial refresh
+     * attempt to 1 and calculates next refresh time from now.
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param collectionWatchKeys list of collection monitoring configurations that can trigger a refresh event
      * @param refreshInterval refresh interval in seconds
      * @param originEndpoint the endpoint URL of the configuration store
      */
-    State(List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys, int refreshInterval, String originEndpoint) {
-        this(watchKeys, collectionWatchKeys, refreshInterval, originEndpoint, Instant.now().plusSeconds(refreshInterval), 1);
+    State(List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys,
+        int refreshInterval, String originEndpoint) {
+        this(watchKeys, collectionWatchKeys, refreshInterval, originEndpoint,
+            Instant.now().plusSeconds(refreshInterval), 1);
     }
 
     /**
-     * Creates a new State from an existing state with an updated refresh time.
-     * Preserves the current refresh attempt count.
+     * Creates a new State from an existing state with an updated refresh time. Preserves the current refresh attempt
+     * count.
      * @param oldState the existing State to copy from
      * @param newRefresh the new refresh time
      */
@@ -71,8 +76,8 @@ class State {
     }
 
     /**
-     * Creates a new State from an existing state with updated refresh time and attempt count.
-     * Used when creating states with modified refresh attempts for backoff logic.
+     * Creates a new State from an existing state with updated refresh time and attempt count. Used when creating states
+     * with modified refresh attempts for backoff logic.
      * @param oldState the existing State to copy from
      * @param newRefresh the new refresh time
      * @param refreshAttempt the refresh attempt count
@@ -83,8 +88,8 @@ class State {
     }
 
     /**
-     * Primary constructor that initializes all fields. All other constructors delegate to this one.
-     * This constructor is private to enforce the use of the public factory-style constructors.
+     * Primary constructor that initializes all fields. All other constructors delegate to this one. This constructor is
+     * private to enforce the use of the public factory-style constructors.
      * @param watchKeys list of configuration watch keys
      * @param collectionWatchKeys list of collection monitoring configurations (may be null)
      * @param refreshInterval refresh interval in seconds
@@ -93,7 +98,7 @@ class State {
      * @param refreshAttempt the current refresh attempt count
      */
     private State(List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys,
-                  int refreshInterval, String originEndpoint, Instant nextRefreshCheck, int refreshAttempt) {
+        int refreshInterval, String originEndpoint, Instant nextRefreshCheck, int refreshAttempt) {
         this.watchKeys = watchKeys;
         this.collectionWatchKeys = collectionWatchKeys;
         this.refreshInterval = refreshInterval;

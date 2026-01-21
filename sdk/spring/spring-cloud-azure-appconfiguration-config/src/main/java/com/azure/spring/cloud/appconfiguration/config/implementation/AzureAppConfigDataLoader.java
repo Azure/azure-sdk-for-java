@@ -11,8 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-
-import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
+import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
@@ -167,8 +166,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         // Check if refreshAll is enabled - if so, use watched configuration settings
                         if (monitoring.getTriggers().size() == 0) {
                             // Use watched configuration settings for refresh
-                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(currentClient);
-                            storeState.setState(resource.getEndpoint(), Collections.emptyList(), watchedConfigurationSettingsList, monitoring.getRefreshInterval());
+                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
+                                currentClient);
+                            storeState.setState(resource.getEndpoint(), Collections.emptyList(),
+                                watchedConfigurationSettingsList, monitoring.getRefreshInterval());
                         } else {
                             // Use traditional watch key monitoring
                             List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
@@ -176,7 +177,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                                     requestContext))
                                 .toList();
 
-                            storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+                            storeState.setState(resource.getEndpoint(), watchKeysSettings,
+                                monitoring.getRefreshInterval());
                         }
                     }
                     storeState.setLoadState(resource.getEndpoint(), true); // Success - configuration loaded, exit loop
@@ -288,8 +290,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     }
 
     /**
-     * Creates a list of watched configuration settings for configuration settings from Azure App Configuration.
-     * This is used for collection-based refresh monitoring as an alternative to individual watch keys.
+     * Creates a list of watched configuration settings for configuration settings from Azure App Configuration. This is
+     * used for collection-based refresh monitoring as an alternative to individual watch keys.
      *
      * @param client client for connecting to App Configuration
      * @return a list of WatchedConfigurationSettings for configuration settings
@@ -312,8 +314,9 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 SettingSelector settingSelector = new SettingSelector()
                     .setKeyFilter(selectedKeys.getKeyFilter() + "*")
                     .setLabelFilter(label);
-                
-                WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector, requestContext);
+
+                WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector,
+                    requestContext);
                 watchedConfigurationSettingsList.add(watchedConfigurationSettings);
             }
         }

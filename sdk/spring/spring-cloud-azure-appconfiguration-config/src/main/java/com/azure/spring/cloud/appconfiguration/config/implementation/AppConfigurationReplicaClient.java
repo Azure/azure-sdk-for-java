@@ -151,8 +151,8 @@ class AppConfigurationReplicaClient {
     }
 
     /**
-     * Gets configuration settings using watched configuration settings. This method retrieves all settings matching
-     * the selector and captures ETags for collection-based refresh monitoring.
+     * Gets configuration settings using watched configuration settings. This method retrieves all settings matching the
+     * selector and captures ETags for collection-based refresh monitoring.
      * 
      * @param settingSelector selector criteria for configuration settings
      * @param context Azure SDK context for request correlation

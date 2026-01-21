@@ -2,22 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.time.Duration;
-import java.util.List;
-
-import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -97,10 +98,10 @@ public class AzureAppConfigDataLoaderTest {
         // Verify
         assertNotNull(result);
         assertEquals(1, result.size());
-        
+
         ArgumentCaptor<SettingSelector> selectorCaptor = ArgumentCaptor.forClass(SettingSelector.class);
         verify(clientMock, times(1)).watchedConfigurationSettings(selectorCaptor.capture(), any(Context.class));
-        
+
         SettingSelector capturedSelector = selectorCaptor.getValue();
         assertEquals(KEY_FILTER + "*", capturedSelector.getKeyFilter());
         assertEquals(LABEL_FILTER, capturedSelector.getLabelFilter());
@@ -201,7 +202,7 @@ public class AzureAppConfigDataLoaderTest {
         // Test - verify that watched configuration settings are created when refreshAll is enabled
         AzureAppConfigDataLoader loader = createLoader();
         List<WatchedConfigurationSettings> result = invokeGetWatchedConfigurationSettings(loader, clientMock);
-        
+
         // Verify watched configuration settings were created
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -213,13 +214,13 @@ public class AzureAppConfigDataLoaderTest {
         // Setup monitoring with refreshAll disabled (traditional watch keys)
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
-        
+
         // Add trigger for traditional watch key
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
         trigger.setKey("sentinel");
         trigger.setLabel("prod");
         monitoring.setTriggers(List.of(trigger));
-        
+
         configStore.setMonitoring(monitoring);
 
         // Setup selector
@@ -237,7 +238,8 @@ public class AzureAppConfigDataLoaderTest {
     // Helper methods
 
     private AzureAppConfigDataLoader createLoader() {
-        org.springframework.boot.logging.DeferredLogFactory logFactory = Mockito.mock(org.springframework.boot.logging.DeferredLogFactory.class);
+        org.springframework.boot.logging.DeferredLogFactory logFactory = Mockito
+            .mock(org.springframework.boot.logging.DeferredLogFactory.class);
         when(logFactory.getLog(any(Class.class))).thenReturn(new org.springframework.boot.logging.DeferredLog());
         return new AzureAppConfigDataLoader(logFactory);
     }

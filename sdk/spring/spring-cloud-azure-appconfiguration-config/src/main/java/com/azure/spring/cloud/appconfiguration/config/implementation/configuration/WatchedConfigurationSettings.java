@@ -13,7 +13,8 @@ public class WatchedConfigurationSettings {
 
     private List<ConfigurationSetting> configurationSettings;
 
-    public WatchedConfigurationSettings(SettingSelector settingSelector, List<ConfigurationSetting> configurationSettings) {
+    public WatchedConfigurationSettings(SettingSelector settingSelector,
+        List<ConfigurationSetting> configurationSettings) {
         this.settingSelector = settingSelector;
         this.configurationSettings = configurationSettings;
     }

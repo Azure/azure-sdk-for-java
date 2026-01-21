@@ -17,12 +17,10 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.Fea
 /**
  * Thread-safe singleton holder for managing refresh state of Azure App Configuration stores.
  * 
- * <p>Maintains state for configuration settings, feature flags, and refresh intervals across
- * multiple configuration stores. Implements exponential backoff for failed refresh attempts
- * and coordinates the timing of refresh operations.</p>
- * 
- * <p>Thread Safety: Uses ConcurrentHashMap for all state maps to ensure thread-safe access
- * in multi-threaded environments.</p>
+ * <p>
+ * Maintains state for configuration settings, feature flags, and refresh intervals across multiple configuration
+ * stores. Implements exponential backoff for failed refresh attempts and coordinates the timing of refresh operations.
+ * </p>
  */
 final class StateHolder {
 
@@ -127,8 +125,10 @@ final class StateHolder {
      * @param collectionWatchKeys list of collection monitoring configurations that can trigger a refresh event
      * @param duration refresh duration
      */
-    void setState(String originEndpoint, List<ConfigurationSetting> watchKeys, List<WatchedConfigurationSettings> collectionWatchKeys, Duration duration) {
-        state.put(originEndpoint, new State(watchKeys, collectionWatchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+    void setState(String originEndpoint, List<ConfigurationSetting> watchKeys,
+        List<WatchedConfigurationSettings> collectionWatchKeys, Duration duration) {
+        state.put(originEndpoint,
+            new State(watchKeys, collectionWatchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
@@ -164,8 +164,8 @@ final class StateHolder {
     }
 
     /**
-     * Expires the state for a configuration store by setting a new refresh time with random jitter.
-     * The jitter helps prevent thundering herd when multiple stores refresh simultaneously.
+     * Expires the state for a configuration store by setting a new refresh time with random jitter. The jitter helps
+     * prevent thundering herd when multiple stores refresh simultaneously.
      * @param originEndpoint the endpoint of the store to expire
      */
     void expireState(String originEndpoint) {
@@ -214,10 +214,9 @@ final class StateHolder {
     }
 
     /**
-     * Updates the next refresh time for all stores using exponential backoff on failures.
-     * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
-     * backoff time, the refresh interval is set to the backoff time. This prevents excessive refresh attempts
-     * during transient failures.
+     * Updates the next refresh time for all stores using exponential backoff on failures. Sets a minimum value until
+     * the next refresh. If a refresh interval has passed or is smaller than the calculated backoff time, the refresh
+     * interval is set to the backoff time. This prevents excessive refresh attempts during transient failures.
      * @param refreshInterval period between refresh checks
      * @param defaultMinBackoff minimum backoff duration between checks in seconds
      */

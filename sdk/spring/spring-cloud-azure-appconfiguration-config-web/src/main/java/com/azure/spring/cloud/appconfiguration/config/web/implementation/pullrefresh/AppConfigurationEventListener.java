@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.web.implementation.pullrefresh;
 
+import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.ACTUATOR;
+import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH;
+import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -9,9 +13,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
-import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.ACTUATOR;
-import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH;
-import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
 
 /**
  * Listens for ServletRequestHandledEvents to check if the configurations need to be updated.
