@@ -14,7 +14,6 @@ import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class Sample09_DeleteAnalyzer {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample09.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
