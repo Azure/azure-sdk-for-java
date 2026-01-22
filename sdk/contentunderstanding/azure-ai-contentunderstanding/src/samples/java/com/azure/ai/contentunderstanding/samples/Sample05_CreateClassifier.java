@@ -50,11 +50,11 @@ public class Sample05_CreateClassifier {
         }
         // END: com.azure.ai.contentunderstanding.sample05.buildClient
 
-        System.out.println("Content Understanding client initialized");
-
         // BEGIN:ContentUnderstandingCreateClassifier
         // Generate a unique classifier analyzer ID
         String analyzerId = "document_classifier_" + System.currentTimeMillis();
+
+        System.out.println("Creating classifier analyzer '" + analyzerId + "'...");
 
         // Define field schema with classification fields
         // Classifiers use the Classify method to categorize documents into predefined types
@@ -90,26 +90,20 @@ public class Sample05_CreateClassifier {
         fieldSchema.setDescription("Schema for classifying document types, industries, and urgency");
         fieldSchema.setFields(fields);
 
-        // Create analyzer configuration
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableFormula(false);
-        config.setEnableLayout(true);
-        config.setEnableOcr(true);
-        config.setEstimateFieldSourceAndConfidence(true);
-        config.setReturnDetails(false);
-
-        // Create the classifier analyzer
-        ContentAnalyzer classifierAnalyzer = new ContentAnalyzer();
-        classifierAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        classifierAnalyzer.setDescription("Document classifier for type, industry, and urgency detection");
-        classifierAnalyzer.setConfig(config);
-        classifierAnalyzer.setFieldSchema(fieldSchema);
-
-        // Add model mappings (required for custom analyzers)
+        // Create the classifier analyzer with configuration
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        classifierAnalyzer.setModels(models);
+
+        ContentAnalyzer classifierAnalyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Document classifier for type, industry, and urgency detection")
+            .setConfig(new ContentAnalyzerConfig()
+                .setEnableOcr(true)
+                .setEnableLayout(true)
+                .setEstimateFieldSourceAndConfidence(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
@@ -117,30 +111,25 @@ public class Sample05_CreateClassifier {
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Classifier analyzer '" + analyzerId + "' created successfully!");
+        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+            System.out.println("  Description: " + result.getDescription());
+        }
+
+        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
+            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
+                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
+                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+            });
+        }
         // END:ContentUnderstandingCreateClassifier
 
         createdAnalyzerId = analyzerId; // Track for cleanup
 
-        System.out.println("Create classifier operation properties verified");
-        System.out.println("Classifier analyzer '" + analyzerId + "' created successfully");
-        System.out.println("Base analyzer ID verified: " + result.getBaseAnalyzerId());
-        System.out.println("Analyzer config verified");
-        System.out.println("Field schema verified: " + result.getFieldSchema().getName());
-        System.out.println("Field schema contains " + result.getFieldSchema().getFields().size() + " fields");
-        System.out.println("  document_type field verified (String, Classify, 7 enum values)");
-        System.out.println("  industry field verified (String, Classify, 6 enum values)");
-        System.out.println("  urgency field verified (String, Classify, 3 enum values)");
-        System.out.println("Model mappings verified: " + result.getModels().size() + " model(s)");
-        System.out.println("All classifier creation properties validated successfully");
-
         // Cleanup - delete the created classifier analyzer
-        try {
-            client.deleteAnalyzer(createdAnalyzerId);
-            System.out.println("\nClassifier analyzer '" + createdAnalyzerId + "' deleted successfully.");
-        } catch (Exception e) {
-            System.out.println("⚠️ Failed to delete classifier analyzer: " + e.getMessage());
-        }
-
-        System.out.println("\nClassifier analyzer creation completed successfully");
+        System.out.println("\nCleaning up: deleting classifier analyzer '" + createdAnalyzerId + "'...");
+        client.deleteAnalyzer(createdAnalyzerId);
+        System.out.println("Classifier analyzer '" + createdAnalyzerId + "' deleted successfully.");
     }
 }

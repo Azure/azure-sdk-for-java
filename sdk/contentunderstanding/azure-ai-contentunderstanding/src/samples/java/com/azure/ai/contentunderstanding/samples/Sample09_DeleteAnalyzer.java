@@ -47,11 +47,10 @@ public class Sample09_DeleteAnalyzer {
         }
         // END: com.azure.ai.contentunderstanding.sample09.buildClient
 
-        System.out.println("Content Understanding client initialized");
-
         // BEGIN:ContentUnderstandingDeleteAnalyzer
         // First, create a temporary analyzer to delete
         String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
+        System.out.println("Creating temporary analyzer '" + analyzerId + "'...");
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
         ContentFieldDefinition titleDef = new ContentFieldDefinition();
@@ -65,20 +64,18 @@ public class Sample09_DeleteAnalyzer {
         fieldSchema.setDescription("Temporary schema for deletion demo");
         fieldSchema.setFields(fields);
 
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableOcr(true);
-        config.setEnableLayout(true);
-
-        ContentAnalyzer analyzer = new ContentAnalyzer();
-        analyzer.setBaseAnalyzerId("prebuilt-document");
-        analyzer.setDescription("Temporary analyzer for deletion demo");
-        analyzer.setConfig(config);
-        analyzer.setFieldSchema(fieldSchema);
-
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        analyzer.setModels(models);
+
+        ContentAnalyzer analyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Temporary analyzer for deletion demo")
+            .setConfig(new ContentAnalyzerConfig()
+                .setEnableOcr(true)
+                .setEnableLayout(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Temporary analyzer created: " + analyzerId);
@@ -100,28 +97,5 @@ public class Sample09_DeleteAnalyzer {
             System.out.println("Confirmed: Analyzer no longer exists");
         }
         // END:ContentUnderstandingDeleteAnalyzer
-
-        System.out.println("\nAnalyzer ID verified: " + analyzerId);
-        System.out.println("Analyzer existence verified before deletion");
-        System.out.println("Analyzer deletion verified: " + (analyzerDeleted ? "Yes" : "No"));
-        System.out.println("All analyzer deletion properties validated successfully");
-
-        // Test deleting a non-existent analyzer
-        System.out.println("\n========================================");
-        String nonExistentId = "non_existent_analyzer_" + System.currentTimeMillis();
-
-        System.out.println("\nAttempting to delete non-existent analyzer: " + nonExistentId);
-
-        // Note: The SDK allows deleting non-existent analyzers without throwing an exception
-        // This is a valid behavior (idempotent delete operation)
-        try {
-            client.deleteAnalyzer(nonExistentId);
-            System.out.println("Delete operation completed (idempotent - no error for non-existent resource)");
-        } catch (ResourceNotFoundException e) {
-            System.out.println("ResourceNotFoundException caught (alternative behavior): " + e.getMessage());
-        }
-
-        System.out.println("Non-existent analyzer deletion behavior verified (SDK allows idempotent deletes)");
-        System.out.println("\nAnalyzer deletion operations completed successfully");
     }
 }

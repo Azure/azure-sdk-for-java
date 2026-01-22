@@ -8,13 +8,11 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
@@ -50,10 +48,9 @@ public class Sample08_UpdateAnalyzer {
         }
         // END: com.azure.ai.contentunderstanding.sample08.buildClient
 
-        System.out.println("Content Understanding client initialized");
-
         // Create an analyzer for testing
         analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
+        System.out.println("Creating test analyzer '" + analyzerId + "'...");
 
         Map<String, ContentFieldDefinition> fields = new HashMap<>();
         ContentFieldDefinition titleDef = new ContentFieldDefinition();
@@ -67,20 +64,18 @@ public class Sample08_UpdateAnalyzer {
         fieldSchema.setDescription("Basic document schema");
         fieldSchema.setFields(fields);
 
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableOcr(true);
-        config.setEnableLayout(true);
-
-        ContentAnalyzer analyzer = new ContentAnalyzer();
-        analyzer.setBaseAnalyzerId("prebuilt-document");
-        analyzer.setDescription("Original analyzer for update testing");
-        analyzer.setConfig(config);
-        analyzer.setFieldSchema(fieldSchema);
-
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        analyzer.setModels(models);
+
+        ContentAnalyzer analyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Original analyzer for update testing")
+            .setConfig(new ContentAnalyzerConfig()
+                .setEnableOcr(true)
+                .setEnableLayout(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
@@ -112,21 +107,19 @@ public class Sample08_UpdateAnalyzer {
         updatedFieldSchema.setDescription("Enhanced document schema with author");
         updatedFieldSchema.setFields(updatedFields);
 
-        ContentAnalyzerConfig updatedConfig = new ContentAnalyzerConfig();
-        updatedConfig.setEnableOcr(true);
-        updatedConfig.setEnableLayout(true);
-        updatedConfig.setEnableFormula(true); // Enable formula extraction
-
-        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer();
-        updatedAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        updatedAnalyzer.setDescription("Updated analyzer with enhanced schema");
-        updatedAnalyzer.setConfig(updatedConfig);
-        updatedAnalyzer.setFieldSchema(updatedFieldSchema);
-
         Map<String, String> updatedModels = new HashMap<>();
         updatedModels.put("completion", "gpt-4.1");
         updatedModels.put("embedding", "text-embedding-3-large");
-        updatedAnalyzer.setModels(updatedModels);
+
+        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Updated analyzer with enhanced schema")
+            .setConfig(new ContentAnalyzerConfig()
+                .setEnableOcr(true)
+                .setEnableLayout(true)
+                .setEnableFormula(true)) // Enable formula extraction
+            .setFieldSchema(updatedFieldSchema)
+            .setModels(updatedModels);
 
         // Update the analyzer using the convenience method
         // This method accepts a ContentAnalyzer object directly instead of BinaryData
@@ -134,21 +127,14 @@ public class Sample08_UpdateAnalyzer {
 
         System.out.println("Analyzer updated successfully!");
         System.out.println("New description: " + result.getDescription());
+        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+            System.out.println("Field schema now has " + result.getFieldSchema().getFields().size() + " fields");
+        }
         // END:ContentUnderstandingUpdateAnalyzer
 
-        System.out.println("Analyzer description verified");
-        System.out.println("Field schema update verified: " + result.getFieldSchema().getFields().size() + " fields");
-        System.out.println("Config update verified");
-        System.out.println("All analyzer update properties validated successfully");
-
         // Cleanup
-        try {
-            client.deleteAnalyzer(analyzerId);
-            System.out.println("\nTest analyzer deleted: " + analyzerId);
-        } catch (Exception e) {
-            System.out.println("⚠️ Failed to delete test analyzer: " + e.getMessage());
-        }
-
-        System.out.println("\nAnalyzer update operation completed successfully");
+        System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
+        client.deleteAnalyzer(analyzerId);
+        System.out.println("Test analyzer deleted successfully.");
     }
 }
