@@ -529,21 +529,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
 
-        boolean isInHubRegionDiscoveryMode = false;
-
         if (request.requestContext != null) {
             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
                 = request.requestContext.getCrossRegionAvailabilityContext();
 
             if (crossRegionAvailabilityContext != null) {
                 if (crossRegionAvailabilityContext.shouldAddHubRegionProcessingOnlyHeader()) {
-                    isInHubRegionDiscoveryMode = true;
                     request.getHeaders().put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, "true");
                 }
             }
         }
 
-        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request, isInHubRegionDiscoveryMode);
+        this.regionalRoutingContext = this.globalEndpointManager.resolveServiceEndpoint(request);
 
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.regionalRoutingContext);

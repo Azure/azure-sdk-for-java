@@ -173,10 +173,6 @@ public class LocationCache {
      * @return Resolved getEndpoint
      */
     public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        return this.resolveServiceEndpoint(request, false);
-    }
-
-    public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request, boolean isInHubRegionDiscoveryMode) {
         Objects.requireNonNull(request.requestContext,
             "RxDocumentServiceRequest.requestContext is required and cannot be null.");
 
@@ -193,20 +189,10 @@ public class LocationCache {
             // first and the second writable region in DatabaseAccount (for manual failover)
             DatabaseAccountLocationsInfo currentLocationInfo =  this.locationInfo;
 
-            if (this.enableEndpointDiscovery) {
-
-                if (isInHubRegionDiscoveryMode && !currentLocationInfo.availableReadLocations.isEmpty()) {
-                    locationIndex = locationIndex % currentLocationInfo.availableReadLocations.size();
-                    String potentialHubLocation = currentLocationInfo.availableReadLocations.get(locationIndex);
-                    return currentLocationInfo.availableReadRegionalRoutingContextsByRegionName.get(potentialHubLocation);
-                } else if (!currentLocationInfo.availableWriteLocations.isEmpty()) {
-                    locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
-                    String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
-                    return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
-                }
-
-                return this.defaultRoutingContext;
-
+            if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
+                locationIndex =  Math.min(locationIndex%2, currentLocationInfo.availableWriteLocations.size()-1);
+                String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
+                return currentLocationInfo.availableWriteRegionalRoutingContextsByRegionName.get(writeLocation);
             } else {
                 return this.defaultRoutingContext;
             }

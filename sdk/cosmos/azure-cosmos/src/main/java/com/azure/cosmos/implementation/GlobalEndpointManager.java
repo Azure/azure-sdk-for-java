@@ -154,11 +154,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        return this.resolveServiceEndpoint(request, false);
-    }
-
-    public RegionalRoutingContext resolveServiceEndpoint(RxDocumentServiceRequest request, boolean isInHubRegionDiscoveryMode) {
-        RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request, isInHubRegionDiscoveryMode);
+        RegionalRoutingContext serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
             // TODO: integrate thin client into fault injection
             request.faultInjectionRequestContext.setRegionalRoutingContextToRoute(serviceEndpoints);
