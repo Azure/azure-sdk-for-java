@@ -27,12 +27,12 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosContainer container;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithContentResponseOnWriteEnabledAndDisabled")
+    @Factory(dataProvider = "emulatorClientBuildersContentResponseOnWriteEnabledAndDisabled")
     public CosmosItemContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -40,13 +40,13 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -62,7 +62,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateMinimalItemResponse(properties, itemResponse1, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -78,7 +78,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateItemResponse(properties, itemResponse1);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -96,7 +96,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -115,7 +115,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceItem_withContentResponseOnWriteDisabled() {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -137,7 +137,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateMinimalItemResponse(properties, replace, true);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception{
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -159,7 +159,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateItemResponse(properties, replace);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
@@ -172,7 +172,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         validateMinimalItemResponse(properties, deleteResponse, false);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);

@@ -36,7 +36,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirectTcp")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public FullFidelityChangeFeedTest(CosmosClientBuilder cosmosClientBuilder) {
         super(cosmosClientBuilder);
     }

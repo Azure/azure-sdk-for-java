@@ -96,6 +96,11 @@ public final class TestConfigurations {
                                        System.getenv().get("PROTOCOLS")),
                                                          null));
 
+    public final static String CONNECTION_MODES =
+        properties.getProperty("CONNECTION_MODES",
+            StringUtils.defaultString(Strings.emptyToNull(
+                System.getenv().get("CONNECTION_MODES")), null));
+
     /**
      * If ${ProjectPath}/cosmos-v4.properties is present, it will be used
      * otherwise, if ~/cosmos-v4.props is present, it will be used

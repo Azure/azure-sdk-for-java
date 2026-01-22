@@ -43,7 +43,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     private CosmosAsyncContainer container;
     private CosmosAsyncDatabase database;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public DocumentCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

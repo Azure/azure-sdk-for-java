@@ -37,7 +37,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "emulatorClientBuilders")
     public ChangeFeedContinuationTokenUtilsTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
