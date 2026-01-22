@@ -14,7 +14,7 @@ import java.util.UUID
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
+abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -25,11 +25,15 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    spark = SparkSession.builder()
+    var sparkBuilder = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
-      .enableHiveSupport()
-      .getOrCreate()
+
+    if (!skipHive) {
+      sparkBuilder = sparkBuilder.enableHiveSupport()
+    }
+
+    spark = sparkBuilder.getOrCreate()
 
     LocalJavaFileSystem.applyToSparkSession(spark)
 
