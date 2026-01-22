@@ -70,34 +70,78 @@ For more information on deploying models, see [Create model deployments in Micro
 
 > **IMPORTANT:** This is a **one-time setup per Microsoft Foundry resource** that maps your deployed models to those required by the prebuilt analyzers and custom models. If you have multiple Microsoft Foundry resources, you need to configure each one separately.
 
-You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK.
+You need to configure the default model mappings in your Microsoft Foundry resource. This can be done programmatically using the SDK. The configuration maps your deployed models (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) to the large language models required by prebuilt analyzers.
 
-**Environment Setup:**
+To configure model deployments using code, see [Sample00_UpdateDefaults][sample00_update_defaults] for a complete example. The sample shows how to:
+- Map your deployed models to the models required by prebuilt analyzers
+- Retrieve the current default model deployment configuration
+- Update the configuration with your model deployment mappings
+- Verify the updated configuration
 
-Before running the configuration, set the following environment variables:
+The following shows how to set up the environment to run this sample successfully:
 
+**3-1. Set environment variables**
+
+The environment variables define your Microsoft Foundry resource endpoint and the deployment names for the models you deployed in Step 2. **Important:** The deployment name values (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) must exactly match the deployment names you chose when deploying models in Step 2.
+
+**On Linux/macOS (bash):**
 ```bash
-# Required: Your Microsoft Foundry resource endpoint
 export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
-
-# Optional: API key (if not using DefaultAzureCredential)
-export CONTENTUNDERSTANDING_KEY="<your-api-key>"
-
-# Required: Your model deployment names
-# Use the deployment names you created in Step 2
-export GPT_4_1_DEPLOYMENT="gpt-4.1"                           # or your custom deployment name
-export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"                 # or your custom deployment name
-export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"  # or your custom deployment name
+export CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
+export GPT_4_1_DEPLOYMENT="gpt-4.1"
+export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
+export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
 ```
 
-**Run the Configuration Sample:**
+**On Windows (PowerShell):**
+```powershell
+$env:CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+$env:CONTENTUNDERSTANDING_KEY="<your-api-key>"  # Optional if using DefaultAzureCredential
+$env:GPT_4_1_DEPLOYMENT="gpt-4.1"
+$env:GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
+$env:TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+```
 
-Run [Sample00_UpdateDefaults][sample00_update_defaults] to configure your model deployments. This sample demonstrates how to:
-1. Get the current default configuration
-2. Update the configuration with your model deployment mappings
-3. Verify the updated configuration
+**On Windows (Command Prompt):**
+```bat
+set CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource-name>.services.ai.azure.com/
+set CONTENTUNDERSTANDING_KEY=<your-api-key>  # Optional if using DefaultAzureCredential
+set GPT_4_1_DEPLOYMENT=gpt-4.1
+set GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
+set TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+```
 
-The configuration maps your deployed models (e.g., `gpt-4.1`, `gpt-4.1-mini`, `text-embedding-3-large`) to the large language models required by prebuilt analyzers.
+**Notes:**
+- If `CONTENTUNDERSTANDING_KEY` is not set, the SDK will fall back to `DefaultAzureCredential`. Ensure you have authenticated (e.g., `az login`).
+- The deployment names must exactly match what you created in Microsoft Foundry in Step 2.
+
+**3-2. Compile and run the configuration sample**
+
+Navigate to the package directory, compile the sample, and run it to update the model deployment defaults:
+
+```bash
+# Navigate to package directory
+cd sdk/contentunderstanding/azure-ai-contentunderstanding
+
+# Compile the sample (samples are not compiled by default)
+mvn compile -DskipTests
+
+# Run the configuration sample
+# Note: -Dexec.classpathScope=test is required to include azure-identity dependency
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults" \
+  -Dexec.classpathScope=test
+```
+
+**Note:** The `mvn compile` step is required because sample files in `src/samples/java` are not compiled by default. You only need to run `mvn compile` once, or whenever you modify sample files.
+
+**Verification**
+
+After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](#examples) section.
+
+If you encounter errors:
+- **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
+- **Access Denied**: Ensure you have the **Cognitive Services User** role assignment.
 
 ### Adding the package to your product
 
@@ -151,6 +195,8 @@ To get your API key:
 4. Copy one of the **Keys** (Key1 or Key2)
 
 For more information on authentication, see [Azure Identity client library for Java][azure_identity].
+
+
 
 ## Key concepts
 
@@ -226,6 +272,77 @@ The samples demonstrate:
 * **Result Management** - Retrieve result files from video analysis and delete analysis results
 
 See the [samples directory][samples_directory] for complete examples.
+
+### Running samples
+
+All samples can be run using Maven's `exec:java` plugin. Before running samples, ensure you have set the required environment variables (see [Step 3: Configure model deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers)).
+
+**Important:** Sample files in `src/samples/java` are not compiled by default. You must compile them first using `mvn compile -DskipTests` before running samples.
+
+**Important:** The samples support both API key and `DefaultAzureCredential` authentication. If you set `CONTENTUNDERSTANDING_KEY`, the sample will use API key authentication. If `CONTENTUNDERSTANDING_KEY` is not set, the sample will fall back to `DefaultAzureCredential` (which requires `azure-identity` dependency).
+
+**Step 1: Compile the samples**
+
+```bash
+cd sdk/contentunderstanding/azure-ai-contentunderstanding
+
+# Compile samples (only needed once, or when you modify sample files)
+mvn compile -DskipTests
+```
+
+**Step 2: Run samples**
+
+Choose one of the following authentication methods:
+
+**Option A: API key authentication**
+
+If you have set `CONTENTUNDERSTANDING_KEY`, you can run samples without the test classpath scope:
+
+```bash
+# Set environment variables
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+export CONTENTUNDERSTANDING_KEY="<your-api-key>"
+
+# Run a sample (API key authentication - no test scope needed)
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl"
+```
+
+**Option B: DefaultAzureCredential authentication**
+
+If you don't set `CONTENTUNDERSTANDING_KEY`, the sample will use `DefaultAzureCredential`. In this case, you need to include the test classpath scope to access the `azure-identity` dependency:
+
+```bash
+# Set environment variables (no CONTENTUNDERSTANDING_KEY set)
+export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
+# Ensure you're authenticated (e.g., az login)
+
+# Run a sample (DefaultAzureCredential - test scope required)
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test
+```
+
+**Common sample commands:**
+
+```bash
+# Analyze document from URL
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test
+
+# Analyze document from binary file
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
+  -Dexec.classpathScope=test
+
+# Analyze invoice
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
+  -Dexec.classpathScope=test
+
+# Create a custom analyzer
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
+  -Dexec.classpathScope=test
+```
+
+**Note:** If you always use API key authentication (always set `CONTENTUNDERSTANDING_KEY`), you can omit `-Dexec.classpathScope=test` from the commands above. However, including it doesn't hurt and ensures samples work regardless of which authentication method is used.
 
 ## Troubleshooting
 
