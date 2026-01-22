@@ -149,8 +149,6 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.1.0</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
-              <config>stdOut=true,verbose=true,stdErr=true</config>
-              <noScalaTestIgnore>true</noScalaTestIgnore>
               <stdout>FDEF</stdout>
               <stderr>FDEF</stderr>
               <config>stdOut=true,verbose=true,stdErr=true</config>
