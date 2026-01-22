@@ -14,6 +14,7 @@ import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.ContainerLogKind;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PageOrder;
@@ -1323,5 +1324,148 @@ public final class AgentsClient {
         }
         return serviceClient.listAgentVersions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Container log entry streamed from the container as text chunks.
+     * Each chunk is a UTF-8 string that may be either a plain text log line
+     * or a JSON-formatted log entry, depending on the type of container log being streamed.
+     * Clients should treat each chunk as opaque text and, if needed, attempt
+     * to parse it as JSON based on their logging requirements.
+     *
+     * For system logs, the format is JSON with the following structure:
+     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
+     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
+     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
+     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
+     *
+     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
+     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
+     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
+     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>console returns container stdout/stderr, system returns container
+     * app event stream. defaults to console. Allowed values: "console", "system".</td></tr>
+     * <tr><td>replica_name</td><td>String</td><td>No</td><td>When omitted, the server chooses the first replica for
+     * console logs. Required to target a specific replica.</td></tr>
+     * <tr><td>tail</td><td>Integer</td><td>No</td><td>Number of trailing lines returned. Enforced to 1-300. Defaults to
+     * 20</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> streamAgentContainerLogsWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions);
+    }
+
+    /**
+     * Container log entry streamed from the container as text chunks.
+     * Each chunk is a UTF-8 string that may be either a plain text log line
+     * or a JSON-formatted log entry, depending on the type of container log being streamed.
+     * Clients should treat each chunk as opaque text and, if needed, attempt
+     * to parse it as JSON based on their logging requirements.
+     *
+     * For system logs, the format is JSON with the following structure:
+     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
+     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
+     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
+     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
+     *
+     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
+     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
+     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
+     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent.
+     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
+     * console.
+     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
+     * specific replica.
+     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void streamAgentContainerLogs(String agentName, String agentVersion, ContainerLogKind kind,
+        String replicaName, Integer tail) {
+        // Generated convenience method for streamAgentContainerLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (kind != null) {
+            requestOptions.addQueryParam("kind", kind.toString(), false);
+        }
+        if (replicaName != null) {
+            requestOptions.addQueryParam("replica_name", replicaName, false);
+        }
+        if (tail != null) {
+            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
+        }
+        streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
+    }
+
+    /**
+     * Container log entry streamed from the container as text chunks.
+     * Each chunk is a UTF-8 string that may be either a plain text log line
+     * or a JSON-formatted log entry, depending on the type of container log being streamed.
+     * Clients should treat each chunk as opaque text and, if needed, attempt
+     * to parse it as JSON based on their logging requirements.
+     *
+     * For system logs, the format is JSON with the following structure:
+     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
+     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
+     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
+     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
+     *
+     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
+     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
+     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
+     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void streamAgentContainerLogs(String agentName, String agentVersion) {
+        // Generated convenience method for streamAgentContainerLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
     }
 }
