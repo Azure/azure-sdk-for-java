@@ -128,9 +128,11 @@ mvn compile -DskipTests
 
 # Run the configuration sample
 # Note: -Dexec.classpathScope=test is required to include azure-identity dependency
+# Note: -Dexec.cleanupDaemonThreads=false suppresses harmless Maven exec:java thread warnings
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults" \
-  -Dexec.classpathScope=test
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 ```
 
 **Note:** The `mvn compile` step is required because sample files in `src/samples/java` are not compiled by default. You only need to run `mvn compile` once, or whenever you modify sample files.
@@ -304,7 +306,9 @@ export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.a
 export CONTENTUNDERSTANDING_KEY="<your-api-key>"
 
 # Run a sample (API key authentication - no test scope needed)
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl"
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.cleanupDaemonThreads=false
 ```
 
 **Option B: DefaultAzureCredential authentication**
@@ -319,27 +323,36 @@ export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.a
 # Run a sample (DefaultAzureCredential - test scope required)
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
-  -Dexec.classpathScope=test
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 ```
 
 **Common sample commands:**
 
 ```bash
 # Analyze document from URL
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
-  -Dexec.classpathScope=test
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 
 # Analyze document from binary file
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
-  -Dexec.classpathScope=test
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 
 # Analyze invoice
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
-  -Dexec.classpathScope=test
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 
 # Create a custom analyzer
-mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
-  -Dexec.classpathScope=test
+mvn exec:java \
+  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
+  -Dexec.classpathScope=test \
+  -Dexec.cleanupDaemonThreads=false
 ```
 
 **Note:** If you always use API key authentication (always set `CONTENTUNDERSTANDING_KEY`), you can omit `-Dexec.classpathScope=test` from the commands above. However, including it doesn't hurt and ensures samples work regardless of which authentication method is used.
