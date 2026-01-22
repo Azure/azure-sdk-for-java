@@ -66,7 +66,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile long approximateBloomFilterInsertionCount;
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
-    private volatile Boolean nRegionSynchronousCommitEnabled;
+    private volatile boolean nRegionSynchronousCommitEnabled;
     private volatile BarrierType barrierType = BarrierType.NONE;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
@@ -270,7 +270,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         }
     }
 
-    public Boolean getNRegionSynchronousCommitEnabled() {
+    public boolean getNRegionSynchronousCommitEnabled() {
         return nRegionSynchronousCommitEnabled;
     }
 
