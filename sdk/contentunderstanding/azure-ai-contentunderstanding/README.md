@@ -115,27 +115,36 @@ set TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
 - If `CONTENTUNDERSTANDING_KEY` is not set, the SDK will fall back to `DefaultAzureCredential`. Ensure you have authenticated (e.g., `az login`).
 - The deployment names must exactly match what you created in Microsoft Foundry in Step 2.
 
-**3-2. Compile and run the configuration sample**
+**3-2. Run the configuration sample**
 
-Navigate to the package directory, compile the sample, and run it to update the model deployment defaults:
+To run the configuration sample, you'll need to add the SDK to your project and copy the sample code:
 
-```bash
-# Navigate to package directory
-cd sdk/contentunderstanding/azure-ai-contentunderstanding
+**Step 1:** Add the SDK dependency to your project's `pom.xml`:
 
-# Compile the sample (samples are not compiled by default)
-mvn compile -DskipTests
-
-# Run the configuration sample
-# Note: -Dexec.classpathScope=test is required to include azure-identity dependency
-# Note: -Dexec.cleanupDaemonThreads=false suppresses harmless Maven exec:java thread warnings
-mvn exec:java \
-  -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults" \
-  -Dexec.classpathScope=test \
-  -Dexec.cleanupDaemonThreads=false
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-contentunderstanding</artifactId>
+    <version>1.0.0-beta.1</version>
+</dependency>
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.18.2</version>
+</dependency>
 ```
 
-**Note:** The `mvn compile` step is required because sample files in `src/samples/java` are not compiled by default. You only need to run `mvn compile` once, or whenever you modify sample files.
+**Step 2:** Download or copy [Sample00_UpdateDefaults.java][sample00_update_defaults] to your project.
+
+**Step 3:** Run the sample:
+
+```bash
+# Compile and run (from your project directory)
+mvn compile
+mvn exec:java -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample00_UpdateDefaults"
+```
+
+Or run it directly from your IDE by executing the `main` method in `Sample00_UpdateDefaults.java`.
 
 **Verification**
 
@@ -279,17 +288,41 @@ See the [samples directory][samples_directory] for complete examples.
 
 All samples can be run using Maven's `exec:java` plugin. Before running samples, ensure you have set the required environment variables (see [Step 3: Configure model deployments](#step-3-configure-model-deployments-required-for-prebuilt-analyzers)).
 
-**Important:** Sample files in `src/samples/java` are not compiled by default. You must compile them first using `mvn compile -DskipTests` before running samples.
-
 **Important:** The samples support both API key and `DefaultAzureCredential` authentication. If you set `CONTENTUNDERSTANDING_KEY`, the sample will use API key authentication. If `CONTENTUNDERSTANDING_KEY` is not set, the sample will fall back to `DefaultAzureCredential` (which requires `azure-identity` dependency).
 
-**Step 1: Compile the samples**
+### Option 1: Run samples in your own project (Recommended)
+
+The simplest way to run samples is to copy them into your own Maven project:
+
+1. Add the SDK dependency to your `pom.xml` (see [Adding the package to your product](#adding-the-package-to-your-product))
+2. Add `azure-identity` if using `DefaultAzureCredential`:
+   ```xml
+   <dependency>
+       <groupId>com.azure</groupId>
+       <artifactId>azure-identity</artifactId>
+       <version>1.18.2</version>
+   </dependency>
+   ```
+3. Copy any sample file from the [samples directory][samples_directory] to your project
+4. Run it like any other Java class (e.g., `mvn compile exec:java -Dexec.mainClass="YourSampleClass"` or run from your IDE)
+
+### Option 2: Run samples from the SDK source repository
+
+If you want to run samples directly from the SDK source code:
+
+**Step 1: Clone and compile**
 
 ```bash
-cd sdk/contentunderstanding/azure-ai-contentunderstanding
+# Clone the repository
+git clone https://github.com/Azure/azure-sdk-for-java.git
+cd azure-sdk-for-java/sdk/contentunderstanding/azure-ai-contentunderstanding
 
-# Compile samples (only needed once, or when you modify sample files)
+# Compile the library
 mvn compile -DskipTests
+
+# Compile sample files (samples in src/samples/java are not compiled by default)
+mvn dependency:build-classpath -Dmdep.outputFile=target/classpath.txt -q
+javac -cp "$(cat target/classpath.txt):target/classes" --release 8 -d target/classes src/samples/java/com/azure/ai/contentunderstanding/samples/*.java
 ```
 
 **Step 2: Run samples**
