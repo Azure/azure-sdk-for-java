@@ -140,7 +140,7 @@ public class Sample03_AnalyzeInvoice {
                 Double amount = amountField != null ? (Double) amountField.getValue() : null;
                 String currency = currencyField != null ? (String) currencyField.getValue() : null;
 
-                System.out.println("Total: " + (currency != null ? currency : "$")
+                System.out.println("Total: " + (currency != null ? currency : "")
                     + (amount != null ? String.format("%.2f", amount) : "(None)"));
                 if (totalAmountObj.getConfidence() != null) {
                     System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
@@ -173,10 +173,12 @@ public class Sample03_AnalyzeInvoice {
                         String description = descField != null ? (String) descField.getValue() : null;
                         Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
 
-                        System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A")
-                            + " (Qty: " + (quantity != null ? quantity : "N/A") + ")");
-                        if (item.getConfidence() != null) {
-                            System.out.println("    Confidence: " + String.format("%.2f", item.getConfidence()));
+                        System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
+                        System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
+                        if (qtyField != null && qtyField.getConfidence() != null) {
+                            System.out.println("    Quantity Confidence: " + String.format("%.2f", qtyField.getConfidence()));
+                        } else {
+                            System.out.println("    Quantity Confidence: N/A");
                         }
                     }
                 }
