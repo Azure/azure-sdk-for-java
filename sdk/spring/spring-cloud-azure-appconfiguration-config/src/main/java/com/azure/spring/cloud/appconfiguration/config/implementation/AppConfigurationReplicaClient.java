@@ -21,7 +21,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -151,14 +151,46 @@ class AppConfigurationReplicaClient {
     }
 
     /**
+     * Gets configuration settings using watched configuration settings. This method retrieves all settings matching the
+     * selector and captures ETags for collection-based refresh monitoring.
+     * 
+     * @param settingSelector selector criteria for configuration settings
+     * @param context Azure SDK context for request correlation
+     * @return WatchedConfigurationSettings containing the retrieved configuration settings and match conditions
+     * @throws HttpResponseException if the request fails
+     */
+    WatchedConfigurationSettings loadWatchedSettings(SettingSelector settingSelector, Context context) {
+        List<ConfigurationSetting> configurationSettings = new ArrayList<>();
+        List<MatchConditions> checks = new ArrayList<>();
+        try {
+            client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
+                checks.add(
+                    new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
+                for (ConfigurationSetting setting : pagedResponse.getValue()) {
+                    configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
+                }
+            });
+
+            // Needs to happen after or we don't know if the request succeeded or failed.
+            this.failedAttempts = 0;
+            settingSelector.setMatchConditions(checks);
+            return new WatchedConfigurationSettings(settingSelector, configurationSettings);
+        } catch (HttpResponseException e) {
+            throw handleHttpResponseException(e);
+        } catch (UncheckedIOException e) {
+            throw new AppConfigurationStatusException(e.getMessage(), null, null);
+        }
+    }
+
+    /**
      * Lists feature flags from the Azure App Configuration store.
      * 
      * @param settingSelector selector criteria for feature flags
      * @param context Azure SDK context for request correlation
-     * @return FeatureFlags containing the retrieved feature flags and match conditions
+     * @return WatchedConfigurationSettings containing the retrieved feature flags and match conditions
      * @throws HttpResponseException if the request fails
      */
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Context context)
+    WatchedConfigurationSettings listFeatureFlags(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
@@ -175,7 +207,7 @@ class AppConfigurationReplicaClient {
             // Needs to happen after or we don't know if the request succeeded or failed.
             this.failedAttempts = 0;
             settingSelector.setMatchConditions(checks);
-            return new FeatureFlags(settingSelector, configurationSettings);
+            return new WatchedConfigurationSettings(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
             throw handleHttpResponseException(e);
         } catch (UncheckedIOException e) {
