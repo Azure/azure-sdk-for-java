@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Sample demonstrating how to create a custom analyzer with field schema.
@@ -61,11 +60,11 @@ public class Sample04_CreateAnalyzer {
         }
         // END: com.azure.ai.contentunderstanding.sample04.buildClient
 
-        System.out.println("Content Understanding client initialized");
-
         // BEGIN:ContentUnderstandingCreateAnalyzer
         // Generate a unique analyzer ID
         String analyzerId = "my_custom_analyzer_" + System.currentTimeMillis();
+
+        System.out.println("Creating custom analyzer '" + analyzerId + "'...");
 
         // Define field schema with custom fields
         // This example demonstrates three extraction methods:
@@ -131,32 +130,24 @@ public class Sample04_CreateAnalyzer {
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
+        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+            System.out.println("  Description: " + result.getDescription());
+        }
+
+        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
+            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
+                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
+                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+            });
+        }
         // END:ContentUnderstandingCreateAnalyzer
 
         createdAnalyzerId = analyzerId; // Track for later use
 
-        System.out.println("Create analyzer operation properties verified");
-        System.out.println("Analyzer '" + analyzerId + "' created successfully");
-        System.out.println("Base analyzer ID verified: " + result.getBaseAnalyzerId());
-        System.out.println("Analyzer config verified");
-        System.out.println("Field schema verified: " + result.getFieldSchema().getName());
-        System.out.println("Field schema contains " + result.getFieldSchema().getFields().size() + " fields");
-        System.out.println("  company_name field verified (String, Extract)");
-        System.out.println("  total_amount field verified (Number, Extract)");
-        System.out.println("  document_summary field verified (String, Generate)");
-        System.out.println("  document_type field verified (String, Classify, 5 enum values)");
-        System.out.println("Model mappings verified: " + result.getModels().size() + " model(s)");
-
-        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
-            System.out.println("Analyzer description: " + result.getDescription());
-        }
-
-        System.out.println("All analyzer creation properties validated successfully");
-
         // Now use the custom analyzer to analyze a document
-        System.out.println("\n========================================");
-        System.out.println("Using the custom analyzer to analyze a document");
-        System.out.println("========================================\n");
+        System.out.println("\nUsing the custom analyzer to analyze a document...");
 
         // BEGIN:ContentUnderstandingUseCustomAnalyzer
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
@@ -256,55 +247,9 @@ public class Sample04_CreateAnalyzer {
         }
         // END:ContentUnderstandingUseCustomAnalyzer
 
-        System.out.println("\nAnalyze operation properties verified");
-        System.out.println("Analysis result contains " + analyzeResult.getContents().size() + " content(s)");
-        System.out.println("Document content has custom fields");
-
-        DocumentContent documentContent = analyzeResult.getContents().get(0) instanceof DocumentContent
-            ? (DocumentContent) analyzeResult.getContents().get(0)
-            : null;
-
-        ContentField companyNameFieldAssert
-            = documentContent != null && documentContent.getFields() != null
-                ? documentContent.getFields().get("company_name")
-                : null;
-        if (companyNameFieldAssert != null) {
-            System.out.println("company_name field found");
-
-            if (companyNameFieldAssert instanceof StringField) {
-                StringField cnf = (StringField) companyNameFieldAssert;
-                if (cnf.getValueString() != null && !cnf.getValueString().trim().isEmpty()) {
-                    System.out.println("  Value: " + cnf.getValueString());
-                }
-            }
-
-            if (companyNameFieldAssert.getConfidence() != null) {
-                System.out.println("  Confidence: " + String.format("%.2f", companyNameFieldAssert.getConfidence()));
-            }
-
-            if (companyNameFieldAssert.getSource() != null
-                && !companyNameFieldAssert.getSource().trim().isEmpty()) {
-                System.out.println("  Source: " + companyNameFieldAssert.getSource());
-            }
-
-            List<ContentSpan> spans = companyNameFieldAssert.getSpans();
-            if (spans != null && !spans.isEmpty()) {
-                System.out.println("  Spans: " + spans.size() + " span(s)");
-            }
-        } else {
-            System.out.println("⚠️ company_name field not found");
-        }
-
-        System.out.println("\nAll custom analyzer usage properties validated successfully");
-
         // Cleanup - delete the created analyzer
-        try {
-            client.deleteAnalyzer(createdAnalyzerId);
-            System.out.println("\nAnalyzer '" + createdAnalyzerId + "' deleted successfully.");
-        } catch (Exception e) {
-            System.out.println("⚠️ Failed to delete analyzer: " + e.getMessage());
-        }
-
-        System.out.println("\nCustom analyzer creation and usage completed successfully");
+        System.out.println("\nCleaning up: deleting analyzer '" + createdAnalyzerId + "'...");
+        client.deleteAnalyzer(createdAnalyzerId);
+        System.out.println("Analyzer '" + createdAnalyzerId + "' deleted successfully.");
     }
 }
