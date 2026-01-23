@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class EventInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventInfoInner model = BinaryData.fromString("{\"id\":\"osjswsr\"}").toObject(EventInfoInner.class);
-        Assertions.assertEquals("osjswsr", model.id());
+        EventInfoInner model = BinaryData.fromString("{\"id\":\"expbtg\"}").toObject(EventInfoInner.class);
+        Assertions.assertEquals("expbtg", model.id());
     }
 }

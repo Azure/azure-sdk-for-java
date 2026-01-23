@@ -12,16 +12,16 @@ public final class TargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Target model = BinaryData.fromString(
-            "{\"mediaType\":\"tlmngu\",\"size\":8390359388948965260,\"digest\":\"ldsyuuximerqfob\",\"length\":8923665884777818679,\"repository\":\"bykutw\",\"url\":\"hpagm\",\"tag\":\"skdsnfdsdoakg\",\"name\":\"lmkk\",\"version\":\"vdlhewpusdsttwv\"}")
+            "{\"mediaType\":\"gdknnqv\",\"size\":8546326573006782142,\"digest\":\"n\",\"length\":5006272159891019182,\"repository\":\"sgsahmkycgr\",\"url\":\"wjue\",\"tag\":\"eburu\",\"name\":\"movsmzlxwabmqoe\",\"version\":\"ifrvtpu\"}")
             .toObject(Target.class);
-        Assertions.assertEquals("tlmngu", model.mediaType());
-        Assertions.assertEquals(8390359388948965260L, model.size());
-        Assertions.assertEquals("ldsyuuximerqfob", model.digest());
-        Assertions.assertEquals(8923665884777818679L, model.length());
-        Assertions.assertEquals("bykutw", model.repository());
-        Assertions.assertEquals("hpagm", model.url());
-        Assertions.assertEquals("skdsnfdsdoakg", model.tag());
-        Assertions.assertEquals("lmkk", model.name());
-        Assertions.assertEquals("vdlhewpusdsttwv", model.version());
+        Assertions.assertEquals("gdknnqv", model.mediaType());
+        Assertions.assertEquals(8546326573006782142L, model.size());
+        Assertions.assertEquals("n", model.digest());
+        Assertions.assertEquals(5006272159891019182L, model.length());
+        Assertions.assertEquals("sgsahmkycgr", model.repository());
+        Assertions.assertEquals("wjue", model.url());
+        Assertions.assertEquals("eburu", model.tag());
+        Assertions.assertEquals("movsmzlxwabmqoe", model.name());
+        Assertions.assertEquals("ifrvtpu", model.version());
     }
 }

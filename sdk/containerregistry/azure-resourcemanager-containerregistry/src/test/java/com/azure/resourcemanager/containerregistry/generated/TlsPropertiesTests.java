@@ -12,7 +12,7 @@ public final class TlsPropertiesTests {
     public void testDeserialize() throws Exception {
         TlsProperties model = BinaryData
             .fromString(
-                "{\"status\":\"Enabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"gnxytxhpzxbz\"}}")
+                "{\"status\":\"Disabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"bnuqqkpik\"}}")
             .toObject(TlsProperties.class);
     }
 }

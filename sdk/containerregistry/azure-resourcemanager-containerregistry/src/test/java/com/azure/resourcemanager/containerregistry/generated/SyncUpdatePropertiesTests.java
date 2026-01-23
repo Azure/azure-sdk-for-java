@@ -14,21 +14,21 @@ public final class SyncUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         SyncUpdateProperties model = BinaryData
             .fromString(
-                "{\"schedule\":\"svlxotogtwrup\",\"syncWindow\":\"PT119H24M20S\",\"messageTtl\":\"PT72H58M15S\"}")
+                "{\"schedule\":\"nyyazttbtwwrqpue\",\"syncWindow\":\"PT37H56M6S\",\"messageTtl\":\"PT69H52M39S\"}")
             .toObject(SyncUpdateProperties.class);
-        Assertions.assertEquals("svlxotogtwrup", model.schedule());
-        Assertions.assertEquals(Duration.parse("PT119H24M20S"), model.syncWindow());
-        Assertions.assertEquals(Duration.parse("PT72H58M15S"), model.messageTtl());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.schedule());
+        Assertions.assertEquals(Duration.parse("PT37H56M6S"), model.syncWindow());
+        Assertions.assertEquals(Duration.parse("PT69H52M39S"), model.messageTtl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SyncUpdateProperties model = new SyncUpdateProperties().withSchedule("svlxotogtwrup")
-            .withSyncWindow(Duration.parse("PT119H24M20S"))
-            .withMessageTtl(Duration.parse("PT72H58M15S"));
+        SyncUpdateProperties model = new SyncUpdateProperties().withSchedule("nyyazttbtwwrqpue")
+            .withSyncWindow(Duration.parse("PT37H56M6S"))
+            .withMessageTtl(Duration.parse("PT69H52M39S"));
         model = BinaryData.fromObject(model).toObject(SyncUpdateProperties.class);
-        Assertions.assertEquals("svlxotogtwrup", model.schedule());
-        Assertions.assertEquals(Duration.parse("PT119H24M20S"), model.syncWindow());
-        Assertions.assertEquals(Duration.parse("PT72H58M15S"), model.messageTtl());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.schedule());
+        Assertions.assertEquals(Duration.parse("PT37H56M6S"), model.syncWindow());
+        Assertions.assertEquals(Duration.parse("PT69H52M39S"), model.messageTtl());
     }
 }

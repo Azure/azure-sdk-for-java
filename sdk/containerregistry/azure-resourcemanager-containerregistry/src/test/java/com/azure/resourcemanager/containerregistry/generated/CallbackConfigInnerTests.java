@@ -12,9 +12,9 @@ public final class CallbackConfigInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CallbackConfigInner model = BinaryData.fromString(
-            "{\"serviceUri\":\"wem\",\"customHeaders\":{\"sfgytguslfead\":\"ncsdtclusiyp\",\"isxgfp\":\"ygqukyhejh\",\"vk\":\"lolp\"}}")
+            "{\"serviceUri\":\"znkbykutwpfhpagm\",\"customHeaders\":{\"kkze\":\"kdsnfdsdoakgtdl\",\"sdsttwvog\":\"dlhewp\",\"akufgmjz\":\"bbejdcngqqm\",\"grtwae\":\"wr\"}}")
             .toObject(CallbackConfigInner.class);
-        Assertions.assertEquals("wem", model.serviceUri());
-        Assertions.assertEquals("ncsdtclusiyp", model.customHeaders().get("sfgytguslfead"));
+        Assertions.assertEquals("znkbykutwpfhpagm", model.serviceUri());
+        Assertions.assertEquals("kdsnfdsdoakgtdl", model.customHeaders().get("kkze"));
     }
 }

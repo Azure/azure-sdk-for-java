@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GarbageCollectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GarbageCollectionProperties model = BinaryData.fromString("{\"enabled\":true,\"schedule\":\"kfssxqukkf\"}")
+        GarbageCollectionProperties model = BinaryData.fromString("{\"enabled\":false,\"schedule\":\"azzmhjrunmpxt\"}")
             .toObject(GarbageCollectionProperties.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("kfssxqukkf", model.schedule());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("azzmhjrunmpxt", model.schedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GarbageCollectionProperties model
-            = new GarbageCollectionProperties().withEnabled(true).withSchedule("kfssxqukkf");
+            = new GarbageCollectionProperties().withEnabled(false).withSchedule("azzmhjrunmpxt");
         model = BinaryData.fromObject(model).toObject(GarbageCollectionProperties.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("kfssxqukkf", model.schedule());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("azzmhjrunmpxt", model.schedule());
     }
 }

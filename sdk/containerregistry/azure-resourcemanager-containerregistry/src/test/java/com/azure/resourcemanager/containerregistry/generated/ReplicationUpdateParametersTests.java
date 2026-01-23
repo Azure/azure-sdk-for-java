@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationUpdateParameters model
-            = BinaryData.fromString("{\"tags\":{\"zbtd\":\"l\"},\"properties\":{\"regionEndpointEnabled\":false}}")
-                .toObject(ReplicationUpdateParameters.class);
-        Assertions.assertEquals("l", model.tags().get("zbtd"));
+        ReplicationUpdateParameters model = BinaryData
+            .fromString("{\"tags\":{\"pz\":\"ytlmoyrxvwfud\"},\"properties\":{\"regionEndpointEnabled\":false}}")
+            .toObject(ReplicationUpdateParameters.class);
+        Assertions.assertEquals("ytlmoyrxvwfud", model.tags().get("pz"));
         Assertions.assertFalse(model.regionEndpointEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationUpdateParameters model
-            = new ReplicationUpdateParameters().withTags(mapOf("zbtd", "l")).withRegionEndpointEnabled(false);
+            = new ReplicationUpdateParameters().withTags(mapOf("pz", "ytlmoyrxvwfud")).withRegionEndpointEnabled(false);
         model = BinaryData.fromObject(model).toObject(ReplicationUpdateParameters.class);
-        Assertions.assertEquals("l", model.tags().get("zbtd"));
+        Assertions.assertEquals("ytlmoyrxvwfud", model.tags().get("pz"));
         Assertions.assertFalse(model.regionEndpointEnabled());
     }
 

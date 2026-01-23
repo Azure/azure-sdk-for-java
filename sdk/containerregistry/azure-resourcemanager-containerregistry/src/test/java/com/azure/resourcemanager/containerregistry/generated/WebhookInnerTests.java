@@ -17,30 +17,28 @@ public final class WebhookInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookInner model = BinaryData.fromString(
-            "{\"properties\":{\"status\":\"disabled\",\"scope\":\"fznudaodvxzb\",\"actions\":[\"chart_push\",\"delete\",\"chart_push\",\"push\"],\"provisioningState\":\"Canceled\"},\"location\":\"dbh\",\"tags\":{\"evfiwjmygt\":\"rzdzucerscdnt\",\"pyqs\":\"sslswtmweriof\",\"vwiwubmwmbesld\":\"mwabnetshhszhedp\",\"wtppjflcxogaoko\":\"k\"},\"id\":\"z\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"}")
+            "{\"properties\":{\"status\":\"enabled\",\"scope\":\"lmpewwwfbkr\",\"actions\":[\"push\"],\"provisioningState\":\"Deleting\"},\"location\":\"hqjohxcrsbfova\",\"tags\":{\"bcgjbirxbp\":\"uvwbhsqfs\"},\"id\":\"bsrfbj\",\"name\":\"dtws\",\"type\":\"otftpvjzbexilz\"}")
             .toObject(WebhookInner.class);
-        Assertions.assertEquals("dbh", model.location());
-        Assertions.assertEquals("rzdzucerscdnt", model.tags().get("evfiwjmygt"));
-        Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("fznudaodvxzb", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
+        Assertions.assertEquals("hqjohxcrsbfova", model.location());
+        Assertions.assertEquals("uvwbhsqfs", model.tags().get("bcgjbirxbp"));
+        Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
+        Assertions.assertEquals("lmpewwwfbkr", model.scope());
+        Assertions.assertEquals(WebhookAction.PUSH, model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookInner model = new WebhookInner().withLocation("dbh")
-            .withTags(mapOf("evfiwjmygt", "rzdzucerscdnt", "pyqs", "sslswtmweriof", "vwiwubmwmbesld",
-                "mwabnetshhszhedp", "wtppjflcxogaoko", "k"))
-            .withStatus(WebhookStatus.DISABLED)
-            .withScope("fznudaodvxzb")
-            .withActions(Arrays.asList(WebhookAction.CHART_PUSH, WebhookAction.DELETE, WebhookAction.CHART_PUSH,
-                WebhookAction.PUSH));
+        WebhookInner model = new WebhookInner().withLocation("hqjohxcrsbfova")
+            .withTags(mapOf("bcgjbirxbp", "uvwbhsqfs"))
+            .withStatus(WebhookStatus.ENABLED)
+            .withScope("lmpewwwfbkr")
+            .withActions(Arrays.asList(WebhookAction.PUSH));
         model = BinaryData.fromObject(model).toObject(WebhookInner.class);
-        Assertions.assertEquals("dbh", model.location());
-        Assertions.assertEquals("rzdzucerscdnt", model.tags().get("evfiwjmygt"));
-        Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("fznudaodvxzb", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
+        Assertions.assertEquals("hqjohxcrsbfova", model.location());
+        Assertions.assertEquals("uvwbhsqfs", model.tags().get("bcgjbirxbp"));
+        Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
+        Assertions.assertEquals("lmpewwwfbkr", model.scope());
+        Assertions.assertEquals(WebhookAction.PUSH, model.actions().get(0));
     }
 
     // Use "Map.of" if available

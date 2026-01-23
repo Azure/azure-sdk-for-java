@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationUpdateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationUpdateParametersProperties model = BinaryData.fromString("{\"regionEndpointEnabled\":true}")
+        ReplicationUpdateParametersProperties model = BinaryData.fromString("{\"regionEndpointEnabled\":false}")
             .toObject(ReplicationUpdateParametersProperties.class);
-        Assertions.assertTrue(model.regionEndpointEnabled());
+        Assertions.assertFalse(model.regionEndpointEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationUpdateParametersProperties model
-            = new ReplicationUpdateParametersProperties().withRegionEndpointEnabled(true);
+            = new ReplicationUpdateParametersProperties().withRegionEndpointEnabled(false);
         model = BinaryData.fromObject(model).toObject(ReplicationUpdateParametersProperties.class);
-        Assertions.assertTrue(model.regionEndpointEnabled());
+        Assertions.assertFalse(model.regionEndpointEnabled());
     }
 }

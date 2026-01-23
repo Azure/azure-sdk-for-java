@@ -12,10 +12,10 @@ public final class ScopeMapListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScopeMapListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"tfdygpfqb\",\"type\":\"ceopzfqrhhuaopp\",\"creationDate\":\"2021-12-04T10:32:02Z\",\"provisioningState\":\"Failed\",\"actions\":[\"ol\",\"dahzxctobg\",\"kdmoi\"]},\"id\":\"ostmgrcf\",\"name\":\"unrmfqjhhkxb\",\"type\":\"vjymjhxxjyngud\"},{\"properties\":{\"description\":\"r\",\"type\":\"wbxqzvszjfau\",\"creationDate\":\"2021-09-23T21:18:01Z\",\"provisioningState\":\"Canceled\",\"actions\":[\"ivetvtcq\",\"qtdo\"]},\"id\":\"cbxvwvxyslqbh\",\"name\":\"fxoblytkb\",\"type\":\"mpew\"}],\"nextLink\":\"fbkrvrnsvs\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"jyofdxluusdtto\",\"type\":\"aboekqv\",\"creationDate\":\"2021-03-07T10:01:38Z\",\"provisioningState\":\"Succeeded\",\"actions\":[\"vbxwyjsflhh\"]},\"id\":\"aln\",\"name\":\"ixisxyawjoy\",\"type\":\"qcslyjpkiid\"}],\"nextLink\":\"exznelixhnr\"}")
             .toObject(ScopeMapListResult.class);
-        Assertions.assertEquals("tfdygpfqb", model.value().get(0).description());
-        Assertions.assertEquals("ol", model.value().get(0).actions().get(0));
-        Assertions.assertEquals("fbkrvrnsvs", model.nextLink());
+        Assertions.assertEquals("jyofdxluusdtto", model.value().get(0).description());
+        Assertions.assertEquals("vbxwyjsflhh", model.value().get(0).actions().get(0));
+        Assertions.assertEquals("exznelixhnr", model.nextLink());
     }
 }

@@ -26,7 +26,7 @@ public final class Source implements JsonSerializable<Source> {
     /*
      * The running instance of an application. Changes after each restart.
      */
-    private String instanceID;
+    private String instanceId;
 
     /**
      * Creates an instance of Source class.
@@ -45,12 +45,12 @@ public final class Source implements JsonSerializable<Source> {
     }
 
     /**
-     * Get the instanceID property: The running instance of an application. Changes after each restart.
+     * Get the instanceId property: The running instance of an application. Changes after each restart.
      * 
-     * @return the instanceID value.
+     * @return the instanceId value.
      */
-    public String instanceID() {
-        return this.instanceID;
+    public String instanceId() {
+        return this.instanceId;
     }
 
     /**
@@ -68,7 +68,7 @@ public final class Source implements JsonSerializable<Source> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("addr", this.addr);
-        jsonWriter.writeStringField("instanceID", this.instanceID);
+        jsonWriter.writeStringField("instanceID", this.instanceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -90,7 +90,7 @@ public final class Source implements JsonSerializable<Source> {
                 if ("addr".equals(fieldName)) {
                     deserializedSource.addr = reader.getString();
                 } else if ("instanceID".equals(fieldName)) {
-                    deserializedSource.instanceID = reader.getString();
+                    deserializedSource.instanceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

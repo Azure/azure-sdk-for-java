@@ -12,10 +12,10 @@ public final class RegistryNameStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryNameStatusInner model
-            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"nqecanoaeup\",\"message\":\"yhltrpmopjmcm\"}")
+            = BinaryData.fromString("{\"nameAvailable\":false,\"reason\":\"a\",\"message\":\"ae\"}")
                 .toObject(RegistryNameStatusInner.class);
-        Assertions.assertTrue(model.nameAvailable());
-        Assertions.assertEquals("nqecanoaeup", model.reason());
-        Assertions.assertEquals("yhltrpmopjmcm", model.message());
+        Assertions.assertFalse(model.nameAvailable());
+        Assertions.assertEquals("a", model.reason());
+        Assertions.assertEquals("ae", model.message());
     }
 }

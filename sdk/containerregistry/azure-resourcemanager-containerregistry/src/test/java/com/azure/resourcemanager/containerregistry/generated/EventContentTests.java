@@ -13,27 +13,27 @@ public final class EventContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventContent model = BinaryData.fromString(
-            "{\"id\":\"sgsahmkycgr\",\"timestamp\":\"2021-04-05T08:15:46Z\",\"action\":\"uetae\",\"target\":{\"mediaType\":\"u\",\"size\":7946094316421332336,\"digest\":\"s\",\"length\":122203340642919775,\"repository\":\"ab\",\"url\":\"oefki\",\"tag\":\"vtpuqujmqlgk\",\"name\":\"tndoaongbjc\",\"version\":\"ujitcjedftww\"},\"request\":{\"id\":\"kojvd\",\"addr\":\"zfoqouicybxar\",\"host\":\"szufoxciqopidoa\",\"method\":\"iodhkhazxkhnz\",\"useragent\":\"nlwntoe\"},\"actor\":{\"name\":\"dwbwhkszzcmrvexz\"},\"source\":{\"addr\":\"t\",\"instanceID\":\"sfraoyzko\"}}")
+            "{\"id\":\"nsj\",\"timestamp\":\"2021-01-29T11:24:17Z\",\"action\":\"iagxsdszuempsbz\",\"target\":{\"mediaType\":\"beyvpnqicvinvkjj\",\"size\":2589593210312984687,\"digest\":\"uukzclewyhmlw\",\"length\":4550643593085904235,\"repository\":\"pofncck\",\"url\":\"fz\",\"tag\":\"hxx\",\"name\":\"yq\",\"version\":\"zfeqztppri\"},\"request\":{\"id\":\"or\",\"addr\":\"lt\",\"host\":\"mncwsobqwcsdb\",\"method\":\"dcfhucqdpf\",\"useragent\":\"glsbjjc\"},\"actor\":{\"name\":\"xbvtvudu\"},\"source\":{\"addr\":\"ormrlxqtvcofudfl\",\"instanceID\":\"gj\"}}")
             .toObject(EventContent.class);
-        Assertions.assertEquals("sgsahmkycgr", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T08:15:46Z"), model.timestamp());
-        Assertions.assertEquals("uetae", model.action());
-        Assertions.assertEquals("u", model.target().mediaType());
-        Assertions.assertEquals(7946094316421332336L, model.target().size());
-        Assertions.assertEquals("s", model.target().digest());
-        Assertions.assertEquals(122203340642919775L, model.target().length());
-        Assertions.assertEquals("ab", model.target().repository());
-        Assertions.assertEquals("oefki", model.target().url());
-        Assertions.assertEquals("vtpuqujmqlgk", model.target().tag());
-        Assertions.assertEquals("tndoaongbjc", model.target().name());
-        Assertions.assertEquals("ujitcjedftww", model.target().version());
-        Assertions.assertEquals("kojvd", model.request().id());
-        Assertions.assertEquals("zfoqouicybxar", model.request().addr());
-        Assertions.assertEquals("szufoxciqopidoa", model.request().host());
-        Assertions.assertEquals("iodhkhazxkhnz", model.request().method());
-        Assertions.assertEquals("nlwntoe", model.request().useragent());
-        Assertions.assertEquals("dwbwhkszzcmrvexz", model.actor().name());
-        Assertions.assertEquals("t", model.source().addr());
-        Assertions.assertEquals("sfraoyzko", model.source().instanceID());
+        Assertions.assertEquals("nsj", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-29T11:24:17Z"), model.timestamp());
+        Assertions.assertEquals("iagxsdszuempsbz", model.action());
+        Assertions.assertEquals("beyvpnqicvinvkjj", model.target().mediaType());
+        Assertions.assertEquals(2589593210312984687L, model.target().size());
+        Assertions.assertEquals("uukzclewyhmlw", model.target().digest());
+        Assertions.assertEquals(4550643593085904235L, model.target().length());
+        Assertions.assertEquals("pofncck", model.target().repository());
+        Assertions.assertEquals("fz", model.target().url());
+        Assertions.assertEquals("hxx", model.target().tag());
+        Assertions.assertEquals("yq", model.target().name());
+        Assertions.assertEquals("zfeqztppri", model.target().version());
+        Assertions.assertEquals("or", model.request().id());
+        Assertions.assertEquals("lt", model.request().addr());
+        Assertions.assertEquals("mncwsobqwcsdb", model.request().host());
+        Assertions.assertEquals("dcfhucqdpf", model.request().method());
+        Assertions.assertEquals("glsbjjc", model.request().useragent());
+        Assertions.assertEquals("xbvtvudu", model.actor().name());
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.source().addr());
+        Assertions.assertEquals("gj", model.source().instanceId());
     }
 }

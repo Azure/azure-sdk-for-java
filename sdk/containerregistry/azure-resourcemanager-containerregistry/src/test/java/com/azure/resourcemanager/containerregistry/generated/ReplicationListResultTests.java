@@ -13,12 +13,12 @@ public final class ReplicationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"status\":{\"displayStatus\":\"przqlveu\",\"message\":\"upjm\",\"timestamp\":\"2021-08-12T08:43:21Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Enabled\"},\"location\":\"sw\",\"tags\":{\"blcg\":\"jriplrbpbewtghf\",\"nmxiebwwaloayqc\":\"xzvlvqhjkbegib\"},\"id\":\"wrtz\",\"name\":\"uzgwyzmhtx\",\"type\":\"ngmtsavjcb\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":{\"displayStatus\":\"rknftguvriuhprwm\",\"message\":\"vxqtayriwwroyqbe\",\"timestamp\":\"2021-06-25T11:51:15Z\"},\"regionEndpointEnabled\":true,\"zoneRedundancy\":\"Disabled\"},\"location\":\"cnojvknmefqsg\",\"tags\":{\"j\":\"hapjyzhpvgqz\"},\"id\":\"vxdjzlmwlxkvugf\",\"name\":\"zovawjvz\",\"type\":\"nluthnnp\"}],\"nextLink\":\"xipeilpjzuaejx\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":{\"displayStatus\":\"ck\",\"message\":\"lhrxsbkyvpyc\",\"timestamp\":\"2021-10-20T05:52:01Z\"},\"regionEndpointEnabled\":true,\"zoneRedundancy\":\"Enabled\"},\"location\":\"afkuwb\",\"tags\":{\"hseyvju\":\"wbme\",\"hspkdeemao\":\"rts\"},\"id\":\"mx\",\"name\":\"gkvtmelmqkrhah\",\"type\":\"ljuahaquhcdh\"},{\"properties\":{\"provisioningState\":\"Creating\",\"status\":{\"displayStatus\":\"exq\",\"message\":\"fadmws\",\"timestamp\":\"2021-04-22T00:28:22Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Enabled\"},\"location\":\"gomz\",\"tags\":{\"ali\":\"isgwbnbbeldawkz\",\"hashsfwxosow\":\"urqhaka\"},\"id\":\"xcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"},{\"properties\":{\"provisioningState\":\"Updating\",\"status\":{\"displayStatus\":\"ojgjrwjueiotwmc\",\"message\":\"tdx\",\"timestamp\":\"2021-01-14T13:52:52Z\"},\"regionEndpointEnabled\":true,\"zoneRedundancy\":\"Enabled\"},\"location\":\"wgqwgxhn\",\"tags\":{\"bkpyc\":\"x\",\"l\":\"klwndnhjdauwhv\",\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"},\"id\":\"khfxobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}],\"nextLink\":\"gw\"}")
             .toObject(ReplicationListResult.class);
-        Assertions.assertEquals("sw", model.value().get(0).location());
-        Assertions.assertEquals("jriplrbpbewtghf", model.value().get(0).tags().get("blcg"));
-        Assertions.assertFalse(model.value().get(0).regionEndpointEnabled());
+        Assertions.assertEquals("afkuwb", model.value().get(0).location());
+        Assertions.assertEquals("wbme", model.value().get(0).tags().get("hseyvju"));
+        Assertions.assertTrue(model.value().get(0).regionEndpointEnabled());
         Assertions.assertEquals(ZoneRedundancy.ENABLED, model.value().get(0).zoneRedundancy());
-        Assertions.assertEquals("xipeilpjzuaejx", model.nextLink());
+        Assertions.assertEquals("gw", model.nextLink());
     }
 }

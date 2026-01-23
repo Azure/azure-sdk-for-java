@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.containerregistry.models.ContainerRegistryResourceType;
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,18 +12,16 @@ public final class RegistryNameCheckRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryNameCheckRequest model
-            = BinaryData.fromString("{\"name\":\"mdajv\",\"type\":\"Microsoft.ContainerRegistry/registries\"}")
-                .toObject(RegistryNameCheckRequest.class);
+            = BinaryData.fromString("{\"name\":\"mdajv\",\"type\":\"ysou\"}").toObject(RegistryNameCheckRequest.class);
         Assertions.assertEquals("mdajv", model.name());
-        Assertions.assertEquals(ContainerRegistryResourceType.MICROSOFT_CONTAINER_REGISTRY_REGISTRIES, model.type());
+        Assertions.assertEquals("ysou", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistryNameCheckRequest model = new RegistryNameCheckRequest().withName("mdajv")
-            .withType(ContainerRegistryResourceType.MICROSOFT_CONTAINER_REGISTRY_REGISTRIES);
+        RegistryNameCheckRequest model = new RegistryNameCheckRequest().withName("mdajv").withType("ysou");
         model = BinaryData.fromObject(model).toObject(RegistryNameCheckRequest.class);
         Assertions.assertEquals("mdajv", model.name());
-        Assertions.assertEquals(ContainerRegistryResourceType.MICROSOFT_CONTAINER_REGISTRY_REGISTRIES, model.type());
+        Assertions.assertEquals("ysou", model.type());
     }
 }

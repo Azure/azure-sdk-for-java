@@ -25,7 +25,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
     /*
      * The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
      */
-    private ContainerRegistryResourceType type;
+    private String type;
 
     /**
      * Creates an instance of RegistryNameCheckRequest class.
@@ -59,7 +59,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
      * 
      * @return the type value.
      */
-    public ContainerRegistryResourceType type() {
+    public String type() {
         return this.type;
     }
 
@@ -70,7 +70,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
      * @param type the type value to set.
      * @return the RegistryNameCheckRequest object itself.
      */
-    public RegistryNameCheckRequest withType(ContainerRegistryResourceType type) {
+    public RegistryNameCheckRequest withType(String type) {
         this.type = type;
         return this;
     }
@@ -100,7 +100,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,8 +123,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
                 if ("name".equals(fieldName)) {
                     deserializedRegistryNameCheckRequest.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedRegistryNameCheckRequest.type
-                        = ContainerRegistryResourceType.fromString(reader.getString());
+                    deserializedRegistryNameCheckRequest.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
