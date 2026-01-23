@@ -273,7 +273,7 @@ public class HttpConstants {
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
         public static final String DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE = "x-ms-dedicatedgateway-bypass-cache";
-        public static final String DEDICATED_GATEWAY_SHARD_KEY = "x-ms-dedicatedgateway-shard-key";
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY = "x-ms-dedicatedgateway-shard-key";
 
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
