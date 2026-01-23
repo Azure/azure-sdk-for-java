@@ -1,14 +1,82 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0 (2026-01-22)
+
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.SuppressionListAddressResourceCollection` was added
 
-### Bugs Fixed
+* `models.SuppressionListAddressResource` was added
 
-### Other Changes
+* `models.SmtpUsernameResource$Update` was added
+
+* `models.SmtpUsernameResource` was added
+
+* `models.SmtpUsernameResource$Definition` was added
+
+* `models.SuppressionListResource$UpdateStages` was added
+
+* `models.SuppressionListResource$Update` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.SmtpUsernameResource$UpdateStages` was added
+
+* `models.SmtpUsernameResourceCollection` was added
+
+* `models.SuppressionListAddressResource$Update` was added
+
+* `models.SuppressionListAddressResource$Definition` was added
+
+* `models.SuppressionListAddresses` was added
+
+* `models.SuppressionListAddressResource$DefinitionStages` was added
+
+* `models.SuppressionListResource$Definition` was added
+
+* `models.SuppressionListResource` was added
+
+* `models.SuppressionLists` was added
+
+* `models.SmtpUsernames` was added
+
+* `models.SuppressionListResourceCollection` was added
+
+* `models.SuppressionListResource$DefinitionStages` was added
+
+* `models.SmtpUsernameResource$DefinitionStages` was added
+
+* `models.SuppressionListAddressResource$UpdateStages` was added
+
+#### `models.CommunicationServiceResource$Update` was modified
+
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.CommunicationServiceResource$Definition` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+
+#### `models.CommunicationServiceResourceUpdate` was modified
+
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `publicNetworkAccess()` was added
+* `disableLocalAuth()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.CommunicationServiceResource` was modified
+
+* `publicNetworkAccess()` was added
+* `disableLocalAuth()` was added
+
+#### `CommunicationManager` was modified
+
+* `suppressionListAddresses()` was added
+* `suppressionLists()` was added
+* `smtpUsernames()` was added
 
 ## 2.2.0 (2024-12-19)
 
