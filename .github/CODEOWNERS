@@ -225,7 +225,7 @@
 # ServiceOwners:                                                   @JinyuID @dipidoo @SteveMSFT
 
 # PRLabel: %Cognitive - Form Recognizer
-/sdk/formrecognizer/                                               @samvaity @Azure/azure-java-sdk
+/sdk/formrecognizer/                                               @bojunehsu @yungshinlintw
 
 # ServiceLabel: %Cognitive - Form Recognizer
 # AzureSdkOwners:                                                  @samvaity
@@ -475,12 +475,15 @@
 # ServiceLabel: %Digital Twins
 # ServiceOwners:                                                   @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @jamdavi
 
+# PRLabel: %Cognitive - Content Understanding
+/sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @yungshinlintw
+
 # PRLabel: %Document Intelligence
-/sdk/documentintelligence/                                         @samvaity @Azure/azure-java-sdk
+/sdk/documentintelligence/                                         @bojunehsu @changjian-wang @yungshinlintw
 
 # ServiceLabel: %Document Intelligence
 # AzureSdkOwners:                                                  @samvaity
-# ServiceOwners:                                                   @vkurpad
+# ServiceOwners:                                                   @bojunehsu @yungshinlintw
 
 # PRLabel: %Durable Task Scheduler
 /sdk/durabletask/                                                  @berndverst @kaibocai @torosent @RyanLettieri @philliphoff @cgillum @Azure/azure-java-sdk
