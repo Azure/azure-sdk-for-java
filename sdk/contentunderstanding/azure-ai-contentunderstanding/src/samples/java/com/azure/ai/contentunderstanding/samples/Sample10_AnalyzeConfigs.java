@@ -14,6 +14,7 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -53,41 +54,25 @@ public class Sample10_AnalyzeConfigs {
         }
         // END: com.azure.ai.contentunderstanding.sample10.buildClient
 
-        System.out.println("Client initialized successfully");
-
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
         // Load local sample file
         Path filePath = Paths.get("src/samples/resources/sample_document_features.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
-        com.azure.ai.contentunderstanding.models.AnalyzeInput input
-            = new com.azure.ai.contentunderstanding.models.AnalyzeInput();
-        input.setData(fileBytes);
+        System.out.println("Analyzing " + filePath + " with prebuilt-documentSearch...");
+        System.out.println("Note: prebuilt-documentSearch has formulas, layout, and OCR enabled by default.");
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-documentSearch", null, null, java.util.Arrays.asList(input), null);
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeWithConfigs
 
-        System.out.println("Analysis operation properties verified");
-        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
-
-        // Verify document content type
-        DocumentContent firstDocContent = result.getContents().get(0) instanceof DocumentContent
-            ? (DocumentContent) result.getContents().get(0)
-            : null;
-        if (firstDocContent != null) {
-            int totalPages = firstDocContent.getEndPageNumber() - firstDocContent.getStartPageNumber() + 1;
-            System.out.println("Document has " + totalPages + " page(s) from " + firstDocContent.getStartPageNumber()
-                + " to " + firstDocContent.getEndPageNumber());
-            System.out.println("Document features analysis with configs completed successfully");
-        }
-
         // BEGIN:ContentUnderstandingExtractCharts
-        // Extract charts from document content
+        // Extract charts from document content (enabled by EnableFigureAnalysis config)
         if (result.getContents().get(0) instanceof DocumentContent) {
             DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
 
@@ -98,64 +83,60 @@ public class Sample10_AnalyzeConfigs {
                     .map(f -> (DocumentChartFigure) f)
                     .collect(Collectors.toList());
 
-                System.out.println("Found " + chartFigures.size() + " chart(s)");
                 for (DocumentChartFigure chart : chartFigures) {
                     System.out.println("  Chart ID: " + chart.getId());
-                    if (chart.getDescription() != null && !chart.getDescription().isEmpty()) {
-                        System.out.println("    Description: " + chart.getDescription());
-                    }
-                    if (chart.getCaption() != null
-                        && chart.getCaption().getContent() != null
-                        && !chart.getCaption().getContent().isEmpty()) {
-                        System.out.println("    Caption: " + chart.getCaption().getContent());
-                    }
+                    System.out.println("    Description: " +
+                        (chart.getDescription() != null ? chart.getDescription() : "(not available)"));
+                    System.out.println("    Caption: " +
+                        (chart.getCaption() != null && chart.getCaption().getContent() != null
+                            ? chart.getCaption().getContent() : "(not available)"));
                 }
             }
         }
         // END:ContentUnderstandingExtractCharts
 
         // BEGIN:ContentUnderstandingExtractHyperlinks
-        // Extract hyperlinks from document content
+        // Extract hyperlinks from document content (enabled by EnableLayout config)
         if (result.getContents().get(0) instanceof DocumentContent) {
             DocumentContent docContent = (DocumentContent) result.getContents().get(0);
 
-            if (docContent.getHyperlinks() != null && !docContent.getHyperlinks().isEmpty()) {
-                System.out.println("\nFound " + docContent.getHyperlinks().size() + " hyperlink(s)");
+            System.out.println("\nFound " +
+                (docContent.getHyperlinks() != null ? docContent.getHyperlinks().size() : 0) + " hyperlink(s)");
+            if (docContent.getHyperlinks() != null) {
                 for (DocumentHyperlink hyperlink : docContent.getHyperlinks()) {
-                    System.out
-                        .println("  URL: " + (hyperlink.getUrl() != null ? hyperlink.getUrl() : "(not available)"));
-                    System.out.println("    Content: "
-                        + (hyperlink.getContent() != null ? hyperlink.getContent() : "(not available)"));
+                    System.out.println("  URL: " +
+                        (hyperlink.getUrl() != null ? hyperlink.getUrl() : "(not available)"));
+                    System.out.println("    Content: " +
+                        (hyperlink.getContent() != null ? hyperlink.getContent() : "(not available)"));
                 }
             }
         }
         // END:ContentUnderstandingExtractHyperlinks
 
         // BEGIN:ContentUnderstandingExtractFormulas
-        // Extract formulas from document pages
+        // Extract formulas from document pages (enabled by EnableFormula config)
         if (result.getContents().get(0) instanceof DocumentContent) {
             DocumentContent content = (DocumentContent) result.getContents().get(0);
 
+            int formulaCount = 0;
             if (content.getPages() != null) {
-                int formulaCount = 0;
                 for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
                     if (page.getFormulas() != null) {
                         formulaCount += page.getFormulas().size();
                     }
                 }
+            }
 
-                if (formulaCount > 0) {
-                    System.out.println("\nFound " + formulaCount + " formula(s)");
-                    for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
-                        if (page.getFormulas() != null) {
-                            for (DocumentFormula formula : page.getFormulas()) {
-                                System.out.println("  Formula Kind: " + formula.getKind());
-                                System.out.println("    LaTeX: "
-                                    + (formula.getValue() != null ? formula.getValue() : "(not available)"));
-                                if (formula.getConfidence() != null) {
-                                    System.out.println(String.format("    Confidence: %.2f", formula.getConfidence()));
-                                }
-                            }
+            System.out.println("\nFound " + formulaCount + " formula(s)");
+            if (formulaCount > 0 && content.getPages() != null) {
+                for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
+                    if (page.getFormulas() != null) {
+                        for (DocumentFormula formula : page.getFormulas()) {
+                            System.out.println("  Formula Kind: " + formula.getKind());
+                            System.out.println("    LaTeX: " +
+                                (formula.getValue() != null ? formula.getValue() : "(not available)"));
+                            System.out.println("    Confidence: " +
+                                (formula.getConfidence() != null ? String.format("%.2f", formula.getConfidence()) : "N/A"));
                         }
                     }
                 }
@@ -164,22 +145,22 @@ public class Sample10_AnalyzeConfigs {
         // END:ContentUnderstandingExtractFormulas
 
         // BEGIN:ContentUnderstandingExtractAnnotations
-        // Extract annotations from document content
+        // Extract annotations from document content (enabled by EnableLayout config)
         if (result.getContents().get(0) instanceof DocumentContent) {
             DocumentContent document = (DocumentContent) result.getContents().get(0);
 
-            if (document.getAnnotations() != null && !document.getAnnotations().isEmpty()) {
-                System.out.println("\nFound " + document.getAnnotations().size() + " annotation(s)");
+            System.out.println("\nFound " +
+                (document.getAnnotations() != null ? document.getAnnotations().size() : 0) + " annotation(s)");
+            if (document.getAnnotations() != null) {
                 for (DocumentAnnotation annotation : document.getAnnotations()) {
                     System.out.println("  Annotation ID: " + annotation.getId());
                     System.out.println("    Kind: " + annotation.getKind());
-                    if (annotation.getAuthor() != null && !annotation.getAuthor().isEmpty()) {
-                        System.out.println("    Author: " + annotation.getAuthor());
-                    }
-                    if (annotation.getComments() != null && !annotation.getComments().isEmpty()) {
-                        System.out.println("    Comments: " + annotation.getComments().size());
-                        for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation
-                            .getComments()) {
+                    System.out.println("    Author: " +
+                        (annotation.getAuthor() != null ? annotation.getAuthor() : "(not available)"));
+                    System.out.println("    Comments: " +
+                        (annotation.getComments() != null ? annotation.getComments().size() : 0));
+                    if (annotation.getComments() != null) {
+                        for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation.getComments()) {
                             System.out.println("      - " + comment.getMessage());
                         }
                     }

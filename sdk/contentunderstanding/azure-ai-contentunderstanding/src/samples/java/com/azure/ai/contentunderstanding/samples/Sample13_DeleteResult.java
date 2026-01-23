@@ -89,18 +89,6 @@ public class Sample13_DeleteResult {
         System.out.println("Analysis result deleted successfully!");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
-        System.out.println("\n📋 DeleteResult Sample Summary:");
-        System.out.println("Document URL: " + documentUrl);
-        System.out.println("Operation ID: " + operationId);
-
-        Object firstContent = result.getContents().get(0);
-        DocumentContent documentContent = (DocumentContent) firstContent;
-        System.out.println("Fields extracted: " + documentContent.getFields().size());
-
-        // Summary
-        System.out.println("\n✅ DeleteResult completed successfully:");
-        System.out.println("  1. Analysis operation completed");
-        System.out.println("  2. Operation ID obtained via getOperationId()");
-        System.out.println("  3. Result deleted via deleteResult(operationId)");
+        System.out.println("\nSample completed successfully!");
     }
 }

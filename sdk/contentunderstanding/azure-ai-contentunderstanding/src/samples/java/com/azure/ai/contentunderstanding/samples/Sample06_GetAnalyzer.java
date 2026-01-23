@@ -38,11 +38,11 @@ public class Sample06_GetAnalyzer {
         }
         // END: com.azure.ai.contentunderstanding.sample06.buildClient
 
-        System.out.println("Content Understanding client initialized");
-
         // BEGIN:ContentUnderstandingGetAnalyzer
         // Get a prebuilt analyzer (these are always available)
         String analyzerId = "prebuilt-invoice";
+
+        System.out.println("Retrieving analyzer '" + analyzerId + "'...");
 
         ContentAnalyzer analyzer = client.getAnalyzer(analyzerId);
 
@@ -103,33 +103,5 @@ public class Sample06_GetAnalyzer {
             System.out.println("Updated: " + analyzer.getLastModifiedAt());
         }
         // END:ContentUnderstandingGetAnalyzer
-
-        System.out.println("\nAnalyzer retrieved successfully");
-        System.out.println("Analyzer ID verified: " + analyzer.getAnalyzerId());
-        System.out.println("Analyzer configuration verified");
-
-        if (analyzer.getFieldSchema() != null) {
-            System.out.println("Field schema verified: " + analyzer.getFieldSchema().getName());
-
-            if (analyzer.getFieldSchema().getFields() != null) {
-                System.out.println("Field schema contains " + analyzer.getFieldSchema().getFields().size() + " fields");
-            }
-        }
-
-        System.out.println("All analyzer properties validated successfully");
-
-        // Test getting another prebuilt analyzer
-        System.out.println("\n========================================");
-        String documentAnalyzerId = "prebuilt-document";
-
-        ContentAnalyzer documentAnalyzer = client.getAnalyzer(documentAnalyzerId);
-
-        System.out.println("\nRetrieving prebuilt-document analyzer...");
-        System.out.println("Analyzer ID: " + documentAnalyzer.getAnalyzerId());
-        System.out.println(
-            "Description: " + (documentAnalyzer.getDescription() != null ? documentAnalyzer.getDescription() : "N/A"));
-        System.out.println("Prebuilt-document analyzer verified successfully");
-
-        System.out.println("\nGet analyzer operations completed successfully");
     }
 }

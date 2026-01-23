@@ -84,7 +84,7 @@ public class Sample11_AnalyzeReturnRawJson {
         // Verify response is valid JSON format
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(responseData.toBytes());
+            mapper.readTree(responseData.toBytes());
             System.out.println("Response is valid JSON format");
         } catch (Exception ex) {
             System.err.println("Response data is not valid JSON: " + ex.getMessage());
@@ -114,14 +114,8 @@ public class Sample11_AnalyzeReturnRawJson {
         System.out.println("File size: " + String.format("%,d", prettyJson.length()) + " characters");
         // END:ContentUnderstandingParseRawJson
 
-        System.out.println("JSON document parsed successfully");
-        System.out.println("Pretty JSON generated: " + String.format("%,d", prettyJson.length()) + " characters");
-        System.out.println("JSON is properly formatted with indentation");
-        System.out.println("Output directory verified: " + outputDir);
-        System.out.println("Output file name: " + outputFileName);
-        System.out.println("Output file created: " + outputPath);
+        System.out.println("\nRaw JSON result saved to: " + outputPath);
         long fileSize = Files.size(outputPath);
-        System.out.println("Output file size verified: " + String.format("%,d", fileSize) + " bytes");
-        System.out.println("Raw JSON parsing and saving completed successfully");
+        System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
     }
 }

@@ -141,14 +141,10 @@ public class Sample12_GetResultFile {
             String imageFormat = detectImageFormat(imageBytes);
             System.out.println("Detected image format: " + imageFormat);
 
-            System.out.println("\n💾 Saved File Verification:");
+            System.out.println("\n💾 Saved File:");
             long fileSize = Files.size(outputPath);
             System.out.println("File saved: " + outputPath.toAbsolutePath());
-            System.out.println("File size verified: " + String.format("%,d", fileSize) + " bytes");
-
-            // Verify file can be read back
-            byte[] readBackBytes = Files.readAllBytes(outputPath);
-            System.out.println("File content verified (read back matches original)");
+            System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
 
             // Test additional keyframes if available
             if (keyFrameTimes.size() > 1) {
@@ -166,17 +162,16 @@ public class Sample12_GetResultFile {
             }
 
             // Summary
-            System.out.println("\n✅ Keyframe retrieval verification completed successfully:");
+            System.out.println("\nKeyframe retrieval completed successfully:");
             System.out.println("  Operation ID: " + operationId);
             System.out.println("  Total keyframes: " + keyFrameTimes.size());
             System.out.println("  First keyframe time: " + firstFrameTimeMs + " ms");
             System.out.println("  Image format: " + imageFormat);
             System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
             System.out.println("  Saved to: " + outputPath.toAbsolutePath());
-            System.out.println("  File verified: Yes");
         } else {
             // No video content (expected for document analysis)
-            System.out.println("\n📚 GetResultFile API Usage Example:");
+            System.out.println("\nGetResultFile API Usage Example:");
             System.out.println("   For video analysis with keyframes:");
             System.out.println("   1. Analyze video with prebuilt-videoSearch");
             System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimesMs()");
