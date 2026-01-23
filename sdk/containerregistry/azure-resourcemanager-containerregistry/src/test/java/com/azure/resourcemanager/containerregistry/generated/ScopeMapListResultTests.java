@@ -12,10 +12,10 @@ public final class ScopeMapListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScopeMapListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"jyofdxluusdtto\",\"type\":\"aboekqv\",\"creationDate\":\"2021-03-07T10:01:38Z\",\"provisioningState\":\"Succeeded\",\"actions\":[\"vbxwyjsflhh\"]},\"id\":\"aln\",\"name\":\"ixisxyawjoy\",\"type\":\"qcslyjpkiid\"}],\"nextLink\":\"exznelixhnr\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"yjpkiidzyexz\",\"type\":\"lixhnrztfol\",\"creationDate\":\"2021-01-02T16:04:01Z\",\"provisioningState\":\"Updating\",\"actions\":[\"alaulppggdtpnapn\",\"iropuhpigvpgylg\",\"git\"]},\"id\":\"edjvcslynqw\",\"name\":\"ncw\",\"type\":\"zhxgktrmgucn\"},{\"properties\":{\"description\":\"t\",\"type\":\"ellwptfdy\",\"creationDate\":\"2020-12-31T02:22:45Z\",\"provisioningState\":\"Creating\",\"actions\":[\"ac\",\"op\",\"fqrhhuaopppc\",\"eqx\"]},\"id\":\"z\",\"name\":\"ahzxctobgbk\",\"type\":\"moizpos\"}],\"nextLink\":\"grcfb\"}")
             .toObject(ScopeMapListResult.class);
-        Assertions.assertEquals("jyofdxluusdtto", model.value().get(0).description());
-        Assertions.assertEquals("vbxwyjsflhh", model.value().get(0).actions().get(0));
-        Assertions.assertEquals("exznelixhnr", model.nextLink());
+        Assertions.assertEquals("yjpkiidzyexz", model.value().get(0).description());
+        Assertions.assertEquals("alaulppggdtpnapn", model.value().get(0).actions().get(0));
+        Assertions.assertEquals("grcfb", model.nextLink());
     }
 }

@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopeMapUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScopeMapUpdateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"y\",\"actions\":[\"vgqzcjrvxd\",\"zlmwlxkvugfhz\",\"vawjvzunlu\",\"hnnpr\"]}}")
-            .toObject(ScopeMapUpdateParameters.class);
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("vgqzcjrvxd", model.actions().get(0));
+        ScopeMapUpdateParameters model
+            = BinaryData.fromString("{\"properties\":{\"description\":\"bsjyofdx\",\"actions\":[\"sd\"]}}")
+                .toObject(ScopeMapUpdateParameters.class);
+        Assertions.assertEquals("bsjyofdx", model.description());
+        Assertions.assertEquals("sd", model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeMapUpdateParameters model = new ScopeMapUpdateParameters().withDescription("y")
-            .withActions(Arrays.asList("vgqzcjrvxd", "zlmwlxkvugfhz", "vawjvzunlu", "hnnpr"));
+        ScopeMapUpdateParameters model
+            = new ScopeMapUpdateParameters().withDescription("bsjyofdx").withActions(Arrays.asList("sd"));
         model = BinaryData.fromObject(model).toObject(ScopeMapUpdateParameters.class);
-        Assertions.assertEquals("y", model.description());
-        Assertions.assertEquals("vgqzcjrvxd", model.actions().get(0));
+        Assertions.assertEquals("bsjyofdx", model.description());
+        Assertions.assertEquals("sd", model.actions().get(0));
     }
 }

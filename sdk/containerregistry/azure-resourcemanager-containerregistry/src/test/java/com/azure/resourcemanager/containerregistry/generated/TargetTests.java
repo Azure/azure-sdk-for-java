@@ -12,16 +12,16 @@ public final class TargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Target model = BinaryData.fromString(
-            "{\"mediaType\":\"gdknnqv\",\"size\":8546326573006782142,\"digest\":\"n\",\"length\":5006272159891019182,\"repository\":\"sgsahmkycgr\",\"url\":\"wjue\",\"tag\":\"eburu\",\"name\":\"movsmzlxwabmqoe\",\"version\":\"ifrvtpu\"}")
+            "{\"mediaType\":\"swhccsphk\",\"size\":798516797680778098,\"digest\":\"tqscywug\",\"length\":3235940224954586497,\"repository\":\"h\",\"url\":\"bwemhairs\",\"tag\":\"gzd\",\"name\":\"swe\",\"version\":\"qwdxggicc\"}")
             .toObject(Target.class);
-        Assertions.assertEquals("gdknnqv", model.mediaType());
-        Assertions.assertEquals(8546326573006782142L, model.size());
-        Assertions.assertEquals("n", model.digest());
-        Assertions.assertEquals(5006272159891019182L, model.length());
-        Assertions.assertEquals("sgsahmkycgr", model.repository());
-        Assertions.assertEquals("wjue", model.url());
-        Assertions.assertEquals("eburu", model.tag());
-        Assertions.assertEquals("movsmzlxwabmqoe", model.name());
-        Assertions.assertEquals("ifrvtpu", model.version());
+        Assertions.assertEquals("swhccsphk", model.mediaType());
+        Assertions.assertEquals(798516797680778098L, model.size());
+        Assertions.assertEquals("tqscywug", model.digest());
+        Assertions.assertEquals(3235940224954586497L, model.length());
+        Assertions.assertEquals("h", model.repository());
+        Assertions.assertEquals("bwemhairs", model.url());
+        Assertions.assertEquals("gzd", model.tag());
+        Assertions.assertEquals("swe", model.name());
+        Assertions.assertEquals("qwdxggicc", model.version());
     }
 }

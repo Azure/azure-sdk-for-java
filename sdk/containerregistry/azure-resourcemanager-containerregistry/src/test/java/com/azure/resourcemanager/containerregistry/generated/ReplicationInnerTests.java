@@ -15,25 +15,26 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":{\"displayStatus\":\"vlxotogtwrupqsx\",\"message\":\"micykvceoveilo\",\"timestamp\":\"2021-09-09T04:11:57Z\"},\"regionEndpointEnabled\":true,\"zoneRedundancy\":\"Enabled\"},\"location\":\"cnjbkcnxdhbt\",\"tags\":{\"wpn\":\"h\",\"mclfplphoxuscr\":\"jtoqne\"},\"id\":\"abgy\",\"name\":\"psbjta\",\"type\":\"qugxywpmueefjzwf\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":{\"displayStatus\":\"qik\",\"message\":\"bovpl\",\"timestamp\":\"2021-08-16T02:09:31Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Disabled\"},\"location\":\"gu\",\"tags\":{\"sxnkjzkdeslpvlo\":\"mkfssxqukkfplgm\",\"baiuebbaumny\":\"wiyighxpkdw\",\"txp\":\"upedeojnabckhs\"},\"id\":\"ie\",\"name\":\"tfhvpesapskrdqmh\",\"type\":\"jdhtldwkyzxu\"}")
             .toObject(ReplicationInner.class);
-        Assertions.assertEquals("cnjbkcnxdhbt", model.location());
-        Assertions.assertEquals("h", model.tags().get("wpn"));
-        Assertions.assertTrue(model.regionEndpointEnabled());
-        Assertions.assertEquals(ZoneRedundancy.ENABLED, model.zoneRedundancy());
+        Assertions.assertEquals("gu", model.location());
+        Assertions.assertEquals("mkfssxqukkfplgm", model.tags().get("sxnkjzkdeslpvlo"));
+        Assertions.assertFalse(model.regionEndpointEnabled());
+        Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationInner model = new ReplicationInner().withLocation("cnjbkcnxdhbt")
-            .withTags(mapOf("wpn", "h", "mclfplphoxuscr", "jtoqne"))
-            .withRegionEndpointEnabled(true)
-            .withZoneRedundancy(ZoneRedundancy.ENABLED);
+        ReplicationInner model = new ReplicationInner().withLocation("gu")
+            .withTags(
+                mapOf("sxnkjzkdeslpvlo", "mkfssxqukkfplgm", "baiuebbaumny", "wiyighxpkdw", "txp", "upedeojnabckhs"))
+            .withRegionEndpointEnabled(false)
+            .withZoneRedundancy(ZoneRedundancy.DISABLED);
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
-        Assertions.assertEquals("cnjbkcnxdhbt", model.location());
-        Assertions.assertEquals("h", model.tags().get("wpn"));
-        Assertions.assertTrue(model.regionEndpointEnabled());
-        Assertions.assertEquals(ZoneRedundancy.ENABLED, model.zoneRedundancy());
+        Assertions.assertEquals("gu", model.location());
+        Assertions.assertEquals("mkfssxqukkfplgm", model.tags().get("sxnkjzkdeslpvlo"));
+        Assertions.assertFalse(model.regionEndpointEnabled());
+        Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
     }
 
     // Use "Map.of" if available

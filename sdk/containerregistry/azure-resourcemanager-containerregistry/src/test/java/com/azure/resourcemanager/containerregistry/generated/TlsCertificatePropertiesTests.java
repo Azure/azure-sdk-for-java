@@ -10,7 +10,8 @@ import com.azure.resourcemanager.containerregistry.models.TlsCertificateProperti
 public final class TlsCertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TlsCertificateProperties model = BinaryData.fromString("{\"type\":\"LocalDirectory\",\"location\":\"vtq\"}")
-            .toObject(TlsCertificateProperties.class);
+        TlsCertificateProperties model
+            = BinaryData.fromString("{\"type\":\"LocalDirectory\",\"location\":\"tvfcivfsn\"}")
+                .toObject(TlsCertificateProperties.class);
     }
 }

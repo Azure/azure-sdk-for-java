@@ -15,21 +15,21 @@ public final class WebhookPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookProperties model = BinaryData.fromString(
-            "{\"status\":\"disabled\",\"scope\":\"q\",\"actions\":[\"chart_push\"],\"provisioningState\":\"Updating\"}")
+            "{\"status\":\"disabled\",\"scope\":\"abnetshh\",\"actions\":[\"delete\",\"chart_push\",\"chart_push\"],\"provisioningState\":\"Updating\"}")
             .toObject(WebhookProperties.class);
         Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("q", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
+        Assertions.assertEquals("abnetshh", model.scope());
+        Assertions.assertEquals(WebhookAction.DELETE, model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WebhookProperties model = new WebhookProperties().withStatus(WebhookStatus.DISABLED)
-            .withScope("q")
-            .withActions(Arrays.asList(WebhookAction.CHART_PUSH));
+            .withScope("abnetshh")
+            .withActions(Arrays.asList(WebhookAction.DELETE, WebhookAction.CHART_PUSH, WebhookAction.CHART_PUSH));
         model = BinaryData.fromObject(model).toObject(WebhookProperties.class);
         Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("q", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
+        Assertions.assertEquals("abnetshh", model.scope());
+        Assertions.assertEquals(WebhookAction.DELETE, model.actions().get(0));
     }
 }

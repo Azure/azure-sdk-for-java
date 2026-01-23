@@ -17,30 +17,29 @@ public final class WebhookPropertiesCreateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookPropertiesCreateParameters model = BinaryData.fromString(
-            "{\"serviceUri\":\"vxzbncb\",\"customHeaders\":{\"ucerscdntnevfi\":\"pstdbhhxsrzd\",\"ofz\":\"jmygtdsslswtmwer\",\"n\":\"yqsemwa\",\"vwiwubmwmbesld\":\"tshhszhedp\"},\"status\":\"enabled\",\"scope\":\"tppjflcx\",\"actions\":[\"chart_delete\",\"chart_push\",\"push\",\"quarantine\"]}")
+            "{\"serviceUri\":\"ubyyntw\",\"customHeaders\":{\"otgqrlltmu\":\"qtkoievs\",\"zmuvpbttdumorppx\":\"lauwzizxbmpgcjef\",\"fgohdneuelfphs\":\"bmnzbtbhjpgl\",\"v\":\"yhtozfikdowwqu\"},\"status\":\"enabled\",\"scope\":\"lvithhqzonosgg\",\"actions\":[\"chart_push\",\"delete\",\"quarantine\"]}")
             .toObject(WebhookPropertiesCreateParameters.class);
-        Assertions.assertEquals("vxzbncb", model.serviceUri());
-        Assertions.assertEquals("pstdbhhxsrzd", model.customHeaders().get("ucerscdntnevfi"));
+        Assertions.assertEquals("ubyyntw", model.serviceUri());
+        Assertions.assertEquals("qtkoievs", model.customHeaders().get("otgqrlltmu"));
         Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
-        Assertions.assertEquals("tppjflcx", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_DELETE, model.actions().get(0));
+        Assertions.assertEquals("lvithhqzonosgg", model.scope());
+        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookPropertiesCreateParameters model = new WebhookPropertiesCreateParameters().withServiceUri("vxzbncb")
-            .withCustomHeaders(mapOf("ucerscdntnevfi", "pstdbhhxsrzd", "ofz", "jmygtdsslswtmwer", "n", "yqsemwa",
-                "vwiwubmwmbesld", "tshhszhedp"))
+        WebhookPropertiesCreateParameters model = new WebhookPropertiesCreateParameters().withServiceUri("ubyyntw")
+            .withCustomHeaders(mapOf("otgqrlltmu", "qtkoievs", "zmuvpbttdumorppx", "lauwzizxbmpgcjef", "fgohdneuelfphs",
+                "bmnzbtbhjpgl", "v", "yhtozfikdowwqu"))
             .withStatus(WebhookStatus.ENABLED)
-            .withScope("tppjflcx")
-            .withActions(Arrays.asList(WebhookAction.CHART_DELETE, WebhookAction.CHART_PUSH, WebhookAction.PUSH,
-                WebhookAction.QUARANTINE));
+            .withScope("lvithhqzonosgg")
+            .withActions(Arrays.asList(WebhookAction.CHART_PUSH, WebhookAction.DELETE, WebhookAction.QUARANTINE));
         model = BinaryData.fromObject(model).toObject(WebhookPropertiesCreateParameters.class);
-        Assertions.assertEquals("vxzbncb", model.serviceUri());
-        Assertions.assertEquals("pstdbhhxsrzd", model.customHeaders().get("ucerscdntnevfi"));
+        Assertions.assertEquals("ubyyntw", model.serviceUri());
+        Assertions.assertEquals("qtkoievs", model.customHeaders().get("otgqrlltmu"));
         Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
-        Assertions.assertEquals("tppjflcx", model.scope());
-        Assertions.assertEquals(WebhookAction.CHART_DELETE, model.actions().get(0));
+        Assertions.assertEquals("lvithhqzonosgg", model.scope());
+        Assertions.assertEquals(WebhookAction.CHART_PUSH, model.actions().get(0));
     }
 
     // Use "Map.of" if available

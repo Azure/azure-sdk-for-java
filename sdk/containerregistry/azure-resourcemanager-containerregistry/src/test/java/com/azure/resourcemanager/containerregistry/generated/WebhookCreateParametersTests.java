@@ -17,35 +17,36 @@ public final class WebhookCreateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookCreateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"r\":\"aruoujmkcjhwqyt\",\"ewgdrjervn\":\"bnw\",\"eh\":\"enq\"},\"location\":\"ndoygmifthnzdnd\",\"properties\":{\"serviceUri\":\"gnayqigynduh\",\"customHeaders\":{\"maqolbgycduie\":\"qlkth\",\"qlfmmdnbb\":\"tgccymvaolpss\",\"wyhzdx\":\"lzpswiydm\"},\"status\":\"disabled\",\"scope\":\"bzmnvdfznud\",\"actions\":[\"delete\"]}}")
+            "{\"tags\":{\"wtppjflcxogaoko\":\"iwubmwmbesldnk\",\"nsikvmkqzeqqkdl\":\"z\"},\"location\":\"fzxmhhvhgureodkw\",\"properties\":{\"serviceUri\":\"dagxtibqd\",\"customHeaders\":{\"zgx\":\"wakbogqxndl\"},\"status\":\"enabled\",\"scope\":\"plbpodxun\",\"actions\":[\"push\",\"push\",\"chart_delete\",\"chart_push\"]}}")
             .toObject(WebhookCreateParameters.class);
-        Assertions.assertEquals("aruoujmkcjhwqyt", model.tags().get("r"));
-        Assertions.assertEquals("ndoygmifthnzdnd", model.location());
-        Assertions.assertEquals("gnayqigynduh", model.serviceUri());
-        Assertions.assertEquals("qlkth", model.customHeaders().get("maqolbgycduie"));
-        Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("bzmnvdfznud", model.scope());
-        Assertions.assertEquals(WebhookAction.DELETE, model.actions().get(0));
+        Assertions.assertEquals("iwubmwmbesldnk", model.tags().get("wtppjflcxogaoko"));
+        Assertions.assertEquals("fzxmhhvhgureodkw", model.location());
+        Assertions.assertEquals("dagxtibqd", model.serviceUri());
+        Assertions.assertEquals("wakbogqxndl", model.customHeaders().get("zgx"));
+        Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
+        Assertions.assertEquals("plbpodxun", model.scope());
+        Assertions.assertEquals(WebhookAction.PUSH, model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WebhookCreateParameters model
-            = new WebhookCreateParameters().withTags(mapOf("r", "aruoujmkcjhwqyt", "ewgdrjervn", "bnw", "eh", "enq"))
-                .withLocation("ndoygmifthnzdnd")
-                .withServiceUri("gnayqigynduh")
-                .withCustomHeaders(mapOf("maqolbgycduie", "qlkth", "qlfmmdnbb", "tgccymvaolpss", "wyhzdx", "lzpswiydm"))
-                .withStatus(WebhookStatus.DISABLED)
-                .withScope("bzmnvdfznud")
-                .withActions(Arrays.asList(WebhookAction.DELETE));
+            = new WebhookCreateParameters().withTags(mapOf("wtppjflcxogaoko", "iwubmwmbesldnk", "nsikvmkqzeqqkdl", "z"))
+                .withLocation("fzxmhhvhgureodkw")
+                .withServiceUri("dagxtibqd")
+                .withCustomHeaders(mapOf("zgx", "wakbogqxndl"))
+                .withStatus(WebhookStatus.ENABLED)
+                .withScope("plbpodxun")
+                .withActions(Arrays.asList(WebhookAction.PUSH, WebhookAction.PUSH, WebhookAction.CHART_DELETE,
+                    WebhookAction.CHART_PUSH));
         model = BinaryData.fromObject(model).toObject(WebhookCreateParameters.class);
-        Assertions.assertEquals("aruoujmkcjhwqyt", model.tags().get("r"));
-        Assertions.assertEquals("ndoygmifthnzdnd", model.location());
-        Assertions.assertEquals("gnayqigynduh", model.serviceUri());
-        Assertions.assertEquals("qlkth", model.customHeaders().get("maqolbgycduie"));
-        Assertions.assertEquals(WebhookStatus.DISABLED, model.status());
-        Assertions.assertEquals("bzmnvdfznud", model.scope());
-        Assertions.assertEquals(WebhookAction.DELETE, model.actions().get(0));
+        Assertions.assertEquals("iwubmwmbesldnk", model.tags().get("wtppjflcxogaoko"));
+        Assertions.assertEquals("fzxmhhvhgureodkw", model.location());
+        Assertions.assertEquals("dagxtibqd", model.serviceUri());
+        Assertions.assertEquals("wakbogqxndl", model.customHeaders().get("zgx"));
+        Assertions.assertEquals(WebhookStatus.ENABLED, model.status());
+        Assertions.assertEquals("plbpodxun", model.scope());
+        Assertions.assertEquals(WebhookAction.PUSH, model.actions().get(0));
     }
 
     // Use "Map.of" if available

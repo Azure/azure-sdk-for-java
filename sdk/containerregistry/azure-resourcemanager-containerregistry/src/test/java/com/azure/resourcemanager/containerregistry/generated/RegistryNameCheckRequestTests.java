@@ -12,16 +12,14 @@ public final class RegistryNameCheckRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryNameCheckRequest model
-            = BinaryData.fromString("{\"name\":\"mdajv\",\"type\":\"ysou\"}").toObject(RegistryNameCheckRequest.class);
+            = BinaryData.fromString("{\"name\":\"mdajv\"}").toObject(RegistryNameCheckRequest.class);
         Assertions.assertEquals("mdajv", model.name());
-        Assertions.assertEquals("ysou", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistryNameCheckRequest model = new RegistryNameCheckRequest().withName("mdajv").withType("ysou");
+        RegistryNameCheckRequest model = new RegistryNameCheckRequest().withName("mdajv");
         model = BinaryData.fromObject(model).toObject(RegistryNameCheckRequest.class);
         Assertions.assertEquals("mdajv", model.name());
-        Assertions.assertEquals("ysou", model.type());
     }
 }

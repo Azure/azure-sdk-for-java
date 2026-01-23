@@ -13,18 +13,18 @@ public final class ReplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"status\":{\"displayStatus\":\"ids\",\"message\":\"onobglaocqx\",\"timestamp\":\"2021-08-26T18:25:08Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Disabled\"}")
+            "{\"provisioningState\":\"Succeeded\",\"status\":{\"displayStatus\":\"ws\",\"message\":\"svlxotogtwrup\",\"timestamp\":\"2021-08-21T23:24:20Z\"},\"regionEndpointEnabled\":false,\"zoneRedundancy\":\"Enabled\"}")
             .toObject(ReplicationProperties.class);
         Assertions.assertFalse(model.regionEndpointEnabled());
-        Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
+        Assertions.assertEquals(ZoneRedundancy.ENABLED, model.zoneRedundancy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationProperties model
-            = new ReplicationProperties().withRegionEndpointEnabled(false).withZoneRedundancy(ZoneRedundancy.DISABLED);
+            = new ReplicationProperties().withRegionEndpointEnabled(false).withZoneRedundancy(ZoneRedundancy.ENABLED);
         model = BinaryData.fromObject(model).toObject(ReplicationProperties.class);
         Assertions.assertFalse(model.regionEndpointEnabled());
-        Assertions.assertEquals(ZoneRedundancy.DISABLED, model.zoneRedundancy());
+        Assertions.assertEquals(ZoneRedundancy.ENABLED, model.zoneRedundancy());
     }
 }

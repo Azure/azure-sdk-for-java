@@ -25,7 +25,7 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
     /*
      * The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
      */
-    private String type;
+    private final String type = "Microsoft.ContainerRegistry/registries";
 
     /**
      * Creates an instance of RegistryNameCheckRequest class.
@@ -64,18 +64,6 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
     }
 
     /**
-     * Set the type property: The resource type of the container registry. This field must be set to
-     * 'Microsoft.ContainerRegistry/registries'.
-     * 
-     * @param type the type value to set.
-     * @return the RegistryNameCheckRequest object itself.
-     */
-    public RegistryNameCheckRequest withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,10 +72,6 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
         if (name() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property name in model RegistryNameCheckRequest"));
-        }
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model RegistryNameCheckRequest"));
         }
     }
 
@@ -122,8 +106,6 @@ public final class RegistryNameCheckRequest implements JsonSerializable<Registry
 
                 if ("name".equals(fieldName)) {
                     deserializedRegistryNameCheckRequest.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedRegistryNameCheckRequest.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
