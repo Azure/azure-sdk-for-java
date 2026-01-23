@@ -6,8 +6,8 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import java.nio.charset.StandardCharsets;
@@ -20,19 +20,19 @@ import reactor.core.publisher.Mono;
 public final class EmailServicesListVerifiedExchangeOnlineDomainsWithResponseMockTests {
     @Test
     public void testListVerifiedExchangeOnlineDomainsWithResponse() throws Exception {
-        String responseStr = "[\"olpsslqlf\",\"mdnbbglzpswiy\"]";
+        String responseStr = "[\"ipfpubji\",\"wwiftohqkvpuv\"]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<String> response = manager.emailServices()
             .listVerifiedExchangeOnlineDomainsWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("olpsslqlf", response.get(0));
+        Assertions.assertEquals("ipfpubji", response.get(0));
     }
 }
