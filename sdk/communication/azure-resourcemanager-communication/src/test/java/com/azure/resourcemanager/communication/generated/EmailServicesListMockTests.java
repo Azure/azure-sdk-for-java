@@ -7,8 +7,8 @@ package com.azure.resourcemanager.communication.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.EmailServiceResource;
@@ -22,19 +22,19 @@ public final class EmailServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"dataLocation\":\"vkr\"},\"location\":\"wbxqzvszjfau\",\"tags\":{\"tvtc\":\"dxxiv\",\"wvxysl\":\"aqtdoqmcbx\",\"ytkblmpew\":\"bhsfxob\",\"shqjohxcrsbf\":\"wfbkrvrns\"},\"id\":\"vasrruvwb\",\"name\":\"sqfsubcgjbirxb\",\"type\":\"ybsrfbjfdtwss\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"dataLocation\":\"ckcb\"},\"location\":\"ejrjxgciqibrho\",\"tags\":{\"rq\":\"dqrhzoymib\",\"dtmhrkwofyyvoqa\":\"ibahwflus\",\"wo\":\"piexpbtgiw\",\"kcnqxwbpo\":\"nwashrtd\"},\"id\":\"ulpiuj\",\"name\":\"aasipqi\",\"type\":\"obyu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EmailServiceResource> response = manager.emailServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wbxqzvszjfau", response.iterator().next().location());
-        Assertions.assertEquals("dxxiv", response.iterator().next().tags().get("tvtc"));
-        Assertions.assertEquals("vkr", response.iterator().next().dataLocation());
+        Assertions.assertEquals("ejrjxgciqibrho", response.iterator().next().location());
+        Assertions.assertEquals("dqrhzoymib", response.iterator().next().tags().get("rq"));
+        Assertions.assertEquals("ckcb", response.iterator().next().dataLocation());
     }
 }
