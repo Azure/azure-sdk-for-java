@@ -202,7 +202,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
         } else if (request.requestContext.resolvedPartitionKeyRange == null) {
 
-            if (!(request.getResourceType() == ResourceType.Document && request.getOperationType() == OperationType.QueryPlan)) {
+            if (!(request.getOperationType() == OperationType.QueryPlan)) {
                 throw new IllegalStateException(
                     "Resolved partition key range should not be null at this point. ResourceType: "
                         + request.getResourceType() + ", OperationType: "
