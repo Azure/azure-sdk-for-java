@@ -8,6 +8,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -20,6 +21,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 class ContentUnderstandingClientTestBase extends TestProxyTestBase {
     protected ContentUnderstandingClient contentUnderstandingClient;
+    protected ContentUnderstandingAsyncClient contentUnderstandingAsyncClient;
 
     // Sanitizer IDs to remove:
     // - AZSDK2003, AZSDK2030: Replace Location/Operation-Location headers with "https://example.com"
@@ -56,6 +58,7 @@ class ContentUnderstandingClientTestBase extends TestProxyTestBase {
             contentUnderstandingClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         contentUnderstandingClient = contentUnderstandingClientbuilder.buildClient();
+        contentUnderstandingAsyncClient = contentUnderstandingClientbuilder.buildAsyncClient();
 
         // Remove sanitizers that break LRO polling by replacing entire URLs
         if (getTestMode() != TestMode.LIVE) {
