@@ -19,6 +19,8 @@ import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 
+import com.azure.core.test.TestMode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,7 +54,10 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
     public void testCreateAnalyzerWithLabelsAsync() {
 
         String analyzerId = testResourceNamer.randomName("test_receipt_analyzer_", 50);
-        String trainingDataSasUrl = System.getenv("TRAINING_DATA_SAS_URL");
+        // In PLAYBACK mode, use a placeholder URL to ensure consistent test behavior
+        String trainingDataSasUrl = getTestMode() == TestMode.PLAYBACK
+            ? "https://placeholder.blob.core.windows.net/container?sv=placeholder"
+            : System.getenv("TRAINING_DATA_SAS_URL");
 
         try {
             // BEGIN: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
