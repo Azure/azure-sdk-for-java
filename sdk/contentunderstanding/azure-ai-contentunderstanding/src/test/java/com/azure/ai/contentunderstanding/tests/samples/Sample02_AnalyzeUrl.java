@@ -35,9 +35,9 @@ import java.util.Set;
 public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testAnalyzeUrlAsync() {
+    public void testAnalyzeUrl() {
 
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
+        // BEGIN:ContentUnderstandingAnalyzeUrl
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -49,9 +49,9 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
-        // END:ContentUnderstandingAnalyzeUrlAsync
+        // END:ContentUnderstandingAnalyzeUrl
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrl
         assertNotNull(uriSource, "URI source should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
@@ -61,7 +61,7 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         assertNotNull(result.getContents(), "Result contents should not be null");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-        // END:Assertion_ContentUnderstandingAnalyzeUrlAsync
+        // END:Assertion_ContentUnderstandingAnalyzeUrl
 
         // A PDF file has only one content element even if it contains multiple pages
         MediaContent content = null;
@@ -229,8 +229,8 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
     }
 
     @Test
-    public void testAnalyzeVideoUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
+    public void testAnalyzeVideoUrl() {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -267,9 +267,9 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             System.out.println("---------------------");
             segmentIndex++;
         }
-        // END:ContentUnderstandingAnalyzeVideoUrlAsync
+        // END:ContentUnderstandingAnalyzeVideoUrl
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrl
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
@@ -287,12 +287,12 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Video analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrl
     }
 
     @Test
-    public void testAnalyzeAudioUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
+    public void testAnalyzeAudioUrl() {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -332,9 +332,9 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
                 count++;
             }
         }
-        // END:ContentUnderstandingAnalyzeAudioUrlAsync
+        // END:ContentUnderstandingAnalyzeAudioUrl
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrl
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
@@ -355,12 +355,12 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Audio analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrl
     }
 
     @Test
-    public void testAnalyzeImageUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
+    public void testAnalyzeImageUrl() {
+        // BEGIN:ContentUnderstandingAnalyzeImageUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -382,9 +382,9 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
                 : "")
             : "";
         System.out.println("Summary: " + summary);
-        // END:ContentUnderstandingAnalyzeImageUrlAsync
+        // END:ContentUnderstandingAnalyzeImageUrl
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrl
         assertNotNull(operation, "Analysis operation should not be null");
         assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
@@ -400,6 +400,6 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
+        // END:Assertion_ContentUnderstandingAnalyzeImageUrl
     }
 }

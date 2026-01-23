@@ -56,14 +56,14 @@ public class Sample01_AnalyzeBinary {
         byte[] fileBytes = Files.readAllBytes(path);
         BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
-        // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
+        // BEGIN:ContentUnderstandingAnalyzeBinary
         // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
         // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getFinalResult();
-        // END:ContentUnderstandingAnalyzeBinaryAsync
+        // END:ContentUnderstandingAnalyzeBinary
 
         System.out.println("Analysis operation completed");
         System.out.println("Analysis result contains "

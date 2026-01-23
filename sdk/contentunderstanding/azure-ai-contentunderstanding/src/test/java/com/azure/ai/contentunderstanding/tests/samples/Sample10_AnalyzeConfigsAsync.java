@@ -9,9 +9,9 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationS
 import com.azure.ai.contentunderstanding.models.DocumentAnnotation;
 import com.azure.ai.contentunderstanding.models.DocumentChartFigure;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
-import com.azure.ai.contentunderstanding.models.DocumentFigure;
 import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 
@@ -39,18 +39,18 @@ public class Sample10_AnalyzeConfigsAsync extends ContentUnderstandingClientTest
     public void testAnalyzeConfigsAsync() throws IOException {
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigsAsync
-        // Load local test file
+        // Load local sample file
         Path filePath = Paths.get("src/test/resources/sample_document_features.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
-        com.azure.ai.contentunderstanding.models.AnalyzeInput input
-            = new com.azure.ai.contentunderstanding.models.AnalyzeInput();
-        input.setData(fileBytes);
+        System.out.println("Analyzing " + filePath + " with prebuilt-documentSearch...");
+        System.out.println("Note: prebuilt-documentSearch has formulas, layout, and OCR enabled by default.");
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", java.util.Arrays.asList(input));
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getSyncPoller().getFinalResult();
         // END:ContentUnderstandingAnalyzeWithConfigsAsync

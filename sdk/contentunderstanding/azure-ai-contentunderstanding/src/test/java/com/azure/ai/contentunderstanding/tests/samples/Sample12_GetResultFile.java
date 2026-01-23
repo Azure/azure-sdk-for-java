@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,16 +42,19 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
         input.setUrl(videoUrl);
 
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", null, null,
-                Collections.singletonList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
-        // Get the operation ID from the poller - use getOperationId() from the polling status
-        String operationId = poller.poll().getValue().getOperationId();
-        System.out.println("Started analysis operation with operation ID: " + operationId);
+        System.out.println("Started analysis operation");
 
         // Wait for completion
         AnalyzeResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
+
+        // Get the operation ID from the polling result using the getOperationId() convenience method
+        // The operation ID is extracted from the Operation-Location header and can be used with
+        // getResultFile() and deleteResult() APIs
+        String operationId = poller.poll().getValue().getOperationId();
+        System.out.println("Operation ID: " + operationId);
 
         // END: com.azure.ai.contentunderstanding.getResultFile
 

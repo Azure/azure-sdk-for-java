@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter;
 public class Sample11_AnalyzeReturnRawJson extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testAnalyzeReturnRawJsonAsync() throws IOException {
+    public void testAnalyzeReturnRawJson() throws IOException {
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJson
         // Load local test file

@@ -50,8 +50,10 @@ public class Sample01_AnalyzeBinaryAsync extends ContentUnderstandingClientTestB
         binaryData = BinaryData.fromBytes(fileBytes);
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-documentSearch", "application/pdf", binaryData, null, null, null);
+        // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
+        // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getSyncPoller().getFinalResult();
         // END:ContentUnderstandingAnalyzeBinaryAsync

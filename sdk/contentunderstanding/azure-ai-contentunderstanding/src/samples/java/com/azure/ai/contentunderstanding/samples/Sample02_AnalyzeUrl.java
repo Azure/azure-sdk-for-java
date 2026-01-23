@@ -51,7 +51,7 @@ public class Sample02_AnalyzeUrl {
         }
         // END: com.azure.ai.contentunderstanding.sample02.buildClient
 
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
+        // BEGIN:ContentUnderstandingAnalyzeUrl
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -63,7 +63,7 @@ public class Sample02_AnalyzeUrl {
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
-        // END:ContentUnderstandingAnalyzeUrlAsync
+        // END:ContentUnderstandingAnalyzeUrl
 
         System.out.println("Analysis operation completed");
         System.out.println("Analysis result contains "
@@ -146,7 +146,7 @@ public class Sample02_AnalyzeUrl {
             client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -182,7 +182,7 @@ public class Sample02_AnalyzeUrl {
             System.out.println("---------------------");
             segmentIndex++;
         }
-        // END:ContentUnderstandingAnalyzeVideoUrlAsync
+        // END:ContentUnderstandingAnalyzeVideoUrl
     }
 
     /**
@@ -206,7 +206,7 @@ public class Sample02_AnalyzeUrl {
             client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -245,7 +245,7 @@ public class Sample02_AnalyzeUrl {
                 count++;
             }
         }
-        // END:ContentUnderstandingAnalyzeAudioUrlAsync
+        // END:ContentUnderstandingAnalyzeAudioUrl
     }
 
     /**
@@ -269,7 +269,7 @@ public class Sample02_AnalyzeUrl {
             client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
         }
 
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
+        // BEGIN:ContentUnderstandingAnalyzeImageUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -291,6 +291,6 @@ public class Sample02_AnalyzeUrl {
                 : "")
             : "";
         System.out.println("Summary: " + summary);
-        // END:ContentUnderstandingAnalyzeImageUrlAsync
+        // END:ContentUnderstandingAnalyzeImageUrl
     }
 }

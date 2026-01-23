@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Sample07_ListAnalyzers extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testListAnalyzersAsync() {
+    public void testListAnalyzers() {
 
         // BEGIN:ContentUnderstandingListAnalyzers
         // List all analyzers
@@ -118,7 +118,7 @@ public class Sample07_ListAnalyzers extends ContentUnderstandingClientTestBase {
     }
 
     @Test
-    public void testListAnalyzersWithMaxResultsAsync() {
+    public void testListAnalyzersWithMaxResults() {
         // List all analyzers and filter for ready ones
         PagedIterable<ContentAnalyzer> analyzers = contentUnderstandingClient.listAnalyzers();
 

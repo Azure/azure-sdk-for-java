@@ -57,7 +57,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
     }
 
     @Test
-    public void testCreateAnalyzerAsync() {
+    public void testCreateAnalyzer() {
 
         // BEGIN:ContentUnderstandingCreateAnalyzer
         // Generate a unique analyzer ID
@@ -117,10 +117,22 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
+        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+            System.out.println("  Description: " + result.getDescription());
+        }
+
+        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
+            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
+                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
+                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+            });
+        }
         // END:ContentUnderstandingCreateAnalyzer
 
         createdAnalyzerId = analyzerId; // Track for cleanup
@@ -237,7 +249,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
     }
 
     @Test
-    public void testUseCustomAnalyzerAsync() {
+    public void testUseCustomAnalyzer() {
         // First create an analyzer
         String analyzerId = testResourceNamer.randomName("test_analyzer_", 50);
 

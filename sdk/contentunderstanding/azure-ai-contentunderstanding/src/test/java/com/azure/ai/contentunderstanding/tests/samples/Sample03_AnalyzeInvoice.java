@@ -33,7 +33,7 @@ import java.util.List;
 public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testAnalyzeInvoiceAsync() {
+    public void testAnalyzeInvoice() {
 
         // BEGIN:ContentUnderstandingAnalyzeInvoice
         // Using a publicly accessible sample file from Azure-Samples GitHub repository

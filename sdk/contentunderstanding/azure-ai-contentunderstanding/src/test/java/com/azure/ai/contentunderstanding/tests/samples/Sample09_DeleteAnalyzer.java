@@ -29,7 +29,7 @@ import java.util.Map;
 public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testDeleteAnalyzerAsync() {
+    public void testDeleteAnalyzer() {
 
         // BEGIN:ContentUnderstandingDeleteAnalyzer
         // First, create a temporary analyzer to delete
@@ -95,7 +95,7 @@ public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase 
     }
 
     @Test
-    public void testDeleteNonexistentAnalyzerAsync() {
+    public void testDeleteNonexistentAnalyzer() {
         // Try to delete a non-existent analyzer
         String nonExistentId = testResourceNamer.randomName("non_existent_analyzer_", 50);
 

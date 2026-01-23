@@ -22,7 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,7 +35,7 @@ import java.util.Set;
 public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testAnalyzeBinaryAsync() throws IOException {
+    public void testAnalyzeBinary() throws IOException {
 
         // Load the sample file
         String filePath = "src/test/resources/sample_invoice.pdf";
@@ -50,14 +49,16 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
         fileBytes = Files.readAllBytes(path);
         binaryData = BinaryData.fromBytes(fileBytes);
 
-        // BEGIN:ContentUnderstandingAnalyzeBinaryAsync
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
-            .beginAnalyzeBinary("prebuilt-documentSearch", "application/pdf", binaryData, null, null, null);
+        // BEGIN:ContentUnderstandingAnalyzeBinary
+        // Use the simplified beginAnalyzeBinary overload - contentType defaults to "application/octet-stream"
+        // For PDFs, you can also explicitly specify "application/pdf" using the full method signature
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
         AnalyzeResult result = operation.getFinalResult();
-        // END:ContentUnderstandingAnalyzeBinaryAsync
+        // END:ContentUnderstandingAnalyzeBinary
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinary
         if (hasRealFile) {
             assertTrue(Files.exists(path), "Sample file not found at " + filePath);
         }
@@ -71,7 +72,7 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
         assertNotNull(result.getContents(), "Result contents should not be null");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-        // END:Assertion_ContentUnderstandingAnalyzeBinaryAsync
+        // END:Assertion_ContentUnderstandingAnalyzeBinary
 
         // BEGIN:ContentUnderstandingExtractMarkdown
         // A PDF file has only one content element even if it contains multiple pages

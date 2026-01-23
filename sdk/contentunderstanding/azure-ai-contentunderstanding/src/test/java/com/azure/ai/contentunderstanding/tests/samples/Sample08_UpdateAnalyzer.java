@@ -77,7 +77,7 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
     }
 
     @Test
-    public void testUpdateAnalyzerAsync() {
+    public void testUpdateAnalyzer() {
         // BEGIN:ContentUnderstandingUpdateAnalyzer
         // Get the current analyzer
         ContentAnalyzer currentAnalyzer = contentUnderstandingClient.getAnalyzer(analyzerId);

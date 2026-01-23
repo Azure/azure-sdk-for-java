@@ -116,10 +116,22 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
 
         // Create the analyzer
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer);
+            = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
         ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
+        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+            System.out.println("  Description: " + result.getDescription());
+        }
+
+        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
+            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
+                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
+                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+            });
+        }
         // END:ContentUnderstandingCreateAnalyzerAsync
 
         createdAnalyzerId = analyzerId; // Track for cleanup

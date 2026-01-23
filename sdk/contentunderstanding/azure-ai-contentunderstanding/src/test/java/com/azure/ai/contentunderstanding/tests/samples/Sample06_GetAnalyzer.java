@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Sample06_GetAnalyzer extends ContentUnderstandingClientTestBase {
 
     @Test
-    public void testGetAnalyzerAsync() {
+    public void testGetAnalyzer() {
 
         // BEGIN:ContentUnderstandingGetAnalyzer
         // Get a prebuilt analyzer (these are always available)
@@ -118,7 +118,7 @@ public class Sample06_GetAnalyzer extends ContentUnderstandingClientTestBase {
     }
 
     @Test
-    public void testGetAnalyzerNotFoundAsync() {
+    public void testGetAnalyzerNotFound() {
         // Test getting another prebuilt analyzer
         String analyzerId = "prebuilt-document";
 
