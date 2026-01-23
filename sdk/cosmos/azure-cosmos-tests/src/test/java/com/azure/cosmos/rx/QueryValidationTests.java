@@ -356,7 +356,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
         // group by should not be cached
-        sqlQuerySpec.setQueryText("select max(c.id) from c group by c.name");
+        sqlQuerySpec.setQueryText("select max(c.id) from c group by c.name order by c.name");
         values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 

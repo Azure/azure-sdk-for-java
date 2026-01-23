@@ -7,11 +7,12 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigData;
+import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
@@ -22,7 +23,8 @@ import org.springframework.util.StringUtils;
 
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
@@ -127,7 +129,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             if ((notification.getPrimaryToken() != null
                 && StringUtils.hasText(notification.getPrimaryToken().getName()))
                 || (notification.getSecondaryToken() != null
-                    && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                    && StringUtils.hasText(notification.getSecondaryToken().getName()))) {
                 pushRefresh = true;
             }
             // Feature Management needs to be set in the last config store.
@@ -152,7 +154,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
                     sourceList.addAll(createSettings(currentClient));
-                    List<FeatureFlags> featureFlags = createFeatureFlags(currentClient);
+                    List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
 
                     logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
@@ -161,13 +163,23 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         monitoring.getFeatureFlagRefreshInterval());
 
                     if (monitoring.isEnabled()) {
-                        // Setting new ETag values for Watch
-                        List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                            .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
-                                requestContext))
-                            .toList();
+                        // Check if refreshAll is enabled - if so, use watched configuration settings
+                        if (monitoring.getTriggers().size() == 0) {
+                            // Use watched configuration settings for refresh
+                            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
+                                currentClient);
+                            storeState.setState(resource.getEndpoint(), Collections.emptyList(),
+                                watchedConfigurationSettingsList, monitoring.getRefreshInterval());
+                        } else {
+                            // Use traditional watch key monitoring
+                            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+                                .map(trigger -> currentClient.getWatchKey(trigger.getKey(), trigger.getLabel(),
+                                    requestContext))
+                                .toList();
 
-                        storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+                            storeState.setState(resource.getEndpoint(), watchKeysSettings,
+                                monitoring.getRefreshInterval());
+                        }
                     }
                     storeState.setLoadState(resource.getEndpoint(), true); // Success - configuration loaded, exit loop
                     lastException = null;
@@ -260,21 +272,56 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * Creates a list of feature flags from Azure App Configuration.
      *
      * @param client client for connecting to App Configuration
-     * @return a list of FeatureFlags
+     * @return a list of WatchedConfigurationSettings
      * @throws Exception creating feature flags failed
      */
-    private List<FeatureFlags> createFeatureFlags(AppConfigurationReplicaClient client)
+    private List<WatchedConfigurationSettings> createFeatureFlags(AppConfigurationReplicaClient client)
         throws Exception {
-        List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
+        List<WatchedConfigurationSettings> featureFlagWatchKeys = new ArrayList<>();
         List<String> profiles = resource.getProfiles().getActive();
 
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
-            List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+            List<WatchedConfigurationSettings> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
                 selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
 
         return featureFlagWatchKeys;
+    }
+
+    /**
+     * Creates a list of watched configuration settings for configuration settings from Azure App Configuration. This is
+     * used for collection-based refresh monitoring as an alternative to individual watch keys.
+     *
+     * @param client client for connecting to App Configuration
+     * @return a list of WatchedConfigurationSettings for configuration settings
+     * @throws Exception creating watched configuration settings failed
+     */
+    private List<WatchedConfigurationSettings> getWatchedConfigurationSettings(AppConfigurationReplicaClient client)
+        throws Exception {
+        List<WatchedConfigurationSettings> watchedConfigurationSettingsList = new ArrayList<>();
+        List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
+        List<String> profiles = resource.getProfiles().getActive();
+
+        for (AppConfigurationKeyValueSelector selectedKeys : selects) {
+            // Skip snapshots - they don't support watched configuration settings
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                continue;
+            }
+
+            // Create watched configuration settings for each label
+            for (String label : selectedKeys.getLabelFilter(profiles)) {
+                SettingSelector settingSelector = new SettingSelector()
+                    .setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                    .setLabelFilter(label);
+
+                WatchedConfigurationSettings watchedConfigurationSettings = client.loadWatchedSettings(settingSelector,
+                    requestContext);
+                watchedConfigurationSettingsList.add(watchedConfigurationSettings);
+            }
+        }
+
+        return watchedConfigurationSettingsList;
     }
 
     /**
