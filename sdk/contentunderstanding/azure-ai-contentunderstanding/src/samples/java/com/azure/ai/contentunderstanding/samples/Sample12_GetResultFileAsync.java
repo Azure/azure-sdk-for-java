@@ -100,8 +100,30 @@ public class Sample12_GetResultFileAsync {
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image using async client with block() for simplicity
-            BinaryData fileData = client.getResultFile(operationId, framePath).block();
+            // Retrieve the keyframe image with retry logic
+            // Note: Result files may not be immediately available after analysis completion
+            // The service requires additional time for keyframe extraction
+            BinaryData fileData = null;
+            int maxRetries = 12;
+            int retryDelayMs = 10000; // 10 seconds between retries
+            for (int attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    fileData = client.getResultFile(operationId, framePath).block();
+                    break; // Success
+                } catch (Exception e) {
+                    if (attempt == maxRetries) {
+                        throw e;
+                    }
+                    System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
+                    System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
+                    try {
+                        Thread.sleep(retryDelayMs);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException("Interrupted while waiting for retry", ie);
+                    }
+                }
+            }
             byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 

@@ -28,6 +28,10 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
 
     /**
      * Synchronous sample for getting result files from a completed analysis operation.
+     * <p>
+     * Note: The Azure Content Understanding service requires extended time after analysis
+     * completion for keyframe result files to become available. This test uses retry logic
+     * to handle the delay.
      */
     @Test
     public void testGetResultFile() throws IOException {
@@ -99,8 +103,29 @@ public class Sample12_GetResultFile extends ContentUnderstandingClientTestBase {
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image using convenience method
-            BinaryData fileData = contentUnderstandingClient.getResultFile(operationId, framePath);
+            // Retrieve the keyframe image using convenience method with retry logic
+            // Result files may not be immediately available after analysis completion
+            BinaryData fileData = null;
+            int maxRetries = 12;
+            int retryDelayMs = 10000;
+            for (int attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    fileData = contentUnderstandingClient.getResultFile(operationId, framePath);
+                    break; // Success, exit retry loop
+                } catch (Exception e) {
+                    if (attempt == maxRetries) {
+                        throw e; // Re-throw on final attempt
+                    }
+                    System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
+                    System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
+                    try {
+                        Thread.sleep(retryDelayMs);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException("Interrupted while waiting for retry", ie);
+                    }
+                }
+            }
             byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
