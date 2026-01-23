@@ -22,13 +22,13 @@ public final class SupportedModels implements JsonSerializable<SupportedModels> 
      * Chat completion models supported by the analyzer.
      */
     @Generated
-    private final List<String> completion;
+    private List<String> completion;
 
     /*
      * Embedding models supported by the analyzer.
      */
     @Generated
-    private final List<String> embedding;
+    private List<String> embedding;
 
     /**
      * Get the completion property: Chat completion models supported by the analyzer.
@@ -68,38 +68,33 @@ public final class SupportedModels implements JsonSerializable<SupportedModels> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SupportedModels if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SupportedModels.
      */
     @Generated
     public static SupportedModels fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> completion = null;
-            List<String> embedding = null;
+            SupportedModels deserializedSupportedModels = new SupportedModels();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("completion".equals(fieldName)) {
-                    completion = reader.readArray(reader1 -> reader1.getString());
+                    List<String> completion = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSupportedModels.completion = completion;
                 } else if ("embedding".equals(fieldName)) {
-                    embedding = reader.readArray(reader1 -> reader1.getString());
+                    List<String> embedding = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSupportedModels.embedding = embedding;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new SupportedModels(completion, embedding);
+            return deserializedSupportedModels;
         });
     }
 
     /**
      * Creates an instance of SupportedModels class.
-     *
-     * @param completion the completion value to set.
-     * @param embedding the embedding value to set.
      */
     @Generated
-    private SupportedModels(List<String> completion, List<String> embedding) {
-        this.completion = completion;
-        this.embedding = embedding;
+    private SupportedModels() {
     }
 }

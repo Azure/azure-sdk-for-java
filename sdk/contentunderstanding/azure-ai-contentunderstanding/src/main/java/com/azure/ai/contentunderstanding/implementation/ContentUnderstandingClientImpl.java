@@ -42,8 +42,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -213,8 +215,8 @@ public final class ContentUnderstandingClientImpl {
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -225,8 +227,8 @@ public final class ContentUnderstandingClientImpl {
             @BodyParam("application/json") BinaryData copyAnalyzerRequest, RequestOptions requestOptions,
             Context context);
 
-        @Post("/analyzers/{analyzerId}:copyAnalyzer")
-        @ExpectedResponses({ 202 })
+        @Post("/analyzers/{analyzerId}:copy")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
@@ -1829,106 +1831,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -1941,8 +1938,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return analyzer that extracts content and fields from multimodal documents along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> copyAnalyzerWithResponseAsync(String analyzerId, BinaryData copyAnalyzerRequest,
@@ -1981,106 +1978,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -2093,7 +2085,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response}.
+     * @return analyzer that extracts content and fields from multimodal documents along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> copyAnalyzerWithResponse(String analyzerId, BinaryData copyAnalyzerRequest,
@@ -2131,106 +2123,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -2243,7 +2230,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of analyzer that extracts content and fields from multimodal
+     * documents.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> beginCopyAnalyzerWithModelAsync(
@@ -2289,106 +2277,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -2401,7 +2384,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of analyzer that extracts content and fields from multimodal
+     * documents.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> beginCopyAnalyzerWithModel(String analyzerId,
@@ -2447,106 +2431,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -2559,7 +2538,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of analyzer that extracts content and fields from multimodal
+     * documents.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCopyAnalyzerAsync(String analyzerId, BinaryData copyAnalyzerRequest,
@@ -2604,106 +2584,101 @@ public final class ContentUnderstandingClientImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
+     *     analyzerId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     status: String(creating/ready/deleting/failed) (Required)
+     *     createdAt: OffsetDateTime (Required)
+     *     lastModifiedAt: OffsetDateTime (Required)
+     *     warnings (Optional): [
+     *          (Optional){
+     *             code: String (Required)
+     *             message: String (Required)
+     *             target: String (Optional)
+     *             details (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *             innererror (Optional): {
+     *                 code: String (Optional)
+     *                 innererror (Optional): (recursive schema, see innererror above)
+     *             }
+     *         }
+     *     ]
+     *     baseAnalyzerId: String (Optional)
+     *     config (Optional): {
+     *         returnDetails: Boolean (Optional)
+     *         locales (Optional): [
+     *             String (Optional)
      *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *         enableOcr: Boolean (Optional)
+     *         enableLayout: Boolean (Optional)
+     *         enableFigureDescription: Boolean (Optional)
+     *         enableFigureAnalysis: Boolean (Optional)
+     *         enableFormula: Boolean (Optional)
+     *         tableFormat: String(html/markdown) (Optional)
+     *         chartFormat: String(chartJs/markdown) (Optional)
+     *         annotationFormat: String(none/markdown) (Optional)
+     *         disableFaceBlurring: Boolean (Optional)
+     *         estimateFieldSourceAndConfidence: Boolean (Optional)
+     *         contentCategories (Optional): {
+     *             String (Required): {
+     *                 description: String (Optional)
+     *                 analyzerId: String (Optional)
+     *                 analyzer (Optional): (recursive schema, see analyzer above)
+     *             }
+     *         }
+     *         enableSegment: Boolean (Optional)
+     *         segmentPerPage: Boolean (Optional)
+     *         omitContent: Boolean (Optional)
+     *     }
+     *     fieldSchema (Optional): {
+     *         name: String (Optional)
+     *         description: String (Optional)
+     *         fields (Optional, Required on create): {
+     *             String (Required): {
+     *                 method: String(generate/extract/classify) (Optional)
+     *                 type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
+     *                 description: String (Optional)
+     *                 items (Optional): (recursive schema, see items above)
+     *                 properties (Optional): {
+     *                     String (Required): (recursive schema, see String above)
+     *                 }
+     *                 examples (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enum (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 enumDescriptions (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *                 $ref: String (Optional)
+     *                 estimateSourceAndConfidence: Boolean (Optional)
+     *             }
+     *         }
+     *         definitions (Optional): {
+     *             String (Required): (recursive schema, see String above)
      *         }
      *     }
-     *     result (Optional): {
-     *         analyzerId: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
+     *     dynamicFieldSchema: Boolean (Optional)
+     *     processingLocation: String(geography/dataZone/global) (Optional)
+     *     knowledgeSources (Optional): [
+     *          (Optional){
+     *             kind: String(labeledData) (Required)
      *         }
-     *         status: String(creating/ready/deleting/failed) (Required)
-     *         createdAt: OffsetDateTime (Required)
-     *         lastModifiedAt: OffsetDateTime (Required)
-     *         warnings (Optional): [
-     *             (recursive schema, see above)
+     *     ]
+     *     models (Optional): {
+     *         String: String (Required)
+     *     }
+     *     supportedModels (Optional): {
+     *         completion (Optional): [
+     *             String (Optional)
      *         ]
-     *         baseAnalyzerId: String (Optional)
-     *         config (Optional): {
-     *             returnDetails: Boolean (Optional)
-     *             locales (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             enableOcr: Boolean (Optional)
-     *             enableLayout: Boolean (Optional)
-     *             enableFigureDescription: Boolean (Optional)
-     *             enableFigureAnalysis: Boolean (Optional)
-     *             enableFormula: Boolean (Optional)
-     *             tableFormat: String(html/markdown) (Optional)
-     *             chartFormat: String(chartJs/markdown) (Optional)
-     *             annotationFormat: String(none/markdown) (Optional)
-     *             disableFaceBlurring: Boolean (Optional)
-     *             estimateFieldSourceAndConfidence: Boolean (Optional)
-     *             contentCategories (Optional): {
-     *                 String (Required): {
-     *                     description: String (Optional)
-     *                     analyzerId: String (Optional)
-     *                     analyzer (Optional): (recursive schema, see analyzer above)
-     *                 }
-     *             }
-     *             enableSegment: Boolean (Optional)
-     *             segmentPerPage: Boolean (Optional)
-     *             omitContent: Boolean (Optional)
-     *         }
-     *         fieldSchema (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             fields (Optional, Required on create): {
-     *                 String (Required): {
-     *                     method: String(generate/extract/classify) (Optional)
-     *                     type: String(string/date/time/number/integer/boolean/array/object/json) (Optional)
-     *                     description: String (Optional)
-     *                     items (Optional): (recursive schema, see items above)
-     *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
-     *                     }
-     *                     examples (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enum (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     enumDescriptions (Optional): {
-     *                         String: String (Required)
-     *                     }
-     *                     $ref: String (Optional)
-     *                     estimateSourceAndConfidence: Boolean (Optional)
-     *                 }
-     *             }
-     *             definitions (Optional): {
-     *                 String (Required): (recursive schema, see String above)
-     *             }
-     *         }
-     *         dynamicFieldSchema: Boolean (Optional)
-     *         processingLocation: String(geography/dataZone/global) (Optional)
-     *         knowledgeSources (Optional): [
-     *              (Optional){
-     *                 kind: String(labeledData) (Required)
-     *             }
+     *         embedding (Optional): [
+     *             String (Optional)
      *         ]
-     *         models (Optional): {
-     *             String: String (Required)
-     *         }
-     *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
-     *         }
      *     }
      * }
      * }
@@ -2716,7 +2691,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of analyzer that extracts content and fields from multimodal
+     * documents.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCopyAnalyzer(String analyzerId, BinaryData copyAnalyzerRequest,
@@ -2838,12 +2814,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -2943,12 +2919,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3077,12 +3053,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3182,12 +3158,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3315,12 +3291,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3420,12 +3396,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3446,14 +3422,12 @@ public final class ContentUnderstandingClientImpl {
         beginCreateAnalyzerWithModelAsync(String analyzerId, BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createAnalyzerWithResponseAsync(analyzerId, resource, requestOptions),
-            new com.azure.ai.contentunderstanding.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(ContentAnalyzerOperationStatus.class),
             TypeReference.createInstance(ContentAnalyzer.class));
     }
@@ -3562,12 +3536,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3667,12 +3641,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3693,14 +3667,12 @@ public final class ContentUnderstandingClientImpl {
         BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createAnalyzerWithResponse(analyzerId, resource, requestOptions),
-            new com.azure.ai.contentunderstanding.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(ContentAnalyzerOperationStatus.class),
             TypeReference.createInstance(ContentAnalyzer.class));
     }
@@ -3809,12 +3781,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3914,12 +3886,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -3940,14 +3912,12 @@ public final class ContentUnderstandingClientImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createAnalyzerWithResponseAsync(analyzerId, resource, requestOptions),
-            new com.azure.ai.contentunderstanding.implementation.OperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -4055,12 +4025,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -4160,12 +4130,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -4186,14 +4156,12 @@ public final class ContentUnderstandingClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createAnalyzerWithResponse(analyzerId, resource, requestOptions),
-            new com.azure.ai.contentunderstanding.implementation.SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(this.getHttpPipeline())
-                    .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
-                    .setContext(requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE)
-                    .setServiceVersion(this.getServiceVersion().getVersion()),
-                "result"),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}/contentunderstanding".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -4361,12 +4329,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -4483,12 +4451,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -4666,12 +4634,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             embedding (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *     }
      *     usage (Optional): {
@@ -4807,12 +4775,12 @@ public final class ContentUnderstandingClientImpl {
      *             String: String (Required)
      *         }
      *         supportedModels (Optional): {
-     *             completion (Required): {
-     *                 String: String (Required)
-     *             }
-     *             embedding (Required): {
-     *                 String: String (Required)
-     *             }
+     *             completion (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             embedding (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *     }
      *     usage (Optional): {
@@ -5252,12 +5220,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5377,12 +5345,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5500,12 +5468,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5623,12 +5591,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5746,12 +5714,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5851,12 +5819,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -5977,12 +5945,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -6082,12 +6050,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -6299,12 +6267,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -6426,12 +6394,12 @@ public final class ContentUnderstandingClientImpl {
      *         String: String (Required)
      *     }
      *     supportedModels (Optional): {
-     *         completion (Required): {
-     *             String: String (Required)
-     *         }
-     *         embedding (Required): {
-     *             String: String (Required)
-     *         }
+     *         completion (Optional): [
+     *             String (Optional)
+     *         ]
+     *         embedding (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }

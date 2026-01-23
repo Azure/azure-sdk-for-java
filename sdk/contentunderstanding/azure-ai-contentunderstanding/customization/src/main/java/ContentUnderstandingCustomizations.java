@@ -65,8 +65,8 @@ public class ContentUnderstandingCustomizations extends Customization {
         // 11. Make ContentUnderstandingDefaults constructor public for convenience methods
         customizeContentUnderstandingDefaults(customization, logger);
 
-        // 12. Add updateAnalyzer and updateDefaults convenience methods (equivalent to C# Update Operations)
-        addUpdateConvenienceMethods(customization, logger);
+        // 12. Add updateDefaults convenience methods (TypeSpec disabled these, but auto-generates updateAnalyzer)
+        addUpdateDefaultsConvenienceMethods(customization, logger);
     }
 
     /**
@@ -693,7 +693,7 @@ public class ContentUnderstandingCustomizations extends Customization {
      * for the updateDefaults convenience method.
      */
     private void customizeContentUnderstandingDefaults(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing ContentUnderstandingDefaults to make constructor public");
+        logger.info("Customizing ContentUnderstandingDefaults to make constructor public and remove @Immutable");
 
         customization.getClass(MODELS_PACKAGE, "ContentUnderstandingDefaults").customizeAst(ast -> {
             // Remove @Immutable annotation
@@ -702,10 +702,8 @@ public class ContentUnderstandingCustomizations extends Customization {
 
                 // Find the existing constructor and make it public
                 clazz.getConstructors().forEach(constructor -> {
-                    constructor.getModifiers().stream()
-                        .filter(m -> m.getKeyword() == Modifier.Keyword.PRIVATE)
-                        .findFirst()
-                        .ifPresent(m -> m.setKeyword(Modifier.Keyword.PUBLIC));
+                    constructor.removeModifier(Modifier.Keyword.PRIVATE);
+                    constructor.addModifier(Modifier.Keyword.PUBLIC);
 
                     // Update Javadoc
                     constructor.setJavadocComment(new Javadoc(JavadocDescription.parseText(
@@ -718,40 +716,23 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add convenience methods for updateAnalyzer and updateDefaults that accept typed objects
+     * Add convenience methods for updateDefaults that accept typed objects
      * instead of BinaryData. This is equivalent to C# Update Operations in ContentUnderstandingClient.Customizations.cs
      *
-     * Note: Convenience methods return the typed object directly (not wrapped in Response) and do not
-     * have @ServiceMethod annotation to avoid linting errors.
+     * Note: TypeSpec auto-generates updateAnalyzer convenience methods, so we only add updateDefaults here.
+     * The updateDefaults convenience methods were disabled in TypeSpec because they require a public constructor
+     * on ContentUnderstandingDefaults, which we enable via customizeContentUnderstandingDefaults.
      */
-    private void addUpdateConvenienceMethods(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding updateAnalyzer and updateDefaults convenience methods");
+    private void addUpdateDefaultsConvenienceMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding updateDefaults convenience methods");
 
         // Add to sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzer");
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                // Add updateAnalyzer convenience method - returns ContentAnalyzer directly
-                clazz.addMethod("updateAnalyzer", Modifier.Keyword.PUBLIC)
-                    .setType("ContentAnalyzer")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("ContentAnalyzer", "resource")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Update analyzer properties.\n\n"
-                        + "This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "resource The ContentAnalyzer instance with properties to update.")
-                        .addBlockTag("return", "the updated ContentAnalyzer.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "Response<BinaryData> response = updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null);"
-                        + "return response.getValue().toObject(ContentAnalyzer.class); }"));
-
                 // Add updateDefaults convenience method with Map parameter - returns ContentUnderstandingDefaults directly
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
                     .setType("ContentUnderstandingDefaults")
@@ -789,29 +770,11 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Add to async client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzer");
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
 
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                // Add updateAnalyzer convenience method - returns Mono<ContentAnalyzer> directly
-                clazz.addMethod("updateAnalyzer", Modifier.Keyword.PUBLIC)
-                    .setType("Mono<ContentAnalyzer>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("ContentAnalyzer", "resource")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Update analyzer properties.\n\n"
-                        + "This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "resource The ContentAnalyzer instance with properties to update.")
-                        .addBlockTag("return", "the updated ContentAnalyzer on successful completion of {@link Mono}.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null)"
-                        + ".map(response -> response.getValue().toObject(ContentAnalyzer.class)); }"));
-
                 // Add updateDefaults convenience method with Map parameter - returns Mono<ContentUnderstandingDefaults>
                 clazz.addMethod("updateDefaults", Modifier.Keyword.PUBLIC)
                     .setType("Mono<ContentUnderstandingDefaults>")
