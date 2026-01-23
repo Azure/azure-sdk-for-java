@@ -81,7 +81,7 @@ public class Sample14_CopyAnalyzer extends ContentUnderstandingClientTestBase {
 
             // Create source analyzer
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = contentUnderstandingClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer, true);
+                = contentUnderstandingClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
             ContentAnalyzer sourceResult = createPoller.getFinalResult();
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 

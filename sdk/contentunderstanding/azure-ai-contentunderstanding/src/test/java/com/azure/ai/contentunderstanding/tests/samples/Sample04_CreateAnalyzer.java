@@ -124,7 +124,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
@@ -308,7 +308,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
         models.put("embedding", "text-embedding-3-large");
         customAnalyzer.setModels(models);
 
-        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, customAnalyzer).getFinalResult();
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         try {

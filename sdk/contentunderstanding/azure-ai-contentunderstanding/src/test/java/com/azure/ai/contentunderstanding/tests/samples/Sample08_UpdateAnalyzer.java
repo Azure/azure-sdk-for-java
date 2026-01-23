@@ -66,7 +66,7 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
         models.put("embedding", "text-embedding-3-large");
         analyzer.setModels(models);
 
-        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
     }
 

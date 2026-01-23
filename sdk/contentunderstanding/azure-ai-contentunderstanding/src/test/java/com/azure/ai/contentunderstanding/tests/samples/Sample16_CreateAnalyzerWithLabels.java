@@ -142,7 +142,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
 
             // For demonstration without actual training data, create analyzer without knowledge sources
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true);
+                = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer);
             ContentAnalyzer result = createPoller.getFinalResult();
 
             System.out.println("Analyzer created: " + analyzerId);

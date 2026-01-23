@@ -109,7 +109,7 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifierAnalyzer, true);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifierAnalyzer);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Classifier analyzer '" + analyzerId + "' created successfully!");

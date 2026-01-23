@@ -63,7 +63,7 @@ public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase 
         models.put("embedding", "text-embedding-3-large");
         analyzer.setModels(models);
 
-        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
         System.out.println("Temporary analyzer created: " + analyzerId);
 
         // Verify the analyzer exists
