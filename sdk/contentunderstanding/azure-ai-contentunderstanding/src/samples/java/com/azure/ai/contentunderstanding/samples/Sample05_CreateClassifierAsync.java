@@ -101,7 +101,7 @@ public class Sample05_CreateClassifierAsync {
 
         // Create the classifier
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, classifier);
+            = client.beginCreateAnalyzer(analyzerId, classifier, true);
 
         ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
         System.out.println("Classifier '" + analyzerId + "' created successfully!");

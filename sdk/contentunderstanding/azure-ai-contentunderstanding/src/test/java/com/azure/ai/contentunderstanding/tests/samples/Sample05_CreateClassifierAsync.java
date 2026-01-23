@@ -89,7 +89,7 @@ public class Sample05_CreateClassifierAsync extends ContentUnderstandingClientTe
 
         // Create the classifier
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, classifier);
+            = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, classifier, true);
 
         ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
         System.out.println("Classifier '" + analyzerId + "' created successfully!");

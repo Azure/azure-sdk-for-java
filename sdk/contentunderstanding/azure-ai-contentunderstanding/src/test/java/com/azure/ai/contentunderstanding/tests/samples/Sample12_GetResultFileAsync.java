@@ -56,6 +56,14 @@ public class Sample12_GetResultFileAsync extends ContentUnderstandingClientTestB
         String operationId = poller.getSyncPoller().poll().getValue().getOperationId();
         System.out.println("Operation ID: " + operationId);
 
+        // Wait briefly to ensure the result files are fully available
+        // This is needed because the analysis may complete but result files may need a moment to be accessible
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         // END: com.azure.ai.contentunderstanding.getResultFileAsync
 
         // Verify operation started and completed

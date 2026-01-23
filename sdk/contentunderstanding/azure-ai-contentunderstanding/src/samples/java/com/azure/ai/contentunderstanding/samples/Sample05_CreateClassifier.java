@@ -19,19 +19,19 @@ import java.util.Map;
 
 /**
  * Sample demonstrating how to create a classifier analyzer.
- * 
+ *
  * This sample shows how to create a classifier that categorizes documents into predefined
  * custom categories using ContentCategories. Classifiers are useful for:
  * - Content organization: Organize large document collections by type through categorization
  * - Data routing (optional): Route data to specific custom analyzers based on category
  * - Multi-document processing: Process files containing multiple document types by automatically
  *   segmenting them
- * 
+ *
  * Classifiers use custom categories defined in ContentCategories. Each category has a Description
  * that helps the AI model understand what documents belong to that category. You can define up to
  * 200 category names and descriptions. You can include an "other" category to handle unmatched
  * content; otherwise, all files are forced to be classified into one of your defined categories.
- * 
+ *
  * The EnableSegment property in the analyzer configuration controls whether multi-document files
  * are split into segments:
  * - EnableSegment = false: Classifies the entire file as a single category (classify only)
@@ -101,7 +101,7 @@ public class Sample05_CreateClassifier {
 
         // Create the classifier
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, classifier);
+            = client.beginCreateAnalyzer(analyzerId, classifier, true);
 
         ContentAnalyzer result = operation.getFinalResult();
         System.out.println("Classifier '" + analyzerId + "' created successfully!");
