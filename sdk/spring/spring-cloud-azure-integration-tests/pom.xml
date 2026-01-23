@@ -38,6 +38,21 @@
     <spotless.skip>true</spotless.skip>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <!-- Force Netty version to match Azure SDK requirements and resolve compatibility issues with Spring Boot 4.x -->
+      <!-- Spring Boot 4.0.1 uses Netty 4.2.x, but Azure SDK requires 4.1.x -->
+      <!-- Netty 4.2.x will cause unit test failure. Refs: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=5785210&view=logs&j=cf5e6108-2b64-5f87-7718-beff375d120b&t=806e1509-ed0a-5d45-2c5f-b78e8c6a5ef5&s=f14e54f5-05fe-5e55-1aa9-be7ac82d47a6-->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>4.1.130.Final</version>  <!-- {x-version-update;io.netty:netty-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

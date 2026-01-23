@@ -44,6 +44,7 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
+io.netty:netty-bom;4.1.130.Final
 io.netty:netty-buffer;4.1.130.Final
 io.netty:netty-common;4.1.130.Final
 io.netty:netty-codec;4.1.130.Final
