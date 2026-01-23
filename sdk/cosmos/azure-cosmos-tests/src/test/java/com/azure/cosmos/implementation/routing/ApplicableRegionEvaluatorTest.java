@@ -209,7 +209,6 @@ public class ApplicableRegionEvaluatorTest {
                 globalEndpointManager,
                 true,
                 new ThrottlingRetryOptions(),
-                null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 

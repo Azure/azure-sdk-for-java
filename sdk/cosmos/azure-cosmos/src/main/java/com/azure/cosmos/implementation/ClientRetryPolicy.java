@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
@@ -51,7 +50,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
     private RxDocumentServiceRequest request;
-    private final RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
     private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
     private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
@@ -60,7 +58,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions,
-                             RxCollectionCache rxCollectionCache,
                              GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                              GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
 
@@ -76,7 +73,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
             false);
         this.metadataThrottlingRetry = new MetadataThrottlingRetryPolicy(BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
-        this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover = globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
@@ -250,7 +246,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
-                if (this.sessionTokenRetryCount > 1) {
+                if (this.sessionTokenRetryCount > 2) {
                     // When cannot use multiple write locations, then don't retry the request if
                     // we have already tried this request on the write location
                     return ShouldRetryResult.noRetry();
@@ -274,7 +270,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContext
                                 = request.requestContext.getCrossRegionAvailabilityContext();
 
-                            if (crossRegionAvailabilityContext != null) {
+                            if (crossRegionAvailabilityContext != null && this.sessionTokenRetryCount == 2) {
                                 crossRegionAvailabilityContext.setShouldAddHubRegionProcessingOnlyHeader(true);
                             }
                         }

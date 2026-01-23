@@ -84,8 +84,8 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             // Set preferred regions - start with third region, then first, then second
             this.preferredRegions = new ArrayList<>();
-            this.preferredRegions.add(accountLevelContext.serviceOrderedReadableRegions.get(0)); // Third region
-            this.preferredRegions.add(accountLevelContext.serviceOrderedReadableRegions.get(2)); // First region
+            this.preferredRegions.add(accountLevelContext.serviceOrderedReadableRegions.get(2)); // Third region
+            this.preferredRegions.add(accountLevelContext.serviceOrderedReadableRegions.get(0)); // First region
             this.preferredRegions.add(accountLevelContext.serviceOrderedReadableRegions.get(1)); // Second region
 
             this.regionNameToEndpoint = accountLevelContext.regionNameToEndpoint;
@@ -168,11 +168,18 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
 
-            // Step 2: Inject 404-1002 fault in the third preferred region (first in list)
-            String thirdRegion = this.preferredRegions.get(0); // Third region is first in our preferred list
+            // Step 2: Inject 404-1002 fault in the third account-level region (first in list)
+            String thirdAccountLevelRegion = this.preferredRegions.get(0); // Third region is first in our preferred list
             injectReadSessionNotAvailableError(
                 targetContainer,
-                thirdRegion,
+                thirdAccountLevelRegion,
+                FaultInjectionOperationType.READ_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            String firstAccountLevelRegion = this.preferredRegions.get(1);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                firstAccountLevelRegion,
                 FaultInjectionOperationType.READ_ITEM,
                 ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
 
@@ -275,12 +282,19 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
 
-            // Inject 404-1002 fault in the third preferred region (first in list)
-            String thirdRegion = this.preferredRegions.get(0);
+            // Inject 404-1002 fault in the third account-level region (first in list)
+            String thirdAccountLevelRegion = this.preferredRegions.get(0);
             injectReadSessionNotAvailableError(
                 targetContainer,
-                thirdRegion,
+                thirdAccountLevelRegion,
                 FaultInjectionOperationType.QUERY_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            String firstAccountLevelRegion = this.preferredRegions.get(1);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                firstAccountLevelRegion,
+                FaultInjectionOperationType.READ_ITEM,
                 ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
 
             Thread.sleep(1000);
@@ -383,12 +397,19 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
 
-            // Inject 404-1002 fault in the third preferred region (first in list)
-            String thirdRegion = this.preferredRegions.get(0);
+            // Inject 404-1002 fault in the third account-level region (first in list)
+            String thirdAccountLevelRegion = this.preferredRegions.get(0);
             injectReadSessionNotAvailableError(
                 targetContainer,
-                thirdRegion,
+                thirdAccountLevelRegion,
                 FaultInjectionOperationType.READ_FEED_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            String firstAccountLevelRegion = this.preferredRegions.get(1);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                firstAccountLevelRegion,
+                FaultInjectionOperationType.READ_ITEM,
                 ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
 
             Thread.sleep(1000);
@@ -490,11 +511,18 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
 
-            // Inject 404-1002 fault in the third preferred region (first in list)
-            String thirdRegion = this.preferredRegions.get(0);
+            // Inject 404-1002 fault in the third account-level region (first in list)
+            String thirdAccountLevelRegion = this.preferredRegions.get(0);
             injectReadSessionNotAvailableError(
                 targetContainer,
-                thirdRegion,
+                thirdAccountLevelRegion,
+                FaultInjectionOperationType.READ_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            String firstAccountLevelRegion = this.preferredRegions.get(1);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                firstAccountLevelRegion,
                 FaultInjectionOperationType.READ_ITEM,
                 ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
 
@@ -595,13 +623,20 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
             logger.info("Determined hub region for partition '{}': {}", this.partitionKeyValue, hubRegion);
 
-            // Inject 404-1002 fault in the third preferred region (first in list)
+            // Inject 404-1002 fault in the third account-level region (first in list)
             // readAll uses QUERY_ITEM fault injection type
-            String thirdRegion = this.preferredRegions.get(0);
+            String thirdAccountLevelRegion = this.preferredRegions.get(0);
             injectReadSessionNotAvailableError(
                 targetContainer,
-                thirdRegion,
+                thirdAccountLevelRegion,
                 FaultInjectionOperationType.QUERY_ITEM,
+                ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
+
+            String firstAccountLevelRegion = this.preferredRegions.get(1);
+            injectReadSessionNotAvailableError(
+                targetContainer,
+                firstAccountLevelRegion,
+                FaultInjectionOperationType.READ_ITEM,
                 ConnectionMode.DIRECT.equals(connectionModeForTestClient) ? FaultInjectionConnectionType.DIRECT : FaultInjectionConnectionType.GATEWAY);
 
             Thread.sleep(1000);
