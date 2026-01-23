@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.resourcemanager.containerregistry.models.ContainerRegistryResourceType;
 import com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest;
 
 /**
@@ -24,9 +23,7 @@ public final class RegistriesCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .checkNameAvailabilityWithResponse(
-                new RegistryNameCheckRequest().withName("myRegistry")
-                    .withType(ContainerRegistryResourceType.MICROSOFT_CONTAINER_REGISTRY_REGISTRIES),
+            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -43,9 +40,7 @@ public final class RegistriesCheckNameAvailabilitySamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .checkNameAvailabilityWithResponse(
-                new RegistryNameCheckRequest().withName("myRegistry")
-                    .withType(ContainerRegistryResourceType.MICROSOFT_CONTAINER_REGISTRY_REGISTRIES),
+            .checkNameAvailabilityWithResponse(new RegistryNameCheckRequest().withName("myRegistry"),
                 com.azure.core.util.Context.NONE);
     }
 }
