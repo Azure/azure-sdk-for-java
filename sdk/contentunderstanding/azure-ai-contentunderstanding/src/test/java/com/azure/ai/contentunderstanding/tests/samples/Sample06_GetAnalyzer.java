@@ -5,7 +5,6 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,28 +87,27 @@ public class Sample06_GetAnalyzer extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingGetAnalyzer
 
         // BEGIN:Assertion_ContentUnderstandingGetAnalyzer
-        Assertions.assertNotNull(analyzerId, "Analyzer ID should not be null");
-        Assertions.assertNotNull(analyzer, "Analyzer should not be null");
+        assertNotNull(analyzerId, "Analyzer ID should not be null");
+        assertNotNull(analyzer, "Analyzer should not be null");
         System.out.println("\nAnalyzer retrieved successfully");
 
         // Verify analyzer ID
-        Assertions.assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
-        Assertions.assertEquals(analyzerId, analyzer.getAnalyzerId(), "Analyzer ID should match requested ID");
+        assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
+        assertEquals(analyzerId, analyzer.getAnalyzerId(), "Analyzer ID should match requested ID");
         System.out.println("Analyzer ID verified: " + analyzer.getAnalyzerId());
 
         // Verify analyzer has configuration
-        Assertions.assertNotNull(analyzer.getConfig(), "Analyzer config should not be null");
+        assertNotNull(analyzer.getConfig(), "Analyzer config should not be null");
         System.out.println("Analyzer configuration verified");
 
         // For prebuilt analyzers, verify they have field schema
         if (analyzer.getFieldSchema() != null) {
-            Assertions.assertNotNull(analyzer.getFieldSchema().getName(), "Field schema name should not be null");
-            Assertions.assertFalse(analyzer.getFieldSchema().getName().trim().isEmpty(),
-                "Field schema name should not be empty");
+            assertNotNull(analyzer.getFieldSchema().getName(), "Field schema name should not be null");
+            assertFalse(analyzer.getFieldSchema().getName().trim().isEmpty(), "Field schema name should not be empty");
             System.out.println("Field schema verified: " + analyzer.getFieldSchema().getName());
 
             if (analyzer.getFieldSchema().getFields() != null) {
-                Assertions.assertTrue(analyzer.getFieldSchema().getFields().size() > 0,
+                assertTrue(analyzer.getFieldSchema().getFields().size() > 0,
                     "Field schema should have at least one field");
                 System.out.println("Field schema contains " + analyzer.getFieldSchema().getFields().size() + " fields");
             }
@@ -131,9 +129,9 @@ public class Sample06_GetAnalyzer extends ContentUnderstandingClientTestBase {
         System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
 
         // Verify the analyzer
-        Assertions.assertNotNull(analyzer, "Analyzer should not be null");
-        Assertions.assertEquals(analyzerId, analyzer.getAnalyzerId(), "Analyzer ID should match");
-        Assertions.assertNotNull(analyzer.getConfig(), "Analyzer config should not be null");
+        assertNotNull(analyzer, "Analyzer should not be null");
+        assertEquals(analyzerId, analyzer.getAnalyzerId(), "Analyzer ID should match");
+        assertNotNull(analyzer.getConfig(), "Analyzer config should not be null");
         System.out.println("Prebuilt-document analyzer verified successfully");
     }
 }

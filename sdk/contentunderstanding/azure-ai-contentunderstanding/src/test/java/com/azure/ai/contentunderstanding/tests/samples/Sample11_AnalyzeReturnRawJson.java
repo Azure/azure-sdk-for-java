@@ -9,7 +9,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +26,7 @@ import java.time.format.DateTimeFormatter;
  * 1. Using protocol method to get raw JSON response instead of strongly-typed objects
  * 2. Parsing raw JSON response
  * 3. Pretty-printing and saving JSON to file
- * 
+ *
  * Note: For production use, prefer the object model approach (beginAnalyzeBinary with typed parameters)
  * which returns AnalyzeResult objects that are easier to work with.
  */
@@ -57,32 +56,32 @@ public class Sample11_AnalyzeReturnRawJson extends ContentUnderstandingClientTes
         // END:ContentUnderstandingAnalyzeReturnRawJson
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeReturnRawJson
-        Assertions.assertTrue(Files.exists(filePath), "Sample file should exist at " + filePath);
-        Assertions.assertTrue(fileBytes.length > 0, "File should not be empty");
+        assertTrue(Files.exists(filePath), "Sample file should exist at " + filePath);
+        assertTrue(fileBytes.length > 0, "File should not be empty");
         System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
 
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("Analysis operation completed with status: " + operation.poll().getStatus());
 
-        Assertions.assertNotNull(responseData, "Response data should not be null");
-        Assertions.assertTrue(responseData.toBytes().length > 0, "Response data should not be empty");
+        assertNotNull(responseData, "Response data should not be null");
+        assertTrue(responseData.toBytes().length > 0, "Response data should not be empty");
         System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
 
         // Verify response data can be converted to string
         String responseString = responseData.toString();
-        Assertions.assertNotNull(responseString, "Response string should not be null");
-        Assertions.assertTrue(responseString.length() > 0, "Response string should not be empty");
+        assertNotNull(responseString, "Response string should not be null");
+        assertTrue(responseString.length() > 0, "Response string should not be empty");
         System.out.println("Response string length: " + String.format("%,d", responseString.length()) + " characters");
 
         // Verify response is valid JSON format
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(responseData.toBytes());
-            Assertions.assertNotNull(jsonNode, "Response should be valid JSON");
+            assertNotNull(jsonNode, "Response should be valid JSON");
             System.out.println("Response is valid JSON format");
         } catch (Exception ex) {
-            Assertions.fail("Response data is not valid JSON: " + ex.getMessage());
+            fail("Response data is not valid JSON: " + ex.getMessage());
         }
 
         System.out.println("Raw JSON analysis operation completed successfully");
@@ -111,44 +110,43 @@ public class Sample11_AnalyzeReturnRawJson extends ContentUnderstandingClientTes
         // END:ContentUnderstandingParseRawJson
 
         // BEGIN:Assertion_ContentUnderstandingParseRawJson
-        Assertions.assertNotNull(jsonNode, "JSON node should not be null");
+        assertNotNull(jsonNode, "JSON node should not be null");
         System.out.println("JSON document parsed successfully");
 
-        Assertions.assertNotNull(prettyJson, "Pretty JSON string should not be null");
-        Assertions.assertTrue(prettyJson.length() > 0, "Pretty JSON should not be empty");
-        Assertions.assertTrue(prettyJson.length() >= responseData.toString().length(),
+        assertNotNull(prettyJson, "Pretty JSON string should not be null");
+        assertTrue(prettyJson.length() > 0, "Pretty JSON should not be empty");
+        assertTrue(prettyJson.length() >= responseData.toString().length(),
             "Pretty JSON should be same size or larger than original (due to indentation)");
         System.out.println("Pretty JSON generated: " + String.format("%,d", prettyJson.length()) + " characters");
 
         // Verify JSON is properly indented
-        Assertions.assertTrue(prettyJson.contains("\n"), "Pretty JSON should contain line breaks");
-        Assertions.assertTrue(prettyJson.contains("  "), "Pretty JSON should contain indentation");
+        assertTrue(prettyJson.contains("\n"), "Pretty JSON should contain line breaks");
+        assertTrue(prettyJson.contains("  "), "Pretty JSON should contain indentation");
         System.out.println("JSON is properly formatted with indentation");
 
         // Verify output directory
-        Assertions.assertNotNull(outputDir, "Output directory path should not be null");
-        Assertions.assertTrue(Files.exists(outputDir), "Output directory should exist at " + outputDir);
+        assertNotNull(outputDir, "Output directory path should not be null");
+        assertTrue(Files.exists(outputDir), "Output directory should exist at " + outputDir);
         System.out.println("Output directory verified: " + outputDir);
 
         // Verify output file name format
-        Assertions.assertNotNull(outputFileName, "Output file name should not be null");
-        Assertions.assertTrue(outputFileName.startsWith("analyze_result_"),
+        assertNotNull(outputFileName, "Output file name should not be null");
+        assertTrue(outputFileName.startsWith("analyze_result_"),
             "Output file name should start with 'analyze_result_'");
-        Assertions.assertTrue(outputFileName.endsWith(".json"), "Output file name should end with '.json'");
+        assertTrue(outputFileName.endsWith(".json"), "Output file name should end with '.json'");
         System.out.println("Output file name: " + outputFileName);
 
         // Verify output file path
-        Assertions.assertNotNull(outputPath, "Output file path should not be null");
-        Assertions.assertTrue(outputPath.toString().contains(outputDir.toString()),
-            "Output path should contain output directory");
-        Assertions.assertTrue(outputPath.toString().endsWith(".json"), "Output path should end with '.json'");
-        Assertions.assertTrue(Files.exists(outputPath), "Output file should exist at " + outputPath);
+        assertNotNull(outputPath, "Output file path should not be null");
+        assertTrue(outputPath.toString().contains(outputDir.toString()), "Output path should contain output directory");
+        assertTrue(outputPath.toString().endsWith(".json"), "Output path should end with '.json'");
+        assertTrue(Files.exists(outputPath), "Output file should exist at " + outputPath);
         System.out.println("Output file created: " + outputPath);
 
         // Verify file content size
         long fileSize = Files.size(outputPath);
-        Assertions.assertTrue(fileSize > 0, "Output file should not be empty");
-        Assertions.assertEquals(prettyJson.length(), fileSize, "File size should match pretty JSON length");
+        assertTrue(fileSize > 0, "Output file should not be empty");
+        assertEquals(prettyJson.length(), fileSize, "File size should match pretty JSON length");
         System.out.println("Output file size verified: " + String.format("%,d", fileSize) + " bytes");
 
         System.out.println("Raw JSON parsing and saving completed successfully");

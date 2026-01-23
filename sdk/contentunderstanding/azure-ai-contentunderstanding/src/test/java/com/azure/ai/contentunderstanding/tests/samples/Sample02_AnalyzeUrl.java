@@ -15,7 +15,6 @@ import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,13 +52,13 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingAnalyzeUrlAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsync
-        Assertions.assertNotNull(uriSource, "URI source should not be null");
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(uriSource, "URI source should not be null");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("Analysis operation properties verified");
 
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result contents should not be null");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeUrlAsync
@@ -77,15 +76,14 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             }
         }
 
-        Assertions.assertNotNull(result.getContents(), "Result should contain contents");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
-        Assertions.assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
-        Assertions.assertNotNull(content, "Content should not be null");
-        Assertions.assertTrue(content instanceof MediaContent, "Content should be of type MediaContent");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
+        assertNotNull(content, "Content should not be null");
+        assertTrue(content instanceof MediaContent, "Content should be of type MediaContent");
 
         if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            Assertions.assertFalse(content.getMarkdown().trim().isEmpty(),
-                "Markdown content should not be just whitespace");
+            assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be just whitespace");
             System.out
                 .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
         }
@@ -122,36 +120,34 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             }
         } else {
             // Content is not DocumentContent - verify it's MediaContent
-            Assertions.assertTrue(content instanceof MediaContent,
-                "Content should be MediaContent when not DocumentContent");
+            assertTrue(content instanceof MediaContent, "Content should be MediaContent when not DocumentContent");
             System.out.println("Content is MediaContent (not document-specific), skipping document properties");
         }
 
-        Assertions.assertNotNull(content, "Content should not be null for document properties validation");
+        assertNotNull(content, "Content should not be null for document properties validation");
 
         if (content instanceof DocumentContent) {
             DocumentContent docContent = (DocumentContent) content;
 
             // Validate MIME type
-            Assertions.assertNotNull(docContent.getMimeType(), "MIME type should not be null");
-            Assertions.assertFalse(docContent.getMimeType().trim().isEmpty(), "MIME type should not be empty");
-            Assertions.assertEquals("application/pdf", docContent.getMimeType(), "MIME type should be application/pdf");
+            assertNotNull(docContent.getMimeType(), "MIME type should not be null");
+            assertFalse(docContent.getMimeType().trim().isEmpty(), "MIME type should not be empty");
+            assertEquals("application/pdf", docContent.getMimeType(), "MIME type should be application/pdf");
             System.out.println("MIME type verified: " + docContent.getMimeType());
 
             // Validate page numbers
-            Assertions.assertTrue(docContent.getStartPageNumber() >= 1, "Start page should be >= 1");
-            Assertions.assertTrue(docContent.getEndPageNumber() >= docContent.getStartPageNumber(),
+            assertTrue(docContent.getStartPageNumber() >= 1, "Start page should be >= 1");
+            assertTrue(docContent.getEndPageNumber() >= docContent.getStartPageNumber(),
                 "End page should be >= start page");
             int totalPages = docContent.getEndPageNumber() - docContent.getStartPageNumber() + 1;
-            Assertions.assertTrue(totalPages > 0, "Total pages should be positive");
+            assertTrue(totalPages > 0, "Total pages should be positive");
             System.out.println("Page range verified: " + docContent.getStartPageNumber() + " to "
                 + docContent.getEndPageNumber() + " (" + totalPages + " pages)");
 
             // Validate pages collection
             if (docContent.getPages() != null && !docContent.getPages().isEmpty()) {
-                Assertions.assertTrue(docContent.getPages().size() > 0,
-                    "Pages collection should not be empty when not null");
-                Assertions.assertEquals(totalPages, docContent.getPages().size(),
+                assertTrue(docContent.getPages().size() > 0, "Pages collection should not be empty when not null");
+                assertEquals(totalPages, docContent.getPages().size(),
                     "Pages collection count should match calculated total pages");
                 System.out.println("Pages collection verified: " + docContent.getPages().size() + " pages");
 
@@ -159,20 +155,20 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
                 Set<Integer> pageNumbers = new HashSet<>();
 
                 for (DocumentPage page : docContent.getPages()) {
-                    Assertions.assertNotNull(page, "Page object should not be null");
-                    Assertions.assertTrue(page.getPageNumber() >= 1, "Page number should be >= 1");
-                    Assertions.assertTrue(
+                    assertNotNull(page, "Page object should not be null");
+                    assertTrue(page.getPageNumber() >= 1, "Page number should be >= 1");
+                    assertTrue(
                         page.getPageNumber() >= docContent.getStartPageNumber()
                             && page.getPageNumber() <= docContent.getEndPageNumber(),
                         "Page number " + page.getPageNumber() + " should be within document range ["
                             + docContent.getStartPageNumber() + ", " + docContent.getEndPageNumber() + "]");
-                    Assertions.assertTrue(page.getWidth() > 0,
+                    assertTrue(page.getWidth() > 0,
                         "Page " + page.getPageNumber() + " width should be > 0, but was " + page.getWidth());
-                    Assertions.assertTrue(page.getHeight() > 0,
+                    assertTrue(page.getHeight() > 0,
                         "Page " + page.getPageNumber() + " height should be > 0, but was " + page.getHeight());
 
                     // Ensure page numbers are unique
-                    Assertions.assertTrue(pageNumbers.add(page.getPageNumber()),
+                    assertTrue(pageNumbers.add(page.getPageNumber()),
                         "Page number " + page.getPageNumber() + " appears multiple times");
 
                     String unit = docContent.getUnit() != null ? docContent.getUnit().toString() : "units";
@@ -185,30 +181,28 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
 
             // Validate tables collection
             if (docContent.getTables() != null && !docContent.getTables().isEmpty()) {
-                Assertions.assertTrue(docContent.getTables().size() > 0,
-                    "Tables collection should not be empty when not null");
+                assertTrue(docContent.getTables().size() > 0, "Tables collection should not be empty when not null");
                 System.out.println("Tables collection verified: " + docContent.getTables().size() + " tables");
 
                 int tableCounter = 1;
                 for (DocumentTable table : docContent.getTables()) {
-                    Assertions.assertNotNull(table, "Table " + tableCounter + " should not be null");
-                    Assertions.assertTrue(table.getRowCount() > 0,
+                    assertNotNull(table, "Table " + tableCounter + " should not be null");
+                    assertTrue(table.getRowCount() > 0,
                         "Table " + tableCounter + " should have at least 1 row, but had " + table.getRowCount());
-                    Assertions.assertTrue(table.getColumnCount() > 0,
+                    assertTrue(table.getColumnCount() > 0,
                         "Table " + tableCounter + " should have at least 1 column, but had " + table.getColumnCount());
 
                     // Validate table cells if available
                     if (table.getCells() != null) {
-                        Assertions.assertTrue(table.getCells().size() > 0,
+                        assertTrue(table.getCells().size() > 0,
                             "Table " + tableCounter + " cells collection should not be empty when not null");
 
                         for (DocumentTableCell cell : table.getCells()) {
-                            Assertions.assertNotNull(cell, "Table cell should not be null");
-                            Assertions.assertTrue(cell.getRowIndex() >= 0 && cell.getRowIndex() < table.getRowCount(),
+                            assertNotNull(cell, "Table cell should not be null");
+                            assertTrue(cell.getRowIndex() >= 0 && cell.getRowIndex() < table.getRowCount(),
                                 "Cell row index " + cell.getRowIndex() + " should be within table row count "
                                     + table.getRowCount());
-                            Assertions.assertTrue(
-                                cell.getColumnIndex() >= 0 && cell.getColumnIndex() < table.getColumnCount(),
+                            assertTrue(cell.getColumnIndex() >= 0 && cell.getColumnIndex() < table.getColumnCount(),
                                 "Cell column index " + cell.getColumnIndex() + " should be within table column count "
                                     + table.getColumnCount());
                         }
@@ -226,7 +220,7 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             System.out.println("All document properties validated successfully");
         } else {
             // Content is not DocumentContent - validate alternative types
-            Assertions.assertTrue(content instanceof MediaContent,
+            assertTrue(content instanceof MediaContent,
                 "Content should be MediaContent when not DocumentContent, but got "
                     + (content != null ? content.getClass().getSimpleName() : "null"));
             System.out.println("⚠️ Content is not DocumentContent type, skipping document-specific validations");
@@ -276,24 +270,21 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingAnalyzeVideoUrlAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result contents should not be null");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify all contents are AudioVisualContent
         for (MediaContent content : result.getContents()) {
-            Assertions.assertTrue(content instanceof AudioVisualContent,
-                "Video analysis should return audio/visual content.");
+            assertTrue(content instanceof AudioVisualContent, "Video analysis should return audio/visual content.");
             AudioVisualContent avContent = (AudioVisualContent) content;
-            Assertions.assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
-            Assertions.assertTrue(avContent.getFields().containsKey("Summary"),
-                "Video segment should have Summary field");
-            Assertions.assertNotNull(avContent.getFields().get("Summary").getValue(),
-                "Summary value should not be null");
+            assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
+            assertTrue(avContent.getFields().containsKey("Summary"), "Video segment should have Summary field");
+            assertNotNull(avContent.getFields().get("Summary").getValue(), "Summary value should not be null");
             String summaryStr = avContent.getFields().get("Summary").getValue().toString();
-            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+            assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Video analysis validation completed successfully");
         // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
@@ -344,28 +335,24 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingAnalyzeAudioUrlAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result contents should not be null");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify content is AudioVisualContent
-        Assertions.assertTrue(audioContent instanceof AudioVisualContent,
-            "Audio analysis should return audio/visual content.");
+        assertTrue(audioContent instanceof AudioVisualContent, "Audio analysis should return audio/visual content.");
 
         // Verify all contents have Summary field
         for (MediaContent content : result.getContents()) {
-            Assertions.assertTrue(content instanceof AudioVisualContent,
-                "Audio analysis should return audio/visual content.");
+            assertTrue(content instanceof AudioVisualContent, "Audio analysis should return audio/visual content.");
             AudioVisualContent avContent = (AudioVisualContent) content;
-            Assertions.assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
-            Assertions.assertTrue(avContent.getFields().containsKey("Summary"),
-                "Audio content should have Summary field");
-            Assertions.assertNotNull(avContent.getFields().get("Summary").getValue(),
-                "Summary value should not be null");
+            assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
+            assertTrue(avContent.getFields().containsKey("Summary"), "Audio content should have Summary field");
+            assertNotNull(avContent.getFields().get("Summary").getValue(), "Summary value should not be null");
             String summaryStr = avContent.getFields().get("Summary").getValue().toString();
-            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+            assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Audio analysis validation completed successfully");
         // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
@@ -398,21 +385,19 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingAnalyzeImageUrlAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result contents should not be null");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
 
         // Verify content has Summary field
         for (MediaContent mediaContent : result.getContents()) {
-            Assertions.assertNotNull(mediaContent.getFields(), "Content should have fields");
-            Assertions.assertTrue(mediaContent.getFields().containsKey("Summary"),
-                "Image content should have Summary field");
-            Assertions.assertNotNull(mediaContent.getFields().get("Summary").getValue(),
-                "Summary value should not be null");
+            assertNotNull(mediaContent.getFields(), "Content should have fields");
+            assertTrue(mediaContent.getFields().containsKey("Summary"), "Image content should have Summary field");
+            assertNotNull(mediaContent.getFields().get("Summary").getValue(), "Summary value should not be null");
             String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
-            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+            assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");
         // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsync

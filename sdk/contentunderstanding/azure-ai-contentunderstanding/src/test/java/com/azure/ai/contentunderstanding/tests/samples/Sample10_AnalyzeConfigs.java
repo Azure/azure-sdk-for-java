@@ -14,7 +14,6 @@ import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,23 +57,23 @@ public class Sample10_AnalyzeConfigs extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingAnalyzeWithConfigs
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeWithConfigs
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("Analysis operation properties verified");
 
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result should contain contents");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
-        Assertions.assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
 
         // Verify document content type
         DocumentContent firstDocContent = result.getContents().get(0) instanceof DocumentContent
             ? (DocumentContent) result.getContents().get(0)
             : null;
-        Assertions.assertNotNull(firstDocContent, "Content should be DocumentContent");
-        Assertions.assertTrue(firstDocContent.getStartPageNumber() >= 1, "Start page should be >= 1");
-        Assertions.assertTrue(firstDocContent.getEndPageNumber() >= firstDocContent.getStartPageNumber(),
+        assertNotNull(firstDocContent, "Content should be DocumentContent");
+        assertTrue(firstDocContent.getStartPageNumber() >= 1, "Start page should be >= 1");
+        assertTrue(firstDocContent.getEndPageNumber() >= firstDocContent.getStartPageNumber(),
             "End page should be >= start page");
         int totalPages = firstDocContent.getEndPageNumber() - firstDocContent.getStartPageNumber() + 1;
         System.out.println("Document has " + totalPages + " page(s) from " + firstDocContent.getStartPageNumber()

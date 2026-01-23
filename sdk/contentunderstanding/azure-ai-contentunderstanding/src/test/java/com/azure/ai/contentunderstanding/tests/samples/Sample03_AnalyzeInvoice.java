@@ -14,7 +14,6 @@ import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,15 +50,15 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingAnalyzeInvoice
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoice
-        Assertions.assertNotNull(invoiceUrl, "Invoice URL should not be null");
-        Assertions.assertNotNull(operation, "Analysis operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(invoiceUrl, "Invoice URL should not be null");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("Analysis operation properties verified");
 
-        Assertions.assertNotNull(result, "Analysis result should not be null");
-        Assertions.assertNotNull(result.getContents(), "Result should contain contents");
-        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
-        Assertions.assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeInvoice
 
@@ -179,25 +178,25 @@ public class Sample03_AnalyzeInvoice extends ContentUnderstandingClientTestBase 
 
         // BEGIN:Assertion_ContentUnderstandingExtractInvoiceFields
         MediaContent content = result.getContents().get(0);
-        Assertions.assertNotNull(content, "Content should not be null");
-        Assertions.assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
+        assertNotNull(content, "Content should not be null");
+        assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
 
         if (content instanceof DocumentContent) {
             DocumentContent docContent = (DocumentContent) content;
 
             // Verify basic document properties
-            Assertions.assertTrue(docContent.getStartPageNumber() >= 1, "Start page should be >= 1");
-            Assertions.assertTrue(docContent.getEndPageNumber() >= docContent.getStartPageNumber(),
+            assertTrue(docContent.getStartPageNumber() >= 1, "Start page should be >= 1");
+            assertTrue(docContent.getEndPageNumber() >= docContent.getStartPageNumber(),
                 "End page should be >= start page");
             int totalPages = docContent.getEndPageNumber() - docContent.getStartPageNumber() + 1;
-            Assertions.assertTrue(totalPages > 0, "Total pages should be positive");
+            assertTrue(totalPages > 0, "Total pages should be positive");
             System.out.println("Document has " + totalPages + " page(s) from " + docContent.getStartPageNumber()
                 + " to " + docContent.getEndPageNumber());
 
             System.out.println("All invoice fields validated successfully");
         } else {
             // This should not happen given the assertTrue above, but handle it for completeness
-            Assertions.fail("Content type validation failed: expected DocumentContent but got "
+            fail("Content type validation failed: expected DocumentContent but got "
                 + (content != null ? content.getClass().getSimpleName() : "null"));
         }
         // END:Assertion_ContentUnderstandingExtractInvoiceFields

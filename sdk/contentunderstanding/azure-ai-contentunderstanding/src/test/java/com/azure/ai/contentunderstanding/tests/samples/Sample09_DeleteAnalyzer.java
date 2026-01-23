@@ -11,7 +11,6 @@ import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.exception.ResourceNotFoundException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,15 +79,15 @@ public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingDeleteAnalyzer
 
         // BEGIN:Assertion_ContentUnderstandingDeleteAnalyzer
-        Assertions.assertNotNull(analyzerId, "Analyzer ID should not be null");
-        Assertions.assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
+        assertNotNull(analyzerId, "Analyzer ID should not be null");
+        assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
         System.out.println("Analyzer ID verified: " + analyzerId);
 
-        Assertions.assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
-        Assertions.assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
+        assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
+        assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
         System.out.println("Analyzer existence verified before deletion");
 
-        Assertions.assertTrue(analyzerDeleted, "Analyzer should be deleted and not retrievable");
+        assertTrue(analyzerDeleted, "Analyzer should be deleted and not retrievable");
         System.out.println("Analyzer deletion verified");
 
         System.out.println("All analyzer deletion properties validated successfully");

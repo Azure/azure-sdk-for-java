@@ -6,7 +6,6 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.http.rest.PagedIterable;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,12 +87,12 @@ public class Sample07_ListAnalyzers extends ContentUnderstandingClientTestBase {
         // END:ContentUnderstandingListAnalyzers
 
         // BEGIN:Assertion_ContentUnderstandingListAnalyzers
-        Assertions.assertNotNull(analyzers, "Analyzers list should not be null");
+        assertNotNull(analyzers, "Analyzers list should not be null");
         System.out.println("\nAnalyzers list retrieved successfully");
 
         // Verify we have at least the prebuilt analyzers
-        Assertions.assertTrue(count > 0, "Should have at least one analyzer");
-        Assertions.assertTrue(prebuiltCount > 0, "Should have at least one prebuilt analyzer");
+        assertTrue(count > 0, "Should have at least one analyzer");
+        assertTrue(prebuiltCount > 0, "Should have at least one prebuilt analyzer");
         System.out.println("Verified: Found " + count + " total analyzer(s)");
         System.out.println("Verified: Found " + prebuiltCount + " prebuilt analyzer(s)");
         if (customCount > 0) {
@@ -103,9 +102,9 @@ public class Sample07_ListAnalyzers extends ContentUnderstandingClientTestBase {
         // Verify each analyzer has required properties
         int validatedCount = 0;
         for (ContentAnalyzer analyzer : analyzers) {
-            Assertions.assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
-            Assertions.assertFalse(analyzer.getAnalyzerId().trim().isEmpty(), "Analyzer ID should not be empty");
-            Assertions.assertNotNull(analyzer.getStatus(), "Analyzer status should not be null");
+            assertNotNull(analyzer.getAnalyzerId(), "Analyzer ID should not be null");
+            assertFalse(analyzer.getAnalyzerId().trim().isEmpty(), "Analyzer ID should not be empty");
+            assertNotNull(analyzer.getStatus(), "Analyzer status should not be null");
             validatedCount++;
 
             // Only validate first few to avoid excessive output
@@ -142,7 +141,7 @@ public class Sample07_ListAnalyzers extends ContentUnderstandingClientTestBase {
         System.out.println("Total ready analyzers: " + readyCount);
 
         // Verify
-        Assertions.assertTrue(readyCount > 0, "Should have at least one ready analyzer");
+        assertTrue(readyCount > 0, "Should have at least one ready analyzer");
         System.out.println("Verified: Found " + readyCount + " ready analyzer(s)");
     }
 }

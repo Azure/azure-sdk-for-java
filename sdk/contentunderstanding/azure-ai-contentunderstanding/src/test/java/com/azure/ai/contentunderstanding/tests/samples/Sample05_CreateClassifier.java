@@ -10,7 +10,6 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -100,77 +99,73 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
 
         // BEGIN:Assertion_ContentUnderstandingCreateClassifier
         // Verify basic properties
-        Assertions.assertNotNull(analyzerId, "Analyzer ID should not be null");
-        Assertions.assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
-        Assertions.assertNotNull(operation, "Create analyzer operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(analyzerId, "Analyzer ID should not be null");
+        assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
+        assertNotNull(operation, "Create analyzer operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("✓ Create classifier operation completed successfully");
 
-        Assertions.assertNotNull(result, "Analyzer result should not be null");
+        assertNotNull(result, "Analyzer result should not be null");
         System.out.println("✓ Classifier analyzer created: " + analyzerId);
 
         // Verify base analyzer
-        Assertions.assertNotNull(result.getBaseAnalyzerId(), "Base analyzer ID should not be null");
-        Assertions.assertEquals("prebuilt-document", result.getBaseAnalyzerId(), "Base analyzer ID should match");
+        assertNotNull(result.getBaseAnalyzerId(), "Base analyzer ID should not be null");
+        assertEquals("prebuilt-document", result.getBaseAnalyzerId(), "Base analyzer ID should match");
         System.out.println("✓ Base analyzer ID verified: " + result.getBaseAnalyzerId());
 
         // Verify description
-        Assertions.assertNotNull(result.getDescription(), "Description should not be null");
-        Assertions.assertEquals("Custom classifier for financial document categorization", result.getDescription(),
+        assertNotNull(result.getDescription(), "Description should not be null");
+        assertEquals("Custom classifier for financial document categorization", result.getDescription(),
             "Description should match");
         System.out.println("✓ Description verified: " + result.getDescription());
 
         // Verify analyzer config
-        Assertions.assertNotNull(result.getConfig(), "Analyzer config should not be null");
+        assertNotNull(result.getConfig(), "Analyzer config should not be null");
         System.out.println("✓ Analyzer config present");
 
         // Verify content categories
-        Assertions.assertNotNull(result.getConfig().getContentCategories(), "Content categories should not be null");
-        Assertions.assertEquals(3, result.getConfig().getContentCategories().size(),
-            "Should have 3 content categories");
+        assertNotNull(result.getConfig().getContentCategories(), "Content categories should not be null");
+        assertEquals(3, result.getConfig().getContentCategories().size(), "Should have 3 content categories");
         System.out.println("✓ Content categories count verified: " + result.getConfig().getContentCategories().size());
 
         // Verify Loan_Application category
-        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Loan_Application"),
+        assertTrue(result.getConfig().getContentCategories().containsKey("Loan_Application"),
             "Should contain Loan_Application category");
         ContentCategoryDefinition loanAppCategory = result.getConfig().getContentCategories().get("Loan_Application");
-        Assertions.assertNotNull(loanAppCategory.getDescription(), "Loan_Application description should not be null");
-        Assertions.assertTrue(loanAppCategory.getDescription().contains("funding"),
+        assertNotNull(loanAppCategory.getDescription(), "Loan_Application description should not be null");
+        assertTrue(loanAppCategory.getDescription().contains("funding"),
             "Loan_Application description should mention funding");
         System.out.println("  ✓ Loan_Application category verified");
 
         // Verify Invoice category
-        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Invoice"),
-            "Should contain Invoice category");
+        assertTrue(result.getConfig().getContentCategories().containsKey("Invoice"), "Should contain Invoice category");
         ContentCategoryDefinition invoiceCategory = result.getConfig().getContentCategories().get("Invoice");
-        Assertions.assertNotNull(invoiceCategory.getDescription(), "Invoice description should not be null");
-        Assertions.assertTrue(invoiceCategory.getDescription().contains("payment"),
-            "Invoice description should mention payment");
+        assertNotNull(invoiceCategory.getDescription(), "Invoice description should not be null");
+        assertTrue(invoiceCategory.getDescription().contains("payment"), "Invoice description should mention payment");
         System.out.println("  ✓ Invoice category verified");
 
         // Verify Bank_Statement category
-        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Bank_Statement"),
+        assertTrue(result.getConfig().getContentCategories().containsKey("Bank_Statement"),
             "Should contain Bank_Statement category");
         ContentCategoryDefinition bankCategory = result.getConfig().getContentCategories().get("Bank_Statement");
-        Assertions.assertNotNull(bankCategory.getDescription(), "Bank_Statement description should not be null");
-        Assertions.assertTrue(bankCategory.getDescription().contains("account activity"),
+        assertNotNull(bankCategory.getDescription(), "Bank_Statement description should not be null");
+        assertTrue(bankCategory.getDescription().contains("account activity"),
             "Bank_Statement description should mention account activity");
         System.out.println("  ✓ Bank_Statement category verified");
 
         // Verify enableSegment is set
-        Assertions.assertNotNull(result.getConfig().isEnableSegment(), "EnableSegment should not be null");
-        Assertions.assertTrue(result.getConfig().isEnableSegment(), "EnableSegment should be true");
+        assertNotNull(result.getConfig().isEnableSegment(), "EnableSegment should not be null");
+        assertTrue(result.getConfig().isEnableSegment(), "EnableSegment should be true");
         System.out.println("✓ EnableSegment verified: " + result.getConfig().isEnableSegment());
 
         // Verify returnDetails is set
-        Assertions.assertNotNull(result.getConfig().isReturnDetails(), "ReturnDetails should not be null");
-        Assertions.assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
+        assertNotNull(result.getConfig().isReturnDetails(), "ReturnDetails should not be null");
+        assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
         System.out.println("✓ ReturnDetails verified: " + result.getConfig().isReturnDetails());
 
         // Verify models
-        Assertions.assertNotNull(result.getModels(), "Models should not be null");
-        Assertions.assertTrue(result.getModels().containsKey("completion"),
-            "Should contain 'completion' model mapping");
+        assertNotNull(result.getModels(), "Models should not be null");
+        assertTrue(result.getModels().containsKey("completion"), "Should contain 'completion' model mapping");
         System.out.println("✓ Model mappings verified: " + result.getModels().size() + " model(s)");
 
         System.out.println("\n════════════════════════════════════════════════════════════");

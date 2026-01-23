@@ -22,7 +22,6 @@ import com.azure.ai.contentunderstanding.models.NumberField;
 import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,116 +126,104 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         // BEGIN:Assertion_ContentUnderstandingCreateAnalyzer
-        Assertions.assertNotNull(analyzerId, "Analyzer ID should not be null");
-        Assertions.assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
-        Assertions.assertNotNull(fieldSchema, "Field schema should not be null");
-        Assertions.assertNotNull(customAnalyzer, "Custom analyzer should not be null");
-        Assertions.assertNotNull(operation, "Create analyzer operation should not be null");
-        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(analyzerId, "Analyzer ID should not be null");
+        assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
+        assertNotNull(fieldSchema, "Field schema should not be null");
+        assertNotNull(customAnalyzer, "Custom analyzer should not be null");
+        assertNotNull(operation, "Create analyzer operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
         System.out.println("Create analyzer operation properties verified");
 
-        Assertions.assertNotNull(result, "Analyzer result should not be null");
+        assertNotNull(result, "Analyzer result should not be null");
         System.out.println("Analyzer '" + analyzerId + "' created successfully");
 
         // Verify base analyzer
-        Assertions.assertNotNull(result.getBaseAnalyzerId(), "Base analyzer ID should not be null");
-        Assertions.assertEquals("prebuilt-document", result.getBaseAnalyzerId(), "Base analyzer ID should match");
+        assertNotNull(result.getBaseAnalyzerId(), "Base analyzer ID should not be null");
+        assertEquals("prebuilt-document", result.getBaseAnalyzerId(), "Base analyzer ID should match");
         System.out.println("Base analyzer ID verified: " + result.getBaseAnalyzerId());
 
         // Verify analyzer config
-        Assertions.assertNotNull(result.getConfig(), "Analyzer config should not be null");
-        Assertions.assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should be true");
-        Assertions.assertTrue(result.getConfig().isEnableLayout(), "EnableLayout should be true");
-        Assertions.assertTrue(result.getConfig().isEnableOcr(), "EnableOcr should be true");
-        Assertions.assertTrue(result.getConfig().isEstimateFieldSourceAndConfidence(),
+        assertNotNull(result.getConfig(), "Analyzer config should not be null");
+        assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should be true");
+        assertTrue(result.getConfig().isEnableLayout(), "EnableLayout should be true");
+        assertTrue(result.getConfig().isEnableOcr(), "EnableOcr should be true");
+        assertTrue(result.getConfig().isEstimateFieldSourceAndConfidence(),
             "EstimateFieldSourceAndConfidence should be true");
-        Assertions.assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
+        assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
         System.out.println("Analyzer config verified");
 
         // Verify field schema
-        Assertions.assertNotNull(result.getFieldSchema(), "Field schema should not be null");
-        Assertions.assertFalse(result.getFieldSchema().getName().trim().isEmpty(),
-            "Field schema name should not be empty");
-        Assertions.assertEquals("company_schema", result.getFieldSchema().getName(), "Field schema name should match");
-        Assertions.assertFalse(result.getFieldSchema().getDescription().trim().isEmpty(),
+        assertNotNull(result.getFieldSchema(), "Field schema should not be null");
+        assertFalse(result.getFieldSchema().getName().trim().isEmpty(), "Field schema name should not be empty");
+        assertEquals("company_schema", result.getFieldSchema().getName(), "Field schema name should match");
+        assertFalse(result.getFieldSchema().getDescription().trim().isEmpty(),
             "Field schema description should not be empty");
         System.out.println("Field schema verified: " + result.getFieldSchema().getName());
 
         // Verify field schema fields
-        Assertions.assertNotNull(result.getFieldSchema().getFields(), "Field schema fields should not be null");
-        Assertions.assertEquals(4, result.getFieldSchema().getFields().size(), "Should have 4 custom fields");
+        assertNotNull(result.getFieldSchema().getFields(), "Field schema fields should not be null");
+        assertEquals(4, result.getFieldSchema().getFields().size(), "Should have 4 custom fields");
         System.out.println("Field schema contains " + result.getFieldSchema().getFields().size() + " fields");
 
         // Verify company_name field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("company_name"),
+        assertTrue(result.getFieldSchema().getFields().containsKey("company_name"),
             "Should contain company_name field");
         ContentFieldDefinition companyNameDefResult = result.getFieldSchema().getFields().get("company_name");
-        Assertions.assertEquals(ContentFieldType.STRING, companyNameDefResult.getType(),
-            "company_name should be String type");
-        Assertions.assertEquals(GenerationMethod.EXTRACT, companyNameDefResult.getMethod(),
+        assertEquals(ContentFieldType.STRING, companyNameDefResult.getType(), "company_name should be String type");
+        assertEquals(GenerationMethod.EXTRACT, companyNameDefResult.getMethod(),
             "company_name should use Extract method");
-        Assertions.assertFalse(companyNameDefResult.getDescription().trim().isEmpty(),
-            "company_name should have description");
+        assertFalse(companyNameDefResult.getDescription().trim().isEmpty(), "company_name should have description");
         System.out.println("  company_name field verified (String, Extract)");
 
         // Verify total_amount field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("total_amount"),
+        assertTrue(result.getFieldSchema().getFields().containsKey("total_amount"),
             "Should contain total_amount field");
         ContentFieldDefinition totalAmountDefResult = result.getFieldSchema().getFields().get("total_amount");
-        Assertions.assertEquals(ContentFieldType.NUMBER, totalAmountDefResult.getType(),
-            "total_amount should be Number type");
-        Assertions.assertEquals(GenerationMethod.EXTRACT, totalAmountDefResult.getMethod(),
+        assertEquals(ContentFieldType.NUMBER, totalAmountDefResult.getType(), "total_amount should be Number type");
+        assertEquals(GenerationMethod.EXTRACT, totalAmountDefResult.getMethod(),
             "total_amount should use Extract method");
-        Assertions.assertFalse(totalAmountDefResult.getDescription().trim().isEmpty(),
-            "total_amount should have description");
+        assertFalse(totalAmountDefResult.getDescription().trim().isEmpty(), "total_amount should have description");
         System.out.println("  total_amount field verified (Number, Extract)");
 
         // Verify document_summary field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("document_summary"),
+        assertTrue(result.getFieldSchema().getFields().containsKey("document_summary"),
             "Should contain document_summary field");
         ContentFieldDefinition summaryDefResult = result.getFieldSchema().getFields().get("document_summary");
-        Assertions.assertEquals(ContentFieldType.STRING, summaryDefResult.getType(),
-            "document_summary should be String type");
-        Assertions.assertEquals(GenerationMethod.GENERATE, summaryDefResult.getMethod(),
+        assertEquals(ContentFieldType.STRING, summaryDefResult.getType(), "document_summary should be String type");
+        assertEquals(GenerationMethod.GENERATE, summaryDefResult.getMethod(),
             "document_summary should use Generate method");
-        Assertions.assertFalse(summaryDefResult.getDescription().trim().isEmpty(),
-            "document_summary should have description");
+        assertFalse(summaryDefResult.getDescription().trim().isEmpty(), "document_summary should have description");
         System.out.println("  document_summary field verified (String, Generate)");
 
         // Verify document_type field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("document_type"),
+        assertTrue(result.getFieldSchema().getFields().containsKey("document_type"),
             "Should contain document_type field");
         ContentFieldDefinition documentTypeDefResult = result.getFieldSchema().getFields().get("document_type");
-        Assertions.assertEquals(ContentFieldType.STRING, documentTypeDefResult.getType(),
-            "document_type should be String type");
-        Assertions.assertEquals(GenerationMethod.CLASSIFY, documentTypeDefResult.getMethod(),
+        assertEquals(ContentFieldType.STRING, documentTypeDefResult.getType(), "document_type should be String type");
+        assertEquals(GenerationMethod.CLASSIFY, documentTypeDefResult.getMethod(),
             "document_type should use Classify method");
-        Assertions.assertFalse(documentTypeDefResult.getDescription().trim().isEmpty(),
-            "document_type should have description");
-        Assertions.assertNotNull(documentTypeDefResult.getEnumProperty(), "document_type should have enum values");
-        Assertions.assertEquals(5, documentTypeDefResult.getEnumProperty().size(),
-            "document_type should have 5 enum values");
-        Assertions.assertTrue(documentTypeDefResult.getEnumProperty().contains("invoice"),
+        assertFalse(documentTypeDefResult.getDescription().trim().isEmpty(), "document_type should have description");
+        assertNotNull(documentTypeDefResult.getEnumProperty(), "document_type should have enum values");
+        assertEquals(5, documentTypeDefResult.getEnumProperty().size(), "document_type should have 5 enum values");
+        assertTrue(documentTypeDefResult.getEnumProperty().contains("invoice"),
             "document_type enum should contain 'invoice'");
-        Assertions.assertTrue(documentTypeDefResult.getEnumProperty().contains("receipt"),
+        assertTrue(documentTypeDefResult.getEnumProperty().contains("receipt"),
             "document_type enum should contain 'receipt'");
-        Assertions.assertTrue(documentTypeDefResult.getEnumProperty().contains("contract"),
+        assertTrue(documentTypeDefResult.getEnumProperty().contains("contract"),
             "document_type enum should contain 'contract'");
-        Assertions.assertTrue(documentTypeDefResult.getEnumProperty().contains("report"),
+        assertTrue(documentTypeDefResult.getEnumProperty().contains("report"),
             "document_type enum should contain 'report'");
-        Assertions.assertTrue(documentTypeDefResult.getEnumProperty().contains("other"),
+        assertTrue(documentTypeDefResult.getEnumProperty().contains("other"),
             "document_type enum should contain 'other'");
         System.out.println("  document_type field verified (String, Classify, 5 enum values)");
 
         // Verify models
-        Assertions.assertNotNull(result.getModels(), "Models should not be null");
-        Assertions.assertTrue(result.getModels().size() >= 2, "Should have at least 2 model mappings");
-        Assertions.assertTrue(result.getModels().containsKey("completion"),
-            "Should contain 'completion' model mapping");
-        Assertions.assertTrue(result.getModels().containsKey("embedding"), "Should contain 'embedding' model mapping");
-        Assertions.assertEquals("gpt-4.1", result.getModels().get("completion"),
-            "Completion model should be 'gpt-4.1'");
-        Assertions.assertEquals("text-embedding-3-large", result.getModels().get("embedding"),
+        assertNotNull(result.getModels(), "Models should not be null");
+        assertTrue(result.getModels().size() >= 2, "Should have at least 2 model mappings");
+        assertTrue(result.getModels().containsKey("completion"), "Should contain 'completion' model mapping");
+        assertTrue(result.getModels().containsKey("embedding"), "Should contain 'embedding' model mapping");
+        assertEquals("gpt-4.1", result.getModels().get("completion"), "Completion model should be 'gpt-4.1'");
+        assertEquals("text-embedding-3-large", result.getModels().get("embedding"),
             "Embedding model should be 'text-embedding-3-large'");
         System.out.println("Model mappings verified: " + result.getModels().size() + " model(s)");
 
@@ -405,24 +392,22 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
             // END:ContentUnderstandingUseCustomAnalyzer
 
             // BEGIN:Assertion_ContentUnderstandingUseCustomAnalyzer
-            Assertions.assertNotNull(documentUrl, "Document URL should not be null");
-            Assertions.assertNotNull(analyzeOperation, "Analyze operation should not be null");
-            Assertions.assertTrue(analyzeOperation.waitForCompletion().getStatus().isComplete(),
-                "Operation should be completed");
+            assertNotNull(documentUrl, "Document URL should not be null");
+            assertNotNull(analyzeOperation, "Analyze operation should not be null");
+            assertTrue(analyzeOperation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
             System.out.println("Analyze operation properties verified");
 
-            Assertions.assertNotNull(analyzeResult, "Analyze result should not be null");
-            Assertions.assertNotNull(analyzeResult.getContents(), "Result should contain contents");
-            Assertions.assertTrue(analyzeResult.getContents().size() > 0, "Result should have at least one content");
-            Assertions.assertEquals(1, analyzeResult.getContents().size(),
-                "Result should have exactly one content element");
+            assertNotNull(analyzeResult, "Analyze result should not be null");
+            assertNotNull(analyzeResult.getContents(), "Result should contain contents");
+            assertTrue(analyzeResult.getContents().size() > 0, "Result should have at least one content");
+            assertEquals(1, analyzeResult.getContents().size(), "Result should have exactly one content element");
             System.out.println("Analysis result contains " + analyzeResult.getContents().size() + " content(s)");
 
             DocumentContent documentContent = analyzeResult.getContents().get(0) instanceof DocumentContent
                 ? (DocumentContent) analyzeResult.getContents().get(0)
                 : null;
-            Assertions.assertNotNull(documentContent, "Content should be DocumentContent");
-            Assertions.assertNotNull(documentContent.getFields(), "Document content should have fields");
+            assertNotNull(documentContent, "Content should be DocumentContent");
+            assertNotNull(documentContent.getFields(), "Document content should have fields");
             System.out.println("Document content has custom fields");
 
             // Verify company_name field (Extract method)
@@ -430,8 +415,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
                 = documentContent.getFields() != null ? documentContent.getFields().get("company_name") : null;
             if (companyNameFieldAssert != null) {
                 System.out.println("company_name field found");
-                Assertions.assertTrue(companyNameFieldAssert instanceof StringField,
-                    "company_name should be a StringField");
+                assertTrue(companyNameFieldAssert instanceof StringField, "company_name should be a StringField");
 
                 if (companyNameFieldAssert instanceof StringField) {
                     StringField cnf = (StringField) companyNameFieldAssert;
@@ -441,7 +425,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
                 }
 
                 if (companyNameFieldAssert.getConfidence() != null) {
-                    Assertions.assertTrue(
+                    assertTrue(
                         companyNameFieldAssert.getConfidence() >= 0 && companyNameFieldAssert.getConfidence() <= 1,
                         "company_name confidence should be between 0 and 1, but was "
                             + companyNameFieldAssert.getConfidence());
@@ -451,19 +435,17 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
 
                 if (companyNameFieldAssert.getSource() != null
                     && !companyNameFieldAssert.getSource().trim().isEmpty()) {
-                    Assertions.assertTrue(companyNameFieldAssert.getSource().startsWith("D("),
+                    assertTrue(companyNameFieldAssert.getSource().startsWith("D("),
                         "Source should start with 'D(' for extracted fields");
                     System.out.println("  Source: " + companyNameFieldAssert.getSource());
                 }
 
                 List<ContentSpan> spans = companyNameFieldAssert.getSpans();
                 if (spans != null && !spans.isEmpty()) {
-                    Assertions.assertTrue(spans.size() > 0, "Spans should not be empty when not null");
+                    assertTrue(spans.size() > 0, "Spans should not be empty when not null");
                     for (ContentSpan span : spans) {
-                        Assertions.assertTrue(span.getOffset() >= 0,
-                            "Span offset should be >= 0, but was " + span.getOffset());
-                        Assertions.assertTrue(span.getLength() > 0,
-                            "Span length should be > 0, but was " + span.getLength());
+                        assertTrue(span.getOffset() >= 0, "Span offset should be >= 0, but was " + span.getOffset());
+                        assertTrue(span.getLength() > 0, "Span length should be > 0, but was " + span.getLength());
                     }
                     System.out.println("  Spans: " + spans.size() + " span(s)");
                 }

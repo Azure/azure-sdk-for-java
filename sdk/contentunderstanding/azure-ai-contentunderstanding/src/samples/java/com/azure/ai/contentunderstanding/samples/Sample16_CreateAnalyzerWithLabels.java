@@ -12,11 +12,15 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.ai.contentunderstanding.models.KnowledgeSource;
+import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,13 +28,13 @@ import java.util.UUID;
  * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage.
  *
  * Required environment variables:
- * - TRAINING_DATA_STORAGE_ACCOUNT: Azure Storage account name
- * - TRAINING_DATA_CONTAINER_NAME: Container name with training data
- * - TRAINING_DATA_SAS_URL: SAS URL for the container (optional, if not using managed identity)
+ * - CONTENTUNDERSTANDING_ENDPOINT: Azure Content Understanding endpoint URL
+ * - CONTENTUNDERSTANDING_KEY: Azure Content Understanding API key (optional if using DefaultAzureCredential)
  *
- * Training data structure:
- * - Container should have labeled documents with .labels.json and .result.json files
- * - Example: receipt.pdf, receipt.pdf.labels.json, receipt.pdf.result.json
+ * Optional environment variables:
+ * - TRAINING_DATA_SAS_URL: SAS URL for the container with labeled training data
+ *   If set, the analyzer will be created with labeled data knowledge source.
+ *   If not set, the analyzer will be created without training data (demonstration mode).
  */
 public class Sample16_CreateAnalyzerWithLabels {
 
@@ -38,6 +42,7 @@ public class Sample16_CreateAnalyzerWithLabels {
         // BEGIN: com.azure.ai.contentunderstanding.sample16.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+        String sasUrl = System.getenv("TRAINING_DATA_SAS_URL");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -116,37 +121,34 @@ public class Sample16_CreateAnalyzerWithLabels {
             fieldSchema.setDescription("Schema for receipt extraction with items");
             fieldSchema.setFields(fields);
 
-            // Step 2: Create labeled data knowledge source
-            // For actual use, provide Azure Blob Storage SAS URL with training data:
-            //
-            // String storageAccount = System.getenv("TRAINING_DATA_STORAGE_ACCOUNT");
-            // String containerName = System.getenv("TRAINING_DATA_CONTAINER_NAME");
-            // String sasUrl = System.getenv("TRAINING_DATA_SAS_URL");
-            // String trainingDataPath = "training_data/"; // Path prefix in container
-            //
-            // LabeledDataKnowledgeSource knowledgeSource = new LabeledDataKnowledgeSource();
-            // knowledgeSource.setUrl(sasUrl);
-            // knowledgeSource.setPrefix(trainingDataPath);
-            //
-            // List<LabeledDataKnowledgeSource> knowledgeSources = Collections.singletonList(knowledgeSource);
+            // Step 2: Create labeled data knowledge source (optional, based on environment variable)
+            List<KnowledgeSource> knowledgeSources = new ArrayList<>();
+            if (sasUrl != null && !sasUrl.trim().isEmpty()) {
+                LabeledDataKnowledgeSource knowledgeSource = new LabeledDataKnowledgeSource()
+                    .setContainerUrl(sasUrl);
+                knowledgeSources.add(knowledgeSource);
+                System.out.println("Using labeled training data from: " + sasUrl.substring(0, Math.min(50, sasUrl.length())) + "...");
+            } else {
+                System.out.println("No TRAINING_DATA_SAS_URL set, creating analyzer without labeled training data");
+            }
 
-            // Step 3: Create analyzer with labeled data
-            ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-            config.setEnableLayout(true);
-            config.setEnableOcr(true);
-
-            ContentAnalyzer analyzer = new ContentAnalyzer();
-            analyzer.setBaseAnalyzerId("prebuilt-document");
-            analyzer.setDescription("Receipt analyzer with labeled training data");
-            analyzer.setConfig(config);
-            analyzer.setFieldSchema(fieldSchema);
-            // analyzer.setKnowledgeSources(knowledgeSources); // Add when using actual training data
-
-            // Add model mappings
+            // Step 3: Create analyzer (with or without labeled data)
             Map<String, String> models = new HashMap<>();
             models.put("completion", "gpt-4.1");
             models.put("embedding", "text-embedding-3-large");
-            analyzer.setModels(models);
+
+            ContentAnalyzer analyzer = new ContentAnalyzer()
+                .setBaseAnalyzerId("prebuilt-document")
+                .setDescription("Receipt analyzer with labeled training data")
+                .setConfig(new ContentAnalyzerConfig()
+                    .setEnableLayout(true)
+                    .setEnableOcr(true))
+                .setFieldSchema(fieldSchema)
+                .setModels(models);
+
+            if (!knowledgeSources.isEmpty()) {
+                analyzer.setKnowledgeSources(knowledgeSources);
+            }
 
             // For demonstration without actual training data, create analyzer without knowledge sources
             SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller

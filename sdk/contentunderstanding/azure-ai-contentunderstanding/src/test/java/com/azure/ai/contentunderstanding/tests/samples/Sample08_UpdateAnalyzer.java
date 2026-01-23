@@ -13,7 +13,6 @@ import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -125,26 +124,22 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingUpdateAnalyzer
 
         // BEGIN:Assertion_ContentUnderstandingUpdateAnalyzer
-        Assertions.assertNotNull(result, "Updated analyzer should not be null");
-        Assertions.assertEquals(analyzerId, result.getAnalyzerId(), "Analyzer ID should match");
-        Assertions.assertEquals("Updated analyzer with enhanced schema", result.getDescription(),
-            "Description should be updated");
+        assertNotNull(result, "Updated analyzer should not be null");
+        assertEquals(analyzerId, result.getAnalyzerId(), "Analyzer ID should match");
+        assertEquals("Updated analyzer with enhanced schema", result.getDescription(), "Description should be updated");
         System.out.println("Analyzer description verified");
 
         // Verify field schema was updated
-        Assertions.assertNotNull(result.getFieldSchema(), "Field schema should not be null");
-        Assertions.assertEquals("enhanced_schema", result.getFieldSchema().getName(),
-            "Field schema name should be updated");
-        Assertions.assertEquals(2, result.getFieldSchema().getFields().size(), "Should have 2 fields after update");
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("title"),
-            "Should still contain title field");
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("author"),
-            "Should contain new author field");
+        assertNotNull(result.getFieldSchema(), "Field schema should not be null");
+        assertEquals("enhanced_schema", result.getFieldSchema().getName(), "Field schema name should be updated");
+        assertEquals(2, result.getFieldSchema().getFields().size(), "Should have 2 fields after update");
+        assertTrue(result.getFieldSchema().getFields().containsKey("title"), "Should still contain title field");
+        assertTrue(result.getFieldSchema().getFields().containsKey("author"), "Should contain new author field");
         System.out.println("Field schema update verified: " + result.getFieldSchema().getFields().size() + " fields");
 
         // Verify config was updated
-        Assertions.assertNotNull(result.getConfig(), "Config should not be null");
-        Assertions.assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should now be true");
+        assertNotNull(result.getConfig(), "Config should not be null");
+        assertTrue(result.getConfig().isEnableFormula(), "EnableFormula should now be true");
         System.out.println("Config update verified");
 
         System.out.println("All analyzer update properties validated successfully");
