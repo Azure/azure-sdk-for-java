@@ -794,7 +794,18 @@ private class BulkWriter
       requestOptions.setFilterPredicate(patchConfigs.filter.get)
     }
 
-    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, context)
+    // for patch operation, BulkItemOperations.getItem does not refer to the original object node,
+    // so track it in the source item
+    val patchOperationContext = new OperationContext(
+      context.itemId,
+      context.partitionKeyValue,
+      context.eTag,
+      context.attemptNumber,
+      context.sequenceNumber,
+      Some(objectNode) // track the original object node, which is needed during retry
+    )
+
+    CosmosBulkOperations.getPatchItemOperation(itemId, partitionKey, cosmosPatchOperations, requestOptions, patchOperationContext)
   }
 
   //scalastyle:off method.length
@@ -845,11 +856,13 @@ private class BulkWriter
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=$exceptionMessage,  " +
         s"Context: {${operationContext.toString}} $getThreadInfo")
 
-      // If the write strategy is patchBulkUpdate, the OperationContext.sourceItem will not be the original objectNode,
+      // 1. If the write strategy is patchBulkUpdate, the ItemBulkOperation.getItem will not be the original objectNode,
       // It is computed through read item from cosmosdb, and then patch the item locally.
       // During retry, it is important to use the original objectNode (for example for preCondition failure, it requires to go through the readMany step again)
+      // 2. If the write strategy is patch or patchIfExists, then ItemBulkOperation.getItem will be CosmosPatchOperations which is not the original objectNode,
+      // so it also needs to use sourceItem to figure out the original objectNode
       val sourceItem = itemOperation match {
-          case _: ItemBulkOperation[ObjectNode, OperationContext] =>
+          case _: ItemBulkOperation[_, OperationContext] =>
               context.sourceItem match {
                   case Some(bulkOperationSourceItem) => bulkOperationSourceItem
                   case None => itemOperation.getItem.asInstanceOf[ObjectNode]
