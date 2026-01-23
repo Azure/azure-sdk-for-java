@@ -8,7 +8,7 @@
     "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
   {
-    "current" : true,
+    "current" : false,
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
     "supportStatus" : "TODO",
