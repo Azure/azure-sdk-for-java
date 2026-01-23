@@ -43,8 +43,8 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(uriSource);
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
-            .beginAnalyze("prebuilt-documentSearch", null, null, Arrays.asList(input), null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeUrlAsync

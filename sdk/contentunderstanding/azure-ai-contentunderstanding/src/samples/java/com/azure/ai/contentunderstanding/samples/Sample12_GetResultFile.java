@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class Sample12_GetResultFile {
         input.setUrl(videoUrl);
 
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = client.beginAnalyze("prebuilt-videoSearch", null, null, Collections.singletonList(input), null);
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
 

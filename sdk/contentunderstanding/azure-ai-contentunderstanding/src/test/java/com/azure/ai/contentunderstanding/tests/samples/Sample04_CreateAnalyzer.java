@@ -322,7 +322,7 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
 
             // Analyze a document using the custom analyzer
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
-                = contentUnderstandingClient.beginAnalyze(analyzerId, null, null, Arrays.asList(input), null);
+                = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
             AnalyzeResult analyzeResult = analyzeOperation.getFinalResult();
 

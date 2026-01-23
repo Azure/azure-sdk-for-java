@@ -51,8 +51,8 @@ public class Sample10_AnalyzeConfigs extends ContentUnderstandingClientTestBase 
 
         // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
         // These configs enable extraction of charts, annotations, hyperlinks, and formulas
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingClient
-            .beginAnalyze("prebuilt-documentSearch", null, null, java.util.Arrays.asList(input), null);
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", java.util.Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeWithConfigs

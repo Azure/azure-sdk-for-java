@@ -36,8 +36,8 @@ public class ContentUnderstandingCustomizations extends Customization {
         // 3. Customize PollingStrategy to extract and set operationId
         customizePollingStrategy(customization, logger);
 
-        // 4. Customize Client methods - hide stringEncoding parameter, add simplified overloads
-        customizeClientMethods(customization, logger);
+        // 4. Add simplified beginAnalyze methods (hide stringEncoding, keep processingLocation and modelDeployments)
+        addSimplifiedAnalyzeMethods(customization, logger);
 
         // 5. Add static accessor helper for operationId
         addStaticAccessorForOperationId(customization, logger);
@@ -202,19 +202,112 @@ public class ContentUnderstandingCustomizations extends Customization {
      * 1. Hide methods with stringEncoding parameter (make them package-private)
      * 2. Add simplified overloads that use "utf16" as default
      */
-    private void customizeClientMethods(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing ContentUnderstandingClient methods");
-        customizeClientClass(customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient"), false, logger);
+    /**
+     * Add simplified beginAnalyze methods that hide the stringEncoding parameter.
+     * This matches .NET's approach of hiding stringEncoding while keeping processingLocation and modelDeployments.
+     */
+    private void addSimplifiedAnalyzeMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding simplified beginAnalyze methods without stringEncoding parameter");
 
-        logger.info("Customizing ContentUnderstandingAsyncClient methods");
-        customizeClientClass(customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient"), true, logger);
-    }
+        // Add to sync client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeInput");
+            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.Map");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
+                // Add overload with all optional parameters (matches .NET parameter order)
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("Map<String, String>", "modelDeployments")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from inputs. "
+                        + "This is a convenience method that uses default string encoding (utf16)."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs The inputs to analyze.")
+                        .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
+                        .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
+                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyze(analyzerId, \"utf16\", processingLocation, inputs, modelDeployments); }"));
 
-    private void customizeClientClass(ClassCustomization classCustomization, boolean isAsync, Logger logger) {
-        // NOTE: Previously we were hiding beginAnalyze/beginAnalyzeBinary methods with stringEncoding parameter
-        // to simplify the API, but this breaks sample code that needs to pass inputs.
-        // Keeping all methods public for now to maintain compatibility with existing samples.
-        logger.info("Customizing " + classCustomization.getClassName() + " - keeping all convenience methods public");
+                // Add simplified overload with only analyzerId and inputs (most common usage)
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from inputs. "
+                        + "This is a convenience method that uses default string encoding (utf16), "
+                        + "service default model deployments, and global processing location."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs The inputs to analyze.")
+                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
+            });
+        });
+
+        // Add to async client
+        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeInput");
+            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.Map");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
+                // Add overload with all optional parameters (matches .NET parameter order)
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addParameter("Map<String, String>", "modelDeployments")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from inputs. "
+                        + "This is a convenience method that uses default string encoding (utf16)."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs The inputs to analyze.")
+                        .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
+                        .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
+                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyze(analyzerId, \"utf16\", processingLocation, inputs, modelDeployments); }"));
+
+                // Add simplified overload with only analyzerId and inputs (most common usage)
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalyzeInput>", "inputs")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from inputs. "
+                        + "This is a convenience method that uses default string encoding (utf16), "
+                        + "service default model deployments, and global processing location."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs The inputs to analyze.")
+                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
+            });
+        });
     }
 
     /**

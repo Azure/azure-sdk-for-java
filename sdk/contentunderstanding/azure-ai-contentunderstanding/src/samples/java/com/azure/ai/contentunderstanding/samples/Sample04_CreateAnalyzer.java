@@ -155,7 +155,7 @@ public class Sample04_CreateAnalyzer {
 
         // Analyze a document using the custom analyzer
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
-            = client.beginAnalyze(analyzerId, null, null, Arrays.asList(input), null);
+            = client.beginAnalyze(analyzerId, Arrays.asList(input));
 
         AnalyzeResult analyzeResult = analyzeOperation.getFinalResult();
 

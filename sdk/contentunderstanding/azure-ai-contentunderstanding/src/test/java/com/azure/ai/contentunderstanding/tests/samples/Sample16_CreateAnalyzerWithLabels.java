@@ -18,6 +18,7 @@ import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -274,9 +275,8 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             AnalyzeInput input = new AnalyzeInput();
             input.setUrl(testDocUrl);
 
-            AnalyzeResult analyzeResult = contentUnderstandingClient
-                .beginAnalyze(analyzerId, null, null, Collections.singletonList(input), null)
-                .getFinalResult();
+            AnalyzeResult analyzeResult
+                = contentUnderstandingClient.beginAnalyze(analyzerId, Arrays.asList(input)).getFinalResult();
 
             System.out.println("Analysis completed!");
             assertNotNull(analyzeResult);
