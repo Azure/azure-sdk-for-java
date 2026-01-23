@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added `ChangeFeedProcessorOptions#setMaxLeasesToAcquirePerCycle(int)` to allow faster acquisition of unused/expired leases during scale-out and rolling deployments (default `0` preserves legacy behavior). - [47606](https://github.com/Azure/azure-sdk-for-java/pull/47606)
+* Added the `QuantizerType` to the vectorIndexSpec: `product`/`spherical`. - [PR 47566](https://github.com/Azure/azure-sdk-for-java/pull/47566)
 
 #### Other Changes
 * Remaps sub-status to 1003 for requests to child resources against non-existent container. - [PR 47604](https://github.com/Azure/azure-sdk-for-java/pull/47604)
