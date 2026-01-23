@@ -31,12 +31,12 @@ import java.util.Map;
  * <ul>
  *   <li>CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint</li>
  *   <li>CONTENTUNDERSTANDING_KEY (optional): API key for source resource</li>
- *   <li>SOURCE_RESOURCE_ID: Azure resource ID of the source resource</li>
- *   <li>SOURCE_REGION: Region of the source resource</li>
- *   <li>TARGET_ENDPOINT: Endpoint of the target resource</li>
- *   <li>TARGET_KEY (optional): API key for target resource</li>
- *   <li>TARGET_RESOURCE_ID: Azure resource ID of the target resource</li>
- *   <li>TARGET_REGION: Region of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_REGION: Region of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_KEY (optional): API key for target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource</li>
  * </ul>
  *
  * <p>Note: If API keys are not provided, DefaultAzureCredential will be used.
@@ -49,12 +49,12 @@ public class Sample15_GrantCopyAuth {
         // Get configuration from environment variables
         String sourceEndpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String sourceKey = System.getenv("CONTENTUNDERSTANDING_KEY");
-        String sourceResourceId = System.getenv("SOURCE_RESOURCE_ID");
-        String sourceRegion = System.getenv("SOURCE_REGION");
-        String targetEndpoint = System.getenv("TARGET_ENDPOINT");
-        String targetKey = System.getenv("TARGET_KEY");
-        String targetResourceId = System.getenv("TARGET_RESOURCE_ID");
-        String targetRegion = System.getenv("TARGET_REGION");
+        String sourceResourceId = System.getenv("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID");
+        String sourceRegion = System.getenv("CONTENTUNDERSTANDING_SOURCE_REGION");
+        String targetEndpoint = System.getenv("CONTENTUNDERSTANDING_TARGET_ENDPOINT");
+        String targetKey = System.getenv("CONTENTUNDERSTANDING_TARGET_KEY");
+        String targetResourceId = System.getenv("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID");
+        String targetRegion = System.getenv("CONTENTUNDERSTANDING_TARGET_REGION");
 
         // Validate required environment variables
         if (sourceEndpoint == null || targetEndpoint == null || sourceResourceId == null
@@ -62,12 +62,12 @@ public class Sample15_GrantCopyAuth {
             System.out.println("Cross-resource copying requires the following environment variables:");
             System.out.println("  - CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint");
             System.out.println("  - CONTENTUNDERSTANDING_KEY (optional): API key for source resource");
-            System.out.println("  - SOURCE_RESOURCE_ID: Azure resource ID of the source resource");
-            System.out.println("  - SOURCE_REGION: Region of the source resource");
-            System.out.println("  - TARGET_ENDPOINT: Endpoint of the target resource");
-            System.out.println("  - TARGET_KEY (optional): API key for target resource");
-            System.out.println("  - TARGET_RESOURCE_ID: Azure resource ID of the target resource");
-            System.out.println("  - TARGET_REGION: Region of the target resource");
+            System.out.println("  - CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource");
+            System.out.println("  - CONTENTUNDERSTANDING_SOURCE_REGION: Region of the source resource");
+            System.out.println("  - CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource");
+            System.out.println("  - CONTENTUNDERSTANDING_TARGET_KEY (optional): API key for target resource");
+            System.out.println("  - CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource");
+            System.out.println("  - CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource");
             return;
         }
 
