@@ -35,3 +35,25 @@ extends:
           AdditionalVariables:
             - name: AdditionalArgs
               value: ''
+          PreTestRunSteps:
+            - script: |
+                if ! command -v docker &>/dev/null; then
+                  echo "Docker not found; please install Docker or ensure it's available on the agent."
+                  exit 1
+                fi
+
+                # wait for docker daemon to be ready
+                for i in {1..30}; do
+                  if docker info >/dev/null 2>&1; then
+                    echo "Docker is running"
+                    break
+                  fi
+                  echo "Waiting for Docker to start... ($i/30)"
+                  sleep 2
+                done
+
+                if ! docker info >/dev/null 2>&1; then
+                  echo "Docker failed to start"
+                  exit 1
+                fi
+              displayName: 'Ensure Docker is installed and running'
