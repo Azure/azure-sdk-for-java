@@ -15,6 +15,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -51,7 +52,7 @@ public class Sample13_DeleteResult {
         input.setUrl(documentUrl);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = client.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input), null);
+            = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Wait for operation to complete
         System.out.println("Started analysis operation");

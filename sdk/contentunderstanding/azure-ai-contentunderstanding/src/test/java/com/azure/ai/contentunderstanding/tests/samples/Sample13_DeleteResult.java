@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -36,8 +37,7 @@ public class Sample13_DeleteResult extends ContentUnderstandingClientTestBase {
         input.setUrl(documentUrl);
 
         SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
-            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", null, null, Collections.singletonList(input),
-                null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Wait for operation to complete to get a result ID
         System.out.println("Started analysis operation");

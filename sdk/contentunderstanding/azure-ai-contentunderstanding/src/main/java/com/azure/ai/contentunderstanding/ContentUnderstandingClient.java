@@ -4,6 +4,7 @@
 package com.azure.ai.contentunderstanding;
 
 import com.azure.ai.contentunderstanding.implementation.ContentUnderstandingClientImpl;
+import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
 import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest1;
@@ -1933,6 +1934,66 @@ public final class ContentUnderstandingClient {
     }
 
     /**
+     * Update analyzer properties.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return analyzer that extracts content and fields from multimodal documents.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContentAnalyzer updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
+        // Generated convenience method for updateAnalyzerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getContentAnalyzerAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getContentAnalyzerAccessor().prepareModelForJsonMergePatch(resource, false);
+        return updateAnalyzerWithResponse(analyzerId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ContentAnalyzer.class);
+    }
+
+    /**
+     * Extract content and fields from inputs. This is a convenience method that uses default string encoding (utf16).
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs The inputs to analyze.
+     * @param modelDeployments Custom model deployment mappings. Set to null to use service defaults.
+     * @param processingLocation The processing location for the analysis. Set to null to use the service default.
+     * @return the {@link SyncPoller} for polling of the analyze operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
+        List<AnalyzeInput> inputs, Map<String, String> modelDeployments, ProcessingLocation processingLocation) {
+        return beginAnalyze(analyzerId, "utf16", processingLocation, inputs, modelDeployments);
+    }
+
+    /**
+     * Extract content and fields from inputs. This is a convenience method that uses default string encoding (utf16),
+     * service default model deployments, and global processing location.
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param inputs The inputs to analyze.
+     * @return the {@link SyncPoller} for polling of the analyze operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyze(String analyzerId,
+        List<AnalyzeInput> inputs) {
+        return beginAnalyze(analyzerId, inputs, null, null);
+    }
+
+    /**
      * Extract content and fields from binary input using default content type (application/octet-stream).
      *
      * @param analyzerId The unique identifier of the analyzer.
@@ -1945,22 +2006,6 @@ public final class ContentUnderstandingClient {
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
         BinaryData binaryInput) {
         return beginAnalyzeBinary(analyzerId, "application/octet-stream", binaryInput);
-    }
-
-    /**
-     * Update analyzer properties.
-     *
-     * This is a convenience method that accepts a ContentAnalyzer object instead of BinaryData.
-     *
-     * @param analyzerId The unique identifier of the analyzer.
-     * @param resource The ContentAnalyzer instance with properties to update.
-     * @return the updated ContentAnalyzer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     */
-    public ContentAnalyzer updateAnalyzer(String analyzerId, ContentAnalyzer resource) {
-        Response<BinaryData> response = updateAnalyzerWithResponse(analyzerId, BinaryData.fromObject(resource), null);
-        return response.getValue().toObject(ContentAnalyzer.class);
     }
 
     /**
@@ -1977,6 +2022,21 @@ public final class ContentUnderstandingClient {
      */
     public ContentUnderstandingDefaults updateDefaults(Map<String, String> modelDeployments) {
         ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);
+        Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
+        return response.getValue().toObject(ContentUnderstandingDefaults.class);
+    }
+
+    /**
+     * Update default model deployment settings.
+     *
+     * This is a convenience method that accepts a ContentUnderstandingDefaults object.
+     *
+     * @param defaults The ContentUnderstandingDefaults instance with settings to update.
+     * @return the updated ContentUnderstandingDefaults.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     */
+    public ContentUnderstandingDefaults updateDefaults(ContentUnderstandingDefaults defaults) {
         Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);
         return response.getValue().toObject(ContentUnderstandingDefaults.class);
     }

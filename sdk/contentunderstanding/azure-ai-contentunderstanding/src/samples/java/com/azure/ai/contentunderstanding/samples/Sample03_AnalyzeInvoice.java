@@ -60,7 +60,7 @@ public class Sample03_AnalyzeInvoice {
         input.setUrl(invoiceUrl);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-invoice", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeInvoice

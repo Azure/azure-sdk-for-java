@@ -60,7 +60,7 @@ public class Sample02_AnalyzeUrl {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-documentSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
         // END:ContentUnderstandingAnalyzeUrlAsync
