@@ -6489,7 +6489,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if ((operationType == OperationType.Query ||
                 operationType == OperationType.SqlQuery ||
                 operationType == OperationType.ReadFeed) &&
-                    Utils.isCollectionChild(request.getResourceType())) {
+                Utils.isCollectionChild(request.getResourceType())
+                || operationType == OperationType.QueryPlan) {
                 // Go to gateway only when partition key range and partition key are not set. This should be very rare
                 if (request.getPartitionKeyRangeIdentity() == null &&
                         request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) == null) {
