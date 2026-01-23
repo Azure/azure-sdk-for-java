@@ -410,8 +410,8 @@ public class ConsistencyWriterTest {
             .verify();
     }
 
-    @Test
-    public void isBarrierRequest() {
+    @Test(groups = "unit")
+    public void getBarrierRequestType() {
         // Setup ConsistencyWriter with useMultipleWriteLocations false
         initializeConsistencyWriter(false);
         ConsistencyWriter writer = this.consistencyWriter;
@@ -423,8 +423,8 @@ public class ConsistencyWriterTest {
             replicatedResourceClientMock.when(ReplicatedResourceClient::isGlobalStrongEnabled).thenReturn(true);
             ConsistencyWriter spyWriter = Mockito.spy(writer);
             Mockito.doReturn(true).when(spyWriter).isGlobalStrongRequest(request, response);
-            boolean result = spyWriter.isBarrierRequest(request, response);
-            assertThat(result).isTrue();
+            BarrierType barrierType = spyWriter.getBarrierRequestType(request, response);
+            assertThat(barrierType).isEqualTo(BarrierType.GLOBAL_STRONG_WRITE);
         }
 
         // 2. NRegionSynchronousCommitEnabled path
@@ -433,33 +433,34 @@ public class ConsistencyWriterTest {
         // useMultipleWriteLocations is already false
         Mockito.doReturn("123").when(response).getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
         Mockito.doReturn(2L).when(response).getNumberOfReadRegions();
-        boolean nRegionResult = writer.isBarrierRequest(request, response);
-        assertThat(nRegionResult).isTrue();
+        BarrierType barrierType = writer.getBarrierRequestType(request, response);
+        assertThat(barrierType).isEqualTo(BarrierType.N_REGION_SYNCHRONOUS_COMMIT);
+
 
         // 3. Negative case: NRegionSynchronousCommitEnabled false
         request.requestContext.setNRegionSynchronousCommitEnabled(false);
-        boolean negativeResult = writer.isBarrierRequest(request, response);
-        assertThat(negativeResult).isFalse();
+        BarrierType negativeResult = writer.getBarrierRequestType(request, response);
+        assertThat(negativeResult).isEqualTo(BarrierType.NONE);
 
         // 4. Negative case: useMultipleWriteLocations true
         initializeConsistencyWriter(true);
         writer = this.consistencyWriter;
         request.requestContext.setNRegionSynchronousCommitEnabled(true);
-        boolean negativeResult2 = writer.isBarrierRequest(request, response);
-        assertThat(negativeResult2).isFalse();
+        BarrierType negativeResult2 = writer.getBarrierRequestType(request, response);
+        assertThat(negativeResult2).isEqualTo(BarrierType.NONE);
 
         // 5. Negative case: GLOBAL_NREGION_COMMITTED_LSN header missing
         initializeConsistencyWriter(false);
         writer = this.consistencyWriter;
         request.requestContext.setNRegionSynchronousCommitEnabled(true);
         Mockito.doReturn(null).when(response).getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
-        boolean negativeResult3 = writer.isBarrierRequest(request, response);
-        assertThat(negativeResult3).isFalse();
+        BarrierType negativeResult3 = writer.getBarrierRequestType(request, response);
+        assertThat(negativeResult3).isEqualTo(BarrierType.NONE);
 
         // 6. Negative case: NUMBER_OF_READ_REGIONS header missing or zero
         Mockito.doReturn(0L).when(response).getNumberOfReadRegions();
-        boolean negativeResult4 = writer.isBarrierRequest(request, response);
-        assertThat(negativeResult4).isFalse();
+        BarrierType negativeResult4 = writer.getBarrierRequestType(request, response);
+        assertThat(negativeResult4).isEqualTo(BarrierType.NONE);
     }
 
     private void runWriteAsyncBarrierableRequestTest(boolean globalStrong, boolean barrierMet) {

@@ -3075,6 +3075,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
                             request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+                            request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
@@ -3375,6 +3376,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
                                 req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+                                request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3608,6 +3610,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
                                 req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+                                request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3781,6 +3784,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
                                 req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+                                request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,

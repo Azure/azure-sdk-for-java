@@ -439,6 +439,14 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public Boolean getNRegionSynchronousCommitEnabled() {
-        return this.latestDatabaseAccount.isNRegionSynchronousCommitEnabled();
+        this.databaseAccountReadLock.lock();
+        try {
+            if (this.latestDatabaseAccount == null) {
+                return null;
+            }
+            return this.latestDatabaseAccount.isNRegionSynchronousCommitEnabled();
+        } finally {
+            this.databaseAccountReadLock.unlock();
+        }
     }
 }

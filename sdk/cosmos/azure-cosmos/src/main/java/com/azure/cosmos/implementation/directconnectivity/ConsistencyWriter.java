@@ -339,7 +339,7 @@ public class ConsistencyWriter {
                 .flatMap(v -> {
 
                     if (!v) {
-                        logger.info(this.getErrorMessageForBarrierRequest(request));
+                        logger.warn(this.getErrorMessageForBarrierRequest(request));
 
                         if (cosmosExceptionValueHolder.get() != null) {
                             return Mono.error(cosmosExceptionValueHolder.get());
@@ -373,7 +373,9 @@ public class ConsistencyWriter {
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
 
         try {
-            if (isBarrierRequest(request, response)) {
+            BarrierType barrierType = getBarrierRequestType(request, response);
+            request.requestContext.setBarrierType(barrierType);
+            if (barrierType == BarrierType.GLOBAL_STRONG_WRITE || barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT) {
                 Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);
                 Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1L);
 
@@ -452,17 +454,14 @@ public class ConsistencyWriter {
             HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET);
     }
 
-    boolean isBarrierRequest(RxDocumentServiceRequest request, StoreResponse response) {
+    BarrierType getBarrierRequestType(RxDocumentServiceRequest request, StoreResponse response) {
         if (isGlobalStrongBarrierRequest(request, response)) {
-            request.requestContext.setBarrierType(BarrierType.GLOBAL_STRONG_WRITE);
-            return true;
+            return BarrierType.GLOBAL_STRONG_WRITE;
         }
         if (isNRegionSynchronousCommitBarrierRequest(request, response)) {
-            request.requestContext.setBarrierType(BarrierType.N_REGION_SYNCHRONOUS_COMMIT);
-            return true;
+            return BarrierType.N_REGION_SYNCHRONOUS_COMMIT;
         }
-        request.requestContext.setBarrierType(BarrierType.NONE);
-        return false;
+        return BarrierType.NONE;
     }
 
     /**
@@ -476,11 +475,21 @@ public class ConsistencyWriter {
      * Checks if the request is a NRegion Synchronous Commit barrier request.
      */
     private boolean isNRegionSynchronousCommitBarrierRequest(RxDocumentServiceRequest request, StoreResponse response) {
-        return request.requestContext.getNRegionSynchronousCommitEnabled()
-            && !this.useMultipleWriteLocations
-            && StringUtils.isNotEmpty(response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN))
-            && Long.parseLong(response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != -1
-            && response.getNumberOfReadRegions() > 0;
+        String globalCommittedGlsnHeader =
+            response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
+        if (!request.requestContext.getNRegionSynchronousCommitEnabled()
+            || this.useMultipleWriteLocations
+            || StringUtils.isEmpty(globalCommittedGlsnHeader)
+            || response.getNumberOfReadRegions() <= 0) {
+            return false;
+        }
+        try {
+            long globalCommittedGlsnValue = Long.parseLong(globalCommittedGlsnHeader);
+            return globalCommittedGlsnValue != -1;
+        } catch (NumberFormatException e) {
+            // Malformed header value: treating as no barrier instead of throwing.
+            return false;
+        }
     }
 
     // visibility set to package-private for testing

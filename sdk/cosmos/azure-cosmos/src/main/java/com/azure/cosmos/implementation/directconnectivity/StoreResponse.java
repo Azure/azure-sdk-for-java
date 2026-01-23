@@ -276,7 +276,7 @@ public class StoreResponse {
     }
 
     public long getNumberOfReadRegions() {
-        int numberOfReadRegions = -1;
+        long numberOfReadRegions = -1L;
         String numberOfReadRegionsString = this.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
         if (StringUtils.isNotEmpty(numberOfReadRegionsString)) {
             try {
