@@ -9,24 +9,33 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Sample demonstrating how to create a classifier analyzer.
- * This sample shows:
- * 1. Defining a classifier with predefined categories
- * 2. Creating an analyzer specifically for classification tasks
- * 3. Using the Classify method for document type classification
+ * 
+ * This sample shows how to create a classifier that categorizes documents into predefined
+ * custom categories using ContentCategories. Classifiers are useful for:
+ * - Content organization: Organize large document collections by type through categorization
+ * - Data routing (optional): Route data to specific custom analyzers based on category
+ * - Multi-document processing: Process files containing multiple document types by automatically
+ *   segmenting them
+ * 
+ * Classifiers use custom categories defined in ContentCategories. Each category has a Description
+ * that helps the AI model understand what documents belong to that category. You can define up to
+ * 200 category names and descriptions. You can include an "other" category to handle unmatched
+ * content; otherwise, all files are forced to be classified into one of your defined categories.
+ * 
+ * The EnableSegment property in the analyzer configuration controls whether multi-document files
+ * are split into segments:
+ * - EnableSegment = false: Classifies the entire file as a single category (classify only)
+ * - EnableSegment = true: Automatically splits the file into segments by category (classify and segment)
  */
 public class Sample05_CreateClassifier {
 
@@ -56,72 +65,68 @@ public class Sample05_CreateClassifier {
 
         System.out.println("Creating classifier analyzer '" + analyzerId + "'...");
 
-        // Define field schema with classification fields
-        // Classifiers use the Classify method to categorize documents into predefined types
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        // Define content categories for classification
+        // Each category has a description that helps the AI model understand what documents belong to it
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
 
-        // Document type classifier
-        ContentFieldDefinition documentTypeDef = new ContentFieldDefinition();
-        documentTypeDef.setType(ContentFieldType.STRING);
-        documentTypeDef.setMethod(GenerationMethod.CLASSIFY);
-        documentTypeDef.setDescription("Type of document");
-        documentTypeDef
-            .setEnumProperty(Arrays.asList("invoice", "receipt", "contract", "report", "letter", "form", "other"));
-        fields.put("document_type", documentTypeDef);
+        categories.put("Loan_Application", new ContentCategoryDefinition()
+            .setDescription("Documents submitted by individuals or businesses to request funding, "
+                + "typically including personal or business details, financial history, loan amount, "
+                + "purpose, and supporting documentation."));
 
-        // Industry classifier
-        ContentFieldDefinition industryDef = new ContentFieldDefinition();
-        industryDef.setType(ContentFieldType.STRING);
-        industryDef.setMethod(GenerationMethod.CLASSIFY);
-        industryDef.setDescription("Industry category of the document");
-        industryDef.setEnumProperty(Arrays.asList("finance", "healthcare", "legal", "retail", "technology", "other"));
-        fields.put("industry", industryDef);
+        categories.put("Invoice", new ContentCategoryDefinition()
+            .setDescription("Billing documents issued by sellers or service providers to request payment "
+                + "for goods or services, detailing items, prices, taxes, totals, and payment terms."));
 
-        // Urgency classifier
-        ContentFieldDefinition urgencyDef = new ContentFieldDefinition();
-        urgencyDef.setType(ContentFieldType.STRING);
-        urgencyDef.setMethod(GenerationMethod.CLASSIFY);
-        urgencyDef.setDescription("Urgency level of the document");
-        urgencyDef.setEnumProperty(Arrays.asList("urgent", "normal", "low"));
-        fields.put("urgency", urgencyDef);
+        categories.put("Bank_Statement", new ContentCategoryDefinition()
+            .setDescription("Official statements issued by banks that summarize account activity over a period, "
+                + "including deposits, withdrawals, fees, and balances."));
 
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("document_classifier_schema");
-        fieldSchema.setDescription("Schema for classifying document types, industries, and urgency");
-        fieldSchema.setFields(fields);
+        // Create analyzer configuration with content categories
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig()
+            .setReturnDetails(true)
+            .setEnableSegment(true) // Enable automatic segmentation by category
+            .setContentCategories(categories);
 
-        // Create the classifier analyzer with configuration
+        // Create the classifier analyzer
+        // Note: models are specified using model names, not deployment names
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
 
-        ContentAnalyzer classifierAnalyzer = new ContentAnalyzer()
+        ContentAnalyzer classifier = new ContentAnalyzer()
             .setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Document classifier for type, industry, and urgency detection")
-            .setConfig(new ContentAnalyzerConfig()
-                .setEnableOcr(true)
-                .setEnableLayout(true)
-                .setEstimateFieldSourceAndConfidence(true))
-            .setFieldSchema(fieldSchema)
+            .setDescription("Custom classifier for financial document categorization")
+            .setConfig(config)
             .setModels(models);
 
-        // Create the analyzer
+        // Create the classifier
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, classifierAnalyzer, true);
+            = client.beginCreateAnalyzer(analyzerId, classifier);
 
         ContentAnalyzer result = operation.getFinalResult();
-        System.out.println("Classifier analyzer '" + analyzerId + "' created successfully!");
+        System.out.println("Classifier '" + analyzerId + "' created successfully!");
+
         if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
             System.out.println("  Description: " + result.getDescription());
         }
 
-        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
-            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
-            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
-                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
-                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
-                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+        if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
+            System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
+            result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
+                System.out.println("    - " + categoryName);
+                if (categoryDef.getDescription() != null) {
+                    // Truncate long descriptions for display
+                    String desc = categoryDef.getDescription();
+                    if (desc.length() > 60) {
+                        desc = desc.substring(0, 57) + "...";
+                    }
+                    System.out.println("      Description: " + desc);
+                }
             });
+        }
+
+        if (result.getConfig() != null && result.getConfig().isEnableSegment() != null) {
+            System.out.println("  Segmentation enabled: " + result.getConfig().isEnableSegment());
         }
         // END:ContentUnderstandingCreateClassifier
 

@@ -8,16 +8,20 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Sample demonstrating how to analyze documents from URL using Content Understanding service.
@@ -31,7 +35,7 @@ public class Sample02_AnalyzeUrl {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02.buildClient
-        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
@@ -118,5 +122,175 @@ public class Sample02_AnalyzeUrl {
         }
 
         System.out.println("\nURL document analysis completed successfully");
+    }
+
+    /**
+     * Sample demonstrating how to analyze video from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to a video file
+     * 2. Analyzing the video with prebuilt-videoSearch analyzer
+     * 3. Iterating through video segments
+     * 4. Accessing audio/visual properties (timing, summary, frame size)
+     */
+    public static void analyzeVideoUrl() {
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = client.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
+        int segmentIndex = 1;
+        for (MediaContent media : result.getContents()) {
+            // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+            // AudioVisualContent derives from MediaContent and provides additional properties
+            // to access full information about audio/video, including timing, transcript phrases, and many others
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("--- Segment " + segmentIndex + " ---");
+            System.out.println("Markdown:");
+            System.out.println(videoContent.getMarkdown());
+
+            String summary = videoContent.getFields() != null && videoContent.getFields().containsKey("Summary")
+                ? (videoContent.getFields().get("Summary").getValue() != null
+                    ? videoContent.getFields().get("Summary").getValue().toString()
+                    : "")
+                : "";
+            System.out.println("Summary: " + summary);
+
+            System.out.println("Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
+            System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
+
+            System.out.println("---------------------");
+            segmentIndex++;
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze audio from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to an audio file
+     * 2. Analyzing the audio with prebuilt-audioSearch analyzer
+     * 3. Accessing audio/visual properties (timing, summary, transcript)
+     */
+    public static void analyzeAudioUrl() {
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = client.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+        // AudioVisualContent derives from MediaContent and provides additional properties
+        // to access full information about audio/video, including timing, transcript phrases, and many others
+        AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+        System.out.println("Markdown:");
+        System.out.println(audioContent.getMarkdown());
+
+        String summary = audioContent.getFields() != null && audioContent.getFields().containsKey("Summary")
+            ? (audioContent.getFields().get("Summary").getValue() != null
+                ? audioContent.getFields().get("Summary").getValue().toString()
+                : "")
+            : "";
+        System.out.println("Summary: " + summary);
+
+        // Example: Access an additional field in AudioVisualContent (transcript phrases)
+        List<TranscriptPhrase> transcriptPhrases = audioContent.getTranscriptPhrases();
+        if (transcriptPhrases != null && !transcriptPhrases.isEmpty()) {
+            System.out.println("Transcript (first two phrases):");
+            int count = 0;
+            for (TranscriptPhrase phrase : transcriptPhrases) {
+                if (count >= 2) {
+                    break;
+                }
+                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
+                count++;
+            }
+        }
+        // END:ContentUnderstandingAnalyzeAudioUrlAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze image from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to an image file
+     * 2. Analyzing the image with prebuilt-imageSearch analyzer
+     * 3. Accessing image properties (markdown, summary)
+     */
+    public static void analyzeImageUrl() {
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = client.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        MediaContent content = result.getContents().get(0);
+        System.out.println("Markdown:");
+        System.out.println(content.getMarkdown());
+
+        String summary = content.getFields() != null && content.getFields().containsKey("Summary")
+            ? (content.getFields().get("Summary").getValue() != null
+                ? content.getFields().get("Summary").getValue().toString()
+                : "")
+            : "";
+        System.out.println("Summary: " + summary);
+        // END:ContentUnderstandingAnalyzeImageUrlAsync
     }
 }

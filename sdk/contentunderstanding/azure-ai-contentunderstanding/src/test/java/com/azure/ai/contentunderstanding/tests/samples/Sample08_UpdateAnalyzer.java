@@ -51,20 +51,15 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
         fieldSchema.setDescription("Basic document schema");
         fieldSchema.setFields(fields);
 
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableOcr(true);
-        config.setEnableLayout(true);
-
-        ContentAnalyzer analyzer = new ContentAnalyzer();
-        analyzer.setBaseAnalyzerId("prebuilt-document");
-        analyzer.setDescription("Original analyzer for update testing");
-        analyzer.setConfig(config);
-        analyzer.setFieldSchema(fieldSchema);
-
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        analyzer.setModels(models);
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Original analyzer for update testing")
+            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
@@ -111,21 +106,15 @@ public class Sample08_UpdateAnalyzer extends ContentUnderstandingClientTestBase 
         updatedFieldSchema.setDescription("Enhanced document schema with author");
         updatedFieldSchema.setFields(updatedFields);
 
-        ContentAnalyzerConfig updatedConfig = new ContentAnalyzerConfig();
-        updatedConfig.setEnableOcr(true);
-        updatedConfig.setEnableLayout(true);
-        updatedConfig.setEnableFormula(true); // Enable formula extraction
+        Map<String, String> updatedModels = new HashMap<>();
+        updatedModels.put("completion", "gpt-4.1");
+        updatedModels.put("embedding", "text-embedding-3-large");
 
-        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer();
-        updatedAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        updatedAnalyzer.setDescription("Updated analyzer with enhanced schema");
-        updatedAnalyzer.setConfig(updatedConfig);
-        updatedAnalyzer.setFieldSchema(updatedFieldSchema);
-
-        Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
-        updatedAnalyzer.setModels(models);
+        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Updated analyzer with enhanced schema")
+            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true).setEnableFormula(true)) // Enable formula extraction
+            .setFieldSchema(updatedFieldSchema)
+            .setModels(updatedModels);
 
         // Update the analyzer using the convenience method
         // This method accepts a ContentAnalyzer object directly instead of BinaryData

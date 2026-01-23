@@ -101,26 +101,20 @@ public class Sample04_CreateAnalyzer extends ContentUnderstandingClientTestBase 
         fieldSchema.setDescription("Schema for extracting company information");
         fieldSchema.setFields(fields);
 
-        // Create analyzer configuration
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableFormula(true);
-        config.setEnableLayout(true);
-        config.setEnableOcr(true);
-        config.setEstimateFieldSourceAndConfidence(true);
-        config.setReturnDetails(true);
-
-        // Create the custom analyzer
-        ContentAnalyzer customAnalyzer = new ContentAnalyzer();
-        customAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        customAnalyzer.setDescription("Custom analyzer for extracting company information");
-        customAnalyzer.setConfig(config);
-        customAnalyzer.setFieldSchema(fieldSchema);
-
-        // Add model mappings (required for custom analyzers)
+        // Create the custom analyzer with configuration
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        customAnalyzer.setModels(models);
+
+        ContentAnalyzer customAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom analyzer for extracting company information")
+            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true)
+                .setEnableLayout(true)
+                .setEnableFormula(true)
+                .setEstimateFieldSourceAndConfidence(true)
+                .setReturnDetails(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         // Create the analyzer
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation

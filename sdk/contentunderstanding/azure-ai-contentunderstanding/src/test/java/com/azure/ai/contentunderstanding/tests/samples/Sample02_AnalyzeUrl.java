@@ -6,12 +6,14 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.MediaContent;
+import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -229,5 +232,189 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
             System.out.println("⚠️ Content is not DocumentContent type, skipping document-specific validations");
             System.out.println("⚠️ Content type: " + content.getClass().getSimpleName() + " (MediaContent validated)");
         }
+    }
+
+    @Test
+    public void testAnalyzeVideoUrlAsync() {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
+        int segmentIndex = 1;
+        for (MediaContent media : result.getContents()) {
+            // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+            // AudioVisualContent derives from MediaContent and provides additional properties
+            // to access full information about audio/video, including timing, transcript phrases, and many others
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("--- Segment " + segmentIndex + " ---");
+            System.out.println("Markdown:");
+            System.out.println(videoContent.getMarkdown());
+
+            String summary = videoContent.getFields() != null && videoContent.getFields().containsKey("Summary")
+                ? (videoContent.getFields().get("Summary").getValue() != null
+                    ? videoContent.getFields().get("Summary").getValue().toString()
+                    : "")
+                : "";
+            System.out.println("Summary: " + summary);
+
+            System.out.println(
+                "Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
+            System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
+
+            System.out.println("---------------------");
+            segmentIndex++;
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
+        Assertions.assertNotNull(operation, "Analysis operation should not be null");
+        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        Assertions.assertNotNull(result, "Analysis result should not be null");
+        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
+        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+
+        // Verify all contents are AudioVisualContent
+        for (MediaContent content : result.getContents()) {
+            Assertions.assertTrue(content instanceof AudioVisualContent,
+                "Video analysis should return audio/visual content.");
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            Assertions.assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
+            Assertions.assertTrue(avContent.getFields().containsKey("Summary"),
+                "Video segment should have Summary field");
+            Assertions.assertNotNull(avContent.getFields().get("Summary").getValue(),
+                "Summary value should not be null");
+            String summaryStr = avContent.getFields().get("Summary").getValue().toString();
+            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+        }
+        System.out.println("Video analysis validation completed successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
+    }
+
+    @Test
+    public void testAnalyzeAudioUrlAsync() {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+        // AudioVisualContent derives from MediaContent and provides additional properties
+        // to access full information about audio/video, including timing, transcript phrases, and many others
+        AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+        System.out.println("Markdown:");
+        System.out.println(audioContent.getMarkdown());
+
+        String summary = audioContent.getFields() != null && audioContent.getFields().containsKey("Summary")
+            ? (audioContent.getFields().get("Summary").getValue() != null
+                ? audioContent.getFields().get("Summary").getValue().toString()
+                : "")
+            : "";
+        System.out.println("Summary: " + summary);
+
+        // Example: Access an additional field in AudioVisualContent (transcript phrases)
+        List<TranscriptPhrase> transcriptPhrases = audioContent.getTranscriptPhrases();
+        if (transcriptPhrases != null && !transcriptPhrases.isEmpty()) {
+            System.out.println("Transcript (first two phrases):");
+            int count = 0;
+            for (TranscriptPhrase phrase : transcriptPhrases) {
+                if (count >= 2) {
+                    break;
+                }
+                System.out
+                    .println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
+                count++;
+            }
+        }
+        // END:ContentUnderstandingAnalyzeAudioUrlAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
+        Assertions.assertNotNull(operation, "Analysis operation should not be null");
+        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        Assertions.assertNotNull(result, "Analysis result should not be null");
+        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
+        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+
+        // Verify content is AudioVisualContent
+        Assertions.assertTrue(audioContent instanceof AudioVisualContent,
+            "Audio analysis should return audio/visual content.");
+
+        // Verify all contents have Summary field
+        for (MediaContent content : result.getContents()) {
+            Assertions.assertTrue(content instanceof AudioVisualContent,
+                "Audio analysis should return audio/visual content.");
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            Assertions.assertNotNull(avContent.getFields(), "AudioVisualContent should have fields");
+            Assertions.assertTrue(avContent.getFields().containsKey("Summary"),
+                "Audio content should have Summary field");
+            Assertions.assertNotNull(avContent.getFields().get("Summary").getValue(),
+                "Summary value should not be null");
+            String summaryStr = avContent.getFields().get("Summary").getValue().toString();
+            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+        }
+        System.out.println("Audio analysis validation completed successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
+    }
+
+    @Test
+    public void testAnalyzeImageUrlAsync() {
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
+
+        AnalyzeInput input = new AnalyzeInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+
+        AnalyzeResult result = operation.getFinalResult();
+
+        MediaContent content = result.getContents().get(0);
+        System.out.println("Markdown:");
+        System.out.println(content.getMarkdown());
+
+        String summary = content.getFields() != null && content.getFields().containsKey("Summary")
+            ? (content.getFields().get("Summary").getValue() != null
+                ? content.getFields().get("Summary").getValue().toString()
+                : "")
+            : "";
+        System.out.println("Summary: " + summary);
+        // END:ContentUnderstandingAnalyzeImageUrlAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
+        Assertions.assertNotNull(operation, "Analysis operation should not be null");
+        Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        Assertions.assertNotNull(result, "Analysis result should not be null");
+        Assertions.assertNotNull(result.getContents(), "Result contents should not be null");
+        Assertions.assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+
+        // Verify content has Summary field
+        for (MediaContent mediaContent : result.getContents()) {
+            Assertions.assertNotNull(mediaContent.getFields(), "Content should have fields");
+            Assertions.assertTrue(mediaContent.getFields().containsKey("Summary"),
+                "Image content should have Summary field");
+            Assertions.assertNotNull(mediaContent.getFields().get("Summary").getValue(),
+                "Summary value should not be null");
+            String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
+            Assertions.assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+        }
+        System.out.println("Image analysis validation completed successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
     }
 }

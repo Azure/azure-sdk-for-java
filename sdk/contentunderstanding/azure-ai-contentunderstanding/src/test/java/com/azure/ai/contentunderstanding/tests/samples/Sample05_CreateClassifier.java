@@ -7,10 +7,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -18,16 +15,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Sample demonstrating how to create a classifier analyzer.
- * This sample shows:
- * 1. Defining a classifier with predefined categories
- * 2. Creating an analyzer specifically for classification tasks
- * 3. Using the Classify method for document type classification
+ *
+ * This sample shows how to create a classifier that categorizes documents into predefined
+ * custom categories using ContentCategories. Classifiers are useful for:
+ * - Content organization: Organize large document collections by type through categorization
+ * - Data routing (optional): Route data to specific custom analyzers based on category
+ * - Multi-document processing: Process files containing multiple document types by automatically
+ *   segmenting them
  */
 public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBase {
 
@@ -46,162 +45,142 @@ public class Sample05_CreateClassifier extends ContentUnderstandingClientTestBas
     }
 
     @Test
-    public void testCreateClassifierAsync() {
+    public void testCreateClassifier() {
 
         // BEGIN:ContentUnderstandingCreateClassifier
         // Generate a unique classifier analyzer ID
         String analyzerId = testResourceNamer.randomName("document_classifier_", 50);
 
-        // Define field schema with classification fields
-        // Classifiers use the Classify method to categorize documents into predefined types
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        System.out.println("Creating classifier analyzer '" + analyzerId + "'...");
 
-        // Document type classifier
-        ContentFieldDefinition documentTypeDef = new ContentFieldDefinition();
-        documentTypeDef.setType(ContentFieldType.STRING);
-        documentTypeDef.setMethod(GenerationMethod.CLASSIFY);
-        documentTypeDef.setDescription("Type of document");
-        documentTypeDef
-            .setEnumProperty(Arrays.asList("invoice", "receipt", "contract", "report", "letter", "form", "other"));
-        fields.put("document_type", documentTypeDef);
+        // Define content categories for classification
+        // Each category has a description that helps the AI model understand what documents belong to it
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
 
-        // Industry classifier
-        ContentFieldDefinition industryDef = new ContentFieldDefinition();
-        industryDef.setType(ContentFieldType.STRING);
-        industryDef.setMethod(GenerationMethod.CLASSIFY);
-        industryDef.setDescription("Industry category of the document");
-        industryDef.setEnumProperty(Arrays.asList("finance", "healthcare", "legal", "retail", "technology", "other"));
-        fields.put("industry", industryDef);
+        categories.put("Loan_Application",
+            new ContentCategoryDefinition()
+                .setDescription("Documents submitted by individuals or businesses to request funding, "
+                    + "typically including personal or business details, financial history, loan amount, "
+                    + "purpose, and supporting documentation."));
 
-        // Urgency classifier
-        ContentFieldDefinition urgencyDef = new ContentFieldDefinition();
-        urgencyDef.setType(ContentFieldType.STRING);
-        urgencyDef.setMethod(GenerationMethod.CLASSIFY);
-        urgencyDef.setDescription("Urgency level of the document");
-        urgencyDef.setEnumProperty(Arrays.asList("urgent", "normal", "low"));
-        fields.put("urgency", urgencyDef);
+        categories.put("Invoice",
+            new ContentCategoryDefinition()
+                .setDescription("Billing documents issued by sellers or service providers to request payment "
+                    + "for goods or services, detailing items, prices, taxes, totals, and payment terms."));
 
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("document_classifier_schema");
-        fieldSchema.setDescription("Schema for classifying document types, industries, and urgency");
-        fieldSchema.setFields(fields);
+        categories.put("Bank_Statement",
+            new ContentCategoryDefinition()
+                .setDescription("Official statements issued by banks that summarize account activity over a period, "
+                    + "including deposits, withdrawals, fees, and balances."));
 
-        // Create analyzer configuration
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableFormula(false);
-        config.setEnableLayout(true);
-        config.setEnableOcr(true);
-        config.setEstimateFieldSourceAndConfidence(true);
-        config.setReturnDetails(false);
+        // Create analyzer configuration with content categories
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig().setReturnDetails(true)
+            .setEnableSegment(true) // Enable automatic segmentation by category
+            .setContentCategories(categories);
 
         // Create the classifier analyzer
-        ContentAnalyzer classifierAnalyzer = new ContentAnalyzer();
-        classifierAnalyzer.setBaseAnalyzerId("prebuilt-document");
-        classifierAnalyzer.setDescription("Document classifier for type, industry, and urgency detection");
-        classifierAnalyzer.setConfig(config);
-        classifierAnalyzer.setFieldSchema(fieldSchema);
-
-        // Add model mappings (required for custom analyzers)
+        // Note: models are specified using model names, not deployment names
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
-        classifierAnalyzer.setModels(models);
 
-        // Create the analyzer
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom classifier for financial document categorization")
+            .setConfig(config)
+            .setModels(models);
+
+        // Create the classifier
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifierAnalyzer);
+            = contentUnderstandingClient.beginCreateAnalyzer(analyzerId, classifier);
 
         ContentAnalyzer result = operation.getFinalResult();
-        System.out.println("Classifier analyzer '" + analyzerId + "' created successfully!");
+        System.out.println("Classifier '" + analyzerId + "' created successfully!");
         // END:ContentUnderstandingCreateClassifier
 
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         // BEGIN:Assertion_ContentUnderstandingCreateClassifier
+        // Verify basic properties
         Assertions.assertNotNull(analyzerId, "Analyzer ID should not be null");
         Assertions.assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
-        Assertions.assertNotNull(fieldSchema, "Field schema should not be null");
-        Assertions.assertNotNull(classifierAnalyzer, "Classifier analyzer should not be null");
         Assertions.assertNotNull(operation, "Create analyzer operation should not be null");
         Assertions.assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        System.out.println("Create classifier operation properties verified");
+        System.out.println("✓ Create classifier operation completed successfully");
 
         Assertions.assertNotNull(result, "Analyzer result should not be null");
-        System.out.println("Classifier analyzer '" + analyzerId + "' created successfully");
+        System.out.println("✓ Classifier analyzer created: " + analyzerId);
 
         // Verify base analyzer
         Assertions.assertNotNull(result.getBaseAnalyzerId(), "Base analyzer ID should not be null");
         Assertions.assertEquals("prebuilt-document", result.getBaseAnalyzerId(), "Base analyzer ID should match");
-        System.out.println("Base analyzer ID verified: " + result.getBaseAnalyzerId());
+        System.out.println("✓ Base analyzer ID verified: " + result.getBaseAnalyzerId());
+
+        // Verify description
+        Assertions.assertNotNull(result.getDescription(), "Description should not be null");
+        Assertions.assertEquals("Custom classifier for financial document categorization", result.getDescription(),
+            "Description should match");
+        System.out.println("✓ Description verified: " + result.getDescription());
 
         // Verify analyzer config
         Assertions.assertNotNull(result.getConfig(), "Analyzer config should not be null");
-        Assertions.assertFalse(result.getConfig().isEnableFormula(), "EnableFormula should be false for classifier");
-        Assertions.assertTrue(result.getConfig().isEnableLayout(), "EnableLayout should be true");
-        Assertions.assertTrue(result.getConfig().isEnableOcr(), "EnableOcr should be true");
-        Assertions.assertTrue(result.getConfig().isEstimateFieldSourceAndConfidence(),
-            "EstimateFieldSourceAndConfidence should be true");
-        System.out.println("Analyzer config verified");
+        System.out.println("✓ Analyzer config present");
 
-        // Verify field schema
-        Assertions.assertNotNull(result.getFieldSchema(), "Field schema should not be null");
-        Assertions.assertFalse(result.getFieldSchema().getName().trim().isEmpty(),
-            "Field schema name should not be empty");
-        Assertions.assertEquals("document_classifier_schema", result.getFieldSchema().getName(),
-            "Field schema name should match");
-        Assertions.assertFalse(result.getFieldSchema().getDescription().trim().isEmpty(),
-            "Field schema description should not be empty");
-        System.out.println("Field schema verified: " + result.getFieldSchema().getName());
+        // Verify content categories
+        Assertions.assertNotNull(result.getConfig().getContentCategories(), "Content categories should not be null");
+        Assertions.assertEquals(3, result.getConfig().getContentCategories().size(),
+            "Should have 3 content categories");
+        System.out.println("✓ Content categories count verified: " + result.getConfig().getContentCategories().size());
 
-        // Verify field schema fields
-        Assertions.assertNotNull(result.getFieldSchema().getFields(), "Field schema fields should not be null");
-        Assertions.assertEquals(3, result.getFieldSchema().getFields().size(), "Should have 3 classifier fields");
-        System.out.println("Field schema contains " + result.getFieldSchema().getFields().size() + " fields");
+        // Verify Loan_Application category
+        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Loan_Application"),
+            "Should contain Loan_Application category");
+        ContentCategoryDefinition loanAppCategory = result.getConfig().getContentCategories().get("Loan_Application");
+        Assertions.assertNotNull(loanAppCategory.getDescription(), "Loan_Application description should not be null");
+        Assertions.assertTrue(loanAppCategory.getDescription().contains("funding"),
+            "Loan_Application description should mention funding");
+        System.out.println("  ✓ Loan_Application category verified");
 
-        // Verify document_type field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("document_type"),
-            "Should contain document_type field");
-        ContentFieldDefinition documentTypeDefResult = result.getFieldSchema().getFields().get("document_type");
-        Assertions.assertEquals(ContentFieldType.STRING, documentTypeDefResult.getType(),
-            "document_type should be String type");
-        Assertions.assertEquals(GenerationMethod.CLASSIFY, documentTypeDefResult.getMethod(),
-            "document_type should use Classify method");
-        Assertions.assertNotNull(documentTypeDefResult.getEnumProperty(), "document_type should have enum values");
-        Assertions.assertEquals(7, documentTypeDefResult.getEnumProperty().size(),
-            "document_type should have 7 enum values");
-        System.out.println("  document_type field verified (String, Classify, 7 enum values)");
+        // Verify Invoice category
+        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Invoice"),
+            "Should contain Invoice category");
+        ContentCategoryDefinition invoiceCategory = result.getConfig().getContentCategories().get("Invoice");
+        Assertions.assertNotNull(invoiceCategory.getDescription(), "Invoice description should not be null");
+        Assertions.assertTrue(invoiceCategory.getDescription().contains("payment"),
+            "Invoice description should mention payment");
+        System.out.println("  ✓ Invoice category verified");
 
-        // Verify industry field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("industry"),
-            "Should contain industry field");
-        ContentFieldDefinition industryDefResult = result.getFieldSchema().getFields().get("industry");
-        Assertions.assertEquals(ContentFieldType.STRING, industryDefResult.getType(), "industry should be String type");
-        Assertions.assertEquals(GenerationMethod.CLASSIFY, industryDefResult.getMethod(),
-            "industry should use Classify method");
-        Assertions.assertNotNull(industryDefResult.getEnumProperty(), "industry should have enum values");
-        Assertions.assertEquals(6, industryDefResult.getEnumProperty().size(), "industry should have 6 enum values");
-        System.out.println("  industry field verified (String, Classify, 6 enum values)");
+        // Verify Bank_Statement category
+        Assertions.assertTrue(result.getConfig().getContentCategories().containsKey("Bank_Statement"),
+            "Should contain Bank_Statement category");
+        ContentCategoryDefinition bankCategory = result.getConfig().getContentCategories().get("Bank_Statement");
+        Assertions.assertNotNull(bankCategory.getDescription(), "Bank_Statement description should not be null");
+        Assertions.assertTrue(bankCategory.getDescription().contains("account activity"),
+            "Bank_Statement description should mention account activity");
+        System.out.println("  ✓ Bank_Statement category verified");
 
-        // Verify urgency field
-        Assertions.assertTrue(result.getFieldSchema().getFields().containsKey("urgency"),
-            "Should contain urgency field");
-        ContentFieldDefinition urgencyDefResult = result.getFieldSchema().getFields().get("urgency");
-        Assertions.assertEquals(ContentFieldType.STRING, urgencyDefResult.getType(), "urgency should be String type");
-        Assertions.assertEquals(GenerationMethod.CLASSIFY, urgencyDefResult.getMethod(),
-            "urgency should use Classify method");
-        Assertions.assertNotNull(urgencyDefResult.getEnumProperty(), "urgency should have enum values");
-        Assertions.assertEquals(3, urgencyDefResult.getEnumProperty().size(), "urgency should have 3 enum values");
-        System.out.println("  urgency field verified (String, Classify, 3 enum values)");
+        // Verify enableSegment is set
+        Assertions.assertNotNull(result.getConfig().isEnableSegment(), "EnableSegment should not be null");
+        Assertions.assertTrue(result.getConfig().isEnableSegment(), "EnableSegment should be true");
+        System.out.println("✓ EnableSegment verified: " + result.getConfig().isEnableSegment());
+
+        // Verify returnDetails is set
+        Assertions.assertNotNull(result.getConfig().isReturnDetails(), "ReturnDetails should not be null");
+        Assertions.assertTrue(result.getConfig().isReturnDetails(), "ReturnDetails should be true");
+        System.out.println("✓ ReturnDetails verified: " + result.getConfig().isReturnDetails());
 
         // Verify models
         Assertions.assertNotNull(result.getModels(), "Models should not be null");
-        Assertions.assertTrue(result.getModels().size() >= 2, "Should have at least 2 model mappings");
         Assertions.assertTrue(result.getModels().containsKey("completion"),
             "Should contain 'completion' model mapping");
-        Assertions.assertTrue(result.getModels().containsKey("embedding"), "Should contain 'embedding' model mapping");
-        System.out.println("Model mappings verified: " + result.getModels().size() + " model(s)");
+        System.out.println("✓ Model mappings verified: " + result.getModels().size() + " model(s)");
 
-        System.out.println("All classifier creation properties validated successfully");
+        System.out.println("\n════════════════════════════════════════════════════════════");
+        System.out.println("✓ CLASSIFIER CREATION VERIFIED SUCCESSFULLY");
+        System.out.println("════════════════════════════════════════════════════════════");
+        System.out.println("  Analyzer ID: " + analyzerId);
+        System.out.println("  Base Analyzer: " + result.getBaseAnalyzerId());
+        System.out.println("  Categories: " + result.getConfig().getContentCategories().size());
+        System.out.println("  Segmentation: " + result.getConfig().isEnableSegment());
+        System.out.println("════════════════════════════════════════════════════════════");
         // END:Assertion_ContentUnderstandingCreateClassifier
     }
 }

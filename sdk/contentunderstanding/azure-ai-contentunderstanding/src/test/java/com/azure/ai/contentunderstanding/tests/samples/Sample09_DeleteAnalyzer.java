@@ -48,20 +48,15 @@ public class Sample09_DeleteAnalyzer extends ContentUnderstandingClientTestBase 
         fieldSchema.setDescription("Temporary schema for deletion demo");
         fieldSchema.setFields(fields);
 
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
-        config.setEnableOcr(true);
-        config.setEnableLayout(true);
-
-        ContentAnalyzer analyzer = new ContentAnalyzer();
-        analyzer.setBaseAnalyzerId("prebuilt-document");
-        analyzer.setDescription("Temporary analyzer for deletion demo");
-        analyzer.setConfig(config);
-        analyzer.setFieldSchema(fieldSchema);
-
         Map<String, String> models = new HashMap<>();
         models.put("completion", "gpt-4.1");
         models.put("embedding", "text-embedding-3-large");
-        analyzer.setModels(models);
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Temporary analyzer for deletion demo")
+            .setConfig(new ContentAnalyzerConfig().setEnableOcr(true).setEnableLayout(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
 
         contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
         System.out.println("Temporary analyzer created: " + analyzerId);
