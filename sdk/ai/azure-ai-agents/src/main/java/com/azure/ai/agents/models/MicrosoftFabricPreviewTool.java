@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for a Microsoft Fabric tool as used to configure an agent.
  */
 @Immutable
-public final class MicrosoftFabricAgentTool extends Tool {
+public final class MicrosoftFabricPreviewTool extends Tool {
 
     /*
      * The type property.
@@ -22,13 +22,19 @@ public final class MicrosoftFabricAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
 
+    /*
+     * The fabric data agent tool parameters.
+     */
+    @Generated
+    private final FabricDataAgentToolParameters fabricDataAgentPreview;
+
     /**
-     * Creates an instance of MicrosoftFabricAgentTool class.
+     * Creates an instance of MicrosoftFabricPreviewTool class.
      *
      * @param fabricDataAgentPreview the fabricDataAgentPreview value to set.
      */
     @Generated
-    public MicrosoftFabricAgentTool(FabricDataAgentToolParameters fabricDataAgentPreview) {
+    public MicrosoftFabricPreviewTool(FabricDataAgentToolParameters fabricDataAgentPreview) {
         this.fabricDataAgentPreview = fabricDataAgentPreview;
     }
 
@@ -44,6 +50,16 @@ public final class MicrosoftFabricAgentTool extends Tool {
     }
 
     /**
+     * Get the fabricDataAgentPreview property: The fabric data agent tool parameters.
+     *
+     * @return the fabricDataAgentPreview value.
+     */
+    @Generated
+    public FabricDataAgentToolParameters getFabricDataAgentPreview() {
+        return this.fabricDataAgentPreview;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -56,16 +72,16 @@ public final class MicrosoftFabricAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of MicrosoftFabricAgentTool from the JsonReader.
+     * Reads an instance of MicrosoftFabricPreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MicrosoftFabricAgentTool if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of MicrosoftFabricPreviewTool if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MicrosoftFabricAgentTool.
+     * @throws IOException If an error occurs while reading the MicrosoftFabricPreviewTool.
      */
     @Generated
-    public static MicrosoftFabricAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static MicrosoftFabricPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FabricDataAgentToolParameters fabricDataAgentPreview = null;
             ToolType type = ToolType.FABRIC_DATAAGENT_PREVIEW;
@@ -80,26 +96,10 @@ public final class MicrosoftFabricAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            MicrosoftFabricAgentTool deserializedMicrosoftFabricAgentTool
-                = new MicrosoftFabricAgentTool(fabricDataAgentPreview);
-            deserializedMicrosoftFabricAgentTool.type = type;
-            return deserializedMicrosoftFabricAgentTool;
+            MicrosoftFabricPreviewTool deserializedMicrosoftFabricPreviewTool
+                = new MicrosoftFabricPreviewTool(fabricDataAgentPreview);
+            deserializedMicrosoftFabricPreviewTool.type = type;
+            return deserializedMicrosoftFabricPreviewTool;
         });
-    }
-
-    /*
-     * The fabric data agent tool parameters.
-     */
-    @Generated
-    private final FabricDataAgentToolParameters fabricDataAgentPreview;
-
-    /**
-     * Get the fabricDataAgentPreview property: The fabric data agent tool parameters.
-     *
-     * @return the fabricDataAgentPreview value.
-     */
-    @Generated
-    public FabricDataAgentToolParameters getFabricDataAgentPreview() {
-        return this.fabricDataAgentPreview;
     }
 }

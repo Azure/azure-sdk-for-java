@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for a Bing custom search tool as used to configure an agent.
  */
 @Immutable
-public final class BingCustomSearchAgentTool extends Tool {
+public final class BingCustomSearchPreviewTool extends Tool {
 
     /*
      * The type property.
@@ -29,12 +29,12 @@ public final class BingCustomSearchAgentTool extends Tool {
     private final BingCustomSearchToolParameters bingCustomSearchPreview;
 
     /**
-     * Creates an instance of BingCustomSearchAgentTool class.
+     * Creates an instance of BingCustomSearchPreviewTool class.
      *
      * @param bingCustomSearchPreview the bingCustomSearchPreview value to set.
      */
     @Generated
-    public BingCustomSearchAgentTool(BingCustomSearchToolParameters bingCustomSearchPreview) {
+    public BingCustomSearchPreviewTool(BingCustomSearchToolParameters bingCustomSearchPreview) {
         this.bingCustomSearchPreview = bingCustomSearchPreview;
     }
 
@@ -72,16 +72,16 @@ public final class BingCustomSearchAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of BingCustomSearchAgentTool from the JsonReader.
+     * Reads an instance of BingCustomSearchPreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BingCustomSearchAgentTool if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of BingCustomSearchPreviewTool if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BingCustomSearchAgentTool.
+     * @throws IOException If an error occurs while reading the BingCustomSearchPreviewTool.
      */
     @Generated
-    public static BingCustomSearchAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static BingCustomSearchPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BingCustomSearchToolParameters bingCustomSearchPreview = null;
             ToolType type = ToolType.BING_CUSTOM_SEARCH_PREVIEW;
@@ -96,10 +96,10 @@ public final class BingCustomSearchAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            BingCustomSearchAgentTool deserializedBingCustomSearchAgentTool
-                = new BingCustomSearchAgentTool(bingCustomSearchPreview);
-            deserializedBingCustomSearchAgentTool.type = type;
-            return deserializedBingCustomSearchAgentTool;
+            BingCustomSearchPreviewTool deserializedBingCustomSearchPreviewTool
+                = new BingCustomSearchPreviewTool(bingCustomSearchPreview);
+            deserializedBingCustomSearchPreviewTool.type = type;
+            return deserializedBingCustomSearchPreviewTool;
         });
     }
 }

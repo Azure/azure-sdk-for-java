@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for a Browser Automation Tool, as used to configure an Agent.
  */
 @Immutable
-public final class BrowserAutomationAgentTool extends Tool {
+public final class BrowserAutomationPreviewTool extends Tool {
 
     /*
      * The type property.
@@ -29,12 +29,12 @@ public final class BrowserAutomationAgentTool extends Tool {
     private final BrowserAutomationToolParameters browserAutomationPreview;
 
     /**
-     * Creates an instance of BrowserAutomationAgentTool class.
+     * Creates an instance of BrowserAutomationPreviewTool class.
      *
      * @param browserAutomationPreview the browserAutomationPreview value to set.
      */
     @Generated
-    public BrowserAutomationAgentTool(BrowserAutomationToolParameters browserAutomationPreview) {
+    public BrowserAutomationPreviewTool(BrowserAutomationToolParameters browserAutomationPreview) {
         this.browserAutomationPreview = browserAutomationPreview;
     }
 
@@ -72,16 +72,16 @@ public final class BrowserAutomationAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of BrowserAutomationAgentTool from the JsonReader.
+     * Reads an instance of BrowserAutomationPreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BrowserAutomationAgentTool if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of BrowserAutomationPreviewTool if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BrowserAutomationAgentTool.
+     * @throws IOException If an error occurs while reading the BrowserAutomationPreviewTool.
      */
     @Generated
-    public static BrowserAutomationAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static BrowserAutomationPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BrowserAutomationToolParameters browserAutomationPreview = null;
             ToolType type = ToolType.BROWSER_AUTOMATION_PREVIEW;
@@ -96,10 +96,10 @@ public final class BrowserAutomationAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            BrowserAutomationAgentTool deserializedBrowserAutomationAgentTool
-                = new BrowserAutomationAgentTool(browserAutomationPreview);
-            deserializedBrowserAutomationAgentTool.type = type;
-            return deserializedBrowserAutomationAgentTool;
+            BrowserAutomationPreviewTool deserializedBrowserAutomationPreviewTool
+                = new BrowserAutomationPreviewTool(browserAutomationPreview);
+            deserializedBrowserAutomationPreviewTool.type = type;
+            return deserializedBrowserAutomationPreviewTool;
         });
     }
 }

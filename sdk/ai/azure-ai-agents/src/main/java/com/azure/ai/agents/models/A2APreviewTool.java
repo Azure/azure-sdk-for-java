@@ -14,7 +14,7 @@ import java.io.IOException;
  * An agent implementing the A2A protocol.
  */
 @Fluent
-public final class A2ATool extends Tool {
+public final class A2APreviewTool extends Tool {
 
     /*
      * The type property.
@@ -43,10 +43,10 @@ public final class A2ATool extends Tool {
     private String projectConnectionId;
 
     /**
-     * Creates an instance of A2ATool class.
+     * Creates an instance of A2APreviewTool class.
      */
     @Generated
-    public A2ATool() {
+    public A2APreviewTool() {
     }
 
     /**
@@ -74,10 +74,10 @@ public final class A2ATool extends Tool {
      * Set the baseUrl property: Base URL of the agent.
      *
      * @param baseUrl the baseUrl value to set.
-     * @return the A2ATool object itself.
+     * @return the A2APreviewTool object itself.
      */
     @Generated
-    public A2ATool setBaseUrl(String baseUrl) {
+    public A2APreviewTool setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
         return this;
     }
@@ -98,10 +98,10 @@ public final class A2ATool extends Tool {
      * If not provided, defaults to `/.well-known/agent-card.json`.
      *
      * @param agentCardPath the agentCardPath value to set.
-     * @return the A2ATool object itself.
+     * @return the A2APreviewTool object itself.
      */
     @Generated
-    public A2ATool setAgentCardPath(String agentCardPath) {
+    public A2APreviewTool setAgentCardPath(String agentCardPath) {
         this.agentCardPath = agentCardPath;
         return this;
     }
@@ -122,10 +122,10 @@ public final class A2ATool extends Tool {
      * The connection stores authentication and other connection details needed to connect to the A2A server.
      *
      * @param projectConnectionId the projectConnectionId value to set.
-     * @return the A2ATool object itself.
+     * @return the A2APreviewTool object itself.
      */
     @Generated
-    public A2ATool setProjectConnectionId(String projectConnectionId) {
+    public A2APreviewTool setProjectConnectionId(String projectConnectionId) {
         this.projectConnectionId = projectConnectionId;
         return this;
     }
@@ -145,33 +145,33 @@ public final class A2ATool extends Tool {
     }
 
     /**
-     * Reads an instance of A2ATool from the JsonReader.
+     * Reads an instance of A2APreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of A2ATool if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the A2ATool.
+     * @return An instance of A2APreviewTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2APreviewTool.
      */
     @Generated
-    public static A2ATool fromJson(JsonReader jsonReader) throws IOException {
+    public static A2APreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            A2ATool deserializedA2ATool = new A2ATool();
+            A2APreviewTool deserializedA2APreviewTool = new A2APreviewTool();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedA2ATool.type = ToolType.fromString(reader.getString());
+                    deserializedA2APreviewTool.type = ToolType.fromString(reader.getString());
                 } else if ("base_url".equals(fieldName)) {
-                    deserializedA2ATool.baseUrl = reader.getString();
+                    deserializedA2APreviewTool.baseUrl = reader.getString();
                 } else if ("agent_card_path".equals(fieldName)) {
-                    deserializedA2ATool.agentCardPath = reader.getString();
+                    deserializedA2APreviewTool.agentCardPath = reader.getString();
                 } else if ("project_connection_id".equals(fieldName)) {
-                    deserializedA2ATool.projectConnectionId = reader.getString();
+                    deserializedA2APreviewTool.projectConnectionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedA2ATool;
+            return deserializedA2APreviewTool;
         });
     }
 }

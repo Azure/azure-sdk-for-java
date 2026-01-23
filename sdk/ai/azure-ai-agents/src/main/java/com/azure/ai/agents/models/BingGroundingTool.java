@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for a bing grounding search tool as used to configure an agent.
  */
 @Immutable
-public final class BingGroundingAgentTool extends Tool {
+public final class BingGroundingTool extends Tool {
 
     /*
      * The type property.
@@ -29,12 +29,12 @@ public final class BingGroundingAgentTool extends Tool {
     private final BingGroundingSearchToolParameters bingGrounding;
 
     /**
-     * Creates an instance of BingGroundingAgentTool class.
+     * Creates an instance of BingGroundingTool class.
      *
      * @param bingGrounding the bingGrounding value to set.
      */
     @Generated
-    public BingGroundingAgentTool(BingGroundingSearchToolParameters bingGrounding) {
+    public BingGroundingTool(BingGroundingSearchToolParameters bingGrounding) {
         this.bingGrounding = bingGrounding;
     }
 
@@ -72,16 +72,16 @@ public final class BingGroundingAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of BingGroundingAgentTool from the JsonReader.
+     * Reads an instance of BingGroundingTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BingGroundingAgentTool if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of BingGroundingTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BingGroundingAgentTool.
+     * @throws IOException If an error occurs while reading the BingGroundingTool.
      */
     @Generated
-    public static BingGroundingAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static BingGroundingTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BingGroundingSearchToolParameters bingGrounding = null;
             ToolType type = ToolType.BING_GROUNDING;
@@ -96,9 +96,9 @@ public final class BingGroundingAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            BingGroundingAgentTool deserializedBingGroundingAgentTool = new BingGroundingAgentTool(bingGrounding);
-            deserializedBingGroundingAgentTool.type = type;
-            return deserializedBingGroundingAgentTool;
+            BingGroundingTool deserializedBingGroundingTool = new BingGroundingTool(bingGrounding);
+            deserializedBingGroundingTool.type = type;
+            return deserializedBingGroundingTool;
         });
     }
 }

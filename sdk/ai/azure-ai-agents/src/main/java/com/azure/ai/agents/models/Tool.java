@@ -78,27 +78,27 @@ public class Tool implements JsonSerializable<Tool> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("bing_grounding".equals(discriminatorValue)) {
-                    return BingGroundingAgentTool.fromJson(readerToUse.reset());
+                    return BingGroundingTool.fromJson(readerToUse.reset());
                 } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
-                    return MicrosoftFabricAgentTool.fromJson(readerToUse.reset());
+                    return MicrosoftFabricPreviewTool.fromJson(readerToUse.reset());
                 } else if ("sharepoint_grounding_preview".equals(discriminatorValue)) {
-                    return SharepointAgentTool.fromJson(readerToUse.reset());
+                    return SharepointPreviewTool.fromJson(readerToUse.reset());
                 } else if ("azure_ai_search".equals(discriminatorValue)) {
-                    return AzureAISearchAgentTool.fromJson(readerToUse.reset());
+                    return AzureAISearchTool.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {
-                    return OpenApiAgentTool.fromJson(readerToUse.reset());
+                    return OpenApiTool.fromJson(readerToUse.reset());
                 } else if ("bing_custom_search_preview".equals(discriminatorValue)) {
-                    return BingCustomSearchAgentTool.fromJson(readerToUse.reset());
+                    return BingCustomSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("browser_automation_preview".equals(discriminatorValue)) {
-                    return BrowserAutomationAgentTool.fromJson(readerToUse.reset());
+                    return BrowserAutomationPreviewTool.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
-                    return AzureFunctionAgentTool.fromJson(readerToUse.reset());
+                    return AzureFunctionTool.fromJson(readerToUse.reset());
                 } else if ("capture_structured_outputs".equals(discriminatorValue)) {
                     return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
-                    return A2ATool.fromJson(readerToUse.reset());
+                    return A2APreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search".equals(discriminatorValue)) {
-                    return MemorySearchTool.fromJson(readerToUse.reset());
+                    return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {

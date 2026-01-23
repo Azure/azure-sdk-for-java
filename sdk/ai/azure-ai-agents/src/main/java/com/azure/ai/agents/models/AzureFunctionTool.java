@@ -11,31 +11,31 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The input definition information for an OpenAPI tool as used to configure an agent.
+ * The input definition information for an Azure Function Tool, as used to configure an Agent.
  */
 @Immutable
-public final class OpenApiAgentTool extends Tool {
+public final class AzureFunctionTool extends Tool {
 
     /*
      * The type property.
      */
     @Generated
-    private ToolType type = ToolType.OPENAPI;
+    private ToolType type = ToolType.AZURE_FUNCTION;
 
     /*
-     * The openapi function definition.
+     * The Azure Function Tool definition.
      */
     @Generated
-    private final OpenApiFunctionDefinition openapi;
+    private final AzureFunctionDefinition azureFunction;
 
     /**
-     * Creates an instance of OpenApiAgentTool class.
+     * Creates an instance of AzureFunctionTool class.
      *
-     * @param openapi the openapi value to set.
+     * @param azureFunction the azureFunction value to set.
      */
     @Generated
-    public OpenApiAgentTool(OpenApiFunctionDefinition openapi) {
-        this.openapi = openapi;
+    public AzureFunctionTool(AzureFunctionDefinition azureFunction) {
+        this.azureFunction = azureFunction;
     }
 
     /**
@@ -50,13 +50,13 @@ public final class OpenApiAgentTool extends Tool {
     }
 
     /**
-     * Get the openapi property: The openapi function definition.
+     * Get the azureFunction property: The Azure Function Tool definition.
      *
-     * @return the openapi value.
+     * @return the azureFunction value.
      */
     @Generated
-    public OpenApiFunctionDefinition getOpenapi() {
-        return this.openapi;
+    public AzureFunctionDefinition getAzureFunction() {
+        return this.azureFunction;
     }
 
     /**
@@ -66,39 +66,39 @@ public final class OpenApiAgentTool extends Tool {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("openapi", this.openapi);
+        jsonWriter.writeJsonField("azure_function", this.azureFunction);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of OpenApiAgentTool from the JsonReader.
+     * Reads an instance of AzureFunctionTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OpenApiAgentTool if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AzureFunctionTool if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OpenApiAgentTool.
+     * @throws IOException If an error occurs while reading the AzureFunctionTool.
      */
     @Generated
-    public static OpenApiAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureFunctionTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OpenApiFunctionDefinition openapi = null;
-            ToolType type = ToolType.OPENAPI;
+            AzureFunctionDefinition azureFunction = null;
+            ToolType type = ToolType.AZURE_FUNCTION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("openapi".equals(fieldName)) {
-                    openapi = OpenApiFunctionDefinition.fromJson(reader);
+                if ("azure_function".equals(fieldName)) {
+                    azureFunction = AzureFunctionDefinition.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            OpenApiAgentTool deserializedOpenApiAgentTool = new OpenApiAgentTool(openapi);
-            deserializedOpenApiAgentTool.type = type;
-            return deserializedOpenApiAgentTool;
+            AzureFunctionTool deserializedAzureFunctionTool = new AzureFunctionTool(azureFunction);
+            deserializedAzureFunctionTool.type = type;
+            return deserializedAzureFunctionTool;
         });
     }
 }

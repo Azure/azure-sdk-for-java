@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for a sharepoint tool as used to configure an agent.
  */
 @Immutable
-public final class SharepointAgentTool extends Tool {
+public final class SharepointPreviewTool extends Tool {
 
     /*
      * The type property.
@@ -29,12 +29,12 @@ public final class SharepointAgentTool extends Tool {
     private final SharepointGroundingToolParameters sharepointGroundingPreview;
 
     /**
-     * Creates an instance of SharepointAgentTool class.
+     * Creates an instance of SharepointPreviewTool class.
      *
      * @param sharepointGroundingPreview the sharepointGroundingPreview value to set.
      */
     @Generated
-    public SharepointAgentTool(SharepointGroundingToolParameters sharepointGroundingPreview) {
+    public SharepointPreviewTool(SharepointGroundingToolParameters sharepointGroundingPreview) {
         this.sharepointGroundingPreview = sharepointGroundingPreview;
     }
 
@@ -72,16 +72,16 @@ public final class SharepointAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of SharepointAgentTool from the JsonReader.
+     * Reads an instance of SharepointPreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SharepointAgentTool if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of SharepointPreviewTool if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SharepointAgentTool.
+     * @throws IOException If an error occurs while reading the SharepointPreviewTool.
      */
     @Generated
-    public static SharepointAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static SharepointPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SharepointGroundingToolParameters sharepointGroundingPreview = null;
             ToolType type = ToolType.SHAREPOINT_GROUNDING_PREVIEW;
@@ -96,9 +96,10 @@ public final class SharepointAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            SharepointAgentTool deserializedSharepointAgentTool = new SharepointAgentTool(sharepointGroundingPreview);
-            deserializedSharepointAgentTool.type = type;
-            return deserializedSharepointAgentTool;
+            SharepointPreviewTool deserializedSharepointPreviewTool
+                = new SharepointPreviewTool(sharepointGroundingPreview);
+            deserializedSharepointPreviewTool.type = type;
+            return deserializedSharepointPreviewTool;
         });
     }
 }

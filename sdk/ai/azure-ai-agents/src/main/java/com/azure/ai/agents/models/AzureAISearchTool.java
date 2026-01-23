@@ -14,7 +14,7 @@ import java.io.IOException;
  * The input definition information for an Azure AI search tool as used to configure an agent.
  */
 @Immutable
-public final class AzureAISearchAgentTool extends Tool {
+public final class AzureAISearchTool extends Tool {
 
     /*
      * The type property.
@@ -22,13 +22,19 @@ public final class AzureAISearchAgentTool extends Tool {
     @Generated
     private ToolType type = ToolType.AZURE_AI_SEARCH;
 
+    /*
+     * The azure ai search index resource.
+     */
+    @Generated
+    private final AzureAISearchToolResource azureAISearch;
+
     /**
-     * Creates an instance of AzureAISearchAgentTool class.
+     * Creates an instance of AzureAISearchTool class.
      *
      * @param azureAISearch the azureAISearch value to set.
      */
     @Generated
-    public AzureAISearchAgentTool(AzureAISearchToolResource azureAISearch) {
+    public AzureAISearchTool(AzureAISearchToolResource azureAISearch) {
         this.azureAISearch = azureAISearch;
     }
 
@@ -44,6 +50,16 @@ public final class AzureAISearchAgentTool extends Tool {
     }
 
     /**
+     * Get the azureAISearch property: The azure ai search index resource.
+     *
+     * @return the azureAISearch value.
+     */
+    @Generated
+    public AzureAISearchToolResource getAzureAISearch() {
+        return this.azureAISearch;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -56,16 +72,16 @@ public final class AzureAISearchAgentTool extends Tool {
     }
 
     /**
-     * Reads an instance of AzureAISearchAgentTool from the JsonReader.
+     * Reads an instance of AzureAISearchTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureAISearchAgentTool if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of AzureAISearchTool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureAISearchAgentTool.
+     * @throws IOException If an error occurs while reading the AzureAISearchTool.
      */
     @Generated
-    public static AzureAISearchAgentTool fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureAISearchTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureAISearchToolResource azureAISearch = null;
             ToolType type = ToolType.AZURE_AI_SEARCH;
@@ -80,25 +96,9 @@ public final class AzureAISearchAgentTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            AzureAISearchAgentTool deserializedAzureAISearchAgentTool = new AzureAISearchAgentTool(azureAISearch);
-            deserializedAzureAISearchAgentTool.type = type;
-            return deserializedAzureAISearchAgentTool;
+            AzureAISearchTool deserializedAzureAISearchTool = new AzureAISearchTool(azureAISearch);
+            deserializedAzureAISearchTool.type = type;
+            return deserializedAzureAISearchTool;
         });
-    }
-
-    /*
-     * The azure ai search index resource.
-     */
-    @Generated
-    private final AzureAISearchToolResource azureAISearch;
-
-    /**
-     * Get the azureAISearch property: The azure ai search index resource.
-     *
-     * @return the azureAISearch value.
-     */
-    @Generated
-    public AzureAISearchToolResource getAzureAISearch() {
-        return this.azureAISearch;
     }
 }

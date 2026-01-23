@@ -14,7 +14,7 @@ import java.io.IOException;
  * A tool for integrating memories into the agent.
  */
 @Fluent
-public final class MemorySearchTool extends Tool {
+public final class MemorySearchPreviewTool extends Tool {
 
     /*
      * The type property.
@@ -49,13 +49,13 @@ public final class MemorySearchTool extends Tool {
     private Integer updateDelay;
 
     /**
-     * Creates an instance of MemorySearchTool class.
+     * Creates an instance of MemorySearchPreviewTool class.
      *
      * @param memoryStoreName the memoryStoreName value to set.
      * @param scope the scope value to set.
      */
     @Generated
-    public MemorySearchTool(String memoryStoreName, String scope) {
+    public MemorySearchPreviewTool(String memoryStoreName, String scope) {
         this.memoryStoreName = memoryStoreName;
         this.scope = scope;
     }
@@ -107,10 +107,10 @@ public final class MemorySearchTool extends Tool {
      * Set the searchOptions property: Options for searching the memory store.
      *
      * @param searchOptions the searchOptions value to set.
-     * @return the MemorySearchTool object itself.
+     * @return the MemorySearchPreviewTool object itself.
      */
     @Generated
-    public MemorySearchTool setSearchOptions(MemorySearchOptions searchOptions) {
+    public MemorySearchPreviewTool setSearchOptions(MemorySearchOptions searchOptions) {
         this.searchOptions = searchOptions;
         return this;
     }
@@ -129,10 +129,10 @@ public final class MemorySearchTool extends Tool {
      * Set the updateDelay property: Time to wait before updating memories after inactivity (seconds). Default 300.
      *
      * @param updateDelay the updateDelay value to set.
-     * @return the MemorySearchTool object itself.
+     * @return the MemorySearchPreviewTool object itself.
      */
     @Generated
-    public MemorySearchTool setUpdateDelay(Integer updateDelay) {
+    public MemorySearchPreviewTool setUpdateDelay(Integer updateDelay) {
         this.updateDelay = updateDelay;
         return this;
     }
@@ -153,16 +153,16 @@ public final class MemorySearchTool extends Tool {
     }
 
     /**
-     * Reads an instance of MemorySearchTool from the JsonReader.
+     * Reads an instance of MemorySearchPreviewTool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MemorySearchTool if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of MemorySearchPreviewTool if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MemorySearchTool.
+     * @throws IOException If an error occurs while reading the MemorySearchPreviewTool.
      */
     @Generated
-    public static MemorySearchTool fromJson(JsonReader jsonReader) throws IOException {
+    public static MemorySearchPreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String memoryStoreName = null;
             String scope = null;
@@ -186,11 +186,12 @@ public final class MemorySearchTool extends Tool {
                     reader.skipChildren();
                 }
             }
-            MemorySearchTool deserializedMemorySearchTool = new MemorySearchTool(memoryStoreName, scope);
-            deserializedMemorySearchTool.type = type;
-            deserializedMemorySearchTool.searchOptions = searchOptions;
-            deserializedMemorySearchTool.updateDelay = updateDelay;
-            return deserializedMemorySearchTool;
+            MemorySearchPreviewTool deserializedMemorySearchPreviewTool
+                = new MemorySearchPreviewTool(memoryStoreName, scope);
+            deserializedMemorySearchPreviewTool.type = type;
+            deserializedMemorySearchPreviewTool.searchOptions = searchOptions;
+            deserializedMemorySearchPreviewTool.updateDelay = updateDelay;
+            return deserializedMemorySearchPreviewTool;
         });
     }
 }
