@@ -27,6 +27,9 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -369,6 +372,97 @@ public class ThinClientE2ETest {
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(deleteResponse.getDiagnostics());
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientStoredProcedure() {
+        CosmosAsyncClient client = null;
+        try {
+            // If running locally, uncomment these lines
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .gatewayMode()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+            String idName = "id";
+            String partitionKeyName = "partitionKey";
+
+            client.createDatabaseIfNotExists("db1").block();
+
+            CosmosContainerProperties containerDef =
+                new CosmosContainerProperties("c2", "/" + partitionKeyName);
+            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
+
+            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
+
+            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
+
+            // Create a stored procedure that creates a document
+            String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
+            String pkValue = UUID.randomUUID().toString();
+            CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+                sprocId,
+                "function createDocument(docToCreate) {" +
+                    "    var context = getContext();" +
+                    "    var container = context.getCollection();" +
+                    "    var response = context.getResponse();" +
+                    "    var accepted = container.createDocument(" +
+                    "        container.getSelfLink()," +
+                    "        docToCreate," +
+                    "        function(err, docCreated) {" +
+                    "            if (err) throw new Error('Error creating document: ' + err.message);" +
+                    "            response.setBody(docCreated);" +
+                    "        }" +
+                    "    );" +
+                    "    if (!accepted) throw new Error('Document creation was not accepted');" +
+                    "}"
+            );
+
+            // Create stored procedure
+            CosmosStoredProcedureResponse createResponse = container.getScripts()
+                .createStoredProcedure(storedProcedureDef)
+                .block();
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+
+            // Execute stored procedure with a specific partition key to create a document
+            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+            options.setPartitionKey(new PartitionKey(pkValue));
+
+            String docId = UUID.randomUUID().toString();
+            String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", idName, docId, partitionKeyName, pkValue);
+
+            CosmosStoredProcedureResponse executeResponse = container.getScripts()
+                .getStoredProcedure(sprocId)
+                .execute(Arrays.asList(docToCreate), options)
+                .block();
+
+            assertThat(executeResponse).isNotNull();
+            assertThat(executeResponse.getStatusCode()).isEqualTo(200);
+            assertThat(executeResponse.getRequestCharge()).isGreaterThan(0.0);
+            assertThinClientEndpointUsed(executeResponse.getDiagnostics());
+
+            // Verify the document was created by reading it
+            CosmosItemResponse<ObjectNode> readResponse = container.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+            assertThat(readResponse.getItem().get(idName).asText()).isEqualTo(docId);
+            assertThat(readResponse.getItem().get(partitionKeyName).asText()).isEqualTo(pkValue);
+
+            // Clean up - delete the created document and stored procedure
+            container.deleteItem(docId, new PartitionKey(pkValue)).block();
+            container.getScripts().getStoredProcedure(sprocId).delete().block();
+
         } finally {
             if (client != null) {
                 client.close();

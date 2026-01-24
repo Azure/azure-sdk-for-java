@@ -8009,7 +8009,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
         if (!useThinClient
             || !this.globalEndpointManager.hasThinClientReadLocations()
-            || request.getResourceType() != ResourceType.Document) {
+            || request.getResourceType() != ResourceType.Document && !request.isExecuteStoredProcedureBasedRequest()) {
 
             return false;
         }
@@ -8019,7 +8019,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return operationType.isPointOperation()
                     || operationType == OperationType.Query
                     || operationType == OperationType.Batch
-                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode();
+                    || request.isChangeFeedRequest() && !request.isAllVersionsAndDeletesChangeFeedMode()
+                    || request.isExecuteStoredProcedureBasedRequest();
     }
 
     private DocumentClientRetryPolicy getRetryPolicyForPointOperation(
