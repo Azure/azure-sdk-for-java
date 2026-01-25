@@ -96,6 +96,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -1287,5 +1288,12 @@ public class BlobTestBase extends TestProxyTestBase {
             assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
                 received.getStaticWebsite().getErrorDocument404Path());
         }
+    }
+
+    protected static <T> void verifySasAndTokenInRequest(Response<T> response) {
+        assertResponseStatusCode(response, 200);
+        //assert sas token exists in URL + auth header exists
+        assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+        assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
     }
 }

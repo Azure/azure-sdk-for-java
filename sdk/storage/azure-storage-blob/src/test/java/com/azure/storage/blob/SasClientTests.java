@@ -207,10 +207,8 @@ public class SasClientTests extends BlobTestBase {
                     .getBlockBlobClient();
 
             Response<BlobProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
-            assertResponseStatusCode(response, 200);
-            //assert sas token exists in URL + auth header exists
-            assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
-            assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -354,10 +352,8 @@ public class SasClientTests extends BlobTestBase {
             Response<BlobProperties> response = client.getBlobClient(blobName)
                 .getBlockBlobClient()
                 .getPropertiesWithResponse(null, null, Context.NONE);
-            assertResponseStatusCode(response, 200);
-            //assert sas token exists in URL + auth header exists
-            assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
-            assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+
+            verifySasAndTokenInRequest(response);
         });
     }
 

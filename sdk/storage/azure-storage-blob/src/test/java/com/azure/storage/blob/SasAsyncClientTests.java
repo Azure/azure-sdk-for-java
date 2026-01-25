@@ -202,19 +202,18 @@ public class SasAsyncClientTests extends BlobTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
             TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-
             // We need to get the object ID from the token credential used to authenticate the request
             String oid = getOidFromToken(tokenCredential);
+
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
 
@@ -231,7 +230,9 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(r -> assertResponseStatusCode(r, 200)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(BlobTestBase::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
@@ -398,7 +399,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
 
-            Flux<BlobItem> response = getUserDelegationInfo().flatMapMany(key -> {
+            Mono<Response<BlobProperties>> response = getUserDelegationInfo().flatMap(key -> {
                 String sas = ccAsync.generateUserDelegationSas(sasValues, key);
 
                 // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
@@ -408,10 +409,14 @@ public class SasAsyncClientTests extends BlobTestBase {
                         .sasToken(sas)
                         .credential(tokenCredential)).buildAsyncClient();
 
-                return client.listBlobs();
+                return client.getBlobAsyncClient(blobName)
+                    .getBlockBlobAsyncClient()
+                    .getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(BlobTestBase::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
