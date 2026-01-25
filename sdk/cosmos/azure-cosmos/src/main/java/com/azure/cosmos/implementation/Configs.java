@@ -19,8 +19,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
 import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
@@ -243,6 +241,16 @@ public class Configs {
     public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
     public static final String MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
     public static final int DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
+
+    // bulk transactional batch settings
+    // how many concurrent transactional batch operations allowed for each partition
+    public static final String MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY = "COSMOS.MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY";
+    public static final String MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY_VARIABLE = "COSMOS_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY";
+    public static final int DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY = 100;
+
+    public static final String BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = "COSMOS.BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final String BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS_VARIABLE = "COSMOS_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS";
+    public static final int DEFAULT_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS = 1000;
 
     // Config of CodingErrorAction on charset decoder for malformed input
     public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
@@ -712,6 +720,13 @@ public class Configs {
         }
 
         return DEFAULT_MAX_BULK_MICRO_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
+    }
+
+    public static int getMaxBulkTransactionalBatchOpsConcurrency() {
+        return Integer.parseInt(System.getProperty(MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY,
+            firstNonNull(
+                emptyToNull(System.getenv().get(MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY_VARIABLE)),
+                String.valueOf(DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY))));
     }
 
     public static int getMaxHttpRequestTimeout() {

@@ -245,7 +245,7 @@ private class TransactionalBulkWriter
         log.logError(s"Batch input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
       })
 
-    val transactionalExecutor = new TransactionalBulkExecutor[Object](
+    val transactionalExecutor = new TransactionalBulkExecutor(
       container,
       batchInputFlux,
       cosmosTransactionalBulkExecutionOptions)
