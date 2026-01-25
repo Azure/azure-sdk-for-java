@@ -220,13 +220,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         if (this.isShutdown.compareAndSet(false, true)) {
             logDebugOrWarning("Shutting down, Context: {}", this.operationContextText);
 
-            // Complete all group sinks so any waiting subscribers can finish
-            try {
-                groupSinks.forEach(Sinks.Many::tryEmitComplete);
-                logger.debug("All group sinks completed, Context: {}", this.operationContextText);
-            } catch (Throwable t) {
-                logger.warn("Error completing group sinks, Context: {}", this.operationContextText, t);
-            }
+            this.cancelFlushTask(false);
 
             // Complete all flush group sinks so any waiting subscribers can finish
             try {
@@ -234,6 +228,14 @@ public final class TransactionalBulkExecutor implements Disposable {
                 logger.debug("All flush group sinks completed, Context: {}", this.operationContextText);
             } catch (Throwable t) {
                 logger.warn("Error completing flush group sinks, Context: {}", this.operationContextText, t);
+            }
+
+            // Complete all group sinks so any waiting subscribers can finish
+            try {
+                groupSinks.forEach(Sinks.Many::tryEmitComplete);
+                logger.debug("All group sinks completed, Context: {}", this.operationContextText);
+            } catch (Throwable t) {
+                logger.warn("Error completing group sinks, Context: {}", this.operationContextText, t);
             }
 
             logger.debug("Shutdown complete, Context: {}", this.operationContextText);
@@ -322,7 +324,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                                 // This is needed as there can be case that onComplete was called after last element was processed
                                 // So complete the sink here also if count is 0, if source has completed and count isn't zero,
                                 // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
-
+                                logInfoOrWarning("Getting complete signal, total count is 0, close all sinks");
                                 completeAllSinks();
                             } else {
                                 this.cancelFlushTask(true);
@@ -349,7 +351,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                                                 pkRangeId,
                                                 this.transactionalBulkExecutionOptionsImpl.getMinBatchRetryRate(),
                                                 this.transactionalBulkExecutionOptionsImpl.getMaxBatchRetryRate(),
-                                                cosmosBatch.getOperations().size(), // use the cosmos batch ops count as the initial value
+                                                this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(), // use the cosmos batch ops count as the initial value
                                                 this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(),
                                                 1));
 
@@ -372,7 +374,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                             if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
                                 // It is possible that count is zero but there are more elements in the source.
                                 // Count 0 also signifies that there are no pending elements in any sink.
-                                logDebugOrWarning("All work completed, TotalCount: {}, Context: {} {}",
+                                logInfoOrWarning("All work completed, TotalCount: {}, Context: {} {}",
                                     totalCountAfterDecrement,
                                     this.operationContextText,
                                     getThreadInfo());
@@ -398,7 +400,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                             if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
                                 // It is possible that count is zero but there are more elements in the source.
                                 // Count 0 also signifies that there are no pending elements in any sink.
-                                logDebugOrWarning("DoOnComplete: All work completed, Context: {}", this.operationContextText);
+                                logInfoOrWarning("DoOnComplete: All work completed, Context: {}", this.operationContextText);
                                 completeAllSinks();
                             } else {
                                 logDebugOrWarning(
@@ -421,8 +423,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         final Flux<CosmosBatch> groupFlux = groupSink.asFlux();
         groupSinks.add(groupSink);
 
-        Sinks.Many<Integer> flushSignalGroupSink = Sinks.many().multicast().onBackpressureBuffer();
-        Flux<Integer> flushSignalGroupFlux = flushSignalGroupSink.asFlux();
+        Sinks.Many<Integer> flushSignalGroupSink = Sinks.many().multicast().directBestEffort();
+        Flux<Integer> flushSignalGroupFlux = flushSignalGroupSink.asFlux().share();
         flushSignalGroupSinks.add(flushSignalGroupSink);
 
         AtomicInteger totalOperationsInFlight = new AtomicInteger(0);
@@ -442,7 +444,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                         thresholds,
                         cosmosBatch)) {
 
-                        return Mono.empty();
+                        return Mono.just(cosmosBatch);
                     }
 
                     // there is no capacity for new cosmos batch to be executed currently
@@ -451,7 +453,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                     return flushSignalGroupFlux
                         .filter((flushSignal) ->
                             canFlushCosmosBatch(
-                                totalBatchesInFlight,
+                                totalOperationsInFlight,
                                 totalBatchesInFlight,
                                 thresholds,
                                 cosmosBatch))
@@ -461,7 +463,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                 .then(Mono.defer(() -> {
                     totalOperationsInFlight.addAndGet(cosmosBatch.getOperations().size());
                     totalBatchesInFlight.incrementAndGet();
-                    logTraceOrWarning(
+                    logInfoOrWarning(
                         "Flush cosmos batch, PKRangeId: {}, PkValue: {}, totalOperationsInFlight: {}, totalBatchesInFlight: {}, Context: {} {}",
                         thresholds.getPartitionKeyRangeId(),
                         cosmosBatch.getPartitionKeyValue(),
@@ -490,9 +492,19 @@ public final class TransactionalBulkExecutor implements Disposable {
         CosmosBatch cosmosBatch) {
 
         int targetBatchSize = partitionScopeThresholds.getTargetMicroBatchSizeSnapshot();
-        return (cosmosBatch.getOperations().size() + totalOperationsInFlight.get() <= targetBatchSize)
-            || (totalConcurrentBatchesInFlight.get() < 0);
+        boolean canFlush = (cosmosBatch.getOperations().size() + totalOperationsInFlight.get() <= targetBatchSize)
+            || (totalConcurrentBatchesInFlight.get() <= 0);
 
+        logger.info(
+            "canFlushCosmosBatch, PkRangeId: {}, targetBatchSize {}, current total operations in flight {}, current batches in flight {}, batch op count {}, canFlush {}",
+            partitionScopeThresholds.getPartitionKeyRangeId(),
+            targetBatchSize,
+            totalOperationsInFlight.get(),
+            totalConcurrentBatchesInFlight.get(),
+            cosmosBatch.getOperations().size(),
+            canFlush);
+
+        return canFlush;
     }
 
     private void setRetryPolicyForTransactionalBatch(
@@ -592,6 +604,10 @@ public final class TransactionalBulkExecutor implements Disposable {
                 totalOperationsInFlight.addAndGet(-cosmosBatch.getOperations().size());
                 totalBatchesInFlight.decrementAndGet();
                 flushSignalGroupSink.emitNext(1, serializedEmitFailureHandler);
+                logger.info(
+                    "CosmosBatch completed, emit flush signal, total operations in flight {}, total batches in flight {},",
+                    totalOperationsInFlight.get(),
+                    totalBatchesInFlight.get());
             })
             .subscribeOn(this.executionScheduler);
     }

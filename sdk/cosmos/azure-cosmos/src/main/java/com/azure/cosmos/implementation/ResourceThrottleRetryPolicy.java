@@ -29,6 +29,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     private Duration cumulativeRetryDelay;
     private RetryContext retryContext;
     private final boolean retryOnClientSideThrottledBatchRequests;
+    private RxDocumentServiceRequest request;
 
     public ResourceThrottleRetryPolicy(
         int maxAttemptCount,
@@ -77,8 +78,11 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.errorOnNonRelatedException(exception));
         }
 
+        // TODO[Annie]: refactor this part
         if (!retryOnClientSideThrottledBatchRequests &&
-            dce.getSubStatusCode() == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE) {
+            this.request != null &&
+            this.request.getOperationType() == OperationType.Batch &&
+            this.request.getResourceType() == ResourceType.Document) {
 
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -113,7 +117,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-        // no op
+        this.request = request;
     }
 
     @Override

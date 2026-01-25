@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
-import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
@@ -32,11 +31,6 @@ public class PartitionScopeThresholds {
     private final int minTargetMicroBatchSize;
 
     private static CosmosBulkExecutionOptionsImpl validateOptions(CosmosBulkExecutionOptionsImpl options) {
-        checkNotNull(options, "expected non-null options");
-        return options;
-    }
-
-    private static CosmosTransactionalBulkExecutionOptionsImpl validateOptions(CosmosTransactionalBulkExecutionOptionsImpl options) {
         checkNotNull(options, "expected non-null options");
         return options;
     }

@@ -1,10 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
@@ -14,16 +14,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchOperationResult;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosItemOperationType;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class TransactionalBatchRetryPolicy implements IRetryPolicy {
 
