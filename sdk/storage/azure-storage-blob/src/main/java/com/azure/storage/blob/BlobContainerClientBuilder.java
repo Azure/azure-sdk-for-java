@@ -304,8 +304,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     @Override
     public BlobContainerClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        // Only clear conflicting credentials, allow SAS to coexist for delegated user scenarios
         this.storageSharedKeyCredential = null;
-        this.sasToken = null;
         return this;
     }
 
@@ -319,8 +319,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      */
     public BlobContainerClientBuilder sasToken(String sasToken) {
         this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
+        // Only clear conflicting credentials, allow token credential to coexist for delegated user scenarios
         this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 
@@ -334,6 +334,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     @Override
     public BlobContainerClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        // Allow token credential to coexist for delegated user scenarios, only clear conflicting ones
+        this.storageSharedKeyCredential = null;
         return this;
     }
 

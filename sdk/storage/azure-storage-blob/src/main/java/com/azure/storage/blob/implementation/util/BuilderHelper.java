@@ -33,7 +33,7 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.credentials.CredentialValidator;
+import com.azure.storage.common.implementation.AuthenticationStrategy;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+import static com.azure.storage.common.implementation.BuilderUtils.determineAuthenticationStrategy;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -90,9 +91,6 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
         ClientLogger logger) {
 
-        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
-            azureSasCredential, sasToken, logger);
-
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -115,26 +113,9 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        HttpPipelinePolicy credentialPolicy;
-        if (storageSharedKeyCredential != null) {
-            credentialPolicy = new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-        } else if (tokenCredential != null) {
-            httpsValidation(tokenCredential, "bearer token", endpoint, logger);
-            String scope = audience != null
-                ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
-                : Constants.STORAGE_SCOPE;
-            credentialPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
-        } else if (azureSasCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
-        } else if (sasToken != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
-        } else {
-            credentialPolicy = null;
-        }
-
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
-        }
+        // Add authentication policies
+        addAuthenticationPolicies(policies, storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, audience, logger);
 
         policies.addAll(perRetryPolicies);
 
@@ -154,13 +135,82 @@ public final class BuilderHelper {
     }
 
     /**
+     * Adds authentication policies to the pipeline based on the determined authentication strategy.
+     *
+     * @param policies The list of policies to add authentication policies to.
+     * @param storageSharedKeyCredential The storage shared key credential, if applicable.
+     * @param tokenCredential The token credential, if applicable.
+     * @param azureSasCredential The Azure SAS credential, if applicable.
+     * @param sasToken The SAS token, if applicable.
+     * @param endpoint The endpoint for the client.
+     * @param audience The blob audience for token credential scope.
+     * @param logger The logger for error reporting.
+     */
+    private static void addAuthenticationPolicies(List<HttpPipelinePolicy> policies,
+        StorageSharedKeyCredential storageSharedKeyCredential, TokenCredential tokenCredential,
+        AzureSasCredential azureSasCredential, String sasToken, String endpoint, BlobAudience audience,
+        ClientLogger logger) {
+
+        // Determine authentication strategy
+        AuthenticationStrategy authStrategy = determineAuthenticationStrategy(storageSharedKeyCredential,
+            tokenCredential, azureSasCredential, sasToken, logger);
+
+        String scope = audience != null
+            ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
+            : Constants.STORAGE_SCOPE;
+
+        switch (authStrategy) {
+            case SHARED_KEY:
+                if (storageSharedKeyCredential != null) {
+                    policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+                }
+                break;
+
+            case TOKEN:
+                if (tokenCredential != null) {
+                    httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+                    policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+                }
+                break;
+
+            case SAS:
+                // Handle both SAS token and Azure SAS credential the same way
+                if (azureSasCredential != null) {
+                    policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+                } else if (sasToken != null) {
+                    policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
+                }
+                break;
+
+            case TOKEN_WITH_SAS:
+                // Add both token credential and SAS policies
+                if (tokenCredential != null) {
+                    httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+                    policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
+                }
+                if (azureSasCredential != null) {
+                    policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+                } else if (sasToken != null) {
+                    policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
+                }
+                break;
+
+            case ANONYMOUS:
+            default:
+                // No authentication policies added
+                break;
+        }
+    }
+
+    /**
      * Gets the default http log option for Storage Blob.
      *
      * @return the default http log options.
      */
     public static HttpLogOptions getDefaultHttpLogOptions() {
         HttpLogOptions defaultOptions = new HttpLogOptions();
-        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
+        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(stringHeaderName ->
+            defaultOptions.addAllowedHttpHeaderName(HttpHeaderName.fromString(stringHeaderName)));
         BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
     }

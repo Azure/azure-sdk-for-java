@@ -183,19 +183,18 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
             TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-
             // We need to get the object ID from the token credential used to authenticate the request
             String oid = getOidFromToken(tokenCredential);
+
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
             String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
@@ -209,6 +208,9 @@ public class SasClientTests extends BlobTestBase {
 
             Response<BlobProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
             assertResponseStatusCode(response, 200);
+            //assert sas token exists in URL + auth header exists
+            assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+            assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
         });
     }
 
@@ -327,17 +329,16 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void containerSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> {
-            BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
+        liveTestScenarioWithRetry(() -> { //RBAC replication lag
+            BlobContainerSasPermission permissions
+                = new BlobContainerSasPermission().setReadPermission(true).setWritePermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
             TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-
             // We need to get the object ID from the token credential used to authenticate the request
             String oid = getOidFromToken(tokenCredential);
             BlobServiceSasSignatureValues sasValues
@@ -350,7 +351,13 @@ public class SasClientTests extends BlobTestBase {
                 .sasToken(sas)
                 .credential(tokenCredential)).buildClient();
 
-            assertDoesNotThrow(() -> client.listBlobs().iterator().hasNext());
+            Response<BlobProperties> response = client.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .getPropertiesWithResponse(null, null, Context.NONE);
+            assertResponseStatusCode(response, 200);
+            //assert sas token exists in URL + auth header exists
+            assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+            assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
         });
     }
 
@@ -567,7 +574,7 @@ public class SasClientTests extends BlobTestBase {
             String sasWithPermissions = cc.generateUserDelegationSas(sasValues, key);
 
             BlobContainerClient client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl());
-            client.listBlobs().iterator().hasNext();
+            assertDoesNotThrow(() -> client.listBlobs().iterator().hasNext());
 
             assertDoesNotThrow(() -> sasWithPermissions.contains("scid=" + cid));
         });
@@ -588,7 +595,7 @@ public class SasClientTests extends BlobTestBase {
         String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
         key.setSignedTenantId(keyTid);
 
-        String cid = "invalidcid";
+        String cid = "invalidCid";
 
         BlobServiceSasSignatureValues sasValues
             = new BlobServiceSasSignatureValues(expiryTime, permissions).setCorrelationId(cid);
