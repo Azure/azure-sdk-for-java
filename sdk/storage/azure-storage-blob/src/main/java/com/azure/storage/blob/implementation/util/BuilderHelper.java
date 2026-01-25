@@ -209,8 +209,9 @@ public final class BuilderHelper {
      */
     public static HttpLogOptions getDefaultHttpLogOptions() {
         HttpLogOptions defaultOptions = new HttpLogOptions();
-        BlobHeadersAndQueryParameters.getBlobHeaders().forEach(stringHeaderName ->
-            defaultOptions.addAllowedHttpHeaderName(HttpHeaderName.fromString(stringHeaderName)));
+        BlobHeadersAndQueryParameters.getBlobHeaders()
+            .forEach(stringHeaderName -> defaultOptions
+                .addAllowedHttpHeaderName(HttpHeaderName.fromString(stringHeaderName)));
         BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
         return defaultOptions;
     }
