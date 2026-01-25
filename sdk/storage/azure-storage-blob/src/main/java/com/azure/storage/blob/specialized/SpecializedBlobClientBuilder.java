@@ -403,8 +403,6 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
      */
     public SpecializedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.tokenCredential = null;
-        this.sasToken = null;
         return this;
     }
 
@@ -433,8 +431,6 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
     @Override
     public SpecializedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.storageSharedKeyCredential = null;
-        this.sasToken = null;
         return this;
     }
 
@@ -448,8 +444,6 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
      */
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
         this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
-        this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 

@@ -591,7 +591,7 @@ public class SasClientTests extends BlobTestBase {
         String keyTid = testResourceNamer.recordValueFromConfig(key.getSignedTenantId());
         key.setSignedTenantId(keyTid);
 
-        String cid = "invalidCid";
+        String cid = "invalidcid";
 
         BlobServiceSasSignatureValues sasValues
             = new BlobServiceSasSignatureValues(expiryTime, permissions).setCorrelationId(cid);
