@@ -69,7 +69,8 @@ public enum Feature {
     PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
     PREVIEW_ADDITIONAL_PROPAGATORS(56), // track additionalPropagators
     GRAAL_VM_NATIVE(57),
-    PEKKO_DISABLED(58) // preview instrumentation
+    PEKKO_DISABLED(58), // preview instrumentation
+    PREVIEW_CAPTURE_LOGBACK_KEY_VALUE(59) // track captureLogbackKeyValue
     ;
 
     private static final Map<String, Feature> javaVendorFeatureMap;
