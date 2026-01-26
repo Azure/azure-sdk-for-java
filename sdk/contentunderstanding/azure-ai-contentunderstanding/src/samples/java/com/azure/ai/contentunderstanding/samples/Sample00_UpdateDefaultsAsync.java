@@ -9,9 +9,11 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to configure and manage default settings for Content Understanding service.
@@ -61,46 +63,75 @@ public class Sample00_UpdateDefaultsAsync {
 
         // Step 1: Get current defaults to see what's configured
         System.out.println("Getting current default configuration...");
-        ContentUnderstandingDefaults currentDefaults = client.getDefaults().block();
-        System.out.println("Current defaults retrieved successfully.");
-        System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
+        
+        // Chain all operations reactively
+        client.getDefaults()
+            .doOnNext(currentDefaults -> {
+                System.out.println("Current defaults retrieved successfully.");
+                System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
+            })
+            .flatMap(currentDefaults -> {
+                // Step 2: Configure model deployments from environment variables
+                // These map model names to your deployed model names in Azure AI Foundry
+                System.out.println("\nConfiguring model deployments from environment variables...");
 
-        // Step 2: Configure model deployments from environment variables
-        // These map model names to your deployed model names in Azure AI Foundry
-        System.out.println("\nConfiguring model deployments from environment variables...");
+                // Get deployment names from environment variables
+                String gpt41Deployment = getEnvOrDefault("GPT_4_1_DEPLOYMENT", "gpt-4.1");
+                String gpt41MiniDeployment = getEnvOrDefault("GPT_4_1_MINI_DEPLOYMENT", "gpt-4.1-mini");
+                String textEmbedding3LargeDeployment
+                    = getEnvOrDefault("TEXT_EMBEDDING_3_LARGE_DEPLOYMENT", "text-embedding-3-large");
 
-        // Get deployment names from environment variables
-        String gpt41Deployment = getEnvOrDefault("GPT_4_1_DEPLOYMENT", "gpt-4.1");
-        String gpt41MiniDeployment = getEnvOrDefault("GPT_4_1_MINI_DEPLOYMENT", "gpt-4.1-mini");
-        String textEmbedding3LargeDeployment
-            = getEnvOrDefault("TEXT_EMBEDDING_3_LARGE_DEPLOYMENT", "text-embedding-3-large");
+                // Create model deployments map
+                Map<String, String> modelDeployments = new HashMap<>();
+                modelDeployments.put("gpt-4.1", gpt41Deployment);
+                modelDeployments.put("gpt-4.1-mini", gpt41MiniDeployment);
+                modelDeployments.put("text-embedding-3-large", textEmbedding3LargeDeployment);
 
-        // Create model deployments map
-        Map<String, String> modelDeployments = new HashMap<>();
-        modelDeployments.put("gpt-4.1", gpt41Deployment);
-        modelDeployments.put("gpt-4.1-mini", gpt41MiniDeployment);
-        modelDeployments.put("text-embedding-3-large", textEmbedding3LargeDeployment);
+                System.out.println("Model deployments to configure:");
+                System.out.println("  gpt-4.1 -> " + gpt41Deployment);
+                System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
+                System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
 
-        System.out.println("Model deployments to configure:");
-        System.out.println("  gpt-4.1 -> " + gpt41Deployment);
-        System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
-        System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
+                // Step 3: Update defaults with the new configuration
+                System.out.println("\nUpdating default configuration...");
+                return client.updateDefaults(modelDeployments);
+            })
+            .doOnNext(updatedConfig -> {
+                System.out.println("Defaults updated successfully.");
+                System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
+            })
+            .flatMap(updatedConfig -> {
+                // Step 4: Verify the updated configuration
+                System.out.println("\nVerifying updated configuration...");
+                return client.getDefaults();
+            })
+            .doOnNext(updatedDefaults -> {
+                System.out.println("Updated defaults verified successfully.");
+                System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
+                System.out.println("\nConfiguration management completed.");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
 
-        // Step 3: Update defaults with the new configuration
-        System.out.println("\nUpdating default configuration...");
-
-        // Update defaults with the configuration using the typed convenience method
-        ContentUnderstandingDefaults updatedConfig = client.updateDefaults(modelDeployments).block();
-        System.out.println("Defaults updated successfully.");
-        System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
-
-        // Step 4: Verify the updated configuration
-        System.out.println("\nVerifying updated configuration...");
-        ContentUnderstandingDefaults updatedDefaults = client.getDefaults().block();
-        System.out.println("Updated defaults verified successfully.");
-        System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
-
-        System.out.println("\nConfiguration management completed.");
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -17,12 +17,14 @@ import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage
@@ -61,9 +63,9 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
         System.out.println("Client initialized successfully");
 
         String analyzerId = "test_receipt_analyzer_" + UUID.randomUUID().toString().replace("-", "");
+        String finalAnalyzerId = analyzerId; // For use in lambda
 
-        try {
-            // BEGIN: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
+        // BEGIN: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
             // Step 1: Define field schema for receipt extraction
             Map<String, ContentFieldDefinition> fields = new HashMap<>();
 
@@ -152,60 +154,90 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
             }
 
             // For demonstration without actual training data, create analyzer without knowledge sources
-            // Using async client with getSyncPoller() for simplicity in samples
+            // Using reactive pattern for async operations
             PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
-                = client.beginCreateAnalyzer(analyzerId, analyzer, true);
-            ContentAnalyzer result = createPoller.getSyncPoller().getFinalResult();
+                = client.beginCreateAnalyzer(finalAnalyzerId, analyzer, true);
+            
+            createPoller.last()
+                .flatMap(pollResponse -> {
+                    if (pollResponse.getStatus().isComplete()) {
+                        System.out.println("Polling completed successfully");
+                        return pollResponse.getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException(
+                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                    }
+                })
+                .doOnNext(result -> {
+                    System.out.println("Analyzer created: " + finalAnalyzerId);
+                    System.out.println("  Description: " + result.getDescription());
+                    System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
+                    System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
+                    // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
 
-            System.out.println("Analyzer created: " + analyzerId);
-            System.out.println("  Description: " + result.getDescription());
-            System.out.println("  Base analyzer: " + result.getBaseAnalyzerId());
-            System.out.println("  Fields: " + result.getFieldSchema().getFields().size());
-            // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
+                    // Verify analyzer creation
+                    System.out.println("\n📋 Analyzer Creation Verification:");
+                    System.out.println("Analyzer created successfully");
 
-            // Verify analyzer creation
-            System.out.println("\n📋 Analyzer Creation Verification:");
-            System.out.println("Analyzer created successfully");
+                    // Verify field schema
+                    Map<String, ContentFieldDefinition> resultFields = result.getFieldSchema().getFields();
+                    System.out.println("Field schema verified:");
+                    System.out.println("  MerchantName: String (Extract)");
+                    System.out.println("  Items: Array of Objects (Generate)");
+                    System.out.println("    - Quantity, Name, Price");
+                    System.out.println("  Total: String (Extract)");
 
-            // Verify field schema
-            Map<String, ContentFieldDefinition> resultFields = result.getFieldSchema().getFields();
-            System.out.println("Field schema verified:");
-            System.out.println("  MerchantName: String (Extract)");
-            System.out.println("  Items: Array of Objects (Generate)");
-            System.out.println("    - Quantity, Name, Price");
-            System.out.println("  Total: String (Extract)");
+                    ContentFieldDefinition itemsFieldResult = resultFields.get("Items");
+                    System.out.println("Items field verified:");
+                    System.out.println("  Type: " + itemsFieldResult.getType());
+                    System.out.println("  Item properties: " + itemsFieldResult.getItemDefinition().getProperties().size());
 
-            ContentFieldDefinition itemsFieldResult = resultFields.get("Items");
-            System.out.println("Items field verified:");
-            System.out.println("  Type: " + itemsFieldResult.getType());
-            System.out.println("  Item properties: " + itemsFieldResult.getItemDefinition().getProperties().size());
+                    // Display API pattern information
+                    System.out.println("\n📚 CreateAnalyzerWithLabels API Pattern:");
+                    System.out.println("   1. Define field schema with nested structures (arrays, objects)");
+                    System.out.println("   2. Upload training data to Azure Blob Storage:");
+                    System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
+                    System.out.println("      - Labels: receipt1.pdf.labels.json, receipt2.pdf.labels.json, ...");
+                    System.out.println("      - OCR: receipt1.pdf.result.json, receipt2.pdf.result.json, ...");
+                    System.out.println("   3. Create LabeledDataKnowledgeSource with storage SAS URL");
+                    System.out.println("   4. Create analyzer with field schema and knowledge sources");
+                    System.out.println("   5. Use analyzer for document analysis");
 
-            // Display API pattern information
-            System.out.println("\n📚 CreateAnalyzerWithLabels API Pattern:");
-            System.out.println("   1. Define field schema with nested structures (arrays, objects)");
-            System.out.println("   2. Upload training data to Azure Blob Storage:");
-            System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
-            System.out.println("      - Labels: receipt1.pdf.labels.json, receipt2.pdf.labels.json, ...");
-            System.out.println("      - OCR: receipt1.pdf.result.json, receipt2.pdf.result.json, ...");
-            System.out.println("   3. Create LabeledDataKnowledgeSource with storage SAS URL");
-            System.out.println("   4. Create analyzer with field schema and knowledge sources");
-            System.out.println("   5. Use analyzer for document analysis");
+                    System.out.println("\n✅ CreateAnalyzerWithLabels pattern demonstration completed");
+                    System.out.println("   Note: This sample demonstrates the API pattern.");
+                    System.out.println("   For actual training, provide TRAINING_DATA_SAS_URL with labeled data.");
+                })
+                .doFinally(signalType -> {
+                    // Cleanup using reactive pattern
+                    client.deleteAnalyzer(finalAnalyzerId)
+                        .onErrorResume(e -> {
+                            System.out.println("Note: Failed to delete analyzer: " + e.getMessage());
+                            return Mono.empty();
+                        })
+                        .doOnSuccess(v -> System.out.println("\nAnalyzer deleted: " + finalAnalyzerId))
+                        .subscribe();
+                })
+                .doOnError(error -> {
+                    System.err.println("Error: " + error.getMessage());
+                    error.printStackTrace();
+                })
+                .subscribe(
+                    result -> {
+                        // Success - operations completed
+                    },
+                    error -> {
+                        // Error already handled in doOnError
+                        System.exit(1);
+                    }
+                );
 
-            System.out.println("\n✅ CreateAnalyzerWithLabels pattern demonstration completed");
-            System.out.println("   Note: This sample demonstrates the API pattern.");
-            System.out.println("   For actual training, provide TRAINING_DATA_SAS_URL with labeled data.");
-
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             e.printStackTrace();
-        } finally {
-            // Cleanup using async client with block()
-            try {
-                client.deleteAnalyzer(analyzerId).block();
-                System.out.println("\nAnalyzer deleted: " + analyzerId);
-            } catch (Exception e) {
-                System.out.println("Note: Failed to delete analyzer: " + e.getMessage());
-            }
         }
     }
 }

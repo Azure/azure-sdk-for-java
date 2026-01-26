@@ -16,11 +16,13 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to analyze binary documents using Content Understanding service.
@@ -62,69 +64,102 @@ public class Sample01_AnalyzeBinaryAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                System.out.println("Analysis operation completed");
+                System.out.println("Analysis result contains "
+                    + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+
+                // BEGIN:ContentUnderstandingExtractMarkdownAsync
+                // A PDF file has only one content element even if it contains multiple pages
+                MediaContent content = null;
+                if (result.getContents() == null || result.getContents().isEmpty()) {
+                    System.out.println("(No content returned from analysis)");
+                } else {
+                    content = result.getContents().get(0);
+                    if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                        System.out.println(content.getMarkdown());
+                    } else {
+                        System.out.println("(No markdown content available)");
+                    }
+                }
+                // END:ContentUnderstandingExtractMarkdownAsync
+
+                if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                    System.out.println("Markdown content extracted successfully ("
+                        + content.getMarkdown().length() + " characters)");
+                }
+
+                // BEGIN:ContentUnderstandingAccessDocumentPropertiesAsync
+                // Check if this is document content to access document-specific properties
+                if (content instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) content;
+                    System.out.println("Document type: "
+                        + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
+                    System.out.println("Start page: " + documentContent.getStartPageNumber());
+                    System.out.println("End page: " + documentContent.getEndPageNumber());
+                    System.out.println("Total pages: "
+                        + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
+
+                    // Check for pages
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        System.out.println("Number of pages: " + documentContent.getPages().size());
+                        for (DocumentPage page : documentContent.getPages()) {
+                            String unit
+                                = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                            System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
+                                + page.getHeight() + " " + unit);
+                        }
+                    }
+
+                    // Check for tables
+                    if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
+                        System.out.println("Number of tables: " + documentContent.getTables().size());
+                        int tableCounter = 1;
+                        for (DocumentTable table : documentContent.getTables()) {
+                            System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
+                                + table.getColumnCount() + " columns");
+                            tableCounter++;
+                        }
+                    }
+                } else {
+                    System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+                }
+                // END:ContentUnderstandingAccessDocumentPropertiesAsync
+
+                System.out.println("\nBinary document analysis completed successfully");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeBinaryAsyncAsync
 
-        System.out.println("Analysis operation completed");
-        System.out.println("Analysis result contains "
-            + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-
-        // BEGIN:ContentUnderstandingExtractMarkdownAsync
-        // A PDF file has only one content element even if it contains multiple pages
-        MediaContent content = null;
-        if (result.getContents() == null || result.getContents().isEmpty()) {
-            System.out.println("(No content returned from analysis)");
-        } else {
-            content = result.getContents().get(0);
-            if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-                System.out.println(content.getMarkdown());
-            } else {
-                System.out.println("(No markdown content available)");
-            }
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-        // END:ContentUnderstandingExtractMarkdownAsync
-
-        if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            System.out
-                .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        }
-
-        // BEGIN:ContentUnderstandingAccessDocumentPropertiesAsync
-        // Check if this is document content to access document-specific properties
-        if (content instanceof DocumentContent) {
-            DocumentContent documentContent = (DocumentContent) content;
-            System.out.println("Document type: "
-                + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
-            System.out.println("Start page: " + documentContent.getStartPageNumber());
-            System.out.println("End page: " + documentContent.getEndPageNumber());
-            System.out.println(
-                "Total pages: " + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
-
-            // Check for pages
-            if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
-                System.out.println("Number of pages: " + documentContent.getPages().size());
-                for (DocumentPage page : documentContent.getPages()) {
-                    String unit = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
-                    System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
-                        + page.getHeight() + " " + unit);
-                }
-            }
-
-            // Check for tables
-            if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
-                System.out.println("Number of tables: " + documentContent.getTables().size());
-                int tableCounter = 1;
-                for (DocumentTable table : documentContent.getTables()) {
-                    System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
-                        + table.getColumnCount() + " columns");
-                    tableCounter++;
-                }
-            }
-        } else {
-            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
-        }
-        // END:ContentUnderstandingAccessDocumentPropertiesAsync
-
-        System.out.println("\nBinary document analysis completed successfully");
     }
 }

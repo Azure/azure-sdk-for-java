@@ -24,11 +24,13 @@ import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to create a custom analyzer with field schema.
@@ -124,128 +126,175 @@ public class Sample04_CreateAnalyzerAsync {
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
             = client.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
-        ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
-        System.out.println("Analyzer '" + analyzerId + "' created successfully!");
-        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
-            System.out.println("  Description: " + result.getDescription());
-        }
+        String finalAnalyzerId = analyzerId; // For use in lambda
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                System.out.println("Analyzer '" + finalAnalyzerId + "' created successfully!");
+                if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+                    System.out.println("  Description: " + result.getDescription());
+                }
 
-        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
-            System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
-            result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
-                String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
-                String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
-                System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
-            });
-        }
+                if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+                    System.out.println("  Fields (" + result.getFieldSchema().getFields().size() + "):");
+                    result.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                        String method = fieldDef.getMethod() != null ? fieldDef.getMethod().toString() : "auto";
+                        String type = fieldDef.getType() != null ? fieldDef.getType().toString() : "unknown";
+                        System.out.println("    - " + fieldName + ": " + type + " (" + method + ")");
+                    });
+                }
+            })
+            .then(Mono.fromRunnable(() -> {
+                // Now use the custom analyzer to analyze a document
+                System.out.println("\nUsing the custom analyzer to analyze a document...");
+            }))
+            .then(Mono.fromCallable(() -> {
+                // BEGIN:ContentUnderstandingUseCustomAnalyzerAsync
+                // Using a publicly accessible sample file from Azure-Samples GitHub repository
+                String documentUrl
+                    = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
+
+                AnalyzeInput input = new AnalyzeInput();
+                input.setUrl(documentUrl);
+                return input;
+            }))
+            .flatMap(input -> {
+                // Analyze a document using the custom analyzer
+                PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
+                    = client.beginAnalyze(finalAnalyzerId, Arrays.asList(input));
+                
+                return analyzeOperation.last()
+                    .flatMap(pollResponse -> {
+                        if (pollResponse.getStatus().isComplete()) {
+                            System.out.println("Analysis polling completed successfully");
+                            return pollResponse.getFinalResult();
+                        } else {
+                            return Mono.error(new RuntimeException(
+                                "Analysis polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                        }
+                    });
+            })
+            .doOnNext(analyzeResult -> {
+                // Extract custom fields from the result
+                // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
+                if (analyzeResult.getContents() != null
+                    && !analyzeResult.getContents().isEmpty()
+                    && analyzeResult.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent content = (DocumentContent) analyzeResult.getContents().get(0);
+
+                    // Extract field (literal text extraction)
+                    ContentField companyNameField
+                        = content.getFields() != null ? content.getFields().get("company_name") : null;
+                    if (companyNameField instanceof StringField) {
+                        StringField sf = (StringField) companyNameField;
+                        String companyName = sf.getValueString();
+                        System.out.println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
+                        System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
+                            ? String.format("%.2f", companyNameField.getConfidence())
+                            : "N/A"));
+                        System.out.println("  Source: "
+                            + (companyNameField.getSource() != null ? companyNameField.getSource() : "N/A"));
+                        List<ContentSpan> spans = companyNameField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
+
+                    // Extract field (literal text extraction)
+                    ContentField totalAmountField
+                        = content.getFields() != null ? content.getFields().get("total_amount") : null;
+                    if (totalAmountField instanceof NumberField) {
+                        NumberField nf = (NumberField) totalAmountField;
+                        Double totalAmount = nf.getValueNumber();
+                        System.out.println("Total Amount (extract): "
+                            + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
+                        System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
+                            ? String.format("%.2f", totalAmountField.getConfidence())
+                            : "N/A"));
+                        System.out.println("  Source: "
+                            + (totalAmountField.getSource() != null ? totalAmountField.getSource() : "N/A"));
+                        List<ContentSpan> spans = totalAmountField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
+
+                    // Generate field (AI-generated value)
+                    ContentField summaryField
+                        = content.getFields() != null ? content.getFields().get("document_summary") : null;
+                    if (summaryField instanceof StringField) {
+                        StringField sf = (StringField) summaryField;
+                        String summary = sf.getValueString();
+                        System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
+                        System.out.println("  Confidence: " + (summaryField.getConfidence() != null
+                            ? String.format("%.2f", summaryField.getConfidence())
+                            : "N/A"));
+                        // Note: Generated fields may not have source information
+                        if (summaryField.getSource() != null && !summaryField.getSource().isEmpty()) {
+                            System.out.println("  Source: " + summaryField.getSource());
+                        }
+                    }
+
+                    // Classify field (classification against predefined categories)
+                    ContentField documentTypeField
+                        = content.getFields() != null ? content.getFields().get("document_type") : null;
+                    if (documentTypeField instanceof StringField) {
+                        StringField sf = (StringField) documentTypeField;
+                        String documentType = sf.getValueString();
+                        System.out.println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
+                        System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
+                            ? String.format("%.2f", documentTypeField.getConfidence())
+                            : "N/A"));
+                        // Note: Classified fields may not have source information
+                        if (documentTypeField.getSource() != null && !documentTypeField.getSource().isEmpty()) {
+                            System.out.println("  Source: " + documentTypeField.getSource());
+                        }
+                    }
+                }
+                // END:ContentUnderstandingUseCustomAnalyzerAsync
+            })
+            .then(Mono.fromRunnable(() -> {
+                // Cleanup - delete the created analyzer
+                System.out.println("\nCleaning up: deleting analyzer '" + finalAnalyzerId + "'...");
+            }))
+            .then(client.deleteAnalyzer(finalAnalyzerId))
+            .doOnSuccess(v -> {
+                System.out.println("Analyzer '" + finalAnalyzerId + "' deleted successfully.");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingCreateAnalyzerAsync
 
-        createdAnalyzerId = analyzerId; // Track for later use
-
-        // Now use the custom analyzer to analyze a document
-        System.out.println("\nUsing the custom analyzer to analyze a document...");
-
-        // BEGIN:ContentUnderstandingUseCustomAnalyzerAsync
-        // Using a publicly accessible sample file from Azure-Samples GitHub repository
-        String documentUrl
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
-
-        AnalyzeInput input = new AnalyzeInput();
-        input.setUrl(documentUrl);
-
-        // Analyze a document using the custom analyzer
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
-            = client.beginAnalyze(analyzerId, Arrays.asList(input));
-
-        AnalyzeResult analyzeResult = analyzeOperation.getSyncPoller().getFinalResult();
-
-        // Extract custom fields from the result
-        // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
-        if (analyzeResult.getContents() != null
-            && !analyzeResult.getContents().isEmpty()
-            && analyzeResult.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent content = (DocumentContent) analyzeResult.getContents().get(0);
-
-            // Extract field (literal text extraction)
-            ContentField companyNameField
-                = content.getFields() != null ? content.getFields().get("company_name") : null;
-            if (companyNameField instanceof StringField) {
-                StringField sf = (StringField) companyNameField;
-                String companyName = sf.getValueString();
-                System.out
-                    .println("Company Name (extract): " + (companyName != null ? companyName : "(not found)"));
-                System.out.println("  Confidence: " + (companyNameField.getConfidence() != null
-                    ? String.format("%.2f", companyNameField.getConfidence())
-                    : "N/A"));
-                System.out.println(
-                    "  Source: " + (companyNameField.getSource() != null ? companyNameField.getSource() : "N/A"));
-                List<ContentSpan> spans = companyNameField.getSpans();
-                if (spans != null && !spans.isEmpty()) {
-                    ContentSpan span = spans.get(0);
-                    System.out.println(
-                        "  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
-                }
-            }
-
-            // Extract field (literal text extraction)
-            ContentField totalAmountField
-                = content.getFields() != null ? content.getFields().get("total_amount") : null;
-            if (totalAmountField instanceof NumberField) {
-                NumberField nf = (NumberField) totalAmountField;
-                Double totalAmount = nf.getValueNumber();
-                System.out.println("Total Amount (extract): "
-                    + (totalAmount != null ? String.format("%.2f", totalAmount) : "(not found)"));
-                System.out.println("  Confidence: " + (totalAmountField.getConfidence() != null
-                    ? String.format("%.2f", totalAmountField.getConfidence())
-                    : "N/A"));
-                System.out.println(
-                    "  Source: " + (totalAmountField.getSource() != null ? totalAmountField.getSource() : "N/A"));
-                List<ContentSpan> spans = totalAmountField.getSpans();
-                if (spans != null && !spans.isEmpty()) {
-                    ContentSpan span = spans.get(0);
-                    System.out.println(
-                        "  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
-                }
-            }
-
-            // Generate field (AI-generated value)
-            ContentField summaryField
-                = content.getFields() != null ? content.getFields().get("document_summary") : null;
-            if (summaryField instanceof StringField) {
-                StringField sf = (StringField) summaryField;
-                String summary = sf.getValueString();
-                System.out.println("Document Summary (generate): " + (summary != null ? summary : "(not found)"));
-                System.out.println("  Confidence: " + (summaryField.getConfidence() != null
-                    ? String.format("%.2f", summaryField.getConfidence())
-                    : "N/A"));
-                // Note: Generated fields may not have source information
-                if (summaryField.getSource() != null && !summaryField.getSource().isEmpty()) {
-                    System.out.println("  Source: " + summaryField.getSource());
-                }
-            }
-
-            // Classify field (classification against predefined categories)
-            ContentField documentTypeField
-                = content.getFields() != null ? content.getFields().get("document_type") : null;
-            if (documentTypeField instanceof StringField) {
-                StringField sf = (StringField) documentTypeField;
-                String documentType = sf.getValueString();
-                System.out
-                    .println("Document Type (classify): " + (documentType != null ? documentType : "(not found)"));
-                System.out.println("  Confidence: " + (documentTypeField.getConfidence() != null
-                    ? String.format("%.2f", documentTypeField.getConfidence())
-                    : "N/A"));
-                // Note: Classified fields may not have source information
-                if (documentTypeField.getSource() != null && !documentTypeField.getSource().isEmpty()) {
-                    System.out.println("  Source: " + documentTypeField.getSource());
-                }
-            }
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(60);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-        // END:ContentUnderstandingUseCustomAnalyzerAsync
-
-        // Cleanup - delete the created analyzer
-        System.out.println("\nCleaning up: deleting analyzer '" + createdAnalyzerId + "'...");
-        client.deleteAnalyzer(createdAnalyzerId).block();
-        System.out.println("Analyzer '" + createdAnalyzerId + "' deleted successfully.");
     }
 }

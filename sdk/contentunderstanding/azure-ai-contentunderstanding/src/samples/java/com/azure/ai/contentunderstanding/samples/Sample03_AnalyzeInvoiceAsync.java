@@ -18,9 +18,11 @@ import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to analyze invoices using Content Understanding service.
@@ -62,130 +64,163 @@ public class Sample03_AnalyzeInvoiceAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
-        // END:ContentUnderstandingAnalyzeInvoiceAsync
-
-        System.out.println("Analysis operation completed");
-        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
-
-        // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
-        // Get the document content (invoices are documents)
-        MediaContent firstContent = result.getContents().get(0);
-        if (firstContent instanceof DocumentContent) {
-            DocumentContent documentContent = (DocumentContent) firstContent;
-
-            // Print document unit information
-            System.out.println("Document unit: "
-                + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
-            System.out.println(
-                "Pages: " + documentContent.getStartPageNumber() + " to " + documentContent.getEndPageNumber());
-            System.out.println();
-
-            // Extract simple string fields using getValue() convenience method
-            // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
-            ContentField customerNameField
-                = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
-            ContentField invoiceDateField
-                = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
-
-            // Use getValue() instead of casting to specific types
-            // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
-            String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
-            // InvoiceDate is a DateField, so getValue() returns LocalDate - convert to String for display
-            Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
-            String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
-
-            System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
-            if (customerNameField != null) {
-                System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
-                    ? String.format("%.2f", customerNameField.getConfidence())
-                    : "N/A"));
-                System.out.println(
-                    "  Source: " + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
-                List<ContentSpan> spans = customerNameField.getSpans();
-                if (spans != null && !spans.isEmpty()) {
-                    ContentSpan span = spans.get(0);
-                    System.out
-                        .println("  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
                 }
-            }
+            })
+            .doOnNext(result -> {
+                System.out.println("Analysis operation completed");
+                System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
 
-            System.out.println("Invoice Date: " + (invoiceDate != null ? invoiceDate : "(None)"));
-            if (invoiceDateField != null) {
-                System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
-                    ? String.format("%.2f", invoiceDateField.getConfidence())
-                    : "N/A"));
-                System.out.println(
-                    "  Source: " + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
-                List<ContentSpan> spans = invoiceDateField.getSpans();
-                if (spans != null && !spans.isEmpty()) {
-                    ContentSpan span = spans.get(0);
-                    System.out
-                        .println("  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
-                }
-            }
+                // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
+                // Get the document content (invoices are documents)
+                MediaContent firstContent = result.getContents().get(0);
+                if (firstContent instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) firstContent;
 
-            // Extract object fields (nested structures) using getFieldOrDefault() convenience method
-            // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
-            ContentField totalAmountField
-                = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
-            if (totalAmountField instanceof ObjectField) {
-                ObjectField totalAmountObj = (ObjectField) totalAmountField;
+                    // Print document unit information
+                    System.out.println("Document unit: "
+                        + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
+                    System.out.println("Pages: " + documentContent.getStartPageNumber() + " to "
+                        + documentContent.getEndPageNumber());
+                    System.out.println();
 
-                // Use getFieldOrDefault() for safe nested field access
-                ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
-                ContentField currencyField = totalAmountObj.getFieldOrDefault("CurrencyCode");
+                    // Extract simple string fields using getValue() convenience method
+                    // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
+                    ContentField customerNameField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
+                    ContentField invoiceDateField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
 
-                // Use getValue() instead of type-specific getters
-                Double amount = amountField != null ? (Double) amountField.getValue() : null;
-                String currency = currencyField != null ? (String) currencyField.getValue() : null;
+                    // Use getValue() instead of casting to specific types
+                    // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
+                    String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
+                    // InvoiceDate is a DateField, so getValue() returns LocalDate - convert to String for display
+                    Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
+                    String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
 
-                System.out.println("Total: " + (currency != null ? currency : "")
-                    + (amount != null ? String.format("%.2f", amount) : "(None)"));
-                if (totalAmountObj.getConfidence() != null) {
-                    System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
-                }
-                if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
-                    System.out.println("  Source: " + totalAmountObj.getSource());
-                }
-            }
+                    System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
+                    if (customerNameField != null) {
+                        System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
+                            ? String.format("%.2f", customerNameField.getConfidence())
+                            : "N/A"));
+                        System.out.println("  Source: "
+                            + (customerNameField.getSource() != null ? customerNameField.getSource() : "N/A"));
+                        List<ContentSpan> spans = customerNameField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
 
-            // Extract array fields using size() and get() convenience methods
-            // size() returns the number of elements, get(index) returns the element at the index
-            ContentField lineItemsField
-                = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
-            if (lineItemsField instanceof ArrayField) {
-                ArrayField lineItems = (ArrayField) lineItemsField;
+                    System.out.println("Invoice Date: " + (invoiceDate != null ? invoiceDate : "(None)"));
+                    if (invoiceDateField != null) {
+                        System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
+                            ? String.format("%.2f", invoiceDateField.getConfidence())
+                            : "N/A"));
+                        System.out.println("  Source: "
+                            + (invoiceDateField.getSource() != null ? invoiceDateField.getSource() : "N/A"));
+                        List<ContentSpan> spans = invoiceDateField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
 
-                // Use size() instead of getValueArray().size()
-                System.out.println("Line Items (" + lineItems.size() + "):");
+                    // Extract object fields (nested structures) using getFieldOrDefault() convenience method
+                    // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
+                    ContentField totalAmountField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
+                    if (totalAmountField instanceof ObjectField) {
+                        ObjectField totalAmountObj = (ObjectField) totalAmountField;
 
-                // Use get(i) instead of getValueArray().get(i)
-                for (int i = 0; i < lineItems.size(); i++) {
-                    ContentField itemField = lineItems.get(i);
-                    if (itemField instanceof ObjectField) {
-                        ObjectField item = (ObjectField) itemField;
+                        // Use getFieldOrDefault() for safe nested field access
+                        ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
+                        ContentField currencyField = totalAmountObj.getFieldOrDefault("CurrencyCode");
 
-                        // Use getFieldOrDefault() and getValue() for cleaner access
-                        ContentField descField = item.getFieldOrDefault("Description");
-                        ContentField qtyField = item.getFieldOrDefault("Quantity");
+                        // Use getValue() instead of type-specific getters
+                        Double amount = amountField != null ? (Double) amountField.getValue() : null;
+                        String currency = currencyField != null ? (String) currencyField.getValue() : null;
 
-                        String description = descField != null ? (String) descField.getValue() : null;
-                        Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
+                        System.out.println("Total: " + (currency != null ? currency : "")
+                            + (amount != null ? String.format("%.2f", amount) : "(None)"));
+                        if (totalAmountObj.getConfidence() != null) {
+                            System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
+                        }
+                        if (totalAmountObj.getSource() != null && !totalAmountObj.getSource().isEmpty()) {
+                            System.out.println("  Source: " + totalAmountObj.getSource());
+                        }
+                    }
 
-                        System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
-                        System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
-                        if (qtyField != null && qtyField.getConfidence() != null) {
-                            System.out.println("    Quantity Confidence: " + String.format("%.2f", qtyField.getConfidence()));
-                        } else {
-                            System.out.println("    Quantity Confidence: N/A");
+                    // Extract array fields using size() and get() convenience methods
+                    // size() returns the number of elements, get(index) returns the element at the index
+                    ContentField lineItemsField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
+                    if (lineItemsField instanceof ArrayField) {
+                        ArrayField lineItems = (ArrayField) lineItemsField;
+
+                        // Use size() instead of getValueArray().size()
+                        System.out.println("Line Items (" + lineItems.size() + "):");
+
+                        // Use get(i) instead of getValueArray().get(i)
+                        for (int i = 0; i < lineItems.size(); i++) {
+                            ContentField itemField = lineItems.get(i);
+                            if (itemField instanceof ObjectField) {
+                                ObjectField item = (ObjectField) itemField;
+
+                                // Use getFieldOrDefault() and getValue() for cleaner access
+                                ContentField descField = item.getFieldOrDefault("Description");
+                                ContentField qtyField = item.getFieldOrDefault("Quantity");
+
+                                String description = descField != null ? (String) descField.getValue() : null;
+                                Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
+
+                                System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
+                                System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
+                                if (qtyField != null && qtyField.getConfidence() != null) {
+                                    System.out.println("    Quantity Confidence: "
+                                        + String.format("%.2f", qtyField.getConfidence()));
+                                } else {
+                                    System.out.println("    Quantity Confidence: N/A");
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-        // END:ContentUnderstandingExtractInvoiceFieldsAsync
+                // END:ContentUnderstandingExtractInvoiceFieldsAsync
 
-        System.out.println("\nInvoice analysis completed successfully");
+                System.out.println("\nInvoice analysis completed successfully");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
+        // END:ContentUnderstandingAnalyzeInvoiceAsync
+
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 }

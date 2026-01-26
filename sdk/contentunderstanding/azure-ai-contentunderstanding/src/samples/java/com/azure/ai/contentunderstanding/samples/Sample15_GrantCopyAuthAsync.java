@@ -17,9 +17,11 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to grant copy authorization and copy an analyzer from a source
@@ -131,43 +133,94 @@ public class Sample15_GrantCopyAuthAsync {
 
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
             = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-        ContentAnalyzer sourceResult = createPoller.getSyncPoller().getFinalResult();
-        System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+        
+        String finalSourceAnalyzerId = sourceAnalyzerId; // For use in lambda
+        String finalTargetAnalyzerId = targetAnalyzerId; // For use in lambda
+        String finalSourceResourceId = sourceResourceId; // For use in lambda
+        String finalSourceRegion = sourceRegion; // For use in lambda
+        String finalTargetResourceId = targetResourceId; // For use in lambda
+        String finalTargetRegion = targetRegion; // For use in lambda
+        
+        createPoller.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(sourceResult -> {
+                System.out.println("Source analyzer '" + finalSourceAnalyzerId + "' created successfully!");
+            })
+            .then(sourceClient.grantCopyAuthorization(finalSourceAnalyzerId, finalTargetResourceId, finalTargetRegion))
+            .doOnNext(copyAuth -> {
+                System.out.println("Copy authorization granted successfully!");
+                System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
+                System.out.println("  Expires at: " + copyAuth.getExpiresAt());
+            })
+            .flatMap(copyAuth -> {
+                // Step 3: Copy analyzer to target resource using target async client
+                PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                    = targetClient.beginCopyAnalyzer(finalTargetAnalyzerId, finalSourceAnalyzerId, false,
+                        finalSourceResourceId, finalSourceRegion);
 
+                return copyPoller.last()
+                    .flatMap(pollResponse -> {
+                        if (pollResponse.getStatus().isComplete()) {
+                            System.out.println("Copy polling completed successfully");
+                            return pollResponse.getFinalResult();
+                        } else {
+                            return Mono.error(new RuntimeException(
+                                "Copy polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                        }
+                    });
+            })
+            .doOnNext(targetResult -> {
+                System.out.println("Target analyzer '" + finalTargetAnalyzerId + "' copied successfully!");
+                System.out.println("  Description: " + targetResult.getDescription());
+                // END: com.azure.ai.contentunderstanding.grantCopyAuthAsync
+            })
+            .doFinally(signalType -> {
+                // Cleanup: delete both analyzers
+                sourceClient.deleteAnalyzer(finalSourceAnalyzerId)
+                    .onErrorResume(e -> {
+                        System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
+                        return Mono.empty();
+                    })
+                    .doOnSuccess(v -> System.out.println("Source analyzer '" + finalSourceAnalyzerId + "' deleted."))
+                    .subscribe();
+                
+                targetClient.deleteAnalyzer(finalTargetAnalyzerId)
+                    .onErrorResume(e -> {
+                        System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
+                        return Mono.empty();
+                    })
+                    .doOnSuccess(v -> System.out.println("Target analyzer '" + finalTargetAnalyzerId + "' deleted."))
+                    .subscribe();
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
+
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
         try {
-            // Step 2: Grant copy authorization on source client using async with block()
-            CopyAuthorization copyAuth = sourceClient.grantCopyAuthorization(
-                sourceAnalyzerId, targetResourceId, targetRegion).block();
-
-            System.out.println("Copy authorization granted successfully!");
-            System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
-            System.out.println("  Expires at: " + copyAuth.getExpiresAt());
-
-            // Step 3: Copy analyzer to target resource using target async client
-            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                = targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false,
-                    sourceResourceId, sourceRegion);
-
-            ContentAnalyzer targetResult = copyPoller.getSyncPoller().getFinalResult();
-            System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
-            System.out.println("  Description: " + targetResult.getDescription());
-            // END: com.azure.ai.contentunderstanding.grantCopyAuthAsync
-
-        } finally {
-            // Cleanup: delete both analyzers using async clients with block()
-            try {
-                sourceClient.deleteAnalyzer(sourceAnalyzerId).block();
-                System.out.println("Source analyzer '" + sourceAnalyzerId + "' deleted.");
-            } catch (Exception e) {
-                // Ignore cleanup errors
-            }
-
-            try {
-                targetClient.deleteAnalyzer(targetAnalyzerId).block();
-                System.out.println("Target analyzer '" + targetAnalyzerId + "' deleted.");
-            } catch (Exception e) {
-                // Ignore cleanup errors
-            }
+            TimeUnit.SECONDS.sleep(60);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
     }
 }

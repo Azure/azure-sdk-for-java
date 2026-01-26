@@ -15,9 +15,11 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to update an existing analyzer asynchronously.
@@ -79,64 +81,104 @@ public class Sample08_UpdateAnalyzerAsync {
             .setModels(models);
 
         PollerFlux<?, ContentAnalyzer> createPoller = client.beginCreateAnalyzer(analyzerId, analyzer, true);
-        createPoller.getSyncPoller().getFinalResult();
-        System.out.println("Test analyzer created: " + analyzerId);
+        
+        String finalAnalyzerId = analyzerId; // For use in lambda
+        createPoller.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                System.out.println("Test analyzer created: " + finalAnalyzerId);
+            })
+            .then(client.getAnalyzer(finalAnalyzerId))
+            .doOnNext(currentAnalyzer -> {
+                // BEGIN:ContentUnderstandingUpdateAnalyzerAsync
+                System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
+            })
+            .flatMap(currentAnalyzer -> {
+                // Update the analyzer with new configuration
+                Map<String, ContentFieldDefinition> updatedFields = new HashMap<>();
 
-        // BEGIN:ContentUnderstandingUpdateAnalyzerAsync
-        // Get the current analyzer
-        ContentAnalyzer currentAnalyzer = client.getAnalyzer(analyzerId).block();
-        System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
+                // Keep the original field
+                ContentFieldDefinition titleDefUpdate = new ContentFieldDefinition();
+                titleDefUpdate.setType(ContentFieldType.STRING);
+                titleDefUpdate.setMethod(GenerationMethod.EXTRACT);
+                titleDefUpdate.setDescription("Document title");
+                updatedFields.put("title", titleDefUpdate);
 
-        // Update the analyzer with new configuration
-        Map<String, ContentFieldDefinition> updatedFields = new HashMap<>();
+                // Add a new field
+                ContentFieldDefinition authorDef = new ContentFieldDefinition();
+                authorDef.setType(ContentFieldType.STRING);
+                authorDef.setMethod(GenerationMethod.EXTRACT);
+                authorDef.setDescription("Document author");
+                updatedFields.put("author", authorDef);
 
-        // Keep the original field
-        ContentFieldDefinition titleDefUpdate = new ContentFieldDefinition();
-        titleDefUpdate.setType(ContentFieldType.STRING);
-        titleDefUpdate.setMethod(GenerationMethod.EXTRACT);
-        titleDefUpdate.setDescription("Document title");
-        updatedFields.put("title", titleDefUpdate);
+                ContentFieldSchema updatedFieldSchema = new ContentFieldSchema();
+                updatedFieldSchema.setName("enhanced_schema");
+                updatedFieldSchema.setDescription("Enhanced document schema with author");
+                updatedFieldSchema.setFields(updatedFields);
 
-        // Add a new field
-        ContentFieldDefinition authorDef = new ContentFieldDefinition();
-        authorDef.setType(ContentFieldType.STRING);
-        authorDef.setMethod(GenerationMethod.EXTRACT);
-        authorDef.setDescription("Document author");
-        updatedFields.put("author", authorDef);
+                Map<String, String> updatedModels = new HashMap<>();
+                updatedModels.put("completion", "gpt-4.1");
+                updatedModels.put("embedding", "text-embedding-3-large");
 
-        ContentFieldSchema updatedFieldSchema = new ContentFieldSchema();
-        updatedFieldSchema.setName("enhanced_schema");
-        updatedFieldSchema.setDescription("Enhanced document schema with author");
-        updatedFieldSchema.setFields(updatedFields);
+                ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
+                    .setBaseAnalyzerId("prebuilt-document")
+                    .setDescription("Updated analyzer with enhanced schema")
+                    .setConfig(new ContentAnalyzerConfig()
+                        .setEnableOcr(true)
+                        .setEnableLayout(true)
+                        .setEnableFormula(true)) // Enable formula extraction
+                    .setFieldSchema(updatedFieldSchema)
+                    .setModels(updatedModels);
 
-        Map<String, String> updatedModels = new HashMap<>();
-        updatedModels.put("completion", "gpt-4.1");
-        updatedModels.put("embedding", "text-embedding-3-large");
+                // Update the analyzer using the convenience method
+                // This method accepts a ContentAnalyzer object directly instead of BinaryData
+                return client.updateAnalyzer(finalAnalyzerId, updatedAnalyzer);
+            })
+            .doOnNext(result -> {
+                System.out.println("Analyzer updated successfully!");
+                System.out.println("New description: " + result.getDescription());
+                if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
+                    System.out.println("Field schema now has " + result.getFieldSchema().getFields().size() + " fields");
+                }
+                // END:ContentUnderstandingUpdateAnalyzerAsync
+            })
+            .then(Mono.fromRunnable(() -> {
+                // Cleanup
+                System.out.println("\nCleaning up: deleting test analyzer '" + finalAnalyzerId + "'...");
+            }))
+            .then(client.deleteAnalyzer(finalAnalyzerId))
+            .doOnSuccess(v -> {
+                System.out.println("Test analyzer deleted successfully.");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
 
-        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
-            .setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Updated analyzer with enhanced schema")
-            .setConfig(new ContentAnalyzerConfig()
-                .setEnableOcr(true)
-                .setEnableLayout(true)
-                .setEnableFormula(true)) // Enable formula extraction
-            .setFieldSchema(updatedFieldSchema)
-            .setModels(updatedModels);
-
-        // Update the analyzer using the convenience method
-        // This method accepts a ContentAnalyzer object directly instead of BinaryData
-        ContentAnalyzer result = client.updateAnalyzer(analyzerId, updatedAnalyzer).block();
-
-        System.out.println("Analyzer updated successfully!");
-        System.out.println("New description: " + result.getDescription());
-        if (result.getFieldSchema() != null && result.getFieldSchema().getFields() != null) {
-            System.out.println("Field schema now has " + result.getFieldSchema().getFields().size() + " fields");
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-        // END:ContentUnderstandingUpdateAnalyzerAsync
-
-        // Cleanup
-        System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
-        client.deleteAnalyzer(analyzerId).block();
-        System.out.println("Test analyzer deleted successfully.");
     }
 }

@@ -17,12 +17,14 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -68,105 +70,139 @@ public class Sample10_AnalyzeConfigsAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                // BEGIN:ContentUnderstandingExtractChartsAsync
+                // Extract charts from document content (enabled by EnableFigureAnalysis config)
+                if (result.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
+
+                    if (documentContent.getFigures() != null && !documentContent.getFigures().isEmpty()) {
+                        List<DocumentChartFigure> chartFigures = documentContent.getFigures()
+                            .stream()
+                            .filter(f -> f instanceof DocumentChartFigure)
+                            .map(f -> (DocumentChartFigure) f)
+                            .collect(Collectors.toList());
+
+                        for (DocumentChartFigure chart : chartFigures) {
+                            System.out.println("  Chart ID: " + chart.getId());
+                            System.out.println("    Description: " +
+                                (chart.getDescription() != null ? chart.getDescription() : "(not available)"));
+                            System.out.println("    Caption: " +
+                                (chart.getCaption() != null && chart.getCaption().getContent() != null
+                                    ? chart.getCaption().getContent() : "(not available)"));
+                        }
+                    }
+                }
+                // END:ContentUnderstandingExtractChartsAsync
+
+                // BEGIN:ContentUnderstandingExtractHyperlinksAsync
+                // Extract hyperlinks from document content (enabled by EnableLayout config)
+                if (result.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent docContent = (DocumentContent) result.getContents().get(0);
+
+                    System.out.println("\nFound " +
+                        (docContent.getHyperlinks() != null ? docContent.getHyperlinks().size() : 0) + " hyperlink(s)");
+                    if (docContent.getHyperlinks() != null) {
+                        for (DocumentHyperlink hyperlink : docContent.getHyperlinks()) {
+                            System.out.println("  URL: " +
+                                (hyperlink.getUrl() != null ? hyperlink.getUrl() : "(not available)"));
+                            System.out.println("    Content: " +
+                                (hyperlink.getContent() != null ? hyperlink.getContent() : "(not available)"));
+                        }
+                    }
+                }
+                // END:ContentUnderstandingExtractHyperlinksAsync
+
+                // BEGIN:ContentUnderstandingExtractFormulasAsync
+                // Extract formulas from document pages (enabled by EnableFormula config)
+                if (result.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent content = (DocumentContent) result.getContents().get(0);
+
+                    int formulaCount = 0;
+                    if (content.getPages() != null) {
+                        for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
+                            if (page.getFormulas() != null) {
+                                formulaCount += page.getFormulas().size();
+                            }
+                        }
+                    }
+
+                    System.out.println("\nFound " + formulaCount + " formula(s)");
+                    if (formulaCount > 0 && content.getPages() != null) {
+                        for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
+                            if (page.getFormulas() != null) {
+                                for (DocumentFormula formula : page.getFormulas()) {
+                                    System.out.println("  Formula Kind: " + formula.getKind());
+                                    System.out.println("    LaTeX: " +
+                                        (formula.getValue() != null ? formula.getValue() : "(not available)"));
+                                    System.out.println("    Confidence: " +
+                                        (formula.getConfidence() != null ? String.format("%.2f", formula.getConfidence())
+                                            : "N/A"));
+                                }
+                            }
+                        }
+                    }
+                }
+                // END:ContentUnderstandingExtractFormulasAsync
+
+                // BEGIN:ContentUnderstandingExtractAnnotationsAsync
+                // Extract annotations from document content (enabled by EnableLayout config)
+                if (result.getContents().get(0) instanceof DocumentContent) {
+                    DocumentContent document = (DocumentContent) result.getContents().get(0);
+
+                    System.out.println("\nFound " +
+                        (document.getAnnotations() != null ? document.getAnnotations().size() : 0) + " annotation(s)");
+                    if (document.getAnnotations() != null) {
+                        for (DocumentAnnotation annotation : document.getAnnotations()) {
+                            System.out.println("  Annotation ID: " + annotation.getId());
+                            System.out.println("    Kind: " + annotation.getKind());
+                            System.out.println("    Author: " +
+                                (annotation.getAuthor() != null ? annotation.getAuthor() : "(not available)"));
+                            System.out.println("    Comments: " +
+                                (annotation.getComments() != null ? annotation.getComments().size() : 0));
+                            if (annotation.getComments() != null) {
+                                for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation
+                                    .getComments()) {
+                                    System.out.println("      - " + comment.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+                // END:ContentUnderstandingExtractAnnotationsAsync
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeWithConfigsAsync
 
-        // BEGIN:ContentUnderstandingExtractChartsAsync
-        // Extract charts from document content (enabled by EnableFigureAnalysis config)
-        if (result.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
-
-            if (documentContent.getFigures() != null && !documentContent.getFigures().isEmpty()) {
-                List<DocumentChartFigure> chartFigures = documentContent.getFigures()
-                    .stream()
-                    .filter(f -> f instanceof DocumentChartFigure)
-                    .map(f -> (DocumentChartFigure) f)
-                    .collect(Collectors.toList());
-
-                for (DocumentChartFigure chart : chartFigures) {
-                    System.out.println("  Chart ID: " + chart.getId());
-                    System.out.println("    Description: " +
-                        (chart.getDescription() != null ? chart.getDescription() : "(not available)"));
-                    System.out.println("    Caption: " +
-                        (chart.getCaption() != null && chart.getCaption().getContent() != null
-                            ? chart.getCaption().getContent() : "(not available)"));
-                }
-            }
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-        // END:ContentUnderstandingExtractChartsAsync
-
-        // BEGIN:ContentUnderstandingExtractHyperlinksAsync
-        // Extract hyperlinks from document content (enabled by EnableLayout config)
-        if (result.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent docContent = (DocumentContent) result.getContents().get(0);
-
-            System.out.println("\nFound " +
-                (docContent.getHyperlinks() != null ? docContent.getHyperlinks().size() : 0) + " hyperlink(s)");
-            if (docContent.getHyperlinks() != null) {
-                for (DocumentHyperlink hyperlink : docContent.getHyperlinks()) {
-                    System.out.println("  URL: " +
-                        (hyperlink.getUrl() != null ? hyperlink.getUrl() : "(not available)"));
-                    System.out.println("    Content: " +
-                        (hyperlink.getContent() != null ? hyperlink.getContent() : "(not available)"));
-                }
-            }
-        }
-        // END:ContentUnderstandingExtractHyperlinksAsync
-
-        // BEGIN:ContentUnderstandingExtractFormulasAsync
-        // Extract formulas from document pages (enabled by EnableFormula config)
-        if (result.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent content = (DocumentContent) result.getContents().get(0);
-
-            int formulaCount = 0;
-            if (content.getPages() != null) {
-                for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
-                    if (page.getFormulas() != null) {
-                        formulaCount += page.getFormulas().size();
-                    }
-                }
-            }
-
-            System.out.println("\nFound " + formulaCount + " formula(s)");
-            if (formulaCount > 0 && content.getPages() != null) {
-                for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
-                    if (page.getFormulas() != null) {
-                        for (DocumentFormula formula : page.getFormulas()) {
-                            System.out.println("  Formula Kind: " + formula.getKind());
-                            System.out.println("    LaTeX: " +
-                                (formula.getValue() != null ? formula.getValue() : "(not available)"));
-                            System.out.println("    Confidence: " +
-                                (formula.getConfidence() != null ? String.format("%.2f", formula.getConfidence()) : "N/A"));
-                        }
-                    }
-                }
-            }
-        }
-        // END:ContentUnderstandingExtractFormulasAsync
-
-        // BEGIN:ContentUnderstandingExtractAnnotationsAsync
-        // Extract annotations from document content (enabled by EnableLayout config)
-        if (result.getContents().get(0) instanceof DocumentContent) {
-            DocumentContent document = (DocumentContent) result.getContents().get(0);
-
-            System.out.println("\nFound " +
-                (document.getAnnotations() != null ? document.getAnnotations().size() : 0) + " annotation(s)");
-            if (document.getAnnotations() != null) {
-                for (DocumentAnnotation annotation : document.getAnnotations()) {
-                    System.out.println("  Annotation ID: " + annotation.getId());
-                    System.out.println("    Kind: " + annotation.getKind());
-                    System.out.println("    Author: " +
-                        (annotation.getAuthor() != null ? annotation.getAuthor() : "(not available)"));
-                    System.out.println("    Comments: " +
-                        (annotation.getComments() != null ? annotation.getComments().size() : 0));
-                    if (annotation.getComments() != null) {
-                        for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation.getComments()) {
-                            System.out.println("      - " + comment.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-        // END:ContentUnderstandingExtractAnnotationsAsync
     }
 }

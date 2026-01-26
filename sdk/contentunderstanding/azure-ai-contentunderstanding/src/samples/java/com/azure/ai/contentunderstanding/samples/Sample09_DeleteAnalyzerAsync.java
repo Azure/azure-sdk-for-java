@@ -16,9 +16,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to delete an analyzer asynchronously.
@@ -79,25 +81,64 @@ public class Sample09_DeleteAnalyzerAsync {
             .setModels(models);
 
         PollerFlux<?, ContentAnalyzer> createPoller = client.beginCreateAnalyzer(analyzerId, analyzer, true);
-        createPoller.getSyncPoller().getFinalResult();
-        System.out.println("Temporary analyzer created: " + analyzerId);
-
-        // Verify the analyzer exists
-        ContentAnalyzer retrievedAnalyzer = client.getAnalyzer(analyzerId).block();
-        System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
-
-        // Delete the analyzer
-        client.deleteAnalyzer(analyzerId).block();
-        System.out.println("Analyzer deleted successfully: " + analyzerId);
-
-        // Verify the analyzer no longer exists
-        boolean analyzerDeleted = false;
-        try {
-            client.getAnalyzer(analyzerId).block();
-        } catch (ResourceNotFoundException e) {
-            analyzerDeleted = true;
-            System.out.println("Confirmed: Analyzer no longer exists");
-        }
+        
+        String finalAnalyzerId = analyzerId; // For use in lambda
+        createPoller.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                System.out.println("Temporary analyzer created: " + finalAnalyzerId);
+            })
+            .then(client.getAnalyzer(finalAnalyzerId))
+            .doOnNext(retrievedAnalyzer -> {
+                System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
+            })
+            .then(client.deleteAnalyzer(finalAnalyzerId))
+            .doOnSuccess(v -> {
+                System.out.println("Analyzer deleted successfully: " + finalAnalyzerId);
+            })
+            .then(client.getAnalyzer(finalAnalyzerId))
+            .doOnNext(ignored -> {
+                // Should not reach here if analyzer was deleted
+                System.out.println("Warning: Analyzer still exists after deletion");
+            })
+            .onErrorResume(ResourceNotFoundException.class, e -> {
+                System.out.println("Confirmed: Analyzer no longer exists");
+                return Mono.empty();
+            })
+            .doOnError(error -> {
+                if (!(error instanceof ResourceNotFoundException)) {
+                    System.err.println("Error occurred: " + error.getMessage());
+                    error.printStackTrace();
+                }
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    if (!(error instanceof ResourceNotFoundException)) {
+                        // Error already handled in doOnError
+                        System.exit(1);
+                    }
+                }
+            );
         // END:ContentUnderstandingDeleteAnalyzerAsync
+
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 }

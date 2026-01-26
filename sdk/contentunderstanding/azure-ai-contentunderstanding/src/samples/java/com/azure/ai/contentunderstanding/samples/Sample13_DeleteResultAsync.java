@@ -14,8 +14,10 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to delete analysis results after they are no longer needed
@@ -57,39 +59,78 @@ public class Sample13_DeleteResultAsync {
         // Wait for operation to complete
         System.out.println("Started analysis operation");
 
-        // Wait for completion using getSyncPoller() for simplicity in samples
-        AnalyzeResult result = poller.getSyncPoller().getFinalResult();
-        System.out.println("Analysis completed successfully!");
+        poller.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    
+                    // Get the operation ID using the getOperationId() convenience method
+                    // This ID is extracted from the Operation-Location header and is needed for deleteResult()
+                    String operationId = pollResponse.getValue().getOperationId();
+                    System.out.println("Operation ID: " + operationId);
+                    
+                    return pollResponse.getFinalResult()
+                        .map(result -> {
+                            // Store operationId and result together for use in doOnNext
+                            return new java.util.AbstractMap.SimpleEntry<>(operationId, result);
+                        });
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(entry -> {
+                String operationId = entry.getKey();
+                AnalyzeResult result = entry.getValue();
+                
+                System.out.println("Analysis completed successfully!");
 
-        // Get the operation ID using the getOperationId() convenience method
-        // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.getSyncPoller().poll().getValue().getOperationId();
-        System.out.println("Operation ID: " + operationId);
-
-        // Display some sample results using getValue() convenience method
-        if (result.getContents() != null && !result.getContents().isEmpty()) {
-            Object firstContent = result.getContents().get(0);
-            if (firstContent instanceof DocumentContent) {
-                DocumentContent docContent = (DocumentContent) firstContent;
-                java.util.Map<String, ContentField> fields = docContent.getFields();
-                if (fields != null) {
-                    System.out.println("Total fields extracted: " + fields.size());
-                    ContentField customerNameField = fields.get("CustomerName");
-                    if (customerNameField != null) {
-                        // Use getValue() instead of casting to StringField
-                        String customerName = (String) customerNameField.getValue();
-                        System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
+                // Display some sample results using getValue() convenience method
+                if (result.getContents() != null && !result.getContents().isEmpty()) {
+                    Object firstContent = result.getContents().get(0);
+                    if (firstContent instanceof DocumentContent) {
+                        DocumentContent docContent = (DocumentContent) firstContent;
+                        java.util.Map<String, ContentField> fields = docContent.getFields();
+                        if (fields != null) {
+                            System.out.println("Total fields extracted: " + fields.size());
+                            ContentField customerNameField = fields.get("CustomerName");
+                            if (customerNameField != null) {
+                                // Use getValue() instead of casting to StringField
+                                String customerName = (String) customerNameField.getValue();
+                                System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        // Step 2: Delete the analysis result using the operation ID
-        // This cleans up the server-side resources (including keyframe images for video analysis)
-        client.deleteResult(operationId).block();
-        System.out.println("Analysis result deleted successfully!");
+                // Step 2: Delete the analysis result using the operation ID
+                // This cleans up the server-side resources (including keyframe images for video analysis)
+                client.deleteResult(operationId)
+                    .doOnSuccess(v -> System.out.println("Analysis result deleted successfully!"))
+                    .subscribe();
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    System.out.println("\nSample completed successfully!");
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END: com.azure.ai.contentunderstanding.deleteResultAsync
 
-        System.out.println("\nSample completed successfully!");
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 }

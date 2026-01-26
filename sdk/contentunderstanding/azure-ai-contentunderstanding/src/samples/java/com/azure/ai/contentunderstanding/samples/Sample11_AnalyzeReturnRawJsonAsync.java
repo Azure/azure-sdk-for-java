@@ -13,6 +13,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to analyze documents and get raw JSON response using protocol methods asynchronously.
@@ -70,52 +72,90 @@ public class Sample11_AnalyzeReturnRawJsonAsync {
         PollerFlux<BinaryData, BinaryData> operation
             = client.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
 
-        BinaryData responseData = operation.getSyncPoller().getFinalResult();
+        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    System.out.println("Analysis operation completed with status: " + pollResponse.getStatus());
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(responseData -> {
+                System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
+
+                // Verify response data can be converted to string
+                String responseString = responseData.toString();
+                System.out.println("Response string length: " + String.format("%,d", responseString.length()) + " characters");
+
+                // Verify response is valid JSON format
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.readTree(responseData.toBytes());
+                    System.out.println("Response is valid JSON format");
+                } catch (Exception ex) {
+                    System.err.println("Response data is not valid JSON: " + ex.getMessage());
+                }
+
+                System.out.println("Raw JSON analysis operation completed successfully");
+
+                // BEGIN:ContentUnderstandingParseRawJsonAsync
+                // Parse the raw JSON response
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode jsonNode = mapper.readTree(responseData.toBytes());
+
+                    // Pretty-print the JSON
+                    String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+
+                    // Create output directory if it doesn't exist
+                    Path outputDir = Paths.get("target/sample_output");
+                    Files.createDirectories(outputDir);
+
+                    // Save to file
+                    String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                    String outputFileName = "analyze_result_" + timestamp + ".json";
+                    Path outputPath = outputDir.resolve(outputFileName);
+                    Files.write(outputPath, prettyJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
+                    System.out.println("Raw JSON response saved to: " + outputPath);
+                    System.out.println("File size: " + String.format("%,d", prettyJson.length()) + " characters");
+
+                    System.out.println("\nRaw JSON result saved to: " + outputPath);
+                    long fileSize = Files.size(outputPath);
+                    System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
+                } catch (IOException e) {
+                    System.err.println("Error saving JSON file: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                // END:ContentUnderstandingParseRawJsonAsync
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
 
-        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
-        System.out.println("Analysis operation completed with status: " + operation.getSyncPoller().poll().getStatus());
-        System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
-
-        // Verify response data can be converted to string
-        String responseString = responseData.toString();
-        System.out.println("Response string length: " + String.format("%,d", responseString.length()) + " characters");
-
-        // Verify response is valid JSON format
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.readTree(responseData.toBytes());
-            System.out.println("Response is valid JSON format");
-        } catch (Exception ex) {
-            System.err.println("Response data is not valid JSON: " + ex.getMessage());
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-
-        System.out.println("Raw JSON analysis operation completed successfully");
-
-        // BEGIN:ContentUnderstandingParseRawJsonAsync
-        // Parse the raw JSON response
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(responseData.toBytes());
-
-        // Pretty-print the JSON
-        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-
-        // Create output directory if it doesn't exist
-        Path outputDir = Paths.get("target/sample_output");
-        Files.createDirectories(outputDir);
-
-        // Save to file
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        String outputFileName = "analyze_result_" + timestamp + ".json";
-        Path outputPath = outputDir.resolve(outputFileName);
-        Files.write(outputPath, prettyJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-
-        System.out.println("Raw JSON response saved to: " + outputPath);
-        System.out.println("File size: " + String.format("%,d", prettyJson.length()) + " characters");
-        // END:ContentUnderstandingParseRawJsonAsync
-
-        System.out.println("\nRaw JSON result saved to: " + outputPath);
-        long fileSize = Files.size(outputPath);
-        System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
     }
 }

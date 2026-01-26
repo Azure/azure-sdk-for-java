@@ -19,9 +19,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to analyze documents from URL using Content Understanding service.
@@ -62,66 +64,99 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                System.out.println("Analysis operation completed");
+                System.out.println("Analysis result contains "
+                    + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+
+                // A PDF file has only one content element even if it contains multiple pages
+                MediaContent content = null;
+                if (result.getContents() == null || result.getContents().isEmpty()) {
+                    System.out.println("(No content returned from analysis)");
+                } else {
+                    content = result.getContents().get(0);
+                    if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                        System.out.println(content.getMarkdown());
+                    } else {
+                        System.out.println("(No markdown content available)");
+                    }
+                }
+
+                if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                    System.out.println("Markdown content extracted successfully ("
+                        + content.getMarkdown().length() + " characters)");
+                }
+
+                // Check if this is document content to access document-specific properties
+                if (content instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) content;
+                    System.out.println("Document type: "
+                        + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
+                    System.out.println("Start page: " + documentContent.getStartPageNumber());
+                    System.out.println("End page: " + documentContent.getEndPageNumber());
+                    System.out.println("Total pages: "
+                        + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
+
+                    // Check for pages
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        System.out.println("Number of pages: " + documentContent.getPages().size());
+                        for (DocumentPage page : documentContent.getPages()) {
+                            String unit
+                                = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                            System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
+                                + page.getHeight() + " " + unit);
+                        }
+                    }
+
+                    // Check for tables
+                    if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
+                        System.out.println("Number of tables: " + documentContent.getTables().size());
+                        int tableCounter = 1;
+                        for (DocumentTable table : documentContent.getTables()) {
+                            System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
+                                + table.getColumnCount() + " columns");
+                            tableCounter++;
+                        }
+                    }
+                } else {
+                    System.out.println("Content is MediaContent (not document-specific), skipping document properties");
+                }
+
+                System.out.println("\nURL document analysis completed successfully");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeUrlAsyncAsync
 
-        System.out.println("Analysis operation completed");
-        System.out.println("Analysis result contains "
-            + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-
-        // A PDF file has only one content element even if it contains multiple pages
-        MediaContent content = null;
-        if (result.getContents() == null || result.getContents().isEmpty()) {
-            System.out.println("(No content returned from analysis)");
-        } else {
-            content = result.getContents().get(0);
-            if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-                System.out.println(content.getMarkdown());
-            } else {
-                System.out.println("(No markdown content available)");
-            }
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
         }
-
-        if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            System.out
-                .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        }
-
-        // Check if this is document content to access document-specific properties
-        if (content instanceof DocumentContent) {
-            DocumentContent documentContent = (DocumentContent) content;
-            System.out.println("Document type: "
-                + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
-            System.out.println("Start page: " + documentContent.getStartPageNumber());
-            System.out.println("End page: " + documentContent.getEndPageNumber());
-            System.out.println(
-                "Total pages: " + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
-
-            // Check for pages
-            if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
-                System.out.println("Number of pages: " + documentContent.getPages().size());
-                for (DocumentPage page : documentContent.getPages()) {
-                    String unit = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
-                    System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
-                        + page.getHeight() + " " + unit);
-                }
-            }
-
-            // Check for tables
-            if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
-                System.out.println("Number of tables: " + documentContent.getTables().size());
-                int tableCounter = 1;
-                for (DocumentTable table : documentContent.getTables()) {
-                    System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
-                        + table.getColumnCount() + " columns");
-                    tableCounter++;
-                }
-            }
-        } else {
-            System.out.println("Content is MediaContent (not document-specific), skipping document properties");
-        }
-
-        System.out.println("\nURL document analysis completed successfully");
     }
 
     /**
@@ -156,32 +191,56 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
+                int segmentIndex = 1;
+                for (MediaContent media : result.getContents()) {
+                    // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+                    // AudioVisualContent derives from MediaContent and provides additional properties
+                    // to access full information about audio/video, including timing, transcript phrases, and many others
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("--- Segment " + segmentIndex + " ---");
+                    System.out.println("Markdown:");
+                    System.out.println(videoContent.getMarkdown());
 
-        // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
-        int segmentIndex = 1;
-        for (MediaContent media : result.getContents()) {
-            // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-            // AudioVisualContent derives from MediaContent and provides additional properties
-            // to access full information about audio/video, including timing, transcript phrases, and many others
-            AudioVisualContent videoContent = (AudioVisualContent) media;
-            System.out.println("--- Segment " + segmentIndex + " ---");
-            System.out.println("Markdown:");
-            System.out.println(videoContent.getMarkdown());
+                    String summary = videoContent.getFields() != null && videoContent.getFields().containsKey("Summary")
+                        ? (videoContent.getFields().get("Summary").getValue() != null
+                            ? videoContent.getFields().get("Summary").getValue().toString()
+                            : "")
+                        : "";
+                    System.out.println("Summary: " + summary);
 
-            String summary = videoContent.getFields() != null && videoContent.getFields().containsKey("Summary")
-                ? (videoContent.getFields().get("Summary").getValue() != null
-                    ? videoContent.getFields().get("Summary").getValue().toString()
-                    : "")
-                : "";
-            System.out.println("Summary: " + summary);
+                    System.out.println("Start: " + videoContent.getStartTimeMs() + " ms, End: "
+                        + videoContent.getEndTimeMs() + " ms");
+                    System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
 
-            System.out.println("Start: " + videoContent.getStartTimeMs() + " ms, End: " + videoContent.getEndTimeMs() + " ms");
-            System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
-
-            System.out.println("---------------------");
-            segmentIndex++;
-        }
+                    System.out.println("---------------------");
+                    segmentIndex++;
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
     }
 
@@ -216,35 +275,59 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
-
-        // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
-        // AudioVisualContent derives from MediaContent and provides additional properties
-        // to access full information about audio/video, including timing, transcript phrases, and many others
-        AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
-        System.out.println("Markdown:");
-        System.out.println(audioContent.getMarkdown());
-
-        String summary = audioContent.getFields() != null && audioContent.getFields().containsKey("Summary")
-            ? (audioContent.getFields().get("Summary").getValue() != null
-                ? audioContent.getFields().get("Summary").getValue().toString()
-                : "")
-            : "";
-        System.out.println("Summary: " + summary);
-
-        // Example: Access an additional field in AudioVisualContent (transcript phrases)
-        List<TranscriptPhrase> transcriptPhrases = audioContent.getTranscriptPhrases();
-        if (transcriptPhrases != null && !transcriptPhrases.isEmpty()) {
-            System.out.println("Transcript (first two phrases):");
-            int count = 0;
-            for (TranscriptPhrase phrase : transcriptPhrases) {
-                if (count >= 2) {
-                    break;
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
                 }
-                System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: " + phrase.getText());
-                count++;
-            }
-        }
+            })
+            .doOnNext(result -> {
+                // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
+                // AudioVisualContent derives from MediaContent and provides additional properties
+                // to access full information about audio/video, including timing, transcript phrases, and many others
+                AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Markdown:");
+                System.out.println(audioContent.getMarkdown());
+
+                String summary = audioContent.getFields() != null && audioContent.getFields().containsKey("Summary")
+                    ? (audioContent.getFields().get("Summary").getValue() != null
+                        ? audioContent.getFields().get("Summary").getValue().toString()
+                        : "")
+                    : "";
+                System.out.println("Summary: " + summary);
+
+                // Example: Access an additional field in AudioVisualContent (transcript phrases)
+                List<TranscriptPhrase> transcriptPhrases = audioContent.getTranscriptPhrases();
+                if (transcriptPhrases != null && !transcriptPhrases.isEmpty()) {
+                    System.out.println("Transcript (first two phrases):");
+                    int count = 0;
+                    for (TranscriptPhrase phrase : transcriptPhrases) {
+                        if (count >= 2) {
+                            break;
+                        }
+                        System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTimeMs() + " ms: "
+                            + phrase.getText());
+                        count++;
+                    }
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
     }
 
@@ -279,18 +362,41 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                MediaContent content = result.getContents().get(0);
+                System.out.println("Markdown:");
+                System.out.println(content.getMarkdown());
 
-        MediaContent content = result.getContents().get(0);
-        System.out.println("Markdown:");
-        System.out.println(content.getMarkdown());
-
-        String summary = content.getFields() != null && content.getFields().containsKey("Summary")
-            ? (content.getFields().get("Summary").getValue() != null
-                ? content.getFields().get("Summary").getValue().toString()
-                : "")
-            : "";
-        System.out.println("Summary: " + summary);
+                String summary = content.getFields() != null && content.getFields().containsKey("Summary")
+                    ? (content.getFields().get("Summary").getValue() != null
+                        ? content.getFields().get("Summary").getValue().toString()
+                        : "")
+                    : "";
+                System.out.println("Summary: " + summary);
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
     }
 }

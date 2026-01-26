@@ -13,9 +13,11 @@ import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to create a classifier analyzer.
@@ -103,38 +105,73 @@ public class Sample05_CreateClassifierAsync {
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
             = client.beginCreateAnalyzer(analyzerId, classifier, true);
 
-        ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
-        System.out.println("Classifier '" + analyzerId + "' created successfully!");
-
-        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
-            System.out.println("  Description: " + result.getDescription());
-        }
-
-        if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
-            System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
-            result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
-                System.out.println("    - " + categoryName);
-                if (categoryDef.getDescription() != null) {
-                    // Truncate long descriptions for display
-                    String desc = categoryDef.getDescription();
-                    if (desc.length() > 60) {
-                        desc = desc.substring(0, 57) + "...";
-                    }
-                    System.out.println("      Description: " + desc);
+        String finalAnalyzerId = analyzerId; // For use in lambda
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
                 }
-            });
-        }
+            })
+            .doOnNext(result -> {
+                System.out.println("Classifier '" + finalAnalyzerId + "' created successfully!");
 
-        if (result.getConfig() != null && result.getConfig().isEnableSegment() != null) {
-            System.out.println("  Segmentation enabled: " + result.getConfig().isEnableSegment());
-        }
+                if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+                    System.out.println("  Description: " + result.getDescription());
+                }
+
+                if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
+                    System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
+                    result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
+                        System.out.println("    - " + categoryName);
+                        if (categoryDef.getDescription() != null) {
+                            // Truncate long descriptions for display
+                            String desc = categoryDef.getDescription();
+                            if (desc.length() > 60) {
+                                desc = desc.substring(0, 57) + "...";
+                            }
+                            System.out.println("      Description: " + desc);
+                        }
+                    });
+                }
+
+                if (result.getConfig() != null && result.getConfig().isEnableSegment() != null) {
+                    System.out.println("  Segmentation enabled: " + result.getConfig().isEnableSegment());
+                }
+            })
+            .then(Mono.fromRunnable(() -> {
+                // Cleanup - delete the created classifier analyzer
+                System.out.println("\nCleaning up: deleting classifier analyzer '" + finalAnalyzerId + "'...");
+            }))
+            .then(client.deleteAnalyzer(finalAnalyzerId))
+            .doOnSuccess(v -> {
+                System.out.println("Classifier analyzer '" + finalAnalyzerId + "' deleted successfully.");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingCreateClassifierAsync
 
-        createdAnalyzerId = analyzerId; // Track for cleanup
-
-        // Cleanup - delete the created classifier analyzer
-        System.out.println("\nCleaning up: deleting classifier analyzer '" + createdAnalyzerId + "'...");
-        client.deleteAnalyzer(createdAnalyzerId).block();
-        System.out.println("Classifier analyzer '" + createdAnalyzerId + "' deleted successfully.");
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 }

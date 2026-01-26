@@ -9,6 +9,9 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to get analyzer information asynchronously.
@@ -44,64 +47,87 @@ public class Sample06_GetAnalyzerAsync {
 
         System.out.println("Retrieving analyzer '" + analyzerId + "'...");
 
-        ContentAnalyzer analyzer = client.getAnalyzer(analyzerId).block();
+        client.getAnalyzer(analyzerId)
+            .doOnNext(analyzer -> {
+                System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
+                System.out.println("Base Analyzer ID: "
+                    + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
+                System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
 
-        System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
-        System.out.println(
-            "Base Analyzer ID: " + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
-        System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
+                // Display configuration
+                if (analyzer.getConfig() != null) {
+                    System.out.println("\nAnalyzer Configuration:");
+                    System.out.println("  Enable OCR: " + analyzer.getConfig().isEnableOcr());
+                    System.out.println("  Enable Layout: " + analyzer.getConfig().isEnableLayout());
+                    System.out.println("  Enable Formula: " + analyzer.getConfig().isEnableFormula());
+                    System.out.println("  Estimate Field Source and Confidence: "
+                        + analyzer.getConfig().isEstimateFieldSourceAndConfidence());
+                    System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());
+                }
 
-        // Display configuration
-        if (analyzer.getConfig() != null) {
-            System.out.println("\nAnalyzer Configuration:");
-            System.out.println("  Enable OCR: " + analyzer.getConfig().isEnableOcr());
-            System.out.println("  Enable Layout: " + analyzer.getConfig().isEnableLayout());
-            System.out.println("  Enable Formula: " + analyzer.getConfig().isEnableFormula());
-            System.out.println(
-                "  Estimate Field Source and Confidence: " + analyzer.getConfig().isEstimateFieldSourceAndConfidence());
-            System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());
-        }
-
-        // Display field schema if available
-        if (analyzer.getFieldSchema() != null) {
-            System.out.println("\nField Schema:");
-            System.out.println("  Name: " + analyzer.getFieldSchema().getName());
-            System.out.println("  Description: " + (analyzer.getFieldSchema().getDescription() != null
-                ? analyzer.getFieldSchema().getDescription()
-                : "N/A"));
-            if (analyzer.getFieldSchema().getFields() != null) {
-                System.out.println("  Number of fields: " + analyzer.getFieldSchema().getFields().size());
-                System.out.println("  Fields:");
-                analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
-                    System.out.println("    - " + fieldName + " (" + fieldDef.getType() + ", Method: "
-                        + (fieldDef.getMethod() != null ? fieldDef.getMethod() : "N/A") + ")");
-                    if (fieldDef.getDescription() != null && !fieldDef.getDescription().trim().isEmpty()) {
-                        System.out.println("      Description: " + fieldDef.getDescription());
+                // Display field schema if available
+                if (analyzer.getFieldSchema() != null) {
+                    System.out.println("\nField Schema:");
+                    System.out.println("  Name: " + analyzer.getFieldSchema().getName());
+                    System.out.println("  Description: " + (analyzer.getFieldSchema().getDescription() != null
+                        ? analyzer.getFieldSchema().getDescription()
+                        : "N/A"));
+                    if (analyzer.getFieldSchema().getFields() != null) {
+                        System.out.println("  Number of fields: " + analyzer.getFieldSchema().getFields().size());
+                        System.out.println("  Fields:");
+                        analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
+                            System.out.println("    - " + fieldName + " (" + fieldDef.getType() + ", Method: "
+                                + (fieldDef.getMethod() != null ? fieldDef.getMethod() : "N/A") + ")");
+                            if (fieldDef.getDescription() != null && !fieldDef.getDescription().trim().isEmpty()) {
+                                System.out.println("      Description: " + fieldDef.getDescription());
+                            }
+                        });
                     }
-                });
-            }
-        }
+                }
 
-        // Display models if available
-        if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
-            System.out.println("\nModel Mappings:");
-            analyzer.getModels().forEach((modelKey, modelValue) -> {
-                System.out.println("  " + modelKey + ": " + modelValue);
-            });
-        }
+                // Display models if available
+                if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
+                    System.out.println("\nModel Mappings:");
+                    analyzer.getModels().forEach((modelKey, modelValue) -> {
+                        System.out.println("  " + modelKey + ": " + modelValue);
+                    });
+                }
 
-        // Display status if available
-        if (analyzer.getStatus() != null) {
-            System.out.println("\nAnalyzer Status: " + analyzer.getStatus());
-        }
+                // Display status if available
+                if (analyzer.getStatus() != null) {
+                    System.out.println("\nAnalyzer Status: " + analyzer.getStatus());
+                }
 
-        // Display created/updated timestamps if available
-        if (analyzer.getCreatedAt() != null) {
-            System.out.println("Created: " + analyzer.getCreatedAt());
-        }
-        if (analyzer.getLastModifiedAt() != null) {
-            System.out.println("Updated: " + analyzer.getLastModifiedAt());
-        }
+                // Display created/updated timestamps if available
+                if (analyzer.getCreatedAt() != null) {
+                    System.out.println("Created: " + analyzer.getCreatedAt());
+                }
+                if (analyzer.getLastModifiedAt() != null) {
+                    System.out.println("Updated: " + analyzer.getLastModifiedAt());
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .subscribe(
+                result -> {
+                    // Success - operations completed
+                },
+                error -> {
+                    // Error already handled in doOnError
+                    System.exit(1);
+                }
+            );
         // END:ContentUnderstandingGetAnalyzerAsync
+
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
     }
 }
