@@ -27,7 +27,7 @@ public final class VectorizedQuery extends VectorQuery {
      * The vector representation of a search query.
      */
     @Generated
-    private final List<Double> vector;
+    private final List<Float> vector;
 
     /**
      * Creates an instance of VectorizedQuery class.
@@ -35,7 +35,7 @@ public final class VectorizedQuery extends VectorQuery {
      * @param vector the vector value to set.
      */
     @Generated
-    public VectorizedQuery(List<Double> vector) {
+    public VectorizedQuery(List<Float> vector) {
         this.vector = vector;
     }
 
@@ -56,7 +56,7 @@ public final class VectorizedQuery extends VectorQuery {
      * @return the vector value.
      */
     @Generated
-    public List<Double> getVector() {
+    public List<Float> getVector() {
         return this.vector;
     }
 
@@ -155,7 +155,7 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeJsonField("threshold", getThreshold());
         jsonWriter.writeStringField("filterOverride", getFilterOverride());
         jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
-        jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
@@ -180,7 +180,7 @@ public final class VectorizedQuery extends VectorQuery {
             VectorThreshold threshold = null;
             String filterOverride = null;
             Integer perDocumentVectorLimit = null;
-            List<Double> vector = null;
+            List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -202,7 +202,7 @@ public final class VectorizedQuery extends VectorQuery {
                 } else if ("perDocumentVectorLimit".equals(fieldName)) {
                     perDocumentVectorLimit = reader.getNullable(JsonReader::getInt);
                 } else if ("vector".equals(fieldName)) {
-                    vector = reader.readArray(reader1 -> reader1.getDouble());
+                    vector = reader.readArray(reader1 -> reader1.getFloat());
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorQueryKind.fromString(reader.getString());
                 } else {

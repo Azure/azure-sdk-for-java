@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.knowledgebase.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebase.models.KnowledgeRetrievalReasoningEffort;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,6 +87,17 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
      * @param name the name value to set.
      * @param knowledgeSources the knowledgeSources value to set.
      */
+    public KnowledgeBase(String name, KnowledgeSourceReference... knowledgeSources) {
+        this.name = name;
+        this.knowledgeSources = (knowledgeSources == null) ? null : Arrays.asList(knowledgeSources);
+    }
+
+    /**
+     * Creates an instance of KnowledgeBase class.
+     *
+     * @param name the name value to set.
+     * @param knowledgeSources the knowledgeSources value to set.
+     */
     @Generated
     public KnowledgeBase(String name, List<KnowledgeSourceReference> knowledgeSources) {
         this.name = name;
@@ -120,6 +132,17 @@ public final class KnowledgeBase implements JsonSerializable<KnowledgeBase> {
     @Generated
     public List<KnowledgeBaseModel> getModels() {
         return this.models;
+    }
+
+    /**
+     * Set the models property: Contains configuration options on how to connect to AI models.
+     *
+     * @param models the models value to set.
+     * @return the KnowledgeBase object itself.
+     */
+    public KnowledgeBase setModels(KnowledgeBaseModel... models) {
+        this.models = (models == null) ? null : Arrays.asList(models);
+        return this;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +43,17 @@ public final class CommonGramTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean useQueryMode;
+
+    /**
+     * Creates an instance of CommonGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param commonWords the commonWords value to set.
+     */
+    public CommonGramTokenFilter(String name, String... commonWords) {
+        super(name);
+        this.commonWords = (commonWords == null) ? null : Arrays.asList(commonWords);
+    }
 
     /**
      * Creates an instance of CommonGramTokenFilter class.

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -279,6 +280,38 @@ public final class SearchField implements JsonSerializable<SearchField> {
     @Generated
     public SearchField setRetrievable(Boolean retrievable) {
         this.retrievable = retrievable;
+        return this;
+    }
+
+    /**
+     * Get the hidden property: A value indicating whether the field will be returned in a search result. This property
+     * must be false for key fields, and must be null for complex fields. You can hide a field from search results if
+     * you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing
+     * fields and enabling it does not cause an increase in index storage requirements. Default is false for simple
+     * fields, true for vector fields, and null for complex fields.
+     *
+     * @return the hidden value.
+     * @deprecated Use {@link #isRetrievable()} instead and flip the boolean value.
+     */
+    @Deprecated
+    public Boolean isHidden() {
+        return (this.retrievable == null) ? null : !this.retrievable;
+    }
+
+    /**
+     * Set the hidden property: A value indicating whether the field will be returned in a search result. This property
+     * must be false for key fields, and must be null for complex fields. You can hide a field from search results if
+     * you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing
+     * fields and enabling it does not cause an increase in index storage requirements. Default is false for simple
+     * fields, true for vector fields, and null for complex fields.
+     *
+     * @param hidden the hidden value to set.
+     * @return the SearchField object itself.
+     * @deprecated Use {@link #setRetrievable(Boolean)} instead and flip the boolean value.
+     */
+    @Deprecated
+    public SearchField setHidden(Boolean hidden) {
+        this.retrievable = (hidden == null) ? null : !hidden;
         return this;
     }
 
@@ -698,6 +731,21 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param synonymMapNames the synonymMapNames value to set.
      * @return the SearchField object itself.
      */
+    public SearchField setSynonymMapNames(String... synonymMapNames) {
+        this.synonymMapNames = (synonymMapNames == null) ? null : Arrays.asList(synonymMapNames);
+        return this;
+    }
+
+    /**
+     * Set the synonymMapNames property: A list of the names of synonym maps to associate with this field. This option
+     * can be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a
+     * synonym map to a field ensures that query terms targeting that field are expanded at query-time using the rules
+     * in the synonym map. This attribute can be changed on existing fields. Must be null or an empty collection for
+     * complex fields.
+     *
+     * @param synonymMapNames the synonymMapNames value to set.
+     * @return the SearchField object itself.
+     */
     @Generated
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
@@ -713,6 +761,18 @@ public final class SearchField implements JsonSerializable<SearchField> {
     @Generated
     public List<SearchField> getFields() {
         return this.fields;
+    }
+
+    /**
+     * Set the fields property: A list of sub-fields if this is a field of type Edm.ComplexType or
+     * Collection(Edm.ComplexType). Must be null or empty for simple fields.
+     *
+     * @param fields the fields value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setFields(SearchField... fields) {
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
+        return this;
     }
 
     /**

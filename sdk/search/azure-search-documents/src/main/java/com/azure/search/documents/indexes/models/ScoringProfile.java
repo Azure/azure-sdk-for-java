@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -93,6 +94,17 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     @Generated
     public List<ScoringFunction> getFunctions() {
         return this.functions;
+    }
+
+    /**
+     * Set the functions property: The collection of functions that influence the scoring of documents.
+     *
+     * @param functions the functions value to set.
+     * @return the ScoringProfile object itself.
+     */
+    public ScoringProfile setFunctions(ScoringFunction... functions) {
+        this.functions = (functions == null) ? null : Arrays.asList(functions);
+        return this;
     }
 
     /**

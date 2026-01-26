@@ -207,7 +207,7 @@ public class Hotel implements JsonSerializable<Hotel> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
             .writeStringField("HotelId", hotelId)
-            .writeStringField("HotelName", hotelId)
+            .writeStringField("HotelName", hotelName)
             .writeStringField("Description", description)
             .writeStringField("Description_fr", descriptionFr)
             .writeStringField("Category", category)

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +40,17 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
     @Generated
     public List<String> getSkillNames() {
         return this.skillNames;
+    }
+
+    /**
+     * Set the skillNames property: the names of skills to be reset.
+     *
+     * @param skillNames the skillNames value to set.
+     * @return the SkillNames object itself.
+     */
+    public SkillNames setSkillNames(String... skillNames) {
+        this.skillNames = (skillNames == null) ? null : Arrays.asList(skillNames);
+        return this;
     }
 
     /**

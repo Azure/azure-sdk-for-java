@@ -5,11 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-
-
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 
 public class ConsistentSessionId {
 
@@ -27,9 +23,10 @@ public class ConsistentSessionId {
         // This ensures a uniform experience for users throughout their "query session". By consistently using the same
         // sessionId, the system makes a best-effort attempt to target the same replica, improving the overall
         // consistency of search results for users within the specified session.
-        SearchOptions searchOptions = new SearchOptions().setSessionId("Session-1").setFilter("Rating gt 3");
+        SearchPostOptions searchOptions = new SearchPostOptions().setSessionId("Session-1").setFilter("Rating gt 3")
+            .setSearchText("hotel");
 
-        SearchPagedIterable results = searchClient.search("hotel", searchOptions, null);
-        results.forEach(result -> System.out.println("Hotel Id: " + result.getDocument(Hotel.class).getHotelId()));
+        searchClient.search(searchOptions)
+            .forEach(result -> System.out.println("Hotel Id: " + result.getAdditionalProperties().get("HotelId")));
     }
 }

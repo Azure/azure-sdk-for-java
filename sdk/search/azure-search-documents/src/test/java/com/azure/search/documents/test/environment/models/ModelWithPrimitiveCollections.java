@@ -4,14 +4,21 @@ package com.azure.search.documents.test.environment.models;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ModelWithPrimitiveCollections {
+public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWithPrimitiveCollections> {
 
     @JsonProperty(value = "Key")
     private String key;
@@ -107,5 +114,80 @@ public class ModelWithPrimitiveCollections {
 
     public String[] strings() {
         return CoreUtils.clone(strings);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject()
+            .writeStringField("Key", key)
+            .writeArrayField("Bools", bools, JsonWriter::writeBoolean)
+            .writeArrayField("Dates", dates, (writer, date) -> writer.writeString(Objects.toString(date, null)))
+            .writeArrayField("Doubles", doubles, JsonWriter::writeNumber);
+        if (ints != null) {
+            jsonWriter.writeStartArray("Ints");
+            for (int i : ints) {
+                jsonWriter.writeInt(i);
+            }
+            jsonWriter.writeEndArray();
+        }
+        return jsonWriter
+            .writeArrayField("Longs", longs, JsonWriter::writeNumber)
+            .writeArrayField("Points", points, JsonWriter::writeJson)
+            .writeArrayField("Strings", strings, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    public static ModelWithPrimitiveCollections fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModelWithPrimitiveCollections model = new ModelWithPrimitiveCollections();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Key".equals(fieldName)) {
+                    model.key = reader.getString();
+                } else if ("Bools".equals(fieldName)) {
+                    List<Boolean> bools = reader.readArray(elem -> elem.getNullable(JsonReader::getBoolean));
+                    if (bools != null) {
+                        model.bools = bools.toArray(new Boolean[0]);
+                    }
+                } else if ("Dates".equals(fieldName)) {
+                    List<OffsetDateTime> dates = reader.readArray(elem -> CoreUtils.parseBestOffsetDateTime(elem.getString()));
+                    if (dates != null) {
+                        model.dates = dates.toArray(new OffsetDateTime[0]);
+                    }
+                } else if ("Doubles".equals(fieldName)) {
+                    List<Double> doubles = reader.readArray(elem -> elem.getNullable(JsonReader::getDouble));
+                    if (doubles != null) {
+                        model.doubles = doubles.toArray(new Double[0]);
+                    }
+                } else if ("Ints".equals(fieldName)) {
+                    List<Integer> ints = reader.readArray(JsonReader::getInt);
+                    if (ints != null) {
+                        model.ints = ints.stream().mapToInt(i -> i).toArray();
+                    }
+                } else if ("Longs".equals(fieldName)) {
+                    List<Long> longs = reader.readArray(elem -> elem.getNullable(JsonReader::getLong));
+                    if (longs != null) {
+                        model.longs = longs.toArray(new Long[0]);
+                    }
+                } else if ("Points".equals(fieldName)) {
+                    List<GeoPoint> points = reader.readArray(GeoPoint::fromJson);
+                    if (points != null) {
+                        model.points = points.toArray(new GeoPoint[0]);
+                    }
+                } else if ("Strings".equals(fieldName)) {
+                    List<String> strings = reader.readArray(JsonReader::getString);
+                    if (strings != null) {
+                        model.strings = strings.toArray(new String[0]);
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return model;
+        });
     }
 }

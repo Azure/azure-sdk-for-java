@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +30,15 @@ public final class KnowledgeBaseMessage implements JsonSerializable<KnowledgeBas
      */
     @Generated
     private final List<KnowledgeBaseMessageContent> content;
+
+    /**
+     * Creates an instance of KnowledgeBaseMessage class.
+     *
+     * @param content the content value to set.
+     */
+    public KnowledgeBaseMessage(KnowledgeBaseMessageContent... content) {
+        this.content = (content == null) ? null : Arrays.asList(content);
+    }
 
     /**
      * Creates an instance of KnowledgeBaseMessage class.

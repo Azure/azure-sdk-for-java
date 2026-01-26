@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +32,17 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      */
     @Generated
     private final List<String> rules;
+
+    /**
+     * Creates an instance of StemmerOverrideTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param rules the rules value to set.
+     */
+    public StemmerOverrideTokenFilter(String name, String... rules) {
+        super(name);
+        this.rules = (rules == null) ? null : Arrays.asList(rules);
+    }
 
     /**
      * Creates an instance of StemmerOverrideTokenFilter class.

@@ -122,4 +122,14 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static Collection<SearchFieldDataType> values() {
         return values(SearchFieldDataType.class);
     }
+
+    /**
+     * Returns a collection of a specific SearchFieldDataType.
+     *
+     * @param dataType the corresponding SearchFieldDataType
+     * @return a Collection of the corresponding SearchFieldDataType
+     */
+    public static SearchFieldDataType collection(SearchFieldDataType dataType) {
+        return fromString(String.format("Collection(%s)", dataType.toString()));
+    }
 }

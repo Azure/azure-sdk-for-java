@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -146,6 +147,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param name the name value to set.
      * @param fields the fields value to set.
      */
+    public SearchIndex(String name, SearchField... fields) {
+        this.name = name;
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
+    }
+
+    /**
+     * Creates an instance of SearchIndex class.
+     *
+     * @param name the name value to set.
+     * @param fields the fields value to set.
+     */
     @Generated
     public SearchIndex(String name, List<SearchField> fields) {
         this.name = name;
@@ -202,6 +214,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     @Generated
     public List<ScoringProfile> getScoringProfiles() {
         return this.scoringProfiles;
+    }
+
+    /**
+     * Set the scoringProfiles property: The scoring profiles for the index.
+     *
+     * @param scoringProfiles the scoringProfiles value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
+        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
+        return this;
     }
 
     /**
@@ -280,6 +303,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setSuggesters(SearchSuggester... suggesters) {
+        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
+        return this;
+    }
+
+    /**
+     * Set the suggesters property: The suggesters for the index.
+     *
+     * @param suggesters the suggesters value to set.
+     * @return the SearchIndex object itself.
+     */
     @Generated
     public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
@@ -294,6 +328,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     @Generated
     public List<LexicalAnalyzer> getAnalyzers() {
         return this.analyzers;
+    }
+
+    /**
+     * Set the analyzers property: The analyzers for the index.
+     *
+     * @param analyzers the analyzers value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
+        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
+        return this;
     }
 
     /**
@@ -324,6 +369,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param tokenizers the tokenizers value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
+        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
+        return this;
+    }
+
+    /**
+     * Set the tokenizers property: The tokenizers for the index.
+     *
+     * @param tokenizers the tokenizers value to set.
+     * @return the SearchIndex object itself.
+     */
     @Generated
     public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
@@ -338,6 +394,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     @Generated
     public List<TokenFilter> getTokenFilters() {
         return this.tokenFilters;
+    }
+
+    /**
+     * Set the tokenFilters property: The token filters for the index.
+     *
+     * @param tokenFilters the tokenFilters value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        return this;
     }
 
     /**
@@ -368,6 +435,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      * @param charFilters the charFilters value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setCharFilters(CharFilter... charFilters) {
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        return this;
+    }
+
+    /**
+     * Set the charFilters property: The character filters for the index.
+     *
+     * @param charFilters the charFilters value to set.
+     * @return the SearchIndex object itself.
+     */
     @Generated
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
@@ -382,6 +460,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     @Generated
     public List<LexicalNormalizer> getNormalizers() {
         return this.normalizers;
+    }
+
+    /**
+     * Set the normalizers property: The normalizers for the index.
+     *
+     * @param normalizers the normalizers value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setNormalizers(LexicalNormalizer... normalizers) {
+        this.normalizers = (normalizers == null) ? null : Arrays.asList(normalizers);
+        return this;
     }
 
     /**

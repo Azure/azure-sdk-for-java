@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -67,6 +68,20 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
     @Generated
     public List<ContentUnderstandingSkillExtractionOptions> getExtractionOptions() {
         return this.extractionOptions;
+    }
+
+    /**
+     * Set the extractionOptions property: Controls the cardinality of the content extracted from the document by the
+     * skill.
+     *
+     * @param extractionOptions the extractionOptions value to set.
+     * @return the ContentUnderstandingSkill object itself.
+     */
+    @Generated
+    public ContentUnderstandingSkill
+    setExtractionOptions(ContentUnderstandingSkillExtractionOptions... extractionOptions) {
+        this.extractionOptions = (extractionOptions == null) ? null : Arrays.asList(extractionOptions);
+        return this;
     }
 
     /**

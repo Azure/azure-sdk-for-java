@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -253,6 +254,18 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    public SearchIndexer setFieldMappings(FieldMapping... fieldMappings) {
+        this.fieldMappings = (fieldMappings == null) ? null : Arrays.asList(fieldMappings);
+        return this;
+    }
+
+    /**
+     * Set the fieldMappings property: Defines mappings between fields in the data source and corresponding target
+     * fields in the index.
+     *
+     * @param fieldMappings the fieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
     @Generated
     public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
@@ -268,6 +281,18 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     @Generated
     public List<FieldMapping> getOutputFieldMappings() {
         return this.outputFieldMappings;
+    }
+
+    /**
+     * Set the outputFieldMappings property: Output field mappings are applied after enrichment and immediately before
+     * indexing.
+     *
+     * @param outputFieldMappings the outputFieldMappings value to set.
+     * @return the SearchIndexer object itself.
+     */
+    public SearchIndexer setOutputFieldMappings(FieldMapping... outputFieldMappings) {
+        this.outputFieldMappings = (outputFieldMappings == null) ? null : Arrays.asList(outputFieldMappings);
+        return this;
     }
 
     /**

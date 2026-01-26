@@ -5,14 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.util.SearchPagedFlux;
-import com.azure.search.documents.util.SearchPagedResponse;
-
-import java.util.stream.Stream;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 
 /**
- * This example shows how to work with {@link SearchOptions} while performing searches
+ * This example shows how to work with {@link SearchPostOptions} while performing searches
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal. See <a
  * href="https://docs.microsoft.com/azure/search/search-get-started-portal">Search getting started portal</a>
@@ -46,57 +42,49 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsFacetsFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"));
-
-        results.getFacets()
-            .doOnNext(facetResults -> facetResults.forEach((key, value) -> value.forEach(result -> {
+        searchClient.search(new SearchPostOptions().setFacets("Rooms/BaseRate,values:5|8|10"))
+            .byPage().doOnNext(page -> page.getFacets().forEach((key, value) -> value.forEach(result -> {
                 System.out.println(key + " :");
                 System.out.println("    count: " + result.getCount());
                 result.getAdditionalProperties().forEach((f, d) -> System.out.println("    " + f + " : " + d));
             })))
-            .block();
+            .blockLast();
     }
 
     private static void searchResultsCoverageFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(80.0));
-
-        System.out.println("Coverage = " + results.getCoverage().block());
+        searchClient.search(new SearchPostOptions().setMinimumCoverage(80.0)).byPage()
+            .doOnNext(page -> System.out.println("Coverage = " + page.getCoverage()))
+            .blockLast();
     }
 
     private static void searchResultsCountFormPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalCount(true));
-
-        System.out.println("Count = " + results.getTotalCount().block());
+        searchClient.search(new SearchPostOptions().setIncludeTotalCount(true)).byPage()
+            .doOnNext(page -> System.out.println("Count = " + page.getCount()))
+            .blockLast();
     }
 
 
     private static void searchResultAsStreamOfPagedResponse(SearchAsyncClient searchClient) {
         // Converting search results to stream
-        Stream<SearchPagedResponse> streamResponse = searchClient.search("*")
-            .byPage().toStream();
-
-        streamResponse.forEach(searchPagedResponse -> searchPagedResponse.getElements().forEach(result ->
-            result.getDocument(SearchDocument.class).forEach((field, value) ->
-                System.out.println((field + ":" + value)))));
+        searchClient.search(null).byPage()
+            .doOnNext(searchPagedResponse -> searchPagedResponse.getElements()
+                .forEach(result -> result.getAdditionalProperties()
+                    .forEach((field, value) -> System.out.println((field + ":" + value)))))
+            .blockLast();
     }
 
     private static void searchResultsAsList(SearchAsyncClient searchClient) {
         // Converting search results to list
-        searchClient.search("*")
+        searchClient.search(null)
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(result ->
-                result.getDocument(SearchDocument.class).forEach((field, value) ->
-                    System.out.println((field + ":" + value)))
-            )
+            .doOnNext(result -> result.getAdditionalProperties()
+                .forEach((field, value) -> System.out.println((field + ":" + value))))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList()
             .block();

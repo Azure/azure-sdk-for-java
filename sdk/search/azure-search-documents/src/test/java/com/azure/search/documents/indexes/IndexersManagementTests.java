@@ -6,14 +6,17 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
+import com.azure.search.documents.indexes.models.BlobIndexerDataToExtract;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexerExecutionResult;
 import com.azure.search.documents.indexes.models.IndexerExecutionStatus;
 import com.azure.search.documents.indexes.models.IndexerStatus;
 import com.azure.search.documents.indexes.models.IndexingParameters;
+import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OcrSkill;
@@ -54,6 +57,7 @@ import java.util.stream.Collectors;
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.ifMatch;
 import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -61,7 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexersManagementTests extends SearchTestBase {
     private static final String TARGET_INDEX_NAME = "indexforindexers";
@@ -219,7 +222,7 @@ public class IndexersManagementTests extends SearchTestBase {
         expectedIndexers.put(indexer2.getName(), indexer2);
 
         Map<String, SearchIndexer> actualIndexers
-            = searchIndexerClient.listIndexers().stream().collect(Collectors.toMap(SearchIndexer::getName, si -> si));
+            = searchIndexerClient.listIndexers().getIndexers().stream().collect(Collectors.toMap(SearchIndexer::getName, si -> si));
 
         compareMaps(expectedIndexers, actualIndexers,
             (expected, actual) -> assertObjectEquals(expected, actual, true, "etag"));
@@ -245,8 +248,8 @@ public class IndexersManagementTests extends SearchTestBase {
         expectedIndexers.put(indexer1.getName(), indexer1);
         expectedIndexers.put(indexer2.getName(), indexer2);
 
-        Mono<Map<String, SearchIndexer>> listMono
-            = searchIndexerAsyncClient.listIndexers().collect(Collectors.toMap(SearchIndexer::getName, si -> si));
+        Mono<Map<String, SearchIndexer>> listMono = searchIndexerAsyncClient.listIndexers()
+            .map(result -> result.getIndexers().stream().collect(Collectors.toMap(SearchIndexer::getName, si -> si)));
 
         StepVerifier.create(listMono)
             .assertNext(actualIndexers -> compareMaps(expectedIndexers, actualIndexers,
@@ -291,7 +294,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
         Set<String> expectedIndexers = new HashSet<>(Arrays.asList(indexer1.getName(), indexer2.getName()));
 
-        StepVerifier.create(searchIndexerAsyncClient.listIndexerNames().collect(Collectors.toSet()))
+        StepVerifier.create(searchIndexerAsyncClient.listIndexerNames().map(HashSet::new))
             .assertNext(actualIndexers -> {
                 assertEquals(expectedIndexers.size(), actualIndexers.size());
                 assertTrue(actualIndexers.containsAll(expectedIndexers));
@@ -343,9 +346,10 @@ public class IndexersManagementTests extends SearchTestBase {
     public void canResetIndexerAndGetIndexerStatusWithResponseSync() {
         SearchIndexer indexer = createTestDataSourceAndIndexer();
 
-        searchIndexerClient.resetIndexerWithResponse(indexer.getName(), Context.NONE);
+        searchIndexerClient.resetIndexerWithResponse(indexer.getName(), null);
         SearchIndexerStatus indexerStatusResponse
-            = searchIndexerClient.getIndexerStatusWithResponse(indexer.getName(), Context.NONE).getValue();
+            = searchIndexerClient.getIndexerStatusWithResponse(indexer.getName(), null).getValue()
+            .toObject(SearchIndexerStatus.class);
         assertEquals(IndexerStatus.RUNNING, indexerStatusResponse.getStatus());
         assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
     }
@@ -354,12 +358,13 @@ public class IndexersManagementTests extends SearchTestBase {
     public void canResetIndexerAndGetIndexerStatusWithResponseAsync() {
         SearchIndexer indexer = createTestDataSourceAndIndexer();
 
-        searchIndexerAsyncClient.resetIndexerWithResponse(indexer.getName()).block();
+        searchIndexerAsyncClient.resetIndexerWithResponse(indexer.getName(), null).block();
 
-        StepVerifier.create(searchIndexerAsyncClient.getIndexerStatusWithResponse(indexer.getName()))
+        StepVerifier.create(searchIndexerAsyncClient.getIndexerStatusWithResponse(indexer.getName(), null))
             .assertNext(response -> {
-                assertEquals(IndexerStatus.RUNNING, response.getValue().getStatus());
-                assertEquals(IndexerExecutionStatus.RESET, response.getValue().getLastResult().getStatus());
+                SearchIndexerStatus indexerStatus = response.getValue().toObject(SearchIndexerStatus.class);
+                assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+                assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
             })
             .verifyComplete();
 
@@ -387,7 +392,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canRunIndexerWithResponseSync() {
         SearchIndexer indexer = createTestDataSourceAndIndexer();
-        Response<Void> response = searchIndexerClient.runIndexerWithResponse(indexer.getName(), Context.NONE);
+        Response<Void> response = searchIndexerClient.runIndexerWithResponse(indexer.getName(), null);
         SearchIndexerStatus indexerExecutionInfo = searchIndexerClient.getIndexerStatus(indexer.getName());
 
         assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode());
@@ -398,7 +403,7 @@ public class IndexersManagementTests extends SearchTestBase {
     public void canRunIndexerWithResponseAsync() {
         SearchIndexer indexer = createTestDataSourceAndIndexer();
 
-        StepVerifier.create(searchIndexerAsyncClient.runIndexerWithResponse(indexer.getName()))
+        StepVerifier.create(searchIndexerAsyncClient.runIndexerWithResponse(indexer.getName(), null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode()))
             .verifyComplete();
 
@@ -423,7 +428,7 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexerStatus indexerExecutionInfo = mockStatusClient.getIndexerStatus(indexer.getName());
         assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
 
-        Response<Void> indexerRunResponse = mockStatusClient.runIndexerWithResponse(indexer.getName(), Context.NONE);
+        Response<Void> indexerRunResponse = mockStatusClient.runIndexerWithResponse(indexer.getName(), null);
         assertEquals(HttpURLConnection.HTTP_ACCEPTED, indexerRunResponse.getStatusCode());
 
         assertValidSearchIndexerStatus(mockStatusClient.getIndexerStatus(indexer.getName()));
@@ -446,7 +451,7 @@ public class IndexersManagementTests extends SearchTestBase {
             .assertNext(info -> assertEquals(IndexerStatus.RUNNING, info.getStatus()))
             .verifyComplete();
 
-        StepVerifier.create(mockStatusClient.runIndexerWithResponse(indexer.getName()))
+        StepVerifier.create(mockStatusClient.runIndexerWithResponse(indexer.getName(), null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode()))
             .verifyComplete();
 
@@ -502,7 +507,7 @@ public class IndexersManagementTests extends SearchTestBase {
         indexersToDelete.add(initial.getName());
 
         SearchIndexer updated = createBaseTestIndexerObject(initial.getName(), indexName, dataSourceName)
-            .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
+            .setFieldMappings(new FieldMapping("state_alpha").setTargetFieldName("state"));
         SearchIndexer indexerResponse = searchIndexerClient.createOrUpdateIndexer(updated);
 
         // verify the returned updated indexer is as expected
@@ -520,7 +525,7 @@ public class IndexersManagementTests extends SearchTestBase {
         indexersToDelete.add(initial.getName());
 
         SearchIndexer updated = createBaseTestIndexerObject(initial.getName(), indexName, dataSourceName)
-            .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
+            .setFieldMappings(new FieldMapping("state_alpha").setTargetFieldName("state"));
 
         StepVerifier.create(searchIndexerAsyncClient.createOrUpdateIndexer(updated)).assertNext(indexerResponse -> {
             // verify the returned updated indexer is as expected
@@ -532,7 +537,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithFieldMappingSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
-            .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
+            .setFieldMappings(new FieldMapping("state_alpha").setTargetFieldName("state"));
 
         createAndValidateIndexerSync(indexer);
     }
@@ -540,7 +545,7 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canCreateIndexerWithFieldMappingAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
-            .setFieldMappings(Collections.singletonList(new FieldMapping("state_alpha").setTargetFieldName("state")));
+            .setFieldMappings(new FieldMapping("state_alpha").setTargetFieldName("state"));
 
         createAndValidateIndexerAsync(indexer);
     }
@@ -753,18 +758,18 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void canCreateAndDeleteIndexerWithResponseSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        searchIndexerClient.createIndexerWithResponse(indexer, Context.NONE);
+        searchIndexerClient.createIndexerWithResponse(BinaryData.fromObject(indexer), null);
 
-        searchIndexerClient.deleteIndexerWithResponse(indexer, false, Context.NONE);
+        searchIndexerClient.deleteIndexerWithResponse(indexer.getName(), null);
         assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer(indexer.getName()));
     }
 
     @Test
     public void canCreateAndDeleteIndexerWithResponseAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        searchIndexerAsyncClient.createIndexerWithResponse(indexer).block();
+        searchIndexerAsyncClient.createIndexerWithResponse(BinaryData.fromObject(indexer), null).block();
 
-        searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false).block();
+        searchIndexerAsyncClient.deleteIndexerWithResponse(indexer.getName(), null).block();
 
         StepVerifier.create(searchIndexerAsyncClient.getIndexer(indexer.getName()))
             .verifyError(HttpResponseException.class);
@@ -776,17 +781,17 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         // Try deleting before the indexer even exists.
-        Response<Void> result = searchIndexerClient.deleteIndexerWithResponse(indexer, false, Context.NONE);
+        Response<Void> result = searchIndexerClient.deleteIndexerWithResponse(indexer.getName(), null);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
         searchIndexerClient.createIndexer(indexer);
 
         // Now delete twice.
-        result = searchIndexerClient.deleteIndexerWithResponse(indexer, false, Context.NONE);
+        result = searchIndexerClient.deleteIndexerWithResponse(indexer.getName(), null);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
-        result = searchIndexerClient.deleteIndexerWithResponse(indexer, false, Context.NONE);
+        result = searchIndexerClient.deleteIndexerWithResponse(indexer.getName(), null);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
@@ -796,7 +801,7 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         // Try deleting before the indexer even exists.
-        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false))
+        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer.getName(), null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
 
@@ -804,11 +809,11 @@ public class IndexersManagementTests extends SearchTestBase {
         searchIndexerAsyncClient.createIndexer(indexer).block();
 
         // Now delete twice.
-        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false))
+        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer.getName(), null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NO_CONTENT, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, false))
+        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer.getName(), null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
     }
@@ -822,7 +827,8 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexerResult = searchIndexerClient.getIndexer(indexer.getName());
         assertObjectEquals(indexer, indexerResult, true, "etag");
 
-        indexerResult = searchIndexerClient.getIndexerWithResponse(indexer.getName(), Context.NONE).getValue();
+        indexerResult = searchIndexerClient.getIndexerWithResponse(indexer.getName(), null).getValue()
+            .toObject(SearchIndexer.class);
         assertObjectEquals(indexer, indexerResult, true, "etag");
     }
 
@@ -836,8 +842,8 @@ public class IndexersManagementTests extends SearchTestBase {
             .assertNext(indexerResult -> assertObjectEquals(indexer, indexerResult, true, "etag"))
             .verifyComplete();
 
-        StepVerifier.create(searchIndexerAsyncClient.getIndexerWithResponse(indexer.getName()))
-            .assertNext(response -> assertObjectEquals(indexer, response.getValue(), true, "etag"))
+        StepVerifier.create(searchIndexerAsyncClient.getIndexerWithResponse(indexer.getName(), null))
+            .assertNext(response -> assertObjectEquals(indexer, response.getValue().toObject(SearchIndexer.class), true, "etag"))
             .verifyComplete();
     }
 
@@ -858,7 +864,7 @@ public class IndexersManagementTests extends SearchTestBase {
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResourceSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
         SearchIndexer created
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, true, Context.NONE).getValue();
+            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, ifMatch(indexer.getETag())).getValue();
         indexersToDelete.add(created.getName());
 
         assertNotNull(created.getETag());
@@ -868,7 +874,7 @@ public class IndexersManagementTests extends SearchTestBase {
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResourceAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
-        StepVerifier.create(searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, true))
+        StepVerifier.create(searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, ifMatch(indexer.getETag())))
             .assertNext(response -> {
                 indexersToDelete.add(response.getValue().getName());
                 assertNotNull(response.getValue().getETag());
@@ -879,18 +885,14 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExistsSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        SearchIndexer created
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE).getValue();
+        SearchIndexer created = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, null).getValue();
 
-        searchIndexerClient.deleteIndexerWithResponse(created, true, Context.NONE);
+        searchIndexerClient.deleteIndexerWithResponse(created.getName(), ifMatch(created.getETag()));
 
         // Try to delete again and expect to fail
-        try {
-            searchIndexerClient.deleteIndexerWithResponse(created, true, Context.NONE);
-            fail("deleteFunc should have failed due to non existent resource.");
-        } catch (HttpResponseException ex) {
-            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-        }
+        assertHttpResponseException(
+            () -> searchIndexerClient.deleteIndexerWithResponse(created.getName(), ifMatch(created.getETag())),
+            HttpURLConnection.HTTP_PRECON_FAILED);
     }
 
     @Test
@@ -898,9 +900,11 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         Mono<Response<Void>> createDeleteThenFailToDeleteMono
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)
-                .flatMap(response -> searchIndexerAsyncClient.deleteIndexerWithResponse(response.getValue(), true)
-                    .then(searchIndexerAsyncClient.deleteIndexerWithResponse(response.getValue(), true)));
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null)
+                .flatMap(response -> searchIndexerAsyncClient.deleteIndexerWithResponse(response.getValue().getName(),
+                        ifMatch(response.getValue().getETag()))
+                    .then(searchIndexerAsyncClient.deleteIndexerWithResponse(response.getValue().getName(),
+                        ifMatch(response.getValue().getETag()))));
 
         StepVerifier.create(createDeleteThenFailToDeleteMono).verifyErrorSatisfies(throwable -> {
             HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
@@ -912,37 +916,33 @@ public class IndexersManagementTests extends SearchTestBase {
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResourceSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
         SearchIndexer stale
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, true, Context.NONE).getValue();
+            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, ifMatch(indexer.getETag())).getValue();
 
-        SearchIndexer updated
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(stale, false, Context.NONE).getValue();
+        SearchIndexer updated = searchIndexerClient.createOrUpdateIndexerWithResponse(stale, null).getValue();
 
-        try {
-            searchIndexerClient.deleteIndexerWithResponse(stale, true, Context.NONE);
-            fail("deleteFunc should have failed due to precondition.");
-        } catch (HttpResponseException ex) {
-            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-        }
+        assertHttpResponseException(
+            () -> searchIndexerClient.deleteIndexerWithResponse(stale.getName(), ifMatch(stale.getETag())),
+            HttpURLConnection.HTTP_PRECON_FAILED);
 
-        searchIndexerClient.deleteIndexerWithResponse(updated, true, Context.NONE);
+        searchIndexerClient.deleteIndexerWithResponse(updated.getName(), ifMatch(updated.getETag()));
     }
 
     @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResourceAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
         SearchIndexer stale
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, true).map(Response::getValue).block();
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, ifMatch(indexer.getETag())).map(Response::getValue).block();
 
         SearchIndexer updated
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(stale, false).map(Response::getValue).block();
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(stale, null).map(Response::getValue).block();
 
-        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(stale, true))
+        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(stale.getName(), ifMatch(stale.getETag())))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
             });
 
-        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(updated, true))
+        StepVerifier.create(searchIndexerAsyncClient.deleteIndexerWithResponse(updated.getName(), ifMatch(updated.getETag())))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -950,13 +950,12 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void updateIndexerIfExistsSucceedsOnExistingResourceSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        SearchIndexer original
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE).getValue();
+        SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, null).getValue();
         String originalETag = original.getETag();
         indexersToDelete.add(original.getName());
 
         SearchIndexer updated = searchIndexerClient
-            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), false, Context.NONE)
+            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), null)
             .getValue();
         String updatedETag = updated.getETag();
 
@@ -969,13 +968,13 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         Mono<Tuple2<String, String>> createAndUpdateIndexerMono
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false).flatMap(response -> {
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null).flatMap(response -> {
                 SearchIndexer original = response.getValue();
                 String originalETag = original.getETag();
                 indexersToDelete.add(original.getName());
 
                 return searchIndexerAsyncClient
-                    .createOrUpdateIndexerWithResponse(original.setDescription("an update"), false)
+                    .createOrUpdateIndexerWithResponse(original.setDescription("an update"), null)
                     .map(updated -> Tuples.of(originalETag, updated.getValue().getETag()));
             });
 
@@ -988,23 +987,19 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChangedSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        SearchIndexer original
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE).getValue();
+        SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, null).getValue();
         String originalETag = original.getETag();
         indexersToDelete.add(original.getName());
 
         SearchIndexer updated = searchIndexerClient
-            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), true, Context.NONE)
+            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), ifMatch(originalETag))
             .getValue();
         String updatedETag = updated.getETag();
 
         // Update and check the eTags were changed
-        try {
-            searchIndexerClient.createOrUpdateIndexerWithResponse(original, true, Context.NONE);
-            fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (HttpResponseException ex) {
-            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-        }
+        assertHttpResponseException(
+            () -> searchIndexerClient.createOrUpdateIndexerWithResponse(original, ifMatch(originalETag)),
+            HttpURLConnection.HTTP_PRECON_FAILED);
 
         // Check eTags
         assertNotNull(originalETag);
@@ -1017,19 +1012,19 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         Mono<Response<SearchIndexer>> createUpdateAndFailToUpdateMono
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false).flatMap(response -> {
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null).flatMap(response -> {
                 SearchIndexer original = response.getValue();
                 String originalETag = original.getETag();
                 indexersToDelete.add(original.getName());
 
                 return searchIndexerAsyncClient
-                    .createOrUpdateIndexerWithResponse(original.setDescription("an update"), true)
+                    .createOrUpdateIndexerWithResponse(original.setDescription("an update"), ifMatch(originalETag))
                     .map(update -> Tuples.of(originalETag, update.getValue().getETag(), original));
             }).doOnNext(etags -> {
                 assertNotNull(etags.getT1());
                 assertNotNull(etags.getT2());
                 assertNotEquals(etags.getT1(), etags.getT2());
-            }).flatMap(original -> searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(original.getT3(), true));
+            }).flatMap(original -> searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(original.getT3(), ifMatch(original.getT3().getETag())));
 
         StepVerifier.create(createUpdateAndFailToUpdateMono).verifyErrorSatisfies(throwable -> {
             HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
@@ -1040,13 +1035,12 @@ public class IndexersManagementTests extends SearchTestBase {
     @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchangedSync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
-        SearchIndexer original
-            = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE).getValue();
+        SearchIndexer original = searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, null).getValue();
         String originalETag = original.getETag();
         indexersToDelete.add(original.getName());
 
         SearchIndexer updated = searchIndexerClient
-            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), true, Context.NONE)
+            .createOrUpdateIndexerWithResponse(original.setDescription("ABrandNewDescription"), ifMatch(originalETag))
             .getValue();
         String updatedETag = updated.getETag();
 
@@ -1061,14 +1055,15 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
         Mono<Tuple2<String, String>> createAndUpdateIndexerMono
-            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false).flatMap(response -> {
-                SearchIndexer original = response.getValue();
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer.getName(), BinaryData.fromObject(indexer), null)
+            .flatMap(response -> {
+                SearchIndexer original = response.getValue().toObject(SearchIndexer.class);
                 String originalETag = original.getETag();
                 indexersToDelete.add(original.getName());
 
-                return searchIndexerAsyncClient
-                    .createOrUpdateIndexerWithResponse(original.setDescription("an update"), true)
-                    .map(update -> Tuples.of(originalETag, update.getValue().getETag()));
+                return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(original.getName(),
+                    BinaryData.fromObject(original.setDescription("an update")), ifMatch(originalETag))
+                    .map(update -> Tuples.of(originalETag, update.getValue().toObject(SearchIndexer.class).getETag()));
             });
 
         StepVerifier.create(createAndUpdateIndexerMono).assertNext(etags -> {
@@ -1133,7 +1128,7 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
             .setSkillsetName(sharedSkillset.getName())
             .setParameters(new IndexingParameters()
-                .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
+                .setConfiguration(new IndexingParametersConfiguration().setAllowSkillsetToReadFileData(true)));
 
         createAndValidateIndexerSync(indexer);
 
@@ -1144,7 +1139,7 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName())
             .setSkillsetName(sharedSkillset.getName())
             .setParameters(new IndexingParameters()
-                .setConfiguration(Collections.singletonMap("allowSkillsetToReadFileData", true)));
+                .setConfiguration(new IndexingParametersConfiguration().setAllowSkillsetToReadFileData(true)));
 
         createAndValidateIndexerAsync(indexer);
     }
@@ -1162,27 +1157,22 @@ public class IndexersManagementTests extends SearchTestBase {
         List<OutputFieldMappingEntry> outputs
             = Collections.singletonList(new OutputFieldMappingEntry("text").setTargetName("mytext"));
 
-        List<SearchIndexerSkill> skills
-            = Collections.singletonList(new OcrSkill(inputs, outputs).setShouldDetectOrientation(true)
-                .setName("myocr")
-                .setDescription("Tested OCR skill")
-                .setContext("/document"));
+        SearchIndexerSkill skill = new OcrSkill(inputs, outputs).setShouldDetectOrientation(true).setName("myocr")
+            .setDescription("Tested OCR skill").setContext("/document");
 
-        return new SearchIndexerSkillset("shared-ocr-skillset")
-            .setDescription("Skillset for testing default configuration")
-            .setSkills(skills);
+        return new SearchIndexerSkillset("shared-ocr-skillset", skill)
+            .setDescription("Skillset for testing default configuration");
     }
 
     private static SearchIndexerDataSourceConnection createSharedDataSource() {
         // create the new data source object for this storage account and container
-        return new SearchIndexerDataSourceConnection("shared-" + BLOB_DATASOURCE_NAME)
-            .setType(SearchIndexerDataSourceType.AZURE_BLOB)
-            .setDescription("real live blob")
-            .setIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY))
-            .setConnectionString(String.format(
+        return new SearchIndexerDataSourceConnection("shared-" + BLOB_DATASOURCE_NAME,
+            SearchIndexerDataSourceType.AZURE_BLOB, new DataSourceCredentials().setConnectionString(String.format(
                 "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
-                SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME))
-            .setContainer(new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/"));
+                SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME)),
+            new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/"))
+            .setDescription("real live blob")
+            .setIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY));
     }
 
     SearchIndexer createBaseTestIndexerObject(String targetIndexName, String dataSourceName) {
@@ -1205,14 +1195,14 @@ public class IndexersManagementTests extends SearchTestBase {
      * @return the newly created Index object
      */
     private static SearchIndex createTestIndexForLiveDatasource() {
-        return new SearchIndex("shared" + IndexersManagementTests.TARGET_INDEX_NAME).setFields(Arrays.asList(
+        return new SearchIndex("shared" + IndexersManagementTests.TARGET_INDEX_NAME,
             new SearchField("county_name", SearchFieldDataType.STRING).setSearchable(Boolean.FALSE)
                 .setFilterable(Boolean.TRUE),
             new SearchField("state", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                 .setFilterable(Boolean.TRUE),
             new SearchField("feature_id", SearchFieldDataType.STRING).setKey(Boolean.TRUE)
                 .setSearchable(Boolean.TRUE)
-                .setFilterable(Boolean.FALSE)));
+                .setFilterable(Boolean.FALSE));
     }
 
     /**
@@ -1240,13 +1230,13 @@ public class IndexersManagementTests extends SearchTestBase {
         SearchIndexer updatedExpected = createBaseTestIndexerObject(name, targetIndexName, dataSourceName);
 
         // just adding some(valid) config values for blobs
-        HashMap<String, Object> config = new HashMap<>();
-        config.put("indexedFileNameExtensions", ".pdf,.docx");
-        config.put("excludedFileNameExtensions", ".xlsx");
-        config.put("dataToExtract", "storageMetadata");
-        config.put("failOnUnsupportedContentType", false);
+        IndexingParametersConfiguration configuration = new IndexingParametersConfiguration()
+            .setIndexedFileNameExtensions(".pdf,.docx")
+            .setExcludedFileNameExtensions(".xlsx")
+            .setDataToExtract(BlobIndexerDataToExtract.STORAGE_METADATA)
+            .setFailOnUnsupportedContentType(false);
 
-        IndexingParameters ip = new IndexingParameters().setConfiguration(config);
+        IndexingParameters ip = new IndexingParameters().setConfiguration(configuration);
 
         // modify it
         updatedExpected.setParameters(ip);

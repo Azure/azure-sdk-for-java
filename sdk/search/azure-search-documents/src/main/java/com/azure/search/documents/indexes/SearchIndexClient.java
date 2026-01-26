@@ -12,13 +12,16 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
+import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
@@ -28,11 +31,15 @@ import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchAlias;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.knowledgebase.models.KnowledgeSourceStatus;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,6 +61,37 @@ public final class SearchIndexClient {
     @Generated
     SearchIndexClient(SearchIndexClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return serviceClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the endpoint for the Azure AI Search service.
+     *
+     * @return the endpoint value.
+     */
+    String getEndpoint() {
+        return serviceClient.getEndpoint();
+    }
+
+    /**
+     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} annotated
+     * with either {@link SimpleField} or {@link SearchableField} into {@link SearchField SearchFields} to help aid the
+     * creation of a {@link SearchField} which represents the {@link Class}.
+     *
+     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+     * structure.
+     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     */
+    public static List<SearchField> buildSearchFields(Class<?> model) {
+        return FieldBuilder.build(model);
     }
 
     /**
@@ -152,6 +190,88 @@ public final class SearchIndexClient {
     Response<BinaryData> createOrUpdateSynonymMapWithResponse(String name, BinaryData synonymMap,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateSynonymMapWithResponse(name, synonymMap, requestOptions);
+    }
+
+    /**
+     * Creates a new synonym map or updates a synonym map if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param synonymMap The definition of the synonym map to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+        RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.createOrUpdateSynonymMapWithResponse(synonymMap.getName(),
+            BinaryData.fromObject(synonymMap), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(SynonymMap.class));
     }
 
     /**
@@ -738,6 +858,398 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> createOrUpdateIndexWithResponse(String name, BinaryData index, RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateIndexWithResponse(name, index, requestOptions);
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>allowIndexDowntime</td><td>Boolean</td><td>No</td><td>Allows new analyzers, tokenizers, token filters, or
+     * char filters to be added to an index by taking the index offline for at least a few seconds. This temporarily
+     * causes indexing and query requests to fail. Performance and write availability of the index can be impaired for
+     * several minutes after the index is updated, or longer for very large indexes.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param index The definition of the index to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.createOrUpdateIndexWithResponse(index.getName(),
+            BinaryData.fromObject(index), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(SearchIndex.class));
     }
 
     /**
@@ -1673,6 +2185,62 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Creates a new search alias or updates an alias if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param alias The definition of the alias to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.createOrUpdateAliasWithResponse(alias.getName(),
+            BinaryData.fromObject(alias), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(SearchAlias.class));
+    }
+
+    /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
      * <p><strong>Header Parameters</strong></p>
@@ -1910,6 +2478,114 @@ public final class SearchIndexClient {
     Response<BinaryData> createOrUpdateKnowledgeBaseWithResponse(String name, BinaryData knowledgeBase,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(name, knowledgeBase, requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeBase> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(
+            knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(KnowledgeBase.class));
     }
 
     /**
@@ -2222,6 +2898,84 @@ public final class SearchIndexClient {
     Response<BinaryData> createOrUpdateKnowledgeSourceWithResponse(String name, BinaryData knowledgeSource,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(name, knowledgeSource, requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(
+            knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(KnowledgeSource.class));
     }
 
     /**
@@ -2578,6 +3332,23 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Creates a new synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap The definition of the synonym map to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
+        return createOrUpdateSynonymMap(synonymMap.getName(), synonymMap);
+    }
+
+    /**
      * Deletes a synonym map.
      *
      * @param name The name of the synonym map.
@@ -2686,6 +3457,37 @@ public final class SearchIndexClient {
         // Generated convenience method for getSynonymMapsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListSynonymMapsResult listSynonymMaps() {
+        return getSynonymMaps();
+    }
+
+    /**
+     * Lists the names of all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<String> listSynonymMapNames() {
+        return getSynonymMaps(Collections.singletonList("name")).getSynonymMaps().stream()
+            .map(SynonymMap::getName).collect(Collectors.toList());
     }
 
     /**
@@ -2905,6 +3707,21 @@ public final class SearchIndexClient {
     }
 
     /**
+     * Lists the names all indexes available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listIndexNames() {
+        return listIndexes(Collections.singletonList("name")).mapPage(SearchIndex::getName);
+    }
+
+    /**
      * Creates a new search index.
      *
      * @param index The definition of the index to create.
@@ -2996,6 +3813,23 @@ public final class SearchIndexClient {
         }
         return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions).getValue()
             .toObject(SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias or updates an alias if it already exists.
+     *
+     * @param alias The definition of the alias to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAlias(alias.getName(), alias);
     }
 
     /**
@@ -3181,6 +4015,23 @@ public final class SearchIndexClient {
         return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
             .getValue()
             .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);
     }
 
     /**

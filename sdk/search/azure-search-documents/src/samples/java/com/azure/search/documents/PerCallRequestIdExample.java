@@ -4,16 +4,17 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.implementation.models.IndexDocumentsResult;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -42,62 +43,57 @@ public class PerCallRequestIdExample {
     private static void synchronousApiCall() {
         SearchClient client = createBuilder().buildClient();
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(
+                Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300")));
 
         // Setup context to pass custom x-ms-client-request-id.
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
-
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        String customRequestId = UUID.randomUUID().toString();
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, customRequestId);
 
         // Print out expected 'x-ms-client-request-id' header value.
-        System.out.printf("Sending request with 'x-ms-client-request-id': %s%n", headers.get("x-ms-client-request-id"));
+        System.out.printf("Sending request with 'x-ms-client-request-id': %s%n", customRequestId);
 
         // Perform index operations on a list of documents
-        Response<IndexDocumentsResult> response = client.mergeOrUploadDocumentsWithResponse(hotels, null, context);
+        Response<IndexDocumentsResult> response = client.indexDocumentsWithResponse(batch, null, requestOptions);
         System.out.printf("Indexed %s documents%n", response.getValue().getResults().size());
 
         // Print out verification of 'x-ms-client-request-id' returned by the service response.
         System.out.printf("Received response with returned 'x-ms-client-request-id': %s%n",
-            response.getHeaders().get("x-ms-client-request-id"));
+            response.getHeaders().get(HttpHeaderName.X_MS_CLIENT_REQUEST_ID));
     }
 
     /**
      * This examples shows how to pass {@code x-ms-client-request-id} when using an asynchronous client.
-     * <p>
-     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's 
-     * {@link Mono#contextWrite(ContextView)} or {@link Flux#contextWrite(ContextView)}
      */
     private static void asynchronousApiCall() {
         SearchAsyncClient client = createBuilder().buildAsyncClient();
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(
+                Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300")));
 
         // Setup context to pass custom x-ms-client-request-id.
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("x-ms-client-request-id", UUID.randomUUID().toString());
-
-        reactor.util.context.Context context = reactor.util.context.Context.of(
-            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        String customRequestId = UUID.randomUUID().toString();
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, customRequestId);
 
         // Print out expected 'x-ms-client-request-id' header value.
-        System.out.printf("Sending request with 'x-ms-client-request-id': %s%n", headers.get("x-ms-client-request-id"));
+        System.out.printf("Sending request with 'x-ms-client-request-id': %s%n", customRequestId);
 
         // Perform index operations on a list of documents
-        client.mergeDocumentsWithResponse(hotels, null)
-            .contextWrite(context)
+        client.indexDocumentsWithResponse(batch, null, requestOptions)
             .doOnSuccess(response -> {
                 System.out.printf("Indexed %s documents%n", response.getValue().getResults().size());
 
                 // Print out verification of 'x-ms-client-request-id' returned by the service response.
                 System.out.printf("Received response with returned 'x-ms-client-request-id': %s%n",
-                    response.getHeaders().get("x-ms-client-request-id"));
+                    response.getHeaders().get(HttpHeaderName.X_MS_CLIENT_REQUEST_ID));
             }).block();
     }
 

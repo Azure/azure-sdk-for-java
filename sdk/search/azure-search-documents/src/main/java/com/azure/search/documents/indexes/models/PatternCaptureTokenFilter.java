@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,6 +36,17 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean preserveOriginal;
+
+    /**
+     * Creates an instance of PatternCaptureTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param patterns the patterns value to set.
+     */
+    public PatternCaptureTokenFilter(String name, String... patterns) {
+        super(name);
+        this.patterns = (patterns == null) ? null : Arrays.asList(patterns);
+    }
 
     /**
      * Creates an instance of PatternCaptureTokenFilter class.

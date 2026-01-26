@@ -5,15 +5,16 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
-import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.util.AutocompletePagedFlux;
-import com.azure.search.documents.util.SearchPagedFlux;
-import com.azure.search.documents.util.SuggestPagedFlux;
+import com.azure.search.documents.implementation.models.AutocompletePostOptions;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.implementation.models.SuggestPostOptions;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public class SearchAsyncClientJavaDocSnippets {
@@ -37,11 +38,11 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void uploadDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
-        searchAsyncClient.uploadDocuments(hotels).block();
+        searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300"))
+        )).block();
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean
     }
 
@@ -51,10 +52,10 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void mergeDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        searchAsyncClient.mergeDocuments(hotels).block();
+        searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "200"))
+        )).block();
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map
     }
 
@@ -64,9 +65,9 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void deleteDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String
-        SearchDocument documentId = new SearchDocument();
-        documentId.put("hotelId", "100");
-        searchAsyncClient.deleteDocuments(Collections.singletonList(documentId));
+        searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.DELETE).setAdditionalProperties(Collections.singletonMap("HotelId", "100"))
+        )).block();
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String
     }
 
@@ -76,10 +77,12 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void getDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
-        Hotel hotel = searchAsyncClient.getDocument("100", Hotel.class).block();
-        if (hotel != null) {
-            System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
-        }
+        searchAsyncClient.getDocument("100")
+            .doOnNext(document -> {
+                if (document.getAdditionalProperties() != null) {
+                    System.out.printf("Retrieved Hotel %s%n", document.getAdditionalProperties().get("HotelId"));
+                }
+            }).block();
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
     }
 
@@ -89,23 +92,23 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void searchDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String
-        SearchDocument searchDocument = new SearchDocument();
-        searchDocument.put("hotelId", "8");
-        searchDocument.put("description", "budget");
-        searchDocument.put("descriptionFr", "motel");
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
+        searchDocument.put("HotelId", "8");
+        searchDocument.put("Description", "budget");
+        searchDocument.put("DescriptionFr", "motel");
 
-        SearchDocument searchDocument1 = new SearchDocument();
-        searchDocument1.put("hotelId", "9");
-        searchDocument1.put("description", "budget");
-        searchDocument1.put("descriptionFr", "motel");
+        Map<String, Object> searchDocument2 = new LinkedHashMap<>();
+        searchDocument2.put("HotelId", "9");
+        searchDocument2.put("Description", "budget");
+        searchDocument2.put("DescriptionFr", "motel");
 
-        List<SearchDocument> searchDocuments = new ArrayList<>();
-        searchDocuments.add(searchDocument);
-        searchDocuments.add(searchDocument1);
-        searchAsyncClient.uploadDocuments(searchDocuments);
+        searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(searchDocument),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(searchDocument2)
+        )).block();
 
-        SearchPagedFlux results = searchAsyncClient.search("SearchText");
-        results.getTotalCount().subscribe(total -> System.out.printf("There are %s results", total));
+        searchAsyncClient.search(new SearchPostOptions().setSearchText("SearchText")).byPage()
+            .subscribe(page -> System.out.printf("There are %d results", page.getCount()));
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String
     }
 
@@ -115,10 +118,9 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void suggestDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String
-        SuggestPagedFlux results = searchAsyncClient.suggest("searchText", "sg");
-        results.subscribe(item -> {
-            System.out.printf("The text '%s' was found.%n", item.getText());
-        });
+        searchAsyncClient.suggestPost(new SuggestPostOptions("searchText", "sg"))
+            .subscribe(results -> results.getResults()
+                .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText())));
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String
     }
 
@@ -128,10 +130,9 @@ public class SearchAsyncClientJavaDocSnippets {
     public static void autocompleteDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
         // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String
-        AutocompletePagedFlux results = searchAsyncClient.autocomplete("searchText", "sg");
-        results.subscribe(item -> {
-            System.out.printf("The text '%s' was found.%n", item.getText());
-        });
+        searchAsyncClient.autocompletePost(new AutocompletePostOptions("searchText", "sg"))
+            .subscribe(results -> results.getResults()
+                .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText())));
         // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String
     }
 

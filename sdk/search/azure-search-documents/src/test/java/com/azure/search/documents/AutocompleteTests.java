@@ -131,7 +131,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void canAutocompleteExcludesFieldsNotInSuggesterSync() {
         AutocompletePostOptions params = new AutocompletePostOptions("luxu", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Collections.singletonList("HotelName"));
+            .setSearchFields("HotelName");
 
         AutocompleteResult results = autocompleteWithResponseSync(params);
 
@@ -142,7 +142,7 @@ public class AutocompleteTests extends SearchTestBase {
     public void canAutocompleteExcludesFieldsNotInSuggesterAsync() {
         AutocompletePostOptions params = new AutocompletePostOptions("luxu", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Collections.singletonList("HotelName"));
+            .setSearchFields("HotelName");
 
         StepVerifier.create(asyncClient.autocompletePost(params))
             .assertNext(results -> assertEquals(0, results.getResults().size()))
@@ -280,7 +280,7 @@ public class AutocompleteTests extends SearchTestBase {
         List<String> expected = Arrays.asList("model", "modern");
 
         AutocompletePostOptions options = new AutocompletePostOptions("mod", "sg").setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName", "Description"));
+            .setSearchFields("HotelName", "Description");
 
         autocompleteAndValidateSync(autocompleteWithResponseSync(options), expected, expected);
     }
@@ -290,7 +290,7 @@ public class AutocompleteTests extends SearchTestBase {
         List<String> expected = Arrays.asList("model", "modern");
 
         AutocompletePostOptions options = new AutocompletePostOptions("mod", "sg").setAutocompleteMode(AutocompleteMode.ONE_TERM)
-            .setSearchFields(Arrays.asList("HotelName", "Description"));
+            .setSearchFields("HotelName", "Description");
 
         autocompleteAndValidateAsync(asyncClient.autocompletePost(options), expected, expected);
     }

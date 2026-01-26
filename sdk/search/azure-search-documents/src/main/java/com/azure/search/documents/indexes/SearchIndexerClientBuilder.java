@@ -38,6 +38,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
+import com.azure.search.documents.models.SearchAudience;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -265,6 +267,20 @@ public final class SearchIndexerClientBuilder implements HttpTrait<SearchIndexer
     @Generated
     public SearchIndexerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Microsoft Entra ID.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Microsoft Entra ID.
+     * @return The updated SearchIndexerClientBuilder object.
+     */
+    public SearchIndexerClientBuilder audience(SearchAudience audience) {
+        // TODO (alzimmer): Set the BearerToken scopes to the audience scope, or if audience is null reset to
+        //  DEFAULT_SCOPES.
         return this;
     }
 

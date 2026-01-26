@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -168,6 +169,18 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeTextOptions object itself.
      */
+    public AnalyzeTextOptions setTokenFilters(TokenFilterName... tokenFilters) {
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        return this;
+    }
+
+    /**
+     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
+     *
+     * @param tokenFilters the tokenFilters value to set.
+     * @return the AnalyzeTextOptions object itself.
+     */
     @Generated
     public AnalyzeTextOptions setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
@@ -183,6 +196,18 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     @Generated
     public List<CharFilterName> getCharFilters() {
         return this.charFilters;
+    }
+
+    /**
+     * Set the charFilters property: An optional list of character filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
+     *
+     * @param charFilters the charFilters value to set.
+     * @return the AnalyzeTextOptions object itself.
+     */
+    public AnalyzeTextOptions setCharFilters(CharFilterName... charFilters) {
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        return this;
     }
 
     /**

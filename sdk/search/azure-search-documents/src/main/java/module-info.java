@@ -11,6 +11,7 @@ module com.azure.search.documents {
     exports com.azure.search.documents.indexes.models;
     exports com.azure.search.documents.models;
     exports com.azure.search.documents.knowledgebase.models;
+    exports com.azure.search.documents.options;
 
     opens com.azure.search.documents.implementation.models to com.azure.core;
     opens com.azure.search.documents.indexes.models to com.azure.core;

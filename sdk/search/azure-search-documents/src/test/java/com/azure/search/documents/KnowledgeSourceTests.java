@@ -44,9 +44,6 @@ import reactor.util.function.Tuples;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -167,7 +164,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         RemoteSharePointKnowledgeSourceParameters params
             = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
-                .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
+                .setResourceMetadata("Author", "CreatedDate");
         KnowledgeSource knowledgeSource
             = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
 
@@ -184,7 +181,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         RemoteSharePointKnowledgeSourceParameters params
             = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
-                .setResourceMetadata(Arrays.asList("Author", "CreatedDate"));
+                .setResourceMetadata("Author", "CreatedDate");
         KnowledgeSource knowledgeSource
             = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
 
@@ -520,9 +517,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
         params.setSemanticConfigurationName("semantic-config");
         assertEquals("semantic-config", params.getSemanticConfigurationName());
 
-        List<SearchIndexFieldReference> sourceFields
-            = Arrays.asList(new SearchIndexFieldReference("field1"), new SearchIndexFieldReference("field2"));
-        params.setSourceDataFields(sourceFields);
+        params.setSourceDataFields(new SearchIndexFieldReference("field1"), new SearchIndexFieldReference("field2"));
         assertEquals(2, params.getSourceDataFields().size());
         assertEquals("field1", params.getSourceDataFields().get(0).getName());
         assertEquals("field2", params.getSourceDataFields().get(1).getName());
@@ -787,13 +782,12 @@ public class KnowledgeSourceTests extends SearchTestBase {
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
-            List<SemanticConfiguration> semanticConfigurations
-                = Collections.singletonList(new SemanticConfiguration("semantic-config",
-                    new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
-                        .setContentFields(new SemanticField("Description"))
-                        .setKeywordsFields(new SemanticField("Category"))));
+            SemanticConfiguration semanticConfiguration = new SemanticConfiguration("semantic-config",
+                new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
+                    .setContentFields(new SemanticField("Description"))
+                    .setKeywordsFields(new SemanticField("Category")));
             SemanticSearch semanticSearch = new SemanticSearch().setDefaultConfigurationName("semantic-config")
-                .setConfigurations(semanticConfigurations);
+                .setConfigurations(semanticConfiguration);
             searchIndexClient.createOrUpdateIndex(
                 TestHelpers.createTestIndex(HOTEL_INDEX_NAME, baseIndex).setSemanticSearch(semanticSearch));
 

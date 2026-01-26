@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -59,6 +60,17 @@ public final class ElisionTokenFilter extends TokenFilter {
     @Generated
     public List<String> getArticles() {
         return this.articles;
+    }
+
+    /**
+     * Set the articles property: The set of articles to remove.
+     *
+     * @param articles the articles value to set.
+     * @return the ElisionTokenFilter object itself.
+     */
+    public ElisionTokenFilter setArticles(String... articles) {
+        this.articles = (articles == null) ? null : Arrays.asList(articles);
+        return this;
     }
 
     /**

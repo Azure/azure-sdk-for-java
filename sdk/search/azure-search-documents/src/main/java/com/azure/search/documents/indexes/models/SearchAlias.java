@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +37,17 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
      */
     @Generated
     private String eTag;
+
+    /**
+     * Creates an instance of SearchAlias class.
+     *
+     * @param name the name value to set.
+     * @param indexes the indexes value to set.
+     */
+    public SearchAlias(String name, String... indexes) {
+        this.name = name;
+        this.indexes = (indexes == null) ? null : Arrays.asList(indexes);
+    }
 
     /**
      * Creates an instance of SearchAlias class.

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,6 +67,18 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     @Generated
     public List<CjkBigramTokenFilterScripts> getIgnoreScripts() {
         return this.ignoreScripts;
+    }
+
+    /**
+     * Set the ignoreScripts property: The scripts to ignore.
+     *
+     * @param ignoreScripts the ignoreScripts value to set.
+     * @return the CjkBigramTokenFilter object itself.
+     */
+    @Generated
+    public CjkBigramTokenFilter setIgnoreScripts(CjkBigramTokenFilterScripts... ignoreScripts) {
+        this.ignoreScripts = (ignoreScripts == null) ? null : Arrays.asList(ignoreScripts);
+        return this;
     }
 
     /**

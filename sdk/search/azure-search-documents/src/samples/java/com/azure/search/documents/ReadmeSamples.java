@@ -4,14 +4,14 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -20,20 +20,22 @@ import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.SearchAudience;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.util.SearchPagedIterable;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code samples for the README.md
@@ -105,25 +107,24 @@ public class ReadmeSamples {
     }
 
     public void customHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("my-header1", "my-header1-value");
-        headers.set("my-header2", "my-header2-value");
-        headers.set("my-header3", "my-header3-value");
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader("my-header1", "my-header1-value")
+            .setHeader("my-header2", "my-header2-value")
+            .setHeader("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
-        SearchIndex index = new SearchIndex(INDEX_NAME).setFields(
+        SearchIndex index = new SearchIndex(INDEX_NAME,
             new SearchField("hotelId", SearchFieldDataType.STRING)
                 .setKey(true)
                 .setFilterable(true)
                 .setSortable(true));
-        SEARCH_INDEX_CLIENT.createIndexWithResponse(index,
-            new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
+        SEARCH_INDEX_CLIENT.createIndexWithResponse(BinaryData.fromObject(index), requestOptions);
         // Above three HttpHeader will be added in outgoing HttpRequest.
     }
 
     public void handleErrorsWithSyncClient() {
         // BEGIN: readme-sample-handleErrorsWithSyncClient
         try {
-            Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
+            Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("hotel"));
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
@@ -136,20 +137,18 @@ public class ReadmeSamples {
 
     public void searchWithDynamicType() {
         // BEGIN: readme-sample-searchWithDynamicType
-        for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
-            SearchDocument doc = searchResult.getDocument(SearchDocument.class);
-            String id = (String) doc.get("hotelId");
-            String name = (String) doc.get("hotelName");
-            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+            Map<String, Object> doc = searchResult.getAdditionalProperties();
+            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("HotelId"), doc.get("HotelName"));
         }
         // END: readme-sample-searchWithDynamicType
     }
 
     // BEGIN: readme-sample-hotelclass
     public static class Hotel {
-        @SimpleField(isKey = true, isFilterable = true, isSortable = true)
+        @SimpleField(name = "Id", isKey = true, isFilterable = true, isSortable = true)
         private String id;
-        @SearchableField(isFilterable = true, isSortable = true)
+        @SearchableField(name = "Name", isFilterable = true, isSortable = true)
         private String name;
 
         public String getId() {
@@ -174,48 +173,54 @@ public class ReadmeSamples {
 
     public void searchWithStronglyType() {
         // BEGIN: readme-sample-searchWithStronglyType
-        for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
-            Hotel doc = searchResult.getDocument(Hotel.class);
-            String id = doc.getId();
-            String name = doc.getName();
-            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+            Map<String, Object> doc = searchResult.getAdditionalProperties();
+            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("Id"), doc.get("Name"));
         }
         // END: readme-sample-searchWithStronglyType
     }
 
     public void searchWithSearchOptions() {
         // BEGIN: readme-sample-searchWithSearchOptions
-        SearchOptions options = new SearchOptions()
+        SearchPostOptions options = new SearchPostOptions()
+            .setSearchText("luxury")
             .setFilter("rating ge 4")
             .setOrderBy("rating desc")
             .setTop(5);
-        SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
+        SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search(options);
         // ...
         // END: readme-sample-searchWithSearchOptions
     }
 
     public void searchWithAsyncClient() {
         // BEGIN: readme-sample-searchWithAsyncClient
-        SEARCH_ASYNC_CLIENT.search("luxury")
+        SEARCH_ASYNC_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))
             .subscribe(result -> {
-                Hotel hotel = result.getDocument(Hotel.class);
-                System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+                Map<String, Object> hotel = result.getAdditionalProperties();
+                System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
             });
         // END: readme-sample-searchWithAsyncClient
     }
 
     public void retrieveDocuments() {
         // BEGIN: readme-sample-retrieveDocuments
-        Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
-        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+        Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
         // END: readme-sample-retrieveDocuments
     }
 
     public void batchDocumentsOperations() {
         // BEGIN: readme-sample-batchDocumentsOperations
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
-        batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
-        batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
+        Map<String, Object> hotel = new LinkedHashMap<>();
+        hotel.put("Id", "783");
+        hotel.put("Name", "Upload Inn");
+
+        Map<String, Object> hotel2 = new LinkedHashMap<>();
+        hotel2.put("Id", "12");
+        hotel2.put("Name", "Renovated Ranch");
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(hotel),
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(hotel2));
         SEARCH_CLIENT.indexDocuments(batch);
         // END: readme-sample-batchDocumentsOperations
     }
@@ -223,50 +228,48 @@ public class ReadmeSamples {
     public void createIndex() {
         // BEGIN: readme-sample-createIndex
         List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+        searchFieldList.add(new SearchField("HotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setFilterable(true)
             .setSortable(true));
-
-        searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+        searchFieldList.add(new SearchField("HotelName", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setSortable(true));
-        searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+        searchFieldList.add(new SearchField("Description", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-        searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+        searchFieldList.add(new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true));
-        searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
-            .setFields(new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
-                new SearchField("city", SearchFieldDataType.STRING)
+        searchFieldList.add(new SearchField("Address", SearchFieldDataType.COMPLEX)
+            .setFields(new SearchField("StreetAddress", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("City", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
-                new SearchField("stateProvince", SearchFieldDataType.STRING)
+                new SearchField("StateProvince", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
-                new SearchField("country", SearchFieldDataType.STRING)
+                new SearchField("Country", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
                     .setSortable(true),
-                new SearchField("postalCode", SearchFieldDataType.STRING)
+                new SearchField("PostalCode", SearchFieldDataType.STRING)
                     .setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true)
-                    .setSortable(true)
-            ));
+                    .setSortable(true)));
 
         // Prepare suggester.
-        SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+        SearchSuggester suggester = new SearchSuggester("sg", "hotelName");
         // Prepare SearchIndex with index name and search fields.
-        SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
+        SearchIndex index = new SearchIndex("hotels", searchFieldList).setSuggesters(suggester);
         // Create an index
         SEARCH_INDEX_CLIENT.createIndex(index);
         // END: readme-sample-createIndex
@@ -274,7 +277,7 @@ public class ReadmeSamples {
 
     public void createIndexUseFieldBuilder() {
         // BEGIN: readme-sample-createIndexUseFieldBuilder
-        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class);
         SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
         // END: readme-sample-createIndexUseFieldBuilder
     }

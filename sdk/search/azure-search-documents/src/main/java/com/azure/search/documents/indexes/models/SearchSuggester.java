@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,6 +36,17 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      */
     @Generated
     private final List<String> sourceFields;
+
+    /**
+     * Creates an instance of SearchSuggester class.
+     *
+     * @param name the name value to set.
+     * @param sourceFields the sourceFields value to set.
+     */
+    public SearchSuggester(String name, String... sourceFields) {
+        this.name = name;
+        this.sourceFields = (sourceFields == null) ? null : Arrays.asList(sourceFields);
+    }
 
     /**
      * Creates an instance of SearchSuggester class.

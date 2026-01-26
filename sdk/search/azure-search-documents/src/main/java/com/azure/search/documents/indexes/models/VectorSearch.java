@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,6 +66,17 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param profiles the profiles value to set.
      * @return the VectorSearch object itself.
      */
+    public VectorSearch setProfiles(VectorSearchProfile... profiles) {
+        this.profiles = (profiles == null) ? null : Arrays.asList(profiles);
+        return this;
+    }
+
+    /**
+     * Set the profiles property: Defines combinations of configurations to use with vector search.
+     *
+     * @param profiles the profiles value to set.
+     * @return the VectorSearch object itself.
+     */
     @Generated
     public VectorSearch setProfiles(List<VectorSearchProfile> profiles) {
         this.profiles = profiles;
@@ -80,6 +92,18 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     @Generated
     public List<VectorSearchAlgorithmConfiguration> getAlgorithms() {
         return this.algorithms;
+    }
+
+    /**
+     * Set the algorithms property: Contains configuration options specific to the algorithm used during indexing or
+     * querying.
+     *
+     * @param algorithms the algorithms value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setAlgorithms(VectorSearchAlgorithmConfiguration... algorithms) {
+        this.algorithms = (algorithms == null) ? null : Arrays.asList(algorithms);
+        return this;
     }
 
     /**
@@ -111,6 +135,17 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      * @param vectorizers the vectorizers value to set.
      * @return the VectorSearch object itself.
      */
+    public VectorSearch setVectorizers(VectorSearchVectorizer... vectorizers) {
+        this.vectorizers = (vectorizers == null) ? null : Arrays.asList(vectorizers);
+        return this;
+    }
+
+    /**
+     * Set the vectorizers property: Contains configuration options on how to vectorize text vector queries.
+     *
+     * @param vectorizers the vectorizers value to set.
+     * @return the VectorSearch object itself.
+     */
     @Generated
     public VectorSearch setVectorizers(List<VectorSearchVectorizer> vectorizers) {
         this.vectorizers = vectorizers;
@@ -126,6 +161,18 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
     @Generated
     public List<VectorSearchCompression> getCompressions() {
         return this.compressions;
+    }
+
+    /**
+     * Set the compressions property: Contains configuration options specific to the compression method used during
+     * indexing or querying.
+     *
+     * @param compressions the compressions value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setCompressions(VectorSearchCompression... compressions) {
+        this.compressions = (compressions == null) ? null : Arrays.asList(compressions);
+        return this;
     }
 
     /**

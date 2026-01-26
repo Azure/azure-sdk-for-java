@@ -12,13 +12,13 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.core.util.paging.ContinuablePagedFluxCore;
-import com.azure.core.util.paging.PageRetriever;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.models.AutocompleteMode;
 import com.azure.search.documents.implementation.models.AutocompletePostOptions;
@@ -30,7 +30,9 @@ import com.azure.search.documents.implementation.models.SearchPostRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.LookupDocument;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
@@ -43,15 +45,15 @@ import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchContinuationToken;
 import com.azure.search.documents.models.SearchDocumentsResult;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SearchPagedFlux;
 import com.azure.search.documents.models.SearchResultPage;
 import com.azure.search.documents.models.SemanticErrorMode;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the asynchronous SearchClient type.
@@ -72,6 +74,24 @@ public final class SearchAsyncClient {
         this.serviceClient = serviceClient;
     }
 
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return serviceClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the endpoint for the Azure AI Search service.
+     *
+     * @return the endpoint value.
+     */
+    String getEndpoint() {
+        return serviceClient.getEndpoint();
+    }
+
     public String getIndexName() {
         return serviceClient.getIndexName();
     }
@@ -79,7 +99,7 @@ public final class SearchAsyncClient {
     /**
      * Queries the number of documents in the index.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * long
@@ -222,7 +242,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -444,7 +464,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -515,9 +535,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -749,7 +769,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -811,7 +831,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -850,7 +870,7 @@ public final class SearchAsyncClient {
     /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -874,9 +894,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -911,7 +931,7 @@ public final class SearchAsyncClient {
     /**
      * Sends a batch of document write actions to the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -926,9 +946,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -990,7 +1010,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1025,7 +1045,7 @@ public final class SearchAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1044,9 +1064,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1368,8 +1388,7 @@ public final class SearchAsyncClient {
      * {@link SearchResultPage} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public ContinuablePagedFlux<SearchContinuationToken, SearchResult, SearchResultPage>
-        search(SearchPostOptions options) {
+    public SearchPagedFlux search(SearchPostOptions options) {
         return new SearchPagedFlux(() -> (continuationToken, pageSize) -> {
             Mono<SearchDocumentsResult> mono;
             if (continuationToken == null) {
@@ -1381,22 +1400,12 @@ public final class SearchAsyncClient {
                             + "apiVersion: " + continuationToken.getApiVersion() + ", serviceVersion: "
                             + serviceClient.getServiceVersion()));
                 }
-                mono = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()), null)
-                    .map(response -> response.getValue().toObject(SearchDocumentsResult.class));
+                mono = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
+                    null).map(response -> response.getValue().toObject(SearchDocumentsResult.class));
             }
-            return mono
-                .map(result -> new SearchResultPage(result,
-                    new SearchContinuationToken(result.getNextPageParameters(), serviceClient.getServiceVersion())))
-                .flux();
+            return mono.map(result -> new SearchResultPage(result,
+                new SearchContinuationToken(result.getNextPageParameters(), serviceClient.getServiceVersion()))).flux();
         });
-    }
-
-    private static final class SearchPagedFlux
-        extends ContinuablePagedFluxCore<SearchContinuationToken, SearchResult, SearchResultPage> {
-
-        SearchPagedFlux(Supplier<PageRetriever<SearchContinuationToken, SearchResultPage>> pageRetrieverProvider) {
-            super(pageRetrieverProvider);
-        }
     }
 
     /**
@@ -1653,7 +1662,7 @@ public final class SearchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SuggestDocumentsResult> suggestPost(SuggestPostOptions options) {
+    public Mono<SuggestDocumentsResult> suggestPost(SuggestPostOptions options) {
         // Generated convenience method for suggestPostWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SuggestPostRequest suggestPostRequestObj
@@ -1691,6 +1700,62 @@ public final class SearchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return indexWithResponse(BinaryData.fromObject(batch), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(IndexDocumentsResult.class));
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
+     * @return response containing the status of operations for all documents in the indexing request on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch batch) {
+        return indexDocumentsWithResponse(batch, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param options Options that allow specifying document indexing behavior.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @throws IndexBatchException If {@code options} is null or has {@link IndexDocumentsOptions#throwOnAnyError()} set
+     * to true and some of the indexing actions fail but other actions succeed and modify the state of the index. This
+     * can happen when the Search Service is under heavy indexing load. It is important to explicitly catch this
+     * exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
+     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
+     * after a partial failure.
+     * @return response containing the status of operations for all documents in the indexing request on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch batch,
+        IndexDocumentsOptions options, RequestOptions requestOptions) {
+        return indexWithResponse(BinaryData.fromObject(batch), requestOptions)
+            .flatMap(response -> {
+                IndexDocumentsResult results = response.getValue().toObject(IndexDocumentsResult.class);
+                return (response.getStatusCode() == 207 && (options == null || options.throwOnAnyError()))
+                    ? Mono.error(new IndexBatchException(results))
+                    : Mono.just(new SimpleResponse<>(response, results));
+            });
     }
 
     /**
@@ -1802,7 +1867,7 @@ public final class SearchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AutocompleteResult> autocompletePost(AutocompletePostOptions options) {
+    public Mono<AutocompleteResult> autocompletePost(AutocompletePostOptions options) {
         // Generated convenience method for autocompletePostWithResponse
         RequestOptions requestOptions = new RequestOptions();
         AutocompletePostRequest autocompletePostRequestObj

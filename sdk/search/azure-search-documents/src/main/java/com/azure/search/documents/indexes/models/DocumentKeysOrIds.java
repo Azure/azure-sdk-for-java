@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,6 +54,17 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
      * @param documentKeys the documentKeys value to set.
      * @return the DocumentKeysOrIds object itself.
      */
+    public DocumentKeysOrIds setDocumentKeys(String... documentKeys) {
+        this.documentKeys = (documentKeys == null) ? null : Arrays.asList(documentKeys);
+        return this;
+    }
+
+    /**
+     * Set the documentKeys property: document keys to be reset.
+     *
+     * @param documentKeys the documentKeys value to set.
+     * @return the DocumentKeysOrIds object itself.
+     */
     @Generated
     public DocumentKeysOrIds setDocumentKeys(List<String> documentKeys) {
         this.documentKeys = documentKeys;
@@ -67,6 +79,17 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
     @Generated
     public List<String> getDatasourceDocumentIds() {
         return this.datasourceDocumentIds;
+    }
+
+    /**
+     * Set the datasourceDocumentIds property: datasource document identifiers to be reset.
+     *
+     * @param datasourceDocumentIds the datasourceDocumentIds value to set.
+     * @return the DocumentKeysOrIds object itself.
+     */
+    public DocumentKeysOrIds setDatasourceDocumentIds(String... datasourceDocumentIds) {
+        this.datasourceDocumentIds = (datasourceDocumentIds == null) ? null : Arrays.asList(datasourceDocumentIds);
+        return this;
     }
 
     /**

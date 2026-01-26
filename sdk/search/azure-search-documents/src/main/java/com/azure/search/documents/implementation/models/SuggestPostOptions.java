@@ -5,6 +5,8 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -252,6 +254,21 @@ public final class SuggestPostOptions {
      * @param orderBy the orderBy value to set.
      * @return the SuggestPostOptions object itself.
      */
+    public SuggestPostOptions setOrderBy(String... orderBy) {
+        this.orderBy = (orderBy == null) ? null : Arrays.asList(orderBy);
+        return this;
+    }
+
+    /**
+     * Set the orderBy property: The comma-separated list of OData $orderby expressions by which to sort the results.
+     * Each expression can be either a field name or a call to either the geo.distance() or the search.score()
+     * functions. Each expression can be followed by asc to indicate ascending, or desc to indicate descending. The
+     * default is ascending order. Ties will be broken by the match scores of documents. If no $orderby is specified,
+     * the default sort order is descending by document match score. There can be at most 32 $orderby clauses.
+     *
+     * @param orderBy the orderBy value to set.
+     * @return the SuggestPostOptions object itself.
+     */
     @Generated
     public SuggestPostOptions setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
@@ -288,6 +305,19 @@ public final class SuggestPostOptions {
      * @return the SuggestPostOptions object itself.
      */
     @Generated
+    public SuggestPostOptions setSearchFields(String... searchFields) {
+        this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
+        return this;
+    }
+
+    /**
+     * Set the searchFields property: The comma-separated list of field names to search for the specified search text.
+     * Target fields must be included in the specified suggester.
+     *
+     * @param searchFields the searchFields value to set.
+     * @return the SuggestPostOptions object itself.
+     */
+    @Generated
     public SuggestPostOptions setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
@@ -302,6 +332,19 @@ public final class SuggestPostOptions {
     @Generated
     public List<String> getSelect() {
         return this.select;
+    }
+
+    /**
+     * Set the select property: The comma-separated list of fields to retrieve. If unspecified, only the key field will
+     * be included in the results.
+     *
+     * @param select the select value to set.
+     * @return the SuggestPostOptions object itself.
+     */
+    @Generated
+    public SuggestPostOptions setSelect(String... select) {
+        this.select = (select == null) ? null : Arrays.asList(select);
+        return this;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,6 +53,17 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean onlyLongestMatch;
+
+    /**
+     * Creates an instance of DictionaryDecompounderTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param wordList the wordList value to set.
+     */
+    public DictionaryDecompounderTokenFilter(String name, String... wordList) {
+        super(name);
+        this.wordList = (wordList == null) ? null : Arrays.asList(wordList);
+    }
 
     /**
      * Creates an instance of DictionaryDecompounderTokenFilter class.

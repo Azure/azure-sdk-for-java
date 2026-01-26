@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +32,17 @@ public final class MappingCharFilter extends CharFilter {
      */
     @Generated
     private final List<String> mappings;
+
+    /**
+     * Creates an instance of MappingCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param mappings the mappings value to set.
+     */
+    public MappingCharFilter(String name, String... mappings) {
+        super(name);
+        this.mappings = (mappings == null) ? null : Arrays.asList(mappings);
+    }
 
     /**
      * Creates an instance of MappingCharFilter class.

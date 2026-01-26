@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,6 +80,19 @@ public final class RemoteSharePointKnowledgeSourceParameters
     @Generated
     public List<String> getResourceMetadata() {
         return this.resourceMetadata;
+    }
+
+    /**
+     * Set the resourceMetadata property: A list of metadata fields to be returned for each item in the response. Only
+     * retrievable metadata properties can be included in this list. By default, no metadata is returned.
+     *
+     * @param resourceMetadata the resourceMetadata value to set.
+     * @return the RemoteSharePointKnowledgeSourceParameters object itself.
+     */
+    @Generated
+    public RemoteSharePointKnowledgeSourceParameters setResourceMetadata(String... resourceMetadata) {
+        this.resourceMetadata = (resourceMetadata == null) ? null : Arrays.asList(resourceMetadata);
+        return this;
     }
 
     /**

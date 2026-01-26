@@ -4,7 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -35,14 +35,14 @@ public class SearchServiceTests extends SearchTestBase {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         SearchServiceStatistics searchServiceStatistics
-            = serviceClient.getServiceStatisticsWithResponse(Context.NONE).getValue();
+            = serviceClient.getServiceStatisticsWithResponse(null).getValue().toObject(SearchServiceStatistics.class);
         validateServiceStatistics(searchServiceStatistics);
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
-            .assertNext(response -> validateServiceStatistics(response.getValue()))
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
+            .assertNext(response -> validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class)))
             .verifyComplete();
     }
 
@@ -51,7 +51,7 @@ public class SearchServiceTests extends SearchTestBase {
     public void getServiceStatsReturnsRequestIdSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
-        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
+        Response<BinaryData> response = serviceClient.getServiceStatisticsWithResponse(null);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if
@@ -64,13 +64,13 @@ public class SearchServiceTests extends SearchTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        validateServiceStatistics(response.getValue());
+        validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class));
     }
 
     @Test
     @LiveOnly
     public void getServiceStatsReturnsRequestIdAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse())
+        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
             .assertNext(response -> {
                 /*
                  * The service will always return a request-id and will conditionally return client-request-id if
@@ -83,7 +83,7 @@ public class SearchServiceTests extends SearchTestBase {
 
                 Assertions.assertNotNull(actualClientRequestId);
                 Assertions.assertEquals(actualClientRequestId, actualRequestId);
-                validateServiceStatistics(response.getValue());
+                validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class));
             })
             .verifyComplete();
     }

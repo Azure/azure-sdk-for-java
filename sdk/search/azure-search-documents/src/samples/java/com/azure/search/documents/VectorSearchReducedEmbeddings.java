@@ -9,11 +9,12 @@ import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
@@ -22,23 +23,26 @@ import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizer;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.VectorSearch;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.models.VectorSearchOptions;
 import com.azure.search.documents.models.VectorizableTextQuery;
-import com.azure.search.documents.util.SearchPagedIterable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This sample demonstrates how to create a vector fields index with reduced dimensions, upload reduced embeddings into
@@ -98,36 +102,36 @@ public class VectorSearchReducedEmbeddings {
         String deploymentId = "my-text-embedding-3-small";
         int modelDimensions = 256; // Here's the reduced model dimensions
         String indexName = "hotel";
-        return new SearchIndex(indexName).setFields(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true), new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)
-                    .setFilterable(true)
-                    .setSortable(true),
-                new SearchField("Description", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
-                new SearchField("DescriptionVector",
-                    SearchFieldDataType.collection(SearchFieldDataType.SINGLE)).setSearchable(true)
-                    .setFilterable(true)
-                    .setVectorSearchDimensions(modelDimensions)
-                    .setVectorSearchProfileName(vectorSearchProfileName),
-                new SearchField("Category", SearchFieldDataType.STRING).setSearchable(true)
-                    .setFilterable(true)
-                    .setSortable(true)
-                    .setFacetable(true),
-                new SearchField("CategoryVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE)).setSearchable(
-                        true)
-                    .setFilterable(true)
-                    .setVectorSearchDimensions(modelDimensions)
-                    .setVectorSearchProfileName(vectorSearchProfileName))
+        return new SearchIndex(indexName, new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true)
+            .setFilterable(true)
+            .setSortable(true)
+            .setFacetable(true), new SearchField("HotelName", SearchFieldDataType.STRING).setSearchable(true)
+            .setFilterable(true)
+            .setSortable(true),
+            new SearchField("Description", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+            new SearchField("DescriptionVector",
+                SearchFieldDataType.collection(SearchFieldDataType.SINGLE)).setSearchable(true)
+                .setFilterable(true)
+                .setVectorSearchDimensions(modelDimensions)
+                .setVectorSearchProfileName(vectorSearchProfileName),
+            new SearchField("Category", SearchFieldDataType.STRING).setSearchable(true)
+                .setFilterable(true)
+                .setSortable(true)
+                .setFacetable(true),
+            new SearchField("CategoryVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                .setSearchable(true)
+                .setFilterable(true)
+                .setVectorSearchDimensions(modelDimensions)
+                .setVectorSearchProfileName(vectorSearchProfileName))
             .setVectorSearch(new VectorSearch().setProfiles(
                     new VectorSearchProfile(vectorSearchProfileName, vectorSearchHnswConfig).setVectorizerName("openai"))
                 .setAlgorithms(new HnswAlgorithmConfiguration(vectorSearchHnswConfig))
-                .setVectorizers(Collections.singletonList(new AzureOpenAIVectorizer("openai").setParameters(
+                .setVectorizers(new AzureOpenAIVectorizer("openai").setParameters(
                     new AzureOpenAIVectorizerParameters().setResourceUrl(
                             Configuration.getGlobalConfiguration().get("OPENAI_ENDPOINT"))
                         .setApiKey(Configuration.getGlobalConfiguration().get("OPENAI_KEY"))
                         .setDeploymentName(deploymentId)
-                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING_3_LARGE)))));
+                        .setModelName(AzureOpenAIModelName.TEXT_EMBEDDING3LARGE))));
     }
 
     public static void createVectorIndex(SearchIndex vectorIndex) {
@@ -149,17 +153,17 @@ public class VectorSearchReducedEmbeddings {
      * Hotel model with an additional field for the vector description.
      */
     public static final class VectorHotel implements JsonSerializable<VectorHotel> {
-        @SimpleField(isKey = true)
+        @SimpleField(name = "HotelId", isKey = true)
         private String hotelId;
-        @SearchableField(isFilterable = true, isSortable = true, analyzerName = "en.lucene")
+        @SearchableField(name = "HotelName", isFilterable = true, isSortable = true, analyzerName = "en.lucene")
         private String hotelName;
-        @SearchableField(analyzerName = "en.lucene")
+        @SearchableField(name = "Description", analyzerName = "en.lucene")
         private String description;
-        @SearchableField(vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
+        @SearchableField(name = "DescriptionVector", vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
         private List<Float> descriptionVector;
-        @SearchableField(isFilterable = true, isFacetable = true, isSortable = true)
+        @SearchableField(name = "Category", isFilterable = true, isFacetable = true, isSortable = true)
         private String category;
-        @SearchableField(vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
+        @SearchableField(name = "CategoryVector", vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
         private List<Float> categoryVector;
 
         public VectorHotel() {
@@ -312,7 +316,22 @@ public class VectorSearchReducedEmbeddings {
     }
 
     public static void indexDocuments(SearchClient searchClient, List<VectorHotel> hotelDocuments) {
-        searchClient.indexDocuments(new IndexDocumentsBatch<VectorHotel>().addUploadActions(hotelDocuments));
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeArray(hotelDocuments, JsonWriter::writeJson);
+            }
+
+            try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+                List<IndexAction> actions = jsonReader.readArray(elem -> new IndexAction()
+                    .setActionType(IndexActionType.UPLOAD)
+                    .setAdditionalProperties(elem.readMap(JsonReader::readUntyped)));
+                searchClient.indexDocuments(new IndexDocumentsBatch(actions));
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
     }
 
     /**
@@ -321,18 +340,18 @@ public class VectorSearchReducedEmbeddings {
      * of nearest neighbors to return as top hits.
      */
     public static void vectorSearch(SearchClient searchClient) {
-        SearchPagedIterable response = searchClient.search(null, new SearchOptions().setVectorSearchOptions(
-            new VectorSearchOptions().setQueries(
-                new VectorizableTextQuery("Luxury hotels in town").setKNearestNeighborsCount(3)
-                    .setFields("DescriptionVector"))), Context.NONE);
+        SearchPagedIterable response = searchClient.search(new SearchPostOptions()
+            .setVectorQueries(new VectorizableTextQuery("Luxury hotels in town")
+                .setKNearestNeighbors(3)
+                .setFields("DescriptionVector")));
 
         int count = 0;
         System.out.println("Vector Search Results:");
 
         for (SearchResult result : response) {
             count++;
-            VectorHotel doc = result.getDocument(VectorHotel.class);
-            System.out.println(doc.getHotelId() + ": " + doc.getHotelName());
+            Map<String, Object> doc = result.getAdditionalProperties();
+            System.out.println(doc.get("HotelId") + ": " + doc.get("HotelName"));
         }
 
         System.out.println("Total number of search results: " + count);

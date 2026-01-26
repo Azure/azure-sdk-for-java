@@ -109,6 +109,17 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
+    public PatternTokenizer setFlags(RegexFlags... flags) {
+        this.flags = (flags == null) ? null : Arrays.asList(flags);
+        return this;
+    }
+
+    /**
+     * Set the flags property: Regular expression flags, specified as a '|' separated string of RegexFlags values.
+     *
+     * @param flags the flags value to set.
+     * @return the PatternTokenizer object itself.
+     */
     @Generated
     public PatternTokenizer setFlags(List<RegexFlags> flags) {
         this.flags = flags;

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +32,15 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
      */
     @Generated
     private Long maxAgeInSeconds;
+
+    /**
+     * Creates an instance of CorsOptions class.
+     *
+     * @param allowedOrigins the allowedOrigins value to set.
+     */
+    public CorsOptions(String... allowedOrigins) {
+        this.allowedOrigins = (allowedOrigins == null) ? null : Arrays.asList(allowedOrigins);
+    }
 
     /**
      * Creates an instance of CorsOptions class.

@@ -6,26 +6,27 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.Context;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchClientBuilder;
-import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchRequestUrlRewriterPolicy;
+import com.azure.search.documents.implementation.models.AutocompletePostOptions;
+import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SkillNames;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,7 +40,9 @@ import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.BinaryData.fromObject;
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.CONCURRENT)
@@ -47,277 +50,218 @@ public class SearchRequestUrlRewriterPolicyTests {
     @ParameterizedTest
     @MethodSource("correctUrlRewriteSupplier")
     public void correctUrlRewrite(Callable<?> apiCall, String expectedUrl) {
-        try {
-            apiCall.call();
-        } catch (Exception ex) {
-            UrlRewriteException urlRewriteException = Assertions.assertInstanceOf(UrlRewriteException.class, ex);
-            assertTrue(urlRewriteException.rewrittenUrl.startsWith(expectedUrl),
-                () -> "Expected URL to start with " + expectedUrl + " but was " + urlRewriteException.rewrittenUrl);
-        }
+        UrlRewriteException urlRewriteException = assertThrows(UrlRewriteException.class, apiCall::call);
+        assertTrue(urlRewriteException.rewrittenUrl.startsWith(expectedUrl),
+            () -> "Expected URL to start with " + expectedUrl + " but was " + urlRewriteException.rewrittenUrl);
     }
 
     public static Stream<Arguments> correctUrlRewriteSupplier() {
+        String endpoint = "https://test.search.windows.net";
         HttpClient urlRewriteHttpClient
             = request -> Mono.error(new UrlRewriteException("Url rewritten", request.getUrl().toString()));
 
-        SearchClientBuilder searchClientBuilder = new SearchClientBuilder().indexName("test")
-            .endpoint("https://test.search.windows.net")
+        SearchIndexClientBuilder indexClientBuilder = new SearchIndexClientBuilder().endpoint(endpoint)
             .credential(new MockTokenCredential())
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new SearchRequestUrlRewriterPolicy())
             .httpClient(urlRewriteHttpClient);
-        SearchClient searchClient = searchClientBuilder.buildClient();
-        SearchAsyncClient searchAsyncClient = searchClientBuilder.buildAsyncClient();
+        SearchIndexClient indexClient = indexClientBuilder.buildClient();
+        SearchIndexAsyncClient indexAsyncClient = indexClientBuilder.buildAsyncClient();
 
-        SearchIndexClientBuilder searchIndexClientBuilder
-            = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
-                .credential(new MockTokenCredential())
-                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-                .addPolicy(new SearchRequestUrlRewriterPolicy())
-                .httpClient(urlRewriteHttpClient);
-        SearchIndexClient searchIndexClient = searchIndexClientBuilder.buildClient();
-        SearchIndexAsyncClient searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
+        SearchClient searchClient = indexClient.getSearchClient("test");
+        SearchAsyncClient searchAsyncClient = indexAsyncClient.getSearchAsyncClient("test");
 
-        SearchIndexerClientBuilder searchIndexerClientBuilder
-            = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
-                .credential(new MockTokenCredential())
-                .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
-                .addPolicy(new SearchRequestUrlRewriterPolicy())
-                .httpClient(urlRewriteHttpClient);
-        SearchIndexerClient searchIndexerClient = searchIndexerClientBuilder.buildClient();
-        SearchIndexerAsyncClient searchIndexerAsyncClient = searchIndexerClientBuilder.buildAsyncClient();
+        SearchIndexerClientBuilder indexerClientBuilder = new SearchIndexerClientBuilder().endpoint(endpoint)
+            .credential(new MockTokenCredential())
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
+            .addPolicy(new SearchRequestUrlRewriterPolicy())
+            .httpClient(urlRewriteHttpClient);
+        SearchIndexerClient indexerClient = indexerClientBuilder.buildClient();
+        SearchIndexerAsyncClient indexerAsyncClient = indexerClientBuilder.buildAsyncClient();
 
-        String docsUrl = "https://test.search.windows.net/indexes/test/docs";
+        String indexesUrl = endpoint + "/indexes";
+        String docsUrl = indexesUrl + "/indexes/test/docs";
 
+        String indexersUrl = endpoint + "/indexers";
         SearchIndex index = new SearchIndex("index");
-        String indexUrl = "https://test.search.windows.net/indexes/index";
+        String indexUrl = indexersUrl + "/index";
 
+        String synonymMapsUrl = endpoint + "/synonymmaps";
         SynonymMap synonymMap = new SynonymMap("synonym");
-        String synonymMapUrl = "https://test.search.windows.net/synonymmaps/synonym";
+        String synonymUrl = synonymMapsUrl + "/synonym";
 
+        String aliasesUrl = endpoint + "/aliases";
         SearchAlias alias = new SearchAlias("alias", emptyList());
-        String aliasUrl = "https://test.search.windows.net/aliases/alias";
+        String aliasUrl = aliasesUrl + "/alias";
 
-        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("datasource");
-        String dataSourceUrl = "https://test.search.windows.net/datasources/datasource";
+        String dataSourcesUrl = endpoint + "/datasources";
+        SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("datasource",
+            SearchIndexerDataSourceType.AZURE_BLOB, new DataSourceCredentials().setConnectionString("fake"),
+            new SearchIndexerDataContainer("fake"));
+        String dataSourceUrl = dataSourcesUrl + "/datasource";
 
-        SearchIndexer indexer = new SearchIndexer("indexer");
-        String indexerUrl = "https://test.search.windows.net/indexers/indexer";
+        SearchIndexer indexer = new SearchIndexer("indexer", "dataSourceName", "targetIndexName");
+        String indexerUrl = indexersUrl + "/indexer";
 
+        String skillsetsUrl = endpoint + "/skillsets";
         SearchIndexerSkillset skillset = new SearchIndexerSkillset("skillset");
-        String skillsetUrl = "https://test.search.windows.net/skillsets/skillset";
+        String skillsetUrl = skillsetsUrl + "/skillset";
+
+        String servicestatsUrl = endpoint + "/servicestats";
 
         return Stream.of(
-            Arguments.of(
-                toCallable(
-                    () -> searchClient.indexDocumentsWithResponse(new IndexDocumentsBatch<>(), null, Context.NONE)),
+            Arguments.of(toCallable(() -> searchClient.indexDocuments(new IndexDocumentsBatch())),
                 docsUrl + "/search.index"),
-            Arguments.of(
-                toCallable(
-                    () -> searchClient.getDocumentWithResponse("test", SearchDocument.class, null, Context.NONE)),
-                docsUrl + "/test"),
-            Arguments.of(toCallable(() -> searchClient.getDocumentCountWithResponse(Context.NONE)),
-                docsUrl + "/$count"),
-            Arguments.of(toCallable(() -> searchClient.search("search", null, Context.NONE).iterator().hasNext()),
+            Arguments.of(toCallable(() -> searchClient.getDocumentWithResponse("test", null)), docsUrl + "/test"),
+            Arguments.of(toCallable(() -> searchClient.getDocumentCountWithResponse(null)), docsUrl + "/$count"),
+            Arguments.of(toCallable(() -> searchClient.search(null).iterator().hasNext()),
                 docsUrl + "/search.post.search"),
-            Arguments.of(
-                toCallable(() -> searchClient.suggest("suggest", "suggester", null, Context.NONE).iterator().hasNext()),
+            Arguments.of(toCallable(() -> searchClient.suggestPost(new SuggestPostOptions("suggest", "suggester"))),
                 docsUrl + "/seach.post.suggest"),
             Arguments.of(toCallable(
-                () -> searchClient.autocomplete("autocomplete", "suggester", null, Context.NONE).iterator().hasNext()),
+                () -> searchClient.autocompletePost(new AutocompletePostOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
 
-            Arguments.of(toCallable(searchAsyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch<>(), null)),
+            Arguments.of(toCallable(searchAsyncClient.indexDocumentsWithResponse(new IndexDocumentsBatch(), null, null)),
                 docsUrl + "/search.index"),
-            Arguments.of(toCallable(searchAsyncClient.getDocumentWithResponse("test", SearchDocument.class, null)),
-                docsUrl + "/test"),
-            Arguments.of(toCallable(searchAsyncClient.getDocumentCountWithResponse()), docsUrl + "/$count"),
-            Arguments.of(toCallable(searchAsyncClient.search("search", null, null)), docsUrl + "/search.post.search"),
-            Arguments.of(toCallable(searchAsyncClient.suggest("suggest", "suggester", null)),
+            Arguments.of(toCallable(searchAsyncClient.getDocumentWithResponse("test", null)), docsUrl + "/test"),
+            Arguments.of(toCallable(searchAsyncClient.getDocumentCountWithResponse(null)), docsUrl + "/$count"),
+            Arguments.of(toCallable(searchAsyncClient.search(null)), docsUrl + "/search.post.search"),
+            Arguments.of(toCallable(searchAsyncClient.suggestPost(new SuggestPostOptions("suggest", "suggester"))),
                 docsUrl + "/search.post.suggest"),
-            Arguments.of(toCallable(searchAsyncClient.autocomplete("autocomplete", "suggester", null)),
+            Arguments.of(toCallable(searchAsyncClient.autocompletePost(new AutocompletePostOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
 
-            Arguments.of(toCallable(() -> searchIndexClient.createIndexWithResponse(index, Context.NONE)),
-                "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(() -> searchIndexClient.getIndexWithResponse("index", Context.NONE)), indexUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.getIndexStatisticsWithResponse("index", Context.NONE)),
+            Arguments.of(toCallable(() -> indexClient.createIndexWithResponse(fromObject(index), null)), indexesUrl),
+            Arguments.of(toCallable(() -> indexClient.getIndexWithResponse("index", null)), indexUrl),
+            Arguments.of(toCallable(() -> indexClient.getIndexStatisticsWithResponse("index", null)),
                 indexUrl + "/search.stats"),
-            Arguments.of(toCallable(() -> searchIndexClient.listIndexes(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(() -> searchIndexClient.listIndexNames(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/indexes"),
-            Arguments.of(
-                toCallable(() -> searchIndexClient.createOrUpdateIndexWithResponse(index, false, false, Context.NONE)),
-                indexUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.deleteIndexWithResponse(index, true, Context.NONE)),
-                indexUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.analyzeText("index", null, Context.NONE)),
-                indexUrl + "/search.analyze"),
-            Arguments.of(toCallable(() -> searchIndexClient.createSynonymMapWithResponse(synonymMap, Context.NONE)),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(() -> searchIndexClient.getSynonymMapWithResponse("synonym", Context.NONE)),
-                synonymMapUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.listSynonymMaps(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(() -> searchIndexClient.listSynonymMapNames(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(
-                toCallable(
-                    () -> searchIndexClient.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE)),
-                synonymMapUrl),
-            Arguments.of(
-                toCallable(() -> searchIndexClient.deleteSynonymMapWithResponse(synonymMap, true, Context.NONE)),
-                synonymMapUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.getServiceStatisticsWithResponse(Context.NONE)),
-                "https://test.search.windows.net/servicestats"),
+            Arguments.of(toCallable(() -> indexClient.listIndexes().iterator().hasNext()), indexesUrl),
+            Arguments.of(toCallable(() -> indexClient.listIndexNames().iterator().hasNext()), indexesUrl),
+            Arguments.of(toCallable(() -> indexClient.createOrUpdateIndexWithResponse(index, null)), indexUrl),
+            Arguments.of(toCallable(() -> indexClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
+            Arguments.of(toCallable(() -> indexClient.analyzeText("index", null)), indexUrl + "/search.analyze"),
+            Arguments.of(toCallable(() -> indexClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
+                synonymMapsUrl),
+            Arguments.of(toCallable(() -> indexClient.getSynonymMapWithResponse("synonym", null)),
+                synonymUrl),
+            Arguments.of(toCallable(indexClient::listSynonymMaps), synonymMapsUrl),
+            Arguments.of(toCallable(indexClient::listSynonymMapNames), synonymMapsUrl),
+            Arguments.of(toCallable(() -> indexClient.createOrUpdateSynonymMapWithResponse(synonymMap, null)),
+                synonymUrl),
+            Arguments.of(toCallable(() -> indexClient.deleteSynonymMapWithResponse(synonymMap.getName(), null)),
+                synonymUrl),
+            Arguments.of(toCallable(() -> indexClient.getServiceStatisticsWithResponse(null)), servicestatsUrl),
 
-            Arguments.of(toCallable(() -> searchIndexClient.createAliasWithResponse(alias, Context.NONE)),
-                "https://test.search.windows.net/aliases"),
-            Arguments.of(
-                toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false, Context.NONE)),
-                aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.getAliasWithResponse("alias", Context.NONE)), aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.deleteAliasWithResponse(alias, true, Context.NONE)),
-                aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.listAliases(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/aliases"),
+            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(fromObject(alias), null)), aliasesUrl),
+            Arguments.of(toCallable(() -> indexClient.createOrUpdateAliasWithResponse(alias, null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.getAliasWithResponse("alias", null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.deleteAliasWithResponse(alias.getName(), null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.listAliases(null).iterator().hasNext()), aliasesUrl),
 
-            Arguments.of(toCallable(searchIndexAsyncClient.createIndexWithResponse(index)),
-                "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(searchIndexAsyncClient.getIndexWithResponse("index")), indexUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.getIndexStatisticsWithResponse("index")),
+            Arguments.of(toCallable(indexAsyncClient.createIndexWithResponse(fromObject(index), null)), indexesUrl),
+            Arguments.of(toCallable(indexAsyncClient.getIndexWithResponse("index", null)), indexUrl),
+            Arguments.of(toCallable(indexAsyncClient.getIndexStatisticsWithResponse("index", null)),
                 indexUrl + "/search.stats"),
-            Arguments.of(toCallable(searchIndexAsyncClient.listIndexes()), "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(searchIndexAsyncClient.listIndexNames()),
-                "https://test.search.windows.net/indexes"),
-            Arguments.of(toCallable(searchIndexAsyncClient.createOrUpdateIndexWithResponse(index, false, false)),
-                indexUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.deleteIndexWithResponse(index, true)), indexUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.analyzeText("index", null)), indexUrl + "/search.analyze"),
-            Arguments.of(toCallable(searchIndexAsyncClient.createSynonymMapWithResponse(synonymMap)),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(searchIndexAsyncClient.getSynonymMapWithResponse("synonym")), synonymMapUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.listSynonymMaps()),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(searchIndexAsyncClient.listSynonymMapNames()),
-                "https://test.search.windows.net/synonymmaps"),
-            Arguments.of(toCallable(searchIndexAsyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, false)),
-                synonymMapUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.deleteSynonymMapWithResponse(synonymMap, true)),
-                synonymMapUrl),
-            Arguments.of(toCallable(searchIndexAsyncClient.getServiceStatisticsWithResponse()),
-                "https://test.search.windows.net/servicestats"),
-            Arguments.of(toCallable(() -> searchIndexClient.createAliasWithResponse(alias, Context.NONE)),
-                "https://test.search.windows.net/aliases"),
+            Arguments.of(toCallable(indexAsyncClient.listIndexes()), indexesUrl),
+            Arguments.of(toCallable(indexAsyncClient.listIndexNames()), indexesUrl),
+            Arguments.of(toCallable(indexAsyncClient.createOrUpdateIndexWithResponse(index, null)), indexUrl),
+            Arguments.of(toCallable(indexAsyncClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
+            Arguments.of(toCallable(indexAsyncClient.analyzeText("index", null)), indexUrl + "/search.analyze"),
+            Arguments.of(toCallable(indexAsyncClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
+                synonymMapsUrl),
+            Arguments.of(toCallable(indexAsyncClient.getSynonymMapWithResponse("synonym", null)), synonymUrl),
+            Arguments.of(toCallable(indexAsyncClient.listSynonymMaps()), synonymMapsUrl),
+            Arguments.of(toCallable(indexAsyncClient.listSynonymMapNames()), synonymMapsUrl),
+            Arguments.of(toCallable(indexAsyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, null)),
+                synonymUrl),
+            Arguments.of(toCallable(indexAsyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), null)),
+                synonymUrl),
+            Arguments.of(toCallable(indexAsyncClient.getServiceStatisticsWithResponse(null)), servicestatsUrl),
+            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(fromObject(alias), null)), aliasesUrl),
             Arguments.of(
-                toCallable(() -> searchIndexClient.createOrUpdateAliasWithResponse(alias, false, Context.NONE)),
-                aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.getAliasWithResponse("alias", Context.NONE)), aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.deleteAliasWithResponse(alias, true, Context.NONE)),
-                aliasUrl),
-            Arguments.of(toCallable(() -> searchIndexClient.listAliases(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/aliases"),
-            Arguments.of(toCallable(() -> searchIndexerClient.createOrUpdateDataSourceConnectionWithResponse(dataSource,
-                true, Context.NONE)), dataSourceUrl),
-            Arguments.of(
-                toCallable(() -> searchIndexerClient.createDataSourceConnectionWithResponse(dataSource, Context.NONE)),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(
-                toCallable(() -> searchIndexerClient.getDataSourceConnectionWithResponse("datasource", Context.NONE)),
+                toCallable(() -> indexClient.createOrUpdateAliasWithResponse(alias, null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.getAliasWithResponse("alias", null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.deleteAliasWithResponse(alias.getName(), null)), aliasUrl),
+            Arguments.of(toCallable(() -> indexClient.listAliases(null).iterator().hasNext()), aliasesUrl),
+            Arguments.of(toCallable(() -> indexerClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourceUrl),
             Arguments.of(
-                toCallable(() -> searchIndexerClient.listDataSourceConnections(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(
-                toCallable(() -> searchIndexerClient.listDataSourceConnectionNames(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(
-                toCallable(
-                    () -> searchIndexerClient.deleteDataSourceConnectionWithResponse(dataSource, true, Context.NONE)),
+                toCallable(() -> indexerClient.createDataSourceConnectionWithResponse(fromObject(dataSource), null)),
+                dataSourcesUrl),
+            Arguments.of(toCallable(() -> indexerClient.getDataSourceConnectionWithResponse("datasource", null)),
                 dataSourceUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.createIndexerWithResponse(indexer, Context.NONE)),
-                "https://test.search.windows.net/indexers"),
+            Arguments.of(toCallable(indexerClient::listDataSourceConnections), dataSourcesUrl),
+            Arguments.of(toCallable(indexerClient::listDataSourceConnectionNames), dataSourcesUrl),
             Arguments.of(
-                toCallable(() -> searchIndexerClient.createOrUpdateIndexerWithResponse(indexer, false, Context.NONE)),
+                toCallable(() -> indexerClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), null)),
+                dataSourceUrl),
+            Arguments.of(toCallable(() -> indexerClient.createIndexerWithResponse(fromObject(indexer), null)),
+                indexersUrl),
+            Arguments.of(toCallable(() -> indexerClient.createOrUpdateIndexerWithResponse(indexer, null)), indexerUrl),
+            Arguments.of(toCallable(indexerClient::listIndexers), indexersUrl),
+            Arguments.of(toCallable(indexerClient::listIndexerNames), indexersUrl),
+            Arguments.of(toCallable(() -> indexerClient.getIndexerWithResponse("indexer", null)), indexerUrl),
+            Arguments.of(toCallable(() -> indexerClient.deleteIndexerWithResponse(indexer.getName(), null)),
                 indexerUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.listIndexers(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(() -> searchIndexerClient.listIndexerNames(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(() -> searchIndexerClient.getIndexerWithResponse("indexer", Context.NONE)),
-                indexerUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.deleteIndexerWithResponse(indexer, true, Context.NONE)),
-                indexerUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.resetIndexerWithResponse("indexer", Context.NONE)),
+            Arguments.of(toCallable(() -> indexerClient.resetIndexerWithResponse("indexer", null)),
                 indexerUrl + "/search.reset"),
-            Arguments.of(toCallable(() -> searchIndexerClient.runIndexerWithResponse("indexer", Context.NONE)),
+            Arguments.of(toCallable(() -> indexerClient.runIndexerWithResponse("indexer", null)),
                 indexerUrl + "/search.run"),
-            Arguments.of(toCallable(() -> searchIndexerClient.getIndexerStatusWithResponse("indexer", Context.NONE)),
+            Arguments.of(toCallable(() -> indexerClient.getIndexerStatusWithResponse("indexer", null)),
                 indexerUrl + "/search.status"),
-            Arguments.of(toCallable(() -> searchIndexerClient.resetDocumentsWithResponse(indexer, null, emptyList(),
-                emptyList(), Context.NONE)), indexerUrl + "/search.resetdocs"),
-            Arguments.of(toCallable(() -> searchIndexerClient.createSkillsetWithResponse(skillset, Context.NONE)),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(() -> searchIndexerClient.getSkillsetWithResponse("skillset", Context.NONE)),
+            Arguments.of(toCallable(() -> indexerClient.resetDocumentsWithResponse(indexer.getName(), null)),
+                indexerUrl + "/search.resetdocs"),
+            Arguments.of(toCallable(() -> indexerClient.createSkillsetWithResponse(fromObject(skillset), null)),
+                skillsetsUrl),
+            Arguments.of(toCallable(() -> indexerClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
+            Arguments.of(toCallable(indexerClient::listSkillsets), skillsetsUrl),
+            Arguments.of(toCallable(indexerClient::listSkillsetNames), skillsetsUrl),
+            Arguments.of(toCallable(() -> indexerClient.createOrUpdateSkillsetWithResponse(skillset, null)),
                 skillsetUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.listSkillsets(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(() -> searchIndexerClient.listSkillsetNames(Context.NONE).iterator().hasNext()),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(
-                toCallable(() -> searchIndexerClient.createOrUpdateSkillsetWithResponse(skillset, false, Context.NONE)),
-                skillsetUrl),
-            Arguments.of(toCallable(() -> searchIndexerClient.deleteSkillsetWithResponse(skillset, true, Context.NONE)),
+            Arguments.of(toCallable(() -> indexerClient.deleteSkillsetWithResponse(skillset.getName(), null)),
                 skillsetUrl),
             Arguments.of(
-                toCallable(() -> searchIndexerClient.resetSkillsWithResponse(skillset, emptyList(), Context.NONE)),
+                toCallable(() -> indexerClient.resetSkillsWithResponse(skillset.getName(), fromObject(new SkillNames()), null)),
                 skillsetUrl + "/search.resetskills"),
 
             Arguments.of(
-                toCallable(searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, true)),
+                toCallable(indexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourceUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.createDataSourceConnectionWithResponse(dataSource)),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.getDataSourceConnectionWithResponse("datasource")),
+            Arguments.of(toCallable(indexerAsyncClient.createDataSourceConnectionWithResponse(fromObject(dataSource), null)),
+                dataSourcesUrl),
+            Arguments.of(toCallable(indexerAsyncClient.getDataSourceConnectionWithResponse("datasource", null)),
                 dataSourceUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listDataSourceConnections()),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listDataSourceConnectionNames()),
-                "https://test.search.windows.net/datasources"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.deleteDataSourceConnectionWithResponse(dataSource, true)),
-                dataSourceUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.createIndexerWithResponse(indexer)),
-                "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, false)),
-                indexerUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listIndexers()),
-                "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listIndexerNames()),
-                "https://test.search.windows.net/indexers"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.getIndexerWithResponse("indexer")), indexerUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.deleteIndexerWithResponse(indexer, true)), indexerUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.resetIndexerWithResponse("indexer")),
-                indexerUrl + "/search.reset"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.runIndexerWithResponse("indexer")),
-                indexerUrl + "/search.run"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.getIndexerStatusWithResponse("indexer")),
-                indexerUrl + "/search.status"),
+            Arguments.of(toCallable(indexerAsyncClient.listDataSourceConnections()), dataSourcesUrl),
+            Arguments.of(toCallable(indexerAsyncClient.listDataSourceConnectionNames()), dataSourcesUrl),
             Arguments.of(
-                toCallable(
-                    searchIndexerAsyncClient.resetDocumentsWithResponse(indexer, null, emptyList(), emptyList())),
+                toCallable(indexerAsyncClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), null)),
+                dataSourceUrl),
+            Arguments.of(toCallable(indexerAsyncClient.createIndexerWithResponse(fromObject(indexer), null)),
+                indexersUrl),
+            Arguments.of(toCallable(indexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null)), indexerUrl),
+            Arguments.of(toCallable(indexerAsyncClient.listIndexers()), indexersUrl),
+            Arguments.of(toCallable(indexerAsyncClient.listIndexerNames()), indexersUrl),
+            Arguments.of(toCallable(indexerAsyncClient.getIndexerWithResponse("indexer", null)), indexerUrl),
+            Arguments.of(toCallable(indexerAsyncClient.deleteIndexerWithResponse(indexer.getName(), null)), indexerUrl),
+            Arguments.of(toCallable(indexerAsyncClient.resetIndexerWithResponse("indexer", null)),
+                indexerUrl + "/search.reset"),
+            Arguments.of(toCallable(indexerAsyncClient.runIndexerWithResponse("indexer", null)),
+                indexerUrl + "/search.run"),
+            Arguments.of(toCallable(indexerAsyncClient.getIndexerStatusWithResponse("indexer", null)),
+                indexerUrl + "/search.status"),
+            Arguments.of(toCallable(indexerAsyncClient.resetDocumentsWithResponse(indexer.getName(), null)),
                 indexerUrl + "/search.resetdocs"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.createSkillsetWithResponse(skillset)),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.getSkillsetWithResponse("skillset")), skillsetUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listSkillsets()),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.listSkillsetNames()),
-                "https://test.search.windows.net/skillsets"),
-            Arguments.of(toCallable(searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(skillset, false)),
+            Arguments.of(toCallable(indexerAsyncClient.createSkillsetWithResponse(fromObject(skillset), null)),
+                skillsetsUrl),
+            Arguments.of(toCallable(indexerAsyncClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
+            Arguments.of(toCallable(indexerAsyncClient.listSkillsets()), skillsetsUrl),
+            Arguments.of(toCallable(indexerAsyncClient.listSkillsetNames()), skillsetsUrl),
+            Arguments.of(toCallable(indexerAsyncClient.createOrUpdateSkillsetWithResponse(skillset, null)),
                 skillsetUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.deleteSkillsetWithResponse(skillset, true)), skillsetUrl),
-            Arguments.of(toCallable(searchIndexerAsyncClient.resetSkillsWithResponse(skillset, emptyList())),
+            Arguments.of(toCallable(indexerAsyncClient.deleteSkillsetWithResponse(skillset.getName(), null)),
+                skillsetUrl),
+            Arguments.of(toCallable(indexerAsyncClient.resetSkillsWithResponse(skillset.getName(), fromObject(new SkillNames()), null)),
                 skillsetUrl + "/search.resetskills"));
     }
 

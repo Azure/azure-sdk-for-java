@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,6 +37,17 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean ignoreCase;
+
+    /**
+     * Creates an instance of KeywordMarkerTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keywords the keywords value to set.
+     */
+    public KeywordMarkerTokenFilter(String name, String... keywords) {
+        super(name);
+        this.keywords = (keywords == null) ? null : Arrays.asList(keywords);
+    }
 
     /**
      * Creates an instance of KeywordMarkerTokenFilter class.

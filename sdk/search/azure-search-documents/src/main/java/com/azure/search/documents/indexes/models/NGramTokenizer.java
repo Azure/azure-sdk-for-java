@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -116,6 +117,17 @@ public final class NGramTokenizer extends LexicalTokenizer {
     @Generated
     public List<TokenCharacterKind> getTokenChars() {
         return this.tokenChars;
+    }
+
+    /**
+     * Set the tokenChars property: Character classes to keep in the tokens.
+     *
+     * @param tokenChars the tokenChars value to set.
+     * @return the NGramTokenizer object itself.
+     */
+    public NGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
+        return this;
     }
 
     /**

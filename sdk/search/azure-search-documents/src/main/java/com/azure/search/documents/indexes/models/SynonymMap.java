@@ -62,6 +62,17 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
      * @param name the name value to set.
      * @param synonyms the synonyms value to set.
      */
+    public SynonymMap(String name, String... synonyms) {
+        this.name = name;
+        this.synonyms = (synonyms == null) ? null : Arrays.asList(synonyms);
+    }
+
+    /**
+     * Creates an instance of SynonymMap class.
+     *
+     * @param name the name value to set.
+     * @param synonyms the synonyms value to set.
+     */
     @Generated
     public SynonymMap(String name, List<String> synonyms) {
         this.name = name;

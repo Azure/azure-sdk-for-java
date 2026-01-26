@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -114,6 +115,17 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
     @Generated
     public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
+    }
+
+    /**
+     * Set the inputs property: The recursive inputs used when creating a complex type.
+     *
+     * @param inputs the inputs value to set.
+     * @return the InputFieldMappingEntry object itself.
+     */
+    public InputFieldMappingEntry setInputs(InputFieldMappingEntry... inputs) {
+        this.inputs = (inputs == null) ? null : Arrays.asList(inputs);
+        return this;
     }
 
     /**

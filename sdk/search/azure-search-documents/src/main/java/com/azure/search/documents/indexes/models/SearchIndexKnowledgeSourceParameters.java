@@ -113,7 +113,6 @@ public final class SearchIndexKnowledgeSourceParameters
      * @param searchFields the searchFields value to set.
      * @return the SearchIndexKnowledgeSourceParameters object itself.
      */
-    @Generated
     public SearchIndexKnowledgeSourceParameters setSearchFields(SearchIndexFieldReference... searchFields) {
         this.searchFields = (searchFields == null) ? null : Arrays.asList(searchFields);
         return this;

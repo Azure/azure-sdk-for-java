@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -89,6 +90,17 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
      * @param messages the messages value to set.
      * @return the KnowledgeBaseRetrievalRequest object itself.
      */
+    public KnowledgeBaseRetrievalRequest setMessages(KnowledgeBaseMessage... messages) {
+        this.messages = (messages == null) ? null : Arrays.asList(messages);
+        return this;
+    }
+
+    /**
+     * Set the messages property: A list of chat message style input.
+     *
+     * @param messages the messages value to set.
+     * @return the KnowledgeBaseRetrievalRequest object itself.
+     */
     @Generated
     public KnowledgeBaseRetrievalRequest setMessages(List<KnowledgeBaseMessage> messages) {
         this.messages = messages;
@@ -103,6 +115,17 @@ public final class KnowledgeBaseRetrievalRequest implements JsonSerializable<Kno
     @Generated
     public List<KnowledgeRetrievalIntent> getIntents() {
         return this.intents;
+    }
+
+    /**
+     * Set the intents property: A list of intended queries to execute without model query planning.
+     *
+     * @param intents the intents value to set.
+     * @return the KnowledgeBaseRetrievalRequest object itself.
+     */
+    public KnowledgeBaseRetrievalRequest setIntents(KnowledgeRetrievalIntent... intents) {
+        this.intents = (intents == null) ? null : Arrays.asList(intents);
+        return this;
     }
 
     /**

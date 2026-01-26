@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,6 +36,17 @@ public final class KeepTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean lowerCaseKeepWords;
+
+    /**
+     * Creates an instance of KeepTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param keepWords the keepWords value to set.
+     */
+    public KeepTokenFilter(String name, String... keepWords) {
+        super(name);
+        this.keepWords = (keepWords == null) ? null : Arrays.asList(keepWords);
+    }
 
     /**
      * Creates an instance of KeepTokenFilter class.

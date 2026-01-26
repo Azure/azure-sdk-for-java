@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -79,6 +80,17 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
     @Generated
     public List<String> getCategories() {
         return this.categories;
+    }
+
+    /**
+     * Set the categories property: A list of entity categories that should be extracted.
+     *
+     * @param categories the categories value to set.
+     * @return the EntityRecognitionSkillV3 object itself.
+     */
+    public EntityRecognitionSkillV3 setCategories(String... categories) {
+        this.categories = (categories == null) ? null : Arrays.asList(categories);
+        return this;
     }
 
     /**

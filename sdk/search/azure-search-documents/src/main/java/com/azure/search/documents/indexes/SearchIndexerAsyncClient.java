@@ -12,9 +12,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
@@ -28,10 +30,12 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
+import reactor.core.publisher.Mono;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous SearchIndexerClient type.
@@ -50,6 +54,24 @@ public final class SearchIndexerAsyncClient {
     @Generated
     SearchIndexerAsyncClient(SearchIndexerClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return serviceClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the endpoint for the Azure AI Search service.
+     *
+     * @return the endpoint value.
+     */
+    String getEndpoint() {
+        return serviceClient.getEndpoint();
     }
 
     /**
@@ -72,7 +94,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -113,9 +135,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -175,6 +197,129 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Creates a new datasource or updates a datasource if it already exists.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param dataSource The definition of the datasource to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
+     * on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateDataSourceConnectionWithResponseAsync(dataSource.getName(),
+            BinaryData.fromObject(dataSource), requestOptions)
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().toObject(SearchIndexerDataSourceConnection.class)));
+    }
+
+    /**
      * Deletes a datasource.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -203,7 +348,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -272,7 +417,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -335,7 +480,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new datasource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -376,9 +521,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -456,7 +601,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -502,7 +647,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -569,7 +714,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -648,9 +793,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -747,6 +892,205 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Creates a new indexer or updates an indexer if it already exists.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
+     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
+     * change detection.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param indexer The definition of the indexer to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateIndexerWithResponseAsync(indexer.getName(),
+            BinaryData.fromObject(indexer), requestOptions)
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexer.class)));
+    }
+
+    /**
      * Deletes an indexer.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -775,7 +1119,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -881,7 +1225,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -980,9 +1324,26 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Lists all indexers available for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListIndexersResult>> listIndexersWithResponse(RequestOptions requestOptions) {
+        return getIndexersWithResponse(requestOptions)
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ListIndexersResult.class)));
+    }
+
+    /**
      * Creates a new indexer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1061,9 +1422,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1160,7 +1521,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1267,7 +1628,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1385,9 +1746,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1523,6 +1884,283 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Creates a new skillset in a search service or updates the skillset if it already exists.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
+     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
+     * change detection.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param skillset The skillset containing one or more skills to create or update in a search service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateSkillsetWithResponseAsync(skillset.getName(),
+            BinaryData.fromObject(skillset), requestOptions)
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexerSkillset.class)));
+    }
+
+    /**
      * Deletes a skillset in a search service.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1551,7 +2189,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a skillset in a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1696,7 +2334,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1836,7 +2474,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1954,9 +2592,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2092,7 +2730,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Reset an existing skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2157,6 +2795,24 @@ public final class SearchIndexerAsyncClient {
         return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Creates a new datasource or updates a datasource if it already exists.
+     *
+     * @param dataSource The definition of the datasource to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
+        return createOrUpdateDataSourceConnection(dataSource.getName(), dataSource);
     }
 
     /**
@@ -2251,6 +2907,38 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListDataSourcesResult> listDataSourceConnections() {
+        return getDataSourceConnections();
+    }
+
+    /**
+     * Lists the names of all datasources available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<String>> listDataSourceConnectionNames() {
+        return getDataSourceConnections(Collections.singletonList("name"))
+            .map(result -> result.getDataSources().stream().map(SearchIndexerDataSourceConnection::getName)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -2483,6 +3171,23 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new indexer or updates an indexer if it already exists.
      *
+     * @param indexer The definition of the indexer to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an indexer on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
+        return createOrUpdateIndexer(indexer.getName(), indexer);
+    }
+
+    /**
+     * Creates a new indexer or updates an indexer if it already exists.
+     *
      * @param name The name of the indexer.
      * @param indexer The definition of the indexer to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2598,6 +3303,37 @@ public final class SearchIndexerAsyncClient {
         }
         return getIndexersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ListIndexersResult.class));
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListIndexersResult> listIndexers() {
+        return getIndexers();
+    }
+
+    /**
+     * Lists all indexer names available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<String>> listIndexerNames() {
+        return getIndexers(Collections.singletonList("name"))
+            .map(result -> result.getIndexers().stream().map(SearchIndexer::getName).collect(Collectors.toList()));
     }
 
     /**
@@ -2730,6 +3466,23 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Creates a new skillset in a search service or updates the skillset if it already exists.
+     *
+     * @param skillset The skillset containing one or more skills to create or update in a search service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
+        return createOrUpdateSkillset(skillset.getName(), skillset);
+    }
+
+    /**
      * Deletes a skillset in a search service.
      *
      * @param name The name of the skillset.
@@ -2843,6 +3596,37 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getSkillsetsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ListSkillsetsResult.class));
+    }
+
+    /**
+     * List all skillsets in a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListSkillsetsResult> listSkillsets() {
+        return getSkillsets();
+    }
+
+    /**
+     * List the names of all skillsets in a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<String>> listSkillsetNames() {
+        return getSkillsets(Collections.singletonList("name")).map(result -> result.getSkillsets().stream()
+            .map(SearchIndexerSkillset::getName).collect(Collectors.toList()));
     }
 
     /**

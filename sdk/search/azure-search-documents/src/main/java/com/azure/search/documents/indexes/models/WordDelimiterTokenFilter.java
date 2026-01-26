@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -333,6 +334,17 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     @Generated
     public List<String> getProtectedWords() {
         return this.protectedWords;
+    }
+
+    /**
+     * Set the protectedWords property: A list of tokens to protect from being delimited.
+     *
+     * @param protectedWords the protectedWords value to set.
+     * @return the WordDelimiterTokenFilter object itself.
+     */
+    public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
+        this.protectedWords = (protectedWords == null) ? null : Arrays.asList(protectedWords);
+        return this;
     }
 
     /**

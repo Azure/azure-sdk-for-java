@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,6 +49,17 @@ public final class SynonymTokenFilter extends TokenFilter {
      */
     @Generated
     private Boolean expand;
+
+    /**
+     * Creates an instance of SynonymTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param synonyms the synonyms value to set.
+     */
+    public SynonymTokenFilter(String name, String... synonyms) {
+        super(name);
+        this.synonyms = (synonyms == null) ? null : Arrays.asList(synonyms);
+    }
 
     /**
      * Creates an instance of SynonymTokenFilter class.

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -59,6 +60,17 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     @Generated
     public List<String> getStopwords() {
         return this.stopwords;
+    }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the StopAnalyzer object itself.
+     */
+    public StopAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        return this;
     }
 
     /**

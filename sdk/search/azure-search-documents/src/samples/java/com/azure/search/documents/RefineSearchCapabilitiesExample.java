@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
@@ -20,11 +21,12 @@ import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceLimits;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.WebApiHttpHeaders;
 import com.azure.search.documents.indexes.models.WebApiSkill;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.IndexDocumentsResult;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -82,11 +84,11 @@ public class RefineSearchCapabilitiesExample {
         SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs,
             "https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
-            .setHttpHeaders(headers)
+            .setHttpHeaders(new WebApiHttpHeaders().setAdditionalProperties(headers))
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset(skillsetName, Collections.singletonList(webApiSkill))
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(skillsetName, webApiSkill)
             .setDescription("Skillset for testing custom skillsets");
 
         client.createOrUpdateSkillset(skillset);
@@ -110,13 +112,13 @@ public class RefineSearchCapabilitiesExample {
 
     private static void uploadDocumentsToIndex(SearchClient client) {
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300")));
 
         // Perform index operations on a list of documents
-        IndexDocumentsResult result = client.mergeOrUploadDocuments(hotels);
+        IndexDocumentsResult result = client.indexDocuments(batch);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 
@@ -130,7 +132,8 @@ public class RefineSearchCapabilitiesExample {
         SearchIndex index = client.getIndex(INDEX_NAME);
         List<SearchField> fields = index.getFields();
         fields.get(1).setSynonymMapNames(synonymMapName);
-        index.setFields(fields);
+        index.getFields().clear();
+        index.getFields().addAll(fields);
 
         client.createOrUpdateIndex(index);
         System.out.printf("Updated index %s with synonym map %s on field %s%n", INDEX_NAME, synonymMapName, "HotelName");

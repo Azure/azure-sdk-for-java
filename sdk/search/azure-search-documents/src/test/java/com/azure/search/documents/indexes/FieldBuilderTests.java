@@ -43,14 +43,14 @@ public class FieldBuilderTests {
     @Test
     public void hotelSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(HotelSearchException.class, null));
+            () -> SearchIndexClient.buildSearchFields(HotelSearchException.class));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.INT32, "getHotelId");
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(HotelSearchableExceptionOnList.class, null));
+            () -> SearchIndexClient.buildSearchFields(HotelSearchableExceptionOnList.class));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32),
             "getPasscode");
     }
@@ -58,7 +58,7 @@ public class FieldBuilderTests {
     @Test
     public void hotelCircularDependencies() {
         List<SearchField> actualFields
-            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelCircularDependencies.class, null));
+            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelCircularDependencies.class));
         List<SearchField> expectedFields = sortByFieldName(buildHotelCircularDependenciesModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
@@ -67,13 +67,13 @@ public class FieldBuilderTests {
     @Disabled("Temporarily disabled")
     public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
-        List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithEmptyInSynonymMaps.class, null);
+        List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithEmptyInSynonymMaps.class);
 
         List<SearchField> expectedFields = Collections.singletonList(
             new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING)).setSearchable(true)
                 .setKey(false)
                 .setStored(true)
-                .setHidden(false)
+                .setRetrievable(true)
                 .setFilterable(false)
                 .setSortable(false)
                 .setFacetable(false)
@@ -85,14 +85,14 @@ public class FieldBuilderTests {
     @Test
     public void hotelWithTwoDimensionalType() {
         Exception exception = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(HotelTwoDimensional.class, null));
+            () -> SearchIndexClient.buildSearchFields(HotelTwoDimensional.class));
         assertExceptionMassageAndDataType(exception, null, "single-dimensional");
     }
 
     @Test
     public void hotelAnalyzerException() {
         Exception exception = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(HotelAnalyzerException.class, null));
+            () -> SearchIndexClient.buildSearchFields(HotelAnalyzerException.class));
         assertExceptionMassageAndDataType(exception, null, "either analyzer or both searchAnalyzer and indexAnalyzer");
     }
 
@@ -100,7 +100,7 @@ public class FieldBuilderTests {
     @Disabled("Temporarily disabled")
     public void hotelWithArrayType() {
         List<SearchField> actualFields
-            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelWithArray.class, null));
+            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelWithArray.class));
         List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
@@ -108,7 +108,7 @@ public class FieldBuilderTests {
     @Test
     public void propertyRename() {
         List<SearchField> actualFields
-            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelRenameProperty.class, null));
+            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelRenameProperty.class));
         List<String> expectedFieldNames = Arrays.asList("HotelName", "hotelId", "description");
         Collections.sort(expectedFieldNames);
         assertEquals(expectedFieldNames.get(0), actualFields.get(0).getName());
@@ -118,14 +118,14 @@ public class FieldBuilderTests {
 
     @Test
     public void ignoredPropertyName() {
-        List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithIgnoredFields.class, null);
+        List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithIgnoredFields.class);
         assertEquals(1, actualFields.size());
         assertEquals("notIgnoredName", actualFields.get(0).getName());
     }
 
     @Test
     public void supportedFields() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class);
 
         assertEquals(25, fields.size());
 
@@ -340,7 +340,7 @@ public class FieldBuilderTests {
 
     @Test
     public void validNormalizerField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class);
 
         assertEquals(1, fields.size());
 
@@ -350,34 +350,33 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class ValidNormalizer {
-        @SimpleField(normalizerName = "standard", isFilterable = true)
+        @SimpleField(name = "validNormalizer", normalizerName = "standard", isFilterable = true)
         public String validNormalizer;
     }
 
     @ParameterizedTest
     @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
     public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex
-            = assertThrows(RuntimeException.class, () -> SearchIndexClient.buildSearchFields(type, null));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> SearchIndexClient.buildSearchFields(type));
 
         assertTrue(ex.getMessage().contains("A field with a normalizer name"));
     }
 
     @SuppressWarnings("unused")
     public static final class NonStringNormalizer {
-        @SimpleField(normalizerName = "standard")
+        @SimpleField(name = "wrongTypeForNormalizer", normalizerName = "standard")
         public int wrongTypeForNormalizer;
     }
 
     @SuppressWarnings("unused")
     public static final class MissingFunctionalityNormalizer {
-        @SimpleField(normalizerName = "standard")
+        @SimpleField(name = "rightTypeWrongFunctionality", normalizerName = "standard")
         public String rightTypeWrongFunctionality;
     }
 
     @Test
     public void onlyAnalyzerNameSetsOnlyAnalyzerName() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(OnlyAnalyzerName.class, null);
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(OnlyAnalyzerName.class);
 
         assertEquals(1, fields.size());
 
@@ -389,13 +388,13 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class OnlyAnalyzerName {
-        @SearchableField(analyzerName = "onlyAnalyzer")
+        @SearchableField(name = "onlyAnalyzer", analyzerName = "onlyAnalyzer")
         public String onlyAnalyzer;
     }
 
     @Test
     public void indexAndSearchAnalyzersSetCorrectly() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(IndexAndSearchAnalyzerNames.class, null);
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(IndexAndSearchAnalyzerNames.class);
 
         assertEquals(1, fields.size());
 
@@ -407,13 +406,14 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class IndexAndSearchAnalyzerNames {
-        @SearchableField(indexAnalyzerName = "indexAnalyzer", searchAnalyzerName = "searchAnalyzer")
+        @SearchableField(name = "indexAndSearchAnalyzer", indexAnalyzerName = "indexAnalyzer",
+            searchAnalyzerName = "searchAnalyzer")
         public String indexAndSearchAnalyzer;
     }
 
     @Test
     public void vectorSearchField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class, null);
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class);
 
         assertEquals(1, fields.size());
 
@@ -424,35 +424,36 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class VectorSearchField {
-        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "myprofile")
+        @SearchableField(name = "vectorSearchField", vectorSearchDimensions = 1536,
+            vectorSearchProfileName = "myprofile")
         public List<Float> vectorSearchField;
     }
 
     @Test
     public void vectorFieldMissingDimensions() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class, null));
+            () -> SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class));
 
         assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
     }
 
     @SuppressWarnings("unused")
     public static final class VectorFieldMissingDimensions {
-        @SearchableField(vectorSearchProfileName = "myprofile")
+        @SearchableField(name = "vectorSearchField", vectorSearchProfileName = "myprofile")
         public List<Float> vectorSearchField;
     }
 
     @Test
     public void vectorFieldMissingProfile() {
         RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class, null));
+            () -> SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class));
 
         assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
     }
 
     @SuppressWarnings("unused")
     public static final class VectorFieldMissingProfile {
-        @SearchableField(vectorSearchDimensions = 1536)
+        @SearchableField(name = "vectorSearchField", vectorSearchDimensions = 1536)
         public List<Float> vectorSearchField;
     }
 
@@ -479,21 +480,20 @@ public class FieldBuilderTests {
     }
 
     private List<SearchField> buildHotelInAddress() {
-        SearchField hotel = new SearchField("hotel", SearchFieldDataType.COMPLEX);
-        return Collections.singletonList(hotel);
+        return Collections.singletonList(new SearchField("hotel", SearchFieldDataType.COMPLEX));
     }
 
     private List<SearchField> buildHotelWithArrayModel() {
         SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true)
             .setSortable(true)
             .setStored(true)
-            .setHidden(false)
+            .setRetrievable(true)
             .setSearchable(false)
             .setFacetable(false)
             .setFilterable(false);
         SearchField tags
             = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING)).setKey(false)
-                .setHidden(false)
+                .setRetrievable(true)
                 .setStored(true)
                 .setSearchable(true)
                 .setSortable(false)

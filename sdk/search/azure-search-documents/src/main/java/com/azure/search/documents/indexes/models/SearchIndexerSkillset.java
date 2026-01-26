@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -71,6 +72,17 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
      */
     @Generated
     private SearchResourceEncryptionKey encryptionKey;
+
+    /**
+     * Creates an instance of SearchIndexerSkillset class.
+     *
+     * @param name the name value to set.
+     * @param skills the skills value to set.
+     */
+    public SearchIndexerSkillset(String name, SearchIndexerSkill... skills) {
+        this.name = name;
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
+    }
 
     /**
      * Creates an instance of SearchIndexerSkillset class.
