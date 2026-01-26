@@ -96,6 +96,7 @@ public class HubRegionProcessingOnlyTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        System.clearProperty("COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
     }
 
     /**
