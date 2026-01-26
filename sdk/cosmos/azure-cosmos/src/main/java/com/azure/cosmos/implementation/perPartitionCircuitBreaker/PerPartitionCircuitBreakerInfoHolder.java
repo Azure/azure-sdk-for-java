@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
+    public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder();
+
     private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> perPartitionCircuitBreakerInfoHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
 
     public synchronized void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {

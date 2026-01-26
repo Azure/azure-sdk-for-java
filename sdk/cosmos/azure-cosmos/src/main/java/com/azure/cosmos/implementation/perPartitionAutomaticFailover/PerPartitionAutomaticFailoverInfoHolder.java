@@ -14,6 +14,8 @@ import java.io.Serializable;
 @JsonSerialize(using = PerPartitionAutomaticFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
 public class PerPartitionAutomaticFailoverInfoHolder implements Serializable {
 
+    public static final PerPartitionAutomaticFailoverInfoHolder EMPTY = new PerPartitionAutomaticFailoverInfoHolder();
+
     private final Utils.ValueHolder<PartitionLevelAutomaticFailoverInfo> partitionLevelFailoverInfoValueHolder = new Utils.ValueHolder<>();
 
     public synchronized PartitionLevelAutomaticFailoverInfo getPartitionLevelFailoverInfo() {
