@@ -6,7 +6,7 @@ package com.azure.cosmos.spark.utils
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.PartitionKeyDefinition
-import com.azure.cosmos.spark.{BulkWriter, CosmosContainerConfig, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteBulkExecutorConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
+import com.azure.cosmos.spark.{BulkWriter, CosmosContainerConfig, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteBulkExecutionConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -173,7 +173,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
    5,
    bulkEnabled = true,
    bulkTransactional = false,
-   bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+   bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
    patchConfigs = Some(patchConfigs))
 
   new BulkWriter(
@@ -198,7 +198,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
          5,
          bulkEnabled = true,
          bulkTransactional = false,
-         bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+         bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
          patchConfigs = Some(patchConfigs))
 
      new BulkWriter(

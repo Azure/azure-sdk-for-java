@@ -37,7 +37,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val metricsPublisher = new TestOutputMetricsPublisher
@@ -85,7 +85,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val bulkWriter = new BulkWriter(
@@ -140,7 +140,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         5,
         bulkEnabled = true,
         bulkTransactional = false,
-        bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+        bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
         bulkMaxPendingOperations = Some(900))
 
       val bulkWriter = new BulkWriter(
@@ -213,7 +213,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
         5,
         bulkEnabled = true,
         bulkTransactional = false,
-        bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+        bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
         bulkMaxPendingOperations = Some(900))
 
       val metricsPublisher = new TestOutputMetricsPublisher
@@ -276,7 +276,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val metricsPublisher = new TestOutputMetricsPublisher
@@ -316,7 +316,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val bulkDeleter = new BulkWriter(
@@ -353,7 +353,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val bulkWriter = new BulkWriter(
@@ -421,7 +421,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
 
     val bulkDeleter = new BulkWriter(
@@ -453,7 +453,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       maxRetryCount = 5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900))
     val bulkWriter = new BulkWriter(
       container,
@@ -495,7 +495,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -621,7 +621,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -753,7 +753,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -835,7 +835,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -921,7 +921,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -984,7 +984,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -1064,7 +1064,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      Some(CosmosWriteBulkExecutorConfigs()),
+      Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -1128,7 +1128,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -1207,7 +1207,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
         )
 
@@ -1271,7 +1271,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       5,
       bulkEnabled = true,
       bulkTransactional = false,
-      bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+      bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
       bulkMaxPendingOperations = Some(900)
     )
 
@@ -1382,7 +1382,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
 
@@ -1431,7 +1431,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
 
@@ -1481,7 +1481,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
       )
 
@@ -1564,7 +1564,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
             5,
             bulkEnabled = true,
             bulkTransactional = false,
-            bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+            bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
             bulkMaxPendingOperations = Some(900)
         )
 
@@ -1623,7 +1623,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
             5,
             bulkEnabled = true,
             bulkTransactional = false,
-            bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+            bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
             bulkMaxPendingOperations = Some(900)
         )
 
@@ -1690,7 +1690,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
             5,
             bulkEnabled = true,
             bulkTransactional = false,
-            bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+            bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
             bulkMaxPendingOperations = Some(900)
         )
 

@@ -766,7 +766,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
         )
 
@@ -1308,7 +1308,7 @@ class PointWriterSubpartitionITest extends IntegrationSpec with CosmosClient wit
                   5,
                   bulkEnabled = true,
                   bulkTransactional = false,
-                  bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+                  bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
                   bulkMaxPendingOperations = Some(900)
               )
 

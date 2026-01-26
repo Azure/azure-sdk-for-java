@@ -977,7 +977,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     var writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
     writeConfig.bulkExecutionConfigs should not be null
-    var bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutorConfigs]
+    var bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
@@ -991,7 +991,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     writeConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
     writeConfig.bulkExecutionConfigs should not be null
-    bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutorConfigs]
+    bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
     bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000

@@ -98,7 +98,6 @@ final class BulkExecutorUtil {
 
         headers.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(result.getSubStatusCode()));
         headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(result.getRequestCharge()));
-        // TODO[Annie]: what about etag
 
         if (result.getRetryAfterDuration() != null) {
             headers.put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, String.valueOf(result.getRetryAfterDuration().toMillis()));

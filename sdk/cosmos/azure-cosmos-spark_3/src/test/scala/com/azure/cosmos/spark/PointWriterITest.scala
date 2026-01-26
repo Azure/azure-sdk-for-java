@@ -801,7 +801,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           5,
           bulkEnabled = true,
           bulkTransactional = false,
-          bulkExecutionConfigs = Some(CosmosWriteBulkExecutorConfigs()),
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
         )
 
