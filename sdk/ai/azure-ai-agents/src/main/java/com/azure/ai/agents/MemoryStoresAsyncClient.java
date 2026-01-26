@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.MemoryStoresImpl;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.models.CreateMemoryStoreRequest;
 import com.azure.ai.agents.implementation.models.DeleteScopeRequest;
 import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
@@ -35,6 +36,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
+import com.openai.models.responses.ResponseInputItem;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -846,9 +848,8 @@ public final class MemoryStoresAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return memory search response on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<InputItem> items,
+    Mono<MemoryStoreSearchResponse> _searchMemories(String name, String scope, List<InputItem> items,
         String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -858,6 +859,31 @@ public final class MemoryStoresAsyncClient {
         BinaryData searchMemoriesRequest = BinaryData.fromObject(searchMemoriesRequestObj);
         return searchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(MemoryStoreSearchResponse.class));
+    }
+
+    /**
+     * Search for relevant memories from a memory store based on conversation context.
+     *
+     * @param name The name of the memory store to search.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Items for which to search for relevant memories.
+     * @param previousSearchId The unique ID of the previous search request, enabling incremental memory search from
+     * where the last operation left off.
+     * @param options Memory search options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memory search response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<ResponseInputItem> items,
+        String previousSearchId, MemorySearchOptions options) {
+        // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
+        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
+        return _searchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
     /**
@@ -880,9 +906,8 @@ public final class MemoryStoresAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+    PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> _beginUpdateMemories(String name,
         String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -891,6 +916,34 @@ public final class MemoryStoresAsyncClient {
             .setUpdateDelay(updateDelay);
         BinaryData updateMemoriesRequest = BinaryData.fromObject(updateMemoriesRequestObj);
         return serviceClient.beginUpdateMemoriesWithModelAsync(name, updateMemoriesRequest, requestOptions);
+    }
+
+    /**
+     * Update memory store with conversation memories.
+     *
+     * @param name The name of the memory store to update.
+     * @param scope The namespace that logically groups and isolates memories, such as a user ID.
+     * @param items Conversation items from which to extract memories (OpenAI SDK type).
+     * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
+     * where the last operation left off.
+     * @param updateDelay Timeout period before processing the memory update in seconds.
+     * If a new update request is received during this period, it will cancel the current request and reset the timeout.
+     * Set to 0 to immediately trigger the update without delay.
+     * Defaults to 300 (5 minutes).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of provides the status of a memory store update operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+        String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelay) {
+        // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
+        List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
+        return _beginUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
     }
 
     /**

@@ -3,13 +3,23 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.DeleteMemoryStoreResponse;
+import com.azure.ai.agents.models.MemoryOperation;
+import com.azure.ai.agents.models.MemorySearchItem;
+import com.azure.ai.agents.models.MemorySearchOptions;
+import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
+import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
+import com.azure.ai.agents.models.MemoryStoreDefinition;
+import com.azure.ai.agents.models.MemoryStoreDetails;
+import com.azure.ai.agents.models.MemoryStoreSearchResponse;
+import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
+import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
+import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
+import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
-import com.openai.models.responses.ResponseInputMessageItem;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseInputItem;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -67,8 +77,7 @@ public class MemoryStoresTests extends ClientTestBase {
 
         // List Memory Stores and ensure the updated one is present
         boolean found = false;
-        for (MemoryStoreDetails store : memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null,
-            null)) {
+        for (MemoryStoreDetails store : memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null, null)) {
             assertNotNull(store.getId());
             assertNotNull(store.getName());
             if (store.getName().equals(updatedStore.getName())) {
@@ -118,11 +127,7 @@ public class MemoryStoresTests extends ClientTestBase {
 
         // Add memories to the memory store
         ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(userMessageContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(userMessageContent).build());
         // beginUpdateMemories returns a poller
         SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> updatePoller
             = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(userMessage), null, 1);
@@ -144,15 +149,8 @@ public class MemoryStoresTests extends ClientTestBase {
             assertNotNull(operation.getMemoryItem().getContent());
         }
 
-        // Retrieve memories from the memory store
-//        ResponsesUserMessageItemParam queryMessage
-//            = new ResponsesUserMessageItemParam(BinaryData.fromString(queryMessageContent));
         ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(queryMessageContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);
         MemoryStoreSearchResponse searchResponse = memoryStoreClient.searchMemories(memoryStoreName, scope,
@@ -206,14 +204,8 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(memoryStore);
         assertEquals(memoryStoreName, memoryStore.getName());
 
-//        ResponsesUserMessageItemParam initialMessage
-//            = new ResponsesUserMessageItemParam(BinaryData.fromString(firstMessageContent));
         ResponseInputItem initialMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(firstMessageContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(firstMessageContent).build());
         SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> initialPoller
             = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(initialMessage), null, 300);
 
@@ -222,14 +214,8 @@ public class MemoryStoresTests extends ClientTestBase {
         String initialUpdateId = initialResponse.getUpdateId();
         assertNotNull(initialUpdateId);
 
-//        ResponsesUserMessageItemParam chainedMessage
-//            = new ResponsesUserMessageItemParam(BinaryData.fromString(chainedMessageContent));
         ResponseInputItem chainedMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(chainedMessageContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(chainedMessageContent).build());
         SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> chainedPoller = memoryStoreClient
             .beginUpdateMemories(memoryStoreName, scope, Arrays.asList(chainedMessage), initialUpdateId, 0);
 
@@ -250,14 +236,8 @@ public class MemoryStoresTests extends ClientTestBase {
             assertNotNull(operation.getMemoryItem().getContent());
         }
 
-//        ResponsesUserMessageItemParam searchQuery
-//            = new ResponsesUserMessageItemParam(BinaryData.fromString(queryMessageContent));
         ResponseInputItem searchQuery = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(queryMessageContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);
 
@@ -273,22 +253,10 @@ public class MemoryStoresTests extends ClientTestBase {
         String previousSearchId = searchResponse.getSearchId();
         assertNotNull(previousSearchId);
 
-//        ResponsesAssistantMessageItemParam agentMessage
-//            = new ResponsesAssistantMessageItemParam(BinaryData.fromString(followupContextContent));
-//        ResponsesUserMessageItemParam followupQuery
-//            = new ResponsesUserMessageItemParam(BinaryData.fromString(followupQuestionContent));
         ResponseInputItem agentMessage = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.ASSISTANT)
-                .content(followupContextContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.ASSISTANT).content(followupContextContent).build());
         ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(
-            EasyInputMessage.builder()
-                .role(EasyInputMessage.Role.USER)
-                .content(followupQuestionContent)
-                .build()
-        );
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(followupQuestionContent).build());
 
         MemoryStoreSearchResponse followupSearch = memoryStoreClient.searchMemories(memoryStoreName, scope,
             Arrays.asList(agentMessage, followupQuery), previousSearchId, searchOptions);
