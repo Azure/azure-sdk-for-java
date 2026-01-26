@@ -11,18 +11,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Apply patch tool call
+ * Apply patch tool call output
  *
- * A tool call representing a request to create, delete, or update files using diff patches.
+ * The streamed output emitted by an apply patch tool call.
  */
 @Fluent
-public final class ApplyPatchToolCallItemParam extends Item {
+public final class InputItemApplyPatchToolCallOutputItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.APPLY_PATCH_CALL;
+    private InputItemType type = InputItemType.APPLY_PATCH_CALL_OUTPUT;
 
     /*
      * The id property.
@@ -37,30 +37,27 @@ public final class ApplyPatchToolCallItemParam extends Item {
     private final String callId;
 
     /*
-     * The status of the apply patch tool call. One of `in_progress` or `completed`.
+     * The status of the apply patch tool call output. One of `completed` or `failed`.
      */
     @Generated
-    private final ApplyPatchCallStatusParam status;
+    private final ApplyPatchCallOutputStatusParam status;
 
     /*
-     * The specific create, delete, or update instruction for the apply_patch tool call.
+     * The output property.
      */
     @Generated
-    private final ApplyPatchOperationParam operation;
+    private String output;
 
     /**
-     * Creates an instance of ApplyPatchToolCallItemParam class.
+     * Creates an instance of InputItemApplyPatchToolCallOutputItemParam class.
      *
      * @param callId the callId value to set.
      * @param status the status value to set.
-     * @param operation the operation value to set.
      */
     @Generated
-    public ApplyPatchToolCallItemParam(String callId, ApplyPatchCallStatusParam status,
-        ApplyPatchOperationParam operation) {
+    public InputItemApplyPatchToolCallOutputItemParam(String callId, ApplyPatchCallOutputStatusParam status) {
         this.callId = callId;
         this.status = status;
-        this.operation = operation;
     }
 
     /**
@@ -70,7 +67,7 @@ public final class ApplyPatchToolCallItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -88,10 +85,10 @@ public final class ApplyPatchToolCallItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the ApplyPatchToolCallItemParam object itself.
+     * @return the InputItemApplyPatchToolCallOutputItemParam object itself.
      */
     @Generated
-    public ApplyPatchToolCallItemParam setId(String id) {
+    public InputItemApplyPatchToolCallOutputItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -107,23 +104,35 @@ public final class ApplyPatchToolCallItemParam extends Item {
     }
 
     /**
-     * Get the status property: The status of the apply patch tool call. One of `in_progress` or `completed`.
+     * Get the status property: The status of the apply patch tool call output. One of `completed` or `failed`.
      *
      * @return the status value.
      */
     @Generated
-    public ApplyPatchCallStatusParam getStatus() {
+    public ApplyPatchCallOutputStatusParam getStatus() {
         return this.status;
     }
 
     /**
-     * Get the operation property: The specific create, delete, or update instruction for the apply_patch tool call.
+     * Get the output property: The output property.
      *
-     * @return the operation value.
+     * @return the output value.
      */
     @Generated
-    public ApplyPatchOperationParam getOperation() {
-        return this.operation;
+    public String getOutput() {
+        return this.output;
+    }
+
+    /**
+     * Set the output property: The output property.
+     *
+     * @param output the output value to set.
+     * @return the InputItemApplyPatchToolCallOutputItemParam object itself.
+     */
+    @Generated
+    public InputItemApplyPatchToolCallOutputItemParam setOutput(String output) {
+        this.output = output;
+        return this;
     }
 
     /**
@@ -135,51 +144,52 @@ public final class ApplyPatchToolCallItemParam extends Item {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("call_id", this.callId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("operation", this.operation);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("output", this.output);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ApplyPatchToolCallItemParam from the JsonReader.
+     * Reads an instance of InputItemApplyPatchToolCallOutputItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplyPatchToolCallItemParam if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of InputItemApplyPatchToolCallOutputItemParam if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ApplyPatchToolCallItemParam.
+     * @throws IOException If an error occurs while reading the InputItemApplyPatchToolCallOutputItemParam.
      */
     @Generated
-    public static ApplyPatchToolCallItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemApplyPatchToolCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
-            ApplyPatchCallStatusParam status = null;
-            ApplyPatchOperationParam operation = null;
-            ItemType type = ItemType.APPLY_PATCH_CALL;
+            ApplyPatchCallOutputStatusParam status = null;
+            InputItemType type = InputItemType.APPLY_PATCH_CALL_OUTPUT;
             String id = null;
+            String output = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ApplyPatchCallStatusParam.fromString(reader.getString());
-                } else if ("operation".equals(fieldName)) {
-                    operation = ApplyPatchOperationParam.fromJson(reader);
+                    status = ApplyPatchCallOutputStatusParam.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("output".equals(fieldName)) {
+                    output = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ApplyPatchToolCallItemParam deserializedApplyPatchToolCallItemParam
-                = new ApplyPatchToolCallItemParam(callId, status, operation);
-            deserializedApplyPatchToolCallItemParam.type = type;
-            deserializedApplyPatchToolCallItemParam.id = id;
-            return deserializedApplyPatchToolCallItemParam;
+            InputItemApplyPatchToolCallOutputItemParam deserializedInputItemApplyPatchToolCallOutputItemParam
+                = new InputItemApplyPatchToolCallOutputItemParam(callId, status);
+            deserializedInputItemApplyPatchToolCallOutputItemParam.type = type;
+            deserializedInputItemApplyPatchToolCallOutputItemParam.id = id;
+            deserializedInputItemApplyPatchToolCallOutputItemParam.output = output;
+            return deserializedInputItemApplyPatchToolCallOutputItemParam;
         });
     }
 }

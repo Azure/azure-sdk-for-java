@@ -18,13 +18,13 @@ import java.io.IOException;
  * [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for more information.
  */
 @Immutable
-public final class ItemWebSearchToolCall extends Item {
+public final class InputItemWebSearchToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.WEB_SEARCH_CALL;
+    private InputItemType type = InputItemType.WEB_SEARCH_CALL;
 
     /*
      * The unique ID of the web search tool call.
@@ -46,14 +46,14 @@ public final class ItemWebSearchToolCall extends Item {
     private final BinaryData action;
 
     /**
-     * Creates an instance of ItemWebSearchToolCall class.
+     * Creates an instance of InputItemWebSearchToolCall class.
      *
      * @param id the id value to set.
      * @param status the status value to set.
      * @param action the action value to set.
      */
     @Generated
-    public ItemWebSearchToolCall(String id, OutputItemWebSearchToolCallStatus status, BinaryData action) {
+    public InputItemWebSearchToolCall(String id, OutputItemWebSearchToolCallStatus status, BinaryData action) {
         this.id = id;
         this.status = status;
         this.action = action;
@@ -66,7 +66,7 @@ public final class ItemWebSearchToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -117,21 +117,21 @@ public final class ItemWebSearchToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemWebSearchToolCall from the JsonReader.
+     * Reads an instance of InputItemWebSearchToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemWebSearchToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemWebSearchToolCall if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemWebSearchToolCall.
+     * @throws IOException If an error occurs while reading the InputItemWebSearchToolCall.
      */
     @Generated
-    public static ItemWebSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemWebSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             OutputItemWebSearchToolCallStatus status = null;
             BinaryData action = null;
-            ItemType type = ItemType.WEB_SEARCH_CALL;
+            InputItemType type = InputItemType.WEB_SEARCH_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -142,14 +142,15 @@ public final class ItemWebSearchToolCall extends Item {
                 } else if ("action".equals(fieldName)) {
                     action = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemWebSearchToolCall deserializedItemWebSearchToolCall = new ItemWebSearchToolCall(id, status, action);
-            deserializedItemWebSearchToolCall.type = type;
-            return deserializedItemWebSearchToolCall;
+            InputItemWebSearchToolCall deserializedInputItemWebSearchToolCall
+                = new InputItemWebSearchToolCall(id, status, action);
+            deserializedInputItemWebSearchToolCall.type = type;
+            return deserializedInputItemWebSearchToolCall;
         });
     }
 }

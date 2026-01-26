@@ -16,13 +16,13 @@ import java.io.IOException;
  * A tool representing a request to execute one or more shell commands.
  */
 @Fluent
-public final class FunctionShellCallItemParam extends Item {
+public final class InputItemFunctionShellCallItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.SHELL_CALL;
+    private InputItemType type = InputItemType.SHELL_CALL;
 
     /*
      * The id property.
@@ -49,13 +49,13 @@ public final class FunctionShellCallItemParam extends Item {
     private FunctionShellCallItemStatus status;
 
     /**
-     * Creates an instance of FunctionShellCallItemParam class.
+     * Creates an instance of InputItemFunctionShellCallItemParam class.
      *
      * @param callId the callId value to set.
      * @param action the action value to set.
      */
     @Generated
-    public FunctionShellCallItemParam(String callId, FunctionShellActionParam action) {
+    public InputItemFunctionShellCallItemParam(String callId, FunctionShellActionParam action) {
         this.callId = callId;
         this.action = action;
     }
@@ -67,7 +67,7 @@ public final class FunctionShellCallItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -85,10 +85,10 @@ public final class FunctionShellCallItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the FunctionShellCallItemParam object itself.
+     * @return the InputItemFunctionShellCallItemParam object itself.
      */
     @Generated
-    public FunctionShellCallItemParam setId(String id) {
+    public InputItemFunctionShellCallItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -127,10 +127,10 @@ public final class FunctionShellCallItemParam extends Item {
      * Set the status property: The status property.
      *
      * @param status the status value to set.
-     * @return the FunctionShellCallItemParam object itself.
+     * @return the InputItemFunctionShellCallItemParam object itself.
      */
     @Generated
-    public FunctionShellCallItemParam setStatus(FunctionShellCallItemStatus status) {
+    public InputItemFunctionShellCallItemParam setStatus(FunctionShellCallItemStatus status) {
         this.status = status;
         return this;
     }
@@ -151,20 +151,20 @@ public final class FunctionShellCallItemParam extends Item {
     }
 
     /**
-     * Reads an instance of FunctionShellCallItemParam from the JsonReader.
+     * Reads an instance of InputItemFunctionShellCallItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellCallItemParam if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of InputItemFunctionShellCallItemParam if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FunctionShellCallItemParam.
+     * @throws IOException If an error occurs while reading the InputItemFunctionShellCallItemParam.
      */
     @Generated
-    public static FunctionShellCallItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemFunctionShellCallItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             FunctionShellActionParam action = null;
-            ItemType type = ItemType.SHELL_CALL;
+            InputItemType type = InputItemType.SHELL_CALL;
             String id = null;
             FunctionShellCallItemStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -175,7 +175,7 @@ public final class FunctionShellCallItemParam extends Item {
                 } else if ("action".equals(fieldName)) {
                     action = FunctionShellActionParam.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -184,12 +184,12 @@ public final class FunctionShellCallItemParam extends Item {
                     reader.skipChildren();
                 }
             }
-            FunctionShellCallItemParam deserializedFunctionShellCallItemParam
-                = new FunctionShellCallItemParam(callId, action);
-            deserializedFunctionShellCallItemParam.type = type;
-            deserializedFunctionShellCallItemParam.id = id;
-            deserializedFunctionShellCallItemParam.status = status;
-            return deserializedFunctionShellCallItemParam;
+            InputItemFunctionShellCallItemParam deserializedInputItemFunctionShellCallItemParam
+                = new InputItemFunctionShellCallItemParam(callId, action);
+            deserializedInputItemFunctionShellCallItemParam.type = type;
+            deserializedInputItemFunctionShellCallItemParam.id = id;
+            deserializedInputItemFunctionShellCallItemParam.status = status;
+            return deserializedInputItemFunctionShellCallItemParam;
         });
     }
 }

@@ -18,13 +18,13 @@ import java.util.List;
  * A tool call to run code.
  */
 @Immutable
-public final class ItemCodeInterpreterToolCall extends Item {
+public final class InputItemCodeInterpreterToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.CODE_INTERPRETER_CALL;
+    private InputItemType type = InputItemType.CODE_INTERPRETER_CALL;
 
     /*
      * The unique ID of the code interpreter tool call.
@@ -58,7 +58,7 @@ public final class ItemCodeInterpreterToolCall extends Item {
     private final List<BinaryData> outputs;
 
     /**
-     * Creates an instance of ItemCodeInterpreterToolCall class.
+     * Creates an instance of InputItemCodeInterpreterToolCall class.
      *
      * @param id the id value to set.
      * @param status the status value to set.
@@ -67,8 +67,8 @@ public final class ItemCodeInterpreterToolCall extends Item {
      * @param outputs the outputs value to set.
      */
     @Generated
-    public ItemCodeInterpreterToolCall(String id, OutputItemCodeInterpreterToolCallStatus status, String containerId,
-        String code, List<BinaryData> outputs) {
+    public InputItemCodeInterpreterToolCall(String id, OutputItemCodeInterpreterToolCallStatus status,
+        String containerId, String code, List<BinaryData> outputs) {
         this.id = id;
         this.status = status;
         this.containerId = containerId;
@@ -83,7 +83,7 @@ public final class ItemCodeInterpreterToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -156,23 +156,23 @@ public final class ItemCodeInterpreterToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemCodeInterpreterToolCall from the JsonReader.
+     * Reads an instance of InputItemCodeInterpreterToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemCodeInterpreterToolCall if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of InputItemCodeInterpreterToolCall if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemCodeInterpreterToolCall.
+     * @throws IOException If an error occurs while reading the InputItemCodeInterpreterToolCall.
      */
     @Generated
-    public static ItemCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             OutputItemCodeInterpreterToolCallStatus status = null;
             String containerId = null;
             String code = null;
             List<BinaryData> outputs = null;
-            ItemType type = ItemType.CODE_INTERPRETER_CALL;
+            InputItemType type = InputItemType.CODE_INTERPRETER_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -188,15 +188,15 @@ public final class ItemCodeInterpreterToolCall extends Item {
                     outputs = reader.readArray(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemCodeInterpreterToolCall deserializedItemCodeInterpreterToolCall
-                = new ItemCodeInterpreterToolCall(id, status, containerId, code, outputs);
-            deserializedItemCodeInterpreterToolCall.type = type;
-            return deserializedItemCodeInterpreterToolCall;
+            InputItemCodeInterpreterToolCall deserializedInputItemCodeInterpreterToolCall
+                = new InputItemCodeInterpreterToolCall(id, status, containerId, code, outputs);
+            deserializedInputItemCodeInterpreterToolCall.type = type;
+            return deserializedInputItemCodeInterpreterToolCall;
         });
     }
 }

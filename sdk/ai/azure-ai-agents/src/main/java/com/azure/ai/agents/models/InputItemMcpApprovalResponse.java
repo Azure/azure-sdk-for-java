@@ -16,13 +16,13 @@ import java.io.IOException;
  * A response to an MCP approval request.
  */
 @Fluent
-public final class MCPApprovalResponse extends Item {
+public final class InputItemMcpApprovalResponse extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MCP_APPROVAL_RESPONSE;
+    private InputItemType type = InputItemType.MCP_APPROVAL_RESPONSE;
 
     /*
      * The id property.
@@ -49,13 +49,13 @@ public final class MCPApprovalResponse extends Item {
     private String reason;
 
     /**
-     * Creates an instance of MCPApprovalResponse class.
+     * Creates an instance of InputItemMcpApprovalResponse class.
      *
      * @param approvalRequestId the approvalRequestId value to set.
      * @param approved the approved value to set.
      */
     @Generated
-    public MCPApprovalResponse(String approvalRequestId, boolean approved) {
+    public InputItemMcpApprovalResponse(String approvalRequestId, boolean approved) {
         this.approvalRequestId = approvalRequestId;
         this.approved = approved;
     }
@@ -67,7 +67,7 @@ public final class MCPApprovalResponse extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -85,10 +85,10 @@ public final class MCPApprovalResponse extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the MCPApprovalResponse object itself.
+     * @return the InputItemMcpApprovalResponse object itself.
      */
     @Generated
-    public MCPApprovalResponse setId(String id) {
+    public InputItemMcpApprovalResponse setId(String id) {
         this.id = id;
         return this;
     }
@@ -127,10 +127,10 @@ public final class MCPApprovalResponse extends Item {
      * Set the reason property: The reason property.
      *
      * @param reason the reason value to set.
-     * @return the MCPApprovalResponse object itself.
+     * @return the InputItemMcpApprovalResponse object itself.
      */
     @Generated
-    public MCPApprovalResponse setReason(String reason) {
+    public InputItemMcpApprovalResponse setReason(String reason) {
         this.reason = reason;
         return this;
     }
@@ -151,20 +151,20 @@ public final class MCPApprovalResponse extends Item {
     }
 
     /**
-     * Reads an instance of MCPApprovalResponse from the JsonReader.
+     * Reads an instance of InputItemMcpApprovalResponse from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of MCPApprovalResponse if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of InputItemMcpApprovalResponse if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MCPApprovalResponse.
+     * @throws IOException If an error occurs while reading the InputItemMcpApprovalResponse.
      */
     @Generated
-    public static MCPApprovalResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemMcpApprovalResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String approvalRequestId = null;
             boolean approved = false;
-            ItemType type = ItemType.MCP_APPROVAL_RESPONSE;
+            InputItemType type = InputItemType.MCP_APPROVAL_RESPONSE;
             String id = null;
             String reason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -175,7 +175,7 @@ public final class MCPApprovalResponse extends Item {
                 } else if ("approve".equals(fieldName)) {
                     approved = reader.getBoolean();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("reason".equals(fieldName)) {
@@ -184,11 +184,12 @@ public final class MCPApprovalResponse extends Item {
                     reader.skipChildren();
                 }
             }
-            MCPApprovalResponse deserializedMCPApprovalResponse = new MCPApprovalResponse(approvalRequestId, approved);
-            deserializedMCPApprovalResponse.type = type;
-            deserializedMCPApprovalResponse.id = id;
-            deserializedMCPApprovalResponse.reason = reason;
-            return deserializedMCPApprovalResponse;
+            InputItemMcpApprovalResponse deserializedInputItemMcpApprovalResponse
+                = new InputItemMcpApprovalResponse(approvalRequestId, approved);
+            deserializedInputItemMcpApprovalResponse.type = type;
+            deserializedInputItemMcpApprovalResponse.id = id;
+            deserializedInputItemMcpApprovalResponse.reason = reason;
+            return deserializedInputItemMcpApprovalResponse;
         });
     }
 }

@@ -16,13 +16,13 @@ import java.io.IOException;
  * A tool call to run a command on the local shell.
  */
 @Immutable
-public final class ItemLocalShellToolCall extends Item {
+public final class InputItemLocalShellToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.LOCAL_SHELL_CALL;
+    private InputItemType type = InputItemType.LOCAL_SHELL_CALL;
 
     /*
      * The unique ID of the local shell call.
@@ -49,7 +49,7 @@ public final class ItemLocalShellToolCall extends Item {
     private final OutputItemLocalShellToolCallStatus status;
 
     /**
-     * Creates an instance of ItemLocalShellToolCall class.
+     * Creates an instance of InputItemLocalShellToolCall class.
      *
      * @param id the id value to set.
      * @param callId the callId value to set.
@@ -57,7 +57,7 @@ public final class ItemLocalShellToolCall extends Item {
      * @param status the status value to set.
      */
     @Generated
-    public ItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
+    public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
         OutputItemLocalShellToolCallStatus status) {
         this.id = id;
         this.callId = callId;
@@ -72,7 +72,7 @@ public final class ItemLocalShellToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -132,22 +132,22 @@ public final class ItemLocalShellToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemLocalShellToolCall from the JsonReader.
+     * Reads an instance of InputItemLocalShellToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemLocalShellToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemLocalShellToolCall if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemLocalShellToolCall.
+     * @throws IOException If an error occurs while reading the InputItemLocalShellToolCall.
      */
     @Generated
-    public static ItemLocalShellToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemLocalShellToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String callId = null;
             LocalShellExecAction action = null;
             OutputItemLocalShellToolCallStatus status = null;
-            ItemType type = ItemType.LOCAL_SHELL_CALL;
+            InputItemType type = InputItemType.LOCAL_SHELL_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -160,15 +160,15 @@ public final class ItemLocalShellToolCall extends Item {
                 } else if ("status".equals(fieldName)) {
                     status = OutputItemLocalShellToolCallStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemLocalShellToolCall deserializedItemLocalShellToolCall
-                = new ItemLocalShellToolCall(id, callId, action, status);
-            deserializedItemLocalShellToolCall.type = type;
-            return deserializedItemLocalShellToolCall;
+            InputItemLocalShellToolCall deserializedInputItemLocalShellToolCall
+                = new InputItemLocalShellToolCall(id, callId, action, status);
+            deserializedInputItemLocalShellToolCall.type = type;
+            return deserializedInputItemLocalShellToolCall;
         });
     }
 }

@@ -17,13 +17,13 @@ import java.util.List;
  * The streamed output items emitted by a shell tool call.
  */
 @Fluent
-public final class FunctionShellCallOutputItemParam extends Item {
+public final class InputItemFunctionShellCallOutputItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.SHELL_CALL_OUTPUT;
+    private InputItemType type = InputItemType.SHELL_CALL_OUTPUT;
 
     /*
      * The id property.
@@ -50,13 +50,13 @@ public final class FunctionShellCallOutputItemParam extends Item {
     private Long maxOutputLength;
 
     /**
-     * Creates an instance of FunctionShellCallOutputItemParam class.
+     * Creates an instance of InputItemFunctionShellCallOutputItemParam class.
      *
      * @param callId the callId value to set.
      * @param output the output value to set.
      */
     @Generated
-    public FunctionShellCallOutputItemParam(String callId, List<FunctionShellCallOutputContentParam> output) {
+    public InputItemFunctionShellCallOutputItemParam(String callId, List<FunctionShellCallOutputContentParam> output) {
         this.callId = callId;
         this.output = output;
     }
@@ -68,7 +68,7 @@ public final class FunctionShellCallOutputItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -86,10 +86,10 @@ public final class FunctionShellCallOutputItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the FunctionShellCallOutputItemParam object itself.
+     * @return the InputItemFunctionShellCallOutputItemParam object itself.
      */
     @Generated
-    public FunctionShellCallOutputItemParam setId(String id) {
+    public InputItemFunctionShellCallOutputItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -128,10 +128,10 @@ public final class FunctionShellCallOutputItemParam extends Item {
      * Set the maxOutputLength property: The max_output_length property.
      *
      * @param maxOutputLength the maxOutputLength value to set.
-     * @return the FunctionShellCallOutputItemParam object itself.
+     * @return the InputItemFunctionShellCallOutputItemParam object itself.
      */
     @Generated
-    public FunctionShellCallOutputItemParam setMaxOutputLength(Long maxOutputLength) {
+    public InputItemFunctionShellCallOutputItemParam setMaxOutputLength(Long maxOutputLength) {
         this.maxOutputLength = maxOutputLength;
         return this;
     }
@@ -152,20 +152,20 @@ public final class FunctionShellCallOutputItemParam extends Item {
     }
 
     /**
-     * Reads an instance of FunctionShellCallOutputItemParam from the JsonReader.
+     * Reads an instance of InputItemFunctionShellCallOutputItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellCallOutputItemParam if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of InputItemFunctionShellCallOutputItemParam if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FunctionShellCallOutputItemParam.
+     * @throws IOException If an error occurs while reading the InputItemFunctionShellCallOutputItemParam.
      */
     @Generated
-    public static FunctionShellCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemFunctionShellCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             List<FunctionShellCallOutputContentParam> output = null;
-            ItemType type = ItemType.SHELL_CALL_OUTPUT;
+            InputItemType type = InputItemType.SHELL_CALL_OUTPUT;
             String id = null;
             Long maxOutputLength = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -176,7 +176,7 @@ public final class FunctionShellCallOutputItemParam extends Item {
                 } else if ("output".equals(fieldName)) {
                     output = reader.readArray(reader1 -> FunctionShellCallOutputContentParam.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("max_output_length".equals(fieldName)) {
@@ -185,12 +185,12 @@ public final class FunctionShellCallOutputItemParam extends Item {
                     reader.skipChildren();
                 }
             }
-            FunctionShellCallOutputItemParam deserializedFunctionShellCallOutputItemParam
-                = new FunctionShellCallOutputItemParam(callId, output);
-            deserializedFunctionShellCallOutputItemParam.type = type;
-            deserializedFunctionShellCallOutputItemParam.id = id;
-            deserializedFunctionShellCallOutputItemParam.maxOutputLength = maxOutputLength;
-            return deserializedFunctionShellCallOutputItemParam;
+            InputItemFunctionShellCallOutputItemParam deserializedInputItemFunctionShellCallOutputItemParam
+                = new InputItemFunctionShellCallOutputItemParam(callId, output);
+            deserializedInputItemFunctionShellCallOutputItemParam.type = type;
+            deserializedInputItemFunctionShellCallOutputItemParam.id = id;
+            deserializedInputItemFunctionShellCallOutputItemParam.maxOutputLength = maxOutputLength;
+            return deserializedInputItemFunctionShellCallOutputItemParam;
         });
     }
 }

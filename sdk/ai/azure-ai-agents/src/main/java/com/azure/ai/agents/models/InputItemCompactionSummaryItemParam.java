@@ -17,13 +17,13 @@ import java.io.IOException;
  * API](https://platform.openai.com/docs/api-reference/responses/compact).
  */
 @Fluent
-public final class CompactionSummaryItemParam extends Item {
+public final class InputItemCompactionSummaryItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.COMPACTION;
+    private InputItemType type = InputItemType.COMPACTION;
 
     /*
      * The id property.
@@ -38,12 +38,12 @@ public final class CompactionSummaryItemParam extends Item {
     private final String encryptedContent;
 
     /**
-     * Creates an instance of CompactionSummaryItemParam class.
+     * Creates an instance of InputItemCompactionSummaryItemParam class.
      *
      * @param encryptedContent the encryptedContent value to set.
      */
     @Generated
-    public CompactionSummaryItemParam(String encryptedContent) {
+    public InputItemCompactionSummaryItemParam(String encryptedContent) {
         this.encryptedContent = encryptedContent;
     }
 
@@ -54,7 +54,7 @@ public final class CompactionSummaryItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -72,10 +72,10 @@ public final class CompactionSummaryItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the CompactionSummaryItemParam object itself.
+     * @return the InputItemCompactionSummaryItemParam object itself.
      */
     @Generated
-    public CompactionSummaryItemParam setId(String id) {
+    public InputItemCompactionSummaryItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -104,19 +104,19 @@ public final class CompactionSummaryItemParam extends Item {
     }
 
     /**
-     * Reads an instance of CompactionSummaryItemParam from the JsonReader.
+     * Reads an instance of InputItemCompactionSummaryItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CompactionSummaryItemParam if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of InputItemCompactionSummaryItemParam if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CompactionSummaryItemParam.
+     * @throws IOException If an error occurs while reading the InputItemCompactionSummaryItemParam.
      */
     @Generated
-    public static CompactionSummaryItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemCompactionSummaryItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String encryptedContent = null;
-            ItemType type = ItemType.COMPACTION;
+            InputItemType type = InputItemType.COMPACTION;
             String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -124,18 +124,18 @@ public final class CompactionSummaryItemParam extends Item {
                 if ("encrypted_content".equals(fieldName)) {
                     encryptedContent = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            CompactionSummaryItemParam deserializedCompactionSummaryItemParam
-                = new CompactionSummaryItemParam(encryptedContent);
-            deserializedCompactionSummaryItemParam.type = type;
-            deserializedCompactionSummaryItemParam.id = id;
-            return deserializedCompactionSummaryItemParam;
+            InputItemCompactionSummaryItemParam deserializedInputItemCompactionSummaryItemParam
+                = new InputItemCompactionSummaryItemParam(encryptedContent);
+            deserializedInputItemCompactionSummaryItemParam.type = type;
+            deserializedInputItemCompactionSummaryItemParam.id = id;
+            return deserializedInputItemCompactionSummaryItemParam;
         });
     }
 }

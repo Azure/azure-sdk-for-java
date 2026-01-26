@@ -5,45 +5,45 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for InputMessageResourceRole.
+ * Defines values for EasyInputMessageStatus.
  */
-public enum InputMessageResourceRole {
+public enum EasyInputMessageStatus {
     /**
-     * Enum value user.
+     * Enum value in_progress.
      */
-    USER("user"),
+    IN_PROGRESS("in_progress"),
 
     /**
-     * Enum value system.
+     * Enum value completed.
      */
-    SYSTEM("system"),
+    COMPLETED("completed"),
 
     /**
-     * Enum value developer.
+     * Enum value incomplete.
      */
-    DEVELOPER("developer");
+    INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a InputMessageResourceRole instance.
+     * The actual serialized value for a EasyInputMessageStatus instance.
      */
     private final String value;
 
-    InputMessageResourceRole(String value) {
+    EasyInputMessageStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a InputMessageResourceRole instance.
+     * Parses a serialized value to a EasyInputMessageStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed InputMessageResourceRole object, or null if unable to parse.
+     * @return the parsed EasyInputMessageStatus object, or null if unable to parse.
      */
-    public static InputMessageResourceRole fromString(String value) {
+    public static EasyInputMessageStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        InputMessageResourceRole[] items = InputMessageResourceRole.values();
-        for (InputMessageResourceRole item : items) {
+        EasyInputMessageStatus[] items = EasyInputMessageStatus.values();
+        for (EasyInputMessageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -16,13 +16,13 @@ import java.io.IOException;
  * An image generation request made by the model.
  */
 @Immutable
-public final class ItemImageGenToolCall extends Item {
+public final class InputItemImageGenToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.IMAGE_GENERATION_CALL;
+    private InputItemType type = InputItemType.IMAGE_GENERATION_CALL;
 
     /*
      * The unique ID of the image generation call.
@@ -43,14 +43,14 @@ public final class ItemImageGenToolCall extends Item {
     private final String result;
 
     /**
-     * Creates an instance of ItemImageGenToolCall class.
+     * Creates an instance of InputItemImageGenToolCall class.
      *
      * @param id the id value to set.
      * @param status the status value to set.
      * @param result the result value to set.
      */
     @Generated
-    public ItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
+    public InputItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
         this.id = id;
         this.status = status;
         this.result = result;
@@ -63,7 +63,7 @@ public final class ItemImageGenToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -112,21 +112,21 @@ public final class ItemImageGenToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemImageGenToolCall from the JsonReader.
+     * Reads an instance of InputItemImageGenToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemImageGenToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemImageGenToolCall if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemImageGenToolCall.
+     * @throws IOException If an error occurs while reading the InputItemImageGenToolCall.
      */
     @Generated
-    public static ItemImageGenToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemImageGenToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             OutputItemImageGenToolCallStatus status = null;
             String result = null;
-            ItemType type = ItemType.IMAGE_GENERATION_CALL;
+            InputItemType type = InputItemType.IMAGE_GENERATION_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -137,14 +137,15 @@ public final class ItemImageGenToolCall extends Item {
                 } else if ("result".equals(fieldName)) {
                     result = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemImageGenToolCall deserializedItemImageGenToolCall = new ItemImageGenToolCall(id, status, result);
-            deserializedItemImageGenToolCall.type = type;
-            return deserializedItemImageGenToolCall;
+            InputItemImageGenToolCall deserializedInputItemImageGenToolCall
+                = new InputItemImageGenToolCall(id, status, result);
+            deserializedInputItemImageGenToolCall.type = type;
+            return deserializedInputItemImageGenToolCall;
         });
     }
 }

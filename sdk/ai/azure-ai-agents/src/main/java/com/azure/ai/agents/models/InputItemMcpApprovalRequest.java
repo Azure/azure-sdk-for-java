@@ -16,13 +16,13 @@ import java.io.IOException;
  * A request for human approval of a tool invocation.
  */
 @Immutable
-public final class ItemMcpApprovalRequest extends Item {
+public final class InputItemMcpApprovalRequest extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MCP_APPROVAL_REQUEST;
+    private InputItemType type = InputItemType.MCP_APPROVAL_REQUEST;
 
     /*
      * The unique ID of the approval request.
@@ -49,7 +49,7 @@ public final class ItemMcpApprovalRequest extends Item {
     private final String arguments;
 
     /**
-     * Creates an instance of ItemMcpApprovalRequest class.
+     * Creates an instance of InputItemMcpApprovalRequest class.
      *
      * @param id the id value to set.
      * @param serverLabel the serverLabel value to set.
@@ -57,7 +57,7 @@ public final class ItemMcpApprovalRequest extends Item {
      * @param arguments the arguments value to set.
      */
     @Generated
-    public ItemMcpApprovalRequest(String id, String serverLabel, String name, String arguments) {
+    public InputItemMcpApprovalRequest(String id, String serverLabel, String name, String arguments) {
         this.id = id;
         this.serverLabel = serverLabel;
         this.name = name;
@@ -71,7 +71,7 @@ public final class ItemMcpApprovalRequest extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -131,22 +131,22 @@ public final class ItemMcpApprovalRequest extends Item {
     }
 
     /**
-     * Reads an instance of ItemMcpApprovalRequest from the JsonReader.
+     * Reads an instance of InputItemMcpApprovalRequest from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemMcpApprovalRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemMcpApprovalRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemMcpApprovalRequest.
+     * @throws IOException If an error occurs while reading the InputItemMcpApprovalRequest.
      */
     @Generated
-    public static ItemMcpApprovalRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemMcpApprovalRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String serverLabel = null;
             String name = null;
             String arguments = null;
-            ItemType type = ItemType.MCP_APPROVAL_REQUEST;
+            InputItemType type = InputItemType.MCP_APPROVAL_REQUEST;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -159,15 +159,15 @@ public final class ItemMcpApprovalRequest extends Item {
                 } else if ("arguments".equals(fieldName)) {
                     arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemMcpApprovalRequest deserializedItemMcpApprovalRequest
-                = new ItemMcpApprovalRequest(id, serverLabel, name, arguments);
-            deserializedItemMcpApprovalRequest.type = type;
-            return deserializedItemMcpApprovalRequest;
+            InputItemMcpApprovalRequest deserializedInputItemMcpApprovalRequest
+                = new InputItemMcpApprovalRequest(id, serverLabel, name, arguments);
+            deserializedInputItemMcpApprovalRequest.type = type;
+            return deserializedInputItemMcpApprovalRequest;
         });
     }
 }

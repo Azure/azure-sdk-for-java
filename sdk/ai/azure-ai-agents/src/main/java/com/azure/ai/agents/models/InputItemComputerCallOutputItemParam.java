@@ -17,13 +17,13 @@ import java.util.List;
  * The output of a computer tool call.
  */
 @Fluent
-public final class ComputerCallOutputItemParam extends Item {
+public final class InputItemComputerCallOutputItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.COMPUTER_CALL_OUTPUT;
+    private InputItemType type = InputItemType.COMPUTER_CALL_OUTPUT;
 
     /*
      * The id property.
@@ -56,13 +56,13 @@ public final class ComputerCallOutputItemParam extends Item {
     private FunctionCallItemStatus status;
 
     /**
-     * Creates an instance of ComputerCallOutputItemParam class.
+     * Creates an instance of InputItemComputerCallOutputItemParam class.
      *
      * @param callId the callId value to set.
      * @param output the output value to set.
      */
     @Generated
-    public ComputerCallOutputItemParam(String callId, ComputerScreenshotImage output) {
+    public InputItemComputerCallOutputItemParam(String callId, ComputerScreenshotImage output) {
         this.callId = callId;
         this.output = output;
     }
@@ -74,7 +74,7 @@ public final class ComputerCallOutputItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -92,10 +92,10 @@ public final class ComputerCallOutputItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the ComputerCallOutputItemParam object itself.
+     * @return the InputItemComputerCallOutputItemParam object itself.
      */
     @Generated
-    public ComputerCallOutputItemParam setId(String id) {
+    public InputItemComputerCallOutputItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -134,10 +134,10 @@ public final class ComputerCallOutputItemParam extends Item {
      * Set the acknowledgedSafetyChecks property: The acknowledged_safety_checks property.
      *
      * @param acknowledgedSafetyChecks the acknowledgedSafetyChecks value to set.
-     * @return the ComputerCallOutputItemParam object itself.
+     * @return the InputItemComputerCallOutputItemParam object itself.
      */
     @Generated
-    public ComputerCallOutputItemParam
+    public InputItemComputerCallOutputItemParam
         setAcknowledgedSafetyChecks(List<ComputerCallSafetyCheckParam> acknowledgedSafetyChecks) {
         this.acknowledgedSafetyChecks = acknowledgedSafetyChecks;
         return this;
@@ -157,10 +157,10 @@ public final class ComputerCallOutputItemParam extends Item {
      * Set the status property: The status property.
      *
      * @param status the status value to set.
-     * @return the ComputerCallOutputItemParam object itself.
+     * @return the InputItemComputerCallOutputItemParam object itself.
      */
     @Generated
-    public ComputerCallOutputItemParam setStatus(FunctionCallItemStatus status) {
+    public InputItemComputerCallOutputItemParam setStatus(FunctionCallItemStatus status) {
         this.status = status;
         return this;
     }
@@ -183,20 +183,20 @@ public final class ComputerCallOutputItemParam extends Item {
     }
 
     /**
-     * Reads an instance of ComputerCallOutputItemParam from the JsonReader.
+     * Reads an instance of InputItemComputerCallOutputItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ComputerCallOutputItemParam if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of InputItemComputerCallOutputItemParam if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ComputerCallOutputItemParam.
+     * @throws IOException If an error occurs while reading the InputItemComputerCallOutputItemParam.
      */
     @Generated
-    public static ComputerCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemComputerCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             ComputerScreenshotImage output = null;
-            ItemType type = ItemType.COMPUTER_CALL_OUTPUT;
+            InputItemType type = InputItemType.COMPUTER_CALL_OUTPUT;
             String id = null;
             List<ComputerCallSafetyCheckParam> acknowledgedSafetyChecks = null;
             FunctionCallItemStatus status = null;
@@ -208,7 +208,7 @@ public final class ComputerCallOutputItemParam extends Item {
                 } else if ("output".equals(fieldName)) {
                     output = ComputerScreenshotImage.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("acknowledged_safety_checks".equals(fieldName)) {
@@ -220,13 +220,13 @@ public final class ComputerCallOutputItemParam extends Item {
                     reader.skipChildren();
                 }
             }
-            ComputerCallOutputItemParam deserializedComputerCallOutputItemParam
-                = new ComputerCallOutputItemParam(callId, output);
-            deserializedComputerCallOutputItemParam.type = type;
-            deserializedComputerCallOutputItemParam.id = id;
-            deserializedComputerCallOutputItemParam.acknowledgedSafetyChecks = acknowledgedSafetyChecks;
-            deserializedComputerCallOutputItemParam.status = status;
-            return deserializedComputerCallOutputItemParam;
+            InputItemComputerCallOutputItemParam deserializedInputItemComputerCallOutputItemParam
+                = new InputItemComputerCallOutputItemParam(callId, output);
+            deserializedInputItemComputerCallOutputItemParam.type = type;
+            deserializedInputItemComputerCallOutputItemParam.id = id;
+            deserializedInputItemComputerCallOutputItemParam.acknowledgedSafetyChecks = acknowledgedSafetyChecks;
+            deserializedInputItemComputerCallOutputItemParam.status = status;
+            return deserializedInputItemComputerCallOutputItemParam;
         });
     }
 }

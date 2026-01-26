@@ -17,13 +17,13 @@ import java.io.IOException;
  * [function calling guide](https://platform.openai.com/docs/guides/function-calling) for more information.
  */
 @Fluent
-public final class ItemFunctionToolCall extends Item {
+public final class InputItemFunctionToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.FUNCTION_CALL;
+    private InputItemType type = InputItemType.FUNCTION_CALL;
 
     /*
      * The unique ID of the function tool call.
@@ -57,14 +57,14 @@ public final class ItemFunctionToolCall extends Item {
     private OutputItemFunctionToolCallStatus status;
 
     /**
-     * Creates an instance of ItemFunctionToolCall class.
+     * Creates an instance of InputItemFunctionToolCall class.
      *
      * @param callId the callId value to set.
      * @param name the name value to set.
      * @param arguments the arguments value to set.
      */
     @Generated
-    public ItemFunctionToolCall(String callId, String name, String arguments) {
+    public InputItemFunctionToolCall(String callId, String name, String arguments) {
         this.callId = callId;
         this.name = name;
         this.arguments = arguments;
@@ -77,7 +77,7 @@ public final class ItemFunctionToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -95,10 +95,10 @@ public final class ItemFunctionToolCall extends Item {
      * Set the id property: The unique ID of the function tool call.
      *
      * @param id the id value to set.
-     * @return the ItemFunctionToolCall object itself.
+     * @return the InputItemFunctionToolCall object itself.
      */
     @Generated
-    public ItemFunctionToolCall setId(String id) {
+    public InputItemFunctionToolCall setId(String id) {
         this.id = id;
         return this;
     }
@@ -149,10 +149,10 @@ public final class ItemFunctionToolCall extends Item {
      * `incomplete`. Populated when items are returned via API.
      *
      * @param status the status value to set.
-     * @return the ItemFunctionToolCall object itself.
+     * @return the InputItemFunctionToolCall object itself.
      */
     @Generated
-    public ItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
+    public InputItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
         this.status = status;
         return this;
     }
@@ -174,21 +174,21 @@ public final class ItemFunctionToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemFunctionToolCall from the JsonReader.
+     * Reads an instance of InputItemFunctionToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemFunctionToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemFunctionToolCall if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemFunctionToolCall.
+     * @throws IOException If an error occurs while reading the InputItemFunctionToolCall.
      */
     @Generated
-    public static ItemFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             String name = null;
             String arguments = null;
-            ItemType type = ItemType.FUNCTION_CALL;
+            InputItemType type = InputItemType.FUNCTION_CALL;
             String id = null;
             OutputItemFunctionToolCallStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -201,7 +201,7 @@ public final class ItemFunctionToolCall extends Item {
                 } else if ("arguments".equals(fieldName)) {
                     arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -210,11 +210,12 @@ public final class ItemFunctionToolCall extends Item {
                     reader.skipChildren();
                 }
             }
-            ItemFunctionToolCall deserializedItemFunctionToolCall = new ItemFunctionToolCall(callId, name, arguments);
-            deserializedItemFunctionToolCall.type = type;
-            deserializedItemFunctionToolCall.id = id;
-            deserializedItemFunctionToolCall.status = status;
-            return deserializedItemFunctionToolCall;
+            InputItemFunctionToolCall deserializedInputItemFunctionToolCall
+                = new InputItemFunctionToolCall(callId, name, arguments);
+            deserializedInputItemFunctionToolCall.type = type;
+            deserializedInputItemFunctionToolCall.id = id;
+            deserializedInputItemFunctionToolCall.status = status;
+            return deserializedInputItemFunctionToolCall;
         });
     }
 }

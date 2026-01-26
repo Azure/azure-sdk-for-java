@@ -17,13 +17,13 @@ import java.io.IOException;
  * The output of a function tool call.
  */
 @Fluent
-public final class FunctionCallOutputItemParam extends Item {
+public final class InputItemFunctionCallOutputItemParam extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.FUNCTION_CALL_OUTPUT;
+    private InputItemType type = InputItemType.FUNCTION_CALL_OUTPUT;
 
     /*
      * The id property.
@@ -50,13 +50,13 @@ public final class FunctionCallOutputItemParam extends Item {
     private FunctionCallItemStatus status;
 
     /**
-     * Creates an instance of FunctionCallOutputItemParam class.
+     * Creates an instance of InputItemFunctionCallOutputItemParam class.
      *
      * @param callId the callId value to set.
      * @param output the output value to set.
      */
     @Generated
-    public FunctionCallOutputItemParam(String callId, BinaryData output) {
+    public InputItemFunctionCallOutputItemParam(String callId, BinaryData output) {
         this.callId = callId;
         this.output = output;
     }
@@ -68,7 +68,7 @@ public final class FunctionCallOutputItemParam extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -86,10 +86,10 @@ public final class FunctionCallOutputItemParam extends Item {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the FunctionCallOutputItemParam object itself.
+     * @return the InputItemFunctionCallOutputItemParam object itself.
      */
     @Generated
-    public FunctionCallOutputItemParam setId(String id) {
+    public InputItemFunctionCallOutputItemParam setId(String id) {
         this.id = id;
         return this;
     }
@@ -128,10 +128,10 @@ public final class FunctionCallOutputItemParam extends Item {
      * Set the status property: The status property.
      *
      * @param status the status value to set.
-     * @return the FunctionCallOutputItemParam object itself.
+     * @return the InputItemFunctionCallOutputItemParam object itself.
      */
     @Generated
-    public FunctionCallOutputItemParam setStatus(FunctionCallItemStatus status) {
+    public InputItemFunctionCallOutputItemParam setStatus(FunctionCallItemStatus status) {
         this.status = status;
         return this;
     }
@@ -153,20 +153,20 @@ public final class FunctionCallOutputItemParam extends Item {
     }
 
     /**
-     * Reads an instance of FunctionCallOutputItemParam from the JsonReader.
+     * Reads an instance of InputItemFunctionCallOutputItemParam from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionCallOutputItemParam if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of InputItemFunctionCallOutputItemParam if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FunctionCallOutputItemParam.
+     * @throws IOException If an error occurs while reading the InputItemFunctionCallOutputItemParam.
      */
     @Generated
-    public static FunctionCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemFunctionCallOutputItemParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             BinaryData output = null;
-            ItemType type = ItemType.FUNCTION_CALL_OUTPUT;
+            InputItemType type = InputItemType.FUNCTION_CALL_OUTPUT;
             String id = null;
             FunctionCallItemStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -177,7 +177,7 @@ public final class FunctionCallOutputItemParam extends Item {
                 } else if ("output".equals(fieldName)) {
                     output = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
@@ -186,12 +186,12 @@ public final class FunctionCallOutputItemParam extends Item {
                     reader.skipChildren();
                 }
             }
-            FunctionCallOutputItemParam deserializedFunctionCallOutputItemParam
-                = new FunctionCallOutputItemParam(callId, output);
-            deserializedFunctionCallOutputItemParam.type = type;
-            deserializedFunctionCallOutputItemParam.id = id;
-            deserializedFunctionCallOutputItemParam.status = status;
-            return deserializedFunctionCallOutputItemParam;
+            InputItemFunctionCallOutputItemParam deserializedInputItemFunctionCallOutputItemParam
+                = new InputItemFunctionCallOutputItemParam(callId, output);
+            deserializedInputItemFunctionCallOutputItemParam.type = type;
+            deserializedInputItemFunctionCallOutputItemParam.id = id;
+            deserializedInputItemFunctionCallOutputItemParam.status = status;
+            return deserializedInputItemFunctionCallOutputItemParam;
         });
     }
 }

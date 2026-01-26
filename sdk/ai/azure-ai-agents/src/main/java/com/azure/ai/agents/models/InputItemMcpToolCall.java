@@ -16,13 +16,13 @@ import java.io.IOException;
  * An invocation of a tool on an MCP server.
  */
 @Fluent
-public final class ItemMcpToolCall extends Item {
+public final class InputItemMcpToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MCP_CALL;
+    private InputItemType type = InputItemType.MCP_CALL;
 
     /*
      * The unique ID of the tool call.
@@ -73,7 +73,7 @@ public final class ItemMcpToolCall extends Item {
     private String approvalRequestId;
 
     /**
-     * Creates an instance of ItemMcpToolCall class.
+     * Creates an instance of InputItemMcpToolCall class.
      *
      * @param id the id value to set.
      * @param serverLabel the serverLabel value to set.
@@ -81,7 +81,7 @@ public final class ItemMcpToolCall extends Item {
      * @param arguments the arguments value to set.
      */
     @Generated
-    public ItemMcpToolCall(String id, String serverLabel, String name, String arguments) {
+    public InputItemMcpToolCall(String id, String serverLabel, String name, String arguments) {
         this.id = id;
         this.serverLabel = serverLabel;
         this.name = name;
@@ -95,7 +95,7 @@ public final class ItemMcpToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -153,10 +153,10 @@ public final class ItemMcpToolCall extends Item {
      * Set the output property: The output property.
      *
      * @param output the output value to set.
-     * @return the ItemMcpToolCall object itself.
+     * @return the InputItemMcpToolCall object itself.
      */
     @Generated
-    public ItemMcpToolCall setOutput(String output) {
+    public InputItemMcpToolCall setOutput(String output) {
         this.output = output;
         return this;
     }
@@ -175,10 +175,10 @@ public final class ItemMcpToolCall extends Item {
      * Set the error property: The error property.
      *
      * @param error the error value to set.
-     * @return the ItemMcpToolCall object itself.
+     * @return the InputItemMcpToolCall object itself.
      */
     @Generated
-    public ItemMcpToolCall setError(String error) {
+    public InputItemMcpToolCall setError(String error) {
         this.error = error;
         return this;
     }
@@ -199,10 +199,10 @@ public final class ItemMcpToolCall extends Item {
      * or `failed`.
      *
      * @param status the status value to set.
-     * @return the ItemMcpToolCall object itself.
+     * @return the InputItemMcpToolCall object itself.
      */
     @Generated
-    public ItemMcpToolCall setStatus(MCPToolCallStatus status) {
+    public InputItemMcpToolCall setStatus(MCPToolCallStatus status) {
         this.status = status;
         return this;
     }
@@ -221,10 +221,10 @@ public final class ItemMcpToolCall extends Item {
      * Set the approvalRequestId property: The approval_request_id property.
      *
      * @param approvalRequestId the approvalRequestId value to set.
-     * @return the ItemMcpToolCall object itself.
+     * @return the InputItemMcpToolCall object itself.
      */
     @Generated
-    public ItemMcpToolCall setApprovalRequestId(String approvalRequestId) {
+    public InputItemMcpToolCall setApprovalRequestId(String approvalRequestId) {
         this.approvalRequestId = approvalRequestId;
         return this;
     }
@@ -249,22 +249,22 @@ public final class ItemMcpToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemMcpToolCall from the JsonReader.
+     * Reads an instance of InputItemMcpToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemMcpToolCall if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of InputItemMcpToolCall if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemMcpToolCall.
+     * @throws IOException If an error occurs while reading the InputItemMcpToolCall.
      */
     @Generated
-    public static ItemMcpToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemMcpToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String serverLabel = null;
             String name = null;
             String arguments = null;
-            ItemType type = ItemType.MCP_CALL;
+            InputItemType type = InputItemType.MCP_CALL;
             String output = null;
             String error = null;
             MCPToolCallStatus status = null;
@@ -281,7 +281,7 @@ public final class ItemMcpToolCall extends Item {
                 } else if ("arguments".equals(fieldName)) {
                     arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
                     output = reader.getString();
                 } else if ("error".equals(fieldName)) {
@@ -294,13 +294,14 @@ public final class ItemMcpToolCall extends Item {
                     reader.skipChildren();
                 }
             }
-            ItemMcpToolCall deserializedItemMcpToolCall = new ItemMcpToolCall(id, serverLabel, name, arguments);
-            deserializedItemMcpToolCall.type = type;
-            deserializedItemMcpToolCall.output = output;
-            deserializedItemMcpToolCall.error = error;
-            deserializedItemMcpToolCall.status = status;
-            deserializedItemMcpToolCall.approvalRequestId = approvalRequestId;
-            return deserializedItemMcpToolCall;
+            InputItemMcpToolCall deserializedInputItemMcpToolCall
+                = new InputItemMcpToolCall(id, serverLabel, name, arguments);
+            deserializedInputItemMcpToolCall.type = type;
+            deserializedInputItemMcpToolCall.output = output;
+            deserializedInputItemMcpToolCall.error = error;
+            deserializedInputItemMcpToolCall.status = status;
+            deserializedInputItemMcpToolCall.approvalRequestId = approvalRequestId;
+            return deserializedInputItemMcpToolCall;
         });
     }
 }

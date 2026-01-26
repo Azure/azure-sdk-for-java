@@ -17,13 +17,13 @@ import java.io.IOException;
  * The output of a custom tool call from your code, being sent back to the model.
  */
 @Fluent
-public final class ItemCustomToolCallOutput extends Item {
+public final class InputItemCustomToolCallOutput extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.CUSTOM_TOOL_CALL_OUTPUT;
+    private InputItemType type = InputItemType.CUSTOM_TOOL_CALL_OUTPUT;
 
     /*
      * The unique ID of the custom tool call output in the OpenAI platform.
@@ -45,13 +45,13 @@ public final class ItemCustomToolCallOutput extends Item {
     private final BinaryData output;
 
     /**
-     * Creates an instance of ItemCustomToolCallOutput class.
+     * Creates an instance of InputItemCustomToolCallOutput class.
      *
      * @param callId the callId value to set.
      * @param output the output value to set.
      */
     @Generated
-    public ItemCustomToolCallOutput(String callId, BinaryData output) {
+    public InputItemCustomToolCallOutput(String callId, BinaryData output) {
         this.callId = callId;
         this.output = output;
     }
@@ -63,7 +63,7 @@ public final class ItemCustomToolCallOutput extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -81,10 +81,10 @@ public final class ItemCustomToolCallOutput extends Item {
      * Set the id property: The unique ID of the custom tool call output in the OpenAI platform.
      *
      * @param id the id value to set.
-     * @return the ItemCustomToolCallOutput object itself.
+     * @return the InputItemCustomToolCallOutput object itself.
      */
     @Generated
-    public ItemCustomToolCallOutput setId(String id) {
+    public InputItemCustomToolCallOutput setId(String id) {
         this.id = id;
         return this;
     }
@@ -126,20 +126,20 @@ public final class ItemCustomToolCallOutput extends Item {
     }
 
     /**
-     * Reads an instance of ItemCustomToolCallOutput from the JsonReader.
+     * Reads an instance of InputItemCustomToolCallOutput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemCustomToolCallOutput if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of InputItemCustomToolCallOutput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemCustomToolCallOutput.
+     * @throws IOException If an error occurs while reading the InputItemCustomToolCallOutput.
      */
     @Generated
-    public static ItemCustomToolCallOutput fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemCustomToolCallOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String callId = null;
             BinaryData output = null;
-            ItemType type = ItemType.CUSTOM_TOOL_CALL_OUTPUT;
+            InputItemType type = InputItemType.CUSTOM_TOOL_CALL_OUTPUT;
             String id = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -149,18 +149,18 @@ public final class ItemCustomToolCallOutput extends Item {
                 } else if ("output".equals(fieldName)) {
                     output = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemCustomToolCallOutput deserializedItemCustomToolCallOutput
-                = new ItemCustomToolCallOutput(callId, output);
-            deserializedItemCustomToolCallOutput.type = type;
-            deserializedItemCustomToolCallOutput.id = id;
-            return deserializedItemCustomToolCallOutput;
+            InputItemCustomToolCallOutput deserializedInputItemCustomToolCallOutput
+                = new InputItemCustomToolCallOutput(callId, output);
+            deserializedInputItemCustomToolCallOutput.type = type;
+            deserializedInputItemCustomToolCallOutput.id = id;
+            return deserializedInputItemCustomToolCallOutput;
         });
     }
 }

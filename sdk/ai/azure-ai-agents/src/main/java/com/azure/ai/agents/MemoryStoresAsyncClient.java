@@ -10,7 +10,7 @@ import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
 import com.azure.ai.agents.models.DeleteMemoryStoreResponse;
-import com.azure.ai.agents.models.Item;
+import com.azure.ai.agents.models.InputItem;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
@@ -301,7 +301,7 @@ public final class MemoryStoresAsyncClient {
      *     scope: String (Required)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
      *         }
      *     ]
      *     previous_search_id: String (Optional)
@@ -371,7 +371,7 @@ public final class MemoryStoresAsyncClient {
      *     scope: String (Required)
      *     items (Optional): [
      *          (Optional){
-     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/structured_outputs/workflow_action/memory_search_call/oauth_consent_request) (Required)
+     *             type: String(message/output_message/file_search_call/computer_call/computer_call_output/web_search_call/function_call/function_call_output/reasoning/compaction/image_generation_call/code_interpreter_call/local_shell_call/local_shell_call_output/shell_call/shell_call_output/apply_patch_call/apply_patch_call_output/mcp_list_tools/mcp_approval_request/mcp_approval_response/mcp_call/custom_tool_call_output/custom_tool_call/item_reference) (Required)
      *         }
      *     ]
      *     previous_update_id: String (Optional)
@@ -848,7 +848,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<Item> items,
+    public Mono<MemoryStoreSearchResponse> searchMemories(String name, String scope, List<InputItem> items,
         String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -883,7 +883,7 @@ public final class MemoryStoresAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
-        String scope, List<Item> items, String previousUpdateId, Integer updateDelay) {
+        String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)

@@ -17,13 +17,13 @@ import java.util.List;
  * A list of tools available on an MCP server.
  */
 @Fluent
-public final class ItemMcpListTools extends Item {
+public final class InputItemMcpListTools extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MCP_LIST_TOOLS;
+    private InputItemType type = InputItemType.MCP_LIST_TOOLS;
 
     /*
      * The unique ID of the list.
@@ -50,14 +50,14 @@ public final class ItemMcpListTools extends Item {
     private String error;
 
     /**
-     * Creates an instance of ItemMcpListTools class.
+     * Creates an instance of InputItemMcpListTools class.
      *
      * @param id the id value to set.
      * @param serverLabel the serverLabel value to set.
      * @param tools the tools value to set.
      */
     @Generated
-    public ItemMcpListTools(String id, String serverLabel, List<MCPListToolsTool> tools) {
+    public InputItemMcpListTools(String id, String serverLabel, List<MCPListToolsTool> tools) {
         this.id = id;
         this.serverLabel = serverLabel;
         this.tools = tools;
@@ -70,7 +70,7 @@ public final class ItemMcpListTools extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -118,10 +118,10 @@ public final class ItemMcpListTools extends Item {
      * Set the error property: The error property.
      *
      * @param error the error value to set.
-     * @return the ItemMcpListTools object itself.
+     * @return the InputItemMcpListTools object itself.
      */
     @Generated
-    public ItemMcpListTools setError(String error) {
+    public InputItemMcpListTools setError(String error) {
         this.error = error;
         return this;
     }
@@ -142,21 +142,21 @@ public final class ItemMcpListTools extends Item {
     }
 
     /**
-     * Reads an instance of ItemMcpListTools from the JsonReader.
+     * Reads an instance of InputItemMcpListTools from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemMcpListTools if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of InputItemMcpListTools if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemMcpListTools.
+     * @throws IOException If an error occurs while reading the InputItemMcpListTools.
      */
     @Generated
-    public static ItemMcpListTools fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemMcpListTools fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String serverLabel = null;
             List<MCPListToolsTool> tools = null;
-            ItemType type = ItemType.MCP_LIST_TOOLS;
+            InputItemType type = InputItemType.MCP_LIST_TOOLS;
             String error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -168,17 +168,17 @@ public final class ItemMcpListTools extends Item {
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> MCPListToolsTool.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
                     error = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemMcpListTools deserializedItemMcpListTools = new ItemMcpListTools(id, serverLabel, tools);
-            deserializedItemMcpListTools.type = type;
-            deserializedItemMcpListTools.error = error;
-            return deserializedItemMcpListTools;
+            InputItemMcpListTools deserializedInputItemMcpListTools = new InputItemMcpListTools(id, serverLabel, tools);
+            deserializedInputItemMcpListTools.type = type;
+            deserializedInputItemMcpListTools.error = error;
+            return deserializedInputItemMcpListTools;
         });
     }
 }

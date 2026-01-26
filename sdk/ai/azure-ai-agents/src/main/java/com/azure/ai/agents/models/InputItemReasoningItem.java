@@ -20,13 +20,13 @@ import java.util.List;
  * [managing context](https://platform.openai.com/docs/guides/conversation-state).
  */
 @Fluent
-public final class ItemReasoningItem extends Item {
+public final class InputItemReasoningItem extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.REASONING;
+    private InputItemType type = InputItemType.REASONING;
 
     /*
      * The unique identifier of the reasoning content.
@@ -60,13 +60,13 @@ public final class ItemReasoningItem extends Item {
     private OutputItemReasoningItemStatus status;
 
     /**
-     * Creates an instance of ItemReasoningItem class.
+     * Creates an instance of InputItemReasoningItem class.
      *
      * @param id the id value to set.
      * @param summary the summary value to set.
      */
     @Generated
-    public ItemReasoningItem(String id, List<Summary> summary) {
+    public InputItemReasoningItem(String id, List<Summary> summary) {
         this.id = id;
         this.summary = summary;
     }
@@ -78,7 +78,7 @@ public final class ItemReasoningItem extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -106,10 +106,10 @@ public final class ItemReasoningItem extends Item {
      * Set the encryptedContent property: The encrypted_content property.
      *
      * @param encryptedContent the encryptedContent value to set.
-     * @return the ItemReasoningItem object itself.
+     * @return the InputItemReasoningItem object itself.
      */
     @Generated
-    public ItemReasoningItem setEncryptedContent(String encryptedContent) {
+    public InputItemReasoningItem setEncryptedContent(String encryptedContent) {
         this.encryptedContent = encryptedContent;
         return this;
     }
@@ -138,10 +138,10 @@ public final class ItemReasoningItem extends Item {
      * Set the content property: Reasoning text content.
      *
      * @param content the content value to set.
-     * @return the ItemReasoningItem object itself.
+     * @return the InputItemReasoningItem object itself.
      */
     @Generated
-    public ItemReasoningItem setContent(List<ReasoningTextContent> content) {
+    public InputItemReasoningItem setContent(List<ReasoningTextContent> content) {
         this.content = content;
         return this;
     }
@@ -162,10 +162,10 @@ public final class ItemReasoningItem extends Item {
      * `incomplete`. Populated when items are returned via API.
      *
      * @param status the status value to set.
-     * @return the ItemReasoningItem object itself.
+     * @return the InputItemReasoningItem object itself.
      */
     @Generated
-    public ItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
+    public InputItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
         this.status = status;
         return this;
     }
@@ -187,20 +187,20 @@ public final class ItemReasoningItem extends Item {
     }
 
     /**
-     * Reads an instance of ItemReasoningItem from the JsonReader.
+     * Reads an instance of InputItemReasoningItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemReasoningItem if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of InputItemReasoningItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemReasoningItem.
+     * @throws IOException If an error occurs while reading the InputItemReasoningItem.
      */
     @Generated
-    public static ItemReasoningItem fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemReasoningItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             List<Summary> summary = null;
-            ItemType type = ItemType.REASONING;
+            InputItemType type = InputItemType.REASONING;
             String encryptedContent = null;
             List<ReasoningTextContent> content = null;
             OutputItemReasoningItemStatus status = null;
@@ -212,7 +212,7 @@ public final class ItemReasoningItem extends Item {
                 } else if ("summary".equals(fieldName)) {
                     summary = reader.readArray(reader1 -> Summary.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("encrypted_content".equals(fieldName)) {
                     encryptedContent = reader.getString();
                 } else if ("content".equals(fieldName)) {
@@ -223,12 +223,12 @@ public final class ItemReasoningItem extends Item {
                     reader.skipChildren();
                 }
             }
-            ItemReasoningItem deserializedItemReasoningItem = new ItemReasoningItem(id, summary);
-            deserializedItemReasoningItem.type = type;
-            deserializedItemReasoningItem.encryptedContent = encryptedContent;
-            deserializedItemReasoningItem.content = content;
-            deserializedItemReasoningItem.status = status;
-            return deserializedItemReasoningItem;
+            InputItemReasoningItem deserializedInputItemReasoningItem = new InputItemReasoningItem(id, summary);
+            deserializedInputItemReasoningItem.type = type;
+            deserializedInputItemReasoningItem.encryptedContent = encryptedContent;
+            deserializedInputItemReasoningItem.content = content;
+            deserializedInputItemReasoningItem.status = status;
+            return deserializedInputItemReasoningItem;
         });
     }
 }

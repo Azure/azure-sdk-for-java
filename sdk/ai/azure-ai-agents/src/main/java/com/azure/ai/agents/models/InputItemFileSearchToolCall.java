@@ -18,13 +18,13 @@ import java.util.List;
  * [file search guide](https://platform.openai.com/docs/guides/tools-file-search) for more information.
  */
 @Fluent
-public final class ItemFileSearchToolCall extends Item {
+public final class InputItemFileSearchToolCall extends InputItem {
 
     /*
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.FILE_SEARCH_CALL;
+    private InputItemType type = InputItemType.FILE_SEARCH_CALL;
 
     /*
      * The unique ID of the file search tool call.
@@ -52,14 +52,14 @@ public final class ItemFileSearchToolCall extends Item {
     private List<FileSearchToolCallResults> results;
 
     /**
-     * Creates an instance of ItemFileSearchToolCall class.
+     * Creates an instance of InputItemFileSearchToolCall class.
      *
      * @param id the id value to set.
      * @param status the status value to set.
      * @param queries the queries value to set.
      */
     @Generated
-    public ItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
+    public InputItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
         this.id = id;
         this.status = status;
         this.queries = queries;
@@ -72,7 +72,7 @@ public final class ItemFileSearchToolCall extends Item {
      */
     @Generated
     @Override
-    public ItemType getType() {
+    public InputItemType getType() {
         return this.type;
     }
 
@@ -121,10 +121,10 @@ public final class ItemFileSearchToolCall extends Item {
      * Set the results property: The results property.
      *
      * @param results the results value to set.
-     * @return the ItemFileSearchToolCall object itself.
+     * @return the InputItemFileSearchToolCall object itself.
      */
     @Generated
-    public ItemFileSearchToolCall setResults(List<FileSearchToolCallResults> results) {
+    public InputItemFileSearchToolCall setResults(List<FileSearchToolCallResults> results) {
         this.results = results;
         return this;
     }
@@ -145,21 +145,21 @@ public final class ItemFileSearchToolCall extends Item {
     }
 
     /**
-     * Reads an instance of ItemFileSearchToolCall from the JsonReader.
+     * Reads an instance of InputItemFileSearchToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ItemFileSearchToolCall if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InputItemFileSearchToolCall if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ItemFileSearchToolCall.
+     * @throws IOException If an error occurs while reading the InputItemFileSearchToolCall.
      */
     @Generated
-    public static ItemFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static InputItemFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             OutputItemFileSearchToolCallStatus status = null;
             List<String> queries = null;
-            ItemType type = ItemType.FILE_SEARCH_CALL;
+            InputItemType type = InputItemType.FILE_SEARCH_CALL;
             List<FileSearchToolCallResults> results = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -171,17 +171,18 @@ public final class ItemFileSearchToolCall extends Item {
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("type".equals(fieldName)) {
-                    type = ItemType.fromString(reader.getString());
+                    type = InputItemType.fromString(reader.getString());
                 } else if ("results".equals(fieldName)) {
                     results = reader.readArray(reader1 -> FileSearchToolCallResults.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            ItemFileSearchToolCall deserializedItemFileSearchToolCall = new ItemFileSearchToolCall(id, status, queries);
-            deserializedItemFileSearchToolCall.type = type;
-            deserializedItemFileSearchToolCall.results = results;
-            return deserializedItemFileSearchToolCall;
+            InputItemFileSearchToolCall deserializedInputItemFileSearchToolCall
+                = new InputItemFileSearchToolCall(id, status, queries);
+            deserializedInputItemFileSearchToolCall.type = type;
+            deserializedInputItemFileSearchToolCall.results = results;
+            return deserializedInputItemFileSearchToolCall;
         });
     }
 }
