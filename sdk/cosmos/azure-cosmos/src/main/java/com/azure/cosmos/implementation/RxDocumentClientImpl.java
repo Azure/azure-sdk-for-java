@@ -7583,7 +7583,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 checkNotNull(networkRequestTimeout, "Argument 'networkRequestTimeout' cannot be null!");
 
-                Duration overallE2eLatencyTimeout = Duration.ofSeconds(500);
+                Duration overallE2eLatencyTimeout = networkRequestTimeout.plus(Utils.ONE_SECOND);
                 Duration threshold = Utils.min(networkRequestTimeout.dividedBy(2), Utils.ONE_SECOND);
                 Duration thresholdStep = Utils.min(threshold.dividedBy(2), Utils.HALF_SECOND);
 
@@ -7592,7 +7592,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .build();
             } else {
 
-                Duration httpNetworkRequestTimeout = Duration.ofSeconds(500);
+                Duration httpNetworkRequestTimeout = connectionPolicy.getHttpNetworkRequestTimeout();
 
                 checkNotNull(httpNetworkRequestTimeout, "Argument 'httpNetworkRequestTimeout' cannot be null!");
 
