@@ -7,6 +7,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -16,34 +17,42 @@ import java.util.List;
 
 @JsonPropertyOrder({ "Description", "Description_fr", "Type", "BaseRate", "BedOptions", "BedOptions", "SleepsCount", })
 public class HotelRoom implements JsonSerializable<HotelRoom> {
+    @SimpleField(name = "Description")
     @JsonProperty(value = "Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
+    @SimpleField(name = "Description_fr")
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
+    @SimpleField(name = "Type")
     @JsonProperty(value = "Type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String type;
 
+    @SimpleField(name = "BaseRate")
     @JsonProperty(value = "BaseRate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double baseRate;
 
+    @SimpleField(name = "BedOptions")
     @JsonProperty(value = "BedOptions")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bedOptions;
 
+    @SimpleField(name = "SleepsCount")
     @JsonProperty(value = "SleepsCount")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer sleepsCount;
 
+    @SimpleField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
+    @SimpleField(name = "Tags")
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String[] tags;
@@ -161,7 +170,7 @@ public class HotelRoom implements JsonSerializable<HotelRoom> {
                     if (tags != null) {
                         hotelRoom.tags = tags.toArray(new String[0]);
                     }
-                } else  {
+                } else {
                     reader.skipChildren();
                 }
             }

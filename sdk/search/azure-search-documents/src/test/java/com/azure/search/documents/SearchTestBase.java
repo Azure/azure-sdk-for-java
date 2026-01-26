@@ -192,11 +192,11 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     }
 
     protected KnowledgeBaseRetrievalClientBuilder getKnowledgeBaseRetrievalClientBuilder(boolean isSync) {
-        KnowledgeBaseRetrievalClientBuilder builder = new KnowledgeBaseRetrievalClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
-            .credential(getTestTokenCredential())
-            .httpClient(getHttpClient(interceptorManager, isSync))
-            .retryOptions(SERVICE_THROTTLE_SAFE_RETRY_OPTIONS);
+        KnowledgeBaseRetrievalClientBuilder builder
+            = new KnowledgeBaseRetrievalClientBuilder().endpoint(SEARCH_ENDPOINT)
+                .credential(getTestTokenCredential())
+                .httpClient(getHttpClient(interceptorManager, isSync))
+                .retryOptions(SERVICE_THROTTLE_SAFE_RETRY_OPTIONS);
 
         // Disable `("$..token")` and `name` sanitizer
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
@@ -389,32 +389,32 @@ public abstract class SearchTestBase extends TestProxyTestBase {
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE),
             new SearchField("ProfitMargin", SearchFieldDataType.DOUBLE))
-            .setScoringProfiles(
-                new ScoringProfile("MyProfile").setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
-                    .setFunctions(new MagnitudeScoringFunction("Rating", 2.0,
-                            new MagnitudeScoringParameters(1, 4).setShouldBoostBeyondRangeByConstant(true))
-                            .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
-                        new DistanceScoringFunction("Location", 1.5, new DistanceScoringParameters("Loc", 5))
-                            .setInterpolation(ScoringFunctionInterpolation.LINEAR),
-                        new FreshnessScoringFunction("LastRenovationDate", 1.1,
-                            new FreshnessScoringParameters(Duration.ofDays(365)))
-                            .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC))
-                    .setTextWeights(new TextWeights(weights)),
-                new ScoringProfile("ProfileTwo").setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
-                    .setFunctions(new TagScoringFunction("Tags", 1.5, new TagScoringParameters("MyTags"))
-                        .setInterpolation(ScoringFunctionInterpolation.LINEAR)),
-                new ScoringProfile("ProfileThree").setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
-                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.0,
-                        new MagnitudeScoringParameters(0, 10).setShouldBoostBeyondRangeByConstant(false))
-                        .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
-                new ScoringProfile("ProfileFour")
-                    .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                    .setFunctions(new MagnitudeScoringFunction("Rating", 3.25,
-                        new MagnitudeScoringParameters(1, 5).setShouldBoostBeyondRangeByConstant(false))
-                        .setInterpolation(ScoringFunctionInterpolation.CONSTANT)))
-            .setDefaultScoringProfile("MyProfile")
-            .setCorsOptions(new CorsOptions("http://tempuri.org", "http://localhost:80").setMaxAgeInSeconds(60L))
-            .setSuggesters(new SearchSuggester("FancySuggester", "HotelName"));
+                .setScoringProfiles(
+                    new ScoringProfile("MyProfile").setFunctionAggregation(ScoringFunctionAggregation.AVERAGE)
+                        .setFunctions(
+                            new MagnitudeScoringFunction("Rating", 2.0,
+                                new MagnitudeScoringParameters(1, 4).setShouldBoostBeyondRangeByConstant(true))
+                                    .setInterpolation(ScoringFunctionInterpolation.CONSTANT),
+                            new DistanceScoringFunction("Location", 1.5, new DistanceScoringParameters("Loc", 5))
+                                .setInterpolation(ScoringFunctionInterpolation.LINEAR),
+                            new FreshnessScoringFunction("LastRenovationDate", 1.1,
+                                new FreshnessScoringParameters(Duration.ofDays(365)))
+                                    .setInterpolation(ScoringFunctionInterpolation.LOGARITHMIC))
+                        .setTextWeights(new TextWeights(weights)),
+                    new ScoringProfile("ProfileTwo").setFunctionAggregation(ScoringFunctionAggregation.MAXIMUM)
+                        .setFunctions(new TagScoringFunction("Tags", 1.5, new TagScoringParameters("MyTags"))
+                            .setInterpolation(ScoringFunctionInterpolation.LINEAR)),
+                    new ScoringProfile("ProfileThree").setFunctionAggregation(ScoringFunctionAggregation.MINIMUM)
+                        .setFunctions(new MagnitudeScoringFunction("Rating", 3.0,
+                            new MagnitudeScoringParameters(0, 10).setShouldBoostBeyondRangeByConstant(false))
+                                .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
+                    new ScoringProfile("ProfileFour").setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
+                        .setFunctions(new MagnitudeScoringFunction("Rating", 3.25,
+                            new MagnitudeScoringParameters(1, 5).setShouldBoostBeyondRangeByConstant(false))
+                                .setInterpolation(ScoringFunctionInterpolation.CONSTANT)))
+                .setDefaultScoringProfile("MyProfile")
+                .setCorsOptions(new CorsOptions("http://tempuri.org", "http://localhost:80").setMaxAgeInSeconds(60L))
+                .setSuggesters(new SearchSuggester("FancySuggester", "HotelName"));
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
@@ -431,6 +431,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         return createTestSqlDataSourceObject(name, null, dataDeletionDetectionPolicy, dataChangeDetectionPolicy);
     }
+
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(String name,
         SearchIndexerDataContainer container, DataDeletionDetectionPolicy dataDeletionDetectionPolicy,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
@@ -441,9 +442,9 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         return new SearchIndexerDataSourceConnection(name, SearchIndexerDataSourceType.AZURE_SQL,
             new DataSourceCredentials().setConnectionString(FAKE_AZURE_SQL_CONNECTION_STRING),
             (container == null) ? new SearchIndexerDataContainer("GeoNamesRI") : container)
-            .setDescription(FAKE_DESCRIPTION)
-            .setDataChangeDetectionPolicy(dataChangeDetectionPolicy)
-            .setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
+                .setDescription(FAKE_DESCRIPTION)
+                .setDataChangeDetectionPolicy(dataChangeDetectionPolicy)
+                .setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
     }
 
     protected String randomIndexName(String indexNameBase) {

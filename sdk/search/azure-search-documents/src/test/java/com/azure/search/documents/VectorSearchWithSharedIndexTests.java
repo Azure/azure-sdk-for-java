@@ -30,7 +30,7 @@ import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.models.SearchResultPage;
+import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.VectorFilterMode;
 import com.azure.search.documents.models.VectorQuery;
 import com.azure.search.documents.models.VectorizedQuery;
@@ -107,8 +107,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1"))
+            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
+                "3", "5", "1"))
             .verifyComplete();
     }
 
@@ -131,8 +131,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setFilter("Category eq 'Budget'");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "4"))
+            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
+                "3", "5", "4"))
             .verifyComplete();
     }
 
@@ -157,8 +157,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "1", "5", "2", "10", "4", "9"))
+            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
+                "3", "1", "5", "2", "10", "4", "9"))
             .verifyComplete();
     }
 
@@ -180,7 +180,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchPostOptions searchOptions = new SearchPostOptions()
-            .setSearchText("Is there any hotel located on the main commercial artery of the city in the heart of New York?")
+            .setSearchText(
+                "Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
@@ -188,29 +189,28 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setCaptions(QueryCaptionType.EXTRACTIVE)
             .setAnswers(QueryAnswerType.EXTRACTIVE);
 
-        StepVerifier.create(searchClient.search(searchOptions).byPage().collectList())
-            .assertNext(pages -> {
-                SearchResultPage page1 = pages.get(0);
-                assertNotNull(page1.getAnswers());
-                assertEquals(1, page1.getAnswers().size());
-                assertEquals("9", page1.getAnswers().get(0).getKey());
-                assertNotNull(page1.getAnswers().get(0).getHighlights());
-                assertNotNull(page1.getAnswers().get(0).getText());
+        StepVerifier.create(searchClient.search(searchOptions).byPage().collectList()).assertNext(pages -> {
+            SearchPagedResponse page1 = pages.get(0);
+            assertNotNull(page1.getAnswers());
+            assertEquals(1, page1.getAnswers().size());
+            assertEquals("9", page1.getAnswers().get(0).getKey());
+            assertNotNull(page1.getAnswers().get(0).getHighlights());
+            assertNotNull(page1.getAnswers().get(0).getText());
 
-                List<SearchResult> results = new ArrayList<>();
-                for (SearchResultPage page : pages) {
-                    for (SearchResult result : page.getElements()) {
-                        results.add(result);
+            List<SearchResult> results = new ArrayList<>();
+            for (SearchPagedResponse page : pages) {
+                for (SearchResult result : page.getElements()) {
+                    results.add(result);
 
-                        assertNotNull(result.getCaptions());
-                        assertNotNull(result.getCaptions().get(0).getHighlights());
-                        assertNotNull(result.getCaptions().get(0).getText());
-                    }
+                    assertNotNull(result.getCaptions());
+                    assertNotNull(result.getCaptions().get(0).getHighlights());
+                    assertNotNull(result.getCaptions().get(0).getText());
                 }
+            }
 
-                assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"), "9", "3", "2", "5",
-                    "10", "1", "4");
-            }).verifyComplete();
+            assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"), "9", "3", "2", "5", "10",
+                "1", "4");
+        }).verifyComplete();
     }
 
     @Test
@@ -218,7 +218,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchPostOptions searchOptions = new SearchPostOptions()
-            .setSearchText("Is there any hotel located on the main commercial artery of the city in the heart of New York?")
+            .setSearchText(
+                "Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName", "Description", "Category")
             .setQueryType(QueryType.SEMANTIC)
@@ -226,9 +227,10 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setCaptions(QueryCaptionType.EXTRACTIVE)
             .setAnswers(QueryAnswerType.EXTRACTIVE);
 
-        List<SearchResultPage> pages = searchClient.search(searchOptions).streamByPage().collect(Collectors.toList());
+        List<SearchPagedResponse> pages
+            = searchClient.search(searchOptions).streamByPage().collect(Collectors.toList());
 
-        SearchResultPage page1 = pages.get(0);
+        SearchPagedResponse page1 = pages.get(0);
         assertNotNull(page1.getAnswers());
         assertEquals(1, page1.getAnswers().size());
         assertEquals("9", page1.getAnswers().get(0).getKey());
@@ -236,7 +238,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         assertNotNull(page1.getAnswers().get(0).getText());
 
         List<SearchResult> results = new ArrayList<>();
-        for (SearchResultPage page : pages) {
+        for (SearchPagedResponse page : pages) {
             for (SearchResult result : page.getElements()) {
                 results.add(result);
 
@@ -256,7 +258,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void hybridSearchWithVectorFilterOverrideSync() {
         // create a new index with a vector field
         // create a hybrid search query with a vector search query and a regular search query
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy").setFilter("Rating ge 3")
+        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy")
+            .setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
             .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
 
@@ -273,7 +276,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void hybridSearchWithVectorFilterOverrideAsync() {
         // create a new index with a vector field
         // create a hybrid search query with a vector search query and a regular search query
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy").setFilter("Rating ge 3")
+        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy")
+            .setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
             .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
 
@@ -307,8 +311,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1"))
+            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
+                "3", "5", "1"))
             .verifyComplete();
     }
 
@@ -333,13 +337,13 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1"))
+            .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
+                "3", "5", "1"))
             .verifyComplete();
     }
 
     private static VectorQuery createDescriptionVectorQuery() {
-        return new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION).setKNearestNeighborsCount(3)
+        return new VectorizedQuery(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION).setKNearestNeighbors(3)
             .setFields("DescriptionVector");
     }
 
@@ -421,30 +425,26 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
                     .setFilterable(true)
                     .setFacetable(true),
                 new SearchField("BaseRate", SearchFieldDataType.DOUBLE).setFilterable(true).setFacetable(true),
-                new SearchField("BedOptions", SearchFieldDataType.STRING)
-                    .setSearchable(true)
+                new SearchField("BedOptions", SearchFieldDataType.STRING).setSearchable(true)
                     .setFilterable(true)
                     .setFacetable(true),
-                new SearchField("SleepsCount", SearchFieldDataType.INT32)
+                new SearchField("SleepsCount", SearchFieldDataType.INT32).setFilterable(true).setFacetable(true),
+                new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN).setFilterable(true).setFacetable(true),
+                new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING)).setSearchable(true)
                     .setFilterable(true)
-                    .setFacetable(true),
-                new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN).setFilterable(true)
-                    .setFacetable(true),
-                new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-                    .setSearchable(true)
-                    .setFilterable(true)
-                    .setFacetable(true)))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")))
-            .setSemanticSearch(new SemanticSearch()
-                .setConfigurations(new SemanticConfiguration("my-semantic-config",
-                    new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
-                        .setContentFields(new SemanticField("Description"))
-                        .setKeywordsFields(new SemanticField("Category")))))
-            .setSuggesters(new SearchSuggester("sg", "Description", "HotelName"))
-            .setScoringProfiles(new ScoringProfile("nearest").setFunctionAggregation(ScoringFunctionAggregation.SUM)
-                .setFunctions(new DistanceScoringFunction("Location", 2, new DistanceScoringParameters("myloc", 100))));
+                    .setFacetable(true))).setVectorSearch(
+                        new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")))
+                        .setSemanticSearch(
+                            new SemanticSearch().setConfigurations(new SemanticConfiguration("my-semantic-config",
+                                new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
+                                    .setContentFields(new SemanticField("Description"))
+                                    .setKeywordsFields(new SemanticField("Category")))))
+                        .setSuggesters(new SearchSuggester("sg", "Description", "HotelName"))
+                        .setScoringProfiles(
+                            new ScoringProfile("nearest").setFunctionAggregation(ScoringFunctionAggregation.SUM)
+                                .setFunctions(new DistanceScoringFunction("Location", 2,
+                                    new DistanceScoringParameters("myloc", 100))));
     }
 
     /*

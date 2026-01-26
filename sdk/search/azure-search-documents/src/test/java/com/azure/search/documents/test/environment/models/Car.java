@@ -2,9 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-public class Car {
+import com.azure.search.documents.indexes.SimpleField;
 
+public class Car {
+    @SimpleField(name = "Color")
     private String color;
+
+    @SimpleField(name = "Type")
     private String type;
 
     public String getColor() {

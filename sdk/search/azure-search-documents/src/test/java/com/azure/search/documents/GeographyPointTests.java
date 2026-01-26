@@ -81,10 +81,11 @@ public class GeographyPointTests extends SearchTestBase {
                 .buildClient();
 
             searchIndexClient.createIndex(new SearchIndex(INDEX_NAME, SEARCH_FIELDS));
-            searchIndexClient.getSearchClient(INDEX_NAME).index(new IndexDocumentsBatch(getDocuments().stream()
-                .map(document -> new IndexAction().setActionType(IndexActionType.UPLOAD)
-                    .setAdditionalProperties(TestHelpers.convertToMapStringObject(document)))
-                .collect(Collectors.toList())));
+            searchIndexClient.getSearchClient(INDEX_NAME)
+                .index(new IndexDocumentsBatch(getDocuments().stream()
+                    .map(document -> new IndexAction().setActionType(IndexActionType.UPLOAD)
+                        .setAdditionalProperties(TestHelpers.convertToMapStringObject(document)))
+                    .collect(Collectors.toList())));
 
             TestHelpers.sleepIfRunningAgainstService(2000);
         }
@@ -121,11 +122,11 @@ public class GeographyPointTests extends SearchTestBase {
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        actualDocuments = searchClient.search(new SearchPostOptions().setSearchText("Tourist location")
-                .setOrderBy("id"))
-            .stream()
-            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
-            .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
+        actualDocuments
+            = searchClient.search(new SearchPostOptions().setSearchText("Tourist location").setOrderBy("id"))
+                .stream()
+                .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
+                .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
     }
@@ -143,10 +144,10 @@ public class GeographyPointTests extends SearchTestBase {
             .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
             .verifyComplete();
 
-        Mono<Map<String, SimpleDocument>> searchDocumentsMono = searchAsyncClient.search(new SearchPostOptions()
-                .setSearchText("Tourist location").setOrderBy("id"))
-            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
-            .collectMap(SimpleDocument::getId);
+        Mono<Map<String, SimpleDocument>> searchDocumentsMono
+            = searchAsyncClient.search(new SearchPostOptions().setSearchText("Tourist location").setOrderBy("id"))
+                .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
+                .collectMap(SimpleDocument::getId);
 
         StepVerifier.create(searchDocumentsMono)
             .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))

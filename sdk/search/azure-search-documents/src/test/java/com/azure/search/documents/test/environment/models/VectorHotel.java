@@ -9,7 +9,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.VectorSearchEmbeddings;
-import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,12 +39,10 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @FieldBuilderIgnore
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
-    @FieldBuilderIgnore
     @JsonProperty(value = "DescriptionVector")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Float> descriptionVector = VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION; // Default DescriptionVector: "Hotel"

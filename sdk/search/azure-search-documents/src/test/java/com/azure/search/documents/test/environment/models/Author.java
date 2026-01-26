@@ -6,14 +6,17 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
 public class Author implements JsonSerializable<Author> {
+    @SimpleField(name = "FirstName")
     @JsonProperty(value = "FirstName")
     private String firstName;
 
+    @SimpleField(name = "LastName")
     @JsonProperty(value = "LastName")
     private String lastName;
 

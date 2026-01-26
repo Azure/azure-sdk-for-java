@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.FieldBuilderIgnore;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class HotelWithIgnoredFields {
@@ -11,7 +11,7 @@ public class HotelWithIgnoredFields {
     private String hotelName;
     private String notIgnoredName;
 
-    @FieldBuilderIgnore
+    @SimpleField(name = "HotelId")
     public String getHotelId() {
         return hotelId;
     }
@@ -21,6 +21,7 @@ public class HotelWithIgnoredFields {
         return hotelName;
     }
 
+    @SimpleField(name = "NotIgnoredName")
     public String getNotIgnoredName() {
         return notIgnoredName;
     }

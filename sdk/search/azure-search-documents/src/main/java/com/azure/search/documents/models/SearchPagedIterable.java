@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * Response type for {@link SearchClient#search(SearchPostOptions)}.
  */
 public final class SearchPagedIterable
-    extends ContinuablePagedIterable<SearchContinuationToken, SearchResult, SearchResultPage> {
+    extends ContinuablePagedIterable<SearchContinuationToken, SearchResult, SearchPagedResponse> {
 
     /**
      * Creates a new instance of {@link SearchPagedIterable}.
@@ -21,7 +21,8 @@ public final class SearchPagedIterable
      * @param pageRetrieverProvider The {@link Supplier} that returns the {@link PageRetrieverSync} that iterates over
      * the paged results of searching.
      */
-    public SearchPagedIterable(Supplier<PageRetrieverSync<SearchContinuationToken, SearchResultPage>> pageRetrieverProvider) {
+    public SearchPagedIterable(
+        Supplier<PageRetrieverSync<SearchContinuationToken, SearchPagedResponse>> pageRetrieverProvider) {
         super(pageRetrieverProvider, null, null);
     }
 }

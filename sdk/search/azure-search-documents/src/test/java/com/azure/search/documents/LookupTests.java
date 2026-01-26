@@ -543,7 +543,8 @@ public class LookupTests extends SearchTestBase {
         expectedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
         expectedDoc.put("Rooms", Collections.singletonList(Collections.singletonMap("BaseRate", "NaN")));
 
-        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, indexedDoc))).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, indexedDoc)))
+            .block();
 
         // Select only the fields set in the test case.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
@@ -573,9 +574,11 @@ public class LookupTests extends SearchTestBase {
         Map<String, Object> expectedDoc = new LinkedHashMap<>();
         expectedDoc.put("HotelId", complexKey);
 
-        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, expectedDoc))).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, expectedDoc)))
+            .block();
 
-        getAndValidateDocumentAsync(asyncClient, complexKey, expectedDoc.keySet(), expectedDoc, Assertions::assertEquals);
+        getAndValidateDocumentAsync(asyncClient, complexKey, expectedDoc.keySet(), expectedDoc,
+            Assertions::assertEquals);
     }
 
     @Test
@@ -593,8 +596,8 @@ public class LookupTests extends SearchTestBase {
         expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00Z"));
 
         client.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, indexedDoc)));
-        getAndValidateDocument(client, hotelId, expectedDoc.keySet(),
-            expectedDoc, (expected, actual) -> assertMapEquals(expected, actual, false));
+        getAndValidateDocument(client, hotelId, expectedDoc.keySet(), expectedDoc,
+            (expected, actual) -> assertMapEquals(expected, actual, false));
     }
 
     @Test
@@ -611,10 +614,11 @@ public class LookupTests extends SearchTestBase {
 
         expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00Z"));
 
-        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, indexedDoc))).block();
+        asyncClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, indexedDoc)))
+            .block();
 
-        getAndValidateDocumentAsync(asyncClient, hotelId, expectedDoc.keySet(),
-            expectedDoc, (expected, actual) -> assertMapEquals(expected, actual, false));
+        getAndValidateDocumentAsync(asyncClient, hotelId, expectedDoc.keySet(), expectedDoc,
+            (expected, actual) -> assertMapEquals(expected, actual, false));
     }
 
     @Test
@@ -788,7 +792,8 @@ public class LookupTests extends SearchTestBase {
 
     private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key,
         ReadValueCallback<JsonReader, T> converter, T expected, BiConsumer<T, T> comparator) {
-        StepVerifier.create(asyncClient.getDocument(key)
+        StepVerifier
+            .create(asyncClient.getDocument(key)
                 .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), converter)))
             .assertNext(actual -> comparator.accept(expected, actual))
             .verifyComplete();
@@ -797,7 +802,10 @@ public class LookupTests extends SearchTestBase {
     private static void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key,
         Collection<String> selectedFields, Map<String, Object> expected,
         BiConsumer<Map<String, Object>, Map<String, Object>> comparator) {
-        StepVerifier.create(asyncClient.getDocumentWithResponse(key, new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
+        StepVerifier
+            .create(asyncClient
+                .getDocumentWithResponse(key,
+                    new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
                 .map(response -> response.getValue().toObject(LookupDocument.class).getAdditionalProperties()))
             .assertNext(actual -> comparator.accept(expected, actual))
             .verifyComplete();
@@ -806,8 +814,12 @@ public class LookupTests extends SearchTestBase {
     private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key,
         ReadValueCallback<JsonReader, T> converter, Collection<String> selectedFields, T expected,
         BiConsumer<T, T> comparator) {
-        StepVerifier.create(asyncClient.getDocumentWithResponse(key, new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
-                .map(response -> convertFromMapStringObject(response.getValue().toObject(LookupDocument.class).getAdditionalProperties(), converter)))
+        StepVerifier
+            .create(asyncClient
+                .getDocumentWithResponse(key,
+                    new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
+                .map(response -> convertFromMapStringObject(
+                    response.getValue().toObject(LookupDocument.class).getAdditionalProperties(), converter)))
             .assertNext(actual -> comparator.accept(expected, actual))
             .verifyComplete();
     }
@@ -825,16 +837,24 @@ public class LookupTests extends SearchTestBase {
 
     private static void getAndValidateDocument(SearchClient client, String key, Collection<String> selectedFields,
         Map<String, Object> expected, BiConsumer<Map<String, Object>, Map<String, Object>> comparator) {
-        Map<String, Object> actual = client.getDocumentWithResponse(key, new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
-            .getValue().toObject(LookupDocument.class).getAdditionalProperties();
+        Map<String, Object> actual = client
+            .getDocumentWithResponse(key,
+                new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
+            .getValue()
+            .toObject(LookupDocument.class)
+            .getAdditionalProperties();
         comparator.accept(expected, actual);
     }
 
     private static <T> void getAndValidateDocument(SearchClient client, String key,
         ReadValueCallback<JsonReader, T> converter, Collection<String> selectedFields, T expected,
         BiConsumer<T, T> comparator) {
-        Map<String, Object> actual = client.getDocumentWithResponse(key, new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
-            .getValue().toObject(LookupDocument.class).getAdditionalProperties();
+        Map<String, Object> actual = client
+            .getDocumentWithResponse(key,
+                new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
+            .getValue()
+            .toObject(LookupDocument.class)
+            .getAdditionalProperties();
         comparator.accept(expected, convertFromMapStringObject(actual, converter));
     }
 
@@ -919,7 +939,8 @@ public class LookupTests extends SearchTestBase {
                 .setRetrievable(true),
             new SearchField("Ints", SearchFieldDataType.collection(SearchFieldDataType.INT32)).setRetrievable(true),
             new SearchField("Longs", SearchFieldDataType.collection(SearchFieldDataType.INT64)).setRetrievable(true),
-            new SearchField("Strings", SearchFieldDataType.collection(SearchFieldDataType.STRING)).setRetrievable(true));
+            new SearchField("Strings", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+                .setRetrievable(true));
 
         createSharedSearchIndexClient().createOrUpdateIndex(index);
     }

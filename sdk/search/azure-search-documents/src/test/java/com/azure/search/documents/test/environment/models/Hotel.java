@@ -7,7 +7,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.FieldBuilderIgnore;
+import com.azure.search.documents.indexes.ComplexField;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,7 +38,6 @@ public class Hotel implements JsonSerializable<Hotel> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @FieldBuilderIgnore
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
@@ -53,30 +52,37 @@ public class Hotel implements JsonSerializable<Hotel> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> tags;
 
+    @SimpleField(name = "ParkingIncluded")
     @JsonProperty(value = "ParkingIncluded")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean parkingIncluded;
 
+    @SimpleField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
+    @SimpleField(name = "LastRenovationDate")
     @JsonProperty(value = "LastRenovationDate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date lastRenovationDate;
 
+    @SimpleField(name = "Rating")
     @JsonProperty(value = "Rating")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer rating;
 
+    @SimpleField(name = "Location")
     @JsonProperty(value = "Location")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private GeoPoint location;
 
+    @ComplexField(name = "Address")
     @JsonProperty(value = "Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress address;
 
+    @ComplexField(name = "Rooms")
     @JsonProperty(value = "Rooms")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> rooms;
@@ -230,7 +236,6 @@ public class Hotel implements JsonSerializable<Hotel> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-
 
                 if ("HotelId".equals(fieldName)) {
                     hotel.hotelId = reader.getString();

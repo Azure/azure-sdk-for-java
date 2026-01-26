@@ -149,8 +149,8 @@ public final class SearchIndexingPublisher<T> {
     private void flushLoop(boolean isClosed, Duration timeout, RequestOptions requestOptions) {
         if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
             final AtomicReference<List<TryTrackingIndexAction>> batchActions = new AtomicReference<>();
-            Future<?> future
-                = SharedExecutorService.getInstance().submit(() -> flushLoopHelper(isClosed, requestOptions, batchActions));
+            Future<?> future = SharedExecutorService.getInstance()
+                .submit(() -> flushLoopHelper(isClosed, requestOptions, batchActions));
 
             try {
                 CoreUtils.getResultWithTimeout(future, timeout);
@@ -201,9 +201,8 @@ public final class SearchIndexingPublisher<T> {
             return null;
         }
 
-        List<IndexAction> convertedActions = batchActions.stream()
-            .map(TryTrackingIndexAction::getAction)
-            .collect(Collectors.toList());
+        List<IndexAction> convertedActions
+            = batchActions.stream().map(TryTrackingIndexAction::getAction).collect(Collectors.toList());
 
         IndexBatchResponse response = sendBatch(convertedActions, batchActions, requestOptions);
         handleResponse(batchActions, response);

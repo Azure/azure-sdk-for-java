@@ -3,11 +3,16 @@
 
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.ComplexField;
+
 /**
  * The model class to test the behaviour of circular dependencies
  */
 public class HotelCircularDependencies {
+    @ComplexField(name = "HomeAddress")
     private AddressCircularDependencies homeAddress;
+
+    @ComplexField(name = "BillingAddress")
     private AddressCircularDependencies billingAddress;
 
     /**

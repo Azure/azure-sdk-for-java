@@ -6,15 +6,17 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
 public class Bucket implements JsonSerializable<Bucket> {
-
+    @SimpleField(name = "BucketName")
     @JsonProperty(value = "BucketName")
     private String bucketName;
 
+    @SimpleField(name = "Count")
     @JsonProperty(value = "Count")
     private int count;
 
@@ -48,7 +50,7 @@ public class Bucket implements JsonSerializable<Bucket> {
         return jsonReader.readObject(reader -> {
             Bucket bucket = new Bucket();
 
-            while (reader. nextToken() != JsonToken.END_OBJECT) {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 

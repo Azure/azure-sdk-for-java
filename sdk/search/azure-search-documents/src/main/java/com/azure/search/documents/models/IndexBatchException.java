@@ -48,7 +48,8 @@ public final class IndexBatchException extends AzureException {
             .filter(result -> isRetriableStatusCode(result.getStatusCode()))
             .map(IndexingResult::getKey)
             .collect(Collectors.toSet());
-        return new IndexDocumentsBatch(originalBatch.getActions().stream()
+        return new IndexDocumentsBatch(originalBatch.getActions()
+            .stream()
             .filter(action -> isActionIncluded(action, uniqueRetriableKeys, keyFieldName))
             .collect(Collectors.toList()));
     }
@@ -67,8 +68,7 @@ public final class IndexBatchException extends AzureException {
         return String.format(MESSAGE_FORMAT, failedResultCount, result.getResults().size());
     }
 
-    private static boolean isActionIncluded(IndexAction action, Set<String> uniqueRetriableKeys,
-        String keyFieldName) {
+    private static boolean isActionIncluded(IndexAction action, Set<String> uniqueRetriableKeys, String keyFieldName) {
         return action.getAdditionalProperties() != null
             && uniqueRetriableKeys.contains(Objects.toString(action.getAdditionalProperties().get(keyFieldName), null));
     }

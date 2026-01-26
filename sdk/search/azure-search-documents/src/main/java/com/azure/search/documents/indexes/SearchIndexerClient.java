@@ -24,7 +24,6 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexersResu
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
-import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -2785,7 +2784,8 @@ public final class SearchIndexerClient {
      * @return represents a datasource definition, which can be used to configure an indexer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
+    public SearchIndexerDataSourceConnection
+        createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
         return createOrUpdateDataSourceConnection(dataSource.getName(), dataSource);
     }
 
@@ -2906,8 +2906,10 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listDataSourceConnectionNames() {
-        return getDataSourceConnections(Collections.singletonList("name")).getDataSources().stream()
-            .map(SearchIndexerDataSourceConnection::getName).collect(Collectors.toList());
+        return getDataSourceConnections(Collections.singletonList("name")).getDataSources()
+            .stream()
+            .map(SearchIndexerDataSourceConnection::getName)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -3286,8 +3288,10 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listIndexerNames() {
-        return getIndexers(Collections.singletonList("name")).getIndexers().stream()
-            .map(SearchIndexer::getName).collect(Collectors.toList());
+        return getIndexers(Collections.singletonList("name")).getIndexers()
+            .stream()
+            .map(SearchIndexer::getName)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -3569,8 +3573,10 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listSkillsetNames() {
-        return getSkillsets(Collections.singletonList("name")).getSkillsets().stream()
-            .map(SearchIndexerSkillset::getName).collect(Collectors.toList());
+        return getSkillsets(Collections.singletonList("name")).getSkillsets()
+            .stream()
+            .map(SearchIndexerSkillset::getName)
+            .collect(Collectors.toList());
     }
 
     /**

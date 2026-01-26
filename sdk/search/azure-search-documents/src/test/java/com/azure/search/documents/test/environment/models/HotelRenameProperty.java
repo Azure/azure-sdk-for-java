@@ -12,7 +12,7 @@ public class HotelRenameProperty {
     private String hotelName;
     private String description;
 
-    @SimpleField(isKey = true, isSortable = true)
+    @SimpleField(name = "HotelId", isKey = true, isSortable = true)
     @JsonProperty
     public String getHotelId() {
         return this.hotelId;
@@ -23,7 +23,7 @@ public class HotelRenameProperty {
         return this;
     }
 
-    @SearchableField(isSortable = true, analyzerName = "en.lucene")
+    @SearchableField(name = "HotelName", isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     public String getHotelName() {
         return this.hotelName;
@@ -34,7 +34,7 @@ public class HotelRenameProperty {
         return this;
     }
 
-    @SimpleField
+    @SimpleField(name = "Description")
     public String getDescription() {
         return this.description;
     }

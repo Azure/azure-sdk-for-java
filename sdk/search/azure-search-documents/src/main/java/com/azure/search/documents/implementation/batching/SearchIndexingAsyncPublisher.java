@@ -107,7 +107,8 @@ public final class SearchIndexingAsyncPublisher {
         return currentRetryDelay;
     }
 
-    public Mono<Void> addActions(Collection<IndexAction> actions, RequestOptions requestOptions, Runnable rescheduleFlush) {
+    public Mono<Void> addActions(Collection<IndexAction> actions, RequestOptions requestOptions,
+        Runnable rescheduleFlush) {
         Tuple2<Integer, Boolean> batchSizeAndAvailable
             = documentManager.addAndCheckForBatch(actions, documentKeyRetriever, onActionAdded, batchSize);
 
@@ -130,9 +131,11 @@ public final class SearchIndexingAsyncPublisher {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions), Semaphore::release);
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions),
+                Semaphore::release);
         } else if (processingSemaphore.tryAcquire()) {
-            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions), Semaphore::release);
+            return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions),
+                Semaphore::release);
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();
@@ -153,9 +156,8 @@ public final class SearchIndexingAsyncPublisher {
             return Mono.empty();
         }
 
-        List<IndexAction> convertedActions = batchActions.stream()
-            .map(TryTrackingIndexAction::getAction)
-            .collect(Collectors.toList());
+        List<IndexAction> convertedActions
+            = batchActions.stream().map(TryTrackingIndexAction::getAction).collect(Collectors.toList());
 
         return sendBatch(convertedActions, batchActions, requestOptions).map(response -> {
             handleResponse(batchActions, response);
@@ -184,7 +186,7 @@ public final class SearchIndexingAsyncPublisher {
         }
 
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
-                response.getValue().getResults(), actions.size(), false)).doOnCancel(() -> {
+            response.getValue().getResults(), actions.size(), false)).doOnCancel(() -> {
                 LOGGER.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
                 documentManager.reinsertCancelledActions(batchActions);
             })

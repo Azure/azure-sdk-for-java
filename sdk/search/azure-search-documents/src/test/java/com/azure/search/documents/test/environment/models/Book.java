@@ -7,6 +7,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -14,15 +15,19 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 public class Book implements JsonSerializable<Book> {
+    @SimpleField(name = "ISBN")
     @JsonProperty(value = "ISBN")
     private String ISBN;
 
+    @SimpleField(name = "Title")
     @JsonProperty(value = "Title")
     private String title;
 
+    @SimpleField(name = "Author")
     @JsonProperty(value = "Author")
     private Author author;
 
+    @SimpleField(name = "PublishDate")
     @JsonProperty(value = "PublishDate")
     private OffsetDateTime publishDate;
 
@@ -87,7 +92,8 @@ public class Book implements JsonSerializable<Book> {
                 } else if ("Author".equals(fieldName)) {
                     book.author = Author.fromJson(reader);
                 } else if ("PublishDate".equals(fieldName)) {
-                    book.publishDate = reader.getNullable(nonNull -> CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                    book.publishDate
+                        = reader.getNullable(nonNull -> CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
                 } else {
                     reader.skipChildren();
                 }

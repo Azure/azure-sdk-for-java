@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * Response type for {@link SearchAsyncClient#search(SearchPostOptions)}.
  */
 public final class SearchPagedFlux
-    extends ContinuablePagedFluxCore<SearchContinuationToken, SearchResult, SearchResultPage> {
+    extends ContinuablePagedFluxCore<SearchContinuationToken, SearchResult, SearchPagedResponse> {
 
     /**
      * Creates a new instance of {@link SearchPagedFlux}.
@@ -21,7 +21,8 @@ public final class SearchPagedFlux
      * @param pageRetrieverProvider The {@link Supplier} that returns the {@link PageRetriever} that iterates over
      * the paged results of searching.
      */
-    public SearchPagedFlux(Supplier<PageRetriever<SearchContinuationToken, SearchResultPage>> pageRetrieverProvider) {
+    public SearchPagedFlux(
+        Supplier<PageRetriever<SearchContinuationToken, SearchPagedResponse>> pageRetrieverProvider) {
         super(pageRetrieverProvider);
     }
 }

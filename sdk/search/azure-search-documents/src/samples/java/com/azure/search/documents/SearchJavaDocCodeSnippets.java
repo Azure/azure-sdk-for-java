@@ -61,7 +61,7 @@ import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.models.LookupDocument;
 import com.azure.search.documents.models.SearchPagedFlux;
 import com.azure.search.documents.models.SearchPagedIterable;
-import com.azure.search.documents.models.SearchResultPage;
+import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SuggestResult;
 
 import java.util.Arrays;
@@ -341,7 +341,7 @@ public class SearchJavaDocCodeSnippets {
 
         boolean firstPage = true;
         long numberOfDocumentsReturned = 0;
-        for (SearchResultPage resultResponse: searchPagedIterable.iterableByPage()) {
+        for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
             if (firstPage) {
                 System.out.printf("There are around %d results.", resultResponse.getCount());
                 firstPage = false;
@@ -382,7 +382,7 @@ public class SearchJavaDocCodeSnippets {
         for (AutocompleteItem result : results.getResults()) {
             System.out.printf("The complete term is %s", result.getText());
         }
-        // END: com.azure.search.documents.SearchClient.autocompletePost#String-String-AutocompleteOptions-RequestOptions
+        // END: com.azure.search.documents.SearchClient.autocompletePost#AutocompletePostOptions
     }
 
     private static final SearchAsyncClient SEARCH_ASYNC_CLIENT = new SearchClientBuilder().buildAsyncClient();
@@ -391,7 +391,7 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchAsyncClient#indexDocuments(IndexDocumentsBatch)}.
      */
     public void uploadDocumentsAsync() {
-        // BEGIN: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch-upload
         Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
@@ -403,7 +403,7 @@ public class SearchJavaDocCodeSnippets {
                         indexingResult.getKey(), indexingResult.isSucceeded());
                 }
             });
-        // END: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch
+        // END: com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch-upload
     }
 
     /**
@@ -1194,7 +1194,7 @@ public class SearchJavaDocCodeSnippets {
                 System.out.printf("The status code of the response is %s. The index name is %s.%n",
                     response.getStatusCode(), index.getName());
             });
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String-RequestOptions
     }
 
     /**

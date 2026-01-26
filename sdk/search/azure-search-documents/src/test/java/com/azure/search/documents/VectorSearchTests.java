@@ -64,9 +64,9 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void updateExistingIndexToAddVectorFieldsAsync() {
         String indexName = randomIndexName("addvectorasync");
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true));
 
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexClient.createIndex(searchIndex).block();
@@ -102,9 +102,9 @@ public class VectorSearchTests extends SearchTestBase {
 
             createdIndex.getFields().add(vectorField);
 
-            createdIndex.setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")));
+            createdIndex.setVectorSearch(
+                new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                    .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")));
 
             return searchIndexClient.createOrUpdateIndex(createdIndex);
         });
@@ -118,21 +118,20 @@ public class VectorSearchTests extends SearchTestBase {
         // Update document to add vector field's data
 
         // Get the document
-        Mono<Map<String, Object>> getAndUpdateDocument
-            = searchClient.getDocument("1").flatMap(resultDoc -> {
-                // Update document to add vector field data
-                resultDoc.getAdditionalProperties()
-                    .put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
-                return searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE,
-                    resultDoc.getAdditionalProperties())));
-            }).flatMap(ignored -> {
-                // Equivalent of 'waitForIndexing()' where in PLAYBACK getting the document is called right away,
-                // but for LIVE and RECORD it waits two seconds for the document to be available.
-                if (TEST_MODE != TestMode.PLAYBACK) {
-                    waitForIndexing();
-                }
-                return searchClient.getDocument("1").map(LookupDocument::getAdditionalProperties);
-            });
+        Mono<Map<String, Object>> getAndUpdateDocument = searchClient.getDocument("1").flatMap(resultDoc -> {
+            // Update document to add vector field data
+            resultDoc.getAdditionalProperties()
+                .put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
+            return searchClient.indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.MERGE, resultDoc.getAdditionalProperties())));
+        }).flatMap(ignored -> {
+            // Equivalent of 'waitForIndexing()' where in PLAYBACK getting the document is called right away,
+            // but for LIVE and RECORD it waits two seconds for the document to be available.
+            if (TEST_MODE != TestMode.PLAYBACK) {
+                waitForIndexing();
+            }
+            return searchClient.getDocument("1").map(LookupDocument::getAdditionalProperties);
+        });
 
         // Get the document
         StepVerifier.create(getAndUpdateDocument).assertNext(response -> {
@@ -147,9 +146,9 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void updateExistingIndexToAddVectorFieldsSync() {
         String indexName = randomIndexName("addvectorsync");
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
@@ -185,9 +184,9 @@ public class VectorSearchTests extends SearchTestBase {
 
         createdIndex.getFields().add(vectorField);
 
-        createdIndex.setVectorSearch(new VectorSearch()
-            .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")));
+        createdIndex.setVectorSearch(
+            new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config")));
 
         // Update index
         SearchIndex responseIndex = searchIndexClient.createOrUpdateIndex(createdIndex);
@@ -222,18 +221,18 @@ public class VectorSearchTests extends SearchTestBase {
         String indexName = randomIndexName("compressiontruncationdimension");
         String compressionName = "vector-compression-100";
 
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
-            new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                .setSearchable(true)
-                .setRetrievable(true)
-                .setVectorSearchDimensions(1536)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setRetrievable(true)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                        new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                            .setCompressions(
+                                new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
@@ -254,18 +253,18 @@ public class VectorSearchTests extends SearchTestBase {
         String indexName = randomIndexName("compressiontruncationdimensionasync");
         String compressionName = "vector-compression-100";
 
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
-            new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                .setSearchable(true)
-                .setRetrievable(true)
-                .setVectorSearchDimensions(1536)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new ScalarQuantizationCompression(compressionName).setTruncationDimension(100)));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setRetrievable(true)
+                    .setVectorSearchDimensions(1536)
+                    .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                        new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                            .setCompressions(
+                                new ScalarQuantizationCompression(compressionName).setTruncationDimension(100)));
 
         SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexAsyncClient.createIndex(searchIndex).block();
@@ -287,18 +286,17 @@ public class VectorSearchTests extends SearchTestBase {
         String indexName = randomIndexName("compressionbinaryquantizationasync");
         String compressionName = "binary-vector-compression";
 
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
-            new SearchField("BinaryCompressedVector",
-                SearchFieldDataType.collection(SearchFieldDataType.SINGLE)).setSearchable(true)
-                .setRetrievable(true)
-                .setVectorSearchDimensions(5)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setRetrievable(true)
+                    .setVectorSearchDimensions(5)
+                    .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                        new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                            .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexAsyncClient.createIndex(searchIndex).block();
@@ -319,18 +317,17 @@ public class VectorSearchTests extends SearchTestBase {
         String indexName = randomIndexName("compressionbinaryquantizationsync");
         String compressionName = "binary-vector-compression";
 
-        SearchIndex searchIndex = new SearchIndex(indexName,
-            new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
-            new SearchField("BinaryCompressedVector",
-                SearchFieldDataType.collection(SearchFieldDataType.SINGLE)).setSearchable(true)
-                .setRetrievable(true)
-                .setVectorSearchDimensions(5)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new BinaryQuantizationCompression(compressionName)));
+        SearchIndex searchIndex
+            = new SearchIndex(indexName, new SearchField("Id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("Name", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true),
+                new SearchField("BinaryCompressedVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
+                    .setSearchable(true)
+                    .setRetrievable(true)
+                    .setVectorSearchDimensions(5)
+                    .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                        new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                            .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                            .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
@@ -355,12 +352,11 @@ public class VectorSearchTests extends SearchTestBase {
                 .setSearchable(true)
                 .setRetrievable(true)
                 .setVectorSearchDimensions(1536)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
-                    .setRescoringOptions(rescoringOptions)));
+                .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                    new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                        .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                        .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                            .setRescoringOptions(rescoringOptions)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
@@ -391,12 +387,11 @@ public class VectorSearchTests extends SearchTestBase {
                 .setSearchable(true)
                 .setRetrievable(true)
                 .setVectorSearchDimensions(1536)
-                .setVectorSearchProfileName("my-vector-profile"))
-            .setVectorSearch(new VectorSearch()
-                .setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
-                .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
-                .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
-                    .setRescoringOptions(rescoringOptions)));
+                .setVectorSearchProfileName("my-vector-profile")).setVectorSearch(
+                    new VectorSearch().setProfiles(new VectorSearchProfile("my-vector-profile", "my-vector-config"))
+                        .setAlgorithms(new HnswAlgorithmConfiguration("my-vector-config"))
+                        .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)
+                            .setRescoringOptions(rescoringOptions)));
 
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexClient.createIndex(searchIndex).block();

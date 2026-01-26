@@ -23,7 +23,7 @@ import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.SearchResultPage;
+import com.azure.search.documents.models.SearchPagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -92,8 +92,8 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetRequestSerializationWithMultipleMetricsOnSameField() {
-        SearchPostOptions searchPostOptions = new SearchPostOptions()
-            .setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
+        SearchPostOptions searchPostOptions
+            = new SearchPostOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
         List<String> serializedFacets = searchPostOptions.getFacets();
         assertNotNull(serializedFacets, "Facets should not be null");
@@ -106,11 +106,13 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithMinAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
-            .setFacets("Rating, metric : min");
+        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : min");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets, "Facets should not be null");
@@ -125,11 +127,13 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithMaxAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
-            .setFacets("Rating, metric : max");
+        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : max");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets, "Facets should not be null");
@@ -144,11 +148,13 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithAvgAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
-            .setFacets("Rating, metric : avg");
+        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : avg");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets, "Facets should not be null");
@@ -163,11 +169,14 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithCardinalityAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
-            .setFacets("Category, metric : cardinality");
+        SearchPostOptions searchOptions
+            = new SearchPostOptions().setSearchText("*").setFacets("Category, metric : cardinality");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets, "Facets should not be null");
@@ -186,7 +195,10 @@ public class FacetAggregationTests extends SearchTestBase {
             .setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets);
@@ -205,16 +217,22 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithCardinalityPrecisionThreshold() {
-        SearchPostOptions defaultThreshold = new SearchPostOptions().setSearchText("*")
-            .setFacets("Category, metric : cardinality");
+        SearchPostOptions defaultThreshold
+            = new SearchPostOptions().setSearchText("*").setFacets("Category, metric : cardinality");
 
         SearchPostOptions maxThreshold = new SearchPostOptions().setSearchText("*")
             .setFacets("Category, metric : cardinality, precisionThreshold: 40000");
 
-        SearchResultPage defaultResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(defaultThreshold).streamByPage().findFirst().orElseThrow(IllegalStateException::new);
-        SearchResultPage maxResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(maxThreshold).streamByPage().findFirst().orElseThrow(IllegalStateException::new);
+        SearchPagedResponse defaultResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
+            .search(defaultThreshold)
+            .streamByPage()
+            .findFirst()
+            .orElseThrow(IllegalStateException::new);
+        SearchPagedResponse maxResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
+            .search(maxThreshold)
+            .streamByPage()
+            .findFirst()
+            .orElseThrow(IllegalStateException::new);
 
         assertNotNull(defaultResults.getFacets().get("Category"));
         assertNotNull(maxResults.getFacets().get("Category"));
@@ -235,7 +253,10 @@ public class FacetAggregationTests extends SearchTestBase {
             .setQueryType(QueryType.SEMANTIC)
             .setSemanticConfigurationName("semantic-config");
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions).streamByPage().findFirst().map(SearchResultPage::getFacets)
+            .search(searchOptions)
+            .streamByPage()
+            .findFirst()
+            .map(SearchPagedResponse::getFacets)
             .orElseThrow(IllegalStateException::new);
 
         assertNotNull(facets, "Facets should not be null");
@@ -250,25 +271,25 @@ public class FacetAggregationTests extends SearchTestBase {
         assertTrue(hasCategoryMetrics, "Category metrics should work with semantic query");
     }
 
-//    @Test
-//    @Disabled("Issues with responses based on record or playback mode")
-//    public void facetMetricsApiVersionCompatibility() {
-//        SearchClient prevVersionClient
-//            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
-//                .buildClient();
-//
-//        SearchPostOptions searchOptions = new SearchPostOptions().setFacets("Rating, metric: min");
-//
-//        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> prevVersionClient.search("*", searchOptions, null).iterator().hasNext());
-//
-//        int statusCode = exception.getResponse().getStatusCode();
-//        assertTrue(statusCode == 400 || statusCode == 401, "Should return 400 Bad Request or 401 Unauthorized");
-//        assertTrue(
-//            exception.getMessage().contains("'metric' faceting")
-//                || exception.getMessage().contains("not supported")
-//                || exception.getMessage().contains("401"),
-//            "Should fail due to unsupported facet metrics in previous API version");
-//    }
+    //    @Test
+    //    @Disabled("Issues with responses based on record or playback mode")
+    //    public void facetMetricsApiVersionCompatibility() {
+    //        SearchClient prevVersionClient
+    //            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
+    //                .buildClient();
+    //
+    //        SearchPostOptions searchOptions = new SearchPostOptions().setFacets("Rating, metric: min");
+    //
+    //        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> prevVersionClient.search("*", searchOptions, null).iterator().hasNext());
+    //
+    //        int statusCode = exception.getResponse().getStatusCode();
+    //        assertTrue(statusCode == 400 || statusCode == 401, "Should return 400 Bad Request or 401 Unauthorized");
+    //        assertTrue(
+    //            exception.getMessage().contains("'metric' faceting")
+    //                || exception.getMessage().contains("not supported")
+    //                || exception.getMessage().contains("401"),
+    //            "Should fail due to unsupported facet metrics in previous API version");
+    //    }
 
     private static SearchIndexClient setupIndex() {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(HOTELS_TESTS_INDEX_DATA_JSON))) {
@@ -286,8 +307,8 @@ public class FacetAggregationTests extends SearchTestBase {
                     .setKeywordsFields(new SemanticField("Category")));
             SemanticSearch semanticSearch = new SemanticSearch().setDefaultConfigurationName("semantic-config")
                 .setConfigurations(semanticConfigurations);
-            searchIndexClient.createIndex(TestHelpers.createTestIndex(HOTEL_INDEX_NAME, baseIndex)
-                .setSemanticSearch(semanticSearch));
+            searchIndexClient.createIndex(
+                TestHelpers.createTestIndex(HOTEL_INDEX_NAME, baseIndex).setSemanticSearch(semanticSearch));
 
             return searchIndexClient;
         } catch (IOException ex) {

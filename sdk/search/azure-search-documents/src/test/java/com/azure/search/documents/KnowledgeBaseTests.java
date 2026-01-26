@@ -150,8 +150,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void createKnowledgeBaseSync() {
         // Test creating a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         assertEquals(knowledgeBase.getName(), created.getName());
@@ -177,8 +177,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void createKnowledgeBaseAsync() {
         // Test creating a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         StepVerifier.create(searchIndexClient.createKnowledgeBase(knowledgeBase)).assertNext(created -> {
             assertEquals(knowledgeBase.getName(), created.getName());
@@ -205,8 +205,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void getKnowledgeBaseSync() {
         // Test getting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBase.getName());
@@ -233,8 +233,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void getKnowledgeBaseAsync() {
         // Test getting a knowledge knowledgebase.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         Mono<KnowledgeBase> createAndGet = searchIndexClient.createKnowledgeBase(knowledgeBase)
             .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
@@ -265,10 +265,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
         // Test listing knowledge knowledgebases.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         long currentCount = searchIndexClient.listKnowledgeBases().stream().count();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
-        KnowledgeBase knowledgeBase2 = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase2
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
         searchIndexClient.createKnowledgeBase(knowledgeBase2);
         Map<String, KnowledgeBase> knowledgeBasesByName = searchIndexClient.listKnowledgeBases()
@@ -287,10 +287,10 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void listKnowledgeBasesAsync() {
         // Test listing knowledge knowledgebases.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
-        KnowledgeBase knowledgeBase2 = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase2
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         Mono<Tuple2<Long, Map<String, KnowledgeBase>>> tuple2Mono = searchIndexClient.listKnowledgeBases()
             .count()
@@ -315,8 +315,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void deleteKnowledgeBaseSync() {
         // Test deleting a knowledge knowledgebase.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         assertEquals(knowledgeBase.getName(), searchIndexClient.getKnowledgeBase(knowledgeBase.getName()).getName());
@@ -329,8 +329,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void deleteKnowledgeBaseAsync() {
         // Test deleting a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         Mono<KnowledgeBase> createAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
             .flatMap(created -> searchIndexClient.getKnowledgeBase(created.getName()));
@@ -350,8 +350,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void updateKnowledgeBaseSync() {
         // Test updating a knowledge base.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
         String newDescription = "Updated description";
         knowledgeBase.setDescription(newDescription);
@@ -365,8 +365,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void updateKnowledgeBaseAsync() {
         // Test updating a knowledge base.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         String newDescription = "Updated description";
 
         Mono<KnowledgeBase> createUpdateAndGetMono = searchIndexClient.createKnowledgeBase(knowledgeBase)
@@ -383,10 +383,9 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void basicRetrievalSync() {
         // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
-
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
 
@@ -395,7 +394,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
         KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
 
-        KnowledgeBaseRetrievalResponse response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResponse response
+            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -405,13 +405,13 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void basicRetrievalAsync() {
         // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
-            KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(false)
-                .buildAsyncClient();
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
                 KnowledgeBaseMessageTextContent messageTextContent
                     = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -433,8 +433,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void basicRetrievalWithReasoningEffortSync() {
         // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
         searchIndexClient.createKnowledgeBase(knowledgeBase);
 
         KnowledgeBaseRetrievalClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(true).buildClient();
@@ -445,7 +445,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
         // .setRetrievalReasoningEffort(KnowledgeRetrievalReasoningEffortKind.MEDIUM);  // TODO: Missing enum
 
-        KnowledgeBaseRetrievalResponse response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResponse response
+            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
     }
@@ -455,13 +456,13 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void basicRetrievalWithReasoningEffortAsync() {
         // Test knowledge base retrieval functionality.
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
-                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(false)
-                        .buildAsyncClient();
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
                 KnowledgeBaseMessageTextContent messageTextContent
                     = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -496,7 +497,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
         KnowledgeBaseMessage message = new KnowledgeBaseMessage(messageTextContent).setRole("user");
         KnowledgeBaseRetrievalRequest retrievalRequest = new KnowledgeBaseRetrievalRequest().setMessages(message);
 
-        KnowledgeBaseRetrievalResponse response = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
+        KnowledgeBaseRetrievalResponse response
+            = knowledgeBaseClient.retrieve(knowledgeBase.getName(), retrievalRequest);
         assertNotNull(response);
         assertNotNull(response.getResponse());
         assertNotNull(response.getActivity());
@@ -512,8 +514,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
                 .setRetrievalInstructions("Only include well reviewed hotels.");
         Mono<KnowledgeBaseRetrievalResponse> createAndRetrieveMono
             = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
-                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient = getKnowledgeBaseRetrievalClientBuilder(false)
-                    .buildAsyncClient();
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).buildAsyncClient();
 
                 KnowledgeBaseMessageTextContent messageTextContent
                     = new KnowledgeBaseMessageTextContent("What are the pet policies at the hotel?");
@@ -535,8 +537,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     @Disabled("Requires further resource deployment")
     public void knowledgeBaseObjectHasNoAgentReferences() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeBase knowledgeBase = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE)
-            .setModels(KNOWLEDGE_BASE_MODEL);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
         String kbJson = BinaryData.fromObject(created).toString();
@@ -654,8 +656,8 @@ public class KnowledgeBaseTests extends SearchTestBase {
     public void errorHandlingUsesKnowledgeBaseTerminology() {
         SearchIndexClient client = getSearchIndexClientBuilder(true).buildClient();
 
-        HttpResponseException exception = assertThrows(HttpResponseException.class,
-            () -> client.getKnowledgeBase("nonexistent-kb-name"));
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.getKnowledgeBase("nonexistent-kb-name"));
 
         assertEquals(404, exception.getResponse().getStatusCode(), "Status code should be 404 Not Found");
         String errorMessage = exception.getMessage().toLowerCase();

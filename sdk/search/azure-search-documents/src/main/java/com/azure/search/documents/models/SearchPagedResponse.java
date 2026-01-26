@@ -2,19 +2,38 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
+import com.azure.search.documents.SearchServiceVersion;
 
 import java.util.List;
 import java.util.Map;
 
-public final class SearchResultPage implements ContinuablePage<SearchContinuationToken, SearchResult> {
+/**
+ * Class representing a page returned by the search API.
+ */
+public final class SearchPagedResponse
+    implements ContinuablePage<SearchContinuationToken, SearchResult>, Response<List<SearchResult>> {
+    private final Response<?> response;
     private final SearchDocumentsResult page;
     private final SearchContinuationToken continuationToken;
 
-    public SearchResultPage(SearchDocumentsResult page, SearchContinuationToken continuationToken) {
-        this.page = page;
-        this.continuationToken = continuationToken;
+    /**
+     * Creates a new {@link SearchPagedResponse} from the paged response.
+     *
+     * @param response The response containing search result.
+     * @param serviceVersion The service version used to send the search request, used by the
+     * {@link #getContinuationToken() continuation token} to ensure iterating through pages remains on the same service
+     * version.
+     */
+    public SearchPagedResponse(Response<BinaryData> response, SearchServiceVersion serviceVersion) {
+        this.response = response;
+        this.page = response.getValue().toObject(SearchDocumentsResult.class);
+        this.continuationToken = new SearchContinuationToken(this.page.getNextPageParameters(), serviceVersion);
     }
 
     /**
@@ -105,5 +124,25 @@ public final class SearchResultPage implements ContinuablePage<SearchContinuatio
     @Override
     public SearchContinuationToken getContinuationToken() {
         return continuationToken;
+    }
+
+    @Override
+    public int getStatusCode() {
+        return response.getStatusCode();
+    }
+
+    @Override
+    public HttpHeaders getHeaders() {
+        return response.getHeaders();
+    }
+
+    @Override
+    public HttpRequest getRequest() {
+        return response.getRequest();
+    }
+
+    @Override
+    public List<SearchResult> getValue() {
+        return page.getResults();
     }
 }

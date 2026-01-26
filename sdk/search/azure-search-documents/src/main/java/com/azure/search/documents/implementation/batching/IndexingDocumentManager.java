@@ -70,14 +70,14 @@ final class IndexingDocumentManager {
      * @return A tuple of the number of actions in the batch and if a batch is available for processing.
      */
     Tuple2<Integer, Boolean> addAndCheckForBatch(Collection<IndexAction> actions,
-        Function<Map<String, Object>, String> documentKeyRetriever, Consumer<OnActionAddedOptions> onActionAddedConsumer,
-        int batchSize) {
+        Function<Map<String, Object>, String> documentKeyRetriever,
+        Consumer<OnActionAddedOptions> onActionAddedConsumer, int batchSize) {
         lock.lock();
 
         try {
             for (IndexAction action : actions) {
-                this.actions
-                    .addLast(new TryTrackingIndexAction(action, documentKeyRetriever.apply(action.getAdditionalProperties())));
+                this.actions.addLast(
+                    new TryTrackingIndexAction(action, documentKeyRetriever.apply(action.getAdditionalProperties())));
 
                 if (onActionAddedConsumer != null) {
                     onActionAddedConsumer.accept(new OnActionAddedOptions(action));

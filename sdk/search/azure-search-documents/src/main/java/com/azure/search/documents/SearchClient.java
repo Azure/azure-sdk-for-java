@@ -17,6 +17,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.models.AutocompleteMode;
@@ -41,11 +42,10 @@ import com.azure.search.documents.models.QueryRewritesType;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
-import com.azure.search.documents.models.SearchContinuationToken;
 import com.azure.search.documents.models.SearchDocumentsResult;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchPagedIterable;
-import com.azure.search.documents.models.SearchResultPage;
+import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SemanticErrorMode;
 
 import java.util.List;
@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SearchClient.class);
 
     @Generated
     private final SearchClientImpl serviceClient;
@@ -89,6 +90,11 @@ public final class SearchClient {
         return serviceClient.getEndpoint();
     }
 
+    /**
+     * Gets the name of the Azure AI Search index.
+     *
+     * @return the indexName value.
+     */
     public String getIndexName() {
         return serviceClient.getIndexName();
     }
@@ -1376,27 +1382,48 @@ public final class SearchClient {
      *
      * @param options Options for searchPost API.
      * @return A {@link ContinuablePagedIterable} that iterates over search results and provides access to the
-     * {@link SearchResultPage} for each page containing HTTP response and count, facet, and coverage information.
+     * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
     public SearchPagedIterable search(SearchPostOptions options) {
+        return search(options, null);
+    }
+
+    /**
+     * Searches for documents in the Azure AI Search index.
+     * <p>
+     * The {@link ContinuablePagedIterable} will iterate through search result pages until all search results are
+     * returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link ContinuablePagedIterable} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding
+     * the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
+     *
+     * @param options Options for searchPost API.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return A {@link ContinuablePagedIterable} that iterates over search results and provides access to the
+     * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
+     */
+    public SearchPagedIterable search(SearchPostOptions options, RequestOptions requestOptions) {
         return new SearchPagedIterable(() -> (continuationToken, pageSize) -> {
-            SearchDocumentsResult result;
+            Response<BinaryData> response;
             if (continuationToken == null) {
-                result = searchPost(options);
+                response = searchPostWithResponse(BinaryData.fromObject(options), requestOptions);
             } else {
                 if (continuationToken.getApiVersion() != serviceClient.getServiceVersion()) {
-                    throw new IllegalStateException(
-                        "Continuation token uses invalid apiVersion that doesn't match client serviceVersion. "
-                            + "apiVersion: " + continuationToken.getApiVersion() + ", serviceVersion: "
-                            + serviceClient.getServiceVersion());
+                    throw LOGGER.atError().addKeyValue("apiVersion", continuationToken.getApiVersion())
+                        .addKeyValue("serviceVersion", serviceClient.getServiceVersion())
+                        .log(new IllegalStateException(
+                            "Continuation token uses invalid apiVersion that doesn't match client serviceVersion."));
                 }
-                result = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()), null)
-                    .getValue()
-                    .toObject(SearchDocumentsResult.class);
+                response = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
+                    requestOptions);
             }
-            return new SearchResultPage(result,
-                new SearchContinuationToken(result.getNextPageParameters(), serviceClient.getServiceVersion()));
+            return new SearchPagedResponse(response, serviceClient.getServiceVersion());
         });
     }
 
@@ -1739,7 +1766,7 @@ public final class SearchClient {
         Response<BinaryData> response = indexWithResponse(BinaryData.fromObject(batch), requestOptions);
         IndexDocumentsResult results = response.getValue().toObject(IndexDocumentsResult.class);
         if (response.getStatusCode() == 207 && (options == null || options.throwOnAnyError())) {
-            throw new IndexBatchException(results);
+            throw LOGGER.atError().log(new IndexBatchException(results));
         } else {
             return new SimpleResponse<>(response, results);
         }

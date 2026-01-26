@@ -303,14 +303,14 @@ public final class TestHelpers {
     }
 
     public static void uploadDocuments(SearchClient client, List<JsonSerializable<?>> uploadDoc) {
-        uploadDocumentsRaw(client, uploadDoc.stream().map(TestHelpers::convertToMapStringObject)
-            .collect(Collectors.toList()));
+        uploadDocumentsRaw(client,
+            uploadDoc.stream().map(TestHelpers::convertToMapStringObject).collect(Collectors.toList()));
         waitForIndexing();
     }
 
     public static void uploadDocuments(SearchAsyncClient client, List<JsonSerializable<?>> uploadDoc) {
-        uploadDocumentsRaw(client, uploadDoc.stream().map(TestHelpers::convertToMapStringObject)
-            .collect(Collectors.toList()));
+        uploadDocumentsRaw(client,
+            uploadDoc.stream().map(TestHelpers::convertToMapStringObject).collect(Collectors.toList()));
         waitForIndexing();
     }
 
@@ -342,9 +342,9 @@ public final class TestHelpers {
     }
 
     public static void uploadDocumentsRaw(SearchAsyncClient client, List<Map<String, Object>> documents) {
-        client.indexDocuments(new IndexDocumentsBatch(documents.stream()
-            .map(doc -> createIndexAction(IndexActionType.UPLOAD, doc))
-            .collect(Collectors.toList()))).block();
+        client.indexDocuments(new IndexDocumentsBatch(
+            documents.stream().map(doc -> createIndexAction(IndexActionType.UPLOAD, doc)).collect(Collectors.toList())))
+            .block();
         waitForIndexing();
     }
 
@@ -476,8 +476,7 @@ public final class TestHelpers {
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
-        return new SearchIndex(testIndexName, baseIndex.getFields())
-            .setScoringProfiles(baseIndex.getScoringProfiles())
+        return new SearchIndex(testIndexName, baseIndex.getFields()).setScoringProfiles(baseIndex.getScoringProfiles())
             .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
             .setCorsOptions(baseIndex.getCorsOptions())
             .setSuggesters(baseIndex.getSuggesters())
@@ -528,6 +527,5 @@ public final class TestHelpers {
     public static RequestOptions ifMatch(String eTag) {
         return new RequestOptions().setHeader(HttpHeaderName.IF_MATCH, eTag);
     }
-
 
 }

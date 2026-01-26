@@ -78,11 +78,9 @@ public class SearchForDynamicDocumentsExample {
 
         // Subscribe and process all results across all pages in the response
         results.subscribe(result -> {
-                Map<String, Object> doc = result.getAdditionalProperties();
-                System.out.printf("%s: %s%n", doc.get("HotelName"), doc.get("Rating"));
-            },
-            err -> System.out.printf("error: %s%n", err),
-            () -> System.out.println("Completed processing"));
+            Map<String, Object> doc = result.getAdditionalProperties();
+            System.out.printf("%s: %s%n", doc.get("HotelName"), doc.get("Rating"));
+        }, err -> System.out.printf("error: %s%n", err), () -> System.out.println("Completed processing"));
 
         /*
         This will block until the above query has completed. This is strongly discouraged for use in production as

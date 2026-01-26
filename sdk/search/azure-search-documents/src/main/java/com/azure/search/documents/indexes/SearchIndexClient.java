@@ -102,8 +102,7 @@ public final class SearchIndexClient {
      * @return a {@link SearchClient} created from the SearchIndexClient configuration
      */
     public SearchClient getSearchClient(String indexName) {
-        return new SearchClientBuilder()
-            .indexName(indexName)
+        return new SearchClientBuilder().indexName(indexName)
             .endpoint(serviceClient.getEndpoint())
             .serviceVersion(serviceClient.getServiceVersion())
             .pipeline(serviceClient.getHttpPipeline())
@@ -3486,8 +3485,10 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listSynonymMapNames() {
-        return getSynonymMaps(Collections.singletonList("name")).getSynonymMaps().stream()
-            .map(SynonymMap::getName).collect(Collectors.toList());
+        return getSynonymMaps(Collections.singletonList("name")).getSynonymMaps()
+            .stream()
+            .map(SynonymMap::getName)
+            .collect(Collectors.toList());
     }
 
     /**

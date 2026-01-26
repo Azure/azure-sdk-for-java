@@ -74,9 +74,10 @@ public class SuggestTests extends SearchTestBase {
         doc2.title("War and Peace");
         doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
 
-        searchIndexClient.getSearchClient(BOOKS_INDEX_NAME).indexDocuments(new IndexDocumentsBatch(
-            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc1)),
-            createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc2))));
+        searchIndexClient.getSearchClient(BOOKS_INDEX_NAME)
+            .indexDocuments(
+                new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc1)),
+                    createIndexAction(IndexActionType.UPLOAD, convertToMapStringObject(doc2))));
         waitForIndexing();
     }
 
@@ -197,8 +198,8 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void canSuggestWithDateTimeInStaticModelSync() {
         SearchClient client = getClient(BOOKS_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("War", "sg")
-            .setSelect("ISBN", "Title", "PublishDate");
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("War", "sg").setSelect("ISBN", "Title", "PublishDate");
 
         verifyCanSuggestWithDateTimeInStaticModel(client.suggestPost(suggestOptions));
     }
@@ -206,8 +207,8 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void canSuggestWithDateTimeInStaticModelAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("War", "sg")
-            .setSelect("ISBN", "Title", "PublishDate");
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("War", "sg").setSelect("ISBN", "Title", "PublishDate");
 
         StepVerifier.create(asyncClient.suggestPost(suggestOptions))
             .assertNext(SuggestTests::verifyCanSuggestWithDateTimeInStaticModel)
@@ -253,8 +254,8 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void suggestThrowsWhenRequestIsMalformedSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("hotel", "sg")
-            .setOrderBy("This is not a valid orderby.");
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("hotel", "sg").setOrderBy("This is not a valid orderby.");
 
         HttpResponseException ex = assertThrows(HttpResponseException.class, () -> client.suggestPost(suggestOptions));
         assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
@@ -263,21 +264,20 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void suggestThrowsWhenRequestIsMalformedAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("hotel", "sg")
-            .setOrderBy("This is not a valid orderby.");
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("hotel", "sg").setOrderBy("This is not a valid orderby.");
 
-        StepVerifier.create(asyncClient.suggestPost(suggestOptions))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
-            });
+        StepVerifier.create(asyncClient.suggestPost(suggestOptions)).verifyErrorSatisfies(throwable -> {
+            HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ex.getResponse().getStatusCode());
+        });
     }
 
     @Test
     public void testCanSuggestWithMinimumCoverageSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("luxury", "sg").setOrderBy("HotelId")
-            .setMinimumCoverage(50.0);
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("luxury", "sg").setOrderBy("HotelId").setMinimumCoverage(50.0);
 
         verifyMinimumCoverage(client.suggestPost(suggestOptions));
     }
@@ -285,8 +285,8 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void testCanSuggestWithMinimumCoverageAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("luxury", "sg").setOrderBy("HotelId")
-            .setMinimumCoverage(50.0);
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("luxury", "sg").setOrderBy("HotelId").setMinimumCoverage(50.0);
 
         StepVerifier.create(asyncClient.suggestPost(suggestOptions))
             .assertNext(SuggestTests::verifyMinimumCoverage)
@@ -318,7 +318,8 @@ public class SuggestTests extends SearchTestBase {
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
             .setOrderBy("HotelId");
 
-        List<String> actualIds = client.suggestPost(suggestOptions).getResults()
+        List<String> actualIds = client.suggestPost(suggestOptions)
+            .getResults()
             .stream()
             .map(s -> (String) s.getAdditionalProperties().get("HotelId"))
             .collect(Collectors.toList());
@@ -347,7 +348,8 @@ public class SuggestTests extends SearchTestBase {
         SuggestPostOptions suggestOptions = new SuggestPostOptions("hotel", "sg").setOrderBy("Rating desc",
             "LastRenovationDate asc", "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
-        List<String> actualIds = client.suggestPost(suggestOptions).getResults()
+        List<String> actualIds = client.suggestPost(suggestOptions)
+            .getResults()
             .stream()
             .map(s -> (String) s.getAdditionalProperties().get("HotelId"))
             .collect(Collectors.toList());
@@ -372,8 +374,8 @@ public class SuggestTests extends SearchTestBase {
     @Test
     public void testCanSuggestWithSelectedFieldsSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("secret", "sg")
-            .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
+        SuggestPostOptions suggestOptions
+            = new SuggestPostOptions("secret", "sg").setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
 
         verifySuggestWithSelectedFields(client.suggestPost(suggestOptions));
     }
@@ -404,8 +406,8 @@ public class SuggestTests extends SearchTestBase {
     static void verifyDynamicDocumentSuggest(SuggestDocumentsResult suggestResultPagedResponse) {
         assertNotNull(suggestResultPagedResponse);
         assertEquals(2, suggestResultPagedResponse.getResults().size());
-        Hotel hotel = convertFromMapStringObject(suggestResultPagedResponse.getResults().get(0).getAdditionalProperties(),
-            Hotel::fromJson);
+        Hotel hotel = convertFromMapStringObject(
+            suggestResultPagedResponse.getResults().get(0).getAdditionalProperties(), Hotel::fromJson);
         assertEquals("10", hotel.hotelId());
     }
 

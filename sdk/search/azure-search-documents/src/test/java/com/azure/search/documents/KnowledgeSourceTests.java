@@ -477,8 +477,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
         client.createKnowledgeSource(knowledgeSource);
         client.deleteKnowledgeSource(knowledgeSource.getName());
 
-        HttpResponseException exception = assertThrows(HttpResponseException.class,
-            () -> client.getKnowledgeSource(knowledgeSource.getName()));
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.getKnowledgeSource(knowledgeSource.getName()));
         assertEquals(404, exception.getResponse().getStatusCode());
     }
 
@@ -651,8 +651,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         searchIndexClient.deleteKnowledgeSource(created.getName());
 
-        HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> searchIndexClient.getKnowledgeSource(created.getName()));
+        HttpResponseException ex
+            = assertThrows(HttpResponseException.class, () -> searchIndexClient.getKnowledgeSource(created.getName()));
         assertEquals(404, ex.getResponse().getStatusCode());
     }
 
@@ -676,8 +676,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         try {
             WebKnowledgeSource webKS = new WebKnowledgeSource("");
-            HttpResponseException ex = assertThrows(HttpResponseException.class,
-                () -> searchIndexClient.createKnowledgeSource(webKS));
+            HttpResponseException ex
+                = assertThrows(HttpResponseException.class, () -> searchIndexClient.createKnowledgeSource(webKS));
             assertTrue(ex.getResponse().getStatusCode() >= 400 && ex.getResponse().getStatusCode() < 500);
 
         } catch (NullPointerException | IllegalArgumentException e) {
@@ -687,8 +687,8 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
         try {
             WebKnowledgeSource webKS = new WebKnowledgeSource(null);
-            HttpResponseException ex2 = assertThrows(HttpResponseException.class,
-                () -> searchIndexClient.createKnowledgeSource(webKS));
+            HttpResponseException ex2
+                = assertThrows(HttpResponseException.class, () -> searchIndexClient.createKnowledgeSource(webKS));
             assertTrue(ex2.getResponse().getStatusCode() >= 400 && ex2.getResponse().getStatusCode() < 500);
 
         } catch (NullPointerException | IllegalArgumentException e) {

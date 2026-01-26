@@ -107,8 +107,7 @@ public final class SearchIndexAsyncClient {
      * @return a {@link SearchAsyncClient} created from the SearchIndexAsyncClient configuration
      */
     public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return new SearchClientBuilder()
-            .indexName(indexName)
+        return new SearchClientBuilder().indexName(indexName)
             .endpoint(serviceClient.getEndpoint())
             .serviceVersion(serviceClient.getServiceVersion())
             .pipeline(serviceClient.getHttpPipeline())
@@ -274,8 +273,9 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateSynonymMapWithResponseAsync(synonymMap.getName(),
-            BinaryData.fromObject(synonymMap), requestOptions)
+        return this.serviceClient
+            .createOrUpdateSynonymMapWithResponseAsync(synonymMap.getName(), BinaryData.fromObject(synonymMap),
+                requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SynonymMap.class)));
     }
 
@@ -1256,7 +1256,8 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexWithResponseAsync(index.getName(), BinaryData.fromObject(index), requestOptions)
+        return this.serviceClient
+            .createOrUpdateIndexWithResponseAsync(index.getName(), BinaryData.fromObject(index), requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndex.class)));
     }
 
@@ -2246,8 +2247,8 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAliasWithResponseAsync(alias.getName(),
-            BinaryData.fromObject(alias), requestOptions)
+        return this.serviceClient
+            .createOrUpdateAliasWithResponseAsync(alias.getName(), BinaryData.fromObject(alias), requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchAlias.class)));
     }
 
@@ -3326,8 +3327,8 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listSynonymMapNames() {
-        return getSynonymMaps(Collections.singletonList("name")).map(result -> result.getSynonymMaps().stream()
-            .map(SynonymMap::getName).collect(Collectors.toList()));
+        return getSynonymMaps(Collections.singletonList("name"))
+            .map(result -> result.getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList()));
     }
 
     /**

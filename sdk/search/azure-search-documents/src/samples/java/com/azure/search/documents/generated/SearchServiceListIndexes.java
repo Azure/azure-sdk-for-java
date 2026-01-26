@@ -17,7 +17,7 @@ public class SearchServiceListIndexes {
                 .endpoint("https://previewexampleservice.search.windows.net")
                 .buildClient();
         // BEGIN:com.azure.search.documents.generated.list-indexes.search-service-list-indexes
-        PagedIterable<SearchIndex> response = searchIndexClient.listIndexes(null);
+        PagedIterable<SearchIndex> response = searchIndexClient.listIndexes();
         // END:com.azure.search.documents.generated.list-indexes.search-service-list-indexes
     }
 }

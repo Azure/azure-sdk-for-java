@@ -18,7 +18,7 @@ public class HotelSearchableExceptionOnList {
      * Gets passcode.
      * @return the passcode of hotel.
      */
-    @SearchableField
+    @SearchableField(name = "Passcode")
     public List<Integer> getPasscode() {
         return (passcode == null) ? null : new ArrayList<>(passcode);
     }

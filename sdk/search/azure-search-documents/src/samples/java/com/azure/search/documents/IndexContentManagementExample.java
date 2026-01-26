@@ -6,14 +6,11 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This example shows how to manage the contents of an Azure AI Search index.

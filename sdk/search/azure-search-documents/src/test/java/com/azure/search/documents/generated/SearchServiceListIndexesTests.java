@@ -37,10 +37,11 @@ import com.azure.search.documents.indexes.models.VectorSearchCompressionRescoreS
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.indexes.models.VectorSearchVectorizer;
 import com.azure.search.documents.indexes.models.VectorSearchVectorizerKind;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 @Disabled
 public final class SearchServiceListIndexesTests extends SearchClientTestBase {
@@ -48,7 +49,7 @@ public final class SearchServiceListIndexesTests extends SearchClientTestBase {
     @Disabled
     public void testSearchServiceListIndexesTests() {
         // method invocation
-        PagedIterable<SearchIndex> response = searchIndexClient.listIndexes(null);
+        PagedIterable<SearchIndex> response = searchIndexClient.listIndexes();
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

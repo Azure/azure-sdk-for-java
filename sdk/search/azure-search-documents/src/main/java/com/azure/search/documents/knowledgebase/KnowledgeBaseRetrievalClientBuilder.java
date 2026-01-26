@@ -38,7 +38,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
-import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.models.SearchAudience;
 
 import java.util.ArrayList;

@@ -99,8 +99,7 @@ public class FieldBuilderTests {
     @Test
     @Disabled("Temporarily disabled")
     public void hotelWithArrayType() {
-        List<SearchField> actualFields
-            = sortByFieldName(SearchIndexClient.buildSearchFields(HotelWithArray.class));
+        List<SearchField> actualFields = sortByFieldName(SearchIndexClient.buildSearchFields(HotelWithArray.class));
         List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
@@ -406,7 +405,9 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class IndexAndSearchAnalyzerNames {
-        @SearchableField(name = "indexAndSearchAnalyzer", indexAnalyzerName = "indexAnalyzer",
+        @SearchableField(
+            name = "indexAndSearchAnalyzer",
+            indexAnalyzerName = "indexAnalyzer",
             searchAnalyzerName = "searchAnalyzer")
         public String indexAndSearchAnalyzer;
     }
@@ -424,7 +425,9 @@ public class FieldBuilderTests {
 
     @SuppressWarnings("unused")
     public static final class VectorSearchField {
-        @SearchableField(name = "vectorSearchField", vectorSearchDimensions = 1536,
+        @SearchableField(
+            name = "vectorSearchField",
+            vectorSearchDimensions = 1536,
             vectorSearchProfileName = "myprofile")
         public List<Float> vectorSearchField;
     }

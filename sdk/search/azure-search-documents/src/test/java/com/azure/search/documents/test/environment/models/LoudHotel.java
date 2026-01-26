@@ -7,6 +7,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.ComplexField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,52 +22,65 @@ import java.util.Objects;
 @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "unused" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel implements JsonSerializable<LoudHotel> {
+    @SimpleField(name = "HotelId", isKey = true)
     @JsonProperty(value = "HotelId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELID;
 
+    @SimpleField(name = "HotelName")
     @JsonProperty(value = "HotelName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELNAME;
 
+    @SimpleField(name = "Description")
     @JsonProperty(value = "Description")
     private String DESCRIPTION;
 
+    @SimpleField(name = "Description_fr")
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String DESCRIPTIONFRENCH;
 
+    @SimpleField(name = "Category")
     @JsonProperty(value = "Category")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String CATEGORY;
 
+    @SimpleField(name = "Tags")
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> TAGS;
 
+    @SimpleField(name = "ParkingIncluded")
     @JsonProperty(value = "ParkingIncluded")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean PARKINGINCLUDED;
 
+    @SimpleField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean SMOKINGALLOWED;
 
+    @SimpleField(name = "LastRenovationDate")
     @JsonProperty(value = "LastRenovationDate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date LASTRENOVATIONDATE;
 
+    @SimpleField(name = "Rating")
     @JsonProperty(value = "Rating")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer RATING;
 
+    @SimpleField(name = "Location")
     @JsonProperty(value = "Location")
     private GeoPoint LOCATION;
 
+    @ComplexField(name = "Address")
     @JsonProperty(value = "Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress ADDRESS;
 
+    @ComplexField(name = "Rooms")
     @JsonProperty(value = "Rooms")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> ROOMS;
@@ -219,7 +234,6 @@ public class LoudHotel implements JsonSerializable<LoudHotel> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-
 
                 if ("HotelId".equals(fieldName)) {
                     hotel.HOTELID = reader.getString();

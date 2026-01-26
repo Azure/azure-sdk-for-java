@@ -79,7 +79,7 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
      */
     @Generated
     public ContentUnderstandingSkill
-    setExtractionOptions(ContentUnderstandingSkillExtractionOptions... extractionOptions) {
+        setExtractionOptions(ContentUnderstandingSkillExtractionOptions... extractionOptions) {
         this.extractionOptions = (extractionOptions == null) ? null : Arrays.asList(extractionOptions);
         return this;
     }

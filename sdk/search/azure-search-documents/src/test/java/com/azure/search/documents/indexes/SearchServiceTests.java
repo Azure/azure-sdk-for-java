@@ -41,8 +41,10 @@ public class SearchServiceTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
-            .assertNext(response -> validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class)))
+        StepVerifier
+            .create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
+            .assertNext(
+                response -> validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class)))
             .verifyComplete();
     }
 
@@ -70,7 +72,8 @@ public class SearchServiceTests extends SearchTestBase {
     @Test
     @LiveOnly
     public void getServiceStatsReturnsRequestIdAsync() {
-        StepVerifier.create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
+        StepVerifier
+            .create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
             .assertNext(response -> {
                 /*
                  * The service will always return a request-id and will conditionally return client-request-id if

@@ -313,8 +313,9 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDataSourceConnectionWithResponseAsync(dataSource.getName(),
-            BinaryData.fromObject(dataSource), requestOptions)
+        return this.serviceClient
+            .createOrUpdateDataSourceConnectionWithResponseAsync(dataSource.getName(),
+                BinaryData.fromObject(dataSource), requestOptions)
             .map(response -> new SimpleResponse<>(response,
                 response.getValue().toObject(SearchIndexerDataSourceConnection.class)));
     }
@@ -1085,8 +1086,8 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexerWithResponseAsync(indexer.getName(),
-            BinaryData.fromObject(indexer), requestOptions)
+        return this.serviceClient
+            .createOrUpdateIndexerWithResponseAsync(indexer.getName(), BinaryData.fromObject(indexer), requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexer.class)));
     }
 
@@ -2155,8 +2156,9 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateSkillsetWithResponseAsync(skillset.getName(),
-            BinaryData.fromObject(skillset), requestOptions)
+        return this.serviceClient
+            .createOrUpdateSkillsetWithResponseAsync(skillset.getName(), BinaryData.fromObject(skillset),
+                requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexerSkillset.class)));
     }
 
@@ -2811,7 +2813,8 @@ public final class SearchIndexerAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
+    public Mono<SearchIndexerDataSourceConnection>
+        createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
         return createOrUpdateDataSourceConnection(dataSource.getName(), dataSource);
     }
 
@@ -2936,9 +2939,10 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listDataSourceConnectionNames() {
-        return getDataSourceConnections(Collections.singletonList("name"))
-            .map(result -> result.getDataSources().stream().map(SearchIndexerDataSourceConnection::getName)
-                .collect(Collectors.toList()));
+        return getDataSourceConnections(Collections.singletonList("name")).map(result -> result.getDataSources()
+            .stream()
+            .map(SearchIndexerDataSourceConnection::getName)
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -3625,8 +3629,8 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> listSkillsetNames() {
-        return getSkillsets(Collections.singletonList("name")).map(result -> result.getSkillsets().stream()
-            .map(SearchIndexerSkillset::getName).collect(Collectors.toList()));
+        return getSkillsets(Collections.singletonList("name")).map(
+            result -> result.getSkillsets().stream().map(SearchIndexerSkillset::getName).collect(Collectors.toList()));
     }
 
     /**

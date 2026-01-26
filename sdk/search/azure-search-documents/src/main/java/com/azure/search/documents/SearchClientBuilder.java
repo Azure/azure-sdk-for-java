@@ -62,6 +62,21 @@ import java.util.function.Function;
 public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>,
     ConfigurationTrait<SearchClientBuilder>, TokenCredentialTrait<SearchClientBuilder>,
     KeyCredentialTrait<SearchClientBuilder>, EndpointTrait<SearchClientBuilder> {
+    private static final boolean DEFAULT_AUTO_FLUSH = true;
+    private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
+    private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
+    private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
+    private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
+    private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
+    // Retaining this commented out code as it may be added back in a future release.
+    // Retaining this commented out code as it may be added back in a future release.
+    //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
+    //        if (oldBatchCount == 1) {
+    //            return 1;
+    //        } else {
+    //            return Math.max(1, oldBatchCount / 2);
+    //        }
+    //    };
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -426,21 +441,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
         serviceClients = { SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class })
     public final class SearchIndexingBufferedSenderBuilder<T> {
         private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderBuilder.class);
-        private static final boolean DEFAULT_AUTO_FLUSH = true;
-        private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
-        private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
-        private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
-        private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
-        private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
-        // Retaining this commented out code as it may be added back in a future release.
-        // Retaining this commented out code as it may be added back in a future release.
-        //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
-        //        if (oldBatchCount == 1) {
-        //            return 1;
-        //        } else {
-        //            return Math.max(1, oldBatchCount / 2);
-        //        }
-        //    };
 
         private Function<Map<String, Object>, String> documentKeyRetriever;
 
@@ -477,10 +477,9 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
 
             JsonSerializer serializer
                 = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
-            return new SearchIndexingBufferedSender<>(client, serializer, documentKeyRetriever,
-                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
-                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
-                onActionSentConsumer);
+            return new SearchIndexingBufferedSender<>(client, serializer, documentKeyRetriever, autoFlush,
+                autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 
         /**
@@ -499,10 +498,9 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
 
             JsonSerializer serializer
                 = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
-            return new SearchIndexingBufferedAsyncSender<>(asyncClient, serializer, documentKeyRetriever,
-                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
-                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
-                onActionSentConsumer);
+            return new SearchIndexingBufferedAsyncSender<>(asyncClient, serializer, documentKeyRetriever, autoFlush,
+                autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 
         /**
@@ -664,7 +662,7 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
         public SearchIndexingBufferedSenderBuilder<T>
-        onActionAdded(Consumer<OnActionAddedOptions> onActionAddedConsumer) {
+            onActionAdded(Consumer<OnActionAddedOptions> onActionAddedConsumer) {
             this.onActionAddedConsumer = onActionAddedConsumer;
             return this;
         }
@@ -677,7 +675,7 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
         public SearchIndexingBufferedSenderBuilder<T>
-        onActionSucceeded(Consumer<OnActionSucceededOptions> onActionSucceededConsumer) {
+            onActionSucceeded(Consumer<OnActionSucceededOptions> onActionSucceededConsumer) {
             this.onActionSucceededConsumer = onActionSucceededConsumer;
             return this;
         }
@@ -690,7 +688,7 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
         public SearchIndexingBufferedSenderBuilder<T>
-        onActionError(Consumer<OnActionErrorOptions> onActionErrorConsumer) {
+            onActionError(Consumer<OnActionErrorOptions> onActionErrorConsumer) {
             this.onActionErrorConsumer = onActionErrorConsumer;
             return this;
         }
@@ -714,8 +712,8 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          * @throws NullPointerException If {@code documentKeyRetriever} is null.
          */
-        public SearchIndexingBufferedSenderBuilder<T> documentKeyRetriever(
-            Function<Map<String, Object>, String> documentKeyRetriever) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            documentKeyRetriever(Function<Map<String, Object>, String> documentKeyRetriever) {
             this.documentKeyRetriever
                 = Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             return this;

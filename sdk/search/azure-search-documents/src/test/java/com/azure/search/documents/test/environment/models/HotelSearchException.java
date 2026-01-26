@@ -16,7 +16,7 @@ public class HotelSearchException extends RuntimeException {
      *
      * @return Get hotel id
      */
-    @SearchableField
+    @SearchableField(name = "HotelId")
     public int getHotelId() {
         return hotelId;
     }

@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.SimpleField;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import java.util.List;
  * The class is to test unsupported two-dimensional type.
  */
 public class HotelTwoDimensional {
+    @SimpleField(name = "Matrix")
     private List<List<String>> matrix;
 
     /**

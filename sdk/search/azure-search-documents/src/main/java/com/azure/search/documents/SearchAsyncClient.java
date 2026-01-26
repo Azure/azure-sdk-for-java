@@ -42,11 +42,10 @@ import com.azure.search.documents.models.QueryRewritesType;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
-import com.azure.search.documents.models.SearchContinuationToken;
 import com.azure.search.documents.models.SearchDocumentsResult;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchPagedFlux;
-import com.azure.search.documents.models.SearchResultPage;
+import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SemanticErrorMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -92,6 +91,11 @@ public final class SearchAsyncClient {
         return serviceClient.getEndpoint();
     }
 
+    /**
+     * Gets the name of the Azure AI Search index.
+     *
+     * @return the indexName value.
+     */
     public String getIndexName() {
         return serviceClient.getIndexName();
     }
@@ -1385,14 +1389,35 @@ public final class SearchAsyncClient {
      *
      * @param options Options for searchPost API.
      * @return A {@link ContinuablePagedFlux} that iterates over search results and provides access to the
-     * {@link SearchResultPage} for each page containing HTTP response and count, facet, and coverage information.
+     * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
     public SearchPagedFlux search(SearchPostOptions options) {
+        return search(options, null);
+    }
+
+    /**
+     * Searches for documents in the Azure AI Search index.
+     * <p>
+     * The {@link ContinuablePagedFlux} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link ContinuablePagedFlux} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the
+     * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
+     *
+     * @param options Options for searchPost API.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return A {@link ContinuablePagedFlux} that iterates over search results and provides access to the
+     * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
+     */
+    public SearchPagedFlux search(SearchPostOptions options, RequestOptions requestOptions) {
         return new SearchPagedFlux(() -> (continuationToken, pageSize) -> {
-            Mono<SearchDocumentsResult> mono;
+            Mono<Response<BinaryData>> mono;
             if (continuationToken == null) {
-                mono = searchPost(options);
+                mono = searchPostWithResponse(BinaryData.fromObject(options), requestOptions);
             } else {
                 if (continuationToken.getApiVersion() != serviceClient.getServiceVersion()) {
                     return Flux.error(new IllegalStateException(
@@ -1401,10 +1426,9 @@ public final class SearchAsyncClient {
                             + serviceClient.getServiceVersion()));
                 }
                 mono = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
-                    null).map(response -> response.getValue().toObject(SearchDocumentsResult.class));
+                    requestOptions);
             }
-            return mono.map(result -> new SearchResultPage(result,
-                new SearchContinuationToken(result.getNextPageParameters(), serviceClient.getServiceVersion()))).flux();
+            return mono.map(response -> new SearchPagedResponse(response, serviceClient.getServiceVersion())).flux();
         });
     }
 
@@ -1749,13 +1773,12 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch batch,
         IndexDocumentsOptions options, RequestOptions requestOptions) {
-        return indexWithResponse(BinaryData.fromObject(batch), requestOptions)
-            .flatMap(response -> {
-                IndexDocumentsResult results = response.getValue().toObject(IndexDocumentsResult.class);
-                return (response.getStatusCode() == 207 && (options == null || options.throwOnAnyError()))
-                    ? Mono.error(new IndexBatchException(results))
-                    : Mono.just(new SimpleResponse<>(response, results));
-            });
+        return indexWithResponse(BinaryData.fromObject(batch), requestOptions).flatMap(response -> {
+            IndexDocumentsResult results = response.getValue().toObject(IndexDocumentsResult.class);
+            return (response.getStatusCode() == 207 && (options == null || options.throwOnAnyError()))
+                ? Mono.error(new IndexBatchException(results))
+                : Mono.just(new SimpleResponse<>(response, results));
+        });
     }
 
     /**

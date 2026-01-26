@@ -226,7 +226,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     Mono<Void> addActions(Mono<Collection<IndexAction>> actionsMono, RequestOptions requestOptions) {
         return ensureOpen().then(actionsMono)
-            .flatMap(actions -> publisher.addActions(actions, requestOptions, () -> rescheduleFlushTask(requestOptions)));
+            .flatMap(
+                actions -> publisher.addActions(actions, requestOptions, () -> rescheduleFlushTask(requestOptions)));
     }
 
     /**
@@ -326,8 +327,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         return isClosed ? Mono.error(new IllegalStateException("Buffered sender has been closed.")) : Mono.empty();
     }
 
-    private Mono<Collection<IndexAction>> createDocumentActions(Collection<T> documents,
-        IndexActionType actionType) {
+    private Mono<Collection<IndexAction>> createDocumentActions(Collection<T> documents, IndexActionType actionType) {
         return Mono.fromCallable(() -> {
             Collection<IndexAction> actions = new ArrayList<>(documents.size());
 

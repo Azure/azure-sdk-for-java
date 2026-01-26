@@ -109,7 +109,8 @@ public class ContextRequestIdTests {
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
         verifyAsync(client.getIndexStatistics("index").contextWrite(subscriberContext), expectedRequestId);
-        verifyAsync(client.getIndexStatisticsWithResponse("index", null).contextWrite(subscriberContext), expectedRequestId);
+        verifyAsync(client.getIndexStatisticsWithResponse("index", null).contextWrite(subscriberContext),
+            expectedRequestId);
     }
 
     @Test
@@ -151,7 +152,8 @@ public class ContextRequestIdTests {
 
     private static void verifySync(Function<RequestOptions, Response<BinaryData>> requestRunner, Context context,
         String expectedRequestId) {
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> requestRunner.apply(new RequestOptions().setContext(context)));
+        RuntimeException ex
+            = assertThrows(RuntimeException.class, () -> requestRunner.apply(new RequestOptions().setContext(context)));
         assertEquals(expectedRequestId, ex.getMessage());
     }
 

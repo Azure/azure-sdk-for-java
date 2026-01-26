@@ -8,6 +8,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,28 +20,35 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWithPrimitiveCollections> {
-
+    @SimpleField(name = "Key", isKey = true)
     @JsonProperty(value = "Key")
     private String key;
 
+    @SimpleField(name = "Bools")
     @JsonProperty(value = "Bools")
     private Boolean[] bools;
 
+    @SimpleField(name = "Dates")
     @JsonProperty(value = "Dates")
     private OffsetDateTime[] dates;
 
+    @SimpleField(name = "Doubles")
     @JsonProperty(value = "Doubles")
     private Double[] doubles;
 
+    @SimpleField(name = "Ints")
     @JsonProperty(value = "Ints")
     private int[] ints;
 
+    @SimpleField(name = "Longs")
     @JsonProperty(value = "Longs")
     private Long[] longs;
 
+    @SimpleField(name = "Points")
     @JsonProperty(value = "Points")
     private GeoPoint[] points;
 
+    @SimpleField(name = "Strings")
     @JsonProperty(value = "Strings")
     private String[] strings;
 
@@ -130,8 +138,7 @@ public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWith
             }
             jsonWriter.writeEndArray();
         }
-        return jsonWriter
-            .writeArrayField("Longs", longs, JsonWriter::writeNumber)
+        return jsonWriter.writeArrayField("Longs", longs, JsonWriter::writeNumber)
             .writeArrayField("Points", points, JsonWriter::writeJson)
             .writeArrayField("Strings", strings, JsonWriter::writeString)
             .writeEndObject();
@@ -153,7 +160,8 @@ public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWith
                         model.bools = bools.toArray(new Boolean[0]);
                     }
                 } else if ("Dates".equals(fieldName)) {
-                    List<OffsetDateTime> dates = reader.readArray(elem -> CoreUtils.parseBestOffsetDateTime(elem.getString()));
+                    List<OffsetDateTime> dates
+                        = reader.readArray(elem -> CoreUtils.parseBestOffsetDateTime(elem.getString()));
                     if (dates != null) {
                         model.dates = dates.toArray(new OffsetDateTime[0]);
                     }

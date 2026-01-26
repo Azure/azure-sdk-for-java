@@ -36,7 +36,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.models.SearchAudience;
