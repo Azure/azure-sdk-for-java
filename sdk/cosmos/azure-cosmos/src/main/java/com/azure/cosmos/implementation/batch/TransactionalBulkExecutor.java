@@ -754,6 +754,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         cosmosBatchRequestOptionsAccessor
             .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
+        cosmosBatchRequestOptionsAccessor.setDisableRetryForThrottledBatchRequest(batchRequestOptions, true);
+
         return batchRequestOptions;
     }
 

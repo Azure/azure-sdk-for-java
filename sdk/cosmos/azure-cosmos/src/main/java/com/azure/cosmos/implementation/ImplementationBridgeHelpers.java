@@ -1177,6 +1177,11 @@ public class ImplementationBridgeHelpers {
             CosmosBatchRequestOptions setOperationContextAndListenerTuple(
               CosmosBatchRequestOptions cosmosBatchRequestOptions,
               OperationContextAndListenerTuple operationContextAndListenerTuple);
+            CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                boolean disableRetryForThrottledBatchRequest
+            );
+            boolean shouldDisableRetryForThrottledBatchRequest(CosmosBatchRequestOptions cosmosBatchRequestOptions);
         }
     }
 

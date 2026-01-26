@@ -943,7 +943,8 @@ public interface AsyncDocumentClient {
                                                   ServerBatchRequest serverBatchRequest,
                                                   RequestOptions options,
                                                   boolean disableAutomaticIdGeneration,
-                                                  boolean disableStaledResourceExceptionHandling);
+                                                  boolean disableStaledResourceExceptionHandling,
+                                                  boolean disableRetryForThrottledBatchRequest);
 
     /**
      * Creates a trigger.

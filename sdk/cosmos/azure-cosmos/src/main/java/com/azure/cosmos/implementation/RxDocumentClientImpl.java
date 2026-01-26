@@ -5188,7 +5188,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration,
-                                                         boolean disableStaledResourceExceptionHandling) {
+                                                         boolean disableStaledResourceExceptionHandling,
+                                                         boolean disableRetryForThrottledBatchRequest) {
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -5204,7 +5205,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
         scopedDiagnosticsFactory.setGwModeE2ETimeoutDiagnosticsHandler(gwModeE2ETimeoutDiagnosticHandler);
 
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        DocumentClientRetryPolicy documentClientRetryPolicy =
+            this.resetSessionTokenRetryPolicy.getRequestPolicy(
+                scopedDiagnosticsFactory,
+                disableRetryForThrottledBatchRequest);
+
         if (!disableStaledResourceExceptionHandling) {
             documentClientRetryPolicy = new StaleResourceRetryPolicy(
                 this.collectionCache,
