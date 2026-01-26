@@ -65,7 +65,7 @@ final class BulkExecutorUtil {
             ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
                 throttlingRetryOptions.getMaxRetryWaitTime(),
-                true);
+                false);
 
             BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(
                 docClientWrapper.getCollectionCache(),

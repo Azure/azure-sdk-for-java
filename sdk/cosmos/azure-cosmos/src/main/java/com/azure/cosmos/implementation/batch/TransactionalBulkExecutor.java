@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.BridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,9 +119,11 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         this.totalCount = new AtomicInteger(0);
 
-        // Initialize main and group sinks for rerouting batches on partition changes
+        // Initialize main sinks for rerouting batches on partition changes
         this.mainSink = Sinks.many().unicast().onBackpressureBuffer();
+        // Initialize group sinks for retriable exceptions
         this.groupSinks = new CopyOnWriteArrayList<>();
+        // Initialize flush signal group sinks for flush batch signals
         this.flushSignalGroupSinks = new CopyOnWriteArrayList<>();
 
         // Initialize partition thresholds map and default options for thresholds.
@@ -134,24 +135,25 @@ public final class TransactionalBulkExecutor implements Disposable {
             : CosmosSchedulers.TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC;
 
         // setup this background task which will try to emit flush signal,
-        // this is just a safeguard to prevent the pipeline got stuck in case when a cosmosBatch completes,
-        // the flush signal is not issued successfuly
-        int flushInterval = Configs.DEFAULT_BULK_TRANSACTIONAL_BATCH_FLUSH_INTERVAL_IN_MILLISECONDS;
-        this.scheduledFutureForFlush = new AtomicReference<>(CosmosSchedulers
-            .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
-            .schedulePeriodically(
-                this::onFlush,
-                flushInterval,
-                flushInterval,
-                TimeUnit.MILLISECONDS));
+        // A safeguard to prevent the pipeline got stuck in case when a cosmosBatch completes,
+        // the flush signal is not issued successfully or missed
+        int flushInterval = Configs.getBulkTransactionalBatchFlushIntervalInMs();
+        this.scheduledFutureForFlush = new AtomicReference<>(
+            CosmosSchedulers
+                .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
+                .schedulePeriodically(
+                    this::onFlush,
+                    flushInterval,
+                    flushInterval,
+                    TimeUnit.MILLISECONDS));
 
-        logger.info("Instantiated TransactionalBulkExecutor, Context: {}",
-            this.operationContextText);
+        logger.info("Instantiated TransactionalBulkExecutor, Context: {}", this.operationContextText);
     }
 
     @Override
     public void dispose() {
         if (this.isDisposed.compareAndSet(false, true)) {
+            logDebugOrWarning("Transactional bulk executor is disposed");
             long totalCountSnapshot = totalCount.get();
             if (totalCountSnapshot == 0) {
                 completeAllSinks();
@@ -172,7 +174,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         Disposable newFlushTask = initializeAggressiveFlush
             ? CosmosSchedulers
-            .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
+            .TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
             .schedulePeriodically(
                 this::onFlush,
                 flushIntervalAfterDrainingIncomingFlux,
@@ -185,9 +187,9 @@ public final class TransactionalBulkExecutor implements Disposable {
         if (scheduledFutureSnapshot != null) {
             try {
                 scheduledFutureSnapshot.dispose();
-                logDebugOrWarning("Cancelled all future scheduled tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
+                logDebugOrWarning("Cancelled all future scheduled flush tasks {}, Context: {}", getThreadInfo(), this.operationContextText);
             } catch (Exception e) {
-                logger.warn("Failed to cancel scheduled tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
+                logger.warn("Failed to cancel scheduled flush tasks{}, Context: {}", getThreadInfo(), this.operationContextText, e);
             }
         }
     }
@@ -242,7 +244,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         }
     }
 
-    public Flux<CosmosBatchResponse> execute() {
+    public Flux<CosmosBulkTransactionalBatchResponse> execute() {
         return this
             .executeCore()
             .doFinally((SignalType signal) -> {
@@ -264,7 +266,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             });
     }
 
-    private Flux<CosmosBatchResponse> executeCore() {
+    private Flux<CosmosBulkTransactionalBatchResponse> executeCore() {
 
         // For transactional batches,
         // resolve partition key range id per transactional batch and group by the partition
@@ -306,7 +308,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                             );
 
                             logger.trace(
-                                "SetRetryPolicy for cosmos batch, pkValue: {}, totalCount: {}, Context: {}, {}",
+                                "SetRetryPolicy for cosmos batch, PkValue: {}, TotalCount: {}, Context: {}, {}",
                                 cosmosBatch.getPartitionKeyValue(),
                                 totalCount.get(),
                                 this.operationContextText,
@@ -324,7 +326,7 @@ public final class TransactionalBulkExecutor implements Disposable {
                                 // This is needed as there can be case that onComplete was called after last element was processed
                                 // So complete the sink here also if count is 0, if source has completed and count isn't zero,
                                 // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
-                                logInfoOrWarning("Getting complete signal, total count is 0, close all sinks");
+                                logInfoOrWarning("Getting complete signal, Total count is 0, close all sinks");
                                 completeAllSinks();
                             } else {
                                 this.cancelFlushTask(true);
@@ -336,8 +338,9 @@ public final class TransactionalBulkExecutor implements Disposable {
                         .mergeWith(mainSink.asFlux())
                         .subscribeOn(this.executionScheduler)
                         .flatMap(cosmosBatch -> {
-                            logger.trace("Before Resolve PkRangeId, PkValue {}, Context: {} {}",
+                            logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
                                 cosmosBatch.getPartitionKeyValue(),
+                                cosmosBatch.getOperations().size(),
                                 this.operationContextText,
                                 getThreadInfo());
 
@@ -351,13 +354,14 @@ public final class TransactionalBulkExecutor implements Disposable {
                                                 pkRangeId,
                                                 this.transactionalBulkExecutionOptionsImpl.getMinBatchRetryRate(),
                                                 this.transactionalBulkExecutionOptionsImpl.getMaxBatchRetryRate(),
-                                                this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(), // use the cosmos batch ops count as the initial value
+                                                this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(),
                                                 this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(),
                                                 1));
 
-                                    logger.trace("Resolved PkRangeId, {}, PKRangeId: {}, PkValue: {}, Context: {} {}",
+                                    logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,
                                         cosmosBatch.getPartitionKeyValue(),
+                                        cosmosBatch.getOperations().size(),
                                         this.operationContextText,
                                         getThreadInfo());
 
@@ -367,40 +371,18 @@ public final class TransactionalBulkExecutor implements Disposable {
                         .groupBy(Pair::getKey, Pair::getValue)
                         .flatMap(this::executePartitionedGroupTransactional, maxConcurrentCosmosPartitions)
                         .subscribeOn(this.executionScheduler)
-                        .doOnNext(requestAndResponse -> {
-
-                            int totalCountAfterDecrement = totalCount.decrementAndGet();
-                            boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
-                            if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
-                                // It is possible that count is zero but there are more elements in the source.
-                                // Count 0 also signifies that there are no pending elements in any sink.
-                                logInfoOrWarning("All work completed, TotalCount: {}, Context: {} {}",
-                                    totalCountAfterDecrement,
-                                    this.operationContextText,
-                                    getThreadInfo());
-                                completeAllSinks();
-                            } else {
-                                if (totalCountAfterDecrement == 0) {
-                                    logDebugOrWarning(
-                                        "No Work left - but mainSource not yet completed, Context: {} {}",
-                                        this.operationContextText,
-                                        getThreadInfo());
-                                }
-                                logTraceOrWarning(
-                                    "Work left - TotalCount after decrement: {}, main sink completed {}, Context: {} {}",
-                                    totalCountAfterDecrement,
-                                    mainSourceCompletedSnapshot,
-                                    this.operationContextText,
-                                    getThreadInfo());
-                            }
-                        })
+                        .doOnNext(response -> doOnResponseOrError())
+                        .doOnError(throwable -> doOnResponseOrError())
                         .doOnComplete(() -> {
                             int totalCountSnapshot = totalCount.get();
                             boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
                             if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
                                 // It is possible that count is zero but there are more elements in the source.
                                 // Count 0 also signifies that there are no pending elements in any sink.
-                                logInfoOrWarning("DoOnComplete: All work completed, Context: {}", this.operationContextText);
+                                logInfoOrWarning(
+                                    "DoOnComplete: All work completed, Context: {} {}",
+                                    this.operationContextText,
+                                    getThreadInfo());
                                 completeAllSinks();
                             } else {
                                 logDebugOrWarning(
@@ -414,7 +396,34 @@ public final class TransactionalBulkExecutor implements Disposable {
                 });
     }
 
-    private Flux<CosmosBatchResponse> executePartitionedGroupTransactional(
+    private void doOnResponseOrError() {
+        int totalCountAfterDecrement = totalCount.decrementAndGet();
+        boolean mainSourceCompletedSnapshot = mainSourceCompleted.get();
+        if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
+            // It is possible that count is zero but there are more elements in the source.
+            // Count 0 also signifies that there are no pending elements in any sink.
+            logInfoOrWarning("All work completed, TotalCount: {}, Context: {} {}",
+                totalCountAfterDecrement,
+                this.operationContextText,
+                getThreadInfo());
+            completeAllSinks();
+        } else {
+            if (totalCountAfterDecrement == 0) {
+                logDebugOrWarning(
+                    "No Work left - but mainSource not yet completed, Context: {} {}",
+                    this.operationContextText,
+                    getThreadInfo());
+            }
+            logTraceOrWarning(
+                "Work left - TotalCount after decrement: {}, main sink completed {}, Context: {} {}",
+                totalCountAfterDecrement,
+                mainSourceCompletedSnapshot,
+                this.operationContextText,
+                getThreadInfo());
+        }
+    }
+
+    private Flux<CosmosBulkTransactionalBatchResponse> executePartitionedGroupTransactional(
         GroupedFlux<PartitionScopeThresholds, CosmosBatch> partitionedGroupFluxOfBatches) {
 
         final PartitionScopeThresholds thresholds = partitionedGroupFluxOfBatches.key();
@@ -463,12 +472,13 @@ public final class TransactionalBulkExecutor implements Disposable {
                 .then(Mono.defer(() -> {
                     totalOperationsInFlight.addAndGet(cosmosBatch.getOperations().size());
                     totalBatchesInFlight.incrementAndGet();
-                    logInfoOrWarning(
-                        "Flush cosmos batch, PKRangeId: {}, PkValue: {}, totalOperationsInFlight: {}, totalBatchesInFlight: {}, Context: {} {}",
+                    logTraceOrWarning(
+                        "Flush cosmos batch, PKRangeId: {}, PkValue: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, Context: {} {}",
                         thresholds.getPartitionKeyRangeId(),
                         cosmosBatch.getPartitionKeyValue(),
                         totalOperationsInFlight.get(),
                         totalBatchesInFlight.get(),
+                        cosmosBatch.getOperations().size(),
                         this.operationContextText,
                         getThreadInfo());
 
@@ -491,18 +501,24 @@ public final class TransactionalBulkExecutor implements Disposable {
         PartitionScopeThresholds partitionScopeThresholds,
         CosmosBatch cosmosBatch) {
 
-        int targetBatchSize = partitionScopeThresholds.getTargetMicroBatchSizeSnapshot();
-        boolean canFlush = (cosmosBatch.getOperations().size() + totalOperationsInFlight.get() <= targetBatchSize)
-            || (totalConcurrentBatchesInFlight.get() <= 0);
+        int targetBatchSizeSnapshot = partitionScopeThresholds.getTargetMicroBatchSizeSnapshot();
+        int totalOpsInFlightSnapshot = totalOperationsInFlight.get();
+        int totalBatchesInFlightSnapshot = totalConcurrentBatchesInFlight.get();
 
-        logger.info(
-            "canFlushCosmosBatch, PkRangeId: {}, targetBatchSize {}, current total operations in flight {}, current batches in flight {}, batch op count {}, canFlush {}",
+        boolean canFlush = (cosmosBatch.getOperations().size() + totalOpsInFlightSnapshot <= targetBatchSizeSnapshot)
+            || (totalBatchesInFlightSnapshot <= 0);
+
+        logTraceOrWarning(
+            "canFlushCosmosBatch - PkRangeId: {}, PkValue: {}, TargetBatchSize {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, CanFlush {}, Context: {} {}",
+            cosmosBatch.getPartitionKeyValue(),
             partitionScopeThresholds.getPartitionKeyRangeId(),
-            targetBatchSize,
-            totalOperationsInFlight.get(),
-            totalConcurrentBatchesInFlight.get(),
+            targetBatchSizeSnapshot,
+            totalOpsInFlightSnapshot,
+            totalBatchesInFlightSnapshot,
             cosmosBatch.getOperations().size(),
-            canFlush);
+            canFlush,
+            this.operationContextText,
+            getThreadInfo());
 
         return canFlush;
     }
@@ -516,7 +532,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
             throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
             throttlingRetryOptions.getMaxRetryWaitTime(),
-            true);
+            false);
 
         TransactionalBatchRetryPolicy retryPolicy = new TransactionalBatchRetryPolicy(
             docClientWrapper.getCollectionCache(),
@@ -527,19 +543,37 @@ public final class TransactionalBulkExecutor implements Disposable {
         cosmosBatchAccessor.setRetryPolicy(cosmosBatch, retryPolicy);
     }
 
-    private Mono<CosmosBatchResponse> enqueueForRetry(
+    private Mono<CosmosBulkTransactionalBatchResponse> enqueueForRetry(
         Duration backOffTime,
         Sinks.Many<CosmosBatch> groupSink,
         CosmosBatch cosmosBatch,
-        PartitionScopeThresholds thresholds) {
+        PartitionScopeThresholds thresholds,
+        String batchTrackingId) {
 
         // Record an enqueued retry for threshold adjustments
-        this.recordResponseForRetry(cosmosBatch, thresholds);
+        this.recordResponseForRetryInThreshold(cosmosBatch, thresholds);
 
         if (backOffTime == null || backOffTime.isZero()) {
+            logDebugOrWarning(
+                "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, Batch trackingId: {}, Context: {} {}",
+                thresholds.getPartitionKeyRangeId(),
+                cosmosBatch.getPartitionKeyValue(),
+                batchTrackingId,
+                this.operationContextText,
+                getThreadInfo());
+
             groupSink.emitNext(cosmosBatch, serializedEmitFailureHandler);
             return Mono.empty();
         } else {
+            logDebugOrWarning(
+                "enqueueForRetry - Retry in group sink for PkRangeId: {}, PkValue: {}, BackoffTime: {}, Batch trackingId: {}, Context: {} {}",
+                thresholds.getPartitionKeyRangeId(),
+                cosmosBatch.getPartitionKeyValue(),
+                backOffTime,
+                batchTrackingId,
+                this.operationContextText,
+                getThreadInfo());
+
             return Mono
                 .delay(backOffTime)
                 .flatMap((dummy) -> {
@@ -549,7 +583,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         }
     }
 
-    private Mono<CosmosBatchResponse> executeTransactionalBatchWithThresholds(
+    private Mono<CosmosBulkTransactionalBatchResponse> executeTransactionalBatchWithThresholds(
         CosmosBatch cosmosBatch,
         PartitionScopeThresholds thresholds,
         Sinks.Many<CosmosBatch> groupSink,
@@ -557,15 +591,16 @@ public final class TransactionalBulkExecutor implements Disposable {
         AtomicInteger totalBatchesInFlight,
         AtomicInteger totalOperationsInFlight) {
 
-        List<CosmosItemOperation> operations = cosmosBatch.getOperations();
         String batchTrackingId = UUIDs.nonBlockingRandomUUID().toString();
 
-        logDebugOrWarning(
-            "Executing transactional batch - {} operations, PK: {}, TrackingId: {}, Context: {}",
-            operations.size(),
+        logTraceOrWarning(
+            "executeTransactionalBatchWithThresholds - PkRangeId: {}, PkValue: {}, BatchOpCount:{}, TrackingId: {}, Context: {} {}",
+            thresholds.getPartitionKeyRangeId(),
             cosmosBatch.getPartitionKeyValue(),
+            cosmosBatch.getOperations().size(),
             batchTrackingId,
-            this.operationContextText);
+            this.operationContextText,
+            getThreadInfo());
 
         CosmosBatchRequestOptions batchRequestOptions = getBatchRequestOptions();
 
@@ -574,18 +609,29 @@ public final class TransactionalBulkExecutor implements Disposable {
             .publishOn(this.executionScheduler)
             .flatMap(response -> {
                 logTraceOrWarning(
-                    "Response for transactional batch of partitionKey %s - status code %s, ActivityId: %s, batch TrackingId %s",
+                    "Response for transactional batch - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, ResponseOpCount: {}, StatusCode: {}, SubStatusCode: {}, ActivityId: {}, Batch trackingId {}, Context: {} {}",
+                    thresholds.getPartitionKeyRangeId(),
                     cosmosBatch.getPartitionKeyValue(),
+                    cosmosBatch.getOperations().size(),
+                    response.getResults().size(),
                     response.getStatusCode(),
+                    response.getSubStatusCode(),
                     response.getActivityId(),
-                    batchTrackingId);
+                    batchTrackingId,
+                    this.operationContextText,
+                    getThreadInfo());
 
                 if (response.isSuccessStatusCode()) {
-                    recordSuccessfulResponse(cosmosBatch, thresholds);
-                    return Mono.just(response);
+                    recordSuccessfulResponseInThreshold(cosmosBatch, thresholds);
+                    return Mono.just(
+                        new CosmosBulkTransactionalBatchResponse(
+                            cosmosBatch,
+                            response,
+                            null)
+                    );
                 }
 
-                return handleUnSuccessfulResponse(thresholds, batchTrackingId, cosmosBatch, response, groupSink);
+                return handleUnsuccessfulResponse(thresholds, batchTrackingId, cosmosBatch, response, groupSink);
             })
             .onErrorResume(throwable -> {
                 if (!(throwable instanceof Exception)) {
@@ -601,30 +647,36 @@ public final class TransactionalBulkExecutor implements Disposable {
                     batchTrackingId);
             })
             .doFinally(signalType -> {
-                totalOperationsInFlight.addAndGet(-cosmosBatch.getOperations().size());
-                totalBatchesInFlight.decrementAndGet();
+                int totalOpsInFlightSnapshot = totalOperationsInFlight.addAndGet(-cosmosBatch.getOperations().size());
+                int totalBatchesInFlightSnapshot = totalBatchesInFlight.decrementAndGet();
                 flushSignalGroupSink.emitNext(1, serializedEmitFailureHandler);
-                logger.info(
-                    "CosmosBatch completed, emit flush signal, total operations in flight {}, total batches in flight {},",
-                    totalOperationsInFlight.get(),
-                    totalBatchesInFlight.get());
+                logTraceOrWarning(
+                    "CosmosBatch completed, emit flush signal - SignalType: {}, PkRangeId: {}, PkValue: {}, BatchOpCount: {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, Context: {} {}",
+                    signalType,
+                    thresholds.getPartitionKeyRangeId(),
+                    cosmosBatch.getPartitionKeyValue(),
+                    cosmosBatch.getOperations().size(),
+                    totalOpsInFlightSnapshot,
+                    totalBatchesInFlightSnapshot,
+                    this.operationContextText,
+                    getThreadInfo());
             })
             .subscribeOn(this.executionScheduler);
     }
 
-    private void recordSuccessfulResponse(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
+    private void recordSuccessfulResponseInThreshold(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
         for (int i = 0; i < cosmosBatch.getOperations().size(); i++) {
             thresholds.recordSuccessfulOperation();
         }
     }
 
-    private void recordResponseForRetry(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
+    private void recordResponseForRetryInThreshold(CosmosBatch cosmosBatch, PartitionScopeThresholds thresholds) {
         for (int i = 0; i < cosmosBatch.getOperations().size(); i++) {
             thresholds.recordEnqueuedRetry();
         }
     }
 
-    private Mono<CosmosBatchResponse> handleUnSuccessfulResponse(
+    private Mono<CosmosBulkTransactionalBatchResponse> handleUnsuccessfulResponse(
         PartitionScopeThresholds thresholds,
         String batchTrackingId,
         CosmosBatch cosmosBatch,
@@ -632,12 +684,14 @@ public final class TransactionalBulkExecutor implements Disposable {
         Sinks.Many<CosmosBatch> groupSink) {
 
         logDebugOrWarning(
-            "handleUnSuccessfulResponse for partitionKey %s - pkRangeId {}, statusCode {}, subStatusCode {}, batch TrackingId %s, {}",
-            cosmosBatch.getPartitionKeyValue(),
+            "handleUnsuccessfulResponse - PkRangeId: {}, PkValue: {}, BatchOpCount: {}, StatusCode {}, SubStatusCode {}, Batch trackingId {}, Context: {} {}",
             thresholds.getPartitionKeyRangeId(),
+            cosmosBatch.getPartitionKeyValue(),
+            cosmosBatch.getOperations().size(),
             response.getStatusCode(),
             response.getSubStatusCode(),
             batchTrackingId,
+            this.operationContextText,
             getThreadInfo());
 
         // Create CosmosException for retry policy to understand:
@@ -649,10 +703,27 @@ public final class TransactionalBulkExecutor implements Disposable {
         BridgeInternal.setSubStatusCode(exception, response.getSubStatusCode());
 
         return this.handleTransactionalBatchExecutionException(cosmosBatch, exception, groupSink, thresholds, batchTrackingId)
-            .onErrorResume(throwable -> Mono.just(response)); // the operation can not be retried, return the original response
+            .onErrorResume(throwable -> {
+                logDebugOrWarning(
+                    "handleUnsuccessfulResponse - Can not be retried. PkRangeId: {}, PkValue: {}, Batch trackingId {}, Context: {} {}",
+                    thresholds.getPartitionKeyRangeId(),
+                    cosmosBatch.getPartitionKeyValue(),
+                    batchTrackingId,
+                    this.operationContextText,
+                    getThreadInfo(),
+                    throwable);
+
+                return Mono.just(
+                    new CosmosBulkTransactionalBatchResponse(
+                        cosmosBatch,
+                        response,
+                        null
+                    )
+                ); // the operation can not be retried, return the original response
+            });
     }
 
-    private Mono<CosmosBatchResponse> handleTransactionalBatchExecutionException(
+    private Mono<CosmosBulkTransactionalBatchResponse> handleTransactionalBatchExecutionException(
         CosmosBatch cosmosBatch,
         Exception exception,
         Sinks.Many<CosmosBatch> groupSink,
@@ -660,11 +731,12 @@ public final class TransactionalBulkExecutor implements Disposable {
         String batchTrackingId) {
 
         logDebugOrWarning(
-            "HandleTransactionalBatchExecutionException for partitionKey %s - pkRangeId {}, Error {}, batch TrackingId %s, {}",
+            "HandleTransactionalBatchExecutionException - PkRangeId: {}, PkRangeValue: {}, Exception {}, Batch TrackingId {}, Context: {} {}",
             cosmosBatch.getPartitionKeyValue(),
             thresholds.getPartitionKeyRangeId(),
             exception,
             batchTrackingId,
+            this.operationContextText,
             getThreadInfo());
 
         if (exception instanceof CosmosException) {
@@ -676,11 +748,12 @@ public final class TransactionalBulkExecutor implements Disposable {
                 .flatMap(shouldRetryInMainSink -> {
                     if (shouldRetryInMainSink) {
                         logDebugOrWarning(
-                            "HandleTransactionalBatchExecutionException - Retry in main sink for partitionKey %s - pkRangeId {}, Error {}, batch TrackingId %s, {}",
-                            cosmosBatch.getPartitionKeyValue(),
+                            "HandleTransactionalBatchExecutionException - Retry in main sink for PkRangeId: {}, PkValue: {}, Error {}, Batch TrackingId {}, Context: {} {}",
                             thresholds.getPartitionKeyRangeId(),
+                            cosmosBatch.getPartitionKeyValue(),
                             exception,
                             batchTrackingId,
+                            this.operationContextText,
                             getThreadInfo());
 
                         // retry - but don't mark as enqueued for retry in thresholds
@@ -692,26 +765,36 @@ public final class TransactionalBulkExecutor implements Disposable {
                             groupSink,
                             cosmosBatchAccessor.getRetryPolicy(cosmosBatch),
                             cosmosException,
-                            thresholds);
+                            thresholds,
+                            batchTrackingId);
                     }
                 });
         }
 
-        return Mono.error(exception);
+        return Mono.just(
+            new CosmosBulkTransactionalBatchResponse(cosmosBatch, null, exception)
+        );
     }
 
-    private Mono<CosmosBatchResponse> retryOtherExceptions(
+    private Mono<CosmosBulkTransactionalBatchResponse> retryOtherExceptions(
         CosmosBatch cosmosBatch,
         Sinks.Many<CosmosBatch> groupSink,
         TransactionalBatchRetryPolicy retryPolicy,
         CosmosException cosmosException,
-        PartitionScopeThresholds thresholds) {
+        PartitionScopeThresholds thresholds,
+        String batchTrackingId) {
 
         return retryPolicy.shouldRetry(cosmosException).flatMap(result -> {
             if (result.shouldRetry) {
-                return this.enqueueForRetry(result.backOffTime, groupSink, cosmosBatch, thresholds);
+                return this.enqueueForRetry(result.backOffTime, groupSink, cosmosBatch, thresholds, batchTrackingId);
             } else {
-                return Mono.error(cosmosException);
+                return Mono.just(
+                    new CosmosBulkTransactionalBatchResponse(
+                        cosmosBatch,
+                        null,
+                        cosmosException
+                    )
+                );
             }
         });
     }
@@ -754,6 +837,8 @@ public final class TransactionalBulkExecutor implements Disposable {
         cosmosBatchRequestOptionsAccessor
             .setOperationContextAndListenerTuple(batchRequestOptions, operationListener);
 
+        batchRequestOptions.setCustomItemSerializer(this.effectiveItemSerializer);
+
         cosmosBatchRequestOptionsAccessor.setDisableRetryForThrottledBatchRequest(batchRequestOptions, true);
 
         return batchRequestOptions;
@@ -761,7 +846,6 @@ public final class TransactionalBulkExecutor implements Disposable {
 
     private void completeAllSinks() {
         logInfoOrWarning("Completing execution, Context: {}", this.operationContextText);
-        logger.debug("Executor service shut down, Context: {}", this.operationContextText);
 
         try {
             mainSink.emitComplete(serializedCompleteEmitFailureHandler);
@@ -774,6 +858,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
     private void onFlush() {
         try {
+            logTraceOrWarning("onFlush - emitting flush signal for each group");
             this.flushSignalGroupSinks.forEach(sink -> sink.emitNext(1, serializedEmitFailureHandler));
         } catch(Throwable t) {
             logger.error("Callback invocation 'onFlush' failed. Context: {}", this.operationContextText,  t);
@@ -785,9 +870,25 @@ public final class TransactionalBulkExecutor implements Disposable {
         @Override
         public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
             if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED)) {
-                logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
+                logger.debug(
+                    "SerializedEmitFailureHandler.onEmitFailure, emit result {} - Signal:{}, Result: {}",
+                    Sinks.EmitResult.FAIL_NON_SERIALIZED,
+                    signalType,
+                    emitResult);
 
                 return true;
+            }
+
+            if (emitResult.equals((Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER))) {
+                // For flushSignalGroupSink which is a Sinks.Many.Multicast, when this happens, it means there is no active subscriber
+                // this can happen usually at the end of the execution when all the operations have flushed
+                logger.trace(
+                    "SerializedEmitFailureHandler.onEmitFailure, emit result {} - Signal:{}, Result: {}",
+                    Sinks.EmitResult.FAIL_ZERO_SUBSCRIBER,
+                    signalType,
+                    emitResult);
+
+                return false;
             }
 
             logger.error("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);

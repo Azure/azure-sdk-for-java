@@ -23,12 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+
 /**
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
  */
 public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableRequestOptions {
-    private int maxOperationsConcurrency = Configs.getMaxBulkTransactionalBatchOpsConcurrency();
+    private int maxOperationsConcurrency = Configs.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY;
+    private int maxBatchesConcurrency = Configs.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY;
+
     private double maxBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
@@ -94,6 +98,17 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
 
     public void setMaxOperationsConcurrency(int maxOperationsConcurrency) {
         this.maxOperationsConcurrency = maxOperationsConcurrency;
+    }
+
+    public int getMaxBatchesConcurrency() {
+        return maxBatchesConcurrency;
+    }
+
+    public void setMaxBatchesConcurrency(int maxBatchesConcurrency) {
+        checkArgument(
+            maxBatchesConcurrency >= 1 && maxBatchesConcurrency <= 10,
+            "maxMicroBatchConcurrency should be between [1, 10]");
+        this.maxBatchesConcurrency = maxBatchesConcurrency;
     }
 
     public void setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {

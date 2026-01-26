@@ -976,9 +976,11 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     )
     var writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
-    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
+    writeConfig.bulkExecutionConfigs should not be null
+    var bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutorConfigs]
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
 
     userConfig = Map(
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
@@ -988,9 +990,11 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     writeConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
-    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
+    writeConfig.bulkExecutionConfigs should not be null
+    bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutorConfigs]
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
   }
 
   "Config Parser" should "validate default operation types for patch configs" in {
