@@ -2,7 +2,7 @@
 
 Azure Resource Manager Deployment Stacks client library for Java.
 
-This package contains Microsoft Azure SDK for Deployment Stacks Management SDK. DeploymentStacks Client. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Deployment Stacks Management SDK. The APIs listed in this specification can be used to manage Deployment stack resources through the Azure Resource Manager. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-resources-deploymentstacks</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
