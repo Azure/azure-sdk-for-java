@@ -59,7 +59,7 @@ public final class MemoryStoresClient {
     /**
      * Create a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -74,9 +74,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -114,7 +114,7 @@ public final class MemoryStoresClient {
     /**
      * Update a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -125,9 +125,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -166,7 +166,7 @@ public final class MemoryStoresClient {
     /**
      * Retrieve a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -223,7 +223,7 @@ public final class MemoryStoresClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -259,7 +259,7 @@ public final class MemoryStoresClient {
     /**
      * Delete a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -287,7 +287,7 @@ public final class MemoryStoresClient {
     /**
      * Search for relevant memories from a memory store based on conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -304,9 +304,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -357,7 +357,7 @@ public final class MemoryStoresClient {
     /**
      * Update memory store with conversation memories.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -372,9 +372,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -445,7 +445,7 @@ public final class MemoryStoresClient {
     /**
      * Get memory store update result.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -697,7 +697,7 @@ public final class MemoryStoresClient {
     /**
      * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -705,9 +705,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -826,8 +826,8 @@ public final class MemoryStoresClient {
      * @return memory search response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MemoryStoreSearchResponse _searchMemories(String name, String scope, List<InputItem> items, String previousSearchId,
-        MemorySearchOptions options) {
+    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<InputItem> items, String previousSearchId,
+                                                     MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SearchMemoriesRequest searchMemoriesRequestObj = new SearchMemoriesRequest(scope).setItems(items)
@@ -860,7 +860,7 @@ public final class MemoryStoresClient {
         String previousSearchId, MemorySearchOptions options) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return _searchMemories(name, scope, inputItems, previousSearchId, options);
+        return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
     }
 
     /**
@@ -883,9 +883,8 @@ public final class MemoryStoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of provides the status of a memory store update operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
+    SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> internalBeginUpdateMemories(String name,
         String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -921,7 +920,7 @@ public final class MemoryStoresClient {
         String scope, List<ResponseInputItem> items, String previousUpdateId, int updateDelay) {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<InputItem> inputItems = OpenAIJsonHelper.toAzureTypeList(items, InputItem::fromJson);
-        return beginUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
+        return internalBeginUpdateMemories(name, scope, inputItems, previousUpdateId, updateDelay);
     }
 
     /**
