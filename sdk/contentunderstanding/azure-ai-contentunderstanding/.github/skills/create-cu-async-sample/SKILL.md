@@ -19,7 +19,7 @@ This skill creates or updates async samples for the Content Understanding SDK, e
 
 ### Step 2: Read Reference Documentation
 
-Before converting, read [async-patterns.md](references/async-patterns.md) for:
+Before converting, read the async-patterns.md reference document in the `references/` directory for:
 - Reactive programming concepts (Mono, Flux, flatMap, doOnNext, subscribe)
 - Conversion patterns and examples
 - Common pitfalls to avoid
@@ -37,7 +37,7 @@ For each sync sample:
    - Methods: Direct calls → Reactive chains
    - Return types: Direct values → `Mono<T>` or `Flux<T>`
    - PollerFlux: Use reactive pattern (`.last().flatMap().subscribe()`)
-4. **Apply reactive patterns** (see [async-patterns.md](references/async-patterns.md)):
+4. **Apply reactive patterns** (see the async-patterns.md reference document):
    - Use `flatMap()` for sequential async operations
    - Use `doOnNext()` for side effects (printing)
    - Use `subscribe()` to start execution

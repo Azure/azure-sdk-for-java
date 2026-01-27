@@ -80,7 +80,7 @@ The in-place build process (assumes CU SDK is already compiled):
 
 **Note**: CU SDK compilation is handled by the `compile-cu-sdk-in-place` skill. Ensure the SDK is compiled before using this skill.
 
-For detailed background, see [references/in-place-build.md](references/in-place-build.md).
+For detailed background, see the in-place build documentation in the `references/` directory.
 
 ## Related Skills
 
