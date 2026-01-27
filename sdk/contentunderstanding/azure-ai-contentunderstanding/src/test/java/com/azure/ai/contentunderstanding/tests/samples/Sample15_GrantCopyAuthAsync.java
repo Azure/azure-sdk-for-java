@@ -19,6 +19,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +127,18 @@ public class Sample15_GrantCopyAuthAsync extends ContentUnderstandingClientTestB
 
             PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-            ContentAnalyzer sourceResult = createPoller.getSyncPoller().getFinalResult();
+
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            ContentAnalyzer sourceResult = createPoller.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
+
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Step 2: Grant copy authorization using convenience method
@@ -142,7 +154,16 @@ public class Sample15_GrantCopyAuthAsync extends ContentUnderstandingClientTestB
             // Step 3: Copy analyzer to target resource using convenience method
             PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller = targetAsyncClient
                 .beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false, sourceResourceId, sourceRegion);
-            ContentAnalyzer targetResult = copyPoller.getSyncPoller().getFinalResult();
+
+            // Use reactive pattern for copy operation as well
+            ContentAnalyzer targetResult = copyPoller.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
 
             System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
             System.out.println("  Description: " + targetResult.getDescription());

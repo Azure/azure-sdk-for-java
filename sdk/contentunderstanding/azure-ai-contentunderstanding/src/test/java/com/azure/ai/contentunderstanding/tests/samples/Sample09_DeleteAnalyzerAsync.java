@@ -12,6 +12,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,7 +58,14 @@ public class Sample09_DeleteAnalyzerAsync extends ContentUnderstandingClientTest
             .setFieldSchema(fieldSchema)
             .setModels(models);
 
-        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer).getSyncPoller().getFinalResult();
+        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer).last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
         System.out.println("Temporary analyzer created: " + analyzerId);
 
         // Verify the analyzer exists

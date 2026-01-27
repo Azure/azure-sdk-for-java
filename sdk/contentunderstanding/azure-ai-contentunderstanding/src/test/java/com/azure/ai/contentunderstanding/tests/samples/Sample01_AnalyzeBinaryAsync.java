@@ -14,6 +14,7 @@ import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,7 +56,16 @@ public class Sample01_AnalyzeBinaryAsync extends ContentUnderstandingClientTestB
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeBinaryAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryAsync

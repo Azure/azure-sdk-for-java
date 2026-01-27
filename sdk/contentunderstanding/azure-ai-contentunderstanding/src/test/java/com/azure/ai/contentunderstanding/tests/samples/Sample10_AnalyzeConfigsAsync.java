@@ -14,6 +14,7 @@ import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,19 +53,25 @@ public class Sample10_AnalyzeConfigsAsync extends ContentUnderstandingClientTest
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeWithConfigsAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeWithConfigsAsync
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("Analysis operation properties verified");
-
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result should contain contents");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
+        System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
 
         // Verify document content type

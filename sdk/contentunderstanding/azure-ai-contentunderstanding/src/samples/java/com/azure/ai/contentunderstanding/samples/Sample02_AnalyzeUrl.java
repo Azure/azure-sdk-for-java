@@ -30,8 +30,15 @@ import java.util.List;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
+ *
+ * Additional samples demonstrate analyzing different media types:
+ * - {@link #analyzeVideoUrl()} - Analyze video files
+ * - {@link #analyzeAudioUrl()} - Analyze audio files
+ * - {@link #analyzeImageUrl()} - Analyze image files
  */
 public class Sample02_AnalyzeUrl {
+
+    private static ContentUnderstandingClient client;
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02.buildClient
@@ -41,7 +48,6 @@ public class Sample02_AnalyzeUrl {
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
-        ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
             client = builder.credential(new AzureKeyCredential(key)).buildClient();
@@ -51,6 +57,29 @@ public class Sample02_AnalyzeUrl {
         }
         // END: com.azure.ai.contentunderstanding.sample02.buildClient
 
+        // Run all media type analysis samples
+        System.out.println("=== Document Analysis ===");
+        analyzeDocumentUrl();
+
+        System.out.println("\n=== Video Analysis ===");
+        analyzeVideoUrl();
+
+        System.out.println("\n=== Audio Analysis ===");
+        analyzeAudioUrl();
+
+        System.out.println("\n=== Image Analysis ===");
+        analyzeImageUrl();
+    }
+
+    /**
+     * Sample demonstrating how to analyze document from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to a document file
+     * 2. Analyzing the document with prebuilt-documentSearch analyzer
+     * 3. Extracting markdown content
+     * 4. Accessing document properties (pages, tables, etc.)
+     */
+    public static void analyzeDocumentUrl() {
         // BEGIN:ContentUnderstandingAnalyzeUrl
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
@@ -133,19 +162,6 @@ public class Sample02_AnalyzeUrl {
      * 4. Accessing audio/visual properties (timing, summary, frame size)
      */
     public static void analyzeVideoUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
         // BEGIN:ContentUnderstandingAnalyzeVideoUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
@@ -193,19 +209,6 @@ public class Sample02_AnalyzeUrl {
      * 3. Accessing audio/visual properties (timing, summary, transcript)
      */
     public static void analyzeAudioUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
         // BEGIN:ContentUnderstandingAnalyzeAudioUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
@@ -256,19 +259,6 @@ public class Sample02_AnalyzeUrl {
      * 3. Accessing image properties (markdown, summary)
      */
     public static void analyzeImageUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
-        }
-
         // BEGIN:ContentUnderstandingAnalyzeImageUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";

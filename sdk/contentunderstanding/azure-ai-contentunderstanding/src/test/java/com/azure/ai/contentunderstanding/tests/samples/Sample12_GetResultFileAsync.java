@@ -7,10 +7,12 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,19 +48,28 @@ public class Sample12_GetResultFileAsync extends ContentUnderstandingClientTestB
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(videoUrl);
 
-        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
 
-        // Wait for completion using getSyncPoller() for simplicity in samples
-        AnalyzeResult result = poller.getSyncPoller().getFinalResult();
-        System.out.println("Analysis completed successfully!");
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        // Use AtomicReference to capture the operation ID from the polling response
+        AtomicReference<String> operationIdRef = new AtomicReference<>();
+        AnalyzeResult result = poller.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                // Capture the operation ID for later use with getResultFile()
+                operationIdRef.set(pollResponse.getValue().getOperationId());
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
 
-        // Get the operation ID from the polling result using the getOperationId() convenience method
-        // The operation ID is extracted from the Operation-Location header and can be used with
-        // getResultFile() and deleteResult() APIs
-        String operationId = poller.getSyncPoller().poll().getValue().getOperationId();
+        System.out.println("Analysis completed successfully!");
+        String operationId = operationIdRef.get();
         System.out.println("Operation ID: " + operationId);
 
         // END: com.azure.ai.contentunderstanding.getResultFileAsync

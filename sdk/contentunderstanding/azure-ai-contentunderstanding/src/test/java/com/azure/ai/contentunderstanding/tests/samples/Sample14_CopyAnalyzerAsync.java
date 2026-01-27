@@ -6,12 +6,14 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,9 +81,20 @@ public class Sample14_CopyAnalyzerAsync extends ContentUnderstandingClientTestBa
             sourceAnalyzer.setTags(tags);
 
             // Create source analyzer
-            PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
-            ContentAnalyzer sourceResult = createPoller.getSyncPoller().getFinalResult();
+
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            ContentAnalyzer sourceResult = createPoller.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
+
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Verify source analyzer is available before copying (ensure it's fully provisioned)
@@ -92,9 +105,19 @@ public class Sample14_CopyAnalyzerAsync extends ContentUnderstandingClientTestBa
             // Note: This copies within the same resource using the simplified 2-parameter method.
             ContentAnalyzer copiedAnalyzer = null;
             try {
-                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
                     = contentUnderstandingAsyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
-                copiedAnalyzer = copyPoller.getSyncPoller().getFinalResult();
+
+                // Use reactive pattern for copy operation as well
+                copiedAnalyzer = copyPoller.last().flatMap(pollResponse -> {
+                    if (pollResponse.getStatus().isComplete()) {
+                        return pollResponse.getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException(
+                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                    }
+                }).block(); // block() is used here for testing; in production, use subscribe()
+
                 System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
                 // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
             } catch (com.azure.core.exception.ResourceNotFoundException e) {

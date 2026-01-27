@@ -16,6 +16,7 @@ import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,18 +49,24 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap, doOnNext, doOnError
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeUrlAsyncAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
         assertNotNull(uriSource, "URI source should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("Analysis operation properties verified");
-
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
+        System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
@@ -241,7 +248,16 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
             .beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
 
         // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
         int segmentIndex = 1;
@@ -272,8 +288,6 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsyncAsync
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
@@ -304,7 +318,16 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
             .beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
 
         // Cast MediaContent to AudioVisualContent to access audio/visual-specific properties
         // AudioVisualContent derives from MediaContent and provides additional properties
@@ -338,8 +361,6 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsyncAsync
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
@@ -373,7 +394,16 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
             .beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
 
         MediaContent content = result.getContents().get(0);
         System.out.println("Markdown:");
@@ -389,8 +419,6 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsyncAsync
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");

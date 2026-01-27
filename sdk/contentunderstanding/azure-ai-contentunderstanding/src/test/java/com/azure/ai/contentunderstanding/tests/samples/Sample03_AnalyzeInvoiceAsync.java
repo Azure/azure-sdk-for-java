@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.ObjectField;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,20 +47,26 @@ public class Sample03_AnalyzeInvoiceAsync extends ContentUnderstandingClientTest
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
-        AnalyzeResult result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalyzeResult result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeInvoiceAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceAsync
         assertNotNull(invoiceUrl, "Invoice URL should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("Analysis operation properties verified");
-
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result should contain contents");
         assertTrue(result.getContents().size() > 0, "Result should have at least one content");
         assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
+        System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
         // END:Assertion_ContentUnderstandingAnalyzeInvoiceAsync
 

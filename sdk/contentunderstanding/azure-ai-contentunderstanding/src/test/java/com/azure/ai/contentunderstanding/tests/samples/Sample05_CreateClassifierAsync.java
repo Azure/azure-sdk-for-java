@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,7 +92,17 @@ public class Sample05_CreateClassifierAsync extends ContentUnderstandingClientTe
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
             = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, classifier, true);
 
-        ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        ContentAnalyzer result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
+
         System.out.println("Classifier '" + analyzerId + "' created successfully!");
         // END:ContentUnderstandingCreateClassifierAsync
 
@@ -102,11 +113,8 @@ public class Sample05_CreateClassifierAsync extends ContentUnderstandingClientTe
         assertNotNull(analyzerId, "Analyzer ID should not be null");
         assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
         assertNotNull(operation, "Create analyzer operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("✓ Create classifier operation completed successfully");
-
         assertNotNull(result, "Analyzer result should not be null");
+        System.out.println("✓ Create classifier operation completed successfully");
         System.out.println("✓ Classifier analyzer created: " + analyzerId);
 
         // Verify base analyzer

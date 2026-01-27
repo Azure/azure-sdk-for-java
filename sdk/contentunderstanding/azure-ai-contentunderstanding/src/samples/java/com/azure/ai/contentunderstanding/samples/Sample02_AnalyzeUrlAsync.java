@@ -32,8 +32,15 @@ import java.util.concurrent.TimeUnit;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
+ *
+ * Additional samples demonstrate analyzing different media types:
+ * - {@link #analyzeVideoUrl()} - Analyze video files
+ * - {@link #analyzeAudioUrl()} - Analyze audio files
+ * - {@link #analyzeImageUrl()} - Analyze image files
  */
 public class Sample02_AnalyzeUrlAsync {
+
+    private static ContentUnderstandingAsyncClient client;
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02Async.buildClient
@@ -43,7 +50,6 @@ public class Sample02_AnalyzeUrlAsync {
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
-        ContentUnderstandingAsyncClient client;
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
             client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
@@ -53,7 +59,39 @@ public class Sample02_AnalyzeUrlAsync {
         }
         // END: com.azure.ai.contentunderstanding.sample02Async.buildClient
 
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // Run all media type analysis samples
+        System.out.println("=== Document Analysis ===");
+        analyzeDocumentUrl();
+
+        System.out.println("\n=== Video Analysis ===");
+        analyzeVideoUrl();
+
+        System.out.println("\n=== Audio Analysis ===");
+        analyzeAudioUrl();
+
+        System.out.println("\n=== Image Analysis ===");
+        analyzeImageUrl();
+
+        // The .subscribe() creation is not a blocking call. For the purpose of this example,
+        // we sleep the thread so the program does not end before the async operations complete.
+        try {
+            TimeUnit.MINUTES.sleep(5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sample demonstrating how to analyze document from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to a document file
+     * 2. Analyzing the document with prebuilt-documentSearch analyzer
+     * 3. Extracting markdown content
+     * 4. Accessing document properties (pages, tables, etc.)
+     */
+    public static void analyzeDocumentUrl() {
+        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -147,16 +185,7 @@ public class Sample02_AnalyzeUrlAsync {
                     System.exit(1);
                 }
             );
-        // END:ContentUnderstandingAnalyzeUrlAsyncAsync
-
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        }
+        // END:ContentUnderstandingAnalyzeUrlAsync
     }
 
     /**
@@ -168,20 +197,7 @@ public class Sample02_AnalyzeUrlAsync {
      * 4. Accessing audio/visual properties (timing, summary, frame size)
      */
     public static void analyzeVideoUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingAsyncClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -241,7 +257,7 @@ public class Sample02_AnalyzeUrlAsync {
                     System.exit(1);
                 }
             );
-        // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeVideoUrlAsync
     }
 
     /**
@@ -252,20 +268,7 @@ public class Sample02_AnalyzeUrlAsync {
      * 3. Accessing audio/visual properties (timing, summary, transcript)
      */
     public static void analyzeAudioUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingAsyncClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -328,7 +331,7 @@ public class Sample02_AnalyzeUrlAsync {
                     System.exit(1);
                 }
             );
-        // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeAudioUrlAsync
     }
 
     /**
@@ -339,20 +342,7 @@ public class Sample02_AnalyzeUrlAsync {
      * 3. Accessing image properties (markdown, summary)
      */
     public static void analyzeImageUrl() {
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
-        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-
-        // Build the client with appropriate authentication
-        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
-
-        ContentUnderstandingAsyncClient client;
-        if (key != null && !key.trim().isEmpty()) {
-            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
-        } else {
-            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
-        }
-
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -397,6 +387,6 @@ public class Sample02_AnalyzeUrlAsync {
                     System.exit(1);
                 }
             );
-        // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeImageUrlAsync
     }
 }

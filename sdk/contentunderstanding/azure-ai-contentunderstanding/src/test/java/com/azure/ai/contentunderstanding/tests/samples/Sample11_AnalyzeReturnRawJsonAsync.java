@@ -10,6 +10,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,7 +53,16 @@ public class Sample11_AnalyzeReturnRawJsonAsync extends ContentUnderstandingClie
         PollerFlux<BinaryData, BinaryData> operation = contentUnderstandingAsyncClient
             .beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
 
-        BinaryData responseData = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        BinaryData responseData = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeReturnRawJsonAsync
@@ -61,10 +71,6 @@ public class Sample11_AnalyzeReturnRawJsonAsync extends ContentUnderstandingClie
         System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
 
         assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("Analysis operation completed with status: " + operation.getSyncPoller().poll().getStatus());
-
         assertNotNull(responseData, "Response data should not be null");
         assertTrue(responseData.toBytes().length > 0, "Response data should not be empty");
         System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");

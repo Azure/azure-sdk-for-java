@@ -23,6 +23,7 @@ import com.azure.ai.contentunderstanding.models.StringField;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,7 +119,17 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
         PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
             = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
-        ContentAnalyzer result = operation.getSyncPoller().getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        ContentAnalyzer result = operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
+
         System.out.println("Analyzer '" + analyzerId + "' created successfully!");
         if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
             System.out.println("  Description: " + result.getDescription());
@@ -142,11 +153,8 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
         assertNotNull(fieldSchema, "Field schema should not be null");
         assertNotNull(customAnalyzer, "Custom analyzer should not be null");
         assertNotNull(operation, "Create analyzer operation should not be null");
-        assertTrue(operation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-            "Operation should be completed");
-        System.out.println("Create analyzer operation properties verified");
-
         assertNotNull(result, "Analyzer result should not be null");
+        System.out.println("Create analyzer operation properties verified");
         System.out.println("Analyzer '" + analyzerId + "' created successfully");
 
         // Verify base analyzer
@@ -301,9 +309,16 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
         models.put("embedding", "text-embedding-3-large");
         customAnalyzer.setModels(models);
 
-        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer)
-            .getSyncPoller()
-            .getFinalResult();
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, customAnalyzer).last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
         createdAnalyzerId = analyzerId; // Track for cleanup
 
         try {
@@ -319,7 +334,16 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
             PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzeOperation
                 = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
 
-            AnalyzeResult analyzeResult = analyzeOperation.getSyncPoller().getFinalResult();
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            AnalyzeResult analyzeResult = analyzeOperation.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
 
             // Extract custom fields from the result
             // Since EstimateFieldSourceAndConfidence is enabled, we can access confidence scores and source information
@@ -408,14 +432,11 @@ public class Sample04_CreateAnalyzerAsync extends ContentUnderstandingClientTest
             // BEGIN:Assertion_ContentUnderstandingUseCustomAnalyzerAsync
             assertNotNull(documentUrl, "Document URL should not be null");
             assertNotNull(analyzeOperation, "Analyze operation should not be null");
-            assertTrue(analyzeOperation.getSyncPoller().waitForCompletion().getStatus().isComplete(),
-                "Operation should be completed");
-            System.out.println("Analyze operation properties verified");
-
             assertNotNull(analyzeResult, "Analyze result should not be null");
             assertNotNull(analyzeResult.getContents(), "Result should contain contents");
             assertTrue(analyzeResult.getContents().size() > 0, "Result should have at least one content");
             assertEquals(1, analyzeResult.getContents().size(), "Result should have exactly one content element");
+            System.out.println("Analyze operation properties verified");
             System.out.println("Analysis result contains " + analyzeResult.getContents().size() + " content(s)");
 
             DocumentContent documentContent = analyzeResult.getContents().get(0) instanceof DocumentContent

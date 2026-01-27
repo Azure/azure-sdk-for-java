@@ -17,6 +17,7 @@ import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.ai.contentunderstanding.models.KnowledgeSource;
 import com.azure.ai.contentunderstanding.models.LabeledDataKnowledgeSource;
 import com.azure.core.util.polling.PollerFlux;
+import reactor.core.publisher.Mono;
 import org.junit.jupiter.api.Test;
 
 import com.azure.core.test.TestMode;
@@ -148,7 +149,17 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
 
             PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer);
-            ContentAnalyzer result = createPoller.getSyncPoller().getFinalResult();
+
+            // Use reactive pattern: chain operations using flatMap
+            // In a real application, you would use subscribe() instead of block()
+            ContentAnalyzer result = createPoller.last().flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            }).block(); // block() is used here for testing; in production, use subscribe()
 
             System.out.println("Analyzer created: " + analyzerId);
             System.out.println("  Description: " + result.getDescription());
@@ -194,10 +205,18 @@ public class Sample16_CreateAnalyzerWithLabelsAsync extends ContentUnderstanding
                 AnalyzeInput input = new AnalyzeInput();
                 input.setUrl(testDocUrl);
 
-                AnalyzeResult analyzeResult
-                    = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input))
-                        .getSyncPoller()
-                        .getFinalResult();
+                PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> analyzePoller
+                    = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, Arrays.asList(input));
+
+                // Use reactive pattern for analyze operation
+                AnalyzeResult analyzeResult = analyzePoller.last().flatMap(pollResponse -> {
+                    if (pollResponse.getStatus().isComplete()) {
+                        return pollResponse.getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException(
+                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                    }
+                }).block(); // block() is used here for testing; in production, use subscribe()
 
                 System.out.println("Analysis completed!");
                 assertNotNull(analyzeResult);

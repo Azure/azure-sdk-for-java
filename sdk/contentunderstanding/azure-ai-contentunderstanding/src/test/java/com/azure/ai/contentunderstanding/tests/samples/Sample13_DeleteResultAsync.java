@@ -6,13 +6,16 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalyzeInput;
 import com.azure.ai.contentunderstanding.models.AnalyzeResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,19 +38,29 @@ public class Sample13_DeleteResultAsync extends ContentUnderstandingClientTestBa
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(documentUrl);
 
-        PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
 
         // Wait for operation to complete to get a result ID
         System.out.println("Started analysis operation");
 
-        // Wait for completion
-        AnalyzeResult result = poller.getSyncPoller().getFinalResult();
-        System.out.println("Analysis completed successfully!");
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        // Use AtomicReference to capture the operation ID from the polling response
+        AtomicReference<String> operationIdRef = new AtomicReference<>();
+        AnalyzeResult result = poller.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                // Capture the operation ID for later use with deleteResult()
+                operationIdRef.set(pollResponse.getValue().getOperationId());
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block(); // block() is used here for testing; in production, use subscribe()
 
-        // Get the operation ID using the getOperationId() convenience method
-        // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.getSyncPoller().poll().getValue().getOperationId();
+        System.out.println("Analysis completed successfully!");
+        String operationId = operationIdRef.get();
         System.out.println("Operation ID: " + operationId);
 
         // Display some sample results using getValue() convenience method
