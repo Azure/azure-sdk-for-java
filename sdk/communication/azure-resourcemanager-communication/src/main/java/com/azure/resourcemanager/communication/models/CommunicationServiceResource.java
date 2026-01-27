@@ -116,6 +116,22 @@ public interface CommunicationServiceResource {
     List<String> linkedDomains();
 
     /**
+     * Gets the publicNetworkAccess property: Allow, disallow, or let network security perimeter configuration control
+     * public network access to the protected resource. Value is optional but if passed in, it must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the disableLocalAuth property: Disable local authentication for the CommunicationService.
+     * 
+     * @return the disableLocalAuth value.
+     */
+    Boolean disableLocalAuth();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -199,7 +215,8 @@ public interface CommunicationServiceResource {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithDataLocation, DefinitionStages.WithLinkedDomains {
+            DefinitionStages.WithDataLocation, DefinitionStages.WithLinkedDomains,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithDisableLocalAuth {
             /**
              * Executes the create request.
              * 
@@ -269,6 +286,36 @@ public interface CommunicationServiceResource {
              */
             WithCreate withLinkedDomains(List<String> linkedDomains);
         }
+
+        /**
+         * The stage of the CommunicationServiceResource definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Allow, disallow, or let network security perimeter
+             * configuration control public network access to the protected resource. Value is optional but if passed
+             * in, it must be 'Enabled', 'Disabled' or 'SecuredByPerimeter'..
+             * 
+             * @param publicNetworkAccess Allow, disallow, or let network security perimeter configuration control
+             * public network access to the protected resource. Value is optional but if passed in, it must be
+             * 'Enabled', 'Disabled' or 'SecuredByPerimeter'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the CommunicationServiceResource definition allowing to specify disableLocalAuth.
+         */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Disable local authentication for the CommunicationService..
+             * 
+             * @param disableLocalAuth Disable local authentication for the CommunicationService.
+             * @return the next definition stage.
+             */
+            WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
+        }
     }
 
     /**
@@ -281,7 +328,8 @@ public interface CommunicationServiceResource {
     /**
      * The template for CommunicationServiceResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithLinkedDomains {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithLinkedDomains,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithDisableLocalAuth {
         /**
          * Executes the update request.
          * 
@@ -341,6 +389,36 @@ public interface CommunicationServiceResource {
              * @return the next definition stage.
              */
             Update withLinkedDomains(List<String> linkedDomains);
+        }
+
+        /**
+         * The stage of the CommunicationServiceResource update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Allow, disallow, or let network security perimeter
+             * configuration control public network access to the protected resource. Value is optional but if passed
+             * in, it must be 'Enabled', 'Disabled' or 'SecuredByPerimeter'..
+             * 
+             * @param publicNetworkAccess Allow, disallow, or let network security perimeter configuration control
+             * public network access to the protected resource. Value is optional but if passed in, it must be
+             * 'Enabled', 'Disabled' or 'SecuredByPerimeter'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the CommunicationServiceResource update allowing to specify disableLocalAuth.
+         */
+        interface WithDisableLocalAuth {
+            /**
+             * Specifies the disableLocalAuth property: Disable local authentication for the CommunicationService..
+             * 
+             * @param disableLocalAuth Disable local authentication for the CommunicationService.
+             * @return the next definition stage.
+             */
+            Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
     }
 
