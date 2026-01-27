@@ -6,16 +6,6 @@ This directory contains GitHub Copilot Agent Skills for Azure SDK development. T
 
 ### 1. Progressive Disclosure
 
-Skills use a three-level loading system:
-
-| Level | Content | When Loaded |
-|-------|---------|-------------|
-| Level 1 | `name` + `description` (YAML front matter) | Always visible for relevance matching |
-| Level 2 | SKILL.md body | When request matches description |
-| Level 3 | Scripts, templates, examples | Only when Copilot needs to reference them |
-
-### 2. Naming Convention
-
 ```
 sdk-{action}[-{qualifier}]
 ```
@@ -27,20 +17,6 @@ sdk-{action}[-{qualifier}]
 | `{lang}-{service}-{action}` | `java-cu-create-async-sample` (language-specific) |
 
 ### 3. Directory Structure
-
-```
-skill-name/
-├── SKILL.md           # Main skill file (required)
-├── scripts/           # Executable scripts
-│   ├── run.sh         # Unix/macOS
-│   └── run.ps1        # Windows PowerShell (optional)
-├── references/        # Reference documentation
-│   └── patterns.md
-└── templates/         # Code templates (optional)
-    └── template.java
-```
-
-### 4. Cross-Language Support
 
 Skills should define **what to do**, not **how to do it**:
 
@@ -80,28 +56,11 @@ Skills should define **what to do**, not **how to do it**:
 ### 1. Setup Environment
 
 ```bash
-# Use sdk-setup-env skill to load .env
-source .github/skills/sdk-setup-env/scripts/load-env.sh
-```
-
-### 2. Compile SDK
-
-```bash
 # Use sdk-compile skill
 .github/skills/sdk-compile/scripts/compile.sh
 ```
 
 ### 3. Run Tests
-
-```bash
-# RECORD mode (requires Azure credentials)
-.github/skills/sdk-test-record/scripts/test-record.sh
-
-# PLAYBACK mode (uses recorded responses)
-.github/skills/sdk-test-playback/scripts/test-playback.sh
-```
-
-### 4. Push Recordings
 
 ```bash
 # Push to Azure SDK Assets repo

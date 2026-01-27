@@ -33,36 +33,11 @@ This skill runs all Azure SDK samples in a module for comprehensive validation.
 ### Java (Maven) - PLAYBACK Mode
 
 ```bash
-# Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Restore recordings first
-test-proxy restore -a assets.json
-
-# Run all samples in PLAYBACK mode
-mvn test -Dtest="Sample*" -DAZURE_TEST_MODE=PLAYBACK
-```
-
-### Java (Maven) - RECORD Mode
-
-```bash
 # Run all samples with live service
 mvn test -Dtest="Sample*" -DAZURE_TEST_MODE=RECORD
 ```
 
 ### Python
-
-```bash
-cd sdk/{service}/azure-{service}/samples
-
-# Run all samples
-for f in sample_*.py; do
-    echo "Running $f..."
-    python "$f"
-done
-```
-
-### .NET
 
 ```bash
 cd sdk/{service}/Azure.{Service}/samples
@@ -72,37 +47,11 @@ dotnet test
 ### JavaScript
 
 ```bash
-cd sdk/{service}/{module}/samples
-npm run samples
-```
-
-## 📦 Sample Discovery
-
-### Java Pattern
-
-```bash
 # Find all sample test classes
 find src/samples -name "Sample*.java" -exec basename {} .java \;
 ```
 
 ### Expected Output
-
-```
-Sample01BasicOperations
-Sample02AnalyzeDocument
-Sample03ExtractFields
-...
-```
-
-## ⚠️ Important Notes
-
-### Execution Order
-
-Samples may have dependencies. If one fails, others might also fail.
-
-### Resource Cleanup
-
-Live samples may create Azure resources. Ensure cleanup:
 
 - Check sample for cleanup code
 - Manually delete test resources if needed

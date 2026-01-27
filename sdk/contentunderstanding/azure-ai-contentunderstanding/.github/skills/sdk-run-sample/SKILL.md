@@ -33,31 +33,11 @@ This skill runs individual Azure SDK samples for testing and demonstration.
 ### Java (Maven)
 
 ```bash
-# Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Run sample as test
-mvn test -Dtest=Sample01BasicOperations -DAZURE_TEST_MODE=PLAYBACK
-
-# Run with live service
-mvn test -Dtest=Sample01BasicOperations -DAZURE_TEST_MODE=RECORD
-```
-
-### Python
-
-```bash
 cd sdk/{service}/azure-{service}/samples
 python sample_basic_operations.py
 ```
 
 ### .NET
-
-```bash
-cd sdk/{service}/Azure.{Service}/samples
-dotnet run --project Sample01BasicOperations.csproj
-```
-
-### JavaScript
 
 ```bash
 cd sdk/{service}/{module}/samples
@@ -77,12 +57,6 @@ npx ts-node sample_basic_operations.ts
 
 ### Live Samples (Require Credentials)
 
-- Connect to real Azure services
-- Require environment variables
-- May incur Azure costs
-
-### Recorded Samples (PLAYBACK mode)
-
 - Use pre-recorded responses
 - No credentials needed
 - Fast and repeatable
@@ -90,13 +64,6 @@ npx ts-node sample_basic_operations.ts
 ## 🔍 Finding Samples
 
 ### Java
-
-```bash
-# List all sample files
-find src/samples -name "Sample*.java" | head -20
-```
-
-### Python
 
 ```bash
 ls samples/sample_*.py

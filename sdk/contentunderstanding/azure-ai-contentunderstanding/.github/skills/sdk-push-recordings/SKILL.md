@@ -36,16 +36,6 @@ This skill pushes session recordings to the Azure SDK Assets repository after RE
 ### Push Recordings
 
 ```bash
-# Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Push recordings to assets repo
-test-proxy push -a assets.json
-```
-
-### Verify Push
-
-```bash
 # Check new tag in assets.json
 cat assets.json
 
@@ -77,33 +67,11 @@ Example: `java/contentunderstanding/azure-ai-contentunderstanding_7c2854bb8e`
 
 ### Git Credentials
 
-The test-proxy needs Git credentials to push to the assets repo:
-
-```bash
-# Ensure Git is configured
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-
-# For Azure DevOps, use PAT or credential manager
-```
-
-### Large Recordings
-
-If recordings are large, the push may take time:
-
 - Be patient during upload
 - Check network connection
 - Verify disk space in `.assets`
 
 ### After Push
-
-1. **Commit assets.json**: Include updated tag in your PR
-2. **Verify PLAYBACK**: Run PLAYBACK tests to ensure recordings work
-3. **Push PR changes**: Include assets.json in your commit
-
-## 🔍 Troubleshooting
-
-### Push Failed - Authentication
 
 ```bash
 # Check Git credentials

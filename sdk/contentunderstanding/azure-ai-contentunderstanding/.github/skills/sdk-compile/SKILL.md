@@ -35,19 +35,6 @@ This skill compiles Azure SDK source code for local development and testing.
 
 ```bash
 # Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Compile with Maven
-mvn compile -f pom.xml
-
-# Or skip tests for faster compilation
-mvn compile -DskipTests -f pom.xml
-```
-
-### Python (pip)
-
-```bash
-# Navigate to SDK module
 cd sdk/{service}/azure-{service}
 
 # Install in editable mode
@@ -55,16 +42,6 @@ pip install -e .
 ```
 
 ### .NET (dotnet)
-
-```bash
-# Navigate to SDK module
-cd sdk/{service}/Azure.{Service}
-
-# Build
-dotnet build
-```
-
-### JavaScript (npm)
 
 ```bash
 # Navigate to SDK module
@@ -79,29 +56,11 @@ npm run build
 ### Compile Single Module (Recommended)
 
 ```bash
-cd sdk/contentunderstanding/azure-ai-contentunderstanding
-mvn compile -f pom.xml
-```
-
-### Compile with Dependencies
-
-```bash
 # From repo root
 mvn compile -pl sdk/contentunderstanding/azure-ai-contentunderstanding -am
 ```
 
 ### Common Maven Flags
-
-| Flag | Description |
-|------|-------------|
-| `-DskipTests` | Skip test compilation |
-| `-T 4` | Parallel build (4 threads) |
-| `-o` | Offline mode (use cached deps) |
-| `-q` | Quiet output |
-
-## ⚠️ Troubleshooting
-
-### Missing Dependencies
 
 ```bash
 # Install to local repo first

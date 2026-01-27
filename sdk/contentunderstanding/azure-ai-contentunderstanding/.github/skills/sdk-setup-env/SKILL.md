@@ -30,16 +30,6 @@ This skill loads environment variables from `.env` files for Azure SDK developme
 
 ### Quick Start (Bash/Zsh)
 
-```bash
-# Navigate to SDK module directory
-cd sdk/{service}/{module}
-
-# Load environment variables
-source .github/skills/sdk-setup-env/scripts/load-env.sh
-```
-
-### Quick Start (PowerShell)
-
 ```powershell
 # Navigate to SDK module directory
 cd sdk\{service}\{module}
@@ -51,15 +41,6 @@ cd sdk\{service}\{module}
 ## 📦 Required Environment Variables
 
 ### Common Variables (All Services)
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `AZURE_SUBSCRIPTION_ID` | Azure subscription ID | For ARM tests |
-| `AZURE_TENANT_ID` | Azure AD tenant ID | For auth |
-| `AZURE_CLIENT_ID` | Service principal client ID | For auth |
-| `AZURE_CLIENT_SECRET` | Service principal secret | For auth |
-
-### Content Understanding Service
 
 | Variable | Description |
 |----------|-------------|

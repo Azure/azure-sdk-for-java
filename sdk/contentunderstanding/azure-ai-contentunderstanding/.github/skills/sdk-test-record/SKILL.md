@@ -36,34 +36,11 @@ This skill runs Azure SDK tests in RECORD mode to capture live API responses for
 ### Java (Maven)
 
 ```bash
-# Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Run tests in RECORD mode
-mvn test -DAZURE_TEST_MODE=RECORD
-
-# Run specific test class
-mvn test -DAZURE_TEST_MODE=RECORD -Dtest=Sample01*
-
-# Run specific test method
-mvn test -DAZURE_TEST_MODE=RECORD -Dtest=Sample01BasicOperations#testAnalyzeDocument
-```
-
-### Python (pytest)
-
-```bash
 cd sdk/{service}/azure-{service}
 pytest --azure-test-mode=record
 ```
 
 ### .NET (dotnet)
-
-```bash
-cd sdk/{service}/Azure.{Service}
-dotnet test /p:TestMode=Record
-```
-
-### JavaScript (npm)
 
 ```bash
 cd sdk/{service}/{module}
@@ -75,13 +52,6 @@ npm test -- --test-mode=record
 ### Restore Existing Recordings
 
 ```bash
-# Before RECORD mode, restore existing assets
-test-proxy restore -a assets.json
-```
-
-### Push After Recording
-
-```bash
 # After RECORD mode, push new recordings
 test-proxy push -a assets.json
 ```
@@ -90,30 +60,11 @@ test-proxy push -a assets.json
 
 ### Recording Requirements
 
-1. **Live credentials**: Tests connect to real Azure services
-2. **Network access**: Ensure firewall allows Azure endpoints
-3. **Cost awareness**: Recording creates real Azure resources (may incur costs)
-
-### Sanitization
-
-Recordings are automatically sanitized to remove:
-
 - API keys and tokens
 - Subscription IDs
 - Client secrets
 
 ### Session Records Location
-
-| Language | Location |
-|----------|----------|
-| Java | `.assets/{tag}/` (managed by test-proxy) |
-| Python | `recordings/` folder |
-| .NET | `SessionRecords/` folder |
-| JavaScript | `recordings/` folder |
-
-## 🔍 Troubleshooting
-
-### Missing Environment Variables
 
 ```bash
 # Check required variables
@@ -122,15 +73,6 @@ echo $AZURE_CLIENT_ID
 ```
 
 ### Test Proxy Not Running
-
-```bash
-# Start test proxy manually
-test-proxy start &
-
-# Or let SDK framework handle it automatically
-```
-
-### Recording Already Exists
 
 Tests will overwrite existing recordings. Use `test-proxy restore` first if you want to preserve them.
 

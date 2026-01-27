@@ -35,18 +35,6 @@ This skill runs Azure SDK tests in PLAYBACK mode using previously recorded API r
 ### Step 1: Restore Recordings
 
 ```bash
-# Navigate to SDK module
-cd sdk/{service}/{module}
-
-# Restore session records
-test-proxy restore -a assets.json
-```
-
-### Step 2: Run Tests
-
-#### Java (Maven)
-
-```bash
 # Run all tests in PLAYBACK mode
 mvn test -DAZURE_TEST_MODE=PLAYBACK
 
@@ -57,24 +45,10 @@ mvn test -DAZURE_TEST_MODE=PLAYBACK -Dtest=Sample01*
 #### Python (pytest)
 
 ```bash
-pytest --azure-test-mode=playback
-```
-
-#### .NET (dotnet)
-
-```bash
 dotnet test /p:TestMode=Playback
 ```
 
 #### JavaScript (npm)
-
-```bash
-npm test -- --test-mode=playback
-```
-
-## 📦 Session Records
-
-### Restore from Assets Repo
 
 ```bash
 # Restore recordings to local .assets directory
@@ -82,19 +56,6 @@ test-proxy restore -a assets.json
 ```
 
 ### Check Assets Tag
-
-```bash
-# View current assets tag
-cat assets.json | jq '.Tag'
-```
-
-## ⚠️ Common Issues
-
-### "Unable to find a record for the request"
-
-This means the test is making a request that wasn't recorded:
-
-1. **Run RECORD mode** to capture the missing request:
 
    ```bash
    mvn test -DAZURE_TEST_MODE=RECORD -Dtest=FailingTestClass
@@ -107,16 +68,6 @@ This means the test is making a request that wasn't recorded:
 ### Test Proxy Not Running
 
 ```bash
-# The SDK framework usually starts it automatically
-# If needed, start manually:
-test-proxy start &
-```
-
-### Stale Recordings
-
-If recordings are outdated:
-
-```bash
 # Record fresh session
 mvn test -DAZURE_TEST_MODE=RECORD
 
@@ -127,16 +78,6 @@ test-proxy push -a assets.json
 ## 🔍 Debugging Tips
 
 ### Verbose Test Proxy Output
-
-```bash
-export PROXY_MANUAL_START=true
-test-proxy start --storage-location .assets
-
-# In another terminal
-mvn test -DAZURE_TEST_MODE=PLAYBACK
-```
-
-### Check Recording Files
 
 ```bash
 # List recording files
