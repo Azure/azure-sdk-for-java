@@ -53,8 +53,15 @@ public class VoiceLiveLiveTests extends TestProxyTestBase {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AI_SERVICES_KEY");
 
-        Assertions.assertNotNull(endpoint, "AI_SERVICES_ENDPOINT environment variable must be set");
-        Assertions.assertNotNull(apiKey, "AI_SERVICES_KEY environment variable must be set");
+        // Validate environment variables are set and not empty
+        if (endpoint == null || endpoint.trim().isEmpty()) {
+            Assertions.fail("AI_SERVICES_ENDPOINT environment variable must be set and not empty. "
+                + "Please set it to your VoiceLive service endpoint URL.");
+        }
+        if (apiKey == null || apiKey.trim().isEmpty()) {
+            Assertions.fail("AI_SERVICES_KEY environment variable must be set and not empty. "
+                + "Please set it to your VoiceLive API key.");
+        }
 
         // Create the VoiceLive client
         VoiceLiveAsyncClient client
