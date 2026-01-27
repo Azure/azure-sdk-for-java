@@ -274,7 +274,6 @@ public final class BlobClientBuilder
     @Override
     public BlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        // Only clear conflicting credentials, allow SAS to coexist for delegated user scenarios
         return this;
     }
 

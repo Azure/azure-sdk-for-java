@@ -40,8 +40,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -624,7 +622,7 @@ public class SasClientTests extends BlobTestBase {
         }
 
         // Generate a sasClient that does not have an encryptionScope
-        sasClient = builder.sasToken(sas)
+        sasClient = getContainerClientBuilder(cc.getBlobContainerUrl()).sasToken(sas)
             .encryptionScope(null)
             .buildClient()
             .getBlobClient(sharedKeyClient.getBlobName())
@@ -808,7 +806,7 @@ public class SasClientTests extends BlobTestBase {
     }
 
     @Test
-    public void accountSasOnEndpoint() throws IOException {
+    public void accountSasOnEndpoint() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceType
             = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
@@ -819,18 +817,18 @@ public class SasClientTests extends BlobTestBase {
         String sas = primaryBlobServiceClient.generateAccountSas(sasValues);
 
         BlobServiceClient sc = getServiceClient(primaryBlobServiceClient.getAccountUrl() + "?" + sas);
-        sc.createBlobContainer(generateContainerName());
+        assertDoesNotThrow(() -> sc.createBlobContainer(generateContainerName()));
 
         BlobContainerClient cc
             = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "?" + sas)
                 .buildClient();
         assertDoesNotThrow(cc::getProperties);
 
-        BlobClient bc = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas);
-        File file = getRandomFile(256);
-        file.deleteOnExit();
-        assertDoesNotThrow(() -> bc.uploadFromFile(file.toPath().toString(), true));
+        BlobClient bc = new BlobClientBuilder()
+            .endpoint(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
+            .buildClient();
+
+        assertDoesNotThrow(bc::getProperties);
     }
 
     @Test

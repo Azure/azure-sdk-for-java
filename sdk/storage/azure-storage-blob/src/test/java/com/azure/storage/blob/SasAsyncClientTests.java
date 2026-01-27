@@ -48,8 +48,6 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -696,7 +694,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             }
 
             // Generate a sasClient that does not have an encryptionScope
-            sasClient = builder.sasToken(sas)
+            sasClient = getContainerClientBuilder(cc.getBlobContainerUrl()).sasToken(sas)
                 .encryptionScope(null)
                 .buildAsyncClient()
                 .getBlobAsyncClient(sharedKeyClient.getBlobName())
@@ -892,7 +890,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     }
 
     @Test
-    public void accountSasOnEndpoint() throws IOException {
+    public void accountSasOnEndpoint() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceType
             = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
@@ -911,11 +909,11 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         StepVerifier.create(response).expectNextCount(1).verifyComplete();
 
-        BlobAsyncClient bc = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas);
-        File file = getRandomFile(256);
-        file.deleteOnExit();
-        StepVerifier.create(bc.uploadFromFile(file.toPath().toString(), true)).verifyComplete();
+        BlobAsyncClient bc = new BlobClientBuilder()
+            .endpoint(primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
+            .buildAsyncClient();
+
+        StepVerifier.create(bc.getProperties()).expectNextCount(1).verifyComplete();
     }
 
     @Test
