@@ -117,13 +117,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .withContent(rawJson)
                 .withStatus(200)
                 .build()));
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes(),
-                null)));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -155,7 +148,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
-    public void backoffRetryUtilityExecuteAsync() throws Exception {
+    public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod =
             Mockito.mock(Function.class);
@@ -171,13 +164,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 .withContent(rawJson)
                 .withStatus(200)
                 .build()));
-            .thenReturn(Mono.just(new StoreResponse(
-                null,
-                200,
-                new HashMap<>(),
-                new ByteBufInputStream(buffer, true),
-                buffer.readableBytes(),
-                null)));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,

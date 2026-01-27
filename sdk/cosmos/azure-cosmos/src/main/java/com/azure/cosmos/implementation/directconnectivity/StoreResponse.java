@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -46,11 +47,12 @@ public class StoreResponse {
     private final String endpoint;
 
     public StoreResponse(
-            String endpoint,
-            int status,
-            Map<String, String> headerMap,
-            ByteBufInputStream contentStream,
-            int responsePayloadLength) {
+        String endpoint,
+        int status,
+        Map<String, String> headerMap,
+        ByteBufInputStream contentStream,
+        int responsePayloadLength,
+        Callable<Void> responseInterceptor) throws Exception {
 
         checkArgument((contentStream == null) == (responsePayloadLength == 0),
             "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
@@ -70,7 +72,7 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap, responseInterceptor);
             } finally {
                 try {
                     contentStream.close();

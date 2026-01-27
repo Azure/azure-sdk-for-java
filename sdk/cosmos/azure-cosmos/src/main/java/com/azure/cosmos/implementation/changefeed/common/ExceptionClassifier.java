@@ -28,7 +28,7 @@ public class ExceptionClassifier {
             return StatusCodeErrorType.PARTITION_NOT_FOUND;
         }
 
-        if (clientException.getStatusCode() == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR) {
+        if (clientException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST) {
             if (subStatusCode == HttpConstants.SubStatusCodes.JACKSON_STREAMS_CONSTRAINED) {
                 return StatusCodeErrorType.JACKSON_STREAMS_CONSTRAINED;
             } else if (subStatusCode == HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE) {

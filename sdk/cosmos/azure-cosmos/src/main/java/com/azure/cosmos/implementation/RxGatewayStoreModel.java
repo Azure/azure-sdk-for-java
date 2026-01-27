@@ -203,7 +203,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         RxDocumentServiceRequest request,
         int statusCode,
         HttpHeaders headers,
-        ByteBuf retainedContent) {
+        ByteBuf retainedContent) throws Exception {
 
         checkNotNull(headers, "Argument 'headers' must not be null.");
         checkNotNull(
@@ -231,7 +231,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 statusCode,
                 HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
-                size);
+                size,
+                request.requestContext.getResponseInterceptor());
         } else {
             retainedContent.release();
         }
@@ -241,7 +242,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             statusCode,
             HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
-            0);
+            0,
+            request.requestContext.getResponseInterceptor());
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
@@ -510,7 +512,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 ReferenceCountUtil.safeRelease(content);
                             }
 
-                            throw t;
+                            try {
+                                throw t;
+                            } catch (Exception e) {
+                                throw reactor.core.Exceptions.propagate(e);
+                            }
                         }
                     })
                     .doOnDiscard(ByteBuf.class, buf -> {

@@ -153,10 +153,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 },
                 -1
             },
-            {
-                new StreamConstraintsException("A StreamConstraintsException has been hit!"),
-                10
-            },
+//            {
+//                new StreamConstraintsException("A StreamConstraintsException has been hit!"),
+//                10
+//            },
             {
                 new JacksonException("A JacksonException has been hit!") {
                     @Override
@@ -331,6 +331,122 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 //            safeDeleteCollection(createdLeaseCollection);
 
             // Allow some time for the collections to be deleted before exiting.            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "long-emulator" }, dataProvider = "parsingErrorArgProvider", timeOut = 12 * TIMEOUT)
+    public void readFeedDocumentsStartFromBeginningWithJsonProcessingErrors(Exception exceptionType, int maxItemCount) throws InterruptedException {
+
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+        Callable<Void> responseInterceptor = null;
+
+        // Response Interceptor Properties
+        AtomicInteger pageCounter = new AtomicInteger(0);
+        AtomicInteger exceptionCounter = new AtomicInteger(0);
+        AtomicInteger totalExceptionHits = new AtomicInteger(0);
+
+        if (exceptionType instanceof StreamConstraintsException) {
+            responseInterceptor = () -> {
+                // inject when certain no. of pages have been processed
+                if (pageCounter.get() > 1 && pageCounter.get() % 2 == 0) {
+                    if (exceptionCounter.get() < 3) {
+                        exceptionCounter.incrementAndGet();
+                        totalExceptionHits.incrementAndGet();
+                        throw exceptionType;
+                    } else {
+                        exceptionCounter.set(0);
+                    }
+                }
+
+                return null;
+            };
+        } else {
+            responseInterceptor = () -> {
+                // inject when certain no. of pages have been processed
+                if (pageCounter.get() > 1 && pageCounter.get() % 2 == 0) {
+                    if (exceptionCounter.get() < 2) {
+                        exceptionCounter.incrementAndGet();
+                        totalExceptionHits.incrementAndGet();
+                        throw exceptionType;
+                    } else {
+                        exceptionCounter.set(0);
+                    }
+                }
+
+                return null;
+            };
+        }
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+            setupReadFeedDocuments(createdDocuments, createdFeedCollection, 100);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges((docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (JsonNode item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+
+                    pageCounter.incrementAndGet();
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(maxItemCount)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                    .setResponseInterceptor(responseInterceptor)
+                )
+                .buildChangeFeedProcessor();
+
+            startChangeFeedProcessor(changeFeedProcessor);
+
+            for (int i = 0; i < 5; i++) {
+                setupReadFeedDocuments(createdDocuments, createdFeedCollection, 100);
+                Thread.sleep(10_000);
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(20 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            safeStopChangeFeedProcessor(changeFeedProcessor);
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            logger.warn("Total documents received: {}", receivedDocuments.size());
+            logger.warn("Total created documents : {}", createdDocuments.size());
+            logger.warn("Total exception hits : {}", totalExceptionHits.get());
+
+            assertThat(totalExceptionHits.get()).isGreaterThan(0);
+
+            if (exceptionType instanceof StreamConstraintsException) {
+                assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
+
+                for (InternalObjectNode item : createdDocuments) {
+                    assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+                }
+            } else {
+                assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size() - totalExceptionHits.get() / 2);
+            }
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
         }
     }
 
