@@ -33,7 +33,7 @@ public class RegistryOperationsTests extends RegistryTest {
     }
 
     @Test
-    public void canCreateContainerRegisterWithWebhook() {
+    public void canCreateContainerRegistryWithWebhook() {
         final String acrName = generateRandomResourceName("acr", 10);
         Registry registry = registryManager.containerRegistries()
             .define(acrName)
