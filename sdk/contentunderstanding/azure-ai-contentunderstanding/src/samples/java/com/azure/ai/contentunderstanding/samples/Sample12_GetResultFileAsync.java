@@ -145,10 +145,18 @@ public class Sample12_GetResultFileAsync {
 
                     // Save the keyframe image
                     Path outputDir = Paths.get("target", "sample_output");
-                    Files.createDirectories(outputDir);
+                    try {
+                        Files.createDirectories(outputDir);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to create output directory", e);
+                    }
                     String outputFileName = "keyframe_" + firstFrameTimeMs + ".jpg";
                     Path outputPath = outputDir.resolve(outputFileName);
-                    Files.write(outputPath, imageBytes);
+                    try {
+                        Files.write(outputPath, imageBytes);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to write keyframe image", e);
+                    }
 
                     System.out.println("Keyframe image saved to: " + outputPath.toAbsolutePath());
                     // END: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
@@ -181,7 +189,12 @@ public class Sample12_GetResultFileAsync {
                     System.out.println("Detected image format: " + imageFormat);
 
                     System.out.println("\n💾 Saved File:");
-                    long fileSize = Files.size(outputPath);
+                    long fileSize;
+                    try {
+                        fileSize = Files.size(outputPath);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to get file size", e);
+                    }
                     System.out.println("File saved: " + outputPath.toAbsolutePath());
                     System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
 
