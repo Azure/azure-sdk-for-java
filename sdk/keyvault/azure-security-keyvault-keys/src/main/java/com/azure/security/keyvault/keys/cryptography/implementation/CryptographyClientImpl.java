@@ -159,7 +159,7 @@ public final class CryptographyClientImpl {
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
 
-                return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
+                return new EncryptResult(result.getResult(), algorithm, result.getKid(), result.getIv(),
                     result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
             });
     }
@@ -191,8 +191,8 @@ public final class CryptographyClientImpl {
                 .getValue()
                 .toObject(KeyOperationResult.class);
 
-        return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(), result.getAuthenticationTag(),
-            result.getAdditionalAuthenticatedData());
+        return new EncryptResult(result.getResult(), algorithm, result.getKid(), result.getIv(),
+            result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
     }
 
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
@@ -224,7 +224,7 @@ public final class CryptographyClientImpl {
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
 
-                return new DecryptResult(result.getResult(), algorithm, keyId);
+                return new DecryptResult(result.getResult(), algorithm, result.getKid());
             });
     }
 
@@ -257,7 +257,7 @@ public final class CryptographyClientImpl {
                 .getValue()
                 .toObject(KeyOperationResult.class);
 
-        return new DecryptResult(result.getResult(), algorithm, keyId);
+        return new DecryptResult(result.getResult(), algorithm, result.getKid());
     }
 
     public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
@@ -272,7 +272,7 @@ public final class CryptographyClientImpl {
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
 
-                return new SignResult(result.getResult(), algorithm, keyId);
+                return new SignResult(result.getResult(), algorithm, result.getKid());
             });
     }
 
@@ -289,7 +289,7 @@ public final class CryptographyClientImpl {
                 .getValue()
                 .toObject(KeyOperationResult.class);
 
-        return new SignResult(result.getResult(), algorithm, keyId);
+        return new SignResult(result.getResult(), algorithm, result.getKid());
     }
 
     public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
@@ -341,7 +341,7 @@ public final class CryptographyClientImpl {
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
 
-                return new WrapResult(result.getResult(), algorithm, keyId);
+                return new WrapResult(result.getResult(), algorithm, result.getKid());
             });
     }
 
@@ -358,7 +358,7 @@ public final class CryptographyClientImpl {
                 .getValue()
                 .toObject(KeyOperationResult.class);
 
-        return new WrapResult(result.getResult(), algorithm, keyId);
+        return new WrapResult(result.getResult(), algorithm, result.getKid());
     }
 
     public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
@@ -374,7 +374,7 @@ public final class CryptographyClientImpl {
             .map(response -> {
                 KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
 
-                return new UnwrapResult(result.getResult(), algorithm, keyId);
+                return new UnwrapResult(result.getResult(), algorithm, result.getKid());
             });
     }
 
@@ -392,7 +392,7 @@ public final class CryptographyClientImpl {
                 .getValue()
                 .toObject(KeyOperationResult.class);
 
-        return new UnwrapResult(result.getResult(), algorithm, keyId);
+        return new UnwrapResult(result.getResult(), algorithm, result.getKid());
     }
 
     public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {
