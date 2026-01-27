@@ -94,7 +94,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         // Create throttling exception with retry delay
         Map<String, String> headers = new HashMap<>();
@@ -170,7 +171,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = new SocketException("Dummy SocketException");
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
@@ -222,7 +224,8 @@ public class ClientRetryPolicyTest {
                 throttlingRetryOptions,
                 null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                false);
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
@@ -269,7 +272,8 @@ public class ClientRetryPolicyTest {
             retryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
@@ -326,7 +330,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = new SocketException("Dummy SocketException");;
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
@@ -372,7 +377,8 @@ public class ClientRetryPolicyTest {
             retryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         //Non retribale exception for write
         GoneException goneException = new GoneException(exception);
@@ -441,7 +447,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = new SocketException("Dummy SocketException");
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
@@ -485,7 +492,8 @@ public class ClientRetryPolicyTest {
             retryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = new SocketException("Dummy SocketException");
         GoneException goneException = new GoneException(exception);
@@ -530,7 +538,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException = BridgeInternal.createCosmosException(
@@ -575,7 +584,8 @@ public class ClientRetryPolicyTest {
             retryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
@@ -619,7 +629,8 @@ public class ClientRetryPolicyTest {
             throttlingRetryOptions,
             null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            false);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -660,7 +671,8 @@ public class ClientRetryPolicyTest {
                 throttlingRetryOptions,
                 null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                false);
 
         RxDocumentServiceRequest dsr;
         Mono<ShouldRetryResult> shouldRetry;
