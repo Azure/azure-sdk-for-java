@@ -30,8 +30,8 @@ import java.util.List;
 import static java.time.OffsetDateTime.now;
 
 public class SharedKeyTests extends BatchClientTestBase {
-    private static BatchClient batchClientWithSharedKey;
-    private static BatchAsyncClient batchAsyncClientWithSharedKey;
+    private BatchClient batchClientWithSharedKey;
+    private BatchAsyncClient batchAsyncClientWithSharedKey;
     private final String sharedKeyPoolPrefix = "SharedKey-testpool";
     private final String vmSize = "STANDARD_D1_V2";
     private final String nodeAgentSkuId = "batch.node.windows amd64";
