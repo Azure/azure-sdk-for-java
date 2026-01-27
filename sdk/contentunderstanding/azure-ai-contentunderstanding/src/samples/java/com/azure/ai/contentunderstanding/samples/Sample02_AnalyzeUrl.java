@@ -16,7 +16,6 @@ import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -42,7 +41,7 @@ public class Sample02_AnalyzeUrl {
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
@@ -57,29 +56,28 @@ public class Sample02_AnalyzeUrl {
         }
         // END: com.azure.ai.contentunderstanding.sample02.buildClient
 
-        // Run all media type analysis samples
-        System.out.println("=== Document Analysis ===");
-        analyzeDocumentUrl();
+        System.out.println("--- Document Analysis Example ---");
+        analyzeDocumentUrl(client);
 
-        System.out.println("\n=== Video Analysis ===");
-        analyzeVideoUrl();
+        System.out.println("\n--- Video Analysis Example ---");
+        analyzeVideoUrl(client);
 
-        System.out.println("\n=== Audio Analysis ===");
-        analyzeAudioUrl();
+        System.out.println("\n--- Audio Analysis Example ---");
+        analyzeAudioUrl(client);
 
-        System.out.println("\n=== Image Analysis ===");
-        analyzeImageUrl();
+        System.out.println("\n--- Image Analysis Example ---");
+        analyzeImageUrl(client);
     }
 
     /**
-     * Sample demonstrating how to analyze document from URL using Content Understanding service.
+     * Sample demonstrating how to analyze documents from URL using Content Understanding service.
      * This sample shows:
-     * 1. Providing a URL to a document file
-     * 2. Analyzing the document with prebuilt-documentSearch analyzer
+     * 1. Providing a URL to a document
+     * 2. Analyzing the document
      * 3. Extracting markdown content
      * 4. Accessing document properties (pages, tables, etc.)
      */
-    public static void analyzeDocumentUrl() {
+    public static void analyzeDocumentUrl(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeUrl
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
@@ -161,7 +159,7 @@ public class Sample02_AnalyzeUrl {
      * 3. Iterating through video segments
      * 4. Accessing audio/visual properties (timing, summary, frame size)
      */
-    public static void analyzeVideoUrl() {
+    public static void analyzeVideoUrl(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeVideoUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
@@ -208,7 +206,7 @@ public class Sample02_AnalyzeUrl {
      * 2. Analyzing the audio with prebuilt-audioSearch analyzer
      * 3. Accessing audio/visual properties (timing, summary, transcript)
      */
-    public static void analyzeAudioUrl() {
+    public static void analyzeAudioUrl(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeAudioUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
@@ -258,7 +256,7 @@ public class Sample02_AnalyzeUrl {
      * 2. Analyzing the image with prebuilt-imageSearch analyzer
      * 3. Accessing image properties (markdown, summary)
      */
-    public static void analyzeImageUrl() {
+    public static void analyzeImageUrl(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeImageUrl
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";

@@ -16,14 +16,13 @@ import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.MediaContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample demonstrating how to analyze documents from URL using Content Understanding service.
@@ -32,24 +31,18 @@ import java.util.concurrent.TimeUnit;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
- *
- * Additional samples demonstrate analyzing different media types:
- * - {@link #analyzeVideoUrl()} - Analyze video files
- * - {@link #analyzeAudioUrl()} - Analyze audio files
- * - {@link #analyzeImageUrl()} - Analyze image files
  */
 public class Sample02_AnalyzeUrlAsync {
 
-    private static ContentUnderstandingAsyncClient client;
-
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02Async.buildClient
-        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
 
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
+        ContentUnderstandingAsyncClient client;
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
             client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
@@ -59,39 +52,29 @@ public class Sample02_AnalyzeUrlAsync {
         }
         // END: com.azure.ai.contentunderstanding.sample02Async.buildClient
 
-        // Run all media type analysis samples
-        System.out.println("=== Document Analysis ===");
-        analyzeDocumentUrl();
+        System.out.println("--- Document Analysis Example ---");
+        analyzeDocumentUrl(client);
 
-        System.out.println("\n=== Video Analysis ===");
-        analyzeVideoUrl();
+        System.out.println("\n--- Video Analysis Example ---");
+        analyzeVideoUrl(client);
 
-        System.out.println("\n=== Audio Analysis ===");
-        analyzeAudioUrl();
+        System.out.println("\n--- Audio Analysis Example ---");
+        analyzeAudioUrl(client);
 
-        System.out.println("\n=== Image Analysis ===");
-        analyzeImageUrl();
-
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.MINUTES.sleep(5);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        }
+        System.out.println("\n--- Image Analysis Example ---");
+        analyzeImageUrl(client);
     }
 
     /**
-     * Sample demonstrating how to analyze document from URL using Content Understanding service.
+     * Sample demonstrating how to analyze documents from URL using Content Understanding service.
      * This sample shows:
-     * 1. Providing a URL to a document file
-     * 2. Analyzing the document with prebuilt-documentSearch analyzer
+     * 1. Providing a URL to a document
+     * 2. Analyzing the document
      * 3. Extracting markdown content
      * 4. Accessing document properties (pages, tables, etc.)
      */
-    public static void analyzeDocumentUrl() {
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
+    public static void analyzeDocumentUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeUrlAsyncAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -101,6 +84,8 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -179,13 +164,22 @@ public class Sample02_AnalyzeUrlAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
-        // END:ContentUnderstandingAnalyzeUrlAsync
+
+        // Wait for the async operation to complete before returning
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for document analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeUrlAsyncAsync
     }
 
     /**
@@ -196,8 +190,8 @@ public class Sample02_AnalyzeUrlAsync {
      * 3. Iterating through video segments
      * 4. Accessing audio/visual properties (timing, summary, frame size)
      */
-    public static void analyzeVideoUrl() {
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
+    public static void analyzeVideoUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -206,6 +200,8 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -251,13 +247,22 @@ public class Sample02_AnalyzeUrlAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
-        // END:ContentUnderstandingAnalyzeVideoUrlAsync
+
+        // Wait for the async operation to complete before returning
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for video analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
     }
 
     /**
@@ -267,8 +272,8 @@ public class Sample02_AnalyzeUrlAsync {
      * 2. Analyzing the audio with prebuilt-audioSearch analyzer
      * 3. Accessing audio/visual properties (timing, summary, transcript)
      */
-    public static void analyzeAudioUrl() {
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
+    public static void analyzeAudioUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -277,6 +282,8 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -325,13 +332,22 @@ public class Sample02_AnalyzeUrlAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
-        // END:ContentUnderstandingAnalyzeAudioUrlAsync
+
+        // Wait for the async operation to complete before returning
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
     }
 
     /**
@@ -341,8 +357,8 @@ public class Sample02_AnalyzeUrlAsync {
      * 2. Analyzing the image with prebuilt-imageSearch analyzer
      * 3. Accessing image properties (markdown, summary)
      */
-    public static void analyzeImageUrl() {
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
+    public static void analyzeImageUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsyncAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -351,6 +367,8 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
             = client.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -381,12 +399,21 @@ public class Sample02_AnalyzeUrlAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
-        // END:ContentUnderstandingAnalyzeImageUrlAsync
+
+        // Wait for the async operation to complete before returning
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for image analysis", e);
+        }
+        // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
     }
 }
