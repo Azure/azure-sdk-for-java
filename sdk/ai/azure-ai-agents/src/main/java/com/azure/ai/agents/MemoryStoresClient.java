@@ -826,8 +826,8 @@ public final class MemoryStoresClient {
      * @return memory search response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<InputItem> items, String previousSearchId,
-                                                     MemorySearchOptions options) {
+    MemoryStoreSearchResponse internalSearchMemories(String name, String scope, List<InputItem> items,
+        String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SearchMemoriesRequest searchMemoriesRequestObj = new SearchMemoriesRequest(scope).setItems(items)

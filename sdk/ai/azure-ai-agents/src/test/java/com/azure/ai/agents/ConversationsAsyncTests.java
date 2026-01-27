@@ -27,6 +27,7 @@ import java.util.concurrent.TimeoutException;
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConversationsAsyncTests extends ClientTestBase {
 
     private final ClientLogger logger = new ClientLogger(ConversationsAsyncTests.class);

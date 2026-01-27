@@ -850,7 +850,7 @@ public final class MemoryStoresAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MemoryStoreSearchResponse> internalSearchMemories(String name, String scope, List<InputItem> items,
-                                                           String previousSearchId, MemorySearchOptions options) {
+        String previousSearchId, MemorySearchOptions options) {
         // Generated convenience method for searchMemoriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SearchMemoriesRequest searchMemoriesRequestObj = new SearchMemoriesRequest(scope).setItems(items)
@@ -908,7 +908,7 @@ public final class MemoryStoresAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> internalBeginUpdateMemories(String name,
-                                                                                                        String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
+        String scope, List<InputItem> items, String previousUpdateId, Integer updateDelay) {
         // Generated convenience method for beginUpdateMemoriesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateMemoriesRequest updateMemoriesRequestObj = new UpdateMemoriesRequest(scope).setItems(items)
