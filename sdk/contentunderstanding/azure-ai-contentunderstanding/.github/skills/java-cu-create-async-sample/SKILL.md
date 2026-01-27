@@ -1,9 +1,18 @@
 ---
-name: create-cu-async-sample
-description: Creates or updates async samples for Content Understanding SDK with reactive patterns. Enumerates sync samples, converts them to async versions using reactive patterns (Mono/Flux, flatMap, doOnNext, subscribe), ensures 100% functionality parity, and reports any non-portable code. Use when creating or updating async samples, converting sync samples to async, or ensuring async samples follow reactive patterns correctly.
+name: java-cu-create-async-sample
+description: |
+  Creates or updates async samples for Content Understanding SDK with reactive patterns.
+  
+  This skill helps you:
+  - Convert sync samples to async versions
+  - Apply reactive patterns (Mono/Flux, flatMap, doOnNext, subscribe)
+  - Ensure 100% functionality parity between sync and async
+  - Report any non-portable code
+  
+  Trigger phrases: "create async sample", "convert to async", "sync to async", "generate async version"
 ---
 
-# Create CU Async Sample
+# Java CU Create Async Sample
 
 This skill creates or updates async samples for the Content Understanding SDK, ensuring they use proper reactive patterns and maintain 100% functionality parity with their sync counterparts.
 
@@ -20,6 +29,7 @@ This skill creates or updates async samples for the Content Understanding SDK, e
 ### Step 2: Read Reference Documentation
 
 Before converting, read the async-patterns.md reference document in the `references/` directory for:
+
 - Reactive programming concepts (Mono, Flux, flatMap, doOnNext, subscribe)
 - Conversion patterns and examples
 - Common pitfalls to avoid
@@ -51,6 +61,7 @@ For each sync sample:
 ### Step 4: Report Issues
 
 If something cannot be ported:
+
 1. **Document the issue** clearly
 2. **Explain why** it cannot be ported
 3. **Ask the user** for guidance if needed
@@ -60,12 +71,14 @@ If something cannot be ported:
 ### Pattern 1: Simple Operations (Mono)
 
 **Sync:**
+
 ```java
 ContentUnderstandingDefaults defaults = client.getDefaults();
 System.out.println("Defaults: " + defaults);
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> System.out.println("Defaults: " + defaults))
@@ -75,6 +88,7 @@ client.getDefaults()
 ### Pattern 2: Sequential Operations
 
 **Sync:**
+
 ```java
 ContentUnderstandingDefaults current = client.getDefaults();
 ContentUnderstandingDefaults updated = client.updateDefaults(map);
@@ -82,6 +96,7 @@ ContentUnderstandingDefaults verified = client.getDefaults();
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .flatMap(current -> client.updateDefaults(map))
@@ -93,12 +108,14 @@ client.getDefaults()
 ### Pattern 3: PollerFlux Operations
 
 **Sync:**
+
 ```java
 SyncPoller<Status, Result> poller = client.beginAnalyze(...);
 Result result = poller.getFinalResult();
 ```
 
 **Async:**
+
 ```java
 PollerFlux<Status, Result> poller = client.beginAnalyze(...);
 poller.last()
@@ -117,6 +134,7 @@ poller.last()
 ### Pattern 4: Error Handling
 
 **Sync:**
+
 ```java
 try {
     ContentUnderstandingDefaults defaults = client.getDefaults();
@@ -126,6 +144,7 @@ try {
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .doOnError(error -> System.err.println("Error: " + error.getMessage()))

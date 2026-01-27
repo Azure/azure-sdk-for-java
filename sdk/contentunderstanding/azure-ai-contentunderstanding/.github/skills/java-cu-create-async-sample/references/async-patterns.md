@@ -37,6 +37,7 @@ In Azure SDK for Java and Content Understanding SDK specifically:
 If you're coming from a .NET background, here's how Java reactive programming compares to .NET's async/await pattern:
 
 **Similarities:**
+
 - Both are designed for non-blocking, asynchronous operations
 - Both handle I/O-bound operations efficiently
 - Both allow composing multiple async operations
@@ -56,6 +57,7 @@ If you're coming from a .NET background, here's how Java reactive programming co
 **Example Comparison:**
 
 **.NET (async/await):**
+
 ```csharp
 var current = await client.GetDefaultsAsync();
 var updated = await client.UpdateDefaultsAsync(map);
@@ -64,6 +66,7 @@ Console.WriteLine($"Verified: {verified}");
 ```
 
 **Java (Reactive):**
+
 ```java
 client.getDefaults()
     .flatMap(current -> client.updateDefaults(map))
@@ -84,6 +87,7 @@ client.getDefaults()
 ### Example: Sync vs Reactive
 
 **Synchronous (Blocking):**
+
 ```java
 // Each call blocks the thread until complete
 ContentUnderstandingDefaults current = client.getDefaults();  // Blocks here
@@ -92,6 +96,7 @@ System.out.println("Done");
 ```
 
 **Reactive (Non-Blocking):**
+
 ```java
 // Operations are chained and execute asynchronously
 client.getDefaults()
@@ -107,10 +112,12 @@ The reactive version allows the thread to handle other work while waiting for AP
 ### Mono vs Flux
 
 **Mono<T>**: Represents 0 or 1 value
+
 - Use for: Single API calls, get operations, update operations
 - Example: `Mono<ContentUnderstandingDefaults> getDefaults()`
 
 **Flux<T>**: Represents 0 to N values
+
 - Use for: Collections, streams, PollerFlux
 - Example: `Flux<ContentAnalyzer> listAnalyzers()`
 
@@ -121,6 +128,7 @@ The reactive version allows the thread to handle other work while waiting for AP
 **Purpose**: Subscribes to a Mono/Flux and executes callbacks.
 
 **Example:**
+
 ```java
 client.getDefaults()
     .subscribe(
@@ -137,6 +145,7 @@ client.getDefaults()
 **Purpose**: Perform side effects (like printing) without changing the value.
 
 **Example:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> System.out.println("Current: " + defaults))
@@ -152,6 +161,7 @@ client.getDefaults()
 **Purpose**: Chain async operations where each returns a Mono/Flux.
 
 **Example:**
+
 ```java
 // Sequential operations
 client.getDefaults()
@@ -166,6 +176,7 @@ client.getDefaults()
 ```
 
 **When to use**:
+
 - Use `flatMap()` when the operation returns `Mono`/`Flux` (async)
 - Use `map()` when the operation is synchronous (e.g., `toUpperCase()`)
 
@@ -174,6 +185,7 @@ client.getDefaults()
 **Purpose**: Chain operations when you don't need the previous value.
 
 **Example:**
+
 ```java
 client.updateDefaults(map)
     .then(client.getDefaults())  // Don't need updated value, just chain
@@ -185,12 +197,14 @@ client.updateDefaults(map)
 ### Pattern 1: Simple Get Operation
 
 **Sync:**
+
 ```java
 ContentUnderstandingDefaults defaults = client.getDefaults();
 System.out.println("Defaults: " + defaults);
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> System.out.println("Defaults: " + defaults))
@@ -207,6 +221,7 @@ try {
 ### Pattern 2: Sequential Operations
 
 **Sync:**
+
 ```java
 ContentUnderstandingDefaults current = client.getDefaults();
 System.out.println("Current: " + current);
@@ -220,6 +235,7 @@ System.out.println("Verified: " + verified);
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .doOnNext(current -> {
@@ -258,6 +274,7 @@ try {
 ### Pattern 3: PollerFlux (Long-Running Operations)
 
 **Sync:**
+
 ```java
 SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
     = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
@@ -267,6 +284,7 @@ System.out.println("Analysis completed");
 ```
 
 **Async:**
+
 ```java
 PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
     = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
@@ -304,6 +322,7 @@ try {
 ### Pattern 4: Error Handling
 
 **Sync:**
+
 ```java
 try {
     ContentUnderstandingDefaults defaults = client.getDefaults();
@@ -315,6 +334,7 @@ try {
 ```
 
 **Async:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> {
@@ -333,6 +353,7 @@ client.getDefaults()
 ### Pattern 5: Conditional Operations
 
 **Sync:**
+
 ```java
 ContentAnalyzer analyzer = client.getAnalyzer(analyzerId);
 if (analyzer != null) {
@@ -343,6 +364,7 @@ if (analyzer != null) {
 ```
 
 **Async:**
+
 ```java
 client.getAnalyzer(analyzerId)
     .doOnNext(analyzer -> {
@@ -359,11 +381,13 @@ client.getAnalyzer(analyzerId)
 ### ❌ Using .block() in Async Samples
 
 **Wrong:**
+
 ```java
 ContentUnderstandingDefaults defaults = client.getDefaults().block();
 ```
 
 **Correct:**
+
 ```java
 client.getDefaults()
     .subscribe(defaults -> { /* use defaults */ });
@@ -372,12 +396,14 @@ client.getDefaults()
 ### ❌ Not Chaining Sequential Operations
 
 **Wrong:**
+
 ```java
 client.getDefaults().subscribe(current -> {});
 client.updateDefaults(map).subscribe(updated -> {});  // May execute before first completes
 ```
 
 **Correct:**
+
 ```java
 client.getDefaults()
     .flatMap(current -> client.updateDefaults(map))
@@ -387,6 +413,7 @@ client.getDefaults()
 ### ❌ Forgetting to Subscribe
 
 **Wrong:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> System.out.println(defaults));
@@ -394,6 +421,7 @@ client.getDefaults()
 ```
 
 **Correct:**
+
 ```java
 client.getDefaults()
     .doOnNext(defaults -> System.out.println(defaults))
@@ -403,6 +431,7 @@ client.getDefaults()
 ### ❌ Not Preventing Premature Exit
 
 **Wrong:**
+
 ```java
 client.getDefaults()
     .subscribe(defaults -> System.out.println(defaults));
@@ -410,6 +439,7 @@ client.getDefaults()
 ```
 
 **Correct:**
+
 ```java
 client.getDefaults()
     .subscribe(defaults -> System.out.println(defaults));
@@ -426,6 +456,7 @@ try {
 ### Example 1: UpdateDefaults (Simple Sequential)
 
 **Sync Pattern:**
+
 ```java
 ContentUnderstandingDefaults current = client.getDefaults();
 ContentUnderstandingDefaults updated = client.updateDefaults(map);
@@ -433,6 +464,7 @@ ContentUnderstandingDefaults verified = client.getDefaults();
 ```
 
 **Async Pattern:**
+
 ```java
 client.getDefaults()
     .flatMap(current -> client.updateDefaults(map))
@@ -443,12 +475,14 @@ client.getDefaults()
 ### Example 2: Analyze Invoice (PollerFlux)
 
 **Sync Pattern:**
+
 ```java
 SyncPoller<Status, AnalyzeResult> operation = client.beginAnalyze(...);
 AnalyzeResult result = operation.getFinalResult();
 ```
 
 **Async Pattern:**
+
 ```java
 PollerFlux<Status, AnalyzeResult> operation = client.beginAnalyze(...);
 operation.last()
