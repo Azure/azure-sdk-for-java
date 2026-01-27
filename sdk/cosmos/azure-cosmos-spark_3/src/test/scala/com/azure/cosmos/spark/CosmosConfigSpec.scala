@@ -728,6 +728,26 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
+  it should "parse transactional bulk write configs" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.transactional" -> "true",
+      "spark.cosmos.write.bulk.transactional.maxOperationsConcurrency" -> "123",
+      "spark.cosmos.write.bulk.transactional.maxBatchesConcurrency" -> "5"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+
+    config.bulkTransactional shouldEqual true
+    config.bulkExecutionConfigs.isDefined shouldEqual true
+    val txConfigs = config.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteTransactionalBulkExecutionConfigs]
+    txConfigs.maxConcurrentOperations.isDefined shouldEqual true
+    txConfigs.maxConcurrentOperations.get shouldEqual 123
+    txConfigs.maxConcurrentBatches.isDefined shouldEqual true
+    txConfigs.maxConcurrentBatches.get shouldEqual 5
+  }
+
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
       "spark.cosmos.read.partitioning.strategy" -> "Custom",

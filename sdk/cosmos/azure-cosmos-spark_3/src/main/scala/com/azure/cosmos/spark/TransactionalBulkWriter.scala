@@ -107,7 +107,7 @@ private class TransactionalBulkWriter
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
     .enable(true)
     .build
-  private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl(Map.empty[String, String].asJava)
+  private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl()
   private val monotonicOperationCounter = new AtomicLong(0)
 
   cosmosTransactionalBulkExecutionOptions.setSchedulerOverride(transactionalBulkWriterRequestsBoundedElastic)
@@ -474,7 +474,7 @@ private class TransactionalBulkWriter
       )
 
       this.scheduleRetry(
-        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isDefined,
+        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
         clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatch.getPartitionKeyValue).isDefined,
         batchOperationRetry,
         effectiveStatusCode)

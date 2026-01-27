@@ -53,6 +53,8 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
 
         this.schedulerOverride = toBeCloned.schedulerOverride;
         this.maxConcurrentCosmosPartitions = toBeCloned.maxConcurrentCosmosPartitions;
+        this.maxOperationsConcurrency = toBeCloned.maxOperationsConcurrency;
+        this.maxBatchesConcurrency = toBeCloned.maxBatchesConcurrency;
         this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
         this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
         this.diagnosticsTracker = toBeCloned.diagnosticsTracker;
@@ -68,12 +70,8 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
         }
     }
 
-    public CosmosTransactionalBulkExecutionOptionsImpl(Map<String, String> customOptions) {
-        if (customOptions == null) {
-            this.customOptions = new HashMap<>();
-        } else {
-            this.customOptions = customOptions;
-        }
+    public CosmosTransactionalBulkExecutionOptionsImpl() {
+        this.customOptions = new HashMap<>();
     }
 
     public CosmosItemSerializer getCustomItemSerializer() {

@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.DEFAULT_MAX_TRANSACTIONAL_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -170,7 +170,7 @@ public final class TransactionalBulkExecutor implements Disposable {
 
     private void cancelFlushTask(boolean initializeAggressiveFlush) {
         long flushIntervalAfterDrainingIncomingFlux =
-            DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS;
+            DEFAULT_MAX_TRANSACTIONAL_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS;
 
         Disposable newFlushTask = initializeAggressiveFlush
             ? CosmosSchedulers
