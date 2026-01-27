@@ -297,7 +297,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,
                                                            DedicatedGatewayRequestOptions options) {
         Map<String, String> headers = httpRequest.headers().toMap();
-        if (headers.get(HttpConstants.HttpHeaders.IS_QUERY) != null || headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL)  != null) {
+        if (headers.get(HttpConstants.HttpHeaders.IS_QUERY) != null || headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL) != null) {
             assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS)).isTrue();
             String durationInMillis =
                 headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS);

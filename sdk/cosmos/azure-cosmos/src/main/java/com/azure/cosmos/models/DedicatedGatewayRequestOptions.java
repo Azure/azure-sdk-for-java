@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Dedicated Gateway Request Options
@@ -98,6 +97,7 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
     /**
      * Gets the shard key value associated with the request in the Azure CosmosDB service to optionally specify a shard key
      * to use the new sharding feature in dedicated gateway.
+     * <p>Default value is null</p>
      *
      * @return shard key value
      */
@@ -108,6 +108,7 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
     /**
      * Sets the shard key value associated with the request in the Azure CosmosDB service to optionally specify a shard key
      * to use the new sharding feature in dedicated gateway.
+     * <p>Default value is null</p>
      *
      * @param shardKey shard key value
      * @return this DedicatedGatewayRequestOptions
@@ -119,7 +120,7 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
         return this;
     }
 
-    private boolean validateShardKey(String shardKey){
+    private boolean validateShardKey(String shardKey) {
         return shardKey.matches("^[a-zA-Z0-9-]+$");
     }
 }
