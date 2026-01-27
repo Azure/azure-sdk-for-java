@@ -1,9 +1,18 @@
 ---
-name: create-cu-async-sample
-description: Creates or updates async samples for Content Understanding SDK with reactive patterns. Enumerates sync samples, converts them to async versions using reactive patterns (Mono/Flux, flatMap, doOnNext, subscribe), ensures 100% functionality parity, and reports any non-portable code. Use when creating or updating async samples, converting sync samples to async, or ensuring async samples follow reactive patterns correctly.
+name: java-cu-create-async-sample
+description: |
+  Creates or updates async samples for Content Understanding SDK with reactive patterns.
+  
+  This skill helps you:
+  - Convert sync samples to async versions
+  - Apply reactive patterns (Mono/Flux, flatMap, doOnNext, subscribe)
+  - Ensure 100% functionality parity between sync and async
+  - Report any non-portable code
+  
+  Trigger phrases: "create async sample", "convert to async", "生成异步 Sample", "sync to async"
 ---
 
-# Create CU Async Sample
+# Java CU Create Async Sample
 
 This skill creates or updates async samples for the Content Understanding SDK, ensuring they use proper reactive patterns and maintain 100% functionality parity with their sync counterparts.
 
