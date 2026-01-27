@@ -49,8 +49,22 @@ import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Transactional bulk executor with per-partition adaptive micro-batch sizing and grouping by partition.
- */
+ * The Core logic of bulk execution is here.
+ *
+ * The actual execution of the flux of operations. It is done in following steps:
+
+ * 1. Getting partition key range ID and grouping operations using that id.
+ * 2. For the flux of operations in a group, adding buffering based on size and a duration.
+ * 3. For the operation we get in after buffering, process it using a batch request and return
+ *    a wrapper having request, response(if-any) and exception(if-any). Either response or exception will be there.
+ *
+ * 4. Any internal retry is done by adding in an intermediate sink for each grouped flux.
+ * 5. Any operation which failed due to partition key range gone is retried by putting it in the main sink which leads
+ *    to re-calculation of partition key range id.
+ * 6. At the end and this is very essential, we close all the sinks as the sink continues to waits for more and the
+ *    execution isn't finished even if all the operations have been executed(figured out by completion call of source)
+ *
+ **/
 public final class TransactionalBulkExecutor implements Disposable {
 
     private final static Logger logger = LoggerFactory.getLogger(TransactionalBulkExecutor.class);
@@ -140,7 +154,7 @@ public final class TransactionalBulkExecutor implements Disposable {
         int flushInterval = Configs.getBulkTransactionalBatchFlushIntervalInMs();
         this.scheduledFutureForFlush = new AtomicReference<>(
             CosmosSchedulers
-                .BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
+                .TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC
                 .schedulePeriodically(
                     this::onFlush,
                     flushInterval,
@@ -510,8 +524,8 @@ public final class TransactionalBulkExecutor implements Disposable {
 
         logTraceOrWarning(
             "canFlushCosmosBatch - PkRangeId: {}, PkValue: {}, TargetBatchSize {}, TotalOpsInFlight: {}, TotalBatchesInFlight: {}, BatchOpCount: {}, CanFlush {}, Context: {} {}",
-            cosmosBatch.getPartitionKeyValue(),
             partitionScopeThresholds.getPartitionKeyRangeId(),
+            cosmosBatch.getPartitionKeyValue(),
             targetBatchSizeSnapshot,
             totalOpsInFlightSnapshot,
             totalBatchesInFlightSnapshot,

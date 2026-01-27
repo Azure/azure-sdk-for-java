@@ -49,8 +49,6 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
     private CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = null;
 
     public CosmosTransactionalBulkExecutionOptionsImpl(CosmosTransactionalBulkExecutionOptionsImpl toBeCloned) {
-        this.maxOperationsConcurrency = toBeCloned.getMaxConcurrentCosmosPartitions();
-
         this.schedulerOverride = toBeCloned.schedulerOverride;
         this.maxConcurrentCosmosPartitions = toBeCloned.maxConcurrentCosmosPartitions;
         this.maxOperationsConcurrency = toBeCloned.maxOperationsConcurrency;
@@ -105,13 +103,13 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
     public void setMaxBatchesConcurrency(int maxBatchesConcurrency) {
         checkArgument(
             maxBatchesConcurrency >= 1 && maxBatchesConcurrency <= 10,
-            "maxMicroBatchConcurrency should be between [1, 10]");
+            "maxBatchesConcurrency should be between [1, 10]");
         this.maxBatchesConcurrency = maxBatchesConcurrency;
     }
 
     public void setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
-            throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
+            throw new IllegalArgumentException("The minRetryRate must not be a negative value");
         }
 
         if (minRetryRate > maxRetryRate) {

@@ -66,7 +66,7 @@ public class TransactionalBatchRetryPolicy implements IRetryPolicy {
         }
 
         if (statusCode == HttpConstants.StatusCodes.GONE) {
-            if (this.attemptedRetries++ > MAX_RETRIES) {
+            if (++this.attemptedRetries > MAX_RETRIES) {
                 return Mono.just(false);
             }
 
