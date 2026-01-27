@@ -49,7 +49,7 @@ public class SharedKeyTests extends BatchClientTestBase {
     public void testPoolCRUD() {
         // Generate a jobId that is unique per test mode (sync vs async)
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
-        String poolId = sharedKeyPoolPrefix + "-" + testModeSuffix;
+        String poolId = getStringIdWithUserNamePrefix(sharedKeyPoolPrefix + "-testPoolCRUD" + testModeSuffix);
 
         // Creating Pool
         BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
@@ -59,7 +59,7 @@ public class SharedKeyTests extends BatchClientTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, nodeAgentSkuId);
 
         BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, vmSize);
-        poolCreateParameters.setTargetDedicatedNodes(2).setVirtualMachineConfiguration(configuration);
+        poolCreateParameters.setTargetDedicatedNodes(0).setVirtualMachineConfiguration(configuration);
 
         Response<Void> response = SyncAsyncExtension.execute(
             () -> batchClientWithSharedKey.createPoolWithResponse(BinaryData.fromObject(poolCreateParameters), null),
@@ -99,11 +99,13 @@ public class SharedKeyTests extends BatchClientTestBase {
         updatedMetadata.clear();
         updatedMetadata.add(new BatchMetadataItem("key1", "value1"));
         BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters().setMetadata(updatedMetadata);
+
         Response<Void> updatePoolResponse = SyncAsyncExtension.execute(
             () -> batchClientWithSharedKey.updatePoolWithResponse(poolId, BinaryData.fromObject(poolUpdateParameters),
                 null),
             () -> batchAsyncClientWithSharedKey.updatePoolWithResponse(poolId,
                 BinaryData.fromObject(poolUpdateParameters), null));
+
         HttpRequest updatePoolRequest = updatePoolResponse.getRequest();
         HttpHeader ocpDateHeader = updatePoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
         Assertions.assertNull(ocpDateHeader);
@@ -115,9 +117,11 @@ public class SharedKeyTests extends BatchClientTestBase {
         // Get Pool With ocp-Date header
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setHeader(HttpHeaderName.fromString("ocp-date"), new DateTimeRfc1123(now()).toString());
+
         Response<BinaryData> poolGetResponse
             = SyncAsyncExtension.execute(() -> batchClientWithSharedKey.getPoolWithResponse(poolId, requestOptions),
                 () -> batchAsyncClientWithSharedKey.getPoolWithResponse(poolId, requestOptions));
+
         HttpRequest getPoolRequest = poolGetResponse.getRequest();
         ocpDateHeader = getPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));
         Assertions.assertNotNull(ocpDateHeader);
