@@ -5,7 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-
 import java.util.Arrays;
 import java.util.List;
 

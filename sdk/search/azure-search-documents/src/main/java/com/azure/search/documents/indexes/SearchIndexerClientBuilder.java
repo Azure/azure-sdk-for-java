@@ -39,7 +39,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

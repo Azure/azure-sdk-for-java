@@ -5,7 +5,7 @@
 package com.azure.search.documents.indexes.models;
 
 /**
- * Defines values for CjkBigramTokenFilterScripts.
+ * Scripts that can be ignored by CjkBigramTokenFilter.
  */
 public enum CjkBigramTokenFilterScripts {
     /**

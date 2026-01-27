@@ -17,7 +17,7 @@ public class SearchCustomizations extends Customization {
             .customizeAst(ast -> ast.getClassByName("SearchClient").ifPresent(clazz ->
                 clazz.getMethodsByName("searchWithResponse").forEach(MethodDeclaration::setModifiers)));
         libraryCustomization.getClass("com.azure.search.documents", "SearchAsyncClient")
-            .customizeAst(ast -> ast.getClassByName("SearchClient").ifPresent(clazz ->
+            .customizeAst(ast -> ast.getClassByName("SearchAsyncClient").ifPresent(clazz ->
                 clazz.getMethodsByName("searchWithResponse").forEach(MethodDeclaration::setModifiers)));
     }
 }

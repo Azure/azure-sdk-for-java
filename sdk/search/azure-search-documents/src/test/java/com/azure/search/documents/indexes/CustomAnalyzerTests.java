@@ -566,7 +566,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
         List<LexicalTokenizer> tokenizers = new ArrayList<>();
         tokenizers.add(new EdgeNGramTokenizer(generateName()).setMinGram(1)
             .setMaxGram(2)
-            .setTokenChars(TokenCharacterKind.values().toArray(new TokenCharacterKind[0])));
+            .setTokenChars(TokenCharacterKind.values()));
         for (MicrosoftStemmingTokenizerLanguage tokenizer : MicrosoftStemmingTokenizerLanguage.values()) {
             tokenizers.add(new MicrosoftLanguageStemmingTokenizer(generateName()).setMaxTokenLength(200)
                 .setIsSearchTokenizer(false)
@@ -815,7 +815,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setSplitOnNumerics(false)
                     .setStemEnglishPossessive(false)
                     .setProtectedWords("protected"))
-            .setCharFilters(new MappingCharFilter(customCharFilterName.toString(), "a => b"), // One custom char filter for CustomeAnalyer above.
+            .setCharFilters(new MappingCharFilter(customCharFilterName.toString(), "a => b"), // One custom char filter for CustomAnalyzer above.
                 new MappingCharFilter(generateName(), "s => $", "S => $"),
                 new PatternReplaceCharFilter(generateName(), "abc", "123"));
     }

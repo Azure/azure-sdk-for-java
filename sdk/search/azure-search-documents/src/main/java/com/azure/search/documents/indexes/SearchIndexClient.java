@@ -121,7 +121,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -146,9 +146,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -301,7 +301,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves a synonym map definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -353,7 +353,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -399,7 +399,7 @@ public final class SearchIndexClient {
     /**
      * Creates a new synonym map.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -424,9 +424,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -489,7 +489,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -664,9 +664,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1281,7 +1281,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves an index definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1484,7 +1484,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1676,7 +1676,7 @@ public final class SearchIndexClient {
     /**
      * Creates a new search index.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1851,9 +1851,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2047,7 +2047,7 @@ public final class SearchIndexClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2075,7 +2075,7 @@ public final class SearchIndexClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2092,9 +2092,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2139,7 +2139,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2151,9 +2151,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2268,7 +2268,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2299,7 +2299,7 @@ public final class SearchIndexClient {
     /**
      * Lists all aliases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2328,7 +2328,7 @@ public final class SearchIndexClient {
     /**
      * Creates a new search alias.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2340,9 +2340,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2383,7 +2383,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2421,9 +2421,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2615,7 +2615,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves a knowledge base definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2671,7 +2671,7 @@ public final class SearchIndexClient {
     /**
      * Lists all knowledge bases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2726,7 +2726,7 @@ public final class SearchIndexClient {
     /**
      * Creates a new knowledge base.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2764,9 +2764,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2833,7 +2833,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2856,9 +2856,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3005,7 +3005,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3046,7 +3046,7 @@ public final class SearchIndexClient {
     /**
      * Lists all knowledge sources available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3086,7 +3086,7 @@ public final class SearchIndexClient {
     /**
      * Creates a new knowledge source.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3109,9 +3109,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3153,7 +3153,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves the status of a knowledge source.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3198,7 +3198,7 @@ public final class SearchIndexClient {
     /**
      * Gets service level statistics for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3250,7 +3250,7 @@ public final class SearchIndexClient {
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
