@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -382,6 +383,18 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     @Generated
     public List<CustomEntityAlias> getAliases() {
         return this.aliases;
+    }
+
+    /**
+     * Set the aliases property: An array of complex objects that can be used to specify alternative spellings or
+     * synonyms to the root entity name.
+     *
+     * @param aliases the aliases value to set.
+     * @return the CustomEntity object itself.
+     */
+    public CustomEntity setAliases(CustomEntityAlias... aliases) {
+        this.aliases = (aliases == null) ? null : Arrays.asList(aliases);
+        return this;
     }
 
     /**

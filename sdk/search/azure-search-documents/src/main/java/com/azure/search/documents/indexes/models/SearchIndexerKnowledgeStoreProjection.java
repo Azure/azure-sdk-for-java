@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,6 +61,18 @@ public final class SearchIndexerKnowledgeStoreProjection
      * @param tables the tables value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
+    public SearchIndexerKnowledgeStoreProjection
+        setTables(SearchIndexerKnowledgeStoreTableProjectionSelector... tables) {
+        this.tables = (tables == null) ? null : Arrays.asList(tables);
+        return this;
+    }
+
+    /**
+     * Set the tables property: Projections to Azure Table storage.
+     *
+     * @param tables the tables value to set.
+     * @return the SearchIndexerKnowledgeStoreProjection object itself.
+     */
     @Generated
     public SearchIndexerKnowledgeStoreProjection
         setTables(List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables) {
@@ -83,6 +96,18 @@ public final class SearchIndexerKnowledgeStoreProjection
      * @param objects the objects value to set.
      * @return the SearchIndexerKnowledgeStoreProjection object itself.
      */
+    public SearchIndexerKnowledgeStoreProjection
+        setObjects(SearchIndexerKnowledgeStoreObjectProjectionSelector... objects) {
+        this.objects = (objects == null) ? null : Arrays.asList(objects);
+        return this;
+    }
+
+    /**
+     * Set the objects property: Projections to Azure Blob storage.
+     *
+     * @param objects the objects value to set.
+     * @return the SearchIndexerKnowledgeStoreProjection object itself.
+     */
     @Generated
     public SearchIndexerKnowledgeStoreProjection
         setObjects(List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects) {
@@ -98,6 +123,17 @@ public final class SearchIndexerKnowledgeStoreProjection
     @Generated
     public List<SearchIndexerKnowledgeStoreFileProjectionSelector> getFiles() {
         return this.files;
+    }
+
+    /**
+     * Set the files property: Projections to Azure File storage.
+     *
+     * @param files the files value to set.
+     * @return the SearchIndexerKnowledgeStoreProjection object itself.
+     */
+    public SearchIndexerKnowledgeStoreProjection setFiles(SearchIndexerKnowledgeStoreFileProjectionSelector... files) {
+        this.files = (files == null) ? null : Arrays.asList(files);
+        return this;
     }
 
     /**

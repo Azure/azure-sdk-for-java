@@ -5,12 +5,12 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SuggestOptions;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -37,13 +37,13 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void uploadDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-upload
         searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
             new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
             new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
             new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300"))
         )).block();
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-upload
     }
 
     /**
@@ -51,12 +51,12 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void mergeDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-merge
         searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
             new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
             new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "200"))
         )).block();
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-merge
     }
 
     /**
@@ -64,11 +64,11 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void deleteDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-delete
         searchAsyncClient.indexDocuments(new IndexDocumentsBatch(
             new IndexAction().setActionType(IndexActionType.DELETE).setAdditionalProperties(Collections.singletonMap("HotelId", "100"))
         )).block();
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-delete
     }
 
     /**
@@ -76,14 +76,14 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void getDocument() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String
         searchAsyncClient.getDocument("100")
             .doOnNext(document -> {
                 if (document.getAdditionalProperties() != null) {
                     System.out.printf("Retrieved Hotel %s%n", document.getAdditionalProperties().get("HotelId"));
                 }
             }).block();
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String
     }
 
     /**
@@ -91,7 +91,7 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void searchDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.search#SearchOptions
         Map<String, Object> searchDocument = new LinkedHashMap<>();
         searchDocument.put("HotelId", "8");
         searchDocument.put("Description", "budget");
@@ -107,9 +107,9 @@ public class SearchAsyncClientJavaDocSnippets {
             new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(searchDocument2)
         )).block();
 
-        searchAsyncClient.search(new SearchPostOptions().setSearchText("SearchText")).byPage()
+        searchAsyncClient.search(new SearchOptions().setSearchText("SearchText")).byPage()
             .subscribe(page -> System.out.printf("There are %d results", page.getCount()));
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.search#SearchOptions
     }
 
     /**
@@ -117,11 +117,11 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void suggestDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String
-        searchAsyncClient.suggestPost(new SuggestPostOptions("searchText", "sg"))
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggest#SuggestOptions
+        searchAsyncClient.suggest(new SuggestOptions("searchText", "sg"))
             .subscribe(results -> results.getResults()
                 .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText())));
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggest#SuggestOptions
     }
 
     /**
@@ -129,11 +129,11 @@ public class SearchAsyncClientJavaDocSnippets {
      */
     public static void autocompleteDocuments() {
         searchAsyncClient = createSearchAsyncClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String
-        searchAsyncClient.autocompletePost(new AutocompletePostOptions("searchText", "sg"))
+        // BEGIN: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#AutocompleteOptions
+        searchAsyncClient.autocomplete(new AutocompleteOptions("searchText", "sg"))
             .subscribe(results -> results.getResults()
                 .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText())));
-        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String
+        // END: com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#AutocompleteOptions
     }
 
 }

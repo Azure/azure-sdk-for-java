@@ -8,7 +8,6 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
@@ -74,6 +73,7 @@ import com.azure.search.documents.indexes.models.UniqueTokenFilter;
 import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -139,13 +139,12 @@ public class CustomAnalyzerTests extends SearchTestBase {
         SearchAsyncClient searchAsyncClient = searchIndexAsyncClient.getSearchAsyncClient(searchClient.getIndexName());
 
         Iterator<SearchResult> iterator
-            = searchClient.search(new SearchPostOptions().setSearchText("someone@somewhere.something")).iterator();
+            = searchClient.search(new SearchOptions().setSearchText("someone@somewhere.something")).iterator();
 
         assertEquals("1", iterator.next().getAdditionalProperties().get("id"));
         assertFalse(iterator.hasNext());
 
-        StepVerifier
-            .create(searchAsyncClient.search(new SearchPostOptions().setSearchText("someone@somewhere.something")))
+        StepVerifier.create(searchAsyncClient.search(new SearchOptions().setSearchText("someone@somewhere.something")))
             .assertNext(searchResult -> assertEquals("1", searchResult.getAdditionalProperties().get("id")))
             .verifyComplete();
     }
@@ -577,8 +576,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
 
         // Set token filters
         List<TokenFilter> tokenFilters = new ArrayList<>();
-        tokenFilters.add(new CjkBigramTokenFilter(generateName())
-            .setIgnoreScripts(new ArrayList<>(CjkBigramTokenFilterScripts.values()))
+        tokenFilters.add(new CjkBigramTokenFilter(generateName()).setIgnoreScripts(CjkBigramTokenFilterScripts.values())
             .setOutputUnigrams(true));
 
         for (EdgeNGramTokenFilterSide filter : EdgeNGramTokenFilterSide.values()) {

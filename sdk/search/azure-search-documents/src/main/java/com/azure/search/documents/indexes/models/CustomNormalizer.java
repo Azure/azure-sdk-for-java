@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,6 +81,19 @@ public final class CustomNormalizer extends LexicalNormalizer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomNormalizer object itself.
      */
+    public CustomNormalizer setTokenFilters(TokenFilterName... tokenFilters) {
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        return this;
+    }
+
+    /**
+     * Set the tokenFilters property: A list of token filters used to filter out or modify the input token. For example,
+     * you can specify a lowercase filter that converts all characters to lowercase. The filters are run in the order in
+     * which they are listed.
+     *
+     * @param tokenFilters the tokenFilters value to set.
+     * @return the CustomNormalizer object itself.
+     */
     @Generated
     public CustomNormalizer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
@@ -96,6 +110,19 @@ public final class CustomNormalizer extends LexicalNormalizer {
     @Generated
     public List<CharFilterName> getCharFilters() {
         return this.charFilters;
+    }
+
+    /**
+     * Set the charFilters property: A list of character filters used to prepare input text before it is processed. For
+     * instance, they can replace certain characters or symbols. The filters are run in the order in which they are
+     * listed.
+     *
+     * @param charFilters the charFilters value to set.
+     * @return the CustomNormalizer object itself.
+     */
+    public CustomNormalizer setCharFilters(CharFilterName... charFilters) {
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        return this;
     }
 
     /**

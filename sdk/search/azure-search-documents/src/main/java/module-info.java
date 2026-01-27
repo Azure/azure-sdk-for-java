@@ -7,15 +7,14 @@ module com.azure.search.documents {
 
     exports com.azure.search.documents;
     exports com.azure.search.documents.indexes;
-    exports com.azure.search.documents.knowledgebase;
+    exports com.azure.search.documents.knowledgebases;
     exports com.azure.search.documents.indexes.models;
+    exports com.azure.search.documents.knowledgebases.models;
     exports com.azure.search.documents.models;
-    exports com.azure.search.documents.knowledgebase.models;
     exports com.azure.search.documents.options;
 
     opens com.azure.search.documents.implementation.models to com.azure.core;
     opens com.azure.search.documents.indexes.models to com.azure.core;
-    opens com.azure.search.documents.indexes.implementation.models to com.azure.core;
+    opens com.azure.search.documents.knowledgebases.models to com.azure.core;
     opens com.azure.search.documents.models to com.azure.core;
-    opens com.azure.search.documents.knowledgebase.models to com.azure.core;
 }

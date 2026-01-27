@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,6 +54,17 @@ public final class WebKnowledgeSourceDomains implements JsonSerializable<WebKnow
      * @param allowedDomains the allowedDomains value to set.
      * @return the WebKnowledgeSourceDomains object itself.
      */
+    public WebKnowledgeSourceDomains setAllowedDomains(WebKnowledgeSourceDomain... allowedDomains) {
+        this.allowedDomains = (allowedDomains == null) ? null : Arrays.asList(allowedDomains);
+        return this;
+    }
+
+    /**
+     * Set the allowedDomains property: Domains that are allowed for web results.
+     *
+     * @param allowedDomains the allowedDomains value to set.
+     * @return the WebKnowledgeSourceDomains object itself.
+     */
     @Generated
     public WebKnowledgeSourceDomains setAllowedDomains(List<WebKnowledgeSourceDomain> allowedDomains) {
         this.allowedDomains = allowedDomains;
@@ -67,6 +79,17 @@ public final class WebKnowledgeSourceDomains implements JsonSerializable<WebKnow
     @Generated
     public List<WebKnowledgeSourceDomain> getBlockedDomains() {
         return this.blockedDomains;
+    }
+
+    /**
+     * Set the blockedDomains property: Domains that are blocked from web results.
+     *
+     * @param blockedDomains the blockedDomains value to set.
+     * @return the WebKnowledgeSourceDomains object itself.
+     */
+    public WebKnowledgeSourceDomains setBlockedDomains(WebKnowledgeSourceDomain... blockedDomains) {
+        this.blockedDomains = (blockedDomains == null) ? null : Arrays.asList(blockedDomains);
+        return this;
     }
 
     /**

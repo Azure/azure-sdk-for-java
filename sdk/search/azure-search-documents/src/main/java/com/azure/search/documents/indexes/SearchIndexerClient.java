@@ -19,17 +19,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
-import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
-import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.models.ListIndexersResult;
+import com.azure.search.documents.indexes.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -92,7 +91,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -133,9 +132,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -345,7 +344,7 @@ public final class SearchIndexerClient {
     /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -414,7 +413,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -476,7 +475,7 @@ public final class SearchIndexerClient {
     /**
      * Creates a new datasource.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -517,9 +516,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -597,7 +596,7 @@ public final class SearchIndexerClient {
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -642,7 +641,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -709,7 +708,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -788,9 +787,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1114,7 +1113,7 @@ public final class SearchIndexerClient {
     /**
      * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1220,7 +1219,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1320,7 +1319,7 @@ public final class SearchIndexerClient {
     /**
      * Creates a new indexer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1399,9 +1398,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1498,7 +1497,7 @@ public final class SearchIndexerClient {
     /**
      * Returns the current status and execution history of an indexer.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1604,7 +1603,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1722,9 +1721,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2128,7 +2127,6 @@ public final class SearchIndexerClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a list of skills along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
@@ -2166,7 +2164,7 @@ public final class SearchIndexerClient {
     /**
      * Retrieves a skillset in a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2311,7 +2309,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2450,7 +2448,7 @@ public final class SearchIndexerClient {
     /**
      * Creates a new skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2568,9 +2566,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2706,7 +2704,7 @@ public final class SearchIndexerClient {
     /**
      * Reset an existing skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

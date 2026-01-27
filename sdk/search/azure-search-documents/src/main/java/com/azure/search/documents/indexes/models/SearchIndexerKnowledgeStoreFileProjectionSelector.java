@@ -71,6 +71,15 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Override
+    public SearchIndexerKnowledgeStoreFileProjectionSelector setInputs(InputFieldMappingEntry... inputs) {
+        super.setInputs(inputs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public SearchIndexerKnowledgeStoreFileProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {

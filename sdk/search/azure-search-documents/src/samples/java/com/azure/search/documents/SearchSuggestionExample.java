@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
+import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 
 import java.util.List;
@@ -39,13 +39,13 @@ public class SearchSuggestionExample {
     }
 
     private static void suggestWithHighlights(SearchClient searchClient) {
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("hotel", "sg")
+        SuggestOptions suggestOptions = new SuggestOptions("hotel", "sg")
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        List<SuggestResult> response = searchClient.suggestPost(suggestOptions).getResults();
+        List<SuggestResult> response = searchClient.suggest(suggestOptions).getResults();
         System.out.println("Received results with highlight:");
         response.forEach(r -> System.out.println(r.getText()));
 
@@ -58,9 +58,9 @@ public class SearchSuggestionExample {
     }
 
     private static void suggestWithFuzzySearch(SearchClient searchClient) {
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("hitel", "sg").setUseFuzzyMatching(true);
+        SuggestOptions suggestOptions = new SuggestOptions("hitel", "sg").setUseFuzzyMatching(true);
 
-        List<SuggestResult> response = searchClient.suggestPost(suggestOptions).getResults();
+        List<SuggestResult> response = searchClient.suggest(suggestOptions).getResults();
         System.out.println("Received results with fuzzy option:");
         response.forEach(r -> System.out.println(r.getText()));
 

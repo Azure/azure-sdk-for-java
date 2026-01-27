@@ -5,10 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 
 /**
- * This example shows how to work with {@link SearchPostOptions} while performing searches
+ * This example shows how to work with {@link SearchOptions} while performing searches
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal. See <a
  * href="https://docs.microsoft.com/azure/search/search-get-started-portal">Search getting started portal</a>
@@ -42,7 +42,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsFacetsFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
-        searchClient.search(new SearchPostOptions().setFacets("Rooms/BaseRate,values:5|8|10"))
+        searchClient.search(new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"))
             .byPage().doOnNext(page -> page.getFacets().forEach((key, value) -> value.forEach(result -> {
                 System.out.println(key + " :");
                 System.out.println("    count: " + result.getCount());
@@ -54,7 +54,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsCoverageFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
-        searchClient.search(new SearchPostOptions().setMinimumCoverage(80.0)).byPage()
+        searchClient.search(new SearchOptions().setMinimumCoverage(80.0)).byPage()
             .doOnNext(page -> System.out.println("Coverage = " + page.getCoverage()))
             .blockLast();
     }
@@ -63,7 +63,7 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
-        searchClient.search(new SearchPostOptions().setIncludeTotalCount(true)).byPage()
+        searchClient.search(new SearchOptions().setIncludeTotalCount(true)).byPage()
             .doOnNext(page -> System.out.println("Count = " + page.getCount()))
             .blockLast();
     }

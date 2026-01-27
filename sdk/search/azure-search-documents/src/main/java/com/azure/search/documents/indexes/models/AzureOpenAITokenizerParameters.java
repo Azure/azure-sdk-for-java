@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -72,6 +73,18 @@ public final class AzureOpenAITokenizerParameters implements JsonSerializable<Az
     @Generated
     public List<String> getAllowedSpecialTokens() {
         return this.allowedSpecialTokens;
+    }
+
+    /**
+     * Set the allowedSpecialTokens property: (Optional) Only applies if the unit is set to azureOpenAITokens. This
+     * parameter defines a collection of special tokens that are permitted within the tokenization process.
+     *
+     * @param allowedSpecialTokens the allowedSpecialTokens value to set.
+     * @return the AzureOpenAITokenizerParameters object itself.
+     */
+    public AzureOpenAITokenizerParameters setAllowedSpecialTokens(String... allowedSpecialTokens) {
+        this.allowedSpecialTokens = (allowedSpecialTokens == null) ? null : Arrays.asList(allowedSpecialTokens);
+        return this;
     }
 
     /**

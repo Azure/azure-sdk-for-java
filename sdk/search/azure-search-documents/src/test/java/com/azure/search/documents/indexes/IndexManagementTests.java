@@ -14,9 +14,6 @@ import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
@@ -35,10 +32,13 @@ import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
+import com.azure.search.documents.models.SuggestOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -329,17 +329,18 @@ public class IndexManagementTests extends SearchTestBase {
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExistsAsync() {
-        SearchIndex index
-            = asyncClient.createOrUpdateIndexWithResponse(createTestIndex(null), null).map(Response::getValue).block();
-
-        asyncClient.deleteIndexWithResponse(index.getName(), ifMatch(index.getETag())).block();
+        Mono<Response<Void>> mono
+            = asyncClient.createOrUpdateIndexWithResponse(createTestIndex(null), null).flatMap(response -> {
+                SearchIndex index = response.getValue();
+                return asyncClient.deleteIndexWithResponse(index.getName(), ifMatch(index.getETag()))
+                    .then(asyncClient.deleteIndexWithResponse(index.getName(), ifMatch(index.getETag())));
+            });
 
         // Try to delete again and expect to fail
-        StepVerifier.create(asyncClient.deleteIndexWithResponse(index.getName(), ifMatch(index.getETag())))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-            });
+        StepVerifier.create(mono).verifyErrorSatisfies(throwable -> {
+            HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
+        });
     }
 
     @Test
@@ -1191,7 +1192,7 @@ public class IndexManagementTests extends SearchTestBase {
             .buildClient();
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
-            () -> apiKeyClient.search(new SearchPostOptions()).iterator().hasNext());
+            () -> apiKeyClient.search(new SearchOptions()).iterator().hasNext());
 
         assertTrue(ex.getResponse().getStatusCode() == 401
             || ex.getResponse().getStatusCode() == 403
@@ -1214,11 +1215,11 @@ public class IndexManagementTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(createdIndex.getName(), true).buildClient();
 
         HttpResponseException ex1 = assertThrows(HttpResponseException.class,
-            () -> searchClient.autocompletePost(new AutocompletePostOptions("test", "sg")));
+            () -> searchClient.autocomplete(new AutocompleteOptions("test", "sg")));
         assertTrue(ex1.getResponse().getStatusCode() == 400 || ex1.getResponse().getStatusCode() == 403);
 
-        HttpResponseException ex2 = assertThrows(HttpResponseException.class,
-            () -> searchClient.suggestPost(new SuggestPostOptions("test", "sg")));
+        HttpResponseException ex2
+            = assertThrows(HttpResponseException.class, () -> searchClient.suggest(new SuggestOptions("test", "sg")));
         assertTrue(ex2.getResponse().getStatusCode() == 400 || ex2.getResponse().getStatusCode() == 403);
     }
 
@@ -1289,7 +1290,7 @@ public class IndexManagementTests extends SearchTestBase {
         searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
         waitForIndexing();
 
-        SearchPagedIterable results = searchClient.search(new SearchPostOptions().setSearchText("Test"));
+        SearchPagedIterable results = searchClient.search(new SearchOptions().setSearchText("Test"));
         assertNotNull(results);
         // getTotalCount() can be null, so check for non-null or use iterator
         Long totalCount = results.iterableByPage().iterator().next().getCount();
@@ -1318,8 +1319,7 @@ public class IndexManagementTests extends SearchTestBase {
         searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
         waitForIndexing();
 
-        SearchPostOptions searchOptions
-            = new SearchPostOptions().setSearchText("Test").setQueryType(QueryType.SEMANTIC);
+        SearchOptions searchOptions = new SearchOptions().setSearchText("Test").setQueryType(QueryType.SEMANTIC);
 
         SearchPagedIterable results = searchClient.search(searchOptions);
         assertNotNull(results);

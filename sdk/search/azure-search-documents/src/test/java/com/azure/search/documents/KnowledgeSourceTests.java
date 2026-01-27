@@ -29,7 +29,7 @@ import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
-import com.azure.search.documents.knowledgebase.models.KnowledgeSourceStatus;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

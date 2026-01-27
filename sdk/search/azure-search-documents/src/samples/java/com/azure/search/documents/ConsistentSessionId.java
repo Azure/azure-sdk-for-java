@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 
 public class ConsistentSessionId {
 
@@ -23,7 +23,7 @@ public class ConsistentSessionId {
         // This ensures a uniform experience for users throughout their "query session". By consistently using the same
         // sessionId, the system makes a best-effort attempt to target the same replica, improving the overall
         // consistency of search results for users within the specified session.
-        SearchPostOptions searchOptions = new SearchPostOptions().setSessionId("Session-1").setFilter("Rating gt 3")
+        SearchOptions searchOptions = new SearchOptions().setSessionId("Session-1").setFilter("Rating gt 3")
             .setSearchText("hotel");
 
         searchClient.search(searchOptions)

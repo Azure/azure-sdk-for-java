@@ -79,7 +79,6 @@ public final class SemanticSearch implements JsonSerializable<SemanticSearch> {
      * @param configurations the configurations value to set.
      * @return the SemanticSearch object itself.
      */
-    @Generated
     public SemanticSearch setConfigurations(SemanticConfiguration... configurations) {
         this.configurations = (configurations == null) ? null : Arrays.asList(configurations);
         return this;

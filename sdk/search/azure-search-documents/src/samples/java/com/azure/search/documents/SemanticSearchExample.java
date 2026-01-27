@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
@@ -29,6 +28,7 @@ import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticErrorMode;
 
@@ -122,7 +122,7 @@ public class SemanticSearchExample {
      * @param searchClient The {@link SearchClient} to use for querying the index.
      */
     public static void semanticSearch(SearchClient searchClient) {
-        SearchPostOptions searchOptions = new SearchPostOptions()
+        SearchOptions searchOptions = new SearchOptions()
             .setSearchText("Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setSemanticConfigurationName("my-semantic-config")
             .setAnswers(QueryAnswerType.EXTRACTIVE)

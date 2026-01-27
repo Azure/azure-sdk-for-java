@@ -14,7 +14,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
@@ -31,6 +30,7 @@ import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.VectorizableTextQuery;
@@ -340,7 +340,7 @@ public class VectorSearchReducedEmbeddings {
      * of nearest neighbors to return as top hits.
      */
     public static void vectorSearch(SearchClient searchClient) {
-        SearchPagedIterable response = searchClient.search(new SearchPostOptions()
+        SearchPagedIterable response = searchClient.search(new SearchOptions()
             .setVectorQueries(new VectorizableTextQuery("Luxury hotels in town")
                 .setKNearestNeighbors(3)
                 .setFields("DescriptionVector")));

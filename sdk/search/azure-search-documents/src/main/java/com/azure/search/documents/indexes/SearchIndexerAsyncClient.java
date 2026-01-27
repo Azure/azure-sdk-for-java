@@ -20,22 +20,21 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
-import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
-import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.models.ListIndexersResult;
+import com.azure.search.documents.indexes.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous SearchIndexerClient type.
@@ -94,7 +93,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -135,9 +134,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -349,7 +348,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -418,7 +417,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -481,7 +480,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new datasource.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -522,9 +521,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -602,7 +601,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -648,7 +647,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -715,7 +714,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -794,9 +793,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1120,7 +1119,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1226,7 +1225,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1344,7 +1343,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new indexer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1423,9 +1422,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1522,7 +1521,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1629,7 +1628,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1747,9 +1746,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2191,7 +2190,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a skillset in a search service.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2336,7 +2335,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2476,7 +2475,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2594,9 +2593,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2732,7 +2731,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Reset an existing skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

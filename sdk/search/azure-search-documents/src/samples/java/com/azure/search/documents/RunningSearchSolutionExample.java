@@ -5,19 +5,19 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
-import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
+import com.azure.search.documents.models.SuggestDocumentsResult;
+import com.azure.search.documents.models.SuggestOptions;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
@@ -65,10 +65,10 @@ public class RunningSearchSolutionExample {
     }
 
     private static void suggestQuery(SearchClient client) {
-        SuggestPostOptions suggestOptions = new SuggestPostOptions("vew", SUGGESTER_NAME)
+        SuggestOptions suggestOptions = new SuggestOptions("vew", SUGGESTER_NAME)
             .setUseFuzzyMatching(true);
 
-        SuggestDocumentsResult  suggestResult = client.suggestPost(suggestOptions);
+        SuggestDocumentsResult  suggestResult = client.suggest(suggestOptions);
 
         System.out.println("Suggest with fuzzy matching:");
         suggestResult.getResults().forEach(res -> System.out.printf("      Found match to: %s, match = %s%n",
@@ -76,10 +76,10 @@ public class RunningSearchSolutionExample {
     }
 
     private static void autocompleteQuery(SearchClient client) {
-        AutocompletePostOptions params = new AutocompletePostOptions("co", SUGGESTER_NAME)
+        AutocompleteOptions params = new AutocompleteOptions("co", SUGGESTER_NAME)
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        AutocompleteResult results = client.autocompletePost(params);
+        AutocompleteResult results = client.autocomplete(params);
 
         System.out.println("Autocomplete with one term context results:");
         results.getResults().forEach(result -> System.out.println(result.getText()));
@@ -87,7 +87,7 @@ public class RunningSearchSolutionExample {
 
     private static void searchQuery(SearchClient client) {
         // search=Resort&searchfields=HotelName&$count=true
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("Resort")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("Resort")
             .setIncludeTotalCount(true)
             .setSearchFields("HotelName");
         SearchPagedIterable searchResults = client.search(searchOptions);

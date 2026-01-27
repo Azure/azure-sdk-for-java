@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -223,6 +224,19 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     @Generated
     public List<IndexerPermissionOption> getIndexerPermissionOptions() {
         return this.indexerPermissionOptions;
+    }
+
+    /**
+     * Set the indexerPermissionOptions property: Ingestion options with various types of permission data.
+     *
+     * @param indexerPermissionOptions the indexerPermissionOptions value to set.
+     * @return the SearchIndexerDataSourceConnection object itself.
+     */
+    public SearchIndexerDataSourceConnection
+        setIndexerPermissionOptions(IndexerPermissionOption... indexerPermissionOptions) {
+        this.indexerPermissionOptions
+            = (indexerPermissionOptions == null) ? null : Arrays.asList(indexerPermissionOptions);
+        return this;
     }
 
     /**

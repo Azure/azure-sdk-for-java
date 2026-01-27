@@ -17,9 +17,6 @@ import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunki
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.ContentUnderstandingSkillExtractionOptions;
 import com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount;
-import com.azure.search.documents.indexes.models.EntityCategory;
-import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
-import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillV3;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkill;
 import com.azure.search.documents.indexes.models.ImageAnalysisSkillLanguage;
@@ -34,8 +31,6 @@ import com.azure.search.documents.indexes.models.OcrSkillLanguage;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.SentimentSkill;
-import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import com.azure.search.documents.indexes.models.SentimentSkillV3;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 import com.azure.search.documents.indexes.models.SplitSkill;
@@ -171,36 +166,33 @@ public class SkillsetManagementTests extends SearchTestBase {
     public void createSkillsetReturnsCorrectDefinitionOcrEntitySync() {
         createAndValidateSkillsetSync(createTestSkillsetOcrEntity(null));
 
-        createAndValidateSkillsetSync(createTestSkillsetOcrEntity(
-            Arrays.asList(EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON)));
+        createAndValidateSkillsetSync(createTestSkillsetOcrEntity(Arrays.asList("location", "organization", "person")));
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrEntityAsync() {
         createAndValidateSkillsetAsync(createTestSkillsetOcrEntity(null));
 
-        createAndValidateSkillsetAsync(createTestSkillsetOcrEntity(
-            Arrays.asList(EntityCategory.LOCATION, EntityCategory.ORGANIZATION, EntityCategory.PERSON)));
+        createAndValidateSkillsetAsync(
+            createTestSkillsetOcrEntity(Arrays.asList("location", "organization", "person")));
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentimentSync() {
-        createAndValidateSkillsetSync(
-            createTestSkillsetOcrSentiment(OcrSkillLanguage.PT, SentimentSkillLanguage.PT_PT));
+        createAndValidateSkillsetSync(createTestSkillsetOcrSentiment(OcrSkillLanguage.PT, "pt_PT"));
 
-        createAndValidateSkillsetSync(createTestSkillsetOcrSentiment(OcrSkillLanguage.FI, SentimentSkillLanguage.FI));
+        createAndValidateSkillsetSync(createTestSkillsetOcrSentiment(OcrSkillLanguage.FI, "fi"));
 
-        createAndValidateSkillsetSync(createTestSkillsetOcrSentiment(OcrSkillLanguage.EN, SentimentSkillLanguage.EN));
+        createAndValidateSkillsetSync(createTestSkillsetOcrSentiment(OcrSkillLanguage.EN, "en"));
     }
 
     @Test
     public void createSkillsetReturnsCorrectDefinitionOcrHandwritingSentimentAsync() {
-        createAndValidateSkillsetAsync(
-            createTestSkillsetOcrSentiment(OcrSkillLanguage.PT, SentimentSkillLanguage.PT_PT));
+        createAndValidateSkillsetAsync(createTestSkillsetOcrSentiment(OcrSkillLanguage.PT, "pt_PT"));
 
-        createAndValidateSkillsetAsync(createTestSkillsetOcrSentiment(OcrSkillLanguage.FI, SentimentSkillLanguage.FI));
+        createAndValidateSkillsetAsync(createTestSkillsetOcrSentiment(OcrSkillLanguage.FI, "fi"));
 
-        createAndValidateSkillsetAsync(createTestSkillsetOcrSentiment(OcrSkillLanguage.EN, SentimentSkillLanguage.EN));
+        createAndValidateSkillsetAsync(createTestSkillsetOcrSentiment(OcrSkillLanguage.EN, "en"));
     }
 
     @Test
@@ -320,13 +312,13 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionDefaultSettingsSync() {
-        createAndValidateSkillsetSync(createSkillsetWithEntityRecognitionDefaultSettings());
+    public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionV3DefaultSettingsSync() {
+        createAndValidateSkillsetSync(createSkillsetWithEntityRecognitionV3DefaultSettings());
     }
 
     @Test
-    public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionDefaultSettingsAsync() {
-        createAndValidateSkillsetAsync(createSkillsetWithEntityRecognitionDefaultSettings());
+    public void createSkillsetReturnsCorrectDefinitionWithEntityRecognitionV3DefaultSettingsAsync() {
+        createAndValidateSkillsetAsync(createSkillsetWithEntityRecognitionV3DefaultSettings());
     }
 
     @Test
@@ -395,13 +387,13 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettingsSync() {
-        createAndValidateSkillsetSync(createSkillsetWithSentimentDefaultSettings());
+    public void createSkillsetReturnsCorrectDefinitionWithSentimentV3DefaultSettingsSync() {
+        createAndValidateSkillsetSync(createSkillsetWithSentimentV3DefaultSettings());
     }
 
     @Test
-    public void createSkillsetReturnsCorrectDefinitionWithSentimentDefaultSettingsAsync() {
-        createAndValidateSkillsetAsync(createSkillsetWithSentimentDefaultSettings());
+    public void createSkillsetReturnsCorrectDefinitionWithSentimentV3DefaultSettingsAsync() {
+        createAndValidateSkillsetAsync(createSkillsetWithSentimentV3DefaultSettings());
     }
 
     @Test
@@ -454,7 +446,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Test
     public void canCreateAndListSkillsetsSyncAndAsync() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionV3DefaultSettings();
 
         client.createSkillset(skillset1);
         skillsetsToDelete.add(skillset1.getName());
@@ -486,7 +478,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Test
     public void canListSkillsetsWithSelectedFieldSyncAndAsync() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
+        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionV3DefaultSettings();
 
         client.createSkillset(skillset1);
         skillsetsToDelete.add(skillset1.getName());
@@ -1157,7 +1149,7 @@ public class SkillsetManagementTests extends SearchTestBase {
         return skillset;
     }
 
-    SearchIndexerSkillset createTestSkillsetOcrEntity(List<EntityCategory> categories) {
+    SearchIndexerSkillset createTestSkillsetOcrEntity(List<String> categories) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -1172,9 +1164,8 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
-        skills.add(new EntityRecognitionSkillV3(inputs, outputs)
-            .setCategories(categories.stream().map(EntityCategory::getValue).collect(Collectors.toList()))
-            .setDefaultLanguageCode(EntityRecognitionSkillLanguage.EN.getValue())
+        skills.add(new EntityRecognitionSkillV3(inputs, outputs).setCategories(categories)
+            .setDefaultLanguageCode("en")
             .setMinimumPrecision(0.5)
             .setName("myentity")
             .setDescription("Tested Entity Recognition skill")
@@ -1185,7 +1176,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     SearchIndexerSkillset createTestSkillsetOcrSentiment(OcrSkillLanguage ocrLanguageCode,
-        SentimentSkillLanguage sentimentLanguageCode) {
+        String sentimentLanguageCode) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
         List<InputFieldMappingEntry> inputs = Arrays.asList(simpleInputFieldMappingEntry("url", "/document/url"),
             simpleInputFieldMappingEntry("queryString", "/document/queryString"));
@@ -1199,7 +1190,7 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         inputs = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
         outputs = Collections.singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
-        skills.add(new SentimentSkillV3(inputs, outputs).setDefaultLanguageCode(sentimentLanguageCode.getValue())
+        skills.add(new SentimentSkillV3(inputs, outputs).setDefaultLanguageCode(sentimentLanguageCode)
             .setName("mysentiment")
             .setDescription("Tested Sentiment skill")
             .setContext(CONTEXT_VALUE));
@@ -1345,14 +1336,14 @@ public class SkillsetManagementTests extends SearchTestBase {
             .setDescription("Skillset for testing default configuration");
     }
 
-    SearchIndexerSkillset createSkillsetWithSentimentDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithSentimentV3DefaultSettings() {
         List<InputFieldMappingEntry> inputs
             = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs
             = Collections.singletonList(createOutputFieldMappingEntry("confidenceScores", "mySentiment"));
 
-        SearchIndexerSkill skill = new SentimentSkill(inputs, outputs).setName("mysentiment")
+        SearchIndexerSkill skill = new SentimentSkillV3(inputs, outputs).setName("mysentiment")
             .setDescription("Tested Sentiment skill")
             .setContext(CONTEXT_VALUE);
 
@@ -1360,14 +1351,14 @@ public class SkillsetManagementTests extends SearchTestBase {
             .setDescription("Skillset for testing default configuration");
     }
 
-    SearchIndexerSkillset createSkillsetWithEntityRecognitionDefaultSettings() {
+    SearchIndexerSkillset createSkillsetWithEntityRecognitionV3DefaultSettings() {
         List<InputFieldMappingEntry> inputs
             = Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs
             = Collections.singletonList(createOutputFieldMappingEntry("namedEntities", "myEntities"));
 
-        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs).setName("myentity")
+        SearchIndexerSkill skill = new EntityRecognitionSkillV3(inputs, outputs).setName("myentity")
             .setDescription("Tested Entity Recognition skill")
             .setContext(CONTEXT_VALUE);
 

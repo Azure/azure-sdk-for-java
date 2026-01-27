@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,6 +45,22 @@ public final class SearchIndexerIndexProjectionSelector
      */
     @Generated
     private final List<InputFieldMappingEntry> mappings;
+
+    /**
+     * Creates an instance of SearchIndexerIndexProjectionSelector class.
+     *
+     * @param targetIndexName the targetIndexName value to set.
+     * @param parentKeyFieldName the parentKeyFieldName value to set.
+     * @param sourceContext the sourceContext value to set.
+     * @param mappings the mappings value to set.
+     */
+    public SearchIndexerIndexProjectionSelector(String targetIndexName, String parentKeyFieldName, String sourceContext,
+        InputFieldMappingEntry... mappings) {
+        this.targetIndexName = targetIndexName;
+        this.parentKeyFieldName = parentKeyFieldName;
+        this.sourceContext = sourceContext;
+        this.mappings = (mappings == null) ? null : Arrays.asList(mappings);
+    }
 
     /**
      * Creates an instance of SearchIndexerIndexProjectionSelector class.

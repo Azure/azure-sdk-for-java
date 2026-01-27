@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -142,6 +143,18 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     @Generated
     public List<CustomEntity> getInlineEntitiesDefinition() {
         return this.inlineEntitiesDefinition;
+    }
+
+    /**
+     * Set the inlineEntitiesDefinition property: The inline CustomEntity definition.
+     *
+     * @param inlineEntitiesDefinition the inlineEntitiesDefinition value to set.
+     * @return the CustomEntityLookupSkill object itself.
+     */
+    public CustomEntityLookupSkill setInlineEntitiesDefinition(CustomEntity... inlineEntitiesDefinition) {
+        this.inlineEntitiesDefinition
+            = (inlineEntitiesDefinition == null) ? null : Arrays.asList(inlineEntitiesDefinition);
+        return this;
     }
 
     /**

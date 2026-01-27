@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -222,6 +223,17 @@ public final class PIIDetectionSkill extends SearchIndexerSkill {
     @Generated
     public List<String> getPiiCategories() {
         return this.piiCategories;
+    }
+
+    /**
+     * Set the piiCategories property: A list of PII entity categories that should be extracted and masked.
+     *
+     * @param piiCategories the piiCategories value to set.
+     * @return the PIIDetectionSkill object itself.
+     */
+    public PIIDetectionSkill setPiiCategories(String... piiCategories) {
+        this.piiCategories = (piiCategories == null) ? null : Arrays.asList(piiCategories);
+        return this;
     }
 
     /**

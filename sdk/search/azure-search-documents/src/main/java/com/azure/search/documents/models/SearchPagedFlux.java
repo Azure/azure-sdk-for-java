@@ -5,12 +5,11 @@ package com.azure.search.documents.models;
 import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import com.azure.core.util.paging.PageRetriever;
 import com.azure.search.documents.SearchAsyncClient;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 
 import java.util.function.Supplier;
 
 /**
- * Response type for {@link SearchAsyncClient#search(SearchPostOptions)}.
+ * Response type for {@link SearchAsyncClient#search(SearchOptions)}.
  */
 public final class SearchPagedFlux
     extends ContinuablePagedFluxCore<SearchContinuationToken, SearchResult, SearchPagedResponse> {

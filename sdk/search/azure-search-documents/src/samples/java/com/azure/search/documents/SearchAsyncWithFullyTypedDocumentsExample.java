@@ -5,8 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.models.Hotel;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedFlux;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,7 +48,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        SearchPagedFlux results = searchClient.search(new SearchPostOptions().setSearchText("searchText"));
+        SearchPagedFlux results = searchClient.search(new SearchOptions().setSearchText("searchText"));
         results.subscribe(item -> {
             // Convert the property bag received from the search query to an object of type Hotel
             Hotel hotel = objectMapper.convertValue(item.getAdditionalProperties(), Hotel.class);

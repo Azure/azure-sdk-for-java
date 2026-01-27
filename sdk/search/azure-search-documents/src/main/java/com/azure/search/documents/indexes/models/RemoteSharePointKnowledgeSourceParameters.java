@@ -89,7 +89,6 @@ public final class RemoteSharePointKnowledgeSourceParameters
      * @param resourceMetadata the resourceMetadata value to set.
      * @return the RemoteSharePointKnowledgeSourceParameters object itself.
      */
-    @Generated
     public RemoteSharePointKnowledgeSourceParameters setResourceMetadata(String... resourceMetadata) {
         this.resourceMetadata = (resourceMetadata == null) ? null : Arrays.asList(resourceMetadata);
         return this;

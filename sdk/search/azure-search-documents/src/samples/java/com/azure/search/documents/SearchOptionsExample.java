@@ -5,10 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 
 /**
- * This example shows how to work with {@link SearchPostOptions} while performing searches
+ * This example shows how to work with {@link SearchOptions} while performing searches
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
  * See https://docs.microsoft.com/azure/search/search-get-started-portal
@@ -42,7 +42,7 @@ public class SearchOptionsExample {
     private static void searchResultsFacets(SearchClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
-        searchClient.search(new SearchPostOptions().setFacets("Rooms/BaseRate,values:5|8|10")).streamByPage()
+        searchClient.search(new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10")).streamByPage()
             .forEach(page -> page.getFacets().forEach((k, v) -> v.forEach(result -> {
                 System.out.println(k + " :");
                 System.out.println("    count: " + result.getCount());
@@ -55,7 +55,7 @@ public class SearchOptionsExample {
     private static void searchResultsCoverageFromPage(SearchClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
-        searchClient.search(new SearchPostOptions().setMinimumCoverage(80.0)).streamByPage()
+        searchClient.search(new SearchOptions().setMinimumCoverage(80.0)).streamByPage()
             .forEach(page -> System.out.println("Coverage = " + page.getCoverage()));
     }
 
@@ -63,7 +63,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
-        searchClient.search(new SearchPostOptions().setMinimumCoverage(80.0)).streamByPage()
+        searchClient.search(new SearchOptions().setMinimumCoverage(80.0)).streamByPage()
             .forEach(page -> System.out.println("Count = " + page.getCount()));
     }
 

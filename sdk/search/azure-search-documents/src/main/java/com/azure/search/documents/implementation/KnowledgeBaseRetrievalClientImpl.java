@@ -215,7 +215,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
-     *             rerankerThreshold: Double (Optional)
+     *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
      * }
@@ -268,7 +268,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             sourceData (Optional): {
      *                 String: Object (Required)
      *             }
-     *             rerankerScore: Double (Optional)
+     *             rerankerScore: Float (Optional)
      *         }
      *     ]
      * }
@@ -339,7 +339,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
-     *             rerankerThreshold: Double (Optional)
+     *             rerankerThreshold: Float (Optional)
      *         }
      *     ]
      * }
@@ -392,7 +392,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             sourceData (Optional): {
      *                 String: Object (Required)
      *             }
-     *             rerankerScore: Double (Optional)
+     *             rerankerScore: Float (Optional)
      *         }
      *     ]
      * }

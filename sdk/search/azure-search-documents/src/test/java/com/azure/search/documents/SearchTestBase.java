@@ -45,7 +45,7 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.azure.search.documents.knowledgebase.KnowledgeBaseRetrievalClientBuilder;
+import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

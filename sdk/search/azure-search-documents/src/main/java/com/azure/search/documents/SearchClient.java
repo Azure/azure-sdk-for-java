@@ -20,19 +20,15 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
-import com.azure.search.documents.implementation.models.SearchPostRequest;
-import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.LookupDocument;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionType;
@@ -44,10 +40,12 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchDocumentsResult;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SemanticErrorMode;
-
+import com.azure.search.documents.models.SuggestDocumentsResult;
+import com.azure.search.documents.models.SuggestOptions;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -57,6 +55,7 @@ import java.util.stream.Collectors;
  */
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchClient {
+
     private static final ClientLogger LOGGER = new ClientLogger(SearchClient.class);
 
     @Generated
@@ -347,7 +346,7 @@ public final class SearchClient {
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
+     *                 weight: Float (Optional)
      *                 threshold (Optional): {
      *                     kind: String(vectorSimilarity/searchScore) (Required)
      *                 }
@@ -451,301 +450,6 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> searchGetWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.searchGetWithResponse(requestOptions);
-    }
-
-    /**
-     * Searches for documents in the index.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
-     * bypass document level permission checks for the query operation.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     count: Boolean (Optional)
-     *     facets (Optional): [
-     *         String (Optional)
-     *     ]
-     *     filter: String (Optional)
-     *     highlight (Optional): [
-     *         String (Optional)
-     *     ]
-     *     highlightPostTag: String (Optional)
-     *     highlightPreTag: String (Optional)
-     *     minimumCoverage: Double (Optional)
-     *     orderby (Optional): [
-     *         String (Optional)
-     *     ]
-     *     queryType: String(simple/full/semantic) (Optional)
-     *     scoringStatistics: String(local/global) (Optional)
-     *     sessionId: String (Optional)
-     *     scoringParameters (Optional): [
-     *         String (Optional)
-     *     ]
-     *     scoringProfile: String (Optional)
-     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
-     *     search: String (Optional)
-     *     searchFields (Optional): [
-     *         String (Optional)
-     *     ]
-     *     searchMode: String(any/all) (Optional)
-     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *     speller: String(none/lexicon) (Optional)
-     *     select (Optional): [
-     *         String (Optional)
-     *     ]
-     *     skip: Integer (Optional)
-     *     top: Integer (Optional)
-     *     semanticConfiguration: String (Optional)
-     *     semanticErrorHandling: String(partial/fail) (Optional)
-     *     semanticMaxWaitInMilliseconds: Integer (Optional)
-     *     semanticQuery: String (Optional)
-     *     answers: String(none/extractive) (Optional)
-     *     captions: String(none/extractive) (Optional)
-     *     queryRewrites: String(none/generative) (Optional)
-     *     semanticFields (Optional): [
-     *         String (Optional)
-     *     ]
-     *     vectorQueries (Optional): [
-     *          (Optional){
-     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
-     *             k: Integer (Optional)
-     *             fields: String (Optional)
-     *             exhaustive: Boolean (Optional)
-     *             oversampling: Double (Optional)
-     *             weight: Double (Optional)
-     *             threshold (Optional): {
-     *                 kind: String(vectorSimilarity/searchScore) (Required)
-     *             }
-     *             filterOverride: String (Optional)
-     *             perDocumentVectorLimit: Integer (Optional)
-     *         }
-     *     ]
-     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *     hybridSearch (Optional): {
-     *         maxTextRecallSize: Integer (Optional)
-     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     &#64;odata.count: Long (Optional)
-     *     &#64;search.coverage: Double (Optional)
-     *     &#64;search.facets (Optional): {
-     *         String (Required): [
-     *              (Required){
-     *                 count: Long (Optional)
-     *                 avg: Double (Optional)
-     *                 min: Double (Optional)
-     *                 max: Double (Optional)
-     *                 sum: Double (Optional)
-     *                 cardinality: Long (Optional)
-     *                 &#64;search.facets (Optional): {
-     *                     String (Required): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                  (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         ]
-     *     }
-     *     &#64;search.answers (Optional): [
-     *          (Optional){
-     *             score: Double (Optional)
-     *             key: String (Optional)
-     *             text: String (Optional)
-     *             highlights: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     ]
-     *     &#64;search.debug (Optional): {
-     *         queryRewrites (Optional): {
-     *             text (Optional): {
-     *                 inputQuery: String (Optional)
-     *                 rewrites (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *             vectors (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
-     *     &#64;search.nextPageParameters (Optional): {
-     *         count: Boolean (Optional)
-     *         facets (Optional): [
-     *             String (Optional)
-     *         ]
-     *         filter: String (Optional)
-     *         highlight (Optional): [
-     *             String (Optional)
-     *         ]
-     *         highlightPostTag: String (Optional)
-     *         highlightPreTag: String (Optional)
-     *         minimumCoverage: Double (Optional)
-     *         orderby (Optional): [
-     *             String (Optional)
-     *         ]
-     *         queryType: String(simple/full/semantic) (Optional)
-     *         scoringStatistics: String(local/global) (Optional)
-     *         sessionId: String (Optional)
-     *         scoringParameters (Optional): [
-     *             String (Optional)
-     *         ]
-     *         scoringProfile: String (Optional)
-     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
-     *         search: String (Optional)
-     *         searchFields (Optional): [
-     *             String (Optional)
-     *         ]
-     *         searchMode: String(any/all) (Optional)
-     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *         speller: String(none/lexicon) (Optional)
-     *         select (Optional): [
-     *             String (Optional)
-     *         ]
-     *         skip: Integer (Optional)
-     *         top: Integer (Optional)
-     *         semanticConfiguration: String (Optional)
-     *         semanticErrorHandling: String(partial/fail) (Optional)
-     *         semanticMaxWaitInMilliseconds: Integer (Optional)
-     *         semanticQuery: String (Optional)
-     *         answers: String(none/extractive) (Optional)
-     *         captions: String(none/extractive) (Optional)
-     *         queryRewrites: String(none/generative) (Optional)
-     *         semanticFields (Optional): [
-     *             String (Optional)
-     *         ]
-     *         vectorQueries (Optional): [
-     *              (Optional){
-     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
-     *                 k: Integer (Optional)
-     *                 fields: String (Optional)
-     *                 exhaustive: Boolean (Optional)
-     *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
-     *                 threshold (Optional): {
-     *                     kind: String(vectorSimilarity/searchScore) (Required)
-     *                 }
-     *                 filterOverride: String (Optional)
-     *                 perDocumentVectorLimit: Integer (Optional)
-     *             }
-     *         ]
-     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *         hybridSearch (Optional): {
-     *             maxTextRecallSize: Integer (Optional)
-     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *         }
-     *     }
-     *     value (Required): [
-     *          (Required){
-     *             &#64;search.score: double (Required)
-     *             &#64;search.rerankerScore: Double (Optional)
-     *             &#64;search.rerankerBoostedScore: Double (Optional)
-     *             &#64;search.highlights (Optional): {
-     *                 String (Required): [
-     *                     String (Required)
-     *                 ]
-     *             }
-     *             &#64;search.captions (Optional): [
-     *                  (Optional){
-     *                     text: String (Optional)
-     *                     highlights: String (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
-     *             ]
-     *             &#64;search.documentDebugInfo (Optional): {
-     *                 semantic (Optional): {
-     *                     titleField (Optional): {
-     *                         name: String (Optional)
-     *                         state: String(used/unused/partial) (Optional)
-     *                     }
-     *                     contentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     keywordFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     rerankerInput (Optional): {
-     *                         title: String (Optional)
-     *                         content: String (Optional)
-     *                         keywords: String (Optional)
-     *                     }
-     *                 }
-     *                 vectors (Optional): {
-     *                     subscores (Optional): {
-     *                         text (Optional): {
-     *                             searchScore: Double (Optional)
-     *                         }
-     *                         vectors (Optional): [
-     *                              (Optional){
-     *                                 String (Required): {
-     *                                     searchScore: Double (Optional)
-     *                                     vectorSimilarity: Double (Optional)
-     *                                 }
-     *                             }
-     *                         ]
-     *                         documentBoost: Double (Optional)
-     *                     }
-     *                 }
-     *                 innerHits (Optional): {
-     *                     String (Required): [
-     *                          (Required){
-     *                             ordinal: Long (Optional)
-     *                             vectors (Optional): [
-     *                                  (Optional){
-     *                                     String (Required): (recursive schema, see String above)
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     ]
-     *     &#64;odata.nextLink: String (Optional)
-     *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
-     *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
-     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param searchPostRequest The searchPostRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response containing search results from an index along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> searchPostWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
-        return this.serviceClient.searchPostWithResponse(searchPostRequest, requestOptions);
     }
 
     /**
@@ -867,66 +571,6 @@ public final class SearchClient {
     }
 
     /**
-     * Suggests documents in the index that match the given partial query text.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     filter: String (Optional)
-     *     fuzzy: Boolean (Optional)
-     *     highlightPostTag: String (Optional)
-     *     highlightPreTag: String (Optional)
-     *     minimumCoverage: Double (Optional)
-     *     orderby (Optional): [
-     *         String (Optional)
-     *     ]
-     *     search: String (Required)
-     *     searchFields (Optional): [
-     *         String (Optional)
-     *     ]
-     *     select (Optional): [
-     *         String (Optional)
-     *     ]
-     *     suggesterName: String (Required)
-     *     top: Integer (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             &#64;search.text: String (Required)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     ]
-     *     &#64;search.coverage: Double (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param suggestPostRequest The suggestPostRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response containing suggestion query results from an index along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> suggestPostWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
-        return this.serviceClient.suggestPostWithResponse(suggestPostRequest, requestOptions);
-    }
-
-    /**
      * Sends a batch of document write actions to the index.
      * <p><strong>Request Body Schema</strong></p>
      *
@@ -1038,60 +682,6 @@ public final class SearchClient {
     Response<BinaryData> autocompleteGetWithResponse(String searchText, String suggesterName,
         RequestOptions requestOptions) {
         return this.serviceClient.autocompleteGetWithResponse(searchText, suggesterName, requestOptions);
-    }
-
-    /**
-     * Autocompletes incomplete query terms based on input text and matching terms in the index.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     search: String (Required)
-     *     autocompleteMode: String(oneTerm/twoTerms/oneTermWithContext) (Optional)
-     *     filter: String (Optional)
-     *     fuzzy: Boolean (Optional)
-     *     highlightPostTag: String (Optional)
-     *     highlightPreTag: String (Optional)
-     *     minimumCoverage: Double (Optional)
-     *     searchFields (Optional): [
-     *         String (Optional)
-     *     ]
-     *     suggesterName: String (Required)
-     *     top: Integer (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     &#64;search.coverage: Double (Optional)
-     *     value (Required): [
-     *          (Required){
-     *             text: String (Required)
-     *             queryPlusText: String (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param autocompletePostRequest The autocompletePostRequest parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of Autocomplete query along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> autocompletePostWithResponse(BinaryData autocompletePostRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.autocompletePostWithResponse(autocompletePostRequest, requestOptions);
     }
 
     /**
@@ -1380,12 +970,12 @@ public final class SearchClient {
      * the
      * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
-     * @param options Options for searchPost API.
+     * @param options Options for search API.
      * @return A {@link ContinuablePagedIterable} that iterates over search results and provides access to the
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public SearchPagedIterable search(SearchPostOptions options) {
+    public SearchPagedIterable search(SearchOptions options) {
         return search(options, null);
     }
 
@@ -1402,95 +992,30 @@ public final class SearchClient {
      * the
      * limit you can track the number of documents returned and stop requesting new pages when the limit is reached.
      *
-     * @param options Options for searchPost API.
+     * @param options Options for search API.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return A {@link ContinuablePagedIterable} that iterates over search results and provides access to the
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public SearchPagedIterable search(SearchPostOptions options, RequestOptions requestOptions) {
+    public SearchPagedIterable search(SearchOptions options, RequestOptions requestOptions) {
         return new SearchPagedIterable(() -> (continuationToken, pageSize) -> {
             Response<BinaryData> response;
             if (continuationToken == null) {
-                response = searchPostWithResponse(BinaryData.fromObject(options), requestOptions);
+                response = searchWithResponse(BinaryData.fromObject(options), requestOptions);
             } else {
                 if (continuationToken.getApiVersion() != serviceClient.getServiceVersion()) {
-                    throw LOGGER.atError().addKeyValue("apiVersion", continuationToken.getApiVersion())
+                    throw LOGGER.atError()
+                        .addKeyValue("apiVersion", continuationToken.getApiVersion())
                         .addKeyValue("serviceVersion", serviceClient.getServiceVersion())
                         .log(new IllegalStateException(
                             "Continuation token uses invalid apiVersion that doesn't match client serviceVersion."));
                 }
-                response = searchPostWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
+                response = searchWithResponse(BinaryData.fromObject(continuationToken.getNextPageParameters()),
                     requestOptions);
             }
             return new SearchPagedResponse(response, serviceClient.getServiceVersion());
         });
-    }
-
-    /**
-     * Searches for documents in the index.
-     *
-     * @param options Options for searchPost API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing search results from an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchDocumentsResult searchPost(SearchPostOptions options) {
-        // Generated convenience method for searchPostWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String querySourceAuthorization = options.getQuerySourceAuthorization();
-        Boolean enableElevatedRead = options.isEnableElevatedRead();
-        SearchPostRequest searchPostRequestObj
-            = new SearchPostRequest().setIncludeTotalCount(options.isIncludeTotalCount())
-                .setFacets(options.getFacets())
-                .setFilter(options.getFilter())
-                .setHighlightFields(options.getHighlightFields())
-                .setHighlightPostTag(options.getHighlightPostTag())
-                .setHighlightPreTag(options.getHighlightPreTag())
-                .setMinimumCoverage(options.getMinimumCoverage())
-                .setOrderBy(options.getOrderBy())
-                .setQueryType(options.getQueryType())
-                .setScoringStatistics(options.getScoringStatistics())
-                .setSessionId(options.getSessionId())
-                .setScoringParameters(options.getScoringParameters())
-                .setScoringProfile(options.getScoringProfile())
-                .setDebug(options.getDebug())
-                .setSearchText(options.getSearchText())
-                .setSearchFields(options.getSearchFields())
-                .setSearchMode(options.getSearchMode())
-                .setQueryLanguage(options.getQueryLanguage())
-                .setQuerySpeller(options.getQuerySpeller())
-                .setSelect(options.getSelect())
-                .setSkip(options.getSkip())
-                .setTop(options.getTop())
-                .setSemanticConfigurationName(options.getSemanticConfigurationName())
-                .setSemanticErrorHandling(options.getSemanticErrorHandling())
-                .setSemanticMaxWaitInMilliseconds(options.getSemanticMaxWaitInMilliseconds())
-                .setSemanticQuery(options.getSemanticQuery())
-                .setAnswers(options.getAnswers())
-                .setCaptions(options.getCaptions())
-                .setQueryRewrites(options.getQueryRewrites())
-                .setSemanticFields(options.getSemanticFields())
-                .setVectorQueries(options.getVectorQueries())
-                .setVectorFilterMode(options.getVectorFilterMode())
-                .setHybridSearch(options.getHybridSearch());
-        BinaryData searchPostRequest = BinaryData.fromObject(searchPostRequestObj);
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (enableElevatedRead != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
-                String.valueOf(enableElevatedRead));
-        }
-        return searchPostWithResponse(searchPostRequest, requestOptions).getValue()
-            .toObject(SearchDocumentsResult.class);
     }
 
     /**
@@ -1666,38 +1191,6 @@ public final class SearchClient {
     }
 
     /**
-     * Suggests documents in the index that match the given partial query text.
-     *
-     * @param options Options for suggestPost API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing suggestion query results from an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuggestDocumentsResult suggestPost(SuggestPostOptions options) {
-        // Generated convenience method for suggestPostWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        SuggestPostRequest suggestPostRequestObj
-            = new SuggestPostRequest(options.getSearchText(), options.getSuggesterName()).setFilter(options.getFilter())
-                .setUseFuzzyMatching(options.isUseFuzzyMatching())
-                .setHighlightPostTag(options.getHighlightPostTag())
-                .setHighlightPreTag(options.getHighlightPreTag())
-                .setMinimumCoverage(options.getMinimumCoverage())
-                .setOrderBy(options.getOrderBy())
-                .setSearchFields(options.getSearchFields())
-                .setSelect(options.getSelect())
-                .setTop(options.getTop());
-        BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
-        return suggestPostWithResponse(suggestPostRequest, requestOptions).getValue()
-            .toObject(SuggestDocumentsResult.class);
-    }
-
-    /**
      * Sends a batch of document write actions to the index.
      *
      * @param batch The batch of index actions.
@@ -1868,9 +1361,450 @@ public final class SearchClient {
     }
 
     /**
+     * Searches for documents in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     count: Boolean (Optional)
+     *     facets (Optional): [
+     *         String (Optional)
+     *     ]
+     *     filter: String (Optional)
+     *     highlight (Optional): [
+     *         String (Optional)
+     *     ]
+     *     highlightPostTag: String (Optional)
+     *     highlightPreTag: String (Optional)
+     *     minimumCoverage: Double (Optional)
+     *     orderby (Optional): [
+     *         String (Optional)
+     *     ]
+     *     queryType: String(simple/full/semantic) (Optional)
+     *     scoringStatistics: String(local/global) (Optional)
+     *     sessionId: String (Optional)
+     *     scoringParameters (Optional): [
+     *         String (Optional)
+     *     ]
+     *     scoringProfile: String (Optional)
+     *     debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *     search: String (Optional)
+     *     searchFields (Optional): [
+     *         String (Optional)
+     *     ]
+     *     searchMode: String(any/all) (Optional)
+     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
+     *     speller: String(none/lexicon) (Optional)
+     *     select (Optional): [
+     *         String (Optional)
+     *     ]
+     *     skip: Integer (Optional)
+     *     top: Integer (Optional)
+     *     semanticConfiguration: String (Optional)
+     *     semanticErrorHandling: String(partial/fail) (Optional)
+     *     semanticMaxWaitInMilliseconds: Integer (Optional)
+     *     semanticQuery: String (Optional)
+     *     answers: String(none/extractive) (Optional)
+     *     captions: String(none/extractive) (Optional)
+     *     queryRewrites: String(none/generative) (Optional)
+     *     semanticFields (Optional): [
+     *         String (Optional)
+     *     ]
+     *     vectorQueries (Optional): [
+     *          (Optional){
+     *             kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *             k: Integer (Optional)
+     *             fields: String (Optional)
+     *             exhaustive: Boolean (Optional)
+     *             oversampling: Double (Optional)
+     *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
+     *         }
+     *     ]
+     *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *     hybridSearch (Optional): {
+     *         maxTextRecallSize: Integer (Optional)
+     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     &#64;odata.count: Long (Optional)
+     *     &#64;search.coverage: Double (Optional)
+     *     &#64;search.facets (Optional): {
+     *         String (Required): [
+     *              (Required){
+     *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                  (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     &#64;search.answers (Optional): [
+     *          (Optional){
+     *             score: Double (Optional)
+     *             key: String (Optional)
+     *             text: String (Optional)
+     *             highlights: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.debug (Optional): {
+     *         queryRewrites (Optional): {
+     *             text (Optional): {
+     *                 inputQuery: String (Optional)
+     *                 rewrites (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *             }
+     *             vectors (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     }
+     *     &#64;search.nextPageParameters (Optional): {
+     *         count: Boolean (Optional)
+     *         facets (Optional): [
+     *             String (Optional)
+     *         ]
+     *         filter: String (Optional)
+     *         highlight (Optional): [
+     *             String (Optional)
+     *         ]
+     *         highlightPostTag: String (Optional)
+     *         highlightPreTag: String (Optional)
+     *         minimumCoverage: Double (Optional)
+     *         orderby (Optional): [
+     *             String (Optional)
+     *         ]
+     *         queryType: String(simple/full/semantic) (Optional)
+     *         scoringStatistics: String(local/global) (Optional)
+     *         sessionId: String (Optional)
+     *         scoringParameters (Optional): [
+     *             String (Optional)
+     *         ]
+     *         scoringProfile: String (Optional)
+     *         debug: String(disabled/semantic/vector/queryRewrites/innerHits/all) (Optional)
+     *         search: String (Optional)
+     *         searchFields (Optional): [
+     *             String (Optional)
+     *         ]
+     *         searchMode: String(any/all) (Optional)
+     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
+     *         speller: String(none/lexicon) (Optional)
+     *         select (Optional): [
+     *             String (Optional)
+     *         ]
+     *         skip: Integer (Optional)
+     *         top: Integer (Optional)
+     *         semanticConfiguration: String (Optional)
+     *         semanticErrorHandling: String(partial/fail) (Optional)
+     *         semanticMaxWaitInMilliseconds: Integer (Optional)
+     *         semanticQuery: String (Optional)
+     *         answers: String(none/extractive) (Optional)
+     *         captions: String(none/extractive) (Optional)
+     *         queryRewrites: String(none/generative) (Optional)
+     *         semanticFields (Optional): [
+     *             String (Optional)
+     *         ]
+     *         vectorQueries (Optional): [
+     *              (Optional){
+     *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
+     *                 k: Integer (Optional)
+     *                 fields: String (Optional)
+     *                 exhaustive: Boolean (Optional)
+     *                 oversampling: Double (Optional)
+     *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
+     *             }
+     *         ]
+     *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
+     *         hybridSearch (Optional): {
+     *             maxTextRecallSize: Integer (Optional)
+     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
+     *         }
+     *     }
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.score: double (Required)
+     *             &#64;search.rerankerScore: Double (Optional)
+     *             &#64;search.rerankerBoostedScore: Double (Optional)
+     *             &#64;search.highlights (Optional): {
+     *                 String (Required): [
+     *                     String (Required)
+     *                 ]
+     *             }
+     *             &#64;search.captions (Optional): [
+     *                  (Optional){
+     *                     text: String (Optional)
+     *                     highlights: String (Optional)
+     *                      (Optional): {
+     *                         String: Object (Required)
+     *                     }
+     *                 }
+     *             ]
+     *             &#64;search.documentDebugInfo (Optional): {
+     *                 semantic (Optional): {
+     *                     titleField (Optional): {
+     *                         name: String (Optional)
+     *                         state: String(used/unused/partial) (Optional)
+     *                     }
+     *                     contentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     keywordFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     rerankerInput (Optional): {
+     *                         title: String (Optional)
+     *                         content: String (Optional)
+     *                         keywords: String (Optional)
+     *                     }
+     *                 }
+     *                 vectors (Optional): {
+     *                     subscores (Optional): {
+     *                         text (Optional): {
+     *                             searchScore: Double (Optional)
+     *                         }
+     *                         vectors (Optional): [
+     *                              (Optional){
+     *                                 String (Required): {
+     *                                     searchScore: Double (Optional)
+     *                                     vectorSimilarity: Double (Optional)
+     *                                 }
+     *                             }
+     *                         ]
+     *                         documentBoost: Double (Optional)
+     *                     }
+     *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
+     *             }
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;odata.nextLink: String (Optional)
+     *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
+     *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
+     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param searchPostRequest The searchPostRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response containing search results from an index along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> searchWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
+        return this.serviceClient.searchWithResponse(searchPostRequest, requestOptions);
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     filter: String (Optional)
+     *     fuzzy: Boolean (Optional)
+     *     highlightPostTag: String (Optional)
+     *     highlightPreTag: String (Optional)
+     *     minimumCoverage: Double (Optional)
+     *     orderby (Optional): [
+     *         String (Optional)
+     *     ]
+     *     search: String (Required)
+     *     searchFields (Optional): [
+     *         String (Optional)
+     *     ]
+     *     select (Optional): [
+     *         String (Optional)
+     *     ]
+     *     suggesterName: String (Required)
+     *     top: Integer (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             &#64;search.text: String (Required)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     ]
+     *     &#64;search.coverage: Double (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param suggestPostRequest The suggestPostRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response containing suggestion query results from an index along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponse(suggestPostRequest, requestOptions);
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     search: String (Required)
+     *     autocompleteMode: String(oneTerm/twoTerms/oneTermWithContext) (Optional)
+     *     filter: String (Optional)
+     *     fuzzy: Boolean (Optional)
+     *     highlightPostTag: String (Optional)
+     *     highlightPreTag: String (Optional)
+     *     minimumCoverage: Double (Optional)
+     *     searchFields (Optional): [
+     *         String (Optional)
+     *     ]
+     *     suggesterName: String (Required)
+     *     top: Integer (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     &#64;search.coverage: Double (Optional)
+     *     value (Required): [
+     *          (Required){
+     *             text: String (Required)
+     *             queryPlusText: String (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param autocompletePostRequest The autocompletePostRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of Autocomplete query along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> autocompleteWithResponse(BinaryData autocompletePostRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.autocompleteWithResponse(autocompletePostRequest, requestOptions);
+    }
+
+    /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param options Options for suggest API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SuggestDocumentsResult suggest(SuggestOptions options) {
+        // Generated convenience method for suggestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        SuggestPostRequest suggestPostRequestObj
+            = new SuggestPostRequest(options.getSearchText(), options.getSuggesterName()).setFilter(options.getFilter())
+                .setUseFuzzyMatching(options.isUseFuzzyMatching())
+                .setHighlightPostTag(options.getHighlightPostTag())
+                .setHighlightPreTag(options.getHighlightPreTag())
+                .setMinimumCoverage(options.getMinimumCoverage())
+                .setOrderBy(options.getOrderBy())
+                .setSearchFields(options.getSearchFields())
+                .setSelect(options.getSelect())
+                .setTop(options.getTop());
+        BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
+        return suggestWithResponse(suggestPostRequest, requestOptions).getValue()
+            .toObject(SuggestDocumentsResult.class);
+    }
+
+    /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
-     * @param options Options for autocompletePost API.
+     * @param options Options for autocomplete API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1881,8 +1815,8 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutocompleteResult autocompletePost(AutocompletePostOptions options) {
-        // Generated convenience method for autocompletePostWithResponse
+    public AutocompleteResult autocomplete(AutocompleteOptions options) {
+        // Generated convenience method for autocompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         AutocompletePostRequest autocompletePostRequestObj
             = new AutocompletePostRequest(options.getSearchText(), options.getSuggesterName())
@@ -1895,7 +1829,7 @@ public final class SearchClient {
                 .setSearchFields(options.getSearchFields())
                 .setTop(options.getTop());
         BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
-        return autocompletePostWithResponse(autocompletePostRequest, requestOptions).getValue()
+        return autocompleteWithResponse(autocompletePostRequest, requestOptions).getValue()
             .toObject(AutocompleteResult.class);
     }
 }

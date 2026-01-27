@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -214,6 +215,17 @@ public final class ChatCompletionCommonModelParameters
     @Generated
     public List<String> getStop() {
         return this.stop;
+    }
+
+    /**
+     * Set the stop property: List of stop sequences that will cut off text generation. Default is none.
+     *
+     * @param stop the stop value to set.
+     * @return the ChatCompletionCommonModelParameters object itself.
+     */
+    public ChatCompletionCommonModelParameters setStop(String... stop) {
+        this.stop = (stop == null) ? null : Arrays.asList(stop);
+        return this;
     }
 
     /**

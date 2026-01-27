@@ -5,10 +5,10 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataSourceCredentials;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;

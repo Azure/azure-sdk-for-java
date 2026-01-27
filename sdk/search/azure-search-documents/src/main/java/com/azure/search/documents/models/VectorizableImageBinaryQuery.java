@@ -116,16 +116,6 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
      */
     @Generated
     @Override
-    public VectorizableImageBinaryQuery setWeight(Double weight) {
-        super.setWeight(weight);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public VectorizableImageBinaryQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
         return this;
@@ -196,7 +186,7 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
                 } else if ("oversampling".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.setOversampling(reader.getNullable(JsonReader::getDouble));
                 } else if ("weight".equals(fieldName)) {
-                    deserializedVectorizableImageBinaryQuery.setWeight(reader.getNullable(JsonReader::getDouble));
+                    deserializedVectorizableImageBinaryQuery.setWeight(reader.getNullable(JsonReader::getFloat));
                 } else if ("threshold".equals(fieldName)) {
                     deserializedVectorizableImageBinaryQuery.setThreshold(VectorThreshold.fromJson(reader));
                 } else if ("filterOverride".equals(fieldName)) {
@@ -214,5 +204,15 @@ public final class VectorizableImageBinaryQuery extends VectorQuery {
             }
             return deserializedVectorizableImageBinaryQuery;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageBinaryQuery setWeight(Float weight) {
+        super.setWeight(weight);
+        return this;
     }
 }

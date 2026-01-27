@@ -6,7 +6,6 @@ package com.azure.search.documents.models;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;

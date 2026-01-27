@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +46,18 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      */
     @Generated
     private SearchIndexerKnowledgeStoreParameters parameters;
+
+    /**
+     * Creates an instance of SearchIndexerKnowledgeStore class.
+     *
+     * @param storageConnectionString the storageConnectionString value to set.
+     * @param projections the projections value to set.
+     */
+    public SearchIndexerKnowledgeStore(String storageConnectionString,
+        SearchIndexerKnowledgeStoreProjection... projections) {
+        this.storageConnectionString = storageConnectionString;
+        this.projections = (projections == null) ? null : Arrays.asList(projections);
+    }
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.

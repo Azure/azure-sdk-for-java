@@ -11,7 +11,6 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -28,7 +27,7 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.SearchAudience;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 
@@ -124,7 +123,7 @@ public class ReadmeSamples {
     public void handleErrorsWithSyncClient() {
         // BEGIN: readme-sample-handleErrorsWithSyncClient
         try {
-            Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("hotel"));
+            Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchOptions().setSearchText("hotel"));
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
@@ -137,7 +136,7 @@ public class ReadmeSamples {
 
     public void searchWithDynamicType() {
         // BEGIN: readme-sample-searchWithDynamicType
-        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
             Map<String, Object> doc = searchResult.getAdditionalProperties();
             System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("HotelId"), doc.get("HotelName"));
         }
@@ -173,7 +172,7 @@ public class ReadmeSamples {
 
     public void searchWithStronglyType() {
         // BEGIN: readme-sample-searchWithStronglyType
-        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+        for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
             Map<String, Object> doc = searchResult.getAdditionalProperties();
             System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("Id"), doc.get("Name"));
         }
@@ -182,8 +181,7 @@ public class ReadmeSamples {
 
     public void searchWithSearchOptions() {
         // BEGIN: readme-sample-searchWithSearchOptions
-        SearchPostOptions options = new SearchPostOptions()
-            .setSearchText("luxury")
+        SearchOptions options = new SearchOptions().setSearchText("luxury")
             .setFilter("rating ge 4")
             .setOrderBy("rating desc")
             .setTop(5);
@@ -194,7 +192,7 @@ public class ReadmeSamples {
 
     public void searchWithAsyncClient() {
         // BEGIN: readme-sample-searchWithAsyncClient
-        SEARCH_ASYNC_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))
+        SEARCH_ASYNC_CLIENT.search(new SearchOptions().setSearchText("luxury"))
             .subscribe(result -> {
                 Map<String, Object> hotel = result.getAdditionalProperties();
                 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));

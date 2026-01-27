@@ -10,7 +10,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -23,6 +22,7 @@ import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -79,8 +79,8 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetRequestSerializationWithAllMetrics() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setFacets("Rating, metric: min",
-            "Rating, metric: max", "Rating, metric: avg", "Rating, metric: sum", "Category, metric: cardinality");
+        SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max",
+            "Rating, metric: avg", "Rating, metric: sum", "Category, metric: cardinality");
 
         String serialized = BinaryData.fromObject(searchOptions).toString();
         assertTrue(serialized.contains("Rating, metric: min"), "Should serialize min metric");
@@ -92,10 +92,10 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetRequestSerializationWithMultipleMetricsOnSameField() {
-        SearchPostOptions searchPostOptions
-            = new SearchPostOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
+        SearchOptions searchOptions
+            = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
-        List<String> serializedFacets = searchPostOptions.getFacets();
+        List<String> serializedFacets = searchOptions.getFacets();
         assertNotNull(serializedFacets, "Facets should not be null");
         assertEquals(3, serializedFacets.size(), "Facet size should be 3");
 
@@ -106,7 +106,7 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithMinAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : min");
+        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : min");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
             .search(searchOptions)
@@ -127,7 +127,7 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithMaxAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : max");
+        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : max");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
             .search(searchOptions)
@@ -148,7 +148,7 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithAvgAggregation() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*").setFacets("Rating, metric : avg");
+        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : avg");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
             .search(searchOptions)
@@ -169,8 +169,8 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithCardinalityAggregation() {
-        SearchPostOptions searchOptions
-            = new SearchPostOptions().setSearchText("*").setFacets("Category, metric : cardinality");
+        SearchOptions searchOptions
+            = new SearchOptions().setSearchText("*").setFacets("Category, metric : cardinality");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
             .search(searchOptions)
@@ -191,7 +191,7 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithMultipleMetricsOnSameFieldResponseShape() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("*")
             .setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
         Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
@@ -217,10 +217,10 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetQueryWithCardinalityPrecisionThreshold() {
-        SearchPostOptions defaultThreshold
-            = new SearchPostOptions().setSearchText("*").setFacets("Category, metric : cardinality");
+        SearchOptions defaultThreshold
+            = new SearchOptions().setSearchText("*").setFacets("Category, metric : cardinality");
 
-        SearchPostOptions maxThreshold = new SearchPostOptions().setSearchText("*")
+        SearchOptions maxThreshold = new SearchOptions().setSearchText("*")
             .setFacets("Category, metric : cardinality, precisionThreshold: 40000");
 
         SearchPagedResponse defaultResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
@@ -248,7 +248,7 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetMetricsWithSemanticQuery() {
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("*")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("*")
             .setFacets("Rating, metric: min", "Rating, metric: max", "Category, metric: cardinality")
             .setQueryType(QueryType.SEMANTIC)
             .setSemanticConfigurationName("semantic-config");
@@ -278,7 +278,7 @@ public class FacetAggregationTests extends SearchTestBase {
     //            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
     //                .buildClient();
     //
-    //        SearchPostOptions searchOptions = new SearchPostOptions().setFacets("Rating, metric: min");
+    //        SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
     //
     //        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> prevVersionClient.search("*", searchOptions, null).iterator().hasNext());
     //

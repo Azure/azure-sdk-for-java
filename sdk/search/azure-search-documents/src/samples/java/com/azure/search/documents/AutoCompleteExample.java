@@ -5,9 +5,9 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
 
 /**
  * This sample is based on the hotels-sample index available to install from the portal.
@@ -36,10 +36,10 @@ public class AutoCompleteExample {
     }
 
     private static void autoCompleteWithOneTermContext(SearchClient searchClient) {
-        AutocompletePostOptions params = new AutocompletePostOptions("coffe m", "sg")
+        AutocompleteOptions params = new AutocompleteOptions("coffe m", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        AutocompleteResult results = searchClient.autocompletePost(params);
+        AutocompleteResult results = searchClient.autocomplete(params);
 
         System.out.println("Received results with one term context:");
         results.getResults().forEach(result -> System.out.println(result.getText()));
@@ -51,13 +51,13 @@ public class AutoCompleteExample {
     }
 
     private static void autoCompleteWithHighlighting(SearchClient searchClient) {
-        AutocompletePostOptions params = new AutocompletePostOptions("co", "sg")
+        AutocompleteOptions params = new AutocompleteOptions("co", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("Address/City eq 'San Diego' or Address/City eq 'Hartford'")
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
 
-        AutocompleteResult results = searchClient.autocompletePost(params);
+        AutocompleteResult results = searchClient.autocomplete(params);
 
         System.out.println("Received results with highlighting:");
         results.getResults().forEach(result -> System.out.println(result.getText()));
@@ -69,12 +69,12 @@ public class AutoCompleteExample {
     }
 
     private static void autoCompleteWithFilterAndFuzzy(SearchClient searchClient) {
-        AutocompletePostOptions params = new AutocompletePostOptions("su", "sg")
+        AutocompleteOptions params = new AutocompleteOptions("su", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and Category eq 'Budget'");
 
-        AutocompleteResult results = searchClient.autocompletePost(params);
+        AutocompleteResult results = searchClient.autocomplete(params);
 
         System.out.println("Received results with filter and fuzzy:");
         results.getResults().forEach(result -> System.out.println(result.getText()));

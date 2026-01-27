@@ -41,12 +41,10 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.models.SearchAudience;
 import com.azure.search.documents.options.OnActionAddedOptions;
 import com.azure.search.documents.options.OnActionErrorOptions;
 import com.azure.search.documents.options.OnActionSentOptions;
 import com.azure.search.documents.options.OnActionSucceededOptions;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,21 +60,18 @@ import java.util.function.Function;
 public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>,
     ConfigurationTrait<SearchClientBuilder>, TokenCredentialTrait<SearchClientBuilder>,
     KeyCredentialTrait<SearchClientBuilder>, EndpointTrait<SearchClientBuilder> {
+
     private static final boolean DEFAULT_AUTO_FLUSH = true;
+
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
+
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
+
     private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
+
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
+
     private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
-    // Retaining this commented out code as it may be added back in a future release.
-    // Retaining this commented out code as it may be added back in a future release.
-    //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
-    //        if (oldBatchCount == 1) {
-    //            return 1;
-    //        } else {
-    //            return Math.max(1, oldBatchCount / 2);
-    //        }
-    //    };
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -323,7 +318,7 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
      */
     public SearchClientBuilder audience(SearchAudience audience) {
         // TODO (alzimmer): Set the BearerToken scopes to the audience scope, or if audience is null reset to
-        //  DEFAULT_SCOPES.
+        // DEFAULT_SCOPES.
         return this;
     }
 
@@ -440,22 +435,32 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
     @ServiceClientBuilder(
         serviceClients = { SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class })
     public final class SearchIndexingBufferedSenderBuilder<T> {
+
         private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderBuilder.class);
 
         private Function<Map<String, Object>, String> documentKeyRetriever;
 
         private boolean autoFlush = DEFAULT_AUTO_FLUSH;
+
         private Duration autoFlushInterval = DEFAULT_FLUSH_INTERVAL;
+
         private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
-        //    private Function<Integer, Integer> scaleDownFunction = DEFAULT_SCALE_DOWN_FUNCTION;
+
+        // private Function<Integer, Integer> scaleDownFunction = DEFAULT_SCALE_DOWN_FUNCTION;
         private int maxRetriesPerAction = DEFAULT_MAX_RETRIES_PER_ACTION;
+
         private Duration throttlingDelay = DEFAULT_THROTTLING_DELAY;
+
         private Duration maxThrottlingDelay = DEFAULT_MAX_THROTTLING_DELAY;
 
         private JsonSerializer jsonSerializer;
+
         private Consumer<OnActionAddedOptions> onActionAddedConsumer;
+
         private Consumer<OnActionSucceededOptions> onActionSucceededConsumer;
+
         private Consumer<OnActionErrorOptions> onActionErrorConsumer;
+
         private Consumer<OnActionSentOptions> onActionSentConsumer;
 
         private SearchIndexingBufferedSenderBuilder() {
@@ -474,7 +479,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
         public SearchIndexingBufferedSender<T> buildSender() {
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             SearchClient client = buildClient();
-
             JsonSerializer serializer
                 = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
             return new SearchIndexingBufferedSender<>(client, serializer, documentKeyRetriever, autoFlush,
@@ -495,7 +499,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
         public SearchIndexingBufferedAsyncSender<T> buildAsyncSender() {
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             SearchAsyncClient asyncClient = buildAsyncClient();
-
             JsonSerializer serializer
                 = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
             return new SearchIndexingBufferedAsyncSender<>(asyncClient, serializer, documentKeyRetriever, autoFlush,
@@ -530,7 +533,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          */
         public SearchIndexingBufferedSenderBuilder<T> autoFlushInterval(Duration autoFlushInterval) {
             Objects.requireNonNull(autoFlushInterval, "'autoFlushInterval' cannot be null.");
-
             this.autoFlushInterval = autoFlushInterval;
             return this;
         }
@@ -549,41 +551,40 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
             if (initialBatchActionCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
             }
-
             this.initialBatchActionCount = initialBatchActionCount;
             return this;
         }
 
         // Retaining this commented out code as it may be added back in a future release.
-        //    /**
-        //     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-        //     * by the service.
-        //     * <p>
-        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-        //     *
-        //     * @param scaleDownFunction The batch size scale down function.
-        //     * @return The updated SearchIndexingBufferedSenderOptions object.
-        //     * @throws NullPointerException If {@code scaleDownFunction} is null.
-        //     */
-        //    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
-        //        Function<Integer, Integer> scaleDownFunction) {
-        //        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
-        //        return this;
-        //    }
-
+        // /**
+        // * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is
+        // returned
+        // * by the service.
+        // * <p>
+        // * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        // *
+        // * @param scaleDownFunction The batch size scale down function.
+        // * @return The updated SearchIndexingBufferedSenderOptions object.
+        // * @throws NullPointerException If {@code scaleDownFunction} is null.
+        // */
+        // public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
+        // Function<Integer, Integer> scaleDownFunction) {
+        // this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
+        // return this;
+        // }
         // Retaining this commented out code as it may be added back in a future release.
-        //    /**
-        //     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-        //     * by the service.
-        //     * <p>
-        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-        //     *
-        //     * @return The batch size scale down function.
-        //     */
-        //    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
-        //        return scaleDownFunction;
-        //    }
-
+        // /**
+        // * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is
+        // returned
+        // * by the service.
+        // * <p>
+        // * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        // *
+        // * @return The batch size scale down function.
+        // */
+        // public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
+        // return scaleDownFunction;
+        // }
         /**
          * Sets the number of times an action will retry indexing before it is considered failed.
          * <p>
@@ -600,7 +601,6 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
             if (maxRetriesPerAction < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'maxRetries' cannot be less than one."));
             }
-
             this.maxRetriesPerAction = maxRetriesPerAction;
             return this;
         }
@@ -618,12 +618,10 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          */
         public SearchIndexingBufferedSenderBuilder<T> throttlingDelay(Duration throttlingDelay) {
             Objects.requireNonNull(throttlingDelay, "'throttlingDelay' cannot be null.");
-
             if (throttlingDelay.isNegative() || throttlingDelay.isZero()) {
                 throw logger
                     .logExceptionAsError(new IllegalArgumentException("'throttlingDelay' cannot be negative or zero."));
             }
-
             this.throttlingDelay = throttlingDelay;
             return this;
         }
@@ -644,12 +642,10 @@ public final class SearchClientBuilder implements HttpTrait<SearchClientBuilder>
          */
         public SearchIndexingBufferedSenderBuilder<T> maxThrottlingDelay(Duration maxThrottlingDelay) {
             Objects.requireNonNull(maxThrottlingDelay, "'maxThrottlingDelay' cannot be null.");
-
             if (maxThrottlingDelay.isNegative() || maxThrottlingDelay.isZero()) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("'maxThrottlingDelay' cannot be negative or zero."));
             }
-
             this.maxThrottlingDelay = maxThrottlingDelay;
             return this;
         }

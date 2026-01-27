@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.knowledgebase.models.KnowledgeSourceIngestionParameters;
+import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import java.io.IOException;
 
 /**

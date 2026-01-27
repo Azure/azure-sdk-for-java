@@ -5,12 +5,11 @@ package com.azure.search.documents.models;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 
 import java.util.function.Supplier;
 
 /**
- * Response type for {@link SearchClient#search(SearchPostOptions)}.
+ * Response type for {@link SearchClient#search(SearchOptions)}.
  */
 public final class SearchPagedIterable
     extends ContinuablePagedIterable<SearchContinuationToken, SearchResult, SearchPagedResponse> {

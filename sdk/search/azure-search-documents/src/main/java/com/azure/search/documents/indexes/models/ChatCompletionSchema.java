@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -106,6 +107,18 @@ public final class ChatCompletionSchema implements JsonSerializable<ChatCompleti
     @Generated
     public List<String> getRequired() {
         return this.required;
+    }
+
+    /**
+     * Set the required property: An array of the property names that are required to be part of the model's response.
+     * All properties must be included for structured outputs.
+     *
+     * @param required the required value to set.
+     * @return the ChatCompletionSchema object itself.
+     */
+    public ChatCompletionSchema setRequired(String... required) {
+        this.required = (required == null) ? null : Arrays.asList(required);
+        return this;
     }
 
     /**

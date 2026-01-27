@@ -137,7 +137,6 @@ public final class SemanticPrioritizedFields implements JsonSerializable<Semanti
      * @param keywordsFields the keywordsFields value to set.
      * @return the SemanticPrioritizedFields object itself.
      */
-    @Generated
     public SemanticPrioritizedFields setKeywordsFields(SemanticField... keywordsFields) {
         this.keywordsFields = (keywordsFields == null) ? null : Arrays.asList(keywordsFields);
         return this;

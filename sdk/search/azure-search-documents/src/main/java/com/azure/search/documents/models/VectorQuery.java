@@ -58,7 +58,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * positive number larger than zero.
      */
     @Generated
-    private Double weight;
+    private Float weight;
 
     /*
      * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
@@ -204,24 +204,8 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      * @return the weight value.
      */
     @Generated
-    public Double getWeight() {
+    public Float getWeight() {
         return this.weight;
-    }
-
-    /**
-     * Set the weight property: Relative weight of the vector query when compared to other vector query and/or the text
-     * query within the same search request. This value is used when combining the results of multiple ranking lists
-     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
-     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
-     * value needs to be a positive number larger than zero.
-     *
-     * @param weight the weight value to set.
-     * @return the VectorQuery object itself.
-     */
-    @Generated
-    public VectorQuery setWeight(Double weight) {
-        this.weight = weight;
-        return this;
     }
 
     /**
@@ -380,7 +364,7 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                 } else if ("oversampling".equals(fieldName)) {
                     deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
-                    deserializedVectorQuery.weight = reader.getNullable(JsonReader::getDouble);
+                    deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
                 } else if ("threshold".equals(fieldName)) {
                     deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
                 } else if ("filterOverride".equals(fieldName)) {
@@ -393,5 +377,21 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
             }
             return deserializedVectorQuery;
         });
+    }
+
+    /**
+     * Set the weight property: Relative weight of the vector query when compared to other vector query and/or the text
+     * query within the same search request. This value is used when combining the results of multiple ranking lists
+     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
+     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
+     * value needs to be a positive number larger than zero.
+     *
+     * @param weight the weight value to set.
+     * @return the VectorQuery object itself.
+     */
+    @Generated
+    public VectorQuery setWeight(Float weight) {
+        this.weight = weight;
+        return this;
     }
 }

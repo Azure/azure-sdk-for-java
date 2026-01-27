@@ -71,6 +71,15 @@ public final class SearchIndexerKnowledgeStoreObjectProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Override
+    public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(InputFieldMappingEntry... inputs) {
+        super.setInputs(inputs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public SearchIndexerKnowledgeStoreObjectProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {

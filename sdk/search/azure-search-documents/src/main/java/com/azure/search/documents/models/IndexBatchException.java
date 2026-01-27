@@ -4,7 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.exception.AzureException;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
 import java.util.List;

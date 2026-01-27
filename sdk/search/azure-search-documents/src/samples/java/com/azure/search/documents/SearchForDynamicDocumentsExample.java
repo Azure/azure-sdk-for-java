@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Flux;
 
@@ -45,7 +45,7 @@ public class SearchForDynamicDocumentsExample {
             .buildClient();
 
         // Perform a text-based search
-        for (SearchResult result : client.search(new SearchPostOptions().setSearchText("luxury hotel"))) {
+        for (SearchResult result : client.search(new SearchOptions().setSearchText("luxury hotel"))) {
             // Each result is a dynamic Map
             Map<String, Object> doc = result.getAdditionalProperties();
             System.out.printf("%s: %s%n", doc.get("HotelName"), doc.get("Rating"));
@@ -64,7 +64,7 @@ public class SearchForDynamicDocumentsExample {
             .buildAsyncClient();
 
         // Add additional options for the search
-        SearchPostOptions parameters = new SearchPostOptions().setSearchText("hotel")
+        SearchOptions parameters = new SearchOptions().setSearchText("hotel")
             .setFilter("geo.distance(Location,geography'POINT(-122.121513 47.673988)') le 5")  // items having a geo-location distance which is less than 5 km from Redmond
             .setFacets("Tags,sort:value")
             .setOrderBy("Rating")

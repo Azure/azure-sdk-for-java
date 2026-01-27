@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -154,6 +155,19 @@ public final class DocumentIntelligenceLayoutSkill extends SearchIndexerSkill {
     @Generated
     public List<DocumentIntelligenceLayoutSkillExtractionOptions> getExtractionOptions() {
         return this.extractionOptions;
+    }
+
+    /**
+     * Set the extractionOptions property: Controls the cardinality of the content extracted from the document by the
+     * skill.
+     *
+     * @param extractionOptions the extractionOptions value to set.
+     * @return the DocumentIntelligenceLayoutSkill object itself.
+     */
+    public DocumentIntelligenceLayoutSkill
+        setExtractionOptions(DocumentIntelligenceLayoutSkillExtractionOptions... extractionOptions) {
+        this.extractionOptions = (extractionOptions == null) ? null : Arrays.asList(extractionOptions);
+        return this;
     }
 
     /**

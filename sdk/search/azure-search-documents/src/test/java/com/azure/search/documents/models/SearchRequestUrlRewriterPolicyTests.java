@@ -9,8 +9,6 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchRequestUrlRewriterPolicy;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -116,11 +114,10 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(() -> searchClient.getDocumentCountWithResponse(null)), docsUrl + "/$count"),
             Arguments.of(toCallable(() -> searchClient.search(null).iterator().hasNext()),
                 docsUrl + "/search.post.search"),
-            Arguments.of(toCallable(() -> searchClient.suggestPost(new SuggestPostOptions("suggest", "suggester"))),
+            Arguments.of(toCallable(() -> searchClient.suggest(new SuggestOptions("suggest", "suggester"))),
                 docsUrl + "/seach.post.suggest"),
             Arguments.of(
-                toCallable(
-                    () -> searchClient.autocompletePost(new AutocompletePostOptions("autocomplete", "suggester"))),
+                toCallable(() -> searchClient.autocomplete(new AutocompleteOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
 
             Arguments.of(
@@ -129,11 +126,10 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(searchAsyncClient.getDocumentWithResponse("test", null)), docsUrl + "/test"),
             Arguments.of(toCallable(searchAsyncClient.getDocumentCountWithResponse(null)), docsUrl + "/$count"),
             Arguments.of(toCallable(searchAsyncClient.search(null)), docsUrl + "/search.post.search"),
-            Arguments.of(toCallable(searchAsyncClient.suggestPost(new SuggestPostOptions("suggest", "suggester"))),
+            Arguments.of(toCallable(searchAsyncClient.suggest(new SuggestOptions("suggest", "suggester"))),
                 docsUrl + "/search.post.suggest"),
             Arguments.of(
-                toCallable(
-                    searchAsyncClient.autocompletePost(new AutocompletePostOptions("autocomplete", "suggester"))),
+                toCallable(searchAsyncClient.autocomplete(new AutocompleteOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
 
             Arguments.of(toCallable(() -> indexClient.createIndexWithResponse(fromObject(index), null)), indexesUrl),

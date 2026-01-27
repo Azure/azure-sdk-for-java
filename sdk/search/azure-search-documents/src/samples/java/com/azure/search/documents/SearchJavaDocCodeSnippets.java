@@ -10,23 +10,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.search.documents.implementation.models.AutocompleteMode;
-import com.azure.search.documents.implementation.models.AutocompletePostOptions;
-import com.azure.search.documents.implementation.models.AutocompleteResult;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
-import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.models.SuggestPostOptions;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
-import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
-import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
-import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
@@ -36,6 +25,10 @@ import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.ListDataSourcesResult;
+import com.azure.search.documents.indexes.models.ListIndexersResult;
+import com.azure.search.documents.indexes.models.ListSkillsetsResult;
+import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchAlias;
@@ -53,15 +46,22 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SkillNames;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.AutocompleteItem;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.models.LookupDocument;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedFlux;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchPagedResponse;
+import com.azure.search.documents.models.SuggestDocumentsResult;
+import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 
 import java.util.Arrays;
@@ -332,11 +332,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchClient#search(SearchPostOptions)}
+     * Code snippet for {@link SearchClient#search(SearchOptions)}
      */
     public void searchDocumentsWithOptions() {
-        // BEGIN: com.azure.search.documents.SearchClient.search#SearchPostOptions
-        SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search(new SearchPostOptions()
+        // BEGIN: com.azure.search.documents.SearchClient.search#SearchOptions
+        SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search(new SearchOptions()
             .setSearchText("searchText").setOrderBy("hotelId desc"));
 
         boolean firstPage = true;
@@ -355,34 +355,34 @@ public class SearchJavaDocCodeSnippets {
                 break;
             }
         }
-        // END: com.azure.search.documents.SearchClient.search#SearchPostOptions
+        // END: com.azure.search.documents.SearchClient.search#SearchOptions
     }
 
     /**
-     * Code snippet for {@link SearchClient#suggestPost(SuggestPostOptions)}
+     * Code snippet for {@link SearchClient#suggest(SuggestOptions)}
      */
     public void suggestDocumentsWithOptions() {
-        // BEGIN: com.azure.search.documents.SearchClient.suggestPost#SuggestPostOptions
-        SuggestDocumentsResult results = SEARCH_CLIENT.suggestPost(new SuggestPostOptions("searchText", "sg")
+        // BEGIN: com.azure.search.documents.SearchClient.suggest#SuggestOptions
+        SuggestDocumentsResult results = SEARCH_CLIENT.suggest(new SuggestOptions("searchText", "sg")
             .setOrderBy("hotelId desc"));
         for (SuggestResult result : results.getResults()) {
             result.getAdditionalProperties()
                 .forEach((key, value) -> System.out.printf("Document key %s, document value %s", key, value));
         }
-        // END: com.azure.search.documents.SearchClient.suggestPost#SuggestPostOptions
+        // END: com.azure.search.documents.SearchClient.suggest#SuggestOptions
     }
 
     /**
-     * Code snippet for {@link SearchClient#autocompletePost(AutocompletePostOptions)}
+     * Code snippet for {@link SearchClient#autocomplete(AutocompleteOptions)}
      */
     public void autocompleteDocumentsWithOptions() {
-        // BEGIN: com.azure.search.documents.SearchClient.autocompletePost#AutocompletePostOptions
-        AutocompleteResult results = SEARCH_CLIENT.autocompletePost(new AutocompletePostOptions("searchText", "sg")
+        // BEGIN: com.azure.search.documents.SearchClient.autocomplete#AutocompleteOptions
+        AutocompleteResult results = SEARCH_CLIENT.autocomplete(new AutocompleteOptions("searchText", "sg")
             .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT));
         for (AutocompleteItem result : results.getResults()) {
             System.out.printf("The complete term is %s", result.getText());
         }
-        // END: com.azure.search.documents.SearchClient.autocompletePost#AutocompletePostOptions
+        // END: com.azure.search.documents.SearchClient.autocomplete#AutocompleteOptions
     }
 
     private static final SearchAsyncClient SEARCH_ASYNC_CLIENT = new SearchClientBuilder().buildAsyncClient();
@@ -646,11 +646,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchAsyncClient#searchPost(SearchPostOptions)}
+     * Code snippet for {@link SearchAsyncClient#search(SearchOptions)}
      */
     public void searchDocumentsWithOptionsAsync() {
-        // BEGIN: com.azure.search.documents.SearchAsyncClient.search#SearchPostOptions
-        SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search(new SearchPostOptions().setSearchText("searchText")
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.search#SearchOptions
+        SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search(new SearchOptions().setSearchText("searchText")
             .setOrderBy("hotelId desc"));
 
         AtomicBoolean firstPage = new AtomicBoolean(true);
@@ -667,30 +667,30 @@ public class SearchJavaDocCodeSnippets {
             })
             .subscribe(page -> page.getElements().forEach(searchDocument -> searchDocument.getAdditionalProperties()
                 .forEach((key, value) -> System.out.printf("Document key %s, document value %s", key, value))));
-        // END: com.azure.search.documents.SearchAsyncClient.search#SearchPostOptions
+        // END: com.azure.search.documents.SearchAsyncClient.search#SearchOptions
     }
 
     /**
-     * Code snippet for {@link SearchAsyncClient#suggestPost(SuggestPostOptions)}
+     * Code snippet for {@link SearchAsyncClient#suggest(SuggestOptions)}
      */
     public void suggestDocumentsWithOptionsAsync() {
-        // BEGIN: com.azure.search.documents.SearchAsyncClient.suggestPost#SuggestPostOptions
-        SEARCH_ASYNC_CLIENT.suggestPost(new SuggestPostOptions("searchText", "sg").setOrderBy("hotelId desc"))
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.suggest#SuggestOptions
+        SEARCH_ASYNC_CLIENT.suggest(new SuggestOptions("searchText", "sg").setOrderBy("hotelId desc"))
             .subscribe(results -> results.getResults().forEach(result -> result.getAdditionalProperties()
                 .forEach((key, value) -> System.out.printf("Document key %s, document value %s", key, value))));
-        // END: com.azure.search.documents.SearchAsyncClient.suggestPost#SuggestPostOptions
+        // END: com.azure.search.documents.SearchAsyncClient.suggest#SuggestOptions
     }
 
     /**
-     * Code snippet for {@link SearchAsyncClient#autocompletePost(AutocompletePostOptions)}
+     * Code snippet for {@link SearchAsyncClient#autocomplete(AutocompleteOptions)}
      */
     public void autocompleteDocumentsWithOptionsAsync() {
-        // BEGIN: com.azure.search.documents.SearchAsyncClient.autocompletePost#AutocompletePostOptions
-        SEARCH_ASYNC_CLIENT.autocompletePost(new AutocompletePostOptions("searchText", "sg")
+        // BEGIN: com.azure.search.documents.SearchAsyncClient.autocomplete#AutocompleteOptions
+        SEARCH_ASYNC_CLIENT.autocomplete(new AutocompleteOptions("searchText", "sg")
                 .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT))
             .subscribe(results -> results.getResults().forEach(result ->
                 System.out.printf("The complete term is %s", result.getText())));
-        // END: com.azure.search.documents.SearchAsyncClient.autocompletePost#AutocompletePostOptions
+        // END: com.azure.search.documents.SearchAsyncClient.autocomplete#AutocompleteOptions
     }
 
     /**

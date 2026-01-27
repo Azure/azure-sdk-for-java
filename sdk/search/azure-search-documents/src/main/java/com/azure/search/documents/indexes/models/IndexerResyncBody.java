@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,6 +40,17 @@ public final class IndexerResyncBody implements JsonSerializable<IndexerResyncBo
     @Generated
     public List<IndexerResyncOption> getOptions() {
         return this.options;
+    }
+
+    /**
+     * Set the options property: Re-sync options that have been pre-defined from data source.
+     *
+     * @param options the options value to set.
+     * @return the IndexerResyncBody object itself.
+     */
+    public IndexerResyncBody setOptions(IndexerResyncOption... options) {
+        this.options = (options == null) ? null : Arrays.asList(options);
+        return this;
     }
 
     /**

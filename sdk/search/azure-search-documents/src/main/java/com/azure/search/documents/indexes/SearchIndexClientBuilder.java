@@ -36,10 +36,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.search.documents.SearchAudience;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.models.SearchAudience;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -280,7 +279,7 @@ public final class SearchIndexClientBuilder implements HttpTrait<SearchIndexClie
      */
     public SearchIndexClientBuilder audience(SearchAudience audience) {
         // TODO (alzimmer): Set the BearerToken scopes to the audience scope, or if audience is null reset to
-        //  DEFAULT_SCOPES.
+        // DEFAULT_SCOPES.
         return this;
     }
 

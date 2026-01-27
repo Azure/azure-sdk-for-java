@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -152,6 +153,17 @@ public class SearchIndexerKnowledgeStoreProjectionSelector
     @Generated
     public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
+    }
+
+    /**
+     * Set the inputs property: Nested inputs for complex projections.
+     *
+     * @param inputs the inputs value to set.
+     * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
+     */
+    public SearchIndexerKnowledgeStoreProjectionSelector setInputs(InputFieldMappingEntry... inputs) {
+        this.inputs = (inputs == null) ? null : Arrays.asList(inputs);
+        return this;
     }
 
     /**

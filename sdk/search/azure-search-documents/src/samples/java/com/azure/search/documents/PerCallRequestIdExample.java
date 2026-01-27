@@ -9,10 +9,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.Collections;
 import java.util.UUID;

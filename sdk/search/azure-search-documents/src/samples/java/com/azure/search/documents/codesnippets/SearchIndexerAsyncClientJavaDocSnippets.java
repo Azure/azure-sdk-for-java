@@ -5,9 +5,9 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
-import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.ListIndexersResult;
+import com.azure.search.documents.indexes.models.ListSkillsetsResult;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexer;
@@ -81,7 +81,7 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
      */
     public static void updateIndexer() {
         searchIndexerAsyncClient = createSearchIndexerAsyncClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.createOrUpdateIndexer#SearchIndexer
         SearchIndexer indexer = searchIndexerAsyncClient.getIndexer("example-indexer").block();
         if (indexer != null) {
             System.out.printf("Retrieved indexer name: %s%n", indexer.getName());
@@ -94,7 +94,7 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
             }
         }
 
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.createOrUpdateIndexer#SearchIndexer
     }
 
     /**
@@ -198,7 +198,7 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
      */
     public static void updateSkillset() {
         searchIndexerAsyncClient = createSearchIndexerAsyncClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.createOrUpdateSkillset#SearchIndexerSkillset
         SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset("example-skillset").block();
         if (skillset != null) {
             System.out.printf("Retrieved skillset name: %s%n", skillset.getName());
@@ -209,7 +209,7 @@ public class SearchIndexerAsyncClientJavaDocSnippets {
                     updatedSkillset.getDescription());
             }
         }
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.createOrUpdateSkillset#SearchIndexerSkillset
     }
 
     /**

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +31,15 @@ public final class SearchIndexerIndexProjection implements JsonSerializable<Sear
      */
     @Generated
     private SearchIndexerIndexProjectionsParameters parameters;
+
+    /**
+     * Creates an instance of SearchIndexerIndexProjection class.
+     *
+     * @param selectors the selectors value to set.
+     */
+    public SearchIndexerIndexProjection(SearchIndexerIndexProjectionSelector... selectors) {
+        this.selectors = (selectors == null) ? null : Arrays.asList(selectors);
+    }
 
     /**
      * Creates an instance of SearchIndexerIndexProjection class.

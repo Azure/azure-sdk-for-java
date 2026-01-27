@@ -77,7 +77,6 @@ public final class ContentUnderstandingSkill extends SearchIndexerSkill {
      * @param extractionOptions the extractionOptions value to set.
      * @return the ContentUnderstandingSkill object itself.
      */
-    @Generated
     public ContentUnderstandingSkill
         setExtractionOptions(ContentUnderstandingSkillExtractionOptions... extractionOptions) {
         this.extractionOptions = (extractionOptions == null) ? null : Arrays.asList(extractionOptions);

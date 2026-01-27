@@ -11,7 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchableField;
@@ -34,6 +33,7 @@ import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.VectorFilterMode;
@@ -162,7 +162,7 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(new SearchPostOptions()
+        SearchPagedIterable searchResults = searchClient.search(new SearchOptions()
                 .setVectorQueries(vectorizableQuery));
 
         int count = 0;
@@ -188,7 +188,7 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(new SearchPostOptions()
+        SearchPagedIterable searchResults = searchClient.search(new SearchOptions()
             .setVectorQueries(vectorizableQuery)
             .setVectorFilterMode(VectorFilterMode.POST_FILTER)
             .setFilter("Category eq 'Luxury'"));
@@ -216,7 +216,7 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(new SearchPostOptions()
+        SearchPagedIterable searchResults = searchClient.search(new SearchOptions()
             .setSearchText("Top hotels in town")
             .setVectorQueries(vectorizableQuery));
 
@@ -246,7 +246,7 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText(
+        SearchOptions searchOptions = new SearchOptions().setSearchText(
             "Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setQueryType(QueryType.SEMANTIC)
             .setVectorQueries(vectorizableQuery)
@@ -303,7 +303,7 @@ public class VectorSearchExample {
             // Set the fields to compare the vector against. This is a comma-delimited list of field names.
             .setFields("DescriptionVector");
 
-        SearchPagedIterable searchResults = searchClient.search(new SearchPostOptions()
+        SearchPagedIterable searchResults = searchClient.search(new SearchOptions()
             .setVectorQueries(firstVectorizableQuery, secondVectorizableQuery, thirdVectorizableQuery));
 
         int count = 0;

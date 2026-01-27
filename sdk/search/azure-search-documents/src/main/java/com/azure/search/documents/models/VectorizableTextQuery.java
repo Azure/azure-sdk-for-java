@@ -134,16 +134,6 @@ public final class VectorizableTextQuery extends VectorQuery {
      */
     @Generated
     @Override
-    public VectorizableTextQuery setWeight(Double weight) {
-        super.setWeight(weight);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public VectorizableTextQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
         return this;
@@ -206,7 +196,7 @@ public final class VectorizableTextQuery extends VectorQuery {
             String fields = null;
             Boolean exhaustive = null;
             Double oversampling = null;
-            Double weight = null;
+            Float weight = null;
             VectorThreshold threshold = null;
             String filterOverride = null;
             Integer perDocumentVectorLimit = null;
@@ -225,7 +215,7 @@ public final class VectorizableTextQuery extends VectorQuery {
                 } else if ("oversampling".equals(fieldName)) {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
-                    weight = reader.getNullable(JsonReader::getDouble);
+                    weight = reader.getNullable(JsonReader::getFloat);
                 } else if ("threshold".equals(fieldName)) {
                     threshold = VectorThreshold.fromJson(reader);
                 } else if ("filterOverride".equals(fieldName)) {
@@ -255,5 +245,15 @@ public final class VectorizableTextQuery extends VectorQuery {
             deserializedVectorizableTextQuery.queryRewrites = queryRewrites;
             return deserializedVectorizableTextQuery;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableTextQuery setWeight(Float weight) {
+        super.setWeight(weight);
+        return this;
     }
 }

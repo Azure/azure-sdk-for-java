@@ -114,16 +114,6 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
      */
     @Generated
     @Override
-    public VectorizableImageUrlQuery setWeight(Double weight) {
-        super.setWeight(weight);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public VectorizableImageUrlQuery setThreshold(VectorThreshold threshold) {
         super.setThreshold(threshold);
         return this;
@@ -193,7 +183,7 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
                 } else if ("oversampling".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.setOversampling(reader.getNullable(JsonReader::getDouble));
                 } else if ("weight".equals(fieldName)) {
-                    deserializedVectorizableImageUrlQuery.setWeight(reader.getNullable(JsonReader::getDouble));
+                    deserializedVectorizableImageUrlQuery.setWeight(reader.getNullable(JsonReader::getFloat));
                 } else if ("threshold".equals(fieldName)) {
                     deserializedVectorizableImageUrlQuery.setThreshold(VectorThreshold.fromJson(reader));
                 } else if ("filterOverride".equals(fieldName)) {
@@ -211,5 +201,15 @@ public final class VectorizableImageUrlQuery extends VectorQuery {
             }
             return deserializedVectorizableImageUrlQuery;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableImageUrlQuery setWeight(Float weight) {
+        super.setWeight(weight);
+        return this;
     }
 }

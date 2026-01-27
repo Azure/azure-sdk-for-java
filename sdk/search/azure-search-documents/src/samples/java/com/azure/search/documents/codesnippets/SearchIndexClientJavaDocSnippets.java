@@ -110,14 +110,14 @@ public class SearchIndexClientJavaDocSnippets {
      */
     public static void updateIndex() {
         searchIndexClient = createSearchIndexClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateIndex#SearchIndex
         SearchIndex searchIndex = searchIndexClient.getIndex("indexName");
         if (searchIndex != null) {
             searchIndex.getFields().clear();
             searchIndex.getFields().add(new SearchField("newField", SearchFieldDataType.STRING));
             searchIndexClient.createOrUpdateIndex(searchIndex);
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex
+        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateIndex#SearchIndex
     }
 
     /**
@@ -171,14 +171,14 @@ public class SearchIndexClientJavaDocSnippets {
      */
     public static void updateSynonymMap() {
         searchIndexClient = createSearchIndexClient();
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateSynonymMap#SynonymMap
         SynonymMap synonymMap = searchIndexClient.getSynonymMap("synonymMapName");
         if (synonymMap != null) {
             synonymMap.getSynonyms().clear();
             synonymMap.getSynonyms().add("inn,hotel,motel");
             searchIndexClient.createOrUpdateSynonymMap(synonymMap);
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap
+        // END: com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createOrUpdateSynonymMap#SynonymMap
     }
 
     /**

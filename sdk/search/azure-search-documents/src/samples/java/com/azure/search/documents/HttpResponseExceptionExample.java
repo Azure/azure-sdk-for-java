@@ -7,7 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.concurrent.CountDownLatch;
@@ -48,7 +48,7 @@ public class HttpResponseExceptionExample {
 
         try {
             // Perform a search on a non-existent field
-            SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("hotel")
+            SearchOptions searchOptions = new SearchOptions().setSearchText("hotel")
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
             for (SearchResult result : client.search(searchOptions)) {
@@ -74,7 +74,7 @@ public class HttpResponseExceptionExample {
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("hotel")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("hotel")
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
         CountDownLatch latch = new CountDownLatch(1);

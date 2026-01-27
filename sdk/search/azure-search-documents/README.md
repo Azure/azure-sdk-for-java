@@ -316,7 +316,7 @@ Let's explore them with a search for a "luxury" hotel.
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
 ```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
     Map<String, Object> doc = searchResult.getAdditionalProperties();
     System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("HotelId"), doc.get("HotelName"));
 }
@@ -356,7 +356,7 @@ public static class Hotel {
 Use it in place of `SearchDocument` when querying.
 
 ```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))) {
+for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
     Map<String, Object> doc = searchResult.getAdditionalProperties();
     System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("Id"), doc.get("Name"));
 }
@@ -371,8 +371,7 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
 
 ```java readme-sample-searchWithSearchOptions
-SearchPostOptions options = new SearchPostOptions()
-    .setSearchText("luxury")
+SearchOptions options = new SearchOptions().setSearchText("luxury")
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
@@ -486,7 +485,7 @@ The examples so far have been using synchronous APIs, but we provide full suppor
 to use [SearchAsyncClient](#create-a-searchclient).
 
 ```java readme-sample-searchWithAsyncClient
-SEARCH_ASYNC_CLIENT.search(new SearchPostOptions().setSearchText("luxury"))
+SEARCH_ASYNC_CLIENT.search(new SearchOptions().setSearchText("luxury"))
     .subscribe(result -> {
         Map<String, Object> hotel = result.getAdditionalProperties();
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
@@ -530,7 +529,7 @@ Any Search API operation that fails will throw an [`HttpResponseException`][Http
 
 ```java readme-sample-handleErrorsWithSyncClient
 try {
-    Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchPostOptions().setSearchText("hotel"));
+    Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchOptions().setSearchText("hotel"));
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service

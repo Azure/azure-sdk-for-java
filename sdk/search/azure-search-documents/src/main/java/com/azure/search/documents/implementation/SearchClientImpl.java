@@ -211,7 +211,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> searchPost(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> search(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
@@ -223,7 +223,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> searchPostSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> searchSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
@@ -279,7 +279,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> suggestPost(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> suggest(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
@@ -291,7 +291,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> suggestPostSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> suggestSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
@@ -347,7 +347,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> autocompletePost(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> autocomplete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
@@ -359,7 +359,7 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> autocompletePostSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> autocompleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
@@ -639,7 +639,7 @@ public final class SearchClientImpl {
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
+     *                 weight: Float (Optional)
      *                 threshold (Optional): {
      *                     kind: String(vectorSimilarity/searchScore) (Required)
      *                 }
@@ -972,7 +972,7 @@ public final class SearchClientImpl {
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
+     *                 weight: Float (Optional)
      *                 threshold (Optional): {
      *                     kind: String(vectorSimilarity/searchScore) (Required)
      *                 }
@@ -1147,7 +1147,7 @@ public final class SearchClientImpl {
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
-     *             weight: Double (Optional)
+     *             weight: Float (Optional)
      *             threshold (Optional): {
      *                 kind: String(vectorSimilarity/searchScore) (Required)
      *             }
@@ -1267,7 +1267,7 @@ public final class SearchClientImpl {
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
+     *                 weight: Float (Optional)
      *                 threshold (Optional): {
      *                     kind: String(vectorSimilarity/searchScore) (Required)
      *                 }
@@ -1370,13 +1370,12 @@ public final class SearchClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> searchPostWithResponseAsync(BinaryData searchPostRequest,
+    public Mono<Response<BinaryData>> searchWithResponseAsync(BinaryData searchPostRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return FluxUtil
-            .withContext(context -> service.searchPost(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, this.getIndexName(), contentType, searchPostRequest, requestOptions, context));
+        return FluxUtil.withContext(context -> service.search(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, this.getIndexName(), contentType, searchPostRequest, requestOptions, context));
     }
 
     /**
@@ -1447,7 +1446,7 @@ public final class SearchClientImpl {
      *             fields: String (Optional)
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
-     *             weight: Double (Optional)
+     *             weight: Float (Optional)
      *             threshold (Optional): {
      *                 kind: String(vectorSimilarity/searchScore) (Required)
      *             }
@@ -1567,7 +1566,7 @@ public final class SearchClientImpl {
      *                 fields: String (Optional)
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
-     *                 weight: Double (Optional)
+     *                 weight: Float (Optional)
      *                 threshold (Optional): {
      *                     kind: String(vectorSimilarity/searchScore) (Required)
      *                 }
@@ -1669,10 +1668,10 @@ public final class SearchClientImpl {
      * @return response containing search results from an index along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> searchPostWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> searchWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.searchPostSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.searchSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             this.getIndexName(), contentType, searchPostRequest, requestOptions, Context.NONE);
     }
 
@@ -1975,13 +1974,13 @@ public final class SearchClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> suggestPostWithResponseAsync(BinaryData suggestPostRequest,
+    public Mono<Response<BinaryData>> suggestWithResponseAsync(BinaryData suggestPostRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.suggestPost(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, this.getIndexName(), contentType, suggestPostRequest, requestOptions, context));
+            .withContext(context -> service.suggest(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+                this.getIndexName(), contentType, suggestPostRequest, requestOptions, context));
     }
 
     /**
@@ -2039,10 +2038,10 @@ public final class SearchClientImpl {
      * @return response containing suggestion query results from an index along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestPostWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.suggestPostSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.suggestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             this.getIndexName(), contentType, suggestPostRequest, requestOptions, Context.NONE);
     }
 
@@ -2329,12 +2328,12 @@ public final class SearchClientImpl {
      * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> autocompletePostWithResponseAsync(BinaryData autocompletePostRequest,
+    public Mono<Response<BinaryData>> autocompleteWithResponseAsync(BinaryData autocompletePostRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.autocompletePost(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            .withContext(context -> service.autocomplete(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 accept, this.getIndexName(), contentType, autocompletePostRequest, requestOptions, context));
     }
 
@@ -2386,11 +2385,11 @@ public final class SearchClientImpl {
      * @return the result of Autocomplete query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> autocompletePostWithResponse(BinaryData autocompletePostRequest,
+    public Response<BinaryData> autocompleteWithResponse(BinaryData autocompletePostRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.autocompletePostSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.autocompleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
             this.getIndexName(), contentType, autocompletePostRequest, requestOptions, Context.NONE);
     }
 }

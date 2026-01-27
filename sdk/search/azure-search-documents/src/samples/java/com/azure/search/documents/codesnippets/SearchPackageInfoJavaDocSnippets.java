@@ -8,7 +8,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
@@ -22,7 +21,8 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.SearchAudience;
+import com.azure.search.documents.SearchAudience;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class SearchPackageInfoJavaDocSnippets {
     public void searchDocumentDictionary() {
         SearchClient searchClient = createSearchClient();
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String
-        for (SearchResult result : searchClient.search(new SearchPostOptions().setSearchText("luxury"))) {
+        for (SearchResult result : searchClient.search(new SearchOptions().setSearchText("luxury"))) {
             Map<String, Object> document = result.getAdditionalProperties();
             System.out.printf("Hotel ID: %s%n", document.get("HotelId"));
             System.out.printf("Hotel Name: %s%n", document.get("HotelName"));
@@ -130,7 +130,7 @@ public class SearchPackageInfoJavaDocSnippets {
 
 
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method
-        for (SearchResult result : searchClient.search(new SearchPostOptions().setSearchText("luxury"))) {
+        for (SearchResult result : searchClient.search(new SearchOptions().setSearchText("luxury"))) {
             Map<String, Object> hotel = result.getAdditionalProperties();
             System.out.printf("Hotel ID: %s%n", hotel.get("HotelId"));
             System.out.printf("Hotel Name: %s%n", hotel.get("HotelName"));
@@ -145,7 +145,7 @@ public class SearchPackageInfoJavaDocSnippets {
     public void searchWithOptions() {
         SearchClient searchClient = createSearchClient();
         // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions
-        SearchPostOptions options = new SearchPostOptions().setSearchText("luxury")
+        SearchOptions options = new SearchOptions().setSearchText("luxury")
             .setFilter("rating gt 4")
             .setOrderBy("rating desc")
             .setTop(5);
@@ -229,11 +229,11 @@ public class SearchPackageInfoJavaDocSnippets {
      */
     public void getDocument() {
         SearchClient searchClient = createSearchClient();
-        // BEGIN: com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String
+        // BEGIN: com.azure.search.documents.packageInfo-SearchClient.getDocument#String
         Map<String, Object> hotel = searchClient.getDocument("1").getAdditionalProperties();
         System.out.printf("Hotel ID: %s%n", hotel.get("HotelId"));
         System.out.printf("Hotel Name: %s%n", hotel.get("HotelName"));
-        // END: com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String
+        // END: com.azure.search.documents.packageInfo-SearchClient.getDocument#String
     }
 
     /**
@@ -278,9 +278,9 @@ public class SearchPackageInfoJavaDocSnippets {
      */
     public void handleSearchError() {
         SearchClient searchClient = createSearchClient();
-        // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Error
+        // BEGIN: com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions-error
         try {
-            searchClient.search(new SearchPostOptions().setSearchText("hotel"))
+            searchClient.search(new SearchOptions().setSearchText("hotel"))
                 .forEach(result -> System.out.println(result.getAdditionalProperties().get("hotelName")));
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
@@ -289,7 +289,7 @@ public class SearchPackageInfoJavaDocSnippets {
             System.out.println("Status Code: " + response.getStatusCode());
             System.out.println("Message: " + ex.getMessage());
         }
-        // END: com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Error
+        // END: com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions-error
     }
 
 }

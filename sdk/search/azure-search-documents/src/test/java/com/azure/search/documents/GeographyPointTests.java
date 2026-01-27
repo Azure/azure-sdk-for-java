@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -19,6 +18,7 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.SearchOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.AfterAll;
@@ -122,11 +122,10 @@ public class GeographyPointTests extends SearchTestBase {
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        actualDocuments
-            = searchClient.search(new SearchPostOptions().setSearchText("Tourist location").setOrderBy("id"))
-                .stream()
-                .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
-                .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
+        actualDocuments = searchClient.search(new SearchOptions().setSearchText("Tourist location").setOrderBy("id"))
+            .stream()
+            .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
+            .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 
         compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
     }
@@ -145,7 +144,7 @@ public class GeographyPointTests extends SearchTestBase {
             .verifyComplete();
 
         Mono<Map<String, SimpleDocument>> searchDocumentsMono
-            = searchAsyncClient.search(new SearchPostOptions().setSearchText("Tourist location").setOrderBy("id"))
+            = searchAsyncClient.search(new SearchOptions().setSearchText("Tourist location").setOrderBy("id"))
                 .map(doc -> convertFromMapStringObject(doc.getAdditionalProperties(), SimpleDocument::fromJson))
                 .collectMap(SimpleDocument::getId);
 

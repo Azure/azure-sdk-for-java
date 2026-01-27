@@ -75,7 +75,6 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param ignoreScripts the ignoreScripts value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
-    @Generated
     public CjkBigramTokenFilter setIgnoreScripts(CjkBigramTokenFilterScripts... ignoreScripts) {
         this.ignoreScripts = (ignoreScripts == null) ? null : Arrays.asList(ignoreScripts);
         return this;

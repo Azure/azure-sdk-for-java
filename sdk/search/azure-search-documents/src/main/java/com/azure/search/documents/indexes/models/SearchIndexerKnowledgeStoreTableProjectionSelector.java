@@ -95,6 +95,15 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     /**
      * {@inheritDoc}
      */
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setInputs(InputFieldMappingEntry... inputs) {
+        super.setInputs(inputs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Generated
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {

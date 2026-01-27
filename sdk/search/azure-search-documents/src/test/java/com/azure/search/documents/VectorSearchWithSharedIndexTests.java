@@ -5,7 +5,7 @@ package com.azure.search.documents;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.search.documents.implementation.models.SearchPostOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
@@ -103,8 +103,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void singleVectorSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setSelect("HotelId", "HotelName");
+        SearchOptions searchOptions
+            = new SearchOptions().setVectorQueries(createDescriptionVectorQuery()).setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(searchOptions).collectList())
             .assertNext(results -> assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"),
@@ -115,8 +115,8 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     @Test
     public void singleVectorSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
-            .setSelect("HotelId", "HotelName");
+        SearchOptions searchOptions
+            = new SearchOptions().setVectorQueries(createDescriptionVectorQuery()).setSelect("HotelId", "HotelName");
 
         List<SearchResult> results = searchClient.search(searchOptions).stream().collect(Collectors.toList());
         assertKeysEqual(results, r -> (String) r.getAdditionalProperties().get("HotelId"), "3", "5", "1");
@@ -126,7 +126,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void singleVectorSearchWithFilterAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName", "Category")
             .setFilter("Category eq 'Budget'");
 
@@ -140,7 +140,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void singleVectorSearchWithFilterSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName", "Category")
             .setFilter("Category eq 'Budget'");
 
@@ -152,7 +152,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void simpleHybridSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("Top hotels in town")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("Top hotels in town")
             .setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName");
 
@@ -166,7 +166,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void simpleHybridSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("Top hotels in town")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("Top hotels in town")
             .setVectorQueries(createDescriptionVectorQuery())
             .setSelect("HotelId", "HotelName");
 
@@ -179,7 +179,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void semanticHybridSearchAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions()
+        SearchOptions searchOptions = new SearchOptions()
             .setSearchText(
                 "Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setVectorQueries(createDescriptionVectorQuery())
@@ -217,7 +217,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void semanticHybridSearchSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions()
+        SearchOptions searchOptions = new SearchOptions()
             .setSearchText(
                 "Is there any hotel located on the main commercial artery of the city in the heart of New York?")
             .setVectorQueries(createDescriptionVectorQuery())
@@ -258,7 +258,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void hybridSearchWithVectorFilterOverrideSync() {
         // create a new index with a vector field
         // create a hybrid search query with a vector search query and a regular search query
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("fancy")
             .setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
             .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
@@ -276,7 +276,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void hybridSearchWithVectorFilterOverrideAsync() {
         // create a new index with a vector field
         // create a hybrid search query with a vector search query and a regular search query
-        SearchPostOptions searchOptions = new SearchPostOptions().setSearchText("fancy")
+        SearchOptions searchOptions = new SearchOptions().setSearchText("fancy")
             .setFilter("Rating ge 3")
             .setSelect("HotelId", "HotelName", "Rating")
             .setVectorQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'"));
@@ -294,7 +294,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithPostFilterModeSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setVectorFilterMode(VectorFilterMode.POST_FILTER)
             .setSelect("HotelId", "HotelName");
 
@@ -306,7 +306,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithPostFilterModeAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setVectorFilterMode(VectorFilterMode.POST_FILTER)
             .setSelect("HotelId", "HotelName");
 
@@ -320,7 +320,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithStrictPostFilterModeSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
             .setSelect("HotelId", "HotelName");
 
@@ -332,7 +332,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     public void vectorSearchWithStrictPostFilterModeAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
-        SearchPostOptions searchOptions = new SearchPostOptions().setVectorQueries(createDescriptionVectorQuery())
+        SearchOptions searchOptions = new SearchOptions().setVectorQueries(createDescriptionVectorQuery())
             .setVectorFilterMode(VectorFilterMode.STRICT_POST_FILTER)
             .setSelect("HotelId", "HotelName");
 
