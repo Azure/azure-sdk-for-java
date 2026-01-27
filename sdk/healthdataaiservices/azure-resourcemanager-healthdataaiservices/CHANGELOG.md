@@ -1,6 +1,8 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-01-27)
+
+- Azure Resource Manager Health Data AI Services client library for Java. This package contains Microsoft Azure SDK for Health Data AI Services Management SDK.  Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
