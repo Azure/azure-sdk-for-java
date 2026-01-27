@@ -621,6 +621,10 @@ public final class TransactionalBulkExecutor implements Disposable {
                     this.operationContextText,
                     getThreadInfo());
 
+                if (diagnosticsTracker != null && response.getDiagnostics() != null) {
+                    diagnosticsTracker.trackDiagnostics(response.getDiagnostics().getDiagnosticsContext());
+                }
+
                 if (response.isSuccessStatusCode()) {
                     recordSuccessfulResponseInThreshold(cosmosBatch, thresholds);
                     return Mono.just(
