@@ -11,16 +11,6 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum AgentsServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2025-05-01.
-     */
-    V2025_05_01("2025-05-01"),
-
-    /**
-     * Enum value 2025-05-15-preview.
-     */
-    V2025_05_15_PREVIEW("2025-05-15-preview"),
-
-    /**
      * Enum value 2025-11-15-preview.
      */
     V2025_11_15_PREVIEW("2025-11-15-preview");

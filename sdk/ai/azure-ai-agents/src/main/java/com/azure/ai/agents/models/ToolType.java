@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * A tool that can be used to generate a response.
+ * Defines values for ToolType.
  */
 public final class ToolType extends ExpandableStringEnum<ToolType> {
 
@@ -156,4 +156,28 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static Collection<ToolType> values() {
         return values(ToolType.class);
     }
+
+    /**
+     * Static value web_search for ToolType.
+     */
+    @Generated
+    public static final ToolType WEB_SEARCH = fromString("web_search");
+
+    /**
+     * Static value shell for ToolType.
+     */
+    @Generated
+    public static final ToolType SHELL = fromString("shell");
+
+    /**
+     * Static value custom for ToolType.
+     */
+    @Generated
+    public static final ToolType CUSTOM = fromString("custom");
+
+    /**
+     * Static value apply_patch for ToolType.
+     */
+    @Generated
+    public static final ToolType APPLY_PATCH = fromString("apply_patch");
 }

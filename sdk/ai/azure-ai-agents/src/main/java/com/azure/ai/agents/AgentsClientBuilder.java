@@ -41,7 +41,6 @@ import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

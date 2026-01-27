@@ -18,16 +18,16 @@ import java.io.IOException;
 public final class MCPToolRequireApproval implements JsonSerializable<MCPToolRequireApproval> {
 
     /*
-     * A list of tools that always require approval.
+     * The always property.
      */
     @Generated
-    private MCPToolRequireApprovalAlways always;
+    private MCPToolFilter always;
 
     /*
-     * A list of tools that never require approval.
+     * The never property.
      */
     @Generated
-    private MCPToolRequireApprovalNever never;
+    private MCPToolFilter never;
 
     /**
      * Creates an instance of MCPToolRequireApproval class.
@@ -37,47 +37,23 @@ public final class MCPToolRequireApproval implements JsonSerializable<MCPToolReq
     }
 
     /**
-     * Get the always property: A list of tools that always require approval.
+     * Get the always property: The always property.
      *
      * @return the always value.
      */
     @Generated
-    public MCPToolRequireApprovalAlways getAlways() {
+    public MCPToolFilter getAlways() {
         return this.always;
     }
 
     /**
-     * Set the always property: A list of tools that always require approval.
-     *
-     * @param always the always value to set.
-     * @return the MCPToolRequireApproval object itself.
-     */
-    @Generated
-    public MCPToolRequireApproval setAlways(MCPToolRequireApprovalAlways always) {
-        this.always = always;
-        return this;
-    }
-
-    /**
-     * Get the never property: A list of tools that never require approval.
+     * Get the never property: The never property.
      *
      * @return the never value.
      */
     @Generated
-    public MCPToolRequireApprovalNever getNever() {
+    public MCPToolFilter getNever() {
         return this.never;
-    }
-
-    /**
-     * Set the never property: A list of tools that never require approval.
-     *
-     * @param never the never value to set.
-     * @return the MCPToolRequireApproval object itself.
-     */
-    @Generated
-    public MCPToolRequireApproval setNever(MCPToolRequireApprovalNever never) {
-        this.never = never;
-        return this;
     }
 
     /**
@@ -108,14 +84,38 @@ public final class MCPToolRequireApproval implements JsonSerializable<MCPToolReq
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("always".equals(fieldName)) {
-                    deserializedMCPToolRequireApproval.always = MCPToolRequireApprovalAlways.fromJson(reader);
+                    deserializedMCPToolRequireApproval.always = MCPToolFilter.fromJson(reader);
                 } else if ("never".equals(fieldName)) {
-                    deserializedMCPToolRequireApproval.never = MCPToolRequireApprovalNever.fromJson(reader);
+                    deserializedMCPToolRequireApproval.never = MCPToolFilter.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedMCPToolRequireApproval;
         });
+    }
+
+    /**
+     * Set the always property: The always property.
+     *
+     * @param always the always value to set.
+     * @return the MCPToolRequireApproval object itself.
+     */
+    @Generated
+    public MCPToolRequireApproval setAlways(MCPToolFilter always) {
+        this.always = always;
+        return this;
+    }
+
+    /**
+     * Set the never property: The never property.
+     *
+     * @param never the never value to set.
+     * @return the MCPToolRequireApproval object itself.
+     */
+    @Generated
+    public MCPToolRequireApproval setNever(MCPToolFilter never) {
+        this.never = never;
+        return this;
     }
 }

@@ -12,6 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+ * Code interpreter
+ *
  * A tool that runs Python code to help generate a response to a prompt.
  */
 @Immutable
@@ -25,7 +27,8 @@ public final class CodeInterpreterTool extends Tool {
 
     /*
      * The code interpreter container. Can be a container ID or an object that
-     * specifies uploaded file IDs to make available to your code.
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
      */
     @Generated
     private final BinaryData container;
@@ -53,7 +56,8 @@ public final class CodeInterpreterTool extends Tool {
 
     /**
      * Get the container property: The code interpreter container. Can be a container ID or an object that
-     * specifies uploaded file IDs to make available to your code.
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
      *
      * @return the container value.
      */

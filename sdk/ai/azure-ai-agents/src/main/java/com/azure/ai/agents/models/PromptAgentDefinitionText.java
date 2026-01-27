@@ -21,7 +21,7 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
      * The format property.
      */
     @Generated
-    private ResponseTextFormatConfiguration format;
+    private TextResponseFormatConfiguration format;
 
     /**
      * Creates an instance of PromptAgentDefinitionText class.
@@ -36,20 +36,8 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
      * @return the format value.
      */
     @Generated
-    public ResponseTextFormatConfiguration getFormat() {
+    public TextResponseFormatConfiguration getFormat() {
         return this.format;
-    }
-
-    /**
-     * Set the format property: The format property.
-     *
-     * @param format the format value to set.
-     * @return the PromptAgentDefinitionText object itself.
-     */
-    @Generated
-    public PromptAgentDefinitionText setFormat(ResponseTextFormatConfiguration format) {
-        this.format = format;
-        return this;
     }
 
     /**
@@ -79,12 +67,24 @@ public final class PromptAgentDefinitionText implements JsonSerializable<PromptA
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("format".equals(fieldName)) {
-                    deserializedPromptAgentDefinitionText.format = ResponseTextFormatConfiguration.fromJson(reader);
+                    deserializedPromptAgentDefinitionText.format = TextResponseFormatConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedPromptAgentDefinitionText;
         });
+    }
+
+    /**
+     * Set the format property: The format property.
+     *
+     * @param format the format value to set.
+     * @return the PromptAgentDefinitionText object itself.
+     */
+    @Generated
+    public PromptAgentDefinitionText setFormat(TextResponseFormatConfiguration format) {
+        this.format = format;
+        return this;
     }
 }
