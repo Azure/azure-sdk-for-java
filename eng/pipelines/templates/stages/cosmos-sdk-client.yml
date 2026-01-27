@@ -125,7 +125,34 @@ extends:
                   keytool -keystore cacerts -delete -noprompt -alias CosmosDbEmulatorCert -storepass changeit
                   keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
                 displayName: 'Create Java TrustStore'
-
+              PostSteps:
+                - powershell: |
+                    Write-Host "===== SCALATEST REPORTS (TXT) ====="
+                    Get-ChildItem -Path "$(System.DefaultWorkingDirectory)" -Recurse -Filter "*.txt" | Where-Object { $_.FullName -like "*surefire-reports*" } | ForEach-Object {
+                      Write-Host "File: $($_.FullName)"
+                      Get-Content $_.FullName
+                    }
+                    
+                    Write-Host "===== SCALATEST REPORTS (OUT) ====="
+                    Get-ChildItem -Path "$(System.DefaultWorkingDirectory)" -Recurse -Filter "*.out" | Where-Object { $_.FullName -like "*surefire-reports*" } | ForEach-Object {
+                      Write-Host "File: $($_.FullName)"
+                      Get-Content $_.FullName
+                    }
+                    
+                    Write-Host "===== SCALATEST REPORTS (ERR) ====="
+                    Get-ChildItem -Path "$(System.DefaultWorkingDirectory)" -Recurse -Filter "*.err" | Where-Object { $_.FullName -like "*surefire-reports*" } | ForEach-Object {
+                      Write-Host "File: $($_.FullName)"
+                      Get-Content $_.FullName
+                    }
+                    
+                    Write-Host "===== SCALATEST XML (RAW) ====="
+                    Get-ChildItem -Path "$(System.DefaultWorkingDirectory)" -Recurse -Filter "*.xml" | Where-Object { $_.FullName -like "*surefire-reports*" } | ForEach-Object {
+                      Write-Host "File: $($_.FullName)"
+                      Get-Content $_.FullName
+                    }
+                  displayName: "Print ScalaTest report files"
+                  errorActionPreference: continue
+                  condition: always()
       - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
         - ${{ each mode in parameters.VnextEmulatorModes }}:
           - stage:

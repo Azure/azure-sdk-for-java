@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation.http;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -28,8 +29,11 @@ import com.openai.errors.RateLimitException;
 import com.openai.errors.UnauthorizedException;
 import com.openai.errors.UnexpectedStatusCodeException;
 import com.openai.errors.UnprocessableEntityException;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -82,10 +86,14 @@ public final class HttpClientHelper {
             Objects.requireNonNull(request, "request");
             Objects.requireNonNull(requestOptions, "requestOptions");
 
-            com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-
-            return new AzureHttpResponseAdapter(
-                this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+            try {
+                com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
+                return new AzureHttpResponseAdapter(
+                    this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+            } catch (MalformedURLException exception) {
+                throw new OpenAIException("Invalid URL in request: " + exception.getMessage(),
+                    LOGGER.logThrowableAsError(exception));
+            }
         }
 
         @Override
@@ -98,9 +106,8 @@ public final class HttpClientHelper {
             Objects.requireNonNull(request, "request");
             Objects.requireNonNull(requestOptions, "requestOptions");
 
-            final com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
-
-            return this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions))
+            return Mono.fromCallable(() -> buildAzureRequest(request))
+                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions)))
                 .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
                 .toFuture();
@@ -163,7 +170,11 @@ public final class HttpClientHelper {
             } else if (throwable instanceof TimeoutException) {
                 return throwable;
             } else {
-                return new OpenAIException(throwable.getMessage(), throwable.getCause());
+                if (throwable instanceof AzureException) {
+                    return new OpenAIException(throwable.getMessage(), throwable.getCause());
+                } else {
+                    return new OpenAIException(throwable.getMessage(), throwable);
+                }
             }
         }
 
@@ -179,7 +190,8 @@ public final class HttpClientHelper {
         /**
          * Converts the OpenAI request metadata and body into an Azure {@link com.azure.core.http.HttpRequest}.
          */
-        private static com.azure.core.http.HttpRequest buildAzureRequest(HttpRequest request) {
+        private static com.azure.core.http.HttpRequest buildAzureRequest(HttpRequest request)
+            throws MalformedURLException {
             HttpRequestBody requestBody = request.body();
             String contentType = requestBody != null ? requestBody.contentType() : null;
             BinaryData bodyData = null;
@@ -196,7 +208,7 @@ public final class HttpClientHelper {
             }
 
             com.azure.core.http.HttpRequest azureRequest = new com.azure.core.http.HttpRequest(
-                HttpMethod.valueOf(request.method().name()), OpenAiRequestUrlBuilder.buildUrl(request), headers);
+                HttpMethod.valueOf(request.method().name()), URI.create(request.url()).toURL(), headers);
 
             if (bodyData != null) {
                 azureRequest.setBody(bodyData);
@@ -230,7 +242,7 @@ public final class HttpClientHelper {
         private static Context buildRequestContext(RequestOptions requestOptions) {
             Context context = new Context("azure-eagerly-read-response", true);
             Timeout timeout = requestOptions.getTimeout();
-            // we use "read" as it's the closes thing to the "response timeout"
+            // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {
                 context = context.addData("azure-response-timeout", timeout.read());
             }

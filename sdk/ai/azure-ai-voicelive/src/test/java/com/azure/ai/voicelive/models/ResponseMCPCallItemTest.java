@@ -6,8 +6,6 @@ package com.azure.ai.voicelive.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -18,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class ResponseMCPCallItemTest {
 
     @Test
-    void testFromJsonWithRequiredFields() throws IOException {
+    void testFromJsonWithRequiredFields() {
         // Arrange
         String json = "{" + "\"id\":\"item-1\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","
             + "\"arguments\":\"{\\\"param\\\":\\\"value\\\"}\"," + "\"server_label\":\"test-server\","
@@ -37,7 +35,7 @@ class ResponseMCPCallItemTest {
     }
 
     @Test
-    void testFromJsonWithAllFields() throws IOException {
+    void testFromJsonWithAllFields() {
         // Arrange
         String json = "{" + "\"id\":\"item-2\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","
             + "\"arguments\":\"{}\"," + "\"server_label\":\"my-server\"," + "\"name\":\"my-tool\","
@@ -59,7 +57,7 @@ class ResponseMCPCallItemTest {
     }
 
     @Test
-    void testTypeIsAlwaysMcpCall() throws IOException {
+    void testTypeIsAlwaysMcpCall() {
         // Arrange
         String json = "{" + "\"id\":\"item-3\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","
             + "\"arguments\":\"{}\"," + "\"server_label\":\"server\"," + "\"name\":\"tool\"" + "}";
@@ -72,7 +70,7 @@ class ResponseMCPCallItemTest {
     }
 
     @Test
-    void testWithNullOptionalFields() throws IOException {
+    void testWithNullOptionalFields() {
         // Arrange
         String json = "{" + "\"id\":\"item-4\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","
             + "\"arguments\":\"{\\\"test\\\":true}\"," + "\"server_label\":\"label\"," + "\"name\":\"toolname\"" + "}";
@@ -88,7 +86,7 @@ class ResponseMCPCallItemTest {
     }
 
     @Test
-    void testJsonRoundTrip() throws IOException {
+    void testJsonRoundTrip() {
         // Arrange
         String originalJson = "{" + "\"id\":\"test-id\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","
             + "\"arguments\":\"{\\\"key\\\":\\\"value\\\"}\"," + "\"server_label\":\"test-server\","
@@ -110,7 +108,7 @@ class ResponseMCPCallItemTest {
     }
 
     @Test
-    void testComplexArgumentsJson() throws IOException {
+    void testComplexArgumentsJson() {
         // Arrange
         String complexArgs = "{\"nested\":{\"array\":[1,2,3],\"string\":\"value\"},\"number\":42}";
         String json = "{" + "\"id\":\"item-5\"," + "\"object\":\"session.item\"," + "\"type\":\"mcp_call\","

@@ -12,20 +12,20 @@ public final class IntelligencePackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntelligencePackInner model
-            = BinaryData.fromString("{\"name\":\"xmyskp\",\"enabled\":true,\"displayName\":\"btkcxywnytnrsyn\"}")
+            = BinaryData.fromString("{\"name\":\"zidnsezcxtbzsgfy\",\"enabled\":false,\"displayName\":\"ewmdw\"}")
                 .toObject(IntelligencePackInner.class);
-        Assertions.assertEquals("xmyskp", model.name());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.displayName());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.name());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("ewmdw", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntelligencePackInner model
-            = new IntelligencePackInner().withName("xmyskp").withEnabled(true).withDisplayName("btkcxywnytnrsyn");
+            = new IntelligencePackInner().withName("zidnsezcxtbzsgfy").withEnabled(false).withDisplayName("ewmdw");
         model = BinaryData.fromObject(model).toObject(IntelligencePackInner.class);
-        Assertions.assertEquals("xmyskp", model.name());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.displayName());
+        Assertions.assertEquals("zidnsezcxtbzsgfy", model.name());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("ewmdw", model.displayName());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
+import com.azure.resourcemanager.avs.fluent.models.VcfLicenseInner;
 import java.util.List;
 import java.util.Map;
 
@@ -243,6 +244,13 @@ public interface PrivateCloud {
     DnsZoneType dnsZoneType();
 
     /**
+     * Gets the vcfLicense property: The private cloud license.
+     * 
+     * @return the vcfLicense value.
+     */
+    VcfLicense vcfLicense();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -344,7 +352,7 @@ public interface PrivateCloud {
             DefinitionStages.WithExtendedNetworkBlocks, DefinitionStages.WithCircuit, DefinitionStages.WithNetworkBlock,
             DefinitionStages.WithVcenterPassword, DefinitionStages.WithNsxtPassword,
             DefinitionStages.WithSecondaryCircuit, DefinitionStages.WithVirtualNetworkId,
-            DefinitionStages.WithDnsZoneType {
+            DefinitionStages.WithDnsZoneType, DefinitionStages.WithVcfLicense {
             /**
              * Executes the create request.
              * 
@@ -587,6 +595,19 @@ public interface PrivateCloud {
              */
             WithCreate withDnsZoneType(DnsZoneType dnsZoneType);
         }
+
+        /**
+         * The stage of the PrivateCloud definition allowing to specify vcfLicense.
+         */
+        interface WithVcfLicense {
+            /**
+             * Specifies the vcfLicense property: The private cloud license.
+             * 
+             * @param vcfLicense The private cloud license.
+             * @return the next definition stage.
+             */
+            WithCreate withVcfLicense(VcfLicenseInner vcfLicense);
+        }
     }
 
     /**
@@ -818,4 +839,24 @@ public interface PrivateCloud {
      * @return administrative credentials for accessing vCenter and NSX-T.
      */
     AdminCredentials listAdminCredentials();
+
+    /**
+     * Get the license for the private cloud.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the license for the private cloud along with {@link Response}.
+     */
+    Response<VcfLicense> getVcfLicenseWithResponse(Context context);
+
+    /**
+     * Get the license for the private cloud.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the license for the private cloud.
+     */
+    VcfLicense getVcfLicense();
 }

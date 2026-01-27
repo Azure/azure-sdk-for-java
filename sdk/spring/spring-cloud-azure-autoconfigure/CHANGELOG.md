@@ -1,6 +1,6 @@
 # Release History
 
-## 6.1.0-beta.1 (Unreleased)
+## 7.0.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,17 @@
 
 ### Bugs Fixed
 
+- Fixed OAuth2 JWT Bearer grant request parameter duplication issue where `grant_type` was being duplicated when using the on-behalf-of flow, causing `AADSTS70003: unsupported_grant_type` error. [#47657](https://github.com/Azure/azure-sdk-for-java/issues/47657)
+
 ### Other Changes
+
+## 7.0.0-beta.1 (2025-12-23)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#700-beta1-2025-12-23) for more details.
+
+## 6.1.0 (2025-12-16)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#610-2025-12-16) for more details.
 
 ## 6.0.0 (2025-09-22)
 

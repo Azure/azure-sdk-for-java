@@ -14,7 +14,7 @@ import com.azure.resourcemanager.avs.models.AddonVrProperties;
  */
 public final class AddonsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Addons_CreateOrUpdate_HCX.json
+     * x-ms-original-file: 2025-09-01/Addons_CreateOrUpdate_HCX.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX.
@@ -30,7 +30,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/Addons_CreateOrUpdate_SRM.json
+     * x-ms-original-file: 2025-09-01/Addons_CreateOrUpdate_SRM.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_SRM.
@@ -46,7 +46,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/Addons_CreateOrUpdate_HCX_With_Networks.json
+     * x-ms-original-file: 2025-09-01/Addons_CreateOrUpdate_HCX_With_Networks.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX_With_Networks.
@@ -64,7 +64,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/Addons_CreateOrUpdate_ArcReg.json
+     * x-ms-original-file: 2025-09-01/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_ArcReg.
@@ -81,7 +81,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/Addons_CreateOrUpdate_VR.json
+     * x-ms-original-file: 2025-09-01/Addons_CreateOrUpdate_VR.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_VR.
