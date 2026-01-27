@@ -8,6 +8,7 @@ import com.azure.ai.voicelive.models.InputAudioFormat;
 import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.SessionUpdate;
+import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
@@ -81,7 +82,7 @@ public class VoiceLiveLiveTests extends TestProxyTestBase {
 
             // Start session and subscribe to events
             VoiceLiveSessionAsyncClient session
-                = client.startSession("gpt-4o-realtime-preview").block(Duration.ofSeconds(30));
+                = client.startSession("gpt-4o").block(Duration.ofSeconds(30));
 
             Assertions.assertNotNull(session, "Session should be created successfully");
             Assertions.assertTrue(session.isConnected(), "Session should be connected");
@@ -137,7 +138,17 @@ public class VoiceLiveLiveTests extends TestProxyTestBase {
         } else if (eventType == ServerEventType.SESSION_CREATED) {
             System.out.println("  → Session created");
         } else if (eventType == ServerEventType.ERROR) {
-            System.err.println("  → Error occurred in session");
+            if (event instanceof SessionUpdateError) {
+                SessionUpdateError errorEvent = (SessionUpdateError) event;
+                System.err.println("  → Error occurred in session:");
+                System.err.println("      Type: " + errorEvent.getError().getType());
+                System.err.println("      Code: " + errorEvent.getError().getCode());
+                System.err.println("      Message: " + errorEvent.getError().getMessage());
+                System.err.println("      Param: " + errorEvent.getError().getParam());
+                System.err.println("      Event ID: " + errorEvent.getError().getEventId());
+            } else {
+                System.err.println("  → Error occurred in session: " + event);
+            }
             latch.countDown();
         }
     }
