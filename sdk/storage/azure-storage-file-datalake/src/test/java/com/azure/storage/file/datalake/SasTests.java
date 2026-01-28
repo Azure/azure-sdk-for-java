@@ -4,6 +4,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
@@ -46,6 +47,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -125,8 +127,8 @@ public class SasTests extends DataLakeTestBase {
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
-    public void fileDatalakeSasUserDelegationDelegatedObjectId() { // RBAC replication lag
-        liveTestScenarioWithRetry(() -> {
+    public void fileDatalakeSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -144,15 +146,16 @@ public class SasTests extends DataLakeTestBase {
                 .sasToken(sas)
                 .credential(tokenCredential)).buildFileClient();
 
-            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            Response<PathProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
-    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() { // RBAC replication lag
-        liveTestScenarioWithRetry(() -> {
+    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -219,12 +222,11 @@ public class SasTests extends DataLakeTestBase {
             () -> getDirectoryClient(sas, getFileSystemUrl(), pathName).getProperties());
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void directorySasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             DataLakeDirectoryClient directoryClient
                 = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
@@ -245,16 +247,16 @@ public class SasTests extends DataLakeTestBase {
                     .sasToken(sas)
                     .credential(tokenCredential)).buildDirectoryClient();
 
-            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            Response<PathProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void directorySasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> {  // RBAC replication lag
             DataLakeDirectoryClient directoryClient
                 = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
@@ -575,12 +577,11 @@ public class SasTests extends DataLakeTestBase {
         assertTrue(sasWithPermissions.contains("scid=" + cid));
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileSystemSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -599,16 +600,18 @@ public class SasTests extends DataLakeTestBase {
                     .sasToken(sas)
                     .credential(tokenCredential)).buildClient();
 
-            assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
+            Response<PathProperties> response
+                = client.getFileClient(pathName).getPropertiesWithResponse(null, null, Context.NONE);
+
+            verifySasAndTokenInRequest(response);
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileSystemSasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 

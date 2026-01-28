@@ -169,10 +169,9 @@ public class SasAsyncClientTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    // RBAC replication lag
     @Test
     public void blobSasUserDelegation() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true)
                 .setWritePermission(true)
                 .setCreatePermission(true)
@@ -203,8 +202,8 @@ public class SasAsyncClientTests extends BlobTestBase {
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
-    public void blobSasUserDelegationDelegatedObjectId() { // RBAC replication lag
-        liveTestScenarioWithRetry(() -> {
+    public void blobSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -227,16 +226,17 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -308,11 +308,10 @@ public class SasAsyncClientTests extends BlobTestBase {
         }).verifyComplete();
     }
 
-    // RBAC replication lag
     @SuppressWarnings("deprecation")
     @Test
     public void blobSasSnapshotUserDelegation() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true)
                 .setWritePermission(true)
                 .setCreatePermission(true)
@@ -353,10 +352,9 @@ public class SasAsyncClientTests extends BlobTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     public void containerSasUserDelegation() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true)
                 .setWritePermission(true)
                 .setCreatePermission(true)
@@ -381,8 +379,8 @@ public class SasAsyncClientTests extends BlobTestBase {
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
-    public void containerSasUserDelegationDelegatedObjectId() { // RBAC replication lag
-        liveTestScenarioWithRetry(() -> {
+    public void containerSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -406,16 +404,17 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getBlobAsyncClient(blobName).getBlockBlobAsyncClient().getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void containerSasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -574,10 +573,9 @@ public class SasAsyncClientTests extends BlobTestBase {
         StepVerifier.create(client.setTags(tags)).verifyError(BlobStorageException.class);
     }
 
-    // RBAC replication lag
     @Test
     public void blobUserDelegationSaoid() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
 
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
@@ -608,10 +606,9 @@ public class SasAsyncClientTests extends BlobTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     public void containerUserDelegationCorrelationId() {
-        liveTestScenarioWithRetry(() -> {
+        liveTestScenarioWithRetry(() -> { // RBAC replication lag
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setListPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
