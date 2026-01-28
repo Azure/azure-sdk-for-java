@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 /**
  * This class provides helper methods for validation of credentials used in storage.
- *
+ * <br>
  * RESERVED FOR INTERNAL USE.
  */
 public class CredentialValidator {
@@ -39,6 +39,31 @@ public class CredentialValidator {
                 "Only one credential should be used. Credentials present: " + usedCredentials.stream()
                     .map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
                     .collect(Collectors.joining(","))));
+        }
+    }
+
+    public static void validateCredentialsNotAmbiguous(StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
+        boolean hasSharedKey = storageSharedKeyCredential != null;
+        boolean hasToken = tokenCredential != null;
+        boolean hasAzureSas = azureSasCredential != null;
+        boolean hasTokenSas = sasToken != null;
+
+        int credentialCount
+            = (hasSharedKey ? 1 : 0) + (hasToken ? 1 : 0) + (hasAzureSas ? 1 : 0) + (hasTokenSas ? 1 : 0);
+
+        if (credentialCount >= 3) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Too many credentials specified. A maximum of two credentials is supported for specific scenarios."));
+        }
+
+        if (credentialCount == 2) {
+            // Only allow: tokenCredential + (azureSasCredential or sasToken)
+            boolean validCombo = hasToken && (hasAzureSas ^ hasTokenSas);
+            if (!validCombo) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Invalid combination of credentials. Only TokenCredential with either AzureSasCredential or sasToken is supported when two credentials are provided."));
+            }
         }
     }
 }

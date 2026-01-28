@@ -134,7 +134,7 @@ public class SasAsyncTests extends DataLakeTestBase {
                 .credential(tokenCredential)).buildFileAsyncClient();
 
             StepVerifier.create(client.getPropertiesWithResponse(null))
-                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
                 .verifyComplete();
         });
     }
@@ -248,7 +248,7 @@ public class SasAsyncTests extends DataLakeTestBase {
                     .credential(tokenCredential)).buildDirectoryAsyncClient();
 
             StepVerifier.create(client.getPropertiesWithResponse(null))
-                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
                 .verifyComplete();
         });
     }
@@ -615,7 +615,9 @@ public class SasAsyncTests extends DataLakeTestBase {
                     .sasToken(sas)
                     .credential(tokenCredential)).buildAsyncClient();
 
-            StepVerifier.create(client.listPaths().collectList()).expectNextCount(1).verifyComplete();
+            StepVerifier.create(client.getFileAsyncClient(pathName).getPropertiesWithResponse(null))
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
