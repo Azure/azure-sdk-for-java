@@ -55,6 +55,11 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
     private SubResource sourceVirtualNetwork;
 
     /*
+     * Reference to an existing service gateway.
+     */
+    private SubResource serviceGateway;
+
+    /*
      * The resource GUID property of the NAT gateway resource.
      */
     private String resourceGuid;
@@ -202,6 +207,26 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
     }
 
     /**
+     * Get the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @return the serviceGateway value.
+     */
+    public SubResource serviceGateway() {
+        return this.serviceGateway;
+    }
+
+    /**
+     * Set the serviceGateway property: Reference to an existing service gateway.
+     * 
+     * @param serviceGateway the serviceGateway value to set.
+     * @return the NatGatewayPropertiesFormat object itself.
+     */
+    public NatGatewayPropertiesFormat withServiceGateway(SubResource serviceGateway) {
+        this.serviceGateway = serviceGateway;
+        return this;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
      * 
      * @return the resourceGuid value.
@@ -243,6 +268,7 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
         jsonWriter.writeArrayField("publicIpPrefixesV6", this.publicIpPrefixesV6,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("sourceVirtualNetwork", this.sourceVirtualNetwork);
+        jsonWriter.writeJsonField("serviceGateway", this.serviceGateway);
         return jsonWriter.writeEndObject();
     }
 
@@ -281,6 +307,8 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
                     deserializedNatGatewayPropertiesFormat.subnets = subnets;
                 } else if ("sourceVirtualNetwork".equals(fieldName)) {
                     deserializedNatGatewayPropertiesFormat.sourceVirtualNetwork = SubResource.fromJson(reader);
+                } else if ("serviceGateway".equals(fieldName)) {
+                    deserializedNatGatewayPropertiesFormat.serviceGateway = SubResource.fromJson(reader);
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedNatGatewayPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
