@@ -152,7 +152,13 @@ public final class CryptographyUtils {
 
     public static boolean isThrowableRetryable(Throwable e) {
         if (e instanceof HttpResponseException) {
-            int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
+            HttpResponseException httpResponseException = (HttpResponseException) e;
+
+            if (httpResponseException.getResponse() == null) {
+                return false;
+            }
+
+            int statusCode = httpResponseException.getResponse().getStatusCode();
 
             // Not a retriable error code.
             return statusCode != 501
