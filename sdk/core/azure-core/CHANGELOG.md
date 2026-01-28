@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `SyncPoller.serializeContinuationToken()` method to support continuation tokens for long-running operations. Default implementation throws `UnsupportedOperationException`; ARM LRO pollers created via `SyncPollerFactory` support this feature.
+
 ### Breaking Changes
 
 ### Bugs Fixed
