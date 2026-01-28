@@ -1,5 +1,16 @@
 # Release History
 
+## 1.1.6 (2026-01-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+
+
 ## 1.1.5 (2025-10-27)
 
 ### Other Changes
