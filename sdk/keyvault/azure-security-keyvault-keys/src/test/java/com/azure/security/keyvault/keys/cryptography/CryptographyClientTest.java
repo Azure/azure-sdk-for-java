@@ -22,6 +22,8 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.KeyVaultKeyIdentifier;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -104,9 +106,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertNotNull(keyId);
 
                 // Ensure the keyId includes the key version
-                String[] keyIdParts = keyId.split("/");
-
-                assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(), "keyId does not contain key version.");
+                assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
                 DecryptResult decryptResult = cryptoClient.decrypt(algorithm, encryptResult.getCipherText());
 
@@ -167,9 +167,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertNotNull(keyId);
 
                 // Ensure the keyId includes the key version
-                String[] keyIdParts = keyId.split("/");
-
-                assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(), "keyId does not contain key version.");
+                assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
                 UnwrapResult unwrapResult = cryptoClient.unwrapKey(algorithm, wrapResult.getEncryptedKey());
 
@@ -237,9 +235,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertNotNull(keyId);
 
                 // Ensure the keyId includes the key version
-                String[] keyIdParts = keyId.split("/");
-
-                assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(), "keyId does not contain key version.");
+                assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
                 Boolean verifyStatus
                     = cryptographyClient.verify(curveToSignature.get(curve), digest, signResult.getSignature())
@@ -282,9 +278,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             assertNotNull(keyId);
 
             // Ensure the keyId includes the key version
-            String[] keyIdParts = keyId.split("/");
-
-            assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(), "keyId does not contain key version.");
+            assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
             Boolean verifyStatus
                 = cryptographyClient.verifyData(curveToSignature.get(curve), plaintext, signResult.getSignature())
@@ -336,10 +330,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                     assertNotNull(keyId);
 
                     // Ensure the keyId includes the key version
-                    String[] keyIdParts = keyId.split("/");
-
-                    assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(),
-                        "keyId does not contain key version.");
+                    assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
                     VerifyResult verifyResult = cryptoClient.verify(algorithm, digest, signResult.getSignature());
 
@@ -380,9 +371,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertNotNull(keyId);
 
                 // Ensure the keyId includes the key version
-                String[] keyIdParts = keyId.split("/");
-
-                assertTrue(keyIdParts.length >= 5 && !keyIdParts[4].isEmpty(), "keyId does not contain key version.");
+                assertNotNull(new KeyVaultKeyIdentifier(keyId).getVersion(), "keyId does not contain key version.");
 
                 VerifyResult verifyResult = cryptoClient.verifyData(algorithm, plaintext, signResult.getSignature());
 
