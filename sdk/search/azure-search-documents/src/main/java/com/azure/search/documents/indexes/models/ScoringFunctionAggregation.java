@@ -33,12 +33,7 @@ public enum ScoringFunctionAggregation {
     /**
      * Boost scores using the first applicable scoring function in the scoring profile.
      */
-    FIRST_MATCHING("firstMatching"),
-
-    /**
-     * Boost scores by the product of all scoring function results.
-     */
-    PRODUCT("product");
+    FIRST_MATCHING("firstMatching");
 
     /**
      * The actual serialized value for a ScoringFunctionAggregation instance.

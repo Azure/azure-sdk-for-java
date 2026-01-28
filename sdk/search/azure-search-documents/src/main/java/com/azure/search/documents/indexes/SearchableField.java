@@ -44,21 +44,6 @@ public @interface SearchableField {
     boolean isFacetable() default false;
 
     /**
-     * Indicates if the field or method should be used as a permission filter {@link SearchField field}.
-     *
-     * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.
-     */
-    String permissionFilter() default "";
-
-    /**
-     * Indicates if the field or method should be used for sensitivity label filtering. This enables document-level
-     * filtering based on Microsoft Purview sensitivity labels.
-     *
-     * @return A flag indicating if the field or method should generate as a sensitivity label {@link SearchField field}.
-     */
-    boolean isSensitivityLabel() default false;
-
-    /**
      * Indicates if the field or method should generate as a sortable {@link SearchField field}.
      *
      * @return A flag indicating if the field or method should generate as a sortable {@link SearchField field}.
@@ -104,9 +89,9 @@ public @interface SearchableField {
     String indexAnalyzerName() default "";
 
     /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
+     * A {@link LexicalNormalizerName} to associate as the index normalizer for the {@link SearchField field}.
      *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
+     * @return The {@link LexicalNormalizerName} that will be associated as the index normalizer for the
      * {@link SearchField field}.
      */
     String normalizerName() default "";

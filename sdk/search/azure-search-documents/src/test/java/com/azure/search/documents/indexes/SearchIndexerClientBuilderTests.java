@@ -133,11 +133,13 @@ public class SearchIndexerClientBuilderTests {
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
-            .httpClient(new FreshDateTestClient())
-            .buildAsyncClient();
+        SearchIndexerAsyncClient searchIndexerAsyncClient
+            = new SearchIndexerClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .endpoint(searchEndpoint)
+                .credential(searchApiKeyCredential)
+                .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
+                .httpClient(new FreshDateTestClient())
+                .buildAsyncClient();
 
         StepVerifier
             .create(searchIndexerAsyncClient.getHttpPipeline().send(request(searchIndexerAsyncClient.getEndpoint())))

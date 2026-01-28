@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
+import com.azure.search.documents.util.SearchPagedResponse;
 
 import java.util.List;
 
@@ -13,19 +15,15 @@ public final class SemanticSearchResults {
     private final List<QueryAnswerResult> queryAnswers;
     private final SemanticErrorReason errorReason;
     private final SemanticSearchResultsType resultsType;
-    private final SemanticQueryRewritesResultType semanticQueryRewritesResultType;
 
     static {
         SemanticSearchResultsAccessHelper.setAccessor(SemanticSearchResults::new);
     }
 
-    private SemanticSearchResults(List<QueryAnswerResult> queryAnswers, SemanticErrorReason semanticErrorReason,
-        SemanticSearchResultsType semanticSearchResultsType,
-        SemanticQueryRewritesResultType semanticQueryRewritesResultType) {
-        this.queryAnswers = queryAnswers;
-        this.errorReason = semanticErrorReason;
-        this.resultsType = semanticSearchResultsType;
-        this.semanticQueryRewritesResultType = semanticQueryRewritesResultType;
+    private SemanticSearchResults(SearchPagedResponse pagedResponse) {
+        this.queryAnswers = SearchPagedResponseAccessHelper.getQueryAnswers(pagedResponse);
+        this.errorReason = SearchPagedResponseAccessHelper.getSemanticErrorReason(pagedResponse);
+        this.resultsType = SearchPagedResponseAccessHelper.getSemanticSearchResultsType(pagedResponse);
     }
 
     /**
@@ -55,14 +53,5 @@ public final class SemanticSearchResults {
      */
     public SemanticSearchResultsType getResultsType() {
         return this.resultsType;
-    }
-
-    /**
-     * Type of query rewrite that was used for this request.
-     *
-     * @return The type of query rewrite that was used for this request.
-     */
-    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return this.semanticQueryRewritesResultType;
     }
 }
