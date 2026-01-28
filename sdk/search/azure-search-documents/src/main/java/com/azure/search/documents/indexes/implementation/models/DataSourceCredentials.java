@@ -20,8 +20,12 @@ import java.io.IOException;
 @Fluent
 public final class DataSourceCredentials implements JsonSerializable<DataSourceCredentials> {
     /*
-     * The connection string for the datasource. Set to `<unchanged>` (with brackets) if you don't want the connection
-     * string updated. Set to `<redacted>` if you want to remove the connection string value from the datasource.
+     * The connection string for the datasource. For Azure SQL, Azure Blob, ADLS Gen 2 and Azure Table, this would be
+     * the connection string or resource ID if using managed identity. For CosmosDB this would be a formatted connection
+     * string specifying ApiKind or resource ID for managed identity. For Onelake files, connection string would be
+     * either the workspace guid or workspace FQDN; Onelake only supports managed identity connections. Set to
+     * `<unchanged>` (with brackets) if you don't want the connection string updated. Set to `<redacted>` if you want to
+     * remove the connection string value from the datasource.
      */
     @Generated
     private String connectionString;
@@ -34,9 +38,12 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     }
 
     /**
-     * Get the connectionString property: The connection string for the datasource. Set to `&lt;unchanged&gt;` (with
-     * brackets) if you don't want the connection string updated. Set to `&lt;redacted&gt;` if you want to remove the
-     * connection string value from the datasource.
+     * Get the connectionString property: The connection string for the datasource. For Azure SQL, Azure Blob, ADLS Gen
+     * 2 and Azure Table, this would be the connection string or resource ID if using managed identity. For CosmosDB
+     * this would be a formatted connection string specifying ApiKind or resource ID for managed identity. For Onelake
+     * files, connection string would be either the workspace guid or workspace FQDN; Onelake only supports managed
+     * identity connections. Set to `&lt;unchanged&gt;` (with brackets) if you don't want the connection string updated.
+     * Set to `&lt;redacted&gt;` if you want to remove the connection string value from the datasource.
      * 
      * @return the connectionString value.
      */
@@ -46,9 +53,12 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
     }
 
     /**
-     * Set the connectionString property: The connection string for the datasource. Set to `&lt;unchanged&gt;` (with
-     * brackets) if you don't want the connection string updated. Set to `&lt;redacted&gt;` if you want to remove the
-     * connection string value from the datasource.
+     * Set the connectionString property: The connection string for the datasource. For Azure SQL, Azure Blob, ADLS Gen
+     * 2 and Azure Table, this would be the connection string or resource ID if using managed identity. For CosmosDB
+     * this would be a formatted connection string specifying ApiKind or resource ID for managed identity. For Onelake
+     * files, connection string would be either the workspace guid or workspace FQDN; Onelake only supports managed
+     * identity connections. Set to `&lt;unchanged&gt;` (with brackets) if you don't want the connection string updated.
+     * Set to `&lt;redacted&gt;` if you want to remove the connection string value from the datasource.
      * 
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.
