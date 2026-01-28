@@ -1,5 +1,13 @@
 # Release History
 
+## 2.53.6 (2026-01-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+
+
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes
