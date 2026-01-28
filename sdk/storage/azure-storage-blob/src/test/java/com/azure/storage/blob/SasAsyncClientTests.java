@@ -227,7 +227,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(BlobTestBase::verifySasAndTokenInRequest).verifyComplete();
+            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
         });
     }
 
@@ -406,7 +406,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getBlobAsyncClient(blobName).getBlockBlobAsyncClient().getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(BlobTestBase::verifySasAndTokenInRequest).verifyComplete();
+            StepVerifier.create(response).assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest).verifyComplete();
         });
     }
 

@@ -122,11 +122,10 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), os.toString());
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
-    public void fileDatalakeSasUserDelegationDelegatedObjectId() {
+    public void fileDatalakeSasUserDelegationDelegatedObjectId() { // RBAC replication lag
         liveTestScenarioWithRetry(() -> {
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
@@ -149,11 +148,10 @@ public class SasTests extends DataLakeTestBase {
         });
     }
 
-    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
-    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() {
+    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() { // RBAC replication lag
         liveTestScenarioWithRetry(() -> {
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
