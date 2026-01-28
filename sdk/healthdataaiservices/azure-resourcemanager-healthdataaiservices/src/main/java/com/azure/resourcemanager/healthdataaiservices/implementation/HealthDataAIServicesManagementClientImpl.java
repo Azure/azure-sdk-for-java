@@ -202,7 +202,7 @@ public final class HealthDataAIServicesManagementClientImpl implements HealthDat
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-09-20";
+        this.apiVersion = "2026-01-27-preview";
         this.operations = new OperationsClientImpl(this);
         this.deidServices = new DeidServicesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
