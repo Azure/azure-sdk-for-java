@@ -4,7 +4,8 @@ package com.azure.cosmos.models;
 
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class DedicatedGatewayRequestOptionsTest {
     @Test(groups = {"unit"})

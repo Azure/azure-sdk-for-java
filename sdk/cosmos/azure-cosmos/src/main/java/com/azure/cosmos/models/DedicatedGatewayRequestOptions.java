@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -13,6 +14,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * Dedicated Gateway Request Options
  */
 public final class DedicatedGatewayRequestOptions implements Serializable {
+
+    private static final Pattern SHARD_KEY_PATTERN = Pattern.compile("^[a-zA-Z0-9-]+$");
 
     /**
      * The staleness value associated with the request in the Azure CosmosDB service.
@@ -121,6 +124,6 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
     }
 
     private boolean validateShardKey(String shardKey) {
-        return shardKey.matches("^[a-zA-Z0-9-]+$");
+        return SHARD_KEY_PATTERN.matcher(shardKey).matches();
     }
 }
