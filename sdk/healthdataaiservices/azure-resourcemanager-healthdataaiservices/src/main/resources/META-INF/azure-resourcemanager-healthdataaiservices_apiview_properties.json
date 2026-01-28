@@ -52,6 +52,9 @@
     "com.azure.resourcemanager.healthdataaiservices.models.PrivateLinkServiceConnectionState": "Azure.ResourceManager.CommonTypes.PrivateLinkServiceConnectionState",
     "com.azure.resourcemanager.healthdataaiservices.models.ProvisioningState": "Microsoft.HealthDataAIServices.ProvisioningState",
     "com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess": "Microsoft.HealthDataAIServices.PublicNetworkAccess",
+    "com.azure.resourcemanager.healthdataaiservices.models.Sku": "Microsoft.HealthDataAIServices.Sku",
+    "com.azure.resourcemanager.healthdataaiservices.models.SkuTier": "Microsoft.HealthDataAIServices.SkuTier",
+    "com.azure.resourcemanager.healthdataaiservices.models.SkuUpdate": "Microsoft.HealthDataAIServices.SkuUpdate",
     "com.azure.resourcemanager.healthdataaiservices.models.UserAssignedIdentity": "Azure.ResourceManager.CommonTypes.UserAssignedIdentity"
   }
 }

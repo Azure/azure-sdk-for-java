@@ -1,14 +1,86 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
+## 1.1.0-beta.1 (2026-01-28)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PrivateEndpointConnection` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.DeidUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DeidServiceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `HealthDataAIServicesManager` was modified
+
+* `fluent.HealthDataAIServicesClient serviceClient()` -> `fluent.HealthDataAIServicesManagementClient serviceClient()`
+
+#### `models.DeidPropertiesUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentityUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.Sku` was added
+
+* `models.SkuTier` was added
+
+* `models.SkuUpdate` was added
+
+#### `models.DeidService$Definition` was modified
+
+* `withSku(models.Sku)` was added
+
+#### `models.DeidUpdate` was modified
+
+* `sku()` was added
+* `withSku(models.SkuUpdate)` was added
+
+#### `models.DeidService$Update` was modified
+
+* `withSku(models.SkuUpdate)` was added
+
+#### `models.DeidService` was modified
+
+* `sku()` was added
+
 
 ## 1.0.0 (2024-11-21)
 

@@ -8,18 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthdataaiservices.implementation.models.DeidServiceListResult;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeidServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"serviceUrl\":\"vkmijcmmxdcuf\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"osfqpteehzzv\",\"tenantId\":\"yqrimzin\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dsoifiyipj\":{\"principalId\":\"dkirsoodqxhcr\",\"clientId\":\"ohjtckw\"}}},\"location\":\"qwpgrjbzn\",\"tags\":{\"ocpcy\":\"jxvsnbyxqabn\",\"gpbtoqcjmklj\":\"hurzafblj\",\"qajzyulpkudjkr\":\"vbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}],\"nextLink\":\"c\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"pbtoqcjmkl\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"idtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"e\",\"name\":\"zloc\",\"type\":\"scpai\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"csglum\",\"tenantId\":\"jtjaodxobnbdxkq\",\"type\":\"None\",\"userAssignedIdentities\":{\"aajrm\":{\"principalId\":\"jionpimexgstxgc\",\"clientId\":\"dg\"},\"hijco\":{\"principalId\":\"jwzrl\",\"clientId\":\"mcl\"},\"ukdkexxppofmxa\":{\"principalId\":\"ctbzaq\",\"clientId\":\"sycbkbfk\"}}},\"sku\":{\"name\":\"fjpgddtocjjxhvp\",\"tier\":\"Basic\",\"capacity\":1295358777},\"location\":\"dzxibqeojnxqbzvd\",\"tags\":{\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
             .toObject(DeidServiceListResult.class);
-        Assertions.assertEquals("qwpgrjbzn", model.value().get(0).location());
-        Assertions.assertEquals("jxvsnbyxqabn", model.value().get(0).tags().get("ocpcy"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.value().get(0).location());
+        Assertions.assertEquals("wndeicbtwnp", model.value().get(0).tags().get("aoqvuh"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
+        Assertions.assertEquals(1295358777, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("gdtopbobjogh", model.nextLink());
     }
 }
