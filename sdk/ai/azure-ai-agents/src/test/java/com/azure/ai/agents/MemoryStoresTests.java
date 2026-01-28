@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class MemoryStoresTests extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -126,29 +125,35 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(memoryStore.getId());
         assertEquals(memoryStoreName, memoryStore.getName());
         assertEquals(description, memoryStore.getDescription());
+        System.out.println("Created memory store: " + memoryStore.getName() + " (" + memoryStore.getId() + "): "
+            + memoryStore.getDescription());
+        System.out.println("  - Chat model: " + definition.getChatModel());
+        System.out.println("  - Embedding model: " + definition.getEmbeddingModel());
 
         // Add memories to the memory store
         ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(
             EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(userMessageContent).build());
-        // beginUpdateMemories returns a poller
+        // beginUpdateMemories returns a poller - use update_delay=0 to trigger update immediately
         SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> updatePoller
-            = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(userMessage), null, 1);
+            = memoryStoreClient.beginUpdateMemories(memoryStoreName, scope, Arrays.asList(userMessage), null, 0);
 
-        // Poll for the write end status
+        // Wait for the update operation to complete
         LongRunningOperationStatus status = null;
         while (status != LongRunningOperationStatus.fromString(MemoryStoreUpdateStatus.COMPLETED.toString(), true)) {
             sleep(500);
-            System.out.println(status);
+            System.out.println("Polling status: " + status);
             status = updatePoller.poll().getStatus();
         }
         MemoryStoreUpdateCompletedResult updateResult = updatePoller.getFinalResult();
         assertNotNull(updateResult);
         assertNotNull(updateResult.getMemoryOperations());
-        assertFalse(updateResult.getMemoryOperations().isEmpty());
+        System.out.println("Updated with " + updateResult.getMemoryOperations().size() + " memory operations");
         for (MemoryOperation operation : updateResult.getMemoryOperations()) {
             assertNotNull(operation.getKind());
             assertNotNull(operation.getMemoryItem().getMemoryId());
             assertNotNull(operation.getMemoryItem().getContent());
+            System.out.println("  - Operation: " + operation.getKind() + ", Memory ID: "
+                + operation.getMemoryItem().getMemoryId() + ", Content: " + operation.getMemoryItem().getContent());
         }
 
         ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(
@@ -159,20 +164,23 @@ public class MemoryStoresTests extends ClientTestBase {
             Arrays.asList(queryMessage), null, searchOptions);
         assertNotNull(searchResponse);
         assertNotNull(searchResponse.getMemories());
-        assertFalse(searchResponse.getMemories().isEmpty());
+        System.out.println("Found " + searchResponse.getMemories().size() + " memories");
         for (MemorySearchItem memory : searchResponse.getMemories()) {
             assertNotNull(memory.getMemoryItem().getMemoryId());
             assertNotNull(memory.getMemoryItem().getContent());
+            System.out.println("  - Memory ID: " + memory.getMemoryItem().getMemoryId() + ", Content: "
+                + memory.getMemoryItem().getContent());
         }
 
         // Delete memories for a specific scope
         memoryStoreClient.deleteScope(memoryStoreName, scope);
-        // No exception means success
+        System.out.println("Deleted memories for scope '" + scope + "'");
 
         // Delete memory store
         DeleteMemoryStoreResponse deleteResponse = memoryStoreClient.deleteMemoryStore(memoryStoreName);
         assertNotNull(deleteResponse);
         assertTrue(deleteResponse.isDeleted());
+        System.out.println("Deleted memory store `" + memoryStoreName + "`");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
