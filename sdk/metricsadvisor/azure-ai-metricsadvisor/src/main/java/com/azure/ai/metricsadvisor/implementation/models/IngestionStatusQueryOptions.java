@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,19 +21,16 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
     /*
      * the start point of time range to query data ingestion status.
      */
-    @Generated
     private OffsetDateTime startTime;
 
     /*
      * the end point of time range to query data ingestion status.
      */
-    @Generated
     private OffsetDateTime endTime;
 
     /**
      * Creates an instance of IngestionStatusQueryOptions class.
      */
-    @Generated
     public IngestionStatusQueryOptions() {
     }
 
@@ -44,7 +39,6 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
      * 
      * @return the startTime value.
      */
-    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -55,7 +49,6 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
      * @param startTime the startTime value to set.
      * @return the IngestionStatusQueryOptions object itself.
      */
-    @Generated
     public IngestionStatusQueryOptions setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -66,7 +59,6 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
      * 
      * @return the endTime value.
      */
-    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -77,16 +69,11 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
      * @param endTime the endTime value to set.
      * @return the IngestionStatusQueryOptions object itself.
      */
-    @Generated
     public IngestionStatusQueryOptions setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,7 +93,6 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IngestionStatusQueryOptions.
      */
-    @Generated
     public static IngestionStatusQueryOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IngestionStatusQueryOptions deserializedIngestionStatusQueryOptions = new IngestionStatusQueryOptions();
@@ -115,11 +101,11 @@ public final class IngestionStatusQueryOptions implements JsonSerializable<Inges
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedIngestionStatusQueryOptions.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIngestionStatusQueryOptions.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedIngestionStatusQueryOptions.endTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedIngestionStatusQueryOptions.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
