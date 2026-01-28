@@ -252,7 +252,6 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
-
         if (this.storageSharedKeyCredential != null) {
             BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
         }
