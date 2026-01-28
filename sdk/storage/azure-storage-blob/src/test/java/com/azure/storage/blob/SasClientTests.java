@@ -45,7 +45,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -1064,10 +1066,12 @@ public class SasClientTests extends BlobTestBase {
         OffsetDateTime keyStart, OffsetDateTime keyExpiry, String keyService, String keyVersion, String keyValue,
         SasIpRange ipRange, SasProtocol protocol, String snapId, String cacheControl, String disposition,
         String encoding, String language, String type, String versionId, String saoid, String cid,
-        String encryptionScope, String delegatedUserObjectId, String expectedStringToSign) {
+        String encryptionScope, String delegatedUserObjectId, Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParameters, String expectedStringToSign) {
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(e, p);
+        ArrayList<String> stringToSign = new ArrayList<>();
 
         String expected = String.format(expectedStringToSign, ENVIRONMENT.getPrimaryAccount().getName());
 
@@ -1087,7 +1091,9 @@ public class SasClientTests extends BlobTestBase {
             .setContentType(type)
             .setPreauthorizedAgentObjectId(saoid)
             .setCorrelationId(cid)
-            .setDelegatedUserObjectId(delegatedUserObjectId);
+            .setDelegatedUserObjectId(delegatedUserObjectId)
+            .setRequestHeaders(requestHeaders)
+            .setRequestQueryParameters(requestQueryParameters);
 
         UserDelegationKey key = new UserDelegationKey().setSignedObjectId(keyOid)
             .setSignedTenantId(keyTid)
@@ -1099,11 +1105,12 @@ public class SasClientTests extends BlobTestBase {
 
         BlobSasImplUtil implUtil
             = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId, encryptionScope);
-        String sasToken
-            = implUtil.generateUserDelegationSas(key, ENVIRONMENT.getPrimaryAccount().getName(), Context.NONE);
+        String sasToken = implUtil.generateUserDelegationSas(key, ENVIRONMENT.getPrimaryAccount().getName(),
+            stringToSign::add, Context.NONE);
         CommonSasQueryParameters token
             = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters();
 
+        assertEqualsForEachLine(stringToSign, expected);
         assertEquals(token.getSignature(), StorageImplUtils.computeHMac256(key.getValue(), expected));
     }
 
@@ -1111,10 +1118,25 @@ public class SasClientTests extends BlobTestBase {
     We test string to sign functionality directly related toUserDelegation sas specific parameters
     */
     private static Stream<Arguments> blobSasImplUtilStringToSignUserDelegationKeySupplier() {
+        // Use LinkedHashMap to ensure deterministic iteration order
+        Map<String, String> singleHeader = new LinkedHashMap<>();
+        singleHeader.put("x-ms-encryption-key-sha256", "hashvalue");
+
+        Map<String, String> singleQueryParam = new LinkedHashMap<>();
+        singleQueryParam.put("comp", "blocklist");
+
+        Map<String, String> multipleHeaders = new LinkedHashMap<>();
+        multipleHeaders.put("x-ms-encryption-key-sha256", "hashvalue");
+        multipleHeaders.put("x-ms-source-if-match", "etag");
+
+        Map<String, String> multipleQueryParams = new LinkedHashMap<>();
+        multipleQueryParams.put("blockid", "blockidvalue");
+        multipleQueryParams.put("comp", "blocklist");
+
         return Stream.of(
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
-                null, null, null, null,
+                null, null, null, null, null, null,
                 "r\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -1122,145 +1144,265 @@ public class SasClientTests extends BlobTestBase {
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, "11111111-1111-1111-1111-111111111111", null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
-                null, null, null, null,
+                null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, "22222222-2222-2222-2222-222222222222", null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
-                null, null, null, null,
+                null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC), null,
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
-                null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC),
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
-                null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, "b", null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, "2018-06-17",
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
-                null, null, null, null,
+                null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=",
-                new SasIpRange(), null, null, null, null, null, null, null, null, null, null, null, null,
+                new SasIpRange(), null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                SasProtocol.HTTPS_ONLY, null, null, null, null, null, null, null, null, null, null, null,
+                SasProtocol.HTTPS_ONLY, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, "snapId", null, null, null, null, null, null, null, null, null, null,
+                null, "snapId", null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbs\nsnapId\n\n\n\n\n\n"),
+                    + "\nbs\nsnapId\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, "control", null, null, null, null, null, null, null, null, null,
+                null, null, "control", null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\ncontrol\n\n\n\n"),
+                    + "\nb\n\n\n\n\ncontrol\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, "disposition", null, null, null, null, null, null, null, null,
+                null, null, null, "disposition", null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\ndisposition\n\n\n"),
+                    + "\nb\n\n\n\n\n\ndisposition\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, "encoding", null, null, null, null, null, null, null,
+                null, null, null, null, "encoding", null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\nencoding\n\n"),
+                    + "\nb\n\n\n\n\n\n\nencoding\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, "language", null, null, null, null, null, null,
+                null, null, null, null, null, "language", null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\nlanguage\n"),
+                    + "\nb\n\n\n\n\n\n\n\nlanguage\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, "type", null, null, null, null, null,
+                null, null, null, null, null, null, "type", null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\ntype"),
+                    + "\nb\n\n\n\n\n\n\n\n\ntype"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, "versionId", null, null, null, null,
+                null, null, null, null, null, null, null, "versionId", null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbv\nversionId\n\n\n\n\n\n"),
+                    + "\nbv\nversionId\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, "saoid", null, null, null,
+                null, null, null, null, null, null, null, null, "saoid", null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, "cid", null, null,
+                null, null, null, null, null, null, null, null, null, "cid", null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\ncid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, "encryptionScope", null,
+                null, null, null, null, null, null, null, null, null, null, "encryptionScope", null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\nencryptionScope\n\n\n\n\n"),
+                    + "\nb\n\nencryptionScope\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid",
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"));
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Test requestHeaders only (single header)
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, null, singleHeader, null,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n\n\n\n\n\n\n"),
+            // Test requestQueryParameters only (single param)
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, null, null, singleQueryParam,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\nb\n\n\n\n\ncomp:blocklist\n\n\n\n\n"),
+            // Test both requestHeaders and requestQueryParameters
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, null, singleHeader, singleQueryParam,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n\n\ncomp:blocklist\n\n\n\n\n"),
+            // Test multiple headers and multiple query parameters
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, null, null, null, null, null, null, null, multipleHeaders,
+                multipleQueryParams,
+                "r\n\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n"
+                    + "x-ms-source-if-match:etag\n\n\nblockid:blockidvalue\n" + "comp:blocklist\n\n\n\n\n"),
+            // Test with all parameters populated
+            Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), // startTime
+                "11111111-1111-1111-1111-111111111111", // keyOid
+                "22222222-2222-2222-2222-222222222222", // keyTid
+                OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC), // keyStart
+                OffsetDateTime.of(LocalDateTime.of(2018, 6, 1, 0, 0), ZoneOffset.UTC), // keyExpiry
+                "b", // keyService
+                "2018-06-17", // keyVersion
+                "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", // keyValue
+                new SasIpRange(), // ipRange
+                SasProtocol.HTTPS_ONLY, // protocol
+                "snapId", // snapId
+                "control", // cacheControl
+                "disposition", // contentDisposition
+                "encoding", // contentEncoding
+                "language", // contentLanguage
+                "type", // contentType
+                null, // versionId, versionId and snapId are mutually exclusive
+                "saoid", // saoid (preauthorizedAgentObjectId)
+                "cid", // cid (correlationId)
+                "encryptionScope", // encryptionScope
+                "delegatedOid", // delegatedUserObjectId
+                multipleHeaders, // requestHeaders
+                multipleQueryParams, // requestQueryParameters
+                "r\n" // permissions
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) // startTime
+                    + "\n"
+                    + Constants.ISO_8601_UTC_DATE_FORMATTER
+                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) // expiryTime
+                    + "\n/blob/%s/containerName/blobName\n" // canonicalName
+                    + "11111111-1111-1111-1111-111111111111\n" // keyOid
+                    + "22222222-2222-2222-2222-222222222222\n" // keyTid
+                    + "2018-01-01T00:00:00Z\n" // keyStart
+                    + "2018-06-01T00:00:00Z\n" // keyExpiry
+                    + "b\n" // keyService
+                    + "2018-06-17\n" // keyVersion
+                    + "saoid\n" // saoid (preauthorizedAgentObjectId)
+                    + "\n" // suoid (always empty)
+                    + "cid\n" // cid (correlationId)
+                    + "\n" // delegatedUserTenantId (removed - empty)
+                    + "delegatedOid\n" // delegatedUserObjectId
+                    + "ip\n" // sasIpRange
+                    + SasProtocol.HTTPS_ONLY + "\n" // protocol
+                    + Constants.SAS_SERVICE_VERSION + "\n" // VERSION
+                    + "bs\n" // resource (blob snapshot)
+                    + "snapId\n" // snapId (versionSegment with snapId)
+                    + "encryptionScope\n" // encryptionScope
+                    + "x-ms-encryption-key-sha256:hashvalue\n" // requestHeaders (multiple)
+                    + "x-ms-source-if-match:etag\n\n" // requestHeaders continuation + newline separator
+                    + "\nblockid:blockidvalue\n" // requestQueryParameters (multiple, with prepended newline)
+                    + "comp:blocklist\n" // requestQueryParameters continuation
+                    + "control\n" // cacheControl
+                    + "disposition\n" // contentDisposition
+                    + "encoding\n" // contentEncoding
+                    + "language\n" // contentLanguage
+                    + "type" // contentType (no trailing newline)
+            ));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
@@ -1347,5 +1489,41 @@ public class SasClientTests extends BlobTestBase {
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nencryptionScope\n"));
+    }
+
+    private static void assertEqualsForEachLine(ArrayList<String> stringToSign, String expected) {
+        String actual = stringToSign.get(0);
+        if (!expected.equals(actual)) {
+            StringBuilder output = new StringBuilder();
+            String[] expectedLines = expected.split("\n", -1);
+            String[] actualLines = actual.split("\n", -1);
+
+            output.append("\n=== Line-by-Line String-to-Sign Comparison ===\n");
+            output.append("Expected lines: ").append(expectedLines.length).append("\n");
+            output.append("Actual lines:   ").append(actualLines.length).append("\n\n");
+
+            int maxLines = Math.max(expectedLines.length, actualLines.length);
+            for (int i = 0; i < maxLines; i++) {
+                String expLine = i < expectedLines.length ? expectedLines[i] : "<missing>";
+                String actLine = i < actualLines.length ? actualLines[i] : "<missing>";
+
+                if (!expLine.equals(actLine)) {
+                    output.append("Line ").append(i).append(" differs:\n");
+                    output.append("  Expected: [").append(expLine).append("]\n");
+                    output.append("  Actual:   [").append(actLine).append("]\n\n");
+                } else {
+                    output.append("Line ").append(i).append(" matches: [").append(expLine).append("]\n");
+                }
+            }
+
+            output.append("=== Full Expected String ===\n");
+            output.append(expected.replace("\n", "\\n\n"));
+            output.append("\n\n=== Full Actual String ===\n");
+            output.append(actual.replace("\n", "\\n\n"));
+
+            // Print everything at once
+            System.out.println(output.toString());
+        }
+        assertEquals(expected, actual, "String-to-sign mismatch");
     }
 }

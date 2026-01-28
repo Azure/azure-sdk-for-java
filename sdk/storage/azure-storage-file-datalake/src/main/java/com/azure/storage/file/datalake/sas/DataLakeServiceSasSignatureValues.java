@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.sas;
 
 import com.azure.core.util.Configuration;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
@@ -12,6 +13,7 @@ import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Data Lake Storage service. Once all
@@ -45,6 +47,8 @@ public final class DataLakeServiceSasSignatureValues {
     private String correlationId;
     private String encryptionScope;
     private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates an object with the specified expiry time and permissions
@@ -473,6 +477,50 @@ public final class DataLakeServiceSasSignatureValues {
      */
     public DataLakeServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
         this.delegatedUserObjectId = delegatedUserObjectId;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * @return The custom request headers to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * @param requestHeaders The custom request headers to be set when the SAS is used.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * @return The custom query parameters to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestQueryParameters() {
+        return requestQueryParameters;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * @param requestQueryParameters The custom query parameters to be set when the SAS is used.
+     * @return the updated DataLakeServiceSasSignatureValues object
+     */
+    public DataLakeServiceSasSignatureValues setRequestQueryParameters(Map<String, String> requestQueryParameters) {
+        this.requestQueryParameters = requestQueryParameters;
         return this;
     }
 }

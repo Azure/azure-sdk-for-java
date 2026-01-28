@@ -10,6 +10,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -116,5 +117,59 @@ public class SasImplUtils {
         }
 
         return retVals;
+    }
+
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestHeaders The map of request headers to format.
+     * @return A formatted string with headers in the format "key:value" separated by newlines, or empty string if
+     * null/empty. Terminates each pair with a newline (\n).
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
+
+    public static String formatRequestHeadersForSasSigning(Map<String, String> requestHeaders) {
+        if (requestHeaders == null || requestHeaders.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        requestHeaders.forEach((key, value) -> sb.append(key).append(":").append(value).append("\n"));
+        return sb.toString();
+    }
+
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestQueryParameters The map of request headers to format.
+     * @return A formatted string with query params in the format "key:value" separated by newlines, or empty string if
+     * null/empty. Prepends a newline character. Prefixes each pair with a newline (\n).
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
+    public static String formatRequestQueryParametersForSasSigning(Map<String, String> requestQueryParameters) {
+        if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        requestQueryParameters.forEach((key, value) -> sb.append("\n").append(key).append(":").append(value));
+        return sb.toString();
+    }
+
+    public static Map<String, String> parseRequestHeadersAndQueryParameterString(String rawString) {
+        if (CoreUtils.isNullOrEmpty(rawString)) {
+            return null;
+        }
+        Map<String, String> valueMap = new HashMap<>();
+        String[] pairs = rawString.split("\n");
+        for (String pair : pairs) {
+            if (!CoreUtils.isNullOrEmpty(pair)) {
+                String[] keyValue = pair.split(":", 2);
+                valueMap.put(keyValue[0].trim(), keyValue[1].trim());
+            }
+        }
+        return valueMap;
     }
 }
