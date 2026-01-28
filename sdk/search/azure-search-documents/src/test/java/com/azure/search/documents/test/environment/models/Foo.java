@@ -5,8 +5,9 @@ package com.azure.search.documents.test.environment.models;
 import com.azure.search.documents.indexes.SimpleField;
 
 public class Foo {
-    @SimpleField(isKey = true)
+    @SimpleField(name = "IntValue", isKey = true)
     private String intValue;
+    @SimpleField(name = "StringValue")
     private String stringValue;
 
     public Foo() {

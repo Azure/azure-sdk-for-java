@@ -10,16 +10,15 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -49,8 +48,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
+import static com.azure.search.documents.TestHelpers.createIndexAction;
 import static com.azure.search.documents.TestHelpers.getTestTokenCredential;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -90,7 +90,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     /**
-     * Tests that a batch can timeout while indexing.
+     * Tests that a batch can time out while indexing.
      */
     @Test
     public void flushTimesOut() {
@@ -106,11 +106,11 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
-        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(1), Context.NONE));
+        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(1), null));
     }
 
     /**
-     * Tests that a batch can timeout while indexing.
+     * Tests that a batch can time out while indexing.
      */
     @Test
     public void flushTimesOutAsync() {
@@ -131,7 +131,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     /**
-     * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
+     * Tests that a batch will retain in-flight documents if the request is canceled before the response is handled.
      */
     @Test
     @Disabled("Temporarily disabled")
@@ -163,11 +163,11 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        // First request is setup to timeout.
-        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+        // First request is set up to timeout.
+        assertThrows(RuntimeException.class, () -> batchingClient.flush(Duration.ofSeconds(3), null));
 
         // Second request shouldn't timeout.
-        assertDoesNotThrow(() -> batchingClient.flush(Duration.ofSeconds(3), Context.NONE));
+        assertDoesNotThrow(() -> batchingClient.flush(Duration.ofSeconds(3), null));
 
         // Then validate that we have the expected number of requests sent and responded.
         assertEquals(10, addedCount.get());
@@ -177,7 +177,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     /**
-     * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
+     * Tests that a batch will retain in-flight documents if the request is canceled before the response is handled.
      */
     @Test
     @Disabled("Temporarily disabled")
@@ -209,7 +209,7 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))).verifyComplete();
 
-        // First request is setup to timeout.
+        // First request is set up to timeout.
         StepVerifier.create(batchingClient.flush().timeout(Duration.ofSeconds(3))).verifyError(TimeoutException.class);
 
         // Second request shouldn't timeout.
@@ -238,10 +238,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -276,10 +276,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))).verifyComplete();
@@ -314,10 +314,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -352,10 +352,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))).verifyComplete();
@@ -402,10 +402,10 @@ public class SearchIndexingBufferedSenderUnitTests {
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .initialBatchActionCount(10)
-                .onActionAdded(options -> addedCount.incrementAndGet())
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> errorCount.incrementAndGet())
-                .onActionSent(options -> sentCount.incrementAndGet())
+                .onActionAdded(ignored -> addedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> errorCount.incrementAndGet())
+                .onActionSent(ignored -> sentCount.incrementAndGet())
                 .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -452,10 +452,10 @@ public class SearchIndexingBufferedSenderUnitTests {
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .initialBatchActionCount(10)
-                .onActionAdded(options -> addedCount.incrementAndGet())
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> errorCount.incrementAndGet())
-                .onActionSent(options -> sentCount.incrementAndGet())
+                .onActionAdded(ignored -> addedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> errorCount.incrementAndGet())
+                .onActionSent(ignored -> sentCount.incrementAndGet())
                 .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))).verifyComplete();
@@ -664,10 +664,10 @@ public class SearchIndexingBufferedSenderUnitTests {
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .maxRetriesPerAction(10)
-                .onActionAdded(options -> addedCount.incrementAndGet())
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> errorCount.incrementAndGet())
-                .onActionSent(options -> sentCount.incrementAndGet())
+                .onActionAdded(ignored -> addedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> errorCount.incrementAndGet())
+                .onActionSent(ignored -> sentCount.incrementAndGet())
                 .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
@@ -714,10 +714,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .maxRetriesPerAction(10)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1)))
@@ -763,10 +763,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
@@ -802,10 +802,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2)))
@@ -845,10 +845,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
@@ -887,10 +887,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
             .initialBatchActionCount(2)
-            .onActionAdded(options -> addedCount.incrementAndGet())
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> errorCount.incrementAndGet())
-            .onActionSent(options -> sentCount.incrementAndGet())
+            .onActionAdded(ignored -> addedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> errorCount.incrementAndGet())
+            .onActionSent(ignored -> sentCount.incrementAndGet())
             .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2)))
@@ -930,27 +930,26 @@ public class SearchIndexingBufferedSenderUnitTests {
     static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>>
         operationsThrowAfterClientIsClosedSupplier() {
         List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
-        List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
-            .map(document -> new IndexAction<Map<String, Object>>().setDocument(document)
-                .setActionType(IndexActionType.UPLOAD))
+        List<IndexAction> actions = simpleDocuments.stream()
+            .map(document -> createIndexAction(IndexActionType.UPLOAD, document))
             .collect(Collectors.toList());
 
         return Stream.of(client -> client.addActions(actions),
-            client -> client.addActions(actions, Duration.ofSeconds(60), Context.NONE),
+            client -> client.addActions(actions, Duration.ofSeconds(60), null),
 
             client -> client.addUploadActions(simpleDocuments),
-            client -> client.addUploadActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+            client -> client.addUploadActions(simpleDocuments, Duration.ofSeconds(60), null),
 
             client -> client.addMergeOrUploadActions(simpleDocuments),
-            client -> client.addMergeOrUploadActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+            client -> client.addMergeOrUploadActions(simpleDocuments, Duration.ofSeconds(60), null),
 
             client -> client.addMergeActions(simpleDocuments),
-            client -> client.addMergeActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+            client -> client.addMergeActions(simpleDocuments, Duration.ofSeconds(60), null),
 
             client -> client.addDeleteActions(simpleDocuments),
-            client -> client.addDeleteActions(simpleDocuments, Duration.ofSeconds(60), Context.NONE),
+            client -> client.addDeleteActions(simpleDocuments, Duration.ofSeconds(60), null),
 
-            SearchIndexingBufferedSender::flush, client -> client.flush(Duration.ofSeconds(60), Context.NONE));
+            SearchIndexingBufferedSender::flush, client -> client.flush(Duration.ofSeconds(60), null));
     }
 
     @ParameterizedTest
@@ -972,9 +971,8 @@ public class SearchIndexingBufferedSenderUnitTests {
     static Stream<Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>>>
         operationsThrowAfterClientIsClosedAsyncSupplier() {
         List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
-        List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
-            .map(document -> new IndexAction<Map<String, Object>>().setDocument(document)
-                .setActionType(IndexActionType.UPLOAD))
+        List<IndexAction> actions = simpleDocuments.stream()
+            .map(document -> createIndexAction(IndexActionType.UPLOAD, document))
             .collect(Collectors.toList());
 
         return Stream.of(client -> client.addActions(actions), client -> client.addUploadActions(simpleDocuments),
@@ -1281,10 +1279,10 @@ public class SearchIndexingBufferedSenderUnitTests {
                 .bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
-                .onActionAdded(options -> addedCount.incrementAndGet())
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> errorCount.incrementAndGet())
-                .onActionSent(options -> sentCount.incrementAndGet())
+                .onActionAdded(ignored -> addedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> errorCount.incrementAndGet())
+                .onActionSent(ignored -> sentCount.incrementAndGet())
                 .buildSender();
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
@@ -1326,10 +1324,10 @@ public class SearchIndexingBufferedSenderUnitTests {
                 .bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
-                .onActionAdded(options -> addedCount.incrementAndGet())
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> errorCount.incrementAndGet())
-                .onActionSent(options -> sentCount.incrementAndGet())
+                .onActionAdded(ignored -> addedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> errorCount.incrementAndGet())
+                .onActionSent(ignored -> sentCount.incrementAndGet())
                 .buildAsyncSender();
 
         StepVerifier.create(batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON))).verifyComplete();
@@ -1503,7 +1501,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
             = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
+                .addPolicy((ignored, next) -> {
                     requestCount.incrementAndGet();
                     return next.process();
                 })
@@ -1526,7 +1524,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
             = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
+                .addPolicy((ignored, next) -> {
                     requestCount.incrementAndGet();
                     return next.process();
                 })
@@ -1575,9 +1573,9 @@ public class SearchIndexingBufferedSenderUnitTests {
         return FluxUtil.collectBytesInByteBufferStream(request.getBody()).flatMap(bodyBytes -> {
             // Request documents are in a sub-node called value.
             try (JsonReader reader = JsonProviders.createReader(bodyBytes)) {
-                IndexBatch indexBatch = IndexBatch.fromJson(reader);
+                IndexDocumentsBatch indexBatch = IndexDocumentsBatch.fromJson(reader);
 
-                // Given the initial size was 10 and it was split we should expect 5 elements.
+                // Given the initial size was 10, and it was split we should expect 5 elements.
                 assertNotNull(indexBatch);
                 assertEquals(expectedBatchSize, indexBatch.getActions().size());
 

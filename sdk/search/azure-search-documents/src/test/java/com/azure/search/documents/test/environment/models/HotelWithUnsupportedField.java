@@ -3,14 +3,19 @@
 
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.SimpleField;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelWithUnsupportedField {
+    @SimpleField(name = "HotelId")
     private String hotelId;
 
+    @SimpleField(name = "SomeByte")
     private Byte someByte;
 
+    @SimpleField(name = "SomeListBytes")
     private List<Byte> someListBytes;
 
     public String getHotelId() {

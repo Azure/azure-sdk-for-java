@@ -3,10 +3,10 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 
@@ -16,12 +16,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation that directs {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions)} to turn the
- * field or method into a searchable {@link SearchField field}.
+ * An annotation that directs {@link SearchIndexAsyncClient#buildSearchFields(Class)} to turn the field or method into a
+ * searchable {@link SearchField field}.
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SearchableField {
+    /**
+     * The {@link SearchField#getName()} used in the {@link SearchIndex}.
+     *
+     * @return The name of the field.
+     */
+    String name();
+
     /**
      * Indicates if the field or method should generate as a key {@link SearchField field}.
      *
@@ -33,8 +40,17 @@ public @interface SearchableField {
      * Indicates if the field or method should generate as a hidden {@link SearchField field}.
      *
      * @return A flag indicating if the field or method should generate as a hidden {@link SearchField field}.
+     * @deprecated Use {@link #isRetrievable()} instead and flip the boolean value.
      */
+    @Deprecated
     boolean isHidden() default false;
+
+    /**
+     * Indicates if the field or method should generate as a retrievable {@link SearchField field}.
+     *
+     * @return A flag indicating if the field or method should generate as a retrievable {@link SearchField field}.
+     */
+    boolean isRetrievable() default true;
 
     /**
      * Indicates if the field or method should generate as a facetable {@link SearchField field}.

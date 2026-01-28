@@ -3,12 +3,19 @@
 package com.azure.search.documents.test.environment.models;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("UseOfObsoleteDateTimeApi")
-public class NonNullableModel {
+public class NonNullableModel implements JsonSerializable<NonNullableModel> {
 
     @JsonProperty(value = "Key")
     private String key;
@@ -84,5 +91,57 @@ public class NonNullableModel {
     public NonNullableModel buckets(Bucket[] buckets) {
         this.buckets = CoreUtils.clone(buckets);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("Key", key)
+            .writeIntField("Rating", rating)
+            .writeLongField("Count", count)
+            .writeBooleanField("IsEnabled", isEnabled)
+            .writeDoubleField("Ratio", ratio)
+            .writeStringField("StartDate", Objects.toString(startDate, null))
+            .writeStringField("EndDate", Objects.toString(endDate, null))
+            .writeJsonField("TopLevelBucket", topLevelBucket)
+            .writeArrayField("Buckets", buckets, JsonWriter::writeJson)
+            .writeEndObject();
+    }
+
+    public static NonNullableModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NonNullableModel model = new NonNullableModel();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Key".equals(fieldName)) {
+                    model.key = reader.getString();
+                } else if ("Rating".equals(fieldName)) {
+                    model.rating = reader.getInt();
+                } else if ("Count".equals(fieldName)) {
+                    model.count = reader.getLong();
+                } else if ("IsEnabled".equals(fieldName)) {
+                    model.isEnabled = reader.getBoolean();
+                } else if ("Ratio".equals(fieldName)) {
+                    model.ratio = reader.getDouble();
+                } else if ("StartDate".equals(fieldName)) {
+                    model.startDate = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                } else if ("EndDate".equals(fieldName)) {
+                    model.endDate = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                } else if ("TopLevelBucket".equals(fieldName)) {
+                    model.topLevelBucket = Bucket.fromJson(reader);
+                } else if ("Buckets".equals(fieldName)) {
+                    List<Bucket> buckets = reader.readArray(Bucket::fromJson);
+                    if (buckets != null) {
+                        model.buckets = buckets.toArray(new Bucket[0]);
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return model;
+        });
     }
 }

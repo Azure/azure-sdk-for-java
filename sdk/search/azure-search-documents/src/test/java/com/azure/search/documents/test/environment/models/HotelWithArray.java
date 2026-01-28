@@ -11,12 +11,12 @@ public class HotelWithArray {
     private String hotelId;
     private String[] tags;
 
-    @SimpleField(isKey = true, isSortable = true)
+    @SimpleField(name = "HotelId", isKey = true, isSortable = true)
     public String getHotelId() {
         return hotelId;
     }
 
-    @SearchableField
+    @SearchableField(name = "Tags")
     public String[] getTags() {
         return CoreUtils.clone(tags);
     }

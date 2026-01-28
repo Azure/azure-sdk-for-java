@@ -3,63 +3,84 @@
 package com.azure.search.documents.test.environment.models;
 
 import com.azure.core.models.GeoPoint;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.ComplexField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "unused" })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoudHotel {
+public class LoudHotel implements JsonSerializable<LoudHotel> {
+    @SimpleField(name = "HotelId", isKey = true)
     @JsonProperty(value = "HotelId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELID;
 
+    @SimpleField(name = "HotelName")
     @JsonProperty(value = "HotelName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELNAME;
 
+    @SimpleField(name = "Description")
     @JsonProperty(value = "Description")
     private String DESCRIPTION;
 
+    @SimpleField(name = "Description_fr")
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String DESCRIPTIONFRENCH;
 
+    @SimpleField(name = "Category")
     @JsonProperty(value = "Category")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String CATEGORY;
 
+    @SimpleField(name = "Tags")
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> TAGS;
 
+    @SimpleField(name = "ParkingIncluded")
     @JsonProperty(value = "ParkingIncluded")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean PARKINGINCLUDED;
 
+    @SimpleField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean SMOKINGALLOWED;
 
+    @SimpleField(name = "LastRenovationDate")
     @JsonProperty(value = "LastRenovationDate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Date LASTRENOVATIONDATE;
 
+    @SimpleField(name = "Rating")
     @JsonProperty(value = "Rating")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer RATING;
 
+    @SimpleField(name = "Location")
     @JsonProperty(value = "Location")
     private GeoPoint LOCATION;
 
+    @ComplexField(name = "Address")
     @JsonProperty(value = "Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress ADDRESS;
 
+    @ComplexField(name = "Rooms")
     @JsonProperty(value = "Rooms")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> ROOMS;
@@ -184,5 +205,68 @@ public class LoudHotel {
     public LoudHotel ROOMS(List<HotelRoom> rooms) {
         this.ROOMS = (rooms == null) ? null : new ArrayList<>(rooms);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("HotelId", HOTELID)
+            .writeStringField("HotelName", HOTELNAME)
+            .writeStringField("Description", DESCRIPTION)
+            .writeStringField("Description_fr", DESCRIPTIONFRENCH)
+            .writeStringField("Category", CATEGORY)
+            .writeArrayField("Tags", TAGS, JsonWriter::writeString)
+            .writeBooleanField("ParkingIncluded", PARKINGINCLUDED)
+            .writeBooleanField("SmokingAllowed", SMOKINGALLOWED)
+            .writeStringField("LastRenovationDate", Objects.toString(LASTRENOVATIONDATE, null))
+            .writeNumberField("Rating", RATING)
+            .writeJsonField("Location", LOCATION)
+            .writeJsonField("Address", ADDRESS)
+            .writeArrayField("Rooms", ROOMS, JsonWriter::writeJson)
+            .writeEndObject();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static LoudHotel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoudHotel hotel = new LoudHotel();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("HotelId".equals(fieldName)) {
+                    hotel.HOTELID = reader.getString();
+                } else if ("HotelName".equals(fieldName)) {
+                    hotel.HOTELNAME = reader.getString();
+                } else if ("Description".equals(fieldName)) {
+                    hotel.DESCRIPTION = reader.getString();
+                } else if ("Description_fr".equals(fieldName)) {
+                    hotel.DESCRIPTIONFRENCH = reader.getString();
+                } else if ("Category".equals(fieldName)) {
+                    hotel.CATEGORY = reader.getString();
+                } else if ("Tags".equals(fieldName)) {
+                    hotel.TAGS = reader.readArray(JsonReader::getString);
+                } else if ("ParkingIncluded".equals(fieldName)) {
+                    hotel.PARKINGINCLUDED = reader.getNullable(JsonReader::getBoolean);
+                } else if ("SmokingAllowed".equals(fieldName)) {
+                    hotel.SMOKINGALLOWED = reader.getNullable(JsonReader::getBoolean);
+                } else if ("LastRenovationDate".equals(fieldName)) {
+                    hotel.LASTRENOVATIONDATE = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                } else if ("Rating".equals(fieldName)) {
+                    hotel.RATING = reader.getNullable(JsonReader::getInt);
+                } else if ("Location".equals(fieldName)) {
+                    hotel.LOCATION = GeoPoint.fromJson(reader);
+                } else if ("Address".equals(fieldName)) {
+                    hotel.ADDRESS = HotelAddress.fromJson(reader);
+                } else if ("Rooms".equals(fieldName)) {
+                    hotel.ROOMS = reader.readArray(HotelRoom::fromJson);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return hotel;
+        });
     }
 }

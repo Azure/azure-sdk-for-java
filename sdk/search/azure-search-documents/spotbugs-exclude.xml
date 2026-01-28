@@ -3,17 +3,12 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="BC_VACUOUS_INSTANCEOF" />
-    <Class name="com.azure.search.documents.KnowledgeSourceTests" />
-  </Match>
-  <Match>
     <Bug pattern="DCN_NULLPOINTER_EXCEPTION" />
     <Class name="com.azure.search.documents.KnowledgeSourceTests" />
   </Match>
   <Match>
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
-      <Class name="com.azure.search.documents.KnowledgeSourceTests" />
       <Class name="com.azure.search.documents.ReadmeSamples" />
       <Class name="com.azure.search.documents.SearchJavaDocCodeSnippets" />
     </Or>
@@ -31,37 +26,24 @@
     <Class name="com.azure.search.documents.KnowledgeSourceTests" />
   </Match>
   <Match>
-    <Bug pattern="EC_UNRELATED_TYPES" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Or>
-      <Class name="com.azure.search.documents.KnowledgeSourceTests" />
+      <Class name="com.azure.search.documents.indexes.IndexManagementTests" />
+      <Class name="com.azure.search.documents.indexes.IndexersManagementTests" />
       <Class name="com.azure.search.documents.indexes.SkillsetManagementTests" />
     </Or>
   </Match>
   <Match>
-    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
-    <Or>
-      <Class name="com.azure.search.documents.implementation.converters.IndexActionHelper" />
-      <Class name="com.azure.search.documents.implementation.converters.SearchResultHelper" />
-      <Class name="com.azure.search.documents.implementation.converters.SuggestResultHelper" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
-    <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill" />
+    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
+    <Class name="com.azure.search.documents.indexes.NonRestCallTests" />
   </Match>
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
       <Class name="com.azure.search.documents.indexes.SearchIndexClientBuilderTests" />
       <Class name="com.azure.search.documents.indexes.SearchIndexerClientBuilderTests" />
+      <Class name="com.azure.search.documents.indexes.models.SearchSuggester" />
+      <Class name="com.azure.search.documents.indexes.models.SynonymMap" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="UC_USELESS_OBJECT" />
-    <Class name="com.azure.search.documents.indexes.SkillsetManagementTests" />
-  </Match>
-  <Match>
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-    <Class name="com.azure.search.documents.test.environment.models.HotelWithUnsupportedField" />
   </Match>
 </FindBugsFilter>

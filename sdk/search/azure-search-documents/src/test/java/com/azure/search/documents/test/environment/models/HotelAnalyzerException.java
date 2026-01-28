@@ -13,7 +13,7 @@ public class HotelAnalyzerException extends RuntimeException {
      *
      * @return The tag of hotel.
      */
-    @SearchableField(analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
+    @SearchableField(name = "Tag", analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
     public String getTag() {
         return tag;
     }

@@ -5,17 +5,18 @@ package com.azure.search.documents.codesnippets;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
-import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.models.AutocompleteItem;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.util.AutocompletePagedIterable;
-import com.azure.search.documents.util.SearchPagedIterable;
-import com.azure.search.documents.util.SuggestPagedIterable;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.LookupDocument;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SuggestOptions;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @SuppressWarnings("unused")
 public class SearchClientJavaDocSnippets {
 
@@ -37,13 +38,13 @@ public class SearchClientJavaDocSnippets {
      */
     public static void uploadDocument() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
-        searchClient.uploadDocuments(hotels);
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.uploadDocument#Map-boolean
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-upload
+        searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300"))
+        ));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-upload
     }
 
     /**
@@ -51,12 +52,12 @@ public class SearchClientJavaDocSnippets {
      */
     public static void mergeDocument() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        searchClient.mergeDocuments(hotels);
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.mergeDocument#Map
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-merge
+        searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "200"))
+        ));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-merge
     }
 
     /**
@@ -64,11 +65,11 @@ public class SearchClientJavaDocSnippets {
      */
     public static void deleteDocument() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String
-        SearchDocument documentId = new SearchDocument();
-        documentId.put("hotelId", "100");
-        searchClient.deleteDocuments(Collections.singletonList(documentId));
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.deleteDocument#String
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-delete
+        searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100"))
+        ));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.indexDocuments#IndexDocumentsBatch-delete
     }
 
     /**
@@ -76,10 +77,12 @@ public class SearchClientJavaDocSnippets {
      */
     public static void getDocument() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class
-        Hotel hotel = searchClient.getDocument("100", Hotel.class);
-        System.out.printf("Retrieved Hotel %s%n", hotel.getHotelId());
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String-Class
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String
+        LookupDocument document = searchClient.getDocument("100");
+        if (document.getAdditionalProperties() != null) {
+            System.out.printf("Retrieved Hotel %s%n", document.getAdditionalProperties().get("HotelId"));
+        }
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.getDocument#String
     }
 
     /**
@@ -87,25 +90,24 @@ public class SearchClientJavaDocSnippets {
      */
     public static void searchDocuments() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String
-        SearchDocument searchDocument = new SearchDocument();
-        searchDocument.put("hotelId", "8");
-        searchDocument.put("description", "budget");
-        searchDocument.put("descriptionFr", "motel");
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.search#SearchOptions
+        Map<String, Object> searchDocument = new LinkedHashMap<>();
+        searchDocument.put("HotelId", "8");
+        searchDocument.put("Description", "budget");
+        searchDocument.put("DescriptionFr", "motel");
 
-        SearchDocument searchDocument1 = new SearchDocument();
-        searchDocument1.put("hotelId", "9");
-        searchDocument1.put("description", "budget");
-        searchDocument1.put("descriptionFr", "motel");
+        Map<String, Object> searchDocument2 = new LinkedHashMap<>();
+        searchDocument2.put("HotelId", "9");
+        searchDocument2.put("Description", "budget");
+        searchDocument2.put("DescriptionFr", "motel");
 
-        List<SearchDocument> searchDocuments = new ArrayList<>();
-        searchDocuments.add(searchDocument);
-        searchDocuments.add(searchDocument1);
-        searchClient.uploadDocuments(searchDocuments);
+        searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(searchDocument),
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(searchDocument2)));
 
-        SearchPagedIterable results = searchClient.search("SearchText");
-        System.out.printf("There are %s results.%n", results.getTotalCount());
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.searchDocuments#String
+        searchClient.search(new SearchOptions().setSearchText("SearchText")).streamByPage()
+            .forEach(page -> System.out.printf("There are %d results.%n", page.getCount()));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.search#SearchOptions
     }
 
     /**
@@ -113,12 +115,10 @@ public class SearchClientJavaDocSnippets {
      */
     public static void suggestDocuments() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String
-        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg");
-        for (SuggestResult result: suggestPagedIterable) {
-            System.out.printf("The suggested text is %s", result.getText());
-        }
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggestDocuments#String-String
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggest#SuggestOptions
+        searchClient.suggest(new SuggestOptions("searchText", "sg")).getResults()
+            .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText()));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.suggest#SuggestOptions
     }
 
     /**
@@ -126,12 +126,10 @@ public class SearchClientJavaDocSnippets {
      */
     public static void autocompleteDocuments() {
         searchClient = createSearchClientWithSearchClientBuilder();
-        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String
-        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg");
-        for (AutocompleteItem result: autocompletePagedIterable) {
-            System.out.printf("The complete term is %s", result.getText());
-        }
-        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#String-String
+        // BEGIN: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#AutocompleteOptions
+        searchClient.autocomplete(new AutocompleteOptions("searchText", "sg")).getResults()
+            .forEach(item -> System.out.printf("The text '%s' was found.%n", item.getText()));
+        // END: com.azure.search.documents.SearchClient-classLevelJavaDoc.autocomplete#AutocompleteOptions
     }
 }
 

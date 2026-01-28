@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 @SuppressWarnings("ALL")
 public class Entry {
-
+    @SimpleField(name = "Entry")
     @JsonProperty
     Date date;
 

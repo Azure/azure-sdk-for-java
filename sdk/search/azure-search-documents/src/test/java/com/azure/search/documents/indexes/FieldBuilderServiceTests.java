@@ -3,15 +3,10 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.test.environment.models.Hotel;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -47,14 +42,11 @@ public class FieldBuilderServiceTests extends SearchTestBase {
 
     @Test
     public void createIndexWithFieldBuilderSync() {
-        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName, "hotel,motel");
         client.createSynonymMap(synonymMap);
 
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32));
-        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class,
-            new FieldBuilderOptions().setJsonSerializer(new JacksonJsonSerializerBuilder()
-                .serializer(new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
-                .build())));
+        SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32),
+            SearchIndexClient.buildSearchFields(Hotel.class));
 
         client.createIndex(index);
         indexesToDelete.add(index.getName());
@@ -63,14 +55,11 @@ public class FieldBuilderServiceTests extends SearchTestBase {
 
     @Test
     public void createIndexWithFieldBuilderAsync() {
-        SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName, "hotel,motel");
         asyncClient.createSynonymMap(synonymMap).block();
 
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32));
-        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class,
-            new FieldBuilderOptions().setJsonSerializer(new JacksonJsonSerializerBuilder()
-                .serializer(new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
-                .build())));
+        SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32),
+            SearchIndexClient.buildSearchFields(Hotel.class));
 
         Mono<SearchIndex> createThenGetIndex = asyncClient.createIndex(index).flatMap(actual -> {
             indexesToDelete.add(actual.getName());
