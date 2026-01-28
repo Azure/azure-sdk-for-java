@@ -76,7 +76,7 @@ stages:
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - stage:
+    - stage: Release
       displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
       dependsOn: Signing
       variables:
