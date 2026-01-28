@@ -606,6 +606,7 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+            ensureCliPath(builder);
             // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
             builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
@@ -679,6 +680,22 @@ public abstract class IdentityClientBase {
         return token;
     }
 
+    /**
+    * Ensures that the process environment PATH contains common Azure CLI installation directories
+    * when invoking CLI commands in non-interactive environments.
+    * Azure CLI is commonly installed via Homebrew on macOS and Linux, which places the `az` executable
+    * under locations such as {@code /usr/local/bin} (Intel) or {@code /opt/homebrew/bin} (Apple Silicon).
+    */
+    private void ensureCliPath(ProcessBuilder builder) {
+        if (!isWindowsPlatform()) {
+            Map<String, String> env = builder.environment();
+            String path = env.getOrDefault("PATH", "");
+            if (!path.contains("/usr/local/bin") && !path.contains("/opt/homebrew/bin")) {
+                env.put("PATH", "/usr/local/bin:/opt/homebrew/bin:" + path);
+            }
+        }
+    }
+
     AccessToken getTokenFromAzureDeveloperCLIAuthentication(StringBuilder azdCommand) {
         AccessToken token;
         try {
@@ -693,6 +710,7 @@ public abstract class IdentityClientBase {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, azdCommand.toString());
+            ensureCliPath(builder);
             // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
             builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
 
