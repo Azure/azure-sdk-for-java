@@ -20,6 +20,7 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.4
 com.fasterxml.jackson.module:jackson-module-afterburner;2.18.4
 com.fasterxml.jackson.module:jackson-module-blackbird;2.18.4
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.4
+com.fasterxml.jackson.module:jackson-module-scala_2.13;2.18.4
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
@@ -43,6 +44,7 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
+io.netty:netty-bom;4.1.130.Final
 io.netty:netty-buffer;4.1.130.Final
 io.netty:netty-common;4.1.130.Final
 io.netty:netty-codec;4.1.130.Final
@@ -57,6 +59,7 @@ io.netty:netty-transport;4.1.130.Final
 io.netty:netty-transport-native-epoll;4.1.130.Final
 io.netty:netty-transport-native-unix-common;4.1.130.Final
 io.netty:netty-transport-native-kqueue;4.1.130.Final
+io.projectreactor:reactor-bom;2024.0.9
 io.projectreactor.netty:reactor-netty-http;1.2.13
 io.projectreactor:reactor-core;3.7.14
 io.vertx:vertx-codegen;4.5.23
@@ -239,8 +242,6 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
-cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
-cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 cosmos_com.microsoft.azure.synapse:synapseutils_2.12;1.5.4
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-<version>_2-12\pom.xml
@@ -248,6 +249,7 @@ cosmos_com.microsoft.azure.synapse:synapseutils_2.12;1.5.4
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
+cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;4.0.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
@@ -285,8 +287,8 @@ cosmos_org.apache.kafka:connect-api;3.6.0
 cosmos_com.jayway.jsonpath:json-path;2.9.0
 # Cosmos Kafka connector tests only
 cosmos_org.apache.kafka:connect-runtime;3.6.0
-cosmos_org.testcontainers:testcontainers;1.19.5
-cosmos_org.testcontainers:kafka;1.19.5
+cosmos_org.testcontainers:testcontainers;1.21.4
+cosmos_org.testcontainers:kafka;1.21.4
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.4
