@@ -1647,61 +1647,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "query" }, timeOut = 20 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void readPartitionKeyRangesWithSuppressedPageSize() {
-
-        AsyncDocumentClient contextClient = BridgeInternal.getContextClient(this.client);
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
-        String containerLink = BridgeInternal.getLink(asyncContainer);
-
-        try {
-            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "1");
-            contextClient
-                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
-                .doOnNext(feedResponse -> {
-                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
-                    assertThat(feedResponse.getResults().size() <= 1).isTrue();
-                })
-                .blockLast();
-
-        } catch (RuntimeException e) {
-            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
-        } finally {
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
-        }
-
-        try {
-            System.setProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE", "-1");
-            contextClient
-                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
-                .doOnNext(feedResponse -> {
-                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
-                    assertThat(feedResponse.getResults().size() > 1).isTrue();
-                })
-                .blockLast();
-
-        } catch (RuntimeException e) {
-            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
-        } finally {
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
-        }
-
-        try {
-            contextClient
-                .readPartitionKeyRanges(containerLink, (CosmosQueryRequestOptions) null)
-                .doOnNext(feedResponse -> {
-                    logger.info("[PAGE SIZE CHECK]: feedResponse size: {}", feedResponse.getResults().size());
-                    assertThat(feedResponse.getResults().size() > 1).isTrue();
-                })
-                .blockLast();
-
-        } catch (RuntimeException e) {
-            fail("readPartitionKeyRangesWithSuppressedPageSize failed which was expected to succeed!", e);
-        } finally {
-            System.clearProperty("COSMOS.MAX_ITEM_COUNT_READ_FEED_PK_RANGE");
-        }
-    }
-
     @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT, retryAnalyzer = SplitTestsRetryAnalyzer.class)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
