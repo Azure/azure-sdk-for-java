@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +19,21 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     /*
      * A unique, non-empty document identifier.
      */
-    @Generated
     private String id;
 
     /*
      * The input text to process.
      */
-    @Generated
     private String text;
 
     /*
-     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
      */
-    @Generated
     private String language;
 
     /**
      * Creates an instance of MultiLanguageInput class.
      */
-    @Generated
     public MultiLanguageInput() {
     }
 
@@ -48,7 +42,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -59,7 +52,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * @param id the id value to set.
      * @return the MultiLanguageInput object itself.
      */
-    @Generated
     public MultiLanguageInput setId(String id) {
         this.id = id;
         return this;
@@ -70,7 +62,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * 
      * @return the text value.
      */
-    @Generated
     public String getText() {
         return this.text;
     }
@@ -81,7 +72,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * @param text the text value to set.
      * @return the MultiLanguageInput object itself.
      */
-    @Generated
     public MultiLanguageInput setText(String text) {
         this.text = text;
         return this;
@@ -93,7 +83,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * 
      * @return the language value.
      */
-    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -105,7 +94,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.
      */
-    @Generated
     public MultiLanguageInput setLanguage(String language) {
         this.language = language;
         return this;
@@ -114,7 +102,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -133,7 +120,6 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MultiLanguageInput.
      */
-    @Generated
     public static MultiLanguageInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MultiLanguageInput deserializedMultiLanguageInput = new MultiLanguageInput();
