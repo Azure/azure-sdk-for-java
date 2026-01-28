@@ -110,11 +110,12 @@ public class SasAsyncTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileDatalakeSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -138,11 +139,12 @@ public class SasAsyncTests extends DataLakeTestBase {
         });
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -219,11 +221,12 @@ public class SasAsyncTests extends DataLakeTestBase {
         StepVerifier.create(response).verifyError(DataLakeStorageException.class);
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void directorySasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             DataLakeDirectoryAsyncClient directoryClient
                 = getDirectoryAsyncClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
@@ -250,11 +253,12 @@ public class SasAsyncTests extends DataLakeTestBase {
         });
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void directorySasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             DataLakeDirectoryAsyncClient directoryClient
                 = getDirectoryAsyncClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
             PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
@@ -587,11 +591,12 @@ public class SasAsyncTests extends DataLakeTestBase {
         assertTrue(sasWithPermissions.contains("scid=" + cid));
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileSystemSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -616,11 +621,12 @@ public class SasAsyncTests extends DataLakeTestBase {
         });
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
     public void fileSystemSasUserDelegationDelegatedObjectIdFail() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 

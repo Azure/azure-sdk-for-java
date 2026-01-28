@@ -182,11 +182,12 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void blobSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
@@ -325,11 +326,12 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
+    // RBAC replication lag
     @Test
     @LiveOnly
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     public void containerSasUserDelegationDelegatedObjectId() {
-        liveTestScenarioWithRetry(() -> { // RBAC replication lag
+        liveTestScenarioWithRetry(() -> {
             BlobContainerSasPermission permissions = new BlobContainerSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
