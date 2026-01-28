@@ -157,10 +157,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, accept, context))
             .<PagedResponse<ScopeMapInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -196,11 +197,12 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, accept, context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                registryName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -306,10 +308,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, scopeMapName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, scopeMapName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -347,10 +350,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, scopeMapName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, scopeMapName, accept, context);
     }
 
     /**
@@ -444,11 +448,12 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapCreateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, scopeMapName,
-                scopeMapCreateParameters, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -493,10 +498,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapCreateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, accept, context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, scopeMapName, scopeMapCreateParameters, accept, context);
     }
 
     /**
@@ -698,11 +704,12 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapUpdateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, scopeMapName,
-                scopeMapUpdateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -747,10 +754,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapUpdateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, scopeMapName, scopeMapUpdateParameters, accept, context);
     }
 
     /**
@@ -944,9 +952,10 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, scopeMapName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -984,10 +993,11 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, scopeMapName, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, scopeMapName, accept, context);
     }
 
     /**
