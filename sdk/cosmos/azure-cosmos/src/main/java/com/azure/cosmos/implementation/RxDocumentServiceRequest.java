@@ -955,6 +955,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isExecuteStoredProcedureBasedRequest() {
+        return this.resourceType == ResourceType.StoredProcedure && this.operationType == OperationType.ExecuteJavaScript;
+    }
+
     public boolean isAllVersionsAndDeletesChangeFeedMode() {
         String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
