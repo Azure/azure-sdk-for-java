@@ -11,7 +11,7 @@ parameters:
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
     type: string
-    default: 'maven'
+    default: 'package-publish'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
