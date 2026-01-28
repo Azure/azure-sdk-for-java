@@ -36,6 +36,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.search.documents.SearchAudience;
+import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import java.util.ArrayList;
@@ -269,6 +271,23 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
     }
 
     /**
+     * Sets the Audience to use for authentication with Microsoft Entra ID.
+     * <p>
+     * If {@code audience} is null the public cloud audience will be assumed.
+     *
+     * @param audience The Audience to use for authentication with Microsoft Entra ID.
+     * @return The updated KnowledgeBaseRetrievalClientBuilder object.
+     */
+    public KnowledgeBaseRetrievalClientBuilder audience(SearchAudience audience) {
+        if (audience == null) {
+            this.scopes = DEFAULT_SCOPES;
+        } else {
+            this.scopes = new String[] { audience.getValue() + "/.default" };
+        }
+        return this;
+    }
+
+    /**
      * Builds an instance of KnowledgeBaseRetrievalClientImpl with the provided parameters.
      *
      * @return an instance of KnowledgeBaseRetrievalClientImpl.
@@ -318,7 +337,7 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -353,4 +372,7 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KnowledgeBaseRetrievalClientBuilder.class);
+
+    @Generated
+    private String[] scopes = DEFAULT_SCOPES;
 }

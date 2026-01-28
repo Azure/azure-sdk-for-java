@@ -278,8 +278,11 @@ public final class SearchIndexerClientBuilder implements HttpTrait<SearchIndexer
      * @return The updated SearchIndexerClientBuilder object.
      */
     public SearchIndexerClientBuilder audience(SearchAudience audience) {
-        // TODO (alzimmer): Set the BearerToken scopes to the audience scope, or if audience is null reset to
-        // DEFAULT_SCOPES.
+        if (audience == null) {
+            this.scopes = DEFAULT_SCOPES;
+        } else {
+            this.scopes = new String[] { audience.getValue() + "/.default" };
+        }
         return this;
     }
 
@@ -333,7 +336,7 @@ public final class SearchIndexerClientBuilder implements HttpTrait<SearchIndexer
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, scopes));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -368,4 +371,7 @@ public final class SearchIndexerClientBuilder implements HttpTrait<SearchIndexer
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerClientBuilder.class);
+
+    @Generated
+    private String[] scopes = DEFAULT_SCOPES;
 }
