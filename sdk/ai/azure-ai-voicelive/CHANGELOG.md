@@ -12,10 +12,34 @@
   - Added `startSession(String model, VoiceLiveRequestOptions requestOptions)` for model with custom options
   - Added `startSession(VoiceLiveRequestOptions requestOptions)` for custom options without explicit model parameter
   - Original `startSession(String model)` and `startSession()` methods preserved for backward compatibility
+- Added Foundry Agent tool support:
+  - `FoundryAgentTool` for integrating Foundry agents as tools in VoiceLive sessions
+  - `FoundryAgentContextType` enum for configuring agent context (no_context, agent_context)
+  - `ResponseFoundryAgentCallItem` for tracking Foundry agent call responses
+  - Foundry agent call lifecycle events: `ServerEventResponseFoundryAgentCallArgumentsDelta`, `ServerEventResponseFoundryAgentCallArgumentsDone`, `ServerEventResponseFoundryAgentCallInProgress`, `ServerEventResponseFoundryAgentCallCompleted`, `ServerEventResponseFoundryAgentCallFailed`
+  - `ItemType.FOUNDRY_AGENT_CALL` and `ToolType.FOUNDRY_AGENT` discriminator values
+- Added filler response configuration for handling latency and tool calls:
+  - `FillerResponseConfigBase` base class for filler response configurations
+  - `BasicFillerResponseConfig` for static/random text filler responses
+  - `LlmFillerResponseConfig` for LLM-generated context-aware filler responses
+  - `FillerResponseConfigType` enum (static_filler, llm_filler)
+  - `FillerTrigger` enum for trigger conditions (latency, tool)
+  - Added `fillerResponse` property to `VoiceLiveSessionOptions` and `VoiceLiveSessionResponse`
+- Added reasoning effort configuration for reasoning models:
+  - `ReasoningEffort` enum with levels: none, minimal, low, medium, high, xhigh
+  - Added `reasoningEffort` property to `VoiceLiveSessionOptions`, `VoiceLiveSessionResponse`, and `ResponseCreateParams`
+- Added metadata support:
+  - Added `metadata` property to `ResponseCreateParams` and `SessionResponse` for attaching key-value pairs
+- Added custom text normalization URL support for Azure voices:
+  - Added `customTextNormalizationUrl` property to `AzureCustomVoice`, `AzurePersonalVoice`, and `AzureStandardVoice`
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed `OutputAudioFormat` enum values from dash-separated to underscore-separated:
+  - `pcm16-8000hz` → `pcm16_8000hz`
+  - `pcm16-16000hz` → `pcm16_16000hz`
 
 ### Other Changes
 
