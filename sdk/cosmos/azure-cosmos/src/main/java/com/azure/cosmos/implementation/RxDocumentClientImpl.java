@@ -4682,6 +4682,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
                 return RxDocumentClientImpl.this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
             }
+
+            @Override
+            public boolean useThinClient(RxDocumentServiceRequest request) {
+                return RxDocumentClientImpl.this.useThinClientStoreModel(request);
+            }
         };
     }
 

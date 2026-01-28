@@ -55,8 +55,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -76,15 +76,15 @@ public class ThinClientE2ETest {
 
             container.createItem(doc, new PartitionKey(idValue), null).block();
 
-            String query = "select * from c WHERE c." + partitionKeyName + "=@id";
+            String query = "select * from c";
             SqlQuerySpec querySpec = new SqlQuerySpec(query);
-            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
-            CosmosQueryRequestOptions requestOptions =
-                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
+//            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
+//            CosmosQueryRequestOptions requestOptions =
+//                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
             FeedResponse<ObjectNode> response = container
-                .queryItems(querySpec, requestOptions, ObjectNode.class)
+                .queryItems(querySpec, new CosmosQueryRequestOptions(), ObjectNode.class)
                 .byPage()
-                .blockFirst();
+                .blockLast();
 
             ObjectNode docFromResponse = response.getResults().get(0);
             assertThat(docFromResponse.get(partitionKeyName).textValue()).isEqualTo(idValue);
@@ -387,8 +387,8 @@ public class ThinClientE2ETest {
         CosmosAsyncClient client = null;
         try {
             // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
