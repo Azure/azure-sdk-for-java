@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.resources.deploymentstacks.implementation;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackTemplateDefinitionInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackTemplateDefinition;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
-import java.util.Collections;
-import java.util.Map;
 
 public final class DeploymentStackTemplateDefinitionImpl implements DeploymentStackTemplateDefinition {
     private DeploymentStackTemplateDefinitionInner innerObject;
@@ -22,13 +19,8 @@ public final class DeploymentStackTemplateDefinitionImpl implements DeploymentSt
         this.serviceManager = serviceManager;
     }
 
-    public Map<String, BinaryData> template() {
-        Map<String, BinaryData> inner = this.innerModel().template();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public Object template() {
+        return this.innerModel().template();
     }
 
     public DeploymentStacksTemplateLink templateLink() {

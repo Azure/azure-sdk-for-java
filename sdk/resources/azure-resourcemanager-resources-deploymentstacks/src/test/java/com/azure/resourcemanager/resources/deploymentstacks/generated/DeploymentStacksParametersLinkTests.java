@@ -12,18 +12,18 @@ public final class DeploymentStacksParametersLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStacksParametersLink model
-            = BinaryData.fromString("{\"uri\":\"qgn\",\"contentVersion\":\"ooojywifsqe\"}")
+            = BinaryData.fromString("{\"uri\":\"xrifkwmrvkts\",\"contentVersion\":\"nt\"}")
                 .toObject(DeploymentStacksParametersLink.class);
-        Assertions.assertEquals("qgn", model.uri());
-        Assertions.assertEquals("ooojywifsqe", model.contentVersion());
+        Assertions.assertEquals("xrifkwmrvkts", model.uri());
+        Assertions.assertEquals("nt", model.contentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentStacksParametersLink model
-            = new DeploymentStacksParametersLink().withUri("qgn").withContentVersion("ooojywifsqe");
+            = new DeploymentStacksParametersLink().withUri("xrifkwmrvkts").withContentVersion("nt");
         model = BinaryData.fromObject(model).toObject(DeploymentStacksParametersLink.class);
-        Assertions.assertEquals("qgn", model.uri());
-        Assertions.assertEquals("ooojywifsqe", model.contentVersion());
+        Assertions.assertEquals("xrifkwmrvkts", model.uri());
+        Assertions.assertEquals("nt", model.contentVersion());
     }
 }

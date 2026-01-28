@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,7 +19,7 @@ public final class DeploymentExternalInput implements JsonSerializable<Deploymen
     /*
      * External input value.
      */
-    private BinaryData value;
+    private Object value;
 
     /**
      * Creates an instance of DeploymentExternalInput class.
@@ -33,7 +32,7 @@ public final class DeploymentExternalInput implements JsonSerializable<Deploymen
      * 
      * @return the value value.
      */
-    public BinaryData value() {
+    public Object value() {
         return this.value;
     }
 
@@ -43,7 +42,7 @@ public final class DeploymentExternalInput implements JsonSerializable<Deploymen
      * @param value the value value to set.
      * @return the DeploymentExternalInput object itself.
      */
-    public DeploymentExternalInput withValue(BinaryData value) {
+    public DeploymentExternalInput withValue(Object value) {
         this.value = value;
         return this;
     }
@@ -54,8 +53,7 @@ public final class DeploymentExternalInput implements JsonSerializable<Deploymen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeFieldName("value");
-        this.value.writeTo(jsonWriter);
+        jsonWriter.writeUntypedField("value", this.value);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,8 +74,7 @@ public final class DeploymentExternalInput implements JsonSerializable<Deploymen
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    deserializedDeploymentExternalInput.value
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentExternalInput.value = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

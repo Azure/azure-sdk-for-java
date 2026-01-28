@@ -21,7 +21,7 @@ public final class DeploymentStacksExportTemplateAtResourceGroupWithResponseMock
     @Test
     public void testExportTemplateAtResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"template\":{},\"templateLink\":{\"uri\":\"ofd\",\"id\":\"uusdttouwa\",\"relativePath\":\"ekqvkeln\",\"queryString\":\"vbxwyjsflhh\",\"contentVersion\":\"aln\"}}";
+            = "{\"template\":\"dataur\",\"templateLink\":{\"uri\":\"kwobdagxtibq\",\"id\":\"bxwakbog\",\"relativePath\":\"ndlkzgxhurip\",\"queryString\":\"podxunkb\",\"contentVersion\":\"xmubyyntwlrbq\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class DeploymentStacksExportTemplateAtResourceGroupWithResponseMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentStackTemplateDefinition response = manager.deploymentStacks()
-            .exportTemplateAtResourceGroupWithResponse("btdzumveekg", "wozuhkf", com.azure.core.util.Context.NONE)
+            .exportTemplateAtResourceGroupWithResponse("tfz", "mhhv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ofd", response.templateLink().uri());
-        Assertions.assertEquals("uusdttouwa", response.templateLink().id());
-        Assertions.assertEquals("ekqvkeln", response.templateLink().relativePath());
-        Assertions.assertEquals("vbxwyjsflhh", response.templateLink().queryString());
-        Assertions.assertEquals("aln", response.templateLink().contentVersion());
+        Assertions.assertEquals("kwobdagxtibq", response.templateLink().uri());
+        Assertions.assertEquals("bxwakbog", response.templateLink().id());
+        Assertions.assertEquals("ndlkzgxhurip", response.templateLink().relativePath());
+        Assertions.assertEquals("podxunkb", response.templateLink().queryString());
+        Assertions.assertEquals("xmubyyntwlrbq", response.templateLink().contentVersion());
     }
 }

@@ -30,9 +30,9 @@ public final class DeploymentStacksDeleteAtManagementGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deploymentStacks()
-            .deleteAtManagementGroup("bkrvrnsvshqj", "hxcr", DeploymentStacksDeleteDetachEnum.DETACH,
-                DeploymentStacksDeleteDetachEnum.DELETE, DeploymentStacksDeleteDetachEnum.DETACH,
-                DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, false, com.azure.core.util.Context.NONE);
+            .deleteAtManagementGroup("vmwy", "rfouyftaakcpw", DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksDeleteDetachEnum.DETACH, DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, true, com.azure.core.util.Context.NONE);
 
     }
 }

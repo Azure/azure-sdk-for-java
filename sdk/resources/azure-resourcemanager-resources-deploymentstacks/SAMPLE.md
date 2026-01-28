@@ -48,7 +48,6 @@
 ### DeploymentStacks_CreateOrUpdateAtManagementGroup
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
@@ -56,8 +55,8 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsM
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,26 +77,23 @@ public final class DeploymentStacksCreateOrUpdateAtManagementGroupSamples {
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
             .createOrUpdateAtManagementGroup("myMg", "simpleDeploymentStack",
-                new DeploymentStackInner().withLocation("eastus")
-                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
-                    .withExtensionConfigs(
-                        mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withExtensionConfigs(mapOf("contoso",
+                            new DeploymentExtensionConfig().withAdditionalProperties(
+                                mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                                    new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                        .withActionOnUnmanage(
+                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -118,15 +114,14 @@ public final class DeploymentStacksCreateOrUpdateAtManagementGroupSamples {
 ### DeploymentStacks_CreateOrUpdateAtResourceGroup
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -150,25 +145,19 @@ public final class DeploymentStacksCreateOrUpdateAtResourceGroupSamples {
             .withExistingResourceGroup("deploymentStacksRG")
             .withRegion("eastus")
             .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
-            .withParameters(mapOf("parameter1",
-                new DeploymentParameter().withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
-            .withExtensionConfigs(
-                mapOf("contoso",
-                    new DeploymentExtensionConfig()
-                        .withAdditionalProperties(
-                            mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-            .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-            .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                .withExcludedPrincipals(Arrays.asList("principal"))
-                .withExcludedActions(Arrays.asList("action"))
-                .withApplyToChildScopes(false))
+            .withProperties(new DeploymentStackProperties()
+                .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                .withExtensionConfigs(mapOf("contoso",
+                    new DeploymentExtensionConfig().withAdditionalProperties(
+                        mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                            new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                    .withExcludedPrincipals(Arrays.asList("principal"))
+                    .withExcludedActions(Arrays.asList("action"))
+                    .withApplyToChildScopes(false)))
             .create();
     }
 
@@ -189,7 +178,6 @@ public final class DeploymentStacksCreateOrUpdateAtResourceGroupSamples {
 ### DeploymentStacks_CreateOrUpdateAtSubscription
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
@@ -197,8 +185,8 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsM
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -219,26 +207,23 @@ public final class DeploymentStacksCreateOrUpdateAtSubscriptionSamples {
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
             .createOrUpdateAtSubscription("simpleDeploymentStack",
-                new DeploymentStackInner().withLocation("eastus")
-                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
-                    .withExtensionConfigs(
-                        mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withExtensionConfigs(mapOf("contoso",
+                            new DeploymentExtensionConfig().withAdditionalProperties(
+                                mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                                    new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                        .withActionOnUnmanage(
+                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -541,15 +526,14 @@ public final class DeploymentStacksListByResourceGroupSamples {
 ### DeploymentStacks_ValidateStackAtManagementGroup
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -569,22 +553,20 @@ public final class DeploymentStacksValidateStackAtManagementGroupSamples {
     public static void validateAManagementGroupDeploymentStack(
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
-            .validateStackAtManagementGroup("myMg", "simpleDeploymentStack",
-                new DeploymentStackInner().withLocation("eastus")
-                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
+            .validateStackAtManagementGroup("myMg", "simpleDeploymentStack", new DeploymentStackInner()
+                .withProperties(new DeploymentStackProperties()
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
+                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
                     .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DETACH)
                         .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
                         .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
-                com.azure.core.util.Context.NONE);
+                        .withApplyToChildScopes(false)))
+                .withLocation("eastus")
+                .withTags(mapOf("tagkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -604,15 +586,14 @@ public final class DeploymentStacksValidateStackAtManagementGroupSamples {
 ### DeploymentStacks_ValidateStackAtResourceGroup
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -633,19 +614,18 @@ public final class DeploymentStacksValidateStackAtResourceGroupSamples {
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
             .validateStackAtResourceGroup("deploymentStacksRG", "simpleDeploymentStack",
-                new DeploymentStackInner().withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
+                new DeploymentStackInner().withProperties(new DeploymentStackProperties()
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
+                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
                     .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
+                        .withApplyToChildScopes(false)))
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -666,15 +646,14 @@ public final class DeploymentStacksValidateStackAtResourceGroupSamples {
 ### DeploymentStacks_ValidateStackAtSubscription
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -694,22 +673,20 @@ public final class DeploymentStacksValidateStackAtSubscriptionSamples {
     public static void validateASubscriptionDeploymentStack(
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
-            .validateStackAtSubscription("simpleDeploymentStack",
-                new DeploymentStackInner().withLocation("eastus")
-                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
+            .validateStackAtSubscription("simpleDeploymentStack", new DeploymentStackInner()
+                .withProperties(new DeploymentStackProperties()
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
+                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
                     .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
-                com.azure.core.util.Context.NONE);
+                        .withApplyToChildScopes(false)))
+                .withLocation("eastus")
+                .withTags(mapOf("tagkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -729,7 +706,6 @@ public final class DeploymentStacksValidateStackAtSubscriptionSamples {
 ### DeploymentStacksWhatIfResultsAtManagementGroup_CreateOrUpdate
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
@@ -739,7 +715,6 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -760,28 +735,21 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupCreateOrUpdateS
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacksWhatIfResultsAtManagementGroups()
             .createOrUpdate("myMg", "simpleDeploymentStackWhatIfResult",
-                new DeploymentStacksWhatIfResultInner()
-                    .withProperties(new DeploymentStacksWhatIfResultProperties()
-                        .withTemplateLink(
-                            new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                        .withParameters(mapOf())
-                        .withExtensionConfigs(mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                        .withActionOnUnmanage(new ActionOnUnmanage()
-                            .withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                            .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                            .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                        .withDenySettings(
-                            new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
-                        .withDeploymentStackResourceId(
-                            "/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
-                        .withRetentionInterval(Duration.parse("P7D")))
-                    .withLocation("eastus"),
+                new DeploymentStacksWhatIfResultInner().withProperties(new DeploymentStacksWhatIfResultProperties()
+                    .withTemplateLink(
+                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                    .withParameters(mapOf())
+                    .withExtensionConfigs(mapOf("contoso",
+                        new DeploymentExtensionConfig().withAdditionalProperties(
+                            mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                                new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
+                    .withDeploymentStackResourceId(
+                        "/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
+                    .withRetentionInterval(Duration.parse("P7D"))).withLocation("eastus"),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -895,7 +863,6 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupWhatIfSamples {
 ### DeploymentStacksWhatIfResultsAtResourceGroup_CreateOrUpdate
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
@@ -904,7 +871,6 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -927,27 +893,21 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupCreateOrUpdateSam
             .define("simpleDeploymentStackWhatIfResult")
             .withExistingResourceGroup("myResourceGroup")
             .withRegion("eastus")
-            .withProperties(
-                new DeploymentStacksWhatIfResultProperties()
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf())
-                    .withExtensionConfigs(
-                        mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                    .withActionOnUnmanage(new ActionOnUnmanage()
-                        .withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
-                    .withDeploymentStackResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
-                    .withRetentionInterval(Duration.parse("P7D")))
+            .withProperties(new DeploymentStacksWhatIfResultProperties()
+                .withTemplateLink(
+                    new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                .withParameters(mapOf())
+                .withExtensionConfigs(mapOf("contoso",
+                    new DeploymentExtensionConfig().withAdditionalProperties(
+                        mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                            new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
+                .withDeploymentStackResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
+                .withRetentionInterval(Duration.parse("P7D")))
             .create();
     }
 
@@ -1063,7 +1023,6 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupWhatIfSamples {
 ### DeploymentStacksWhatIfResultsAtSubscription_CreateOrUpdate
 
 ```java
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
@@ -1073,7 +1032,6 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -1094,28 +1052,21 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionCreateOrUpdateSamp
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacksWhatIfResultsAtSubscriptions()
             .createOrUpdate("simpleDeploymentStackWhatIfResult",
-                new DeploymentStacksWhatIfResultInner()
-                    .withProperties(new DeploymentStacksWhatIfResultProperties()
-                        .withTemplateLink(
-                            new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                        .withParameters(mapOf())
-                        .withExtensionConfigs(mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                        .withActionOnUnmanage(new ActionOnUnmanage()
-                            .withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                            .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                            .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                        .withDenySettings(
-                            new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
-                        .withDeploymentStackResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
-                        .withRetentionInterval(Duration.parse("P7D")))
-                    .withLocation("eastus"),
+                new DeploymentStacksWhatIfResultInner().withProperties(new DeploymentStacksWhatIfResultProperties()
+                    .withTemplateLink(
+                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                    .withParameters(mapOf())
+                    .withExtensionConfigs(mapOf("contoso",
+                        new DeploymentExtensionConfig().withAdditionalProperties(
+                            mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                                new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
+                    .withDeploymentStackResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
+                    .withRetentionInterval(Duration.parse("P7D"))).withLocation("eastus"),
                 com.azure.core.util.Context.NONE);
     }
 

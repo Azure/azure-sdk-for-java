@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,12 +21,12 @@ public final class DeploymentStacksWhatIfPropertyChange
     /*
      * The predicted value before the deployment is executed.
      */
-    private BinaryData before;
+    private Object before;
 
     /*
      * The predicted value after the deployment is executed.
      */
-    private BinaryData after;
+    private Object after;
 
     /*
      * Type of change that will be made to the resource when the deployment is executed.
@@ -55,7 +54,7 @@ public final class DeploymentStacksWhatIfPropertyChange
      * 
      * @return the before value.
      */
-    public BinaryData before() {
+    public Object before() {
         return this.before;
     }
 
@@ -64,7 +63,7 @@ public final class DeploymentStacksWhatIfPropertyChange
      * 
      * @return the after value.
      */
-    public BinaryData after() {
+    public Object after() {
         return this.after;
     }
 
@@ -104,12 +103,10 @@ public final class DeploymentStacksWhatIfPropertyChange
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
         if (this.before != null) {
-            jsonWriter.writeFieldName("before");
-            this.before.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("before", this.before);
         }
         if (this.after != null) {
-            jsonWriter.writeFieldName("after");
-            this.after.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("after", this.after);
         }
         jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -138,11 +135,9 @@ public final class DeploymentStacksWhatIfPropertyChange
                     deserializedDeploymentStacksWhatIfPropertyChange.changeType
                         = DeploymentStacksWhatIfPropertyChangeType.fromString(reader.getString());
                 } else if ("before".equals(fieldName)) {
-                    deserializedDeploymentStacksWhatIfPropertyChange.before
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentStacksWhatIfPropertyChange.before = reader.readUntyped();
                 } else if ("after".equals(fieldName)) {
-                    deserializedDeploymentStacksWhatIfPropertyChange.after
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentStacksWhatIfPropertyChange.after = reader.readUntyped();
                 } else if ("children".equals(fieldName)) {
                     List<DeploymentStacksWhatIfPropertyChange> children
                         = reader.readArray(reader1 -> DeploymentStacksWhatIfPropertyChange.fromJson(reader1));

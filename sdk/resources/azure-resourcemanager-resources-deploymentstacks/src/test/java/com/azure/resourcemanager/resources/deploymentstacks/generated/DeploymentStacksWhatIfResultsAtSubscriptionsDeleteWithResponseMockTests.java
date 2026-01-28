@@ -30,9 +30,9 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsDeleteWithRespons
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deploymentStacksWhatIfResultsAtSubscriptions()
-            .deleteWithResponse("it", DeploymentStacksDeleteDetachEnum.DETACH, DeploymentStacksDeleteDetachEnum.DELETE,
-                DeploymentStacksDeleteDetachEnum.DELETE, DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, false,
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("hsqfsubcgjbirxbp", DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksDeleteDetachEnum.DETACH, DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, false, com.azure.core.util.Context.NONE);
 
     }
 }

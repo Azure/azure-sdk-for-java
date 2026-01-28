@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,7 +24,7 @@ public final class DeploymentExternalInputDefinition implements JsonSerializable
     /*
      * Configuration for the external input.
      */
-    private BinaryData config;
+    private Object config;
 
     /**
      * Creates an instance of DeploymentExternalInputDefinition class.
@@ -58,7 +57,7 @@ public final class DeploymentExternalInputDefinition implements JsonSerializable
      * 
      * @return the config value.
      */
-    public BinaryData config() {
+    public Object config() {
         return this.config;
     }
 
@@ -68,7 +67,7 @@ public final class DeploymentExternalInputDefinition implements JsonSerializable
      * @param config the config value to set.
      * @return the DeploymentExternalInputDefinition object itself.
      */
-    public DeploymentExternalInputDefinition withConfig(BinaryData config) {
+    public DeploymentExternalInputDefinition withConfig(Object config) {
         this.config = config;
         return this;
     }
@@ -81,8 +80,7 @@ public final class DeploymentExternalInputDefinition implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", this.kind);
         if (this.config != null) {
-            jsonWriter.writeFieldName("config");
-            this.config.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("config", this.config);
         }
         return jsonWriter.writeEndObject();
     }
@@ -107,8 +105,7 @@ public final class DeploymentExternalInputDefinition implements JsonSerializable
                 if ("kind".equals(fieldName)) {
                     deserializedDeploymentExternalInputDefinition.kind = reader.getString();
                 } else if ("config".equals(fieldName)) {
-                    deserializedDeploymentExternalInputDefinition.config
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentExternalInputDefinition.config = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

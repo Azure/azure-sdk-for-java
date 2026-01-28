@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,7 +24,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
     /*
      * The value of the config item. The type is determined by the extension config schema.
      */
-    private BinaryData value;
+    private Object value;
 
     /*
      * The key vault reference of the config item.
@@ -52,7 +51,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
      * 
      * @return the value value.
      */
-    public BinaryData value() {
+    public Object value() {
         return this.value;
     }
 
@@ -62,7 +61,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
      * @param value the value value to set.
      * @return the DeploymentExtensionConfigItem object itself.
      */
-    public DeploymentExtensionConfigItem withValue(BinaryData value) {
+    public DeploymentExtensionConfigItem withValue(Object value) {
         this.value = value;
         return this;
     }
@@ -94,8 +93,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         if (this.value != null) {
-            jsonWriter.writeFieldName("value");
-            this.value.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("value", this.value);
         }
         jsonWriter.writeJsonField("keyVaultReference", this.keyVaultReference);
         return jsonWriter.writeEndObject();
@@ -120,8 +118,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
                 if ("type".equals(fieldName)) {
                     deserializedDeploymentExtensionConfigItem.type = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    deserializedDeploymentExtensionConfigItem.value
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentExtensionConfigItem.value = reader.readUntyped();
                 } else if ("keyVaultReference".equals(fieldName)) {
                     deserializedDeploymentExtensionConfigItem.keyVaultReference
                         = KeyVaultParameterReference.fromJson(reader);

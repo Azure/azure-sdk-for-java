@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,7 +24,7 @@ public final class ErrorAdditionalInfo implements JsonSerializable<ErrorAddition
     /*
      * The additional info.
      */
-    private BinaryData info;
+    private Object info;
 
     /**
      * Creates an instance of ErrorAdditionalInfo class.
@@ -47,7 +46,7 @@ public final class ErrorAdditionalInfo implements JsonSerializable<ErrorAddition
      * 
      * @return the info value.
      */
-    public BinaryData info() {
+    public Object info() {
         return this.info;
     }
 
@@ -78,8 +77,7 @@ public final class ErrorAdditionalInfo implements JsonSerializable<ErrorAddition
                 if ("type".equals(fieldName)) {
                     deserializedErrorAdditionalInfo.type = reader.getString();
                 } else if ("info".equals(fieldName)) {
-                    deserializedErrorAdditionalInfo.info
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedErrorAdditionalInfo.info = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

@@ -12,14 +12,16 @@ public final class DeploymentExternalInputDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentExternalInputDefinition model
-            = BinaryData.fromString("{\"kind\":\"ucmpoyfd\"}").toObject(DeploymentExternalInputDefinition.class);
-        Assertions.assertEquals("ucmpoyfd", model.kind());
+            = BinaryData.fromString("{\"kind\":\"flusarhmof\",\"config\":\"datahs\"}")
+                .toObject(DeploymentExternalInputDefinition.class);
+        Assertions.assertEquals("flusarhmof", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentExternalInputDefinition model = new DeploymentExternalInputDefinition().withKind("ucmpoyfd");
+        DeploymentExternalInputDefinition model
+            = new DeploymentExternalInputDefinition().withKind("flusarhmof").withConfig("datahs");
         model = BinaryData.fromObject(model).toObject(DeploymentExternalInputDefinition.class);
-        Assertions.assertEquals("ucmpoyfd", model.kind());
+        Assertions.assertEquals("flusarhmof", model.kind());
     }
 }

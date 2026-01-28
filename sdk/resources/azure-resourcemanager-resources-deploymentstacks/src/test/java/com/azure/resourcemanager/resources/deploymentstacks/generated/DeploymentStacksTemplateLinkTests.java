@@ -12,27 +12,27 @@ public final class DeploymentStacksTemplateLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStacksTemplateLink model = BinaryData.fromString(
-            "{\"uri\":\"dxbmtqioq\",\"id\":\"ehtbm\",\"relativePath\":\"p\",\"queryString\":\"noi\",\"contentVersion\":\"wlrxyb\"}")
+            "{\"uri\":\"zehtbmu\",\"id\":\"ownoizhw\",\"relativePath\":\"xybqsoqij\",\"queryString\":\"dmbpazlobcufpdz\",\"contentVersion\":\"btcqq\"}")
             .toObject(DeploymentStacksTemplateLink.class);
-        Assertions.assertEquals("dxbmtqioq", model.uri());
-        Assertions.assertEquals("ehtbm", model.id());
-        Assertions.assertEquals("p", model.relativePath());
-        Assertions.assertEquals("noi", model.queryString());
-        Assertions.assertEquals("wlrxyb", model.contentVersion());
+        Assertions.assertEquals("zehtbmu", model.uri());
+        Assertions.assertEquals("ownoizhw", model.id());
+        Assertions.assertEquals("xybqsoqij", model.relativePath());
+        Assertions.assertEquals("dmbpazlobcufpdz", model.queryString());
+        Assertions.assertEquals("btcqq", model.contentVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentStacksTemplateLink model = new DeploymentStacksTemplateLink().withUri("dxbmtqioq")
-            .withId("ehtbm")
-            .withRelativePath("p")
-            .withQueryString("noi")
-            .withContentVersion("wlrxyb");
+        DeploymentStacksTemplateLink model = new DeploymentStacksTemplateLink().withUri("zehtbmu")
+            .withId("ownoizhw")
+            .withRelativePath("xybqsoqij")
+            .withQueryString("dmbpazlobcufpdz")
+            .withContentVersion("btcqq");
         model = BinaryData.fromObject(model).toObject(DeploymentStacksTemplateLink.class);
-        Assertions.assertEquals("dxbmtqioq", model.uri());
-        Assertions.assertEquals("ehtbm", model.id());
-        Assertions.assertEquals("p", model.relativePath());
-        Assertions.assertEquals("noi", model.queryString());
-        Assertions.assertEquals("wlrxyb", model.contentVersion());
+        Assertions.assertEquals("zehtbmu", model.uri());
+        Assertions.assertEquals("ownoizhw", model.id());
+        Assertions.assertEquals("xybqsoqij", model.relativePath());
+        Assertions.assertEquals("dmbpazlobcufpdz", model.queryString());
+        Assertions.assertEquals("btcqq", model.contentVersion());
     }
 }

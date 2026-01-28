@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -36,7 +35,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
      * The extensible resource identifiers.
      */
-    private Map<String, BinaryData> identifiers;
+    private Map<String, Object> identifiers;
 
     /*
      * The API version the resource was deployed with
@@ -114,7 +113,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
      * 
      * @return the identifiers value.
      */
-    public Map<String, BinaryData> identifiers() {
+    public Map<String, Object> identifiers() {
         return this.identifiers;
     }
 
@@ -124,7 +123,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
      * @param identifiers the identifiers value to set.
      * @return the ResourceReference object itself.
      */
-    ResourceReference withIdentifiers(Map<String, BinaryData> identifiers) {
+    ResourceReference withIdentifiers(Map<String, Object> identifiers) {
         this.identifiers = identifiers;
         return this;
     }
@@ -180,8 +179,7 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
                 } else if ("type".equals(fieldName)) {
                     deserializedResourceReference.type = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
-                    Map<String, BinaryData> identifiers = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> identifiers = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedResourceReference.identifiers = identifiers;
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedResourceReference.apiVersion = reader.getString();

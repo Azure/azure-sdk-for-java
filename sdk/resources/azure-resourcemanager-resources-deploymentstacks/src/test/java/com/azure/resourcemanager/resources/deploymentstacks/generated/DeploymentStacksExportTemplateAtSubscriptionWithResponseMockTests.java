@@ -21,7 +21,7 @@ public final class DeploymentStacksExportTemplateAtSubscriptionWithResponseMockT
     @Test
     public void testExportTemplateAtSubscriptionWithResponse() throws Exception {
         String responseStr
-            = "{\"template\":{},\"templateLink\":{\"uri\":\"gktrmgucnapkte\",\"id\":\"llwptfdy\",\"relativePath\":\"fqbuaceopzf\",\"queryString\":\"hhuao\",\"contentVersion\":\"pcqeqx\"}}";
+            = "{\"template\":\"dataka\",\"templateLink\":{\"uri\":\"tiiswacffg\",\"id\":\"zzewkfvhqcrai\",\"relativePath\":\"pnppfuf\",\"queryString\":\"wdmhdlxyjrxs\",\"contentVersion\":\"afcnih\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class DeploymentStacksExportTemplateAtSubscriptionWithResponseMockT
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentStackTemplateDefinition response = manager.deploymentStacks()
-            .exportTemplateAtSubscriptionWithResponse("slynqwwnc", com.azure.core.util.Context.NONE)
+            .exportTemplateAtSubscriptionWithResponse("ggbhcohfwds", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gktrmgucnapkte", response.templateLink().uri());
-        Assertions.assertEquals("llwptfdy", response.templateLink().id());
-        Assertions.assertEquals("fqbuaceopzf", response.templateLink().relativePath());
-        Assertions.assertEquals("hhuao", response.templateLink().queryString());
-        Assertions.assertEquals("pcqeqx", response.templateLink().contentVersion());
+        Assertions.assertEquals("tiiswacffg", response.templateLink().uri());
+        Assertions.assertEquals("zzewkfvhqcrai", response.templateLink().id());
+        Assertions.assertEquals("pnppfuf", response.templateLink().relativePath());
+        Assertions.assertEquals("wdmhdlxyjrxs", response.templateLink().queryString());
+        Assertions.assertEquals("afcnih", response.templateLink().contentVersion());
     }
 }

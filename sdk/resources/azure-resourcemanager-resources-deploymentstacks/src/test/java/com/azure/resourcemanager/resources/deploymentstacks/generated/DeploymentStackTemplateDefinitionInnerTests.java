@@ -12,12 +12,12 @@ public final class DeploymentStackTemplateDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStackTemplateDefinitionInner model = BinaryData.fromString(
-            "{\"template\":{},\"templateLink\":{\"uri\":\"g\",\"id\":\"dxyt\",\"relativePath\":\"oyrxvwfudwpzntxh\",\"queryString\":\"hl\",\"contentVersion\":\"jbhckfrlhr\"}}")
+            "{\"template\":\"datalaulppg\",\"templateLink\":{\"uri\":\"pnapnyiropuh\",\"id\":\"gvpgy\",\"relativePath\":\"qgitxmed\",\"queryString\":\"c\",\"contentVersion\":\"ynqwwncwzzhxgk\"}}")
             .toObject(DeploymentStackTemplateDefinitionInner.class);
-        Assertions.assertEquals("g", model.templateLink().uri());
-        Assertions.assertEquals("dxyt", model.templateLink().id());
-        Assertions.assertEquals("oyrxvwfudwpzntxh", model.templateLink().relativePath());
-        Assertions.assertEquals("hl", model.templateLink().queryString());
-        Assertions.assertEquals("jbhckfrlhr", model.templateLink().contentVersion());
+        Assertions.assertEquals("pnapnyiropuh", model.templateLink().uri());
+        Assertions.assertEquals("gvpgy", model.templateLink().id());
+        Assertions.assertEquals("qgitxmed", model.templateLink().relativePath());
+        Assertions.assertEquals("c", model.templateLink().queryString());
+        Assertions.assertEquals("ynqwwncwzzhxgk", model.templateLink().contentVersion());
     }
 }

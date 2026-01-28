@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.deploymentstacks.generated;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
@@ -12,8 +11,8 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsM
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,26 +33,23 @@ public final class DeploymentStacksCreateOrUpdateAtManagementGroupSamples {
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
             .createOrUpdateAtManagementGroup("myMg", "simpleDeploymentStack",
-                new DeploymentStackInner().withLocation("eastus")
-                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
-                    .withExtensionConfigs(
-                        mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withExtensionConfigs(mapOf("contoso",
+                            new DeploymentExtensionConfig().withAdditionalProperties(
+                                mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                                    new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                        .withActionOnUnmanage(
+                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

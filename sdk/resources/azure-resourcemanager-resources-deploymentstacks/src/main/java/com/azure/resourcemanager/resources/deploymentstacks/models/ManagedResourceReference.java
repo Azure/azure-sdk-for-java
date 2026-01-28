@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -35,7 +34,7 @@ public final class ManagedResourceReference extends ResourceReference {
     /*
      * The extensible resource identifiers.
      */
-    private Map<String, BinaryData> identifiers;
+    private Map<String, Object> identifiers;
 
     /*
      * The resource type.
@@ -92,7 +91,7 @@ public final class ManagedResourceReference extends ResourceReference {
      * @return the identifiers value.
      */
     @Override
-    public Map<String, BinaryData> identifiers() {
+    public Map<String, Object> identifiers() {
         return this.identifiers;
     }
 
@@ -159,8 +158,7 @@ public final class ManagedResourceReference extends ResourceReference {
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedResourceReference.type = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
-                    Map<String, BinaryData> identifiers = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> identifiers = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedManagedResourceReference.identifiers = identifiers;
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedManagedResourceReference.apiVersion = reader.getString();

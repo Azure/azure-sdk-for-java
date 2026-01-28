@@ -7,11 +7,8 @@ package com.azure.resourcemanager.resources.deploymentstacks.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
-import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +37,13 @@ public interface DeploymentStack {
     String type();
 
     /**
+     * Gets the properties property: Deployment stack properties.
+     * 
+     * @return the properties value.
+     */
+    DeploymentStackProperties properties();
+
+    /**
      * Gets the location property: The geo-location where the resource lives. Required for subscription and management
      * group scoped stacks. The location is inherited from the resource group for resource group scoped stacks.
      * 
@@ -60,202 +64,6 @@ public interface DeploymentStack {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the error property: The error detail.
-     * 
-     * @return the error value.
-     */
-    ManagementError error();
-
-    /**
-     * Gets the template property: The template content. You use this element when you want to pass the template syntax
-     * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
-     * Use either the templateLink property or the template property, but not both.
-     * 
-     * @return the template value.
-     */
-    Map<String, BinaryData> template();
-
-    /**
-     * Gets the templateLink property: The URI of the template. Use either the templateLink property or the template
-     * property, but not both.
-     * 
-     * @return the templateLink value.
-     */
-    DeploymentStacksTemplateLink templateLink();
-
-    /**
-     * Gets the parameters property: Name and value pairs that define the deployment parameters for the template. Use
-     * this element when providing the parameter values directly in the request, rather than linking to an existing
-     * parameter file. Use either the parametersLink property or the parameters property, but not both.
-     * 
-     * @return the parameters value.
-     */
-    Map<String, DeploymentParameter> parameters();
-
-    /**
-     * Gets the parametersLink property: The URI of parameters file. Use this element to link to an existing parameters
-     * file. Use either the parametersLink property or the parameters property, but not both.
-     * 
-     * @return the parametersLink value.
-     */
-    DeploymentStacksParametersLink parametersLink();
-
-    /**
-     * Gets the extensionConfigs property: The deployment extension configs. Keys of this object are extension aliases
-     * as defined in the deployment template.
-     * 
-     * @return the extensionConfigs value.
-     */
-    Map<String, DeploymentExtensionConfig> extensionConfigs();
-
-    /**
-     * Gets the externalInputs property: External input values, used by external tooling for parameter evaluation.
-     * 
-     * @return the externalInputs value.
-     */
-    Map<String, DeploymentExternalInput> externalInputs();
-
-    /**
-     * Gets the externalInputDefinitions property: External input definitions, used by external tooling to define
-     * expected external input values.
-     * 
-     * @return the externalInputDefinitions value.
-     */
-    Map<String, DeploymentExternalInputDefinition> externalInputDefinitions();
-
-    /**
-     * Gets the actionOnUnmanage property: Defines the behavior of resources that are no longer managed after the
-     * Deployment stack is updated or deleted.
-     * 
-     * @return the actionOnUnmanage value.
-     */
-    ActionOnUnmanage actionOnUnmanage();
-
-    /**
-     * Gets the debugSetting property: The debug setting of the deployment.
-     * 
-     * @return the debugSetting value.
-     */
-    DeploymentStacksDebugSetting debugSetting();
-
-    /**
-     * Gets the deploymentScope property: The scope at which the initial deployment should be created. If a scope is not
-     * specified, it will default to the scope of the deployment stack. Valid scopes are: management group (format:
-     * '/providers/Microsoft.Management/managementGroups/{managementGroupId}'), subscription (format:
-     * '/subscriptions/{subscriptionId}'), resource group (format:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
-     * 
-     * @return the deploymentScope value.
-     */
-    String deploymentScope();
-
-    /**
-     * Gets the description property: Deployment stack description. Max length of 4096 characters.
-     * 
-     * @return the description value.
-     */
-    String description();
-
-    /**
-     * Gets the denySettings property: Defines how resources deployed by the stack are locked.
-     * 
-     * @return the denySettings value.
-     */
-    DenySettings denySettings();
-
-    /**
-     * Gets the provisioningState property: State of the deployment stack.
-     * 
-     * @return the provisioningState value.
-     */
-    DeploymentStackProvisioningState provisioningState();
-
-    /**
-     * Gets the correlationId property: The correlation id of the last Deployment stack upsert or delete operation. It
-     * is in GUID format and is used for tracing.
-     * 
-     * @return the correlationId value.
-     */
-    String correlationId();
-
-    /**
-     * Gets the validationLevel property: The validation level of the deployment stack.
-     * 
-     * @return the validationLevel value.
-     */
-    ValidationLevel validationLevel();
-
-    /**
-     * Gets the bypassStackOutOfSyncError property: Flag to bypass service errors that indicate the stack resource list
-     * is not correctly synchronized.
-     * 
-     * @return the bypassStackOutOfSyncError value.
-     */
-    Boolean bypassStackOutOfSyncError();
-
-    /**
-     * Gets the detachedResources property: An array of resources that were detached during the most recent Deployment
-     * stack update. Detached means that the resource was removed from the template, but no relevant deletion operations
-     * were specified. So, the resource still exists while no longer being associated with the stack.
-     * 
-     * @return the detachedResources value.
-     */
-    List<ResourceReference> detachedResources();
-
-    /**
-     * Gets the deletedResources property: An array of resources that were deleted during the most recent Deployment
-     * stack update. Deleted means that the resource was removed from the template and relevant deletion operations were
-     * specified.
-     * 
-     * @return the deletedResources value.
-     */
-    List<ResourceReference> deletedResources();
-
-    /**
-     * Gets the failedResources property: An array of resources that failed to reach goal state during the most recent
-     * update. Each resourceId is accompanied by an error message.
-     * 
-     * @return the failedResources value.
-     */
-    List<ResourceReferenceExtended> failedResources();
-
-    /**
-     * Gets the resources property: An array of resources currently managed by the deployment stack.
-     * 
-     * @return the resources value.
-     */
-    List<ManagedResourceReference> resources();
-
-    /**
-     * Gets the deploymentExtensions property: The extensions used during deployment. Contains extension data for all
-     * extensible resources managed by the stack.
-     * 
-     * @return the deploymentExtensions value.
-     */
-    List<DeploymentExtension> deploymentExtensions();
-
-    /**
-     * Gets the deploymentId property: The resourceId of the deployment resource created by the deployment stack.
-     * 
-     * @return the deploymentId value.
-     */
-    String deploymentId();
-
-    /**
-     * Gets the outputs property: The outputs of the deployment resource created by the deployment stack.
-     * 
-     * @return the outputs value.
-     */
-    Map<String, BinaryData> outputs();
-
-    /**
-     * Gets the duration property: The duration of the last successful Deployment stack update.
-     * 
-     * @return the duration value.
-     */
-    String duration();
 
     /**
      * Gets the region of the resource.
@@ -319,13 +127,8 @@ public interface DeploymentStack {
          * The stage of the DeploymentStack definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
-            DefinitionStages.WithError, DefinitionStages.WithTemplate, DefinitionStages.WithTemplateLink,
-            DefinitionStages.WithParameters, DefinitionStages.WithParametersLink, DefinitionStages.WithExtensionConfigs,
-            DefinitionStages.WithExternalInputs, DefinitionStages.WithExternalInputDefinitions,
-            DefinitionStages.WithActionOnUnmanage, DefinitionStages.WithDebugSetting,
-            DefinitionStages.WithDeploymentScope, DefinitionStages.WithDescription, DefinitionStages.WithDenySettings,
-            DefinitionStages.WithValidationLevel, DefinitionStages.WithBypassStackOutOfSyncError {
+        interface WithCreate
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -379,230 +182,16 @@ public interface DeploymentStack {
         }
 
         /**
-         * The stage of the DeploymentStack definition allowing to specify error.
+         * The stage of the DeploymentStack definition allowing to specify properties.
          */
-        interface WithError {
+        interface WithProperties {
             /**
-             * Specifies the error property: The error detail..
+             * Specifies the properties property: Deployment stack properties..
              * 
-             * @param error The error detail.
+             * @param properties Deployment stack properties.
              * @return the next definition stage.
              */
-            WithCreate withError(ManagementError error);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify template.
-         */
-        interface WithTemplate {
-            /**
-             * Specifies the template property: The template content. You use this element when you want to pass the
-             * template syntax directly in the request rather than link to an existing template. It can be a JObject or
-             * well-formed JSON string. Use either the templateLink property or the template property, but not both..
-             * 
-             * @param template The template content. You use this element when you want to pass the template syntax
-             * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON
-             * string. Use either the templateLink property or the template property, but not both.
-             * @return the next definition stage.
-             */
-            WithCreate withTemplate(Map<String, BinaryData> template);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify templateLink.
-         */
-        interface WithTemplateLink {
-            /**
-             * Specifies the templateLink property: The URI of the template. Use either the templateLink property or the
-             * template property, but not both..
-             * 
-             * @param templateLink The URI of the template. Use either the templateLink property or the template
-             * property, but not both.
-             * @return the next definition stage.
-             */
-            WithCreate withTemplateLink(DeploymentStacksTemplateLink templateLink);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify parameters.
-         */
-        interface WithParameters {
-            /**
-             * Specifies the parameters property: Name and value pairs that define the deployment parameters for the
-             * template. Use this element when providing the parameter values directly in the request, rather than
-             * linking to an existing parameter file. Use either the parametersLink property or the parameters property,
-             * but not both..
-             * 
-             * @param parameters Name and value pairs that define the deployment parameters for the template. Use this
-             * element when providing the parameter values directly in the request, rather than linking to an existing
-             * parameter file. Use either the parametersLink property or the parameters property, but not both.
-             * @return the next definition stage.
-             */
-            WithCreate withParameters(Map<String, DeploymentParameter> parameters);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify parametersLink.
-         */
-        interface WithParametersLink {
-            /**
-             * Specifies the parametersLink property: The URI of parameters file. Use this element to link to an
-             * existing parameters file. Use either the parametersLink property or the parameters property, but not
-             * both..
-             * 
-             * @param parametersLink The URI of parameters file. Use this element to link to an existing parameters
-             * file. Use either the parametersLink property or the parameters property, but not both.
-             * @return the next definition stage.
-             */
-            WithCreate withParametersLink(DeploymentStacksParametersLink parametersLink);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify extensionConfigs.
-         */
-        interface WithExtensionConfigs {
-            /**
-             * Specifies the extensionConfigs property: The deployment extension configs. Keys of this object are
-             * extension aliases as defined in the deployment template..
-             * 
-             * @param extensionConfigs The deployment extension configs. Keys of this object are extension aliases as
-             * defined in the deployment template.
-             * @return the next definition stage.
-             */
-            WithCreate withExtensionConfigs(Map<String, DeploymentExtensionConfig> extensionConfigs);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify externalInputs.
-         */
-        interface WithExternalInputs {
-            /**
-             * Specifies the externalInputs property: External input values, used by external tooling for parameter
-             * evaluation..
-             * 
-             * @param externalInputs External input values, used by external tooling for parameter evaluation.
-             * @return the next definition stage.
-             */
-            WithCreate withExternalInputs(Map<String, DeploymentExternalInput> externalInputs);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify externalInputDefinitions.
-         */
-        interface WithExternalInputDefinitions {
-            /**
-             * Specifies the externalInputDefinitions property: External input definitions, used by external tooling to
-             * define expected external input values..
-             * 
-             * @param externalInputDefinitions External input definitions, used by external tooling to define expected
-             * external input values.
-             * @return the next definition stage.
-             */
-            WithCreate
-                withExternalInputDefinitions(Map<String, DeploymentExternalInputDefinition> externalInputDefinitions);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify actionOnUnmanage.
-         */
-        interface WithActionOnUnmanage {
-            /**
-             * Specifies the actionOnUnmanage property: Defines the behavior of resources that are no longer managed
-             * after the Deployment stack is updated or deleted..
-             * 
-             * @param actionOnUnmanage Defines the behavior of resources that are no longer managed after the Deployment
-             * stack is updated or deleted.
-             * @return the next definition stage.
-             */
-            WithCreate withActionOnUnmanage(ActionOnUnmanage actionOnUnmanage);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify debugSetting.
-         */
-        interface WithDebugSetting {
-            /**
-             * Specifies the debugSetting property: The debug setting of the deployment..
-             * 
-             * @param debugSetting The debug setting of the deployment.
-             * @return the next definition stage.
-             */
-            WithCreate withDebugSetting(DeploymentStacksDebugSetting debugSetting);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify deploymentScope.
-         */
-        interface WithDeploymentScope {
-            /**
-             * Specifies the deploymentScope property: The scope at which the initial deployment should be created. If a
-             * scope is not specified, it will default to the scope of the deployment stack. Valid scopes are:
-             * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroupId}'),
-             * subscription (format: '/subscriptions/{subscriptionId}'), resource group (format:
-             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}')..
-             * 
-             * @param deploymentScope The scope at which the initial deployment should be created. If a scope is not
-             * specified, it will default to the scope of the deployment stack. Valid scopes are: management group
-             * (format: '/providers/Microsoft.Management/managementGroups/{managementGroupId}'), subscription (format:
-             * '/subscriptions/{subscriptionId}'), resource group (format:
-             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
-             * @return the next definition stage.
-             */
-            WithCreate withDeploymentScope(String deploymentScope);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify description.
-         */
-        interface WithDescription {
-            /**
-             * Specifies the description property: Deployment stack description. Max length of 4096 characters..
-             * 
-             * @param description Deployment stack description. Max length of 4096 characters.
-             * @return the next definition stage.
-             */
-            WithCreate withDescription(String description);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify denySettings.
-         */
-        interface WithDenySettings {
-            /**
-             * Specifies the denySettings property: Defines how resources deployed by the stack are locked..
-             * 
-             * @param denySettings Defines how resources deployed by the stack are locked.
-             * @return the next definition stage.
-             */
-            WithCreate withDenySettings(DenySettings denySettings);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify validationLevel.
-         */
-        interface WithValidationLevel {
-            /**
-             * Specifies the validationLevel property: The validation level of the deployment stack.
-             * 
-             * @param validationLevel The validation level of the deployment stack.
-             * @return the next definition stage.
-             */
-            WithCreate withValidationLevel(ValidationLevel validationLevel);
-        }
-
-        /**
-         * The stage of the DeploymentStack definition allowing to specify bypassStackOutOfSyncError.
-         */
-        interface WithBypassStackOutOfSyncError {
-            /**
-             * Specifies the bypassStackOutOfSyncError property: Flag to bypass service errors that indicate the stack
-             * resource list is not correctly synchronized..
-             * 
-             * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is
-             * not correctly synchronized.
-             * @return the next definition stage.
-             */
-            WithCreate withBypassStackOutOfSyncError(Boolean bypassStackOutOfSyncError);
+            WithCreate withProperties(DeploymentStackProperties properties);
         }
     }
 
@@ -616,12 +205,7 @@ public interface DeploymentStack {
     /**
      * The template for DeploymentStack update.
      */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithError, UpdateStages.WithTemplate, UpdateStages.WithTemplateLink,
-        UpdateStages.WithParameters, UpdateStages.WithParametersLink, UpdateStages.WithExtensionConfigs,
-        UpdateStages.WithExternalInputs, UpdateStages.WithExternalInputDefinitions, UpdateStages.WithActionOnUnmanage,
-        UpdateStages.WithDebugSetting, UpdateStages.WithDeploymentScope, UpdateStages.WithDescription,
-        UpdateStages.WithDenySettings, UpdateStages.WithValidationLevel, UpdateStages.WithBypassStackOutOfSyncError {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -656,230 +240,16 @@ public interface DeploymentStack {
         }
 
         /**
-         * The stage of the DeploymentStack update allowing to specify error.
+         * The stage of the DeploymentStack update allowing to specify properties.
          */
-        interface WithError {
+        interface WithProperties {
             /**
-             * Specifies the error property: The error detail..
+             * Specifies the properties property: Deployment stack properties..
              * 
-             * @param error The error detail.
+             * @param properties Deployment stack properties.
              * @return the next definition stage.
              */
-            Update withError(ManagementError error);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify template.
-         */
-        interface WithTemplate {
-            /**
-             * Specifies the template property: The template content. You use this element when you want to pass the
-             * template syntax directly in the request rather than link to an existing template. It can be a JObject or
-             * well-formed JSON string. Use either the templateLink property or the template property, but not both..
-             * 
-             * @param template The template content. You use this element when you want to pass the template syntax
-             * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON
-             * string. Use either the templateLink property or the template property, but not both.
-             * @return the next definition stage.
-             */
-            Update withTemplate(Map<String, BinaryData> template);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify templateLink.
-         */
-        interface WithTemplateLink {
-            /**
-             * Specifies the templateLink property: The URI of the template. Use either the templateLink property or the
-             * template property, but not both..
-             * 
-             * @param templateLink The URI of the template. Use either the templateLink property or the template
-             * property, but not both.
-             * @return the next definition stage.
-             */
-            Update withTemplateLink(DeploymentStacksTemplateLink templateLink);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify parameters.
-         */
-        interface WithParameters {
-            /**
-             * Specifies the parameters property: Name and value pairs that define the deployment parameters for the
-             * template. Use this element when providing the parameter values directly in the request, rather than
-             * linking to an existing parameter file. Use either the parametersLink property or the parameters property,
-             * but not both..
-             * 
-             * @param parameters Name and value pairs that define the deployment parameters for the template. Use this
-             * element when providing the parameter values directly in the request, rather than linking to an existing
-             * parameter file. Use either the parametersLink property or the parameters property, but not both.
-             * @return the next definition stage.
-             */
-            Update withParameters(Map<String, DeploymentParameter> parameters);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify parametersLink.
-         */
-        interface WithParametersLink {
-            /**
-             * Specifies the parametersLink property: The URI of parameters file. Use this element to link to an
-             * existing parameters file. Use either the parametersLink property or the parameters property, but not
-             * both..
-             * 
-             * @param parametersLink The URI of parameters file. Use this element to link to an existing parameters
-             * file. Use either the parametersLink property or the parameters property, but not both.
-             * @return the next definition stage.
-             */
-            Update withParametersLink(DeploymentStacksParametersLink parametersLink);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify extensionConfigs.
-         */
-        interface WithExtensionConfigs {
-            /**
-             * Specifies the extensionConfigs property: The deployment extension configs. Keys of this object are
-             * extension aliases as defined in the deployment template..
-             * 
-             * @param extensionConfigs The deployment extension configs. Keys of this object are extension aliases as
-             * defined in the deployment template.
-             * @return the next definition stage.
-             */
-            Update withExtensionConfigs(Map<String, DeploymentExtensionConfig> extensionConfigs);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify externalInputs.
-         */
-        interface WithExternalInputs {
-            /**
-             * Specifies the externalInputs property: External input values, used by external tooling for parameter
-             * evaluation..
-             * 
-             * @param externalInputs External input values, used by external tooling for parameter evaluation.
-             * @return the next definition stage.
-             */
-            Update withExternalInputs(Map<String, DeploymentExternalInput> externalInputs);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify externalInputDefinitions.
-         */
-        interface WithExternalInputDefinitions {
-            /**
-             * Specifies the externalInputDefinitions property: External input definitions, used by external tooling to
-             * define expected external input values..
-             * 
-             * @param externalInputDefinitions External input definitions, used by external tooling to define expected
-             * external input values.
-             * @return the next definition stage.
-             */
-            Update
-                withExternalInputDefinitions(Map<String, DeploymentExternalInputDefinition> externalInputDefinitions);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify actionOnUnmanage.
-         */
-        interface WithActionOnUnmanage {
-            /**
-             * Specifies the actionOnUnmanage property: Defines the behavior of resources that are no longer managed
-             * after the Deployment stack is updated or deleted..
-             * 
-             * @param actionOnUnmanage Defines the behavior of resources that are no longer managed after the Deployment
-             * stack is updated or deleted.
-             * @return the next definition stage.
-             */
-            Update withActionOnUnmanage(ActionOnUnmanage actionOnUnmanage);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify debugSetting.
-         */
-        interface WithDebugSetting {
-            /**
-             * Specifies the debugSetting property: The debug setting of the deployment..
-             * 
-             * @param debugSetting The debug setting of the deployment.
-             * @return the next definition stage.
-             */
-            Update withDebugSetting(DeploymentStacksDebugSetting debugSetting);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify deploymentScope.
-         */
-        interface WithDeploymentScope {
-            /**
-             * Specifies the deploymentScope property: The scope at which the initial deployment should be created. If a
-             * scope is not specified, it will default to the scope of the deployment stack. Valid scopes are:
-             * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroupId}'),
-             * subscription (format: '/subscriptions/{subscriptionId}'), resource group (format:
-             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}')..
-             * 
-             * @param deploymentScope The scope at which the initial deployment should be created. If a scope is not
-             * specified, it will default to the scope of the deployment stack. Valid scopes are: management group
-             * (format: '/providers/Microsoft.Management/managementGroups/{managementGroupId}'), subscription (format:
-             * '/subscriptions/{subscriptionId}'), resource group (format:
-             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
-             * @return the next definition stage.
-             */
-            Update withDeploymentScope(String deploymentScope);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify description.
-         */
-        interface WithDescription {
-            /**
-             * Specifies the description property: Deployment stack description. Max length of 4096 characters..
-             * 
-             * @param description Deployment stack description. Max length of 4096 characters.
-             * @return the next definition stage.
-             */
-            Update withDescription(String description);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify denySettings.
-         */
-        interface WithDenySettings {
-            /**
-             * Specifies the denySettings property: Defines how resources deployed by the stack are locked..
-             * 
-             * @param denySettings Defines how resources deployed by the stack are locked.
-             * @return the next definition stage.
-             */
-            Update withDenySettings(DenySettings denySettings);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify validationLevel.
-         */
-        interface WithValidationLevel {
-            /**
-             * Specifies the validationLevel property: The validation level of the deployment stack.
-             * 
-             * @param validationLevel The validation level of the deployment stack.
-             * @return the next definition stage.
-             */
-            Update withValidationLevel(ValidationLevel validationLevel);
-        }
-
-        /**
-         * The stage of the DeploymentStack update allowing to specify bypassStackOutOfSyncError.
-         */
-        interface WithBypassStackOutOfSyncError {
-            /**
-             * Specifies the bypassStackOutOfSyncError property: Flag to bypass service errors that indicate the stack
-             * resource list is not correctly synchronized..
-             * 
-             * @param bypassStackOutOfSyncError Flag to bypass service errors that indicate the stack resource list is
-             * not correctly synchronized.
-             * @return the next definition stage.
-             */
-            Update withBypassStackOutOfSyncError(Boolean bypassStackOutOfSyncError);
+            Update withProperties(DeploymentStackProperties properties);
         }
     }
 

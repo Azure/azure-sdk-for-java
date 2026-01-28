@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,7 +19,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     /*
      * Input value to the parameter.
      */
-    private BinaryData value;
+    private Object value;
 
     /*
      * Type of the value.
@@ -48,7 +47,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
      * 
      * @return the value value.
      */
-    public BinaryData value() {
+    public Object value() {
         return this.value;
     }
 
@@ -58,7 +57,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
      * @param value the value value to set.
      * @return the DeploymentParameter object itself.
      */
-    public DeploymentParameter withValue(BinaryData value) {
+    public DeploymentParameter withValue(Object value) {
         this.value = value;
         return this;
     }
@@ -130,8 +129,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         if (this.value != null) {
-            jsonWriter.writeFieldName("value");
-            this.value.writeTo(jsonWriter);
+            jsonWriter.writeUntypedField("value", this.value);
         }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("reference", this.reference);
@@ -155,8 +153,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    deserializedDeploymentParameter.value
-                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    deserializedDeploymentParameter.value = reader.readUntyped();
                 } else if ("type".equals(fieldName)) {
                     deserializedDeploymentParameter.type = reader.getString();
                 } else if ("reference".equals(fieldName)) {

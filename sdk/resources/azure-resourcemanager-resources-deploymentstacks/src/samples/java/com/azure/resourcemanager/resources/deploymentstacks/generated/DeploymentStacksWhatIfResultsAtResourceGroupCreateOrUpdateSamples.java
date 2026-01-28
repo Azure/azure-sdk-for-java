@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resources.deploymentstacks.generated;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,27 +34,21 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupCreateOrUpdateSam
             .define("simpleDeploymentStackWhatIfResult")
             .withExistingResourceGroup("myResourceGroup")
             .withRegion("eastus")
-            .withProperties(
-                new DeploymentStacksWhatIfResultProperties()
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf())
-                    .withExtensionConfigs(
-                        mapOf("contoso",
-                            new DeploymentExtensionConfig().withAdditionalProperties(mapOf("configTwo",
-                                new DeploymentExtensionConfigItem()
-                                    .withValue(BinaryData.fromBytes("true".getBytes(StandardCharsets.UTF_8))),
-                                "configOne",
-                                new DeploymentExtensionConfigItem().withValue(
-                                    BinaryData.fromBytes("config1Value".getBytes(StandardCharsets.UTF_8)))))))
-                    .withActionOnUnmanage(new ActionOnUnmanage()
-                        .withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
-                    .withDeploymentStackResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
-                    .withRetentionInterval(Duration.parse("P7D")))
+            .withProperties(new DeploymentStacksWhatIfResultProperties()
+                .withTemplateLink(
+                    new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                .withParameters(mapOf())
+                .withExtensionConfigs(mapOf("contoso",
+                    new DeploymentExtensionConfig().withAdditionalProperties(
+                        mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
+                            new DeploymentExtensionConfigItem().withValue("config1Value")))))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
+                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
+                .withDeploymentStackResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
+                .withRetentionInterval(Duration.parse("P7D")))
             .create();
     }
 

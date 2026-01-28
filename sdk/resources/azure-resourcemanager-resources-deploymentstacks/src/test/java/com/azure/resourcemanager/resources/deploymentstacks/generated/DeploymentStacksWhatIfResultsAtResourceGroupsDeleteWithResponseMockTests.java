@@ -30,9 +30,9 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsDeleteWithRespon
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deploymentStacksWhatIfResultsAtResourceGroups()
-            .deleteWithResponse("c", "hmdua", DeploymentStacksDeleteDetachEnum.DELETE,
-                DeploymentStacksDeleteDetachEnum.DELETE, DeploymentStacksDeleteDetachEnum.DETACH,
-                DeploymentStacksResourcesWithoutDeleteSupportEnum.DETACH, true, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ol", "dahzxctobg", DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksDeleteDetachEnum.DETACH, DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, false, com.azure.core.util.Context.NONE);
 
     }
 }

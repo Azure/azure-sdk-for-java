@@ -13,9 +13,9 @@ public final class DeploymentStacksChangeBaseDenyStatusModeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStacksChangeBaseDenyStatusMode model
-            = BinaryData.fromString("{\"before\":\"denyDelete\",\"after\":\"none\"}")
+            = BinaryData.fromString("{\"before\":\"inapplicable\",\"after\":\"none\"}")
                 .toObject(DeploymentStacksChangeBaseDenyStatusMode.class);
-        Assertions.assertEquals(DenyStatusMode.DENY_DELETE, model.before());
+        Assertions.assertEquals(DenyStatusMode.INAPPLICABLE, model.before());
         Assertions.assertEquals(DenyStatusMode.NONE, model.after());
     }
 }

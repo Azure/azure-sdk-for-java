@@ -4,15 +4,14 @@
 
 package com.azure.resourcemanager.resources.deploymentstacks.generated;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,19 +32,18 @@ public final class DeploymentStacksValidateStackAtResourceGroupSamples {
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
             .validateStackAtResourceGroup("deploymentStacksRG", "simpleDeploymentStack",
-                new DeploymentStackInner().withTags(mapOf("tagkey", "fakeTokenPlaceholder"))
+                new DeploymentStackInner().withProperties(new DeploymentStackProperties()
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1",
-                        new DeploymentParameter()
-                            .withValue(BinaryData.fromBytes("a string".getBytes(StandardCharsets.UTF_8)))))
+                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
                     .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
                         .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)),
+                        .withApplyToChildScopes(false)))
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

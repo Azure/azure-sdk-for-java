@@ -14,24 +14,24 @@ public final class DenySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DenySettings model = BinaryData.fromString(
-            "{\"mode\":\"denyDelete\",\"excludedPrincipals\":[\"pewnw\",\"eitjz\",\"flusarhmof\",\"qhsmyurkdtml\"],\"excludedActions\":[\"kuksjtxukcdm\",\"arcryuanzwuxzdxt\"],\"applyToChildScopes\":false}")
+            "{\"mode\":\"none\",\"excludedPrincipals\":[\"ryuanzwuxzdxtay\",\"lhmwhfpmrqobm\"],\"excludedActions\":[\"knryrtihfxtij\",\"pzvgnwzsymglzufc\",\"zk\"],\"applyToChildScopes\":true}")
             .toObject(DenySettings.class);
-        Assertions.assertEquals(DenySettingsMode.DENY_DELETE, model.mode());
-        Assertions.assertEquals("pewnw", model.excludedPrincipals().get(0));
-        Assertions.assertEquals("kuksjtxukcdm", model.excludedActions().get(0));
-        Assertions.assertFalse(model.applyToChildScopes());
+        Assertions.assertEquals(DenySettingsMode.NONE, model.mode());
+        Assertions.assertEquals("ryuanzwuxzdxtay", model.excludedPrincipals().get(0));
+        Assertions.assertEquals("knryrtihfxtij", model.excludedActions().get(0));
+        Assertions.assertTrue(model.applyToChildScopes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DenySettings model = new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-            .withExcludedPrincipals(Arrays.asList("pewnw", "eitjz", "flusarhmof", "qhsmyurkdtml"))
-            .withExcludedActions(Arrays.asList("kuksjtxukcdm", "arcryuanzwuxzdxt"))
-            .withApplyToChildScopes(false);
+        DenySettings model = new DenySettings().withMode(DenySettingsMode.NONE)
+            .withExcludedPrincipals(Arrays.asList("ryuanzwuxzdxtay", "lhmwhfpmrqobm"))
+            .withExcludedActions(Arrays.asList("knryrtihfxtij", "pzvgnwzsymglzufc", "zk"))
+            .withApplyToChildScopes(true);
         model = BinaryData.fromObject(model).toObject(DenySettings.class);
-        Assertions.assertEquals(DenySettingsMode.DENY_DELETE, model.mode());
-        Assertions.assertEquals("pewnw", model.excludedPrincipals().get(0));
-        Assertions.assertEquals("kuksjtxukcdm", model.excludedActions().get(0));
-        Assertions.assertFalse(model.applyToChildScopes());
+        Assertions.assertEquals(DenySettingsMode.NONE, model.mode());
+        Assertions.assertEquals("ryuanzwuxzdxtay", model.excludedPrincipals().get(0));
+        Assertions.assertEquals("knryrtihfxtij", model.excludedActions().get(0));
+        Assertions.assertTrue(model.applyToChildScopes());
     }
 }

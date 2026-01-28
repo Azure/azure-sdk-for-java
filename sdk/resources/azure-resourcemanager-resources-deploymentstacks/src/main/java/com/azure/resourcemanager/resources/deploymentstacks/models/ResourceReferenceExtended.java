@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -37,7 +36,7 @@ public final class ResourceReferenceExtended implements JsonSerializable<Resourc
     /*
      * The extensible resource identifiers.
      */
-    private Map<String, BinaryData> identifiers;
+    private Map<String, Object> identifiers;
 
     /*
      * The API version the resource was deployed with
@@ -87,7 +86,7 @@ public final class ResourceReferenceExtended implements JsonSerializable<Resourc
      * 
      * @return the identifiers value.
      */
-    public Map<String, BinaryData> identifiers() {
+    public Map<String, Object> identifiers() {
         return this.identifiers;
     }
 
@@ -141,8 +140,7 @@ public final class ResourceReferenceExtended implements JsonSerializable<Resourc
                 } else if ("type".equals(fieldName)) {
                     deserializedResourceReferenceExtended.type = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
-                    Map<String, BinaryData> identifiers = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> identifiers = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedResourceReferenceExtended.identifiers = identifiers;
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedResourceReferenceExtended.apiVersion = reader.getString();

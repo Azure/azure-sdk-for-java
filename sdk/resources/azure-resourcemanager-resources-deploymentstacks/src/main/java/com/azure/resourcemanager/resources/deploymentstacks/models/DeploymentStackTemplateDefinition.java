@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
-import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackTemplateDefinitionInner;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of DeploymentStackTemplateDefinition.
@@ -19,7 +17,7 @@ public interface DeploymentStackTemplateDefinition {
      * 
      * @return the template value.
      */
-    Map<String, BinaryData> template();
+    Object template();
 
     /**
      * Gets the templateLink property: The URI of the template. Use either the templateLink property or the template

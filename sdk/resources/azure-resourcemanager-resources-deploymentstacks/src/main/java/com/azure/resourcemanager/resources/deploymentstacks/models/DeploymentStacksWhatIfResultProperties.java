@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -34,7 +33,7 @@ public final class DeploymentStacksWhatIfResultProperties
      * rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the
      * templateLink property or the template property, but not both.
      */
-    private Map<String, BinaryData> template;
+    private Map<String, Object> template;
 
     /*
      * The URI of the template. Use either the templateLink property or the template property, but not both.
@@ -174,7 +173,7 @@ public final class DeploymentStacksWhatIfResultProperties
      * 
      * @return the template value.
      */
-    public Map<String, BinaryData> template() {
+    public Map<String, Object> template() {
         return this.template;
     }
 
@@ -186,7 +185,7 @@ public final class DeploymentStacksWhatIfResultProperties
      * @param template the template value to set.
      * @return the DeploymentStacksWhatIfResultProperties object itself.
      */
-    public DeploymentStacksWhatIfResultProperties withTemplate(Map<String, BinaryData> template) {
+    public DeploymentStacksWhatIfResultProperties withTemplate(Map<String, Object> template) {
         this.template = template;
         return this;
     }
@@ -556,8 +555,7 @@ public final class DeploymentStacksWhatIfResultProperties
         jsonWriter.writeStringField("deploymentStackResourceId", this.deploymentStackResourceId);
         jsonWriter.writeStringField("retentionInterval", CoreUtils.durationToStringWithDays(this.retentionInterval));
         jsonWriter.writeJsonField("error", this.error);
-        jsonWriter.writeMapField("template", this.template,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("template", this.template, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("parametersLink", this.parametersLink);
@@ -604,8 +602,7 @@ public final class DeploymentStacksWhatIfResultProperties
                 } else if ("error".equals(fieldName)) {
                     deserializedDeploymentStacksWhatIfResultProperties.error = ManagementError.fromJson(reader);
                 } else if ("template".equals(fieldName)) {
-                    Map<String, BinaryData> template = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> template = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedDeploymentStacksWhatIfResultProperties.template = template;
                 } else if ("templateLink".equals(fieldName)) {
                     deserializedDeploymentStacksWhatIfResultProperties.templateLink

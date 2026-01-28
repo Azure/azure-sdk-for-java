@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -37,7 +36,7 @@ public final class DeploymentStacksWhatIfResourceChange
     /*
      * The extensible resource identifiers.
      */
-    private Map<String, BinaryData> identifiers;
+    private Map<String, Object> identifiers;
 
     /*
      * The API version the resource was deployed with
@@ -122,7 +121,7 @@ public final class DeploymentStacksWhatIfResourceChange
      * 
      * @return the identifiers value.
      */
-    public Map<String, BinaryData> identifiers() {
+    public Map<String, Object> identifiers() {
         return this.identifiers;
     }
 
@@ -256,8 +255,7 @@ public final class DeploymentStacksWhatIfResourceChange
                 } else if ("type".equals(fieldName)) {
                     deserializedDeploymentStacksWhatIfResourceChange.type = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
-                    Map<String, BinaryData> identifiers = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> identifiers = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedDeploymentStacksWhatIfResourceChange.identifiers = identifiers;
                 } else if ("apiVersion".equals(fieldName)) {
                     deserializedDeploymentStacksWhatIfResourceChange.apiVersion = reader.getString();

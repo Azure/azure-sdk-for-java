@@ -5,14 +5,12 @@
 package com.azure.resourcemanager.resources.deploymentstacks.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Export Template specific properties of the Deployment stack.
@@ -25,7 +23,7 @@ public final class DeploymentStackTemplateDefinitionInner
      * existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the
      * template property, but not both.
      */
-    private Map<String, BinaryData> template;
+    private Object template;
 
     /*
      * The URI of the template. Use either the templateLink property or the template property, but not both.
@@ -45,7 +43,7 @@ public final class DeploymentStackTemplateDefinitionInner
      * 
      * @return the template value.
      */
-    public Map<String, BinaryData> template() {
+    public Object template() {
         return this.template;
     }
 
@@ -65,8 +63,9 @@ public final class DeploymentStackTemplateDefinitionInner
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("template", this.template,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        if (this.template != null) {
+            jsonWriter.writeUntypedField("template", this.template);
+        }
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         return jsonWriter.writeEndObject();
     }
@@ -88,9 +87,7 @@ public final class DeploymentStackTemplateDefinitionInner
                 reader.nextToken();
 
                 if ("template".equals(fieldName)) {
-                    Map<String, BinaryData> template = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedDeploymentStackTemplateDefinitionInner.template = template;
+                    deserializedDeploymentStackTemplateDefinitionInner.template = reader.readUntyped();
                 } else if ("templateLink".equals(fieldName)) {
                     deserializedDeploymentStackTemplateDefinitionInner.templateLink
                         = DeploymentStacksTemplateLink.fromJson(reader);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.deploymentstacks.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,12 +21,12 @@ public final class DeploymentStacksChangeDeltaRecord implements JsonSerializable
     /*
      * The predicted value before the deployment is executed.
      */
-    private Map<String, BinaryData> before;
+    private Map<String, Object> before;
 
     /*
      * The predicted value after the deployment is executed.
      */
-    private Map<String, BinaryData> after;
+    private Map<String, Object> after;
 
     /*
      * The predicted changes to the properties."
@@ -45,7 +44,7 @@ public final class DeploymentStacksChangeDeltaRecord implements JsonSerializable
      * 
      * @return the before value.
      */
-    public Map<String, BinaryData> before() {
+    public Map<String, Object> before() {
         return this.before;
     }
 
@@ -54,7 +53,7 @@ public final class DeploymentStacksChangeDeltaRecord implements JsonSerializable
      * 
      * @return the after value.
      */
-    public Map<String, BinaryData> after() {
+    public Map<String, Object> after() {
         return this.after;
     }
 
@@ -73,10 +72,8 @@ public final class DeploymentStacksChangeDeltaRecord implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("before", this.before,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("after", this.after,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("before", this.before, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("after", this.after, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeArrayField("delta", this.delta, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -98,12 +95,10 @@ public final class DeploymentStacksChangeDeltaRecord implements JsonSerializable
                 reader.nextToken();
 
                 if ("before".equals(fieldName)) {
-                    Map<String, BinaryData> before = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> before = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedDeploymentStacksChangeDeltaRecord.before = before;
                 } else if ("after".equals(fieldName)) {
-                    Map<String, BinaryData> after = reader.readMap(reader1 -> reader1
-                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                    Map<String, Object> after = reader.readMap(reader1 -> reader1.readUntyped());
                     deserializedDeploymentStacksChangeDeltaRecord.after = after;
                 } else if ("delta".equals(fieldName)) {
                     List<DeploymentStacksWhatIfPropertyChange> delta

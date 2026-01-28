@@ -14,23 +14,23 @@ public final class DeploymentStacksChangeDeltaDenySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentStacksChangeDeltaDenySettings model = BinaryData.fromString(
-            "{\"before\":{\"mode\":\"denyWriteAndDelete\",\"excludedPrincipals\":[\"ywnuzoq\"],\"excludedActions\":[\"yqzrnkcqvyxlw\",\"zlsico\"],\"applyToChildScopes\":false},\"after\":{\"mode\":\"none\",\"excludedPrincipals\":[\"lryav\",\"hheunmmqhgyx\",\"konocu\",\"oklyaxuconuq\"],\"excludedActions\":[\"kbeype\",\"rmjmwvvjektc\"],\"applyToChildScopes\":false},\"delta\":[{\"path\":\"rsffrzpwvlqdqgbi\",\"changeType\":\"create\",\"children\":[{\"path\":\"aetcktvfcivfs\",\"changeType\":\"noEffect\",\"children\":[{\"path\":\"uctqhjfbe\",\"changeType\":\"delete\"}]},{\"path\":\"xerf\",\"changeType\":\"array\",\"children\":[{\"path\":\"ttxfvjr\",\"changeType\":\"array\"},{\"path\":\"rp\",\"changeType\":\"delete\"},{\"path\":\"epcyvahfnlj\",\"changeType\":\"noEffect\"}]},{\"path\":\"j\",\"changeType\":\"create\",\"children\":[{\"path\":\"qgidokgjljyo\",\"changeType\":\"delete\"}]}]},{\"path\":\"ltbgsncghkj\",\"changeType\":\"create\",\"children\":[{\"path\":\"ijhtxf\",\"changeType\":\"noEffect\",\"children\":[{\"path\":\"fsm\",\"changeType\":\"modify\"}]},{\"path\":\"mpvecxgodebfqk\",\"changeType\":\"array\",\"children\":[{\"path\":\"pukgriwflzlfb\",\"changeType\":\"delete\"},{\"path\":\"puz\",\"changeType\":\"delete\"}]},{\"path\":\"pnq\",\"changeType\":\"noEffect\",\"children\":[{\"path\":\"gkbrpyyd\",\"changeType\":\"delete\"},{\"path\":\"bnuqqkpik\",\"changeType\":\"array\"},{\"path\":\"rgvtqag\",\"changeType\":\"create\"},{\"path\":\"uynhijg\",\"changeType\":\"noEffect\"}]}]}]}")
+            "{\"before\":{\"mode\":\"none\",\"excludedPrincipals\":[\"muzyoxaepdk\",\"jancu\"],\"excludedActions\":[\"d\",\"bavxbniwdjswzt\",\"dbpgnxytxhp\",\"xbzpfzab\"],\"applyToChildScopes\":false},\"after\":{\"mode\":\"denyWriteAndDelete\",\"excludedPrincipals\":[\"tcty\",\"iklbbovpl\"],\"excludedActions\":[\"hvgyuguosvmk\",\"ss\"],\"applyToChildScopes\":true},\"delta\":[{\"before\":\"dataplgmgsxnk\",\"after\":\"datakde\",\"path\":\"lpvlopw\",\"changeType\":\"noEffect\",\"children\":[{\"before\":\"dataxpkd\",\"after\":\"databaiuebbaumny\",\"path\":\"upedeojnabckhs\",\"changeType\":\"array\",\"children\":[{\"path\":\"siebtfhvpesapskr\",\"changeType\":\"noEffect\"},{\"path\":\"mhjjdhtldwkyzx\",\"changeType\":\"noEffect\"},{\"path\":\"tkncwsc\",\"changeType\":\"create\"}]},{\"before\":\"datalxotogtwrupq\",\"after\":\"datavnm\",\"path\":\"cykvceo\",\"changeType\":\"delete\",\"children\":[{\"path\":\"ovnotyfjfcnjbkcn\",\"changeType\":\"delete\"}]}]},{\"before\":\"databttk\",\"after\":\"dataywpnvjt\",\"path\":\"qnermclfplphoxu\",\"changeType\":\"array\",\"children\":[{\"before\":\"databgyepsbj\",\"after\":\"datazq\",\"path\":\"gxywpmue\",\"changeType\":\"delete\",\"children\":[{\"path\":\"wfqkquj\",\"changeType\":\"create\"},{\"path\":\"suyonobglaocq\",\"changeType\":\"delete\"},{\"path\":\"ccm\",\"changeType\":\"noEffect\"},{\"path\":\"udxytlmoyrx\",\"changeType\":\"create\"}]},{\"before\":\"datau\",\"after\":\"datapz\",\"path\":\"txhdzh\",\"changeType\":\"create\",\"children\":[{\"path\":\"bh\",\"changeType\":\"create\"},{\"path\":\"frlh\",\"changeType\":\"create\"},{\"path\":\"sbkyvpycanuzbp\",\"changeType\":\"array\"}]}]},{\"before\":\"datafkuwbcrnwbmehhse\",\"after\":\"datajusrtslhspk\",\"path\":\"eemaofmxagkvtme\",\"changeType\":\"create\",\"children\":[{\"before\":\"datahahvljuahaq\",\"after\":\"datac\",\"path\":\"hmdua\",\"changeType\":\"noEffect\",\"children\":[{\"path\":\"qpv\",\"changeType\":\"array\"},{\"path\":\"dmwsrcrgvxpvgomz\",\"changeType\":\"array\"},{\"path\":\"misgwbnb\",\"changeType\":\"modify\"}]}]}]}")
             .toObject(DeploymentStacksChangeDeltaDenySettings.class);
-        Assertions.assertEquals(DenySettingsMode.DENY_WRITE_AND_DELETE, model.before().mode());
-        Assertions.assertEquals("ywnuzoq", model.before().excludedPrincipals().get(0));
-        Assertions.assertEquals("yqzrnkcqvyxlw", model.before().excludedActions().get(0));
+        Assertions.assertEquals(DenySettingsMode.NONE, model.before().mode());
+        Assertions.assertEquals("muzyoxaepdk", model.before().excludedPrincipals().get(0));
+        Assertions.assertEquals("d", model.before().excludedActions().get(0));
         Assertions.assertFalse(model.before().applyToChildScopes());
-        Assertions.assertEquals(DenySettingsMode.NONE, model.after().mode());
-        Assertions.assertEquals("lryav", model.after().excludedPrincipals().get(0));
-        Assertions.assertEquals("kbeype", model.after().excludedActions().get(0));
-        Assertions.assertFalse(model.after().applyToChildScopes());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.delta().get(0).path());
-        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.CREATE, model.delta().get(0).changeType());
-        Assertions.assertEquals("aetcktvfcivfs", model.delta().get(0).children().get(0).path());
-        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.NO_EFFECT,
+        Assertions.assertEquals(DenySettingsMode.DENY_WRITE_AND_DELETE, model.after().mode());
+        Assertions.assertEquals("tcty", model.after().excludedPrincipals().get(0));
+        Assertions.assertEquals("hvgyuguosvmk", model.after().excludedActions().get(0));
+        Assertions.assertTrue(model.after().applyToChildScopes());
+        Assertions.assertEquals("lpvlopw", model.delta().get(0).path());
+        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.NO_EFFECT, model.delta().get(0).changeType());
+        Assertions.assertEquals("upedeojnabckhs", model.delta().get(0).children().get(0).path());
+        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.ARRAY,
             model.delta().get(0).children().get(0).changeType());
-        Assertions.assertEquals("uctqhjfbe", model.delta().get(0).children().get(0).children().get(0).path());
-        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.DELETE,
+        Assertions.assertEquals("siebtfhvpesapskr", model.delta().get(0).children().get(0).children().get(0).path());
+        Assertions.assertEquals(DeploymentStacksWhatIfPropertyChangeType.NO_EFFECT,
             model.delta().get(0).children().get(0).children().get(0).changeType());
     }
 }

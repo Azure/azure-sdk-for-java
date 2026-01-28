@@ -30,8 +30,8 @@ public final class DeploymentStacksDeleteAtSubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deploymentStacks()
-            .deleteAtSubscription("pigvpgylgqgitx", DeploymentStacksDeleteDetachEnum.DETACH,
-                DeploymentStacksDeleteDetachEnum.DELETE, DeploymentStacksDeleteDetachEnum.DELETE,
+            .deleteAtSubscription("wwquuvxzxclvithh", DeploymentStacksDeleteDetachEnum.DELETE,
+                DeploymentStacksDeleteDetachEnum.DELETE, DeploymentStacksDeleteDetachEnum.DETACH,
                 DeploymentStacksResourcesWithoutDeleteSupportEnum.DETACH, false, com.azure.core.util.Context.NONE);
 
     }

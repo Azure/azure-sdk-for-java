@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentStacksChangeBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentStacksChangeBase model = BinaryData.fromString("{\"before\":\"bfs\",\"after\":\"rbu\"}")
+        DeploymentStacksChangeBase model = BinaryData.fromString("{\"before\":\"dawkzbali\",\"after\":\"rqhakauha\"}")
             .toObject(DeploymentStacksChangeBase.class);
-        Assertions.assertEquals("bfs", model.before());
-        Assertions.assertEquals("rbu", model.after());
+        Assertions.assertEquals("dawkzbali", model.before());
+        Assertions.assertEquals("rqhakauha", model.after());
     }
 }

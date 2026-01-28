@@ -21,7 +21,7 @@ public final class DeploymentStacksExportTemplateAtManagementGroupWithResponseMo
     @Test
     public void testExportTemplateAtManagementGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"template\":{},\"templateLink\":{\"uri\":\"rfbjf\",\"id\":\"w\",\"relativePath\":\"otftpvjzbexilz\",\"queryString\":\"fqqnvwpmqtaruo\",\"contentVersion\":\"mkcjhwqytjrybn\"}}";
+            = "{\"template\":\"datakopkwhojvpajqgx\",\"templateLink\":{\"uri\":\"ocmbqfqvmkcxoza\",\"id\":\"helxprglya\",\"relativePath\":\"dckcbc\",\"queryString\":\"jrjxgciqibrhosx\",\"contentVersion\":\"qrhzoymibmrqyib\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class DeploymentStacksExportTemplateAtManagementGroupWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeploymentStackTemplateDefinition response = manager.deploymentStacks()
-            .exportTemplateAtManagementGroupWithResponse("srruvwbhsqfsubcg", "birx", com.azure.core.util.Context.NONE)
+            .exportTemplateAtManagementGroupWithResponse("mnubexkpzksmond", "mquxvypo",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rfbjf", response.templateLink().uri());
-        Assertions.assertEquals("w", response.templateLink().id());
-        Assertions.assertEquals("otftpvjzbexilz", response.templateLink().relativePath());
-        Assertions.assertEquals("fqqnvwpmqtaruo", response.templateLink().queryString());
-        Assertions.assertEquals("mkcjhwqytjrybn", response.templateLink().contentVersion());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", response.templateLink().uri());
+        Assertions.assertEquals("helxprglya", response.templateLink().id());
+        Assertions.assertEquals("dckcbc", response.templateLink().relativePath());
+        Assertions.assertEquals("jrjxgciqibrhosx", response.templateLink().queryString());
+        Assertions.assertEquals("qrhzoymibmrqyib", response.templateLink().contentVersion());
     }
 }
