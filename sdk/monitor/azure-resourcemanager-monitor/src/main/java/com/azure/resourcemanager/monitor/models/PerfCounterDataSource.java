@@ -39,11 +39,6 @@ public final class PerfCounterDataSource implements JsonSerializable<PerfCounter
     private List<String> counterSpecifiers;
 
     /*
-     * The KQL query to transform the data source. This is a deprecated property and will be removed in future versions.
-     */
-    private String transformKql;
-
-    /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -126,28 +121,6 @@ public final class PerfCounterDataSource implements JsonSerializable<PerfCounter
     }
 
     /**
-     * Get the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @return the transformKql value.
-     */
-    public String transformKql() {
-        return this.transformKql;
-    }
-
-    /**
-     * Set the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @param transformKql the transformKql value to set.
-     * @return the PerfCounterDataSource object itself.
-     */
-    public PerfCounterDataSource withTransformKql(String transformKql) {
-        this.transformKql = transformKql;
-        return this;
-    }
-
-    /**
      * Get the name property: A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
@@ -188,7 +161,6 @@ public final class PerfCounterDataSource implements JsonSerializable<PerfCounter
         jsonWriter.writeNumberField("samplingFrequencyInSeconds", this.samplingFrequencyInSeconds);
         jsonWriter.writeArrayField("counterSpecifiers", this.counterSpecifiers,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("transformKql", this.transformKql);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -218,8 +190,6 @@ public final class PerfCounterDataSource implements JsonSerializable<PerfCounter
                 } else if ("counterSpecifiers".equals(fieldName)) {
                     List<String> counterSpecifiers = reader.readArray(reader1 -> reader1.getString());
                     deserializedPerfCounterDataSource.counterSpecifiers = counterSpecifiers;
-                } else if ("transformKql".equals(fieldName)) {
-                    deserializedPerfCounterDataSource.transformKql = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedPerfCounterDataSource.name = reader.getString();
                 } else {
