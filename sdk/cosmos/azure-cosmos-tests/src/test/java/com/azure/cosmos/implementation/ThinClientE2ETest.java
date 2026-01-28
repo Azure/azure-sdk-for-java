@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
@@ -34,13 +35,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.Fail.fail;
@@ -49,80 +54,360 @@ import static org.assertj.core.api.Fail.fail;
 public class ThinClientE2ETest {
     private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class);
     private static final String thinClientEndpointIndicator = ":10250/";
+    private static final String DATABASE_NAME = "db1";
+    private static final String CONTAINER_NAME = "ct1";
+    private static final String PARTITION_KEY_PATH = "/partitionKey";
+    private static final String ID_FIELD = "id";
+    private static final String PARTITION_KEY_FIELD = "partitionKey";
+    private static final int THROUGHPUT_RU = 35_000;
+
+    private static CosmosAsyncClient sharedClient;
+    private static CosmosAsyncDatabase sharedDatabase;
+    private static CosmosAsyncContainer sharedContainer;
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    @BeforeClass(groups = {"thinclient"})
+    public void beforeClass() {
+        // If running locally, uncomment these lines
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+
+        sharedClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .gatewayMode()
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .buildAsyncClient();
+
+        // Create database if not exists
+        sharedClient.createDatabaseIfNotExists(DATABASE_NAME).block();
+        sharedDatabase = sharedClient.getDatabase(DATABASE_NAME);
+
+        // Create container with 35,000 RU/s manual throughput
+        CosmosContainerProperties containerDef = new CosmosContainerProperties(CONTAINER_NAME, PARTITION_KEY_PATH);
+        ThroughputProperties throughputConfig = ThroughputProperties.createManualThroughput(THROUGHPUT_RU);
+        sharedDatabase.createContainerIfNotExists(containerDef, throughputConfig).block();
+        sharedContainer = sharedDatabase.getContainer(CONTAINER_NAME);
+    }
+
+    @AfterClass(groups = {"thinclient"})
+    public void afterClass() {
+        if (sharedClient != null) {
+            sharedClient.close();
+        }
+    }
+
+    /**
+     * Helper method to create a test document with id and partitionKey fields.
+     */
+    private ObjectNode createTestDocument(String id, String partitionKey) {
+        ObjectNode doc = mapper.createObjectNode();
+        doc.put(ID_FIELD, id);
+        doc.put(PARTITION_KEY_FIELD, partitionKey);
+        return doc;
+    }
+
+    /**
+     * Helper method to delete all documents from the container.
+     */
+    private void emptyContainer() {
+        List<ObjectNode> allDocs = sharedContainer
+            .queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), ObjectNode.class)
+            .collectList()
+            .block();
+
+        if (allDocs != null && !allDocs.isEmpty()) {
+            for (ObjectNode doc : allDocs) {
+                String id = doc.get(ID_FIELD).asText();
+                String pk = doc.get(PARTITION_KEY_FIELD).asText();
+                try {
+                    sharedContainer.deleteItem(id, new PartitionKey(pk)).block();
+                } catch (Exception e) {
+                    logger.warn("Failed to delete document with id: {}", id, e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Helper method to delete specific documents by their ids and partition keys.
+     */
+    private void deleteDocuments(List<ObjectNode> documents) {
+        for (ObjectNode doc : documents) {
+            String id = doc.get(ID_FIELD).asText();
+            String pk = doc.get(PARTITION_KEY_FIELD).asText();
+            try {
+                sharedContainer.deleteItem(id, new PartitionKey(pk)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to delete document with id: {}", id, e);
+            }
+        }
+    }
+
+    /**
+     * Helper method to drain all pages from a query using continuation token.
+     */
+    private List<ObjectNode> drainQueryWithContinuation(String query, CosmosQueryRequestOptions options) {
+        List<ObjectNode> allResults = new ArrayList<>();
+        List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+        String continuationToken = null;
+
+        do {
+            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                .queryItems(query, options, ObjectNode.class)
+                .byPage(continuationToken, 10)
+                .toIterable();
+
+            for (FeedResponse<ObjectNode> page : pages) {
+                allResults.addAll(page.getResults());
+                allDiagnostics.add(page.getCosmosDiagnostics());
+                continuationToken = page.getContinuationToken();
+            }
+        } while (continuationToken != null);
+
+        // Assert thin client endpoint used for all requests
+        for (CosmosDiagnostics diagnostics : allDiagnostics) {
+            assertThinClientEndpointUsed(diagnostics);
+        }
+
+        return allResults;
+    }
+
+    /**
+     * Test: SELECT * FROM C type query
+     * 1. Empty the container
+     * 2. Create N documents
+     * 3. Execute SELECT * FROM C with continuation token draining
+     * 4. Assert only thin-client endpoint is used
+     * 5. Assert all documents are drained
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQuerySelectAll() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        try {
+            // 1. Empty container
+            emptyContainer();
+
+            // 2. Create N documents
+            int numDocs = 25;
+            for (int i = 0; i < numDocs; i++) {
+                String id = UUID.randomUUID().toString();
+                String pk = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, pk);
+                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // 3. Execute SELECT * FROM C query with draining
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            List<ObjectNode> results = drainQueryWithContinuation("SELECT * FROM c", queryOptions);
+
+            // 5. Assert all documents are drained
+            assertThat(results.size()).isEqualTo(numDocs);
+
+            // Verify all created document ids are in results
+            List<String> createdIds = createdDocs.stream()
+                .map(doc -> doc.get(ID_FIELD).asText())
+                .collect(Collectors.toList());
+            List<String> resultIds = results.stream()
+                .map(doc -> doc.get(ID_FIELD).asText())
+                .collect(Collectors.toList());
+            assertThat(resultIds.containsAll(createdIds)).isTrue();
+
+        } finally {
+            // Cleanup: delete created documents
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: SELECT * FROM C WHERE c.id = '' type query
+     * 1. Empty the container
+     * 2. Create N documents
+     * 3. Execute SELECT * FROM C WHERE c.id = @id with continuation token draining
+     * 4. Assert only thin-client endpoint is used
+     * 5. Assert only the document with specified id is obtained
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQuerySelectById() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        try {
+            // 1. Empty container
+            emptyContainer();
+
+            // 2. Create N documents
+            int numDocs = 10;
+            String targetId = null;
+            String targetPk = null;
+
+            for (int i = 0; i < numDocs; i++) {
+                String id = UUID.randomUUID().toString();
+                String pk = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, pk);
+                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                createdDocs.add(doc);
+
+                // Pick the 5th document as our target
+                if (i == 4) {
+                    targetId = id;
+                    targetPk = pk;
+                }
+            }
+
+            // 3. Execute SELECT * FROM C WHERE c.id = @id query
+            String query = "SELECT * FROM c WHERE c.id = @id";
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", targetId)));
+
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+            List<ObjectNode> allResults = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+            String continuationToken = null;
+
+            do {
+                Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                    .queryItems(querySpec, queryOptions, ObjectNode.class)
+                    .byPage(continuationToken, 10)
+                    .toIterable();
+
+                for (FeedResponse<ObjectNode> page : pages) {
+                    allResults.addAll(page.getResults());
+                    allDiagnostics.add(page.getCosmosDiagnostics());
+                    continuationToken = page.getContinuationToken();
+                }
+            } while (continuationToken != null);
+
+            // 4. Assert thin client endpoint used for all requests
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // 5. Assert only document with specified id is obtained
+            assertThat(allResults.size()).isEqualTo(1);
+            assertThat(allResults.get(0).get(ID_FIELD).asText()).isEqualTo(targetId);
+            assertThat(allResults.get(0).get(PARTITION_KEY_FIELD).asText()).isEqualTo(targetPk);
+
+        } finally {
+            // Cleanup: delete created documents
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: SELECT * FROM C with CosmosQueryRequestOptions partition key
+     * 1. Empty the container
+     * 2. Create N documents (some with same partition key)
+     * 3. Execute SELECT * FROM C with partition key in CosmosQueryRequestOptions
+     * 4. Assert only thin-client endpoint is used
+     * 5. Assert only documents with specified partition key are obtained
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryWithPartitionKeyOption() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        try {
+            // 1. Empty container
+            emptyContainer();
+
+            // 2. Create N documents - some with a common partition key
+            String targetPk = UUID.randomUUID().toString();
+            int docsWithTargetPk = 5;
+            int docsWithOtherPk = 5;
+
+            // Create documents with target partition key
+            for (int i = 0; i < docsWithTargetPk; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, targetPk);
+                sharedContainer.createItem(doc, new PartitionKey(targetPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Create documents with different partition keys
+            for (int i = 0; i < docsWithOtherPk; i++) {
+                String id = UUID.randomUUID().toString();
+                String pk = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, pk);
+                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // 3. Execute SELECT * FROM C with partition key in options
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(targetPk));
+
+            List<ObjectNode> allResults = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+            String continuationToken = null;
+
+            do {
+                Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                    .queryItems("SELECT * FROM c", queryOptions, ObjectNode.class)
+                    .byPage(continuationToken, 10)
+                    .toIterable();
+
+                for (FeedResponse<ObjectNode> page : pages) {
+                    allResults.addAll(page.getResults());
+                    allDiagnostics.add(page.getCosmosDiagnostics());
+                    continuationToken = page.getContinuationToken();
+                }
+            } while (continuationToken != null);
+
+            // 4. Assert thin client endpoint used for all requests
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // 5. Assert only documents with specified partition key are obtained
+            assertThat(allResults.size()).isEqualTo(docsWithTargetPk);
+            for (ObjectNode result : allResults) {
+                assertThat(result.get(PARTITION_KEY_FIELD).asText()).isEqualTo(targetPk);
+            }
+
+        } finally {
+            // Cleanup: delete created documents
+            deleteDocuments(createdDocs);
+        }
+    }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
-    public void testThinClientQuery() {
-        CosmosAsyncClient client = null;
+    public void testThinClientQueryLegacy() {
+        String idValue = UUID.randomUUID().toString();
         try {
-            // If running locally, uncomment these lines
-             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            ObjectNode doc = createTestDocument(idValue, idValue);
+            sharedContainer.createItem(doc, new PartitionKey(idValue), null).block();
 
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildAsyncClient();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode doc = mapper.createObjectNode();
-            String idValue = UUID.randomUUID().toString();
-            doc.put(idName, idValue);
-            doc.put(partitionKeyName, idValue);
-
-            container.createItem(doc, new PartitionKey(idValue), null).block();
-
-            String query = "select * from c";
+            String query = "select * from c WHERE c." + PARTITION_KEY_FIELD + "=@id";
             SqlQuerySpec querySpec = new SqlQuerySpec(query);
-//            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
-//            CosmosQueryRequestOptions requestOptions =
-//                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
-            FeedResponse<ObjectNode> response = container
-                .queryItems(querySpec, new CosmosQueryRequestOptions(), ObjectNode.class)
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
+            CosmosQueryRequestOptions requestOptions =
+                new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
+            FeedResponse<ObjectNode> response = sharedContainer
+                .queryItems(querySpec, requestOptions, ObjectNode.class)
                 .byPage()
-                .blockLast();
+                .blockFirst();
 
             ObjectNode docFromResponse = response.getResults().get(0);
-            assertThat(docFromResponse.get(partitionKeyName).textValue()).isEqualTo(idValue);
-            assertThat(docFromResponse.get(idName).textValue()).isEqualTo(idValue);
+            assertThat(docFromResponse.get(PARTITION_KEY_FIELD).textValue()).isEqualTo(idValue);
+            assertThat(docFromResponse.get(ID_FIELD).textValue()).isEqualTo(idValue);
             assertThinClientEndpointUsed(response.getCosmosDiagnostics());
 
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup
+            try {
+                sharedContainer.deleteItem(idValue, new PartitionKey(idValue)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup document: {}", idValue, e);
             }
         }
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientBulk() {
-        CosmosAsyncClient client = null;
+        String idValue = UUID.randomUUID().toString();
         try {
-            // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+            ObjectNode doc = createTestDocument(idValue, idValue);
 
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.EVENTUAL)
-                .buildAsyncClient();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode doc = mapper.createObjectNode();
-            String idValue = UUID.randomUUID().toString();
-            doc.put(idName, idValue);
-            doc.put(partitionKeyName, idValue);
-
-            Flux<CosmosBulkOperationResponse<Object>> responsesFlux = container.executeBulkOperations(Flux.just(
+            Flux<CosmosBulkOperationResponse<Object>> responsesFlux = sharedContainer.executeBulkOperations(Flux.just(
                 CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(idValue))
             ));
 
@@ -134,98 +419,61 @@ public class ThinClientE2ETest {
             assertThat(bulkResponse.isSuccessStatusCode()).isEqualTo(true);
             assertThinClientEndpointUsed(bulkResponse.getCosmosDiagnostics());
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup
+            try {
+                sharedContainer.deleteItem(idValue, new PartitionKey(idValue)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup document: {}", idValue, e);
             }
         }
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientBatch() {
-        CosmosAsyncClient client = null;
+        String pkValue = UUID.randomUUID().toString();
+        String idValue1 = UUID.randomUUID().toString();
+        String idValue2 = UUID.randomUUID().toString();
         try {
-            // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildAsyncClient();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-            ObjectMapper mapper = new ObjectMapper();
-            String pkValue = UUID.randomUUID().toString();
-            ObjectNode doc1 = mapper.createObjectNode();
-            String idValue1 = UUID.randomUUID().toString();
-            doc1.put(idName, idValue1);
-            doc1.put(partitionKeyName, pkValue);
-
-            ObjectNode doc2 = mapper.createObjectNode();
-            String idValue2 = UUID.randomUUID().toString();
-            doc2.put(idName, idValue2);
-            doc2.put(partitionKeyName, pkValue);
+            ObjectNode doc1 = createTestDocument(idValue1, pkValue);
+            ObjectNode doc2 = createTestDocument(idValue2, pkValue);
 
             CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
             batch.createItemOperation(doc1);
             batch.createItemOperation(doc2);
 
-            CosmosBatchResponse response = container
+            CosmosBatchResponse response = sharedContainer
                 .executeCosmosBatch(batch)
                 .block();
 
             assertThat(response.getStatusCode()).isEqualTo(200);
             assertThinClientEndpointUsed(response.getDiagnostics());
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup
+            try {
+                sharedContainer.deleteItem(idValue1, new PartitionKey(pkValue)).block();
+                sharedContainer.deleteItem(idValue2, new PartitionKey(pkValue)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup documents", e);
             }
         }
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientIncrementalChangeFeed() {
-        CosmosAsyncClient client = null;
+        String pkValue = UUID.randomUUID().toString();
+        String idValue1 = UUID.randomUUID().toString();
+        String idValue2 = UUID.randomUUID().toString();
         try {
-            // If running locally, uncomment these lines
-            // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-            // System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildAsyncClient();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-            ObjectMapper mapper = new ObjectMapper();
-            String pkValue = UUID.randomUUID().toString();
-            ObjectNode doc1 = mapper.createObjectNode();
-            String idValue1 = UUID.randomUUID().toString();
-            doc1.put(idName, idValue1);
-            doc1.put(partitionKeyName, pkValue);
-
-            ObjectNode doc2 = mapper.createObjectNode();
-            String idValue2 = UUID.randomUUID().toString();
-            doc2.put(idName, idValue2);
-            doc2.put(partitionKeyName, pkValue);
+            ObjectNode doc1 = createTestDocument(idValue1, pkValue);
+            ObjectNode doc2 = createTestDocument(idValue2, pkValue);
 
             CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
             batch.createItemOperation(doc1);
             batch.createItemOperation(doc2);
 
-            CosmosBatchResponse response = container
-                .executeCosmosBatch(batch)
-                .block();
+            sharedContainer.executeCosmosBatch(batch).block();
 
-            FeedResponse<ObjectNode> changeFeedResponse = container
+            FeedResponse<ObjectNode> changeFeedResponse = sharedContainer
                 .queryChangeFeed(CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()), ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -235,8 +483,12 @@ public class ThinClientE2ETest {
             assertThat(changeFeedResponse.getResults().size()).isGreaterThanOrEqualTo(1);
             assertThinClientEndpointUsed(changeFeedResponse.getCosmosDiagnostics());
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup
+            try {
+                sharedContainer.deleteItem(idValue1, new PartitionKey(pkValue)).block();
+                sharedContainer.deleteItem(idValue2, new PartitionKey(pkValue)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup documents", e);
             }
         }
     }
@@ -273,83 +525,52 @@ public class ThinClientE2ETest {
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientDocumentPointOperations() {
-        CosmosAsyncClient client = null;
+        String idValue = UUID.randomUUID().toString();
+        String idValue2 = null;
         try {
-            // if running locally, uncomment these lines
-             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-            client  = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildAsyncClient();
-
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-
-            client.createDatabaseIfNotExists("db1").block();
-
-            CosmosContainerProperties containerDef =
-                new CosmosContainerProperties("c2", "/" + partitionKeyName);
-            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
-
-            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode doc = mapper.createObjectNode();
-            String idValue = UUID.randomUUID().toString();
-            doc.put(idName, idValue);
-            doc.put(partitionKeyName, idValue);
+            ObjectNode doc = createTestDocument(idValue, idValue);
 
             // create
-            CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
+            CosmosItemResponse<ObjectNode> createResponse = sharedContainer.createItem(doc).block();
             assertThat(createResponse.getStatusCode()).isEqualTo(201);
             assertThat(createResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(createResponse.getDiagnostics());
 
             // read
-            CosmosItemResponse<ObjectNode> readResponse = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readResponse = sharedContainer.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readResponse.getStatusCode()).isEqualTo(200);
             assertThat(readResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(readResponse.getDiagnostics());
 
-            ObjectNode doc2 = mapper.createObjectNode();
-            String idValue2 = UUID.randomUUID().toString();
-            doc2.put(idName, idValue2);
-            doc2.put(partitionKeyName, idValue);
+            idValue2 = UUID.randomUUID().toString();
+            ObjectNode doc2 = createTestDocument(idValue2, idValue);
 
             // replace
-            CosmosItemResponse<ObjectNode> replaceResponse = container.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
+            CosmosItemResponse<ObjectNode> replaceResponse = sharedContainer.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
             assertThat(replaceResponse.getStatusCode()).isEqualTo(200);
             assertThat(replaceResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(replaceResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterReplaceResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterReplaceResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readAfterReplaceResponse.getStatusCode()).isEqualTo(200);
             ObjectNode replacedItemFromRead = readAfterReplaceResponse.getItem();
-            assertThat(replacedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
-            assertThat(replacedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
+            assertThat(replacedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
+            assertThat(replacedItemFromRead.get(PARTITION_KEY_FIELD).asText()).isEqualTo(idValue);
             assertThinClientEndpointUsed(readAfterReplaceResponse.getDiagnostics());
 
-            ObjectNode doc3 = mapper.createObjectNode();
-            doc3.put(idName, idValue2);
-            doc3.put(partitionKeyName, idValue);
+            ObjectNode doc3 = createTestDocument(idValue2, idValue);
             doc3.put("newField", "newValue");
 
             // upsert
-            CosmosItemResponse<ObjectNode> upsertResponse = container.upsertItem(doc3, new PartitionKey(idValue), new CosmosItemRequestOptions()).block();
+            CosmosItemResponse<ObjectNode> upsertResponse = sharedContainer.upsertItem(doc3, new PartitionKey(idValue), new CosmosItemRequestOptions()).block();
             assertThat(upsertResponse.getStatusCode()).isEqualTo(200);
             assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(upsertResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterUpsertResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterUpsertResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode upsertedItemFromRead = readAfterUpsertResponse.getItem();
-            assertThat(upsertedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
-            assertThat(upsertedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
+            assertThat(upsertedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
+            assertThat(upsertedItemFromRead.get(PARTITION_KEY_FIELD).asText()).isEqualTo(idValue);
             assertThat(upsertedItemFromRead.get("newField").asText()).isEqualTo("newValue");
             assertThinClientEndpointUsed(readAfterUpsertResponse.getDiagnostics());
 
@@ -357,62 +578,44 @@ public class ThinClientE2ETest {
             CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
             patchOperations.add("/anotherNewField", "anotherNewValue");
             patchOperations.replace("/newField", "patchedNewField");
-            CosmosItemResponse<ObjectNode> patchResponse = container.patchItem(idValue2, new PartitionKey(idValue), patchOperations, ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> patchResponse = sharedContainer.patchItem(idValue2, new PartitionKey(idValue), patchOperations, ObjectNode.class).block();
             assertThat(patchResponse.getStatusCode()).isEqualTo(200);
             assertThat(patchResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(patchResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterPatchResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterPatchResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode patchedItemFromRead = readAfterPatchResponse.getItem();
-            assertThat(patchedItemFromRead.get(idName).asText()).isEqualTo(idValue2);
-            assertThat(patchedItemFromRead.get(partitionKeyName).asText()).isEqualTo(idValue);
+            assertThat(patchedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
+            assertThat(patchedItemFromRead.get(PARTITION_KEY_FIELD).asText()).isEqualTo(idValue);
             assertThat(patchedItemFromRead.get("newField").asText()).isEqualTo("patchedNewField");
             assertThat(patchedItemFromRead.get("anotherNewField").asText()).isEqualTo("anotherNewValue");
             assertThinClientEndpointUsed(readAfterPatchResponse.getDiagnostics());
 
             // delete
-            CosmosItemResponse<Object> deleteResponse = container.deleteItem(idValue2, new PartitionKey(idValue)).block();
+            CosmosItemResponse<Object> deleteResponse = sharedContainer.deleteItem(idValue2, new PartitionKey(idValue)).block();
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(deleteResponse.getDiagnostics());
+            idValue2 = null; // Mark as already deleted
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup - only if not already deleted in the test
+            if (idValue2 != null) {
+                try {
+                    sharedContainer.deleteItem(idValue2, new PartitionKey(idValue)).block();
+                } catch (Exception e) {
+                    logger.warn("Failed to cleanup document: {}", idValue2, e);
+                }
             }
         }
     }
 
     @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testThinClientStoredProcedure() {
-        CosmosAsyncClient client = null;
+        String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
+        String pkValue = UUID.randomUUID().toString();
+        String docId = UUID.randomUUID().toString();
         try {
-            // If running locally, uncomment these lines
-             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-            client = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .gatewayMode()
-                .consistencyLevel(ConsistencyLevel.SESSION)
-                .buildAsyncClient();
-
-            String idName = "id";
-            String partitionKeyName = "partitionKey";
-
-            client.createDatabaseIfNotExists("db1").block();
-
-            CosmosContainerProperties containerDef =
-                new CosmosContainerProperties("c2", "/" + partitionKeyName);
-            ThroughputProperties ruCfg = ThroughputProperties.createManualThroughput(35_000);
-
-            client.getDatabase("db1").createContainerIfNotExists(containerDef, ruCfg).block();
-
-            CosmosAsyncContainer container = client.getDatabase("db1").getContainer("c2");
-
             // Create a stored procedure that creates a document
-            String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
-            String pkValue = UUID.randomUUID().toString();
             CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
                 sprocId,
                 "function createDocument(docToCreate) {" +
@@ -432,7 +635,7 @@ public class ThinClientE2ETest {
             );
 
             // Create stored procedure
-            CosmosStoredProcedureResponse createResponse = container.getScripts()
+            CosmosStoredProcedureResponse createResponse = sharedContainer.getScripts()
                 .createStoredProcedure(storedProcedureDef)
                 .block();
             assertThat(createResponse).isNotNull();
@@ -442,10 +645,9 @@ public class ThinClientE2ETest {
             CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
             options.setPartitionKey(new PartitionKey(pkValue));
 
-            String docId = UUID.randomUUID().toString();
-            String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", idName, docId, partitionKeyName, pkValue);
+            String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", ID_FIELD, docId, PARTITION_KEY_FIELD, pkValue);
 
-            CosmosStoredProcedureResponse executeResponse = container.getScripts()
+            CosmosStoredProcedureResponse executeResponse = sharedContainer.getScripts()
                 .getStoredProcedure(sprocId)
                 .execute(Arrays.asList(docToCreate), options)
                 .block();
@@ -456,19 +658,23 @@ public class ThinClientE2ETest {
             assertThinClientEndpointUsed(executeResponse.getDiagnostics());
 
             // Verify the document was created by reading it
-            CosmosItemResponse<ObjectNode> readResponse = container.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readResponse = sharedContainer.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getStatusCode()).isEqualTo(200);
-            assertThat(readResponse.getItem().get(idName).asText()).isEqualTo(docId);
-            assertThat(readResponse.getItem().get(partitionKeyName).asText()).isEqualTo(pkValue);
-
-            // Clean up - delete the created document and stored procedure
-            container.deleteItem(docId, new PartitionKey(pkValue)).block();
-            container.getScripts().getStoredProcedure(sprocId).delete().block();
+            assertThat(readResponse.getItem().get(ID_FIELD).asText()).isEqualTo(docId);
+            assertThat(readResponse.getItem().get(PARTITION_KEY_FIELD).asText()).isEqualTo(pkValue);
 
         } finally {
-            if (client != null) {
-                client.close();
+            // Cleanup - delete the created document and stored procedure
+            try {
+                sharedContainer.deleteItem(docId, new PartitionKey(pkValue)).block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup document: {}", docId, e);
+            }
+            try {
+                sharedContainer.getScripts().getStoredProcedure(sprocId).delete().block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup stored procedure: {}", sprocId, e);
             }
         }
     }
