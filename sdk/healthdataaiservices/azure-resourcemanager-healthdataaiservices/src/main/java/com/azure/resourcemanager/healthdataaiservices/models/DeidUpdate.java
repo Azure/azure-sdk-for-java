@@ -35,7 +35,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
     /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
      */
-    private SkuUpdate sku;
+    private Sku sku;
 
     /**
      * Creates an instance of DeidUpdate class.
@@ -108,7 +108,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * 
      * @return the sku value.
      */
-    public SkuUpdate sku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -118,7 +118,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
      * @param sku the sku value to set.
      * @return the DeidUpdate object itself.
      */
-    public DeidUpdate withSku(SkuUpdate sku) {
+    public DeidUpdate withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -159,7 +159,7 @@ public final class DeidUpdate implements JsonSerializable<DeidUpdate> {
                 } else if ("properties".equals(fieldName)) {
                     deserializedDeidUpdate.properties = DeidPropertiesUpdate.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedDeidUpdate.sku = SkuUpdate.fromJson(reader);
+                    deserializedDeidUpdate.sku = Sku.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

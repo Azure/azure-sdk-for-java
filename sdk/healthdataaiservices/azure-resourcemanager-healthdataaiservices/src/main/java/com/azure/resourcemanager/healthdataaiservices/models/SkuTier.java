@@ -4,53 +4,64 @@
 
 package com.azure.resourcemanager.healthdataaiservices.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * The tier of the SKU.
+ * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not
+ * required on a PUT.
  */
-public final class SkuTier extends ExpandableStringEnum<SkuTier> {
+public enum SkuTier {
     /**
-     * Free tier.
+     * The Free service tier.
      */
-    public static final SkuTier FREE = fromString("Free");
+    FREE("Free"),
 
     /**
-     * Basic tier.
+     * The Basic service tier.
      */
-    public static final SkuTier BASIC = fromString("Basic");
+    BASIC("Basic"),
 
     /**
-     * Standard tier.
+     * The Standard service tier.
      */
-    public static final SkuTier STANDARD = fromString("Standard");
+    STANDARD("Standard"),
 
     /**
-     * Creates a new instance of SkuTier value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The Premium service tier.
      */
-    @Deprecated
-    public SkuTier() {
+    PREMIUM("Premium");
+
+    /**
+     * The actual serialized value for a SkuTier instance.
+     */
+    private final String value;
+
+    SkuTier(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a SkuTier from its string representation.
+     * Parses a serialized value to a SkuTier instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding SkuTier.
+     * @param value the serialized value to parse.
+     * @return the parsed SkuTier object, or null if unable to parse.
      */
-    public static SkuTier fromString(String name) {
-        return fromString(name, SkuTier.class);
+    public static SkuTier fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        SkuTier[] items = SkuTier.values();
+        for (SkuTier item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known SkuTier values.
-     * 
-     * @return known SkuTier values.
+     * {@inheritDoc}
      */
-    public static Collection<SkuTier> values() {
-        return values(SkuTier.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

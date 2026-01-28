@@ -312,7 +312,7 @@ public interface DeidService {
              * @param sku The SKU (Stock Keeping Unit) assigned to this resource.
              * @return the next definition stage.
              */
-            Update withSku(SkuUpdate sku);
+            Update withSku(Sku sku);
         }
     }
 

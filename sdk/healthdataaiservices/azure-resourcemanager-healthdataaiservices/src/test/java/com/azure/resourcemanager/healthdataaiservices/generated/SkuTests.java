@@ -12,19 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"xqabnmocpcysh\",\"tier\":\"Basic\",\"capacity\":980347160}")
+        Sku model = BinaryData.fromString(
+            "{\"name\":\"rfidfvzwdz\",\"tier\":\"Free\",\"size\":\"mwisdkfthwxmnt\",\"family\":\"waopvkmijcmmxd\",\"capacity\":292078453}")
             .toObject(Sku.class);
-        Assertions.assertEquals("xqabnmocpcysh", model.name());
-        Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals(980347160, model.capacity());
+        Assertions.assertEquals("rfidfvzwdz", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("mwisdkfthwxmnt", model.size());
+        Assertions.assertEquals("waopvkmijcmmxd", model.family());
+        Assertions.assertEquals(292078453, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName("xqabnmocpcysh").withTier(SkuTier.BASIC).withCapacity(980347160);
+        Sku model = new Sku().withName("rfidfvzwdz")
+            .withTier(SkuTier.FREE)
+            .withSize("mwisdkfthwxmnt")
+            .withFamily("waopvkmijcmmxd")
+            .withCapacity(292078453);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals("xqabnmocpcysh", model.name());
-        Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals(980347160, model.capacity());
+        Assertions.assertEquals("rfidfvzwdz", model.name());
+        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("mwisdkfthwxmnt", model.size());
+        Assertions.assertEquals("waopvkmijcmmxd", model.family());
+        Assertions.assertEquals(292078453, model.capacity());
     }
 }

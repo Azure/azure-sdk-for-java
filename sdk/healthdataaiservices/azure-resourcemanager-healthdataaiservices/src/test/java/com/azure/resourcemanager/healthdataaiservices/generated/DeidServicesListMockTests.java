@@ -25,7 +25,7 @@ public final class DeidServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"serviceUrl\":\"nxytxh\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"fzab\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"xwtctyqiklbbovpl\",\"name\":\"zbhvgyuguosv\",\"type\":\"kfssxqukkf\"},{\"properties\":{\"groupIds\":[\"gsxnkjzkdeslpv\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"hsmtxpsiebtfhvp\",\"tenantId\":\"apskrdqm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wsvlxotogtwrupqs\":{\"principalId\":\"tldwkyzxuutk\",\"clientId\":\"ws\"},\"vei\":{\"principalId\":\"nmic\",\"clientId\":\"vce\"},\"dhbt\":{\"principalId\":\"vnotyfjfcnj\",\"clientId\":\"cn\"}}},\"sku\":{\"name\":\"phywpnvj\",\"tier\":\"Free\",\"capacity\":1979421186},\"location\":\"mclfplphoxuscr\",\"tags\":{\"zq\":\"gyepsbjt\",\"fjz\":\"gxywpmue\"},\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"tlmoyrx\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"pz\",\"txhdzh\",\"rqjbhckfrl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"kyv\",\"name\":\"ycanuzbpzkafku\",\"type\":\"b\"},{\"properties\":{\"groupIds\":[\"bmehh\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"us\",\"name\":\"tslhspkdeem\",\"type\":\"ofmxagkvtmelmqkr\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"juahaquhcdhmdual\",\"tenantId\":\"xqpvfadmw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"e\":{\"principalId\":\"vxpvgomz\",\"clientId\":\"misgwbnb\"}}},\"sku\":{\"name\":\"awkz\",\"tier\":\"Standard\",\"size\":\"ourqhakau\",\"family\":\"shsfwxosowzxcu\",\"capacity\":1879830205},\"location\":\"ooxdjebwpuc\",\"tags\":{\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\",\"it\":\"x\",\"hniskxfbkpyc\":\"nrjawgqwg\"},\"id\":\"klwndnhjdauwhv\",\"name\":\"l\",\"type\":\"zbtd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,14 +36,16 @@ public final class DeidServicesListMockTests {
 
         PagedIterable<DeidService> response = manager.deidServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mclfplphoxuscr", response.iterator().next().location());
-        Assertions.assertEquals("gyepsbjt", response.iterator().next().tags().get("zq"));
+        Assertions.assertEquals("ooxdjebwpuc", response.iterator().next().location());
+        Assertions.assertEquals("vo", response.iterator().next().tags().get("bvmeuecivy"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("phywpnvj", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals(1979421186, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("awkz", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("ourqhakau", response.iterator().next().sku().size());
+        Assertions.assertEquals("shsfwxosowzxcu", response.iterator().next().sku().family());
+        Assertions.assertEquals(1879830205, response.iterator().next().sku().capacity());
     }
 }

@@ -15,15 +15,17 @@ public final class DeidServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"pbtoqcjmkl\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"idtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"e\",\"name\":\"zloc\",\"type\":\"scpai\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"csglum\",\"tenantId\":\"jtjaodxobnbdxkq\",\"type\":\"None\",\"userAssignedIdentities\":{\"aajrm\":{\"principalId\":\"jionpimexgstxgc\",\"clientId\":\"dg\"},\"hijco\":{\"principalId\":\"jwzrl\",\"clientId\":\"mcl\"},\"ukdkexxppofmxa\":{\"principalId\":\"ctbzaq\",\"clientId\":\"sycbkbfk\"}}},\"sku\":{\"name\":\"fjpgddtocjjxhvp\",\"tier\":\"Basic\",\"capacity\":1295358777},\"location\":\"dzxibqeojnxqbzvd\",\"tags\":{\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"serviceUrl\":\"ymzidn\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"tbzsgfyccs\",\"name\":\"ewmdw\",\"type\":\"jeiachboosfl\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"sfqpteehz\",\"name\":\"vypyqrimzinpv\",\"type\":\"wjdk\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"oodqxhcrm\",\"name\":\"ohjtckw\",\"type\":\"dsoifiyipj\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"wpgrjbzno\",\"name\":\"cjxvsnbyxqab\",\"type\":\"mocpc\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"zafb\",\"tenantId\":\"j\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ulpkudjkrl\":{\"principalId\":\"qcjm\",\"clientId\":\"javbqidtqajz\"},\"scpai\":{\"principalId\":\"bzhfepgzgqexz\",\"clientId\":\"c\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}},\"sku\":{\"name\":\"odgmaajrmvdjwz\",\"tier\":\"Premium\",\"size\":\"mcl\",\"family\":\"ijcoejctb\",\"capacity\":1083194269},\"location\":\"qsycbkbfkgu\",\"tags\":{\"ddtocjjxhvp\":\"exxppofmxaxcfjp\",\"exhd\":\"o\"},\"id\":\"xibqeojnx\",\"name\":\"bzv\",\"type\":\"dntwndeicbtw\"}],\"nextLink\":\"zao\"}")
             .toObject(DeidServiceListResult.class);
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.value().get(0).location());
-        Assertions.assertEquals("wndeicbtwnp", model.value().get(0).tags().get("aoqvuh"));
+        Assertions.assertEquals("qsycbkbfkgu", model.value().get(0).location());
+        Assertions.assertEquals("exxppofmxaxcfjp", model.value().get(0).tags().get("ddtocjjxhvp"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1295358777, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("gdtopbobjogh", model.nextLink());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
+        Assertions.assertEquals("mcl", model.value().get(0).sku().size());
+        Assertions.assertEquals("ijcoejctb", model.value().get(0).sku().family());
+        Assertions.assertEquals(1083194269, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("zao", model.nextLink());
     }
 }

@@ -13,14 +13,14 @@ public final class DeidPropertiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidPropertiesUpdate model
-            = BinaryData.fromString("{\"publicNetworkAccess\":\"Disabled\"}").toObject(DeidPropertiesUpdate.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+            = BinaryData.fromString("{\"publicNetworkAccess\":\"Enabled\"}").toObject(DeidPropertiesUpdate.class);
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeidPropertiesUpdate model = new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        DeidPropertiesUpdate model = new DeidPropertiesUpdate().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DeidPropertiesUpdate.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

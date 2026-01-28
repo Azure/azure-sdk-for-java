@@ -25,7 +25,7 @@ public final class DeidServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"serviceUrl\":\"eyp\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"wv\",\"jektcxsenh\",\"lrsf\",\"rzpwvlqdqgbiq\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"aetcktvfcivfs\",\"name\":\"kymuctqhjfbebr\",\"type\":\"cxerf\"},{\"properties\":{\"groupIds\":[\"ttxfvjr\",\"i\",\"phxepcyvahf\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"qxj\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"},{\"properties\":{\"groupIds\":[\"ncghkje\",\"zz\",\"bijhtxfvgxbf\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"hmpvecx\",\"name\":\"odebfqkkrbmpu\",\"type\":\"gr\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"lfbxzpuzycisp\",\"tenantId\":\"zahmgkbrpyydhibn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"buynhijggm\":{\"principalId\":\"ik\",\"clientId\":\"rgvtqag\"},\"jrunmpxtt\":{\"principalId\":\"fsiarbutr\",\"clientId\":\"pnazzm\"},\"qidybyx\":{\"principalId\":\"hrbnlankxmyskpbh\",\"clientId\":\"btkcxywnytnrsyn\"}}},\"sku\":{\"name\":\"fclhaaxdbabphlwr\",\"tier\":\"Free\",\"capacity\":285105336},\"location\":\"thsu\",\"tags\":{\"bt\":\"mnyyazt\",\"ckzywbiexzfeyue\":\"wrqpue\",\"zyoxaepdkzjan\":\"xibxujwbhqwalm\"},\"id\":\"ux\",\"name\":\"hdwbavxbniwdjs\",\"type\":\"zt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"vmkfssxqu\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"mg\",\"xnkjzkdesl\",\"vlopwiyighx\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"baiuebbaumny\",\"name\":\"upedeojnabckhs\",\"type\":\"txp\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"fhvpesaps\",\"tenantId\":\"dqmh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xotogtwrupqsxv\":{\"principalId\":\"ldwkyzxuutkn\",\"clientId\":\"scwsv\"},\"fcnj\":{\"principalId\":\"i\",\"clientId\":\"kvceoveilovnotyf\"}}},\"sku\":{\"name\":\"cn\",\"tier\":\"Standard\",\"size\":\"ttkphywpnvjtoqne\",\"family\":\"clfp\",\"capacity\":1314028538},\"location\":\"xus\",\"tags\":{\"psbjta\":\"abgy\",\"kqujidsuyono\":\"qugxywpmueefjzwf\"},\"id\":\"glaocq\",\"name\":\"tcc\",\"type\":\"g\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,17 @@ public final class DeidServicesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeidService> response
-            = manager.deidServices().listByResourceGroup("oklyaxuconuq", com.azure.core.util.Context.NONE);
+            = manager.deidServices().listByResourceGroup("bhvgy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("thsu", response.iterator().next().location());
-        Assertions.assertEquals("mnyyazt", response.iterator().next().tags().get("bt"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+        Assertions.assertEquals("xus", response.iterator().next().location());
+        Assertions.assertEquals("abgy", response.iterator().next().tags().get("psbjta"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("fclhaaxdbabphlwr", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals(285105336, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("cn", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("ttkphywpnvjtoqne", response.iterator().next().sku().size());
+        Assertions.assertEquals("clfp", response.iterator().next().sku().family());
+        Assertions.assertEquals(1314028538, response.iterator().next().sku().capacity());
     }
 }
