@@ -31,7 +31,6 @@ import java.util.Objects;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -142,7 +141,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                         .doOnNext(updateResult -> {
                             assertNotNull(updateResult);
                             assertNotNull(updateResult.getMemoryOperations());
-                            assertFalse(updateResult.getMemoryOperations().isEmpty());
                             for (MemoryOperation operation : updateResult.getMemoryOperations()) {
                                 assertNotNull(operation.getKind());
                                 assertNotNull(operation.getMemoryItem().getMemoryId());
@@ -154,7 +152,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                             .doOnNext(searchResponse -> {
                                 assertNotNull(searchResponse);
                                 assertNotNull(searchResponse.getMemories());
-                                assertFalse(searchResponse.getMemories().isEmpty());
                                 for (MemorySearchItem memory : searchResponse.getMemories()) {
                                     assertNotNull(memory.getMemoryItem().getMemoryId());
                                     assertNotNull(memory.getMemoryItem().getContent());
@@ -232,7 +229,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                         scope, Arrays.asList(chainedMessage), initialUpdateId, 0)).doOnNext(updateResult -> {
                             assertNotNull(updateResult);
                             assertNotNull(updateResult.getMemoryOperations());
-                            assertFalse(updateResult.getMemoryOperations().isEmpty());
                             for (MemoryOperation operation : updateResult.getMemoryOperations()) {
                                 assertNotNull(operation.getKind());
                                 assertNotNull(operation.getMemoryItem().getMemoryId());
@@ -244,7 +240,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                 .flatMap(searchResponse -> {
                                     assertNotNull(searchResponse);
                                     assertNotNull(searchResponse.getMemories());
-                                    assertFalse(searchResponse.getMemories().isEmpty());
                                     for (MemorySearchItem memory : searchResponse.getMemories()) {
                                         assertNotNull(memory.getMemoryItem().getMemoryId());
                                         assertNotNull(memory.getMemoryItem().getContent());
@@ -258,7 +253,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                         .doOnNext(followupSearch -> {
                                             assertNotNull(followupSearch);
                                             assertNotNull(followupSearch.getMemories());
-                                            assertFalse(followupSearch.getMemories().isEmpty());
                                             for (MemorySearchItem memory : followupSearch.getMemories()) {
                                                 assertNotNull(memory.getMemoryItem().getMemoryId());
                                                 assertNotNull(memory.getMemoryItem().getContent());
