@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.56.1 (2026-01-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+
+
 ## 2.56.0 (2026-01-12)
 
 ### Other Changes
