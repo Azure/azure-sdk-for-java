@@ -196,10 +196,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, accept, context))
             .<PagedResponse<WebhookInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -235,11 +236,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, accept, context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                registryName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -345,10 +347,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -386,10 +389,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, accept, context);
     }
 
     /**
@@ -483,11 +487,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookCreateParameters,
-                accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, webhookName, webhookCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -532,10 +537,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookCreateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, webhookCreateParameters, accept, context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, webhookCreateParameters, accept, context);
     }
 
     /**
@@ -737,11 +743,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookUpdateParameters,
-                accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, registryName, webhookName, webhookUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -786,10 +793,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         } else {
             webhookUpdateParameters.validate();
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, webhookUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, webhookUpdateParameters, accept, context);
     }
 
     /**
@@ -983,9 +991,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1023,10 +1032,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, accept, context);
     }
 
     /**
@@ -1204,9 +1214,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getCallbackConfig(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.getCallbackConfig(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1245,10 +1256,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getCallbackConfig(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context);
+        return service.getCallbackConfig(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, registryName, webhookName, accept, context);
     }
 
     /**
@@ -1337,9 +1349,10 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listEvents(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listEvents(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
             .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1380,11 +1393,12 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listEvents(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, webhookName, accept, context)
+            .listEvents(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                registryName, webhookName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1491,10 +1505,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.ping(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, accept, context))
+            .withContext(context -> service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, registryName, webhookName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1531,10 +1546,11 @@ public final class WebhooksClientImpl implements WebhooksClient {
         if (webhookName == null) {
             return Mono.error(new IllegalArgumentException("Parameter webhookName is required and cannot be null."));
         }
+        final String apiVersion = "2025-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.ping(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, registryName, webhookName, accept, context);
+        return service.ping(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            registryName, webhookName, accept, context);
     }
 
     /**
