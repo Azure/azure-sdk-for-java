@@ -159,23 +159,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
         cosmosBatches.add(createBatch);
 
         // configure fault injection rules
-        // using the combination of connection close and response delay to simulate a client generated gone for write operations
-        FaultInjectionRule connectionCloseRule =
-            new FaultInjectionRuleBuilder("connectionClose-" + UUID.randomUUID())
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.BATCH_ITEM)
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(1))
-                        .build()
-                )
-                .duration(Duration.ofSeconds(10))
-                .build();
-
+        // using response delay to simulate a client generated gone for write operations
         FaultInjectionRule serverResponseDelayRule =
             new FaultInjectionRuleBuilder("serverResponseDelay-" + UUID.randomUUID())
                 .condition(
@@ -186,7 +170,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(1))
+                        .delay(Duration.ofSeconds(6))
                         .build()
                 )
                 .duration(Duration.ofSeconds(10))
@@ -199,7 +183,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
 
         try {
             CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
+                .configureFaultInjectionRules(container, Arrays.asList(serverResponseDelayRule))
                 .block();
 
             List<CosmosBulkTransactionalBatchResponse> bulkResponse =
@@ -219,7 +203,6 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
             if (executor != null && !executor.isDisposed()) {
                 executor.dispose();
             }
-            connectionCloseRule.disable();
             serverResponseDelayRule.disable();
         }
     }

@@ -54,7 +54,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * The actual execution of the flux of operations. It is done in following steps:
 
  * 1. Getting partition key range ID and grouping operations using that id.
- * 2. For the flux of operations in a group, adding buffering based on size and a duration.
+ * 2. For the flux of operations in a group, using two simple counters totalOperationsInFlight and totalBatchesInFlight and a flushSignalFlux to control concurrency.
  * 3. For the operation we get in after buffering, process it using a batch request and return
  *    a wrapper having request, response(if-any) and exception(if-any). Either response or exception will be there.
  *
@@ -361,16 +361,10 @@ public final class TransactionalBulkExecutor implements Disposable {
                             // resolve partition key range id and attach PartitionScopeThresholds
                             return resolvePartitionKeyRangeIdForBatch(cosmosBatch)
                                 .map(pkRangeId -> {
-                                    PartitionScopeThresholds thresholds = this.partitionScopeThresholds.computeIfAbsent(
-                                        pkRangeId,
-                                        newPkRangeId ->
-                                            new PartitionScopeThresholds(
-                                                pkRangeId,
-                                                this.transactionalBulkExecutionOptionsImpl.getMinBatchRetryRate(),
-                                                this.transactionalBulkExecutionOptionsImpl.getMaxBatchRetryRate(),
-                                                this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(),
-                                                this.transactionalBulkExecutionOptionsImpl.getMaxOperationsConcurrency(),
-                                                1));
+                                    PartitionScopeThresholds thresholds =
+                                        this.partitionScopeThresholds.computeIfAbsent(
+                                            pkRangeId,
+                                            newPkRangeId -> new PartitionScopeThresholds(pkRangeId, this.transactionalBulkExecutionOptionsImpl));
 
                                     logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,

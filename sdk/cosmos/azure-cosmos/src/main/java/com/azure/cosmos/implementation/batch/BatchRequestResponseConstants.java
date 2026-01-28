@@ -16,6 +16,8 @@ public final class BatchRequestResponseConstants {
     public static final int DEFAULT_MAX_TRANSACTIONAL_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS = 100;
     public static final double DEFAULT_MIN_MICRO_BATCH_RETRY_RATE = 0.1;
     public static final double DEFAULT_MAX_MICRO_BATCH_RETRY_RATE = 0.2;
+    public static final int DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY = 100;
+    public static final int DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY = 5;
 
     static final String FIELD_OPERATION_TYPE = "operationType";
     static final String FIELD_ID = "id";

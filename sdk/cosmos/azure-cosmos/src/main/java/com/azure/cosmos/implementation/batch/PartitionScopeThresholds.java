@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
@@ -35,6 +36,11 @@ public class PartitionScopeThresholds {
         return options;
     }
 
+    private static CosmosTransactionalBulkExecutionOptionsImpl validateOptions(CosmosTransactionalBulkExecutionOptionsImpl options) {
+        checkNotNull(options, "expected non-null options");
+        return options;
+    }
+
     public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptionsImpl options) {
         this(
             pkRangeId,
@@ -44,6 +50,16 @@ public class PartitionScopeThresholds {
             validateOptions(options).getMaxMicroBatchSize(),
             validateOptions(options).getMinTargetMicroBatchSize());
 
+    }
+
+    public PartitionScopeThresholds(String pkRangeId, CosmosTransactionalBulkExecutionOptionsImpl options) {
+        this(
+            pkRangeId,
+            validateOptions(options).getMinBatchRetryRate(),
+            validateOptions(options).getMaxBatchRetryRate(),
+            1, // for transactional batch, we start with small batch size to avoid sudden RU spike
+            validateOptions(options).getMaxOperationsConcurrency(),
+            1);
     }
 
     PartitionScopeThresholds(

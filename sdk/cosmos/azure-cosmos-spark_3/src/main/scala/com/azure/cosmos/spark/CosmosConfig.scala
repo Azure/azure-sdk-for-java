@@ -1482,16 +1482,16 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
 private trait CosmosWriteBulkExecutionConfigsBase {}
 
 private case class CosmosWriteBulkExecutionConfigs(
-                                                   maxConcurrentCosmosPartitions: Option[Int] = None,
-                                                   maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
-                                                   initialMicroBatchSize: Option[Int] = None,
-                                                   maxMicroBatchSize: Option[Int] = None,
-                                                   minTargetMicroBatchSize: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
+                                                    maxConcurrentCosmosPartitions: Option[Int] = None,
+                                                    maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
+                                                    initialMicroBatchSize: Option[Int] = None,
+                                                    maxMicroBatchSize: Option[Int] = None,
+                                                    minTargetMicroBatchSize: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
 
 private case class CosmosWriteTransactionalBulkExecutionConfigs(
-                                                                maxConcurrentCosmosPartitions: Option[Int] = None,
-                                                                maxConcurrentOperations: Option[Int] = None,
-                                                                maxConcurrentBatches: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
+                                                                 maxConcurrentCosmosPartitions: Option[Int] = None,
+                                                                 maxConcurrentOperations: Option[Int] = None,
+                                                                 maxConcurrentBatches: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -1568,16 +1568,21 @@ private object CosmosWriteConfig {
       s" repartitioned to balance to how many Cosmos partitions each Spark partition needs to write. This is mainly" +
       s" useful for very large containers (with hundreds of physical partitions).")
 
-  private val bulkTransactionalMaxOpsConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkTransactionalMaxOperationsConcurrency,
+  private val bulkTransactionalMaxOpsConcurrency = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkTransactionalMaxOperationsConcurrency,
+    defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY),
     mandatory = false,
     parseFromStringFunction = maxOpsConcurrency => maxOpsConcurrency.toInt,
-    helpMessage = "The max concurrent operations allowed per partition, this will be used to control the batch concurrency for each partition." +
-      " By default the initial value is 100.")
+    helpMessage = "Max number of in-flight operations per Cosmos partition for transactional bulk mode. " +
+      "Higher values increase parallelism (and RU usage) but can cause throttling; default ~100.")
 
-  private val bulkTransactionalMaxBatchesConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkTransactionalMaxBatchesConcurrency,
+  private val bulkTransactionalMaxBatchesConcurrency = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkTransactionalMaxBatchesConcurrency,
+    defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY),
     mandatory = false,
     parseFromStringFunction = maxBatchesConcurrency => maxBatchesConcurrency.toInt,
-    helpMessage = "The max concurrent batches allowed per partition, only valid between [1, 10]. By default the initial value is 10.")
+    helpMessage = "Max concurrent transactional batches per Cosmos partition (1..5). Controls batch-level parallelism; default 5." +
+        "Each batch may contain multiple operations; tune together with 'spark.cosmos.write.bulk.transactional.maxOperationsConcurrency' to balance throughput and throttling.")
 
   private val pointWriteConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WritePointMaxConcurrency,
     mandatory = false,

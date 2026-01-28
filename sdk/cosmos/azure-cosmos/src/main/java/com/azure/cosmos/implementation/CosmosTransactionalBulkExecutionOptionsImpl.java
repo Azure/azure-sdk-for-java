@@ -30,8 +30,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * It can be passed while processing bulk operations.
  */
 public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableRequestOptions {
-    private int maxOperationsConcurrency = Configs.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY;
-    private int maxBatchesConcurrency = Configs.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY;
+    private int maxOperationsConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY;
+    private int maxBatchesConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY;
 
     private double maxBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
