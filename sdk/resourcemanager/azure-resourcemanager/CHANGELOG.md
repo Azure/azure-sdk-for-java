@@ -18,6 +18,14 @@
 
 ### Other Changes
 
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
 ## 2.58.0 (2025-12-22)
 
 ### azure-resourcemanager-containerservice
