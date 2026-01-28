@@ -66,4 +66,15 @@ public class RegionTests {
     public void testNegative() {
         Assertions.assertThrows(NullPointerException.class, () -> Region.create(null, "desc"));
     }
+
+    @Test
+    public void testNewRegions() {
+        // Test Austria East region
+        Assertions.assertNotNull(Region.AUSTRIA_EAST);
+        Assertions.assertEquals("austriaeast", Region.AUSTRIA_EAST.name());
+        Assertions.assertEquals("Austria East", Region.AUSTRIA_EAST.label());
+
+        Region austriaEastFromName = Region.fromName("austriaeast");
+        Assertions.assertEquals(Region.AUSTRIA_EAST, austriaEastFromName);
+    }
 }
