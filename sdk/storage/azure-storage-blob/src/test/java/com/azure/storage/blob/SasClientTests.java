@@ -826,9 +826,9 @@ public class SasClientTests extends BlobTestBase {
                 .buildClient();
         assertDoesNotThrow(cc::getProperties);
 
-        BlobClient bc = new BlobClientBuilder()
-            .endpoint(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
-            .buildClient();
+        BlobClient bc = instrument(new BlobClientBuilder()
+            .endpoint(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas))
+                .buildClient();
 
         assertDoesNotThrow(bc::getProperties);
     }

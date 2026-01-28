@@ -913,9 +913,9 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         StepVerifier.create(response).expectNextCount(1).verifyComplete();
 
-        BlobAsyncClient bc = new BlobClientBuilder()
-            .endpoint(primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
-            .buildAsyncClient();
+        BlobAsyncClient bc = instrument(new BlobClientBuilder()
+            .endpoint(primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas))
+                .buildAsyncClient();
 
         StepVerifier.create(bc.getProperties()).expectNextCount(1).verifyComplete();
     }
