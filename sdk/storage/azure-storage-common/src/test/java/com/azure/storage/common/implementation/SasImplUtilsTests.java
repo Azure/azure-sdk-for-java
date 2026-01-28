@@ -14,10 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;;
 public class SasImplUtilsTests {
 
     private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParams;
 
     @BeforeEach
     public void setup() {
         requestHeaders = new HashMap<>();
+        requestQueryParams = new HashMap<>();
     }
 
     @Test
@@ -59,5 +61,44 @@ public class SasImplUtilsTests {
 
         assertEquals(4, newLineCount);
         assertEquals(sortedExpected, sortedHeaders);
+    }
+
+    @Test
+    public void formatRequestQueryParamsForSasSigningNullReturnsEmptyString() {
+        assertEquals("", SasImplUtils.formatRequestQueryParametersForSasSigning(null));
+    }
+
+    @Test
+    public void formatRequestQueryParamsForSasSigningEmptyReturnsEmptyString() {
+        assertEquals("", SasImplUtils.formatRequestQueryParametersForSasSigning(requestQueryParams));
+    }
+
+    @Test
+    public void formatRequestQueryParamsForSasSigningReturnsWithFirstCharAsNewline() {
+        requestQueryParams.put("someParam", "someValue");
+
+        String queryParamString = SasImplUtils.formatRequestQueryParametersForSasSigning(requestQueryParams);
+
+        assertNotEquals("", queryParamString);
+        assertEquals("\n", queryParamString.substring(0, 1));
+    }
+
+    @Test
+    public void formatRequestQueryParamsForSasSigningPopulatedParams() {
+        requestQueryParams.put("paramA", "valueA");
+        requestQueryParams.put("paramB", "valueB");
+        requestQueryParams.put("paramC", "valueC");
+        String expected = "\nparamA:valueA\nparamB:valueB\nparamC:valueC";
+
+        String queryParams = SasImplUtils.formatRequestQueryParametersForSasSigning(requestQueryParams);
+        Integer newLineCount
+            = Arrays.stream(queryParams.split("")).filter(s -> s.equals("\n")).collect(Collectors.toList()).size();
+        String sortedExpected
+            = "\n" + Arrays.stream(expected.substring(1).split("\n")).sorted().collect(Collectors.joining("\n"));
+        String sortedQueryParams
+            = "\n" + Arrays.stream(queryParams.substring(1).split("\n")).sorted().collect(Collectors.joining("\n"));
+
+        assertEquals(3, newLineCount);
+        assertEquals(sortedExpected, sortedQueryParams);
     }
 }
