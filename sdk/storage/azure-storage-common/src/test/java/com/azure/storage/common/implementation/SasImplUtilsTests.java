@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;;
 
 public class SasImplUtilsTests {
 
@@ -27,6 +28,15 @@ public class SasImplUtilsTests {
     @Test
     public void formatRequestHeadersForSasSigningEmptyReturnsEmptyString() {
         assertEquals("", SasImplUtils.formatRequestHeadersForSasSigning(requestHeaders));
+    }
+
+    @Test
+    public void formatRequestHeadersForSasSigningReturnsWithLastCharAsNewline() {
+        requestHeaders.put("Some-Header", "someValue");
+        String headerString = SasImplUtils.formatRequestHeadersForSasSigning(requestHeaders);
+
+        assertNotEquals("", headerString);
+        assertEquals("\n", headerString.substring(headerString.length() - 1));
     }
 
     @Test
