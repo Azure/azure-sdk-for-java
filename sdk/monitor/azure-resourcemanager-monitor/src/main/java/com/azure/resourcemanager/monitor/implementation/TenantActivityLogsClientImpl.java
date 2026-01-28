@@ -60,7 +60,7 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientTenantActivityLogs")
+    @ServiceInterface(name = "MonitorClientTenantA")
     public interface TenantActivityLogsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Insights/eventtypes/management/values")
@@ -333,11 +333,8 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
-     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
-     * surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return represents collection of events along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink) {
@@ -363,11 +360,8 @@ public final class TenantActivityLogsClientImpl implements TenantActivityLogsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Activity Logs for the Tenant.&lt;br&gt;Everything that is applicable to the API to get the Activity
-     * Logs for the subscription is applicable to this API (the parameters, $filter, etc.).&lt;br&gt;One thing to point
-     * out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only
-     * surfaces the logs that were generated at the tenant level along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return represents collection of events along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventDataInner>> listNextSinglePageAsync(String nextLink, Context context) {

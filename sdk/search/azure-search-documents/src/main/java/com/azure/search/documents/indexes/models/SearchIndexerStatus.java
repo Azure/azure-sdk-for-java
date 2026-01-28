@@ -34,12 +34,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     private final IndexerStatus status;
 
     /*
-     * Snapshot of the indexer’s cumulative runtime consumption for the service over the current UTC period.
-     */
-    @Generated
-    private IndexerRuntime runtime;
-
-    /*
      * The result of the most recent or an in-progress indexer execution.
      */
     @Generated
@@ -56,12 +50,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
      */
     @Generated
     private final SearchIndexerLimits limits;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    @Generated
-    private IndexerCurrentState currentState;
 
     /**
      * Creates an instance of SearchIndexerStatus class.
@@ -99,17 +87,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     }
 
     /**
-     * Get the runtime property: Snapshot of the indexer’s cumulative runtime consumption for the service over the
-     * current UTC period.
-     * 
-     * @return the runtime value.
-     */
-    @Generated
-    public IndexerRuntime getRuntime() {
-        return this.runtime;
-    }
-
-    /**
      * Get the lastResult property: The result of the most recent or an in-progress indexer execution.
      * 
      * @return the lastResult value.
@@ -141,16 +118,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     }
 
     /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     * 
-     * @return the currentState value.
-     */
-    @Generated
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -179,9 +146,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
             boolean limitsFound = false;
             SearchIndexerLimits limits = null;
             String name = null;
-            IndexerRuntime runtime = null;
             IndexerExecutionResult lastResult = null;
-            IndexerCurrentState currentState = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -197,12 +162,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     limitsFound = true;
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
-                } else if ("runtime".equals(fieldName)) {
-                    runtime = IndexerRuntime.fromJson(reader);
                 } else if ("lastResult".equals(fieldName)) {
                     lastResult = IndexerExecutionResult.fromJson(reader);
-                } else if ("currentState".equals(fieldName)) {
-                    currentState = IndexerCurrentState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -211,9 +172,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                 SearchIndexerStatus deserializedSearchIndexerStatus
                     = new SearchIndexerStatus(status, executionHistory, limits);
                 deserializedSearchIndexerStatus.name = name;
-                deserializedSearchIndexerStatus.runtime = runtime;
                 deserializedSearchIndexerStatus.lastResult = lastResult;
-                deserializedSearchIndexerStatus.currentState = currentState;
 
                 return deserializedSearchIndexerStatus;
             }

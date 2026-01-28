@@ -5,73 +5,63 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * The Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema model.
- */
+/** The Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema model. */
 @Fluent
 public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
     implements JsonSerializable<Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema> {
     /*
      * Can take a value of access_token_refresh_token, or access_token, or refresh_token
      */
-    @Generated
     private PostContentSchemaGrantType grantType;
 
     /*
      * Indicates the name of your Azure container registry.
      */
-    @Generated
     private String service;
 
     /*
      * AAD tenant associated to the AAD credentials.
      */
-    @Generated
     private String tenant;
 
     /*
      * AAD refresh token, mandatory when grant_type is access_token_refresh_token or refresh_token
      */
-    @Generated
     private String refreshToken;
 
     /*
      * AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
      */
-    @Generated
     private String aadAccessToken;
 
     /**
      * Creates an instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {
     }
 
     /**
      * Get the grantType property: Can take a value of access_token_refresh_token, or access_token, or refresh_token.
-     * 
+     *
      * @return the grantType value.
      */
-    @Generated
     public PostContentSchemaGrantType getGrantType() {
         return this.grantType;
     }
 
     /**
      * Set the grantType property: Can take a value of access_token_refresh_token, or access_token, or refresh_token.
-     * 
+     *
      * @param grantType the grantType value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setGrantType(PostContentSchemaGrantType grantType) {
         this.grantType = grantType;
@@ -80,21 +70,19 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
 
     /**
      * Get the service property: Indicates the name of your Azure container registry.
-     * 
+     *
      * @return the service value.
      */
-    @Generated
     public String getService() {
         return this.service;
     }
 
     /**
      * Set the service property: Indicates the name of your Azure container registry.
-     * 
+     *
      * @param service the service value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setService(String service) {
         this.service = service;
@@ -103,21 +91,19 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
 
     /**
      * Get the tenant property: AAD tenant associated to the AAD credentials.
-     * 
+     *
      * @return the tenant value.
      */
-    @Generated
     public String getTenant() {
         return this.tenant;
     }
 
     /**
      * Set the tenant property: AAD tenant associated to the AAD credentials.
-     * 
+     *
      * @param tenant the tenant value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setTenant(String tenant) {
         this.tenant = tenant;
@@ -127,10 +113,9 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Get the refreshToken property: AAD refresh token, mandatory when grant_type is access_token_refresh_token or
      * refresh_token.
-     * 
+     *
      * @return the refreshToken value.
      */
-    @Generated
     public String getRefreshToken() {
         return this.refreshToken;
     }
@@ -138,11 +123,10 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Set the refreshToken property: AAD refresh token, mandatory when grant_type is access_token_refresh_token or
      * refresh_token.
-     * 
+     *
      * @param refreshToken the refreshToken value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
@@ -152,10 +136,9 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Get the aadAccessToken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
      * access_token.
-     * 
+     *
      * @return the aadAccessToken value.
      */
-    @Generated
     public String getAadAccessToken() {
         return this.aadAccessToken;
     }
@@ -163,25 +146,20 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Set the aadAccessToken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
      * access_token.
-     * 
+     *
      * @param aadAccessToken the aadAccessToken value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    @Generated
     public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         setAadAccessToken(String aadAccessToken) {
         this.aadAccessToken = aadAccessToken;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("grant_type", this.grantType == null ? null : this.grantType.toString());
+        jsonWriter.writeStringField("grant_type", Objects.toString(this.grantType, null));
         jsonWriter.writeStringField("service", this.service);
         jsonWriter.writeStringField("tenant", this.tenant);
         jsonWriter.writeStringField("refresh_token", this.refreshToken);
@@ -192,15 +170,14 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     /**
      * Reads an instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema from the
      * JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema if the
-     * JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     *     JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
-     * Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
+     *     Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema.
      */
-    @Generated
     public static Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema
         fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

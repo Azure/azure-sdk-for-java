@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The provisioning state of the archive at the time the operation was called.
+ * The provisioning state of this agent pool.
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**

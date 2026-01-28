@@ -59,7 +59,7 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientEventCategories")
+    @ServiceInterface(name = "MonitorClientEventCa")
     public interface EventCategoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Insights/eventcategories")

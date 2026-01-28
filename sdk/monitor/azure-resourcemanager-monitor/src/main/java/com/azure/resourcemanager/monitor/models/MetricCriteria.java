@@ -20,17 +20,17 @@ import java.util.Map;
 @Fluent
 public final class MetricCriteria extends MultiMetricCriteria {
     /*
-     * Specifies the type of threshold criteria. Previously undocumented values might be returned
+     * Specifies the type of threshold criteria
      */
     private CriterionType criterionType = CriterionType.STATIC_THRESHOLD_CRITERION;
 
     /*
-     * The criteria operator. Previously undocumented values might be returned
+     * the criteria operator.
      */
     private Operator operator;
 
     /*
-     * The criteria threshold value that activates the alert.
+     * the criteria threshold value that activates the alert.
      */
     private double threshold;
 
@@ -41,8 +41,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the criterionType property: Specifies the type of threshold criteria. Previously undocumented values might be
-     * returned.
+     * Get the criterionType property: Specifies the type of threshold criteria.
      * 
      * @return the criterionType value.
      */
@@ -52,7 +51,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the operator property: The criteria operator. Previously undocumented values might be returned.
+     * Get the operator property: the criteria operator.
      * 
      * @return the operator value.
      */
@@ -61,7 +60,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the operator property: The criteria operator. Previously undocumented values might be returned.
+     * Set the operator property: the criteria operator.
      * 
      * @param operator the operator value to set.
      * @return the MetricCriteria object itself.
@@ -72,7 +71,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Get the threshold property: The criteria threshold value that activates the alert.
+     * Get the threshold property: the criteria threshold value that activates the alert.
      * 
      * @return the threshold value.
      */
@@ -81,7 +80,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     }
 
     /**
-     * Set the threshold property: The criteria threshold value that activates the alert.
+     * Set the threshold property: the criteria threshold value that activates the alert.
      * 
      * @param threshold the threshold value to set.
      * @return the MetricCriteria object itself.
@@ -152,24 +151,10 @@ public final class MetricCriteria extends MultiMetricCriteria {
      */
     @Override
     public void validate() {
+        super.validate();
         if (operator() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
-        }
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model MetricCriteria"));
-        }
-        if (metricName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property metricName in model MetricCriteria"));
-        }
-        if (timeAggregation() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property timeAggregation in model MetricCriteria"));
-        }
-        if (dimensions() != null) {
-            dimensions().forEach(e -> e.validate());
         }
     }
 

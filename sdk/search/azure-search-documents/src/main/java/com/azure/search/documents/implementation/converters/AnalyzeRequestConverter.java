@@ -22,7 +22,8 @@ public final class AnalyzeRequestConverter {
             .setAnalyzer(obj.getAnalyzerName())
             .setTokenizer(obj.getTokenizerName())
             .setCharFilters(obj.getCharFilters())
-            .setTokenFilters(obj.getTokenFilters());
+            .setTokenFilters(obj.getTokenFilters())
+            .setNormalizer(obj.getNormalizerName());
     }
 
     private AnalyzeRequestConverter() {

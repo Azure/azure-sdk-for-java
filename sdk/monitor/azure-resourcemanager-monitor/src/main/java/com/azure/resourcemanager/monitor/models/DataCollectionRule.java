@@ -39,21 +39,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
     private DataCollectionRuleMetadata metadata;
 
     /*
-     * Defines the ingestion endpoints to send data to via this rule.
-     */
-    private DataCollectionRuleEndpoints endpoints;
-
-    /*
-     * Defines all the references that may be used in other sections of the DCR
-     */
-    private DataCollectionRuleReferences references;
-
-    /*
-     * Agent settings used to modify agent behavior on a given host
-     */
-    private DataCollectionRuleAgentSettings agentSettings;
-
-    /*
      * Declaration of custom streams used in this rule.
      */
     private Map<String, StreamDeclaration> streamDeclarations;
@@ -66,12 +51,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
     private DataCollectionRuleDataSources dataSources;
 
     /*
-     * The specification of direct data sources.
-     * This property is optional and can be omitted.
-     */
-    private DataCollectionRuleDirectDataSources directDataSources;
-
-    /*
      * The specification of destinations.
      */
     private DataCollectionRuleDestinations destinations;
@@ -80,11 +59,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
      * The specification of data flows.
      */
     private List<DataFlow> dataFlows;
-
-    /*
-     * The specification for ingestion limits
-     */
-    private DataCollectionRuleIngestionQuotas ingestionQuotas;
 
     /*
      * The resource provisioning state.
@@ -180,66 +154,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
     }
 
     /**
-     * Get the endpoints property: Defines the ingestion endpoints to send data to via this rule.
-     * 
-     * @return the endpoints value.
-     */
-    public DataCollectionRuleEndpoints endpoints() {
-        return this.endpoints;
-    }
-
-    /**
-     * Set the endpoints property: Defines the ingestion endpoints to send data to via this rule.
-     * 
-     * @param endpoints the endpoints value to set.
-     * @return the DataCollectionRule object itself.
-     */
-    DataCollectionRule withEndpoints(DataCollectionRuleEndpoints endpoints) {
-        this.endpoints = endpoints;
-        return this;
-    }
-
-    /**
-     * Get the references property: Defines all the references that may be used in other sections of the DCR.
-     * 
-     * @return the references value.
-     */
-    public DataCollectionRuleReferences references() {
-        return this.references;
-    }
-
-    /**
-     * Set the references property: Defines all the references that may be used in other sections of the DCR.
-     * 
-     * @param references the references value to set.
-     * @return the DataCollectionRule object itself.
-     */
-    public DataCollectionRule withReferences(DataCollectionRuleReferences references) {
-        this.references = references;
-        return this;
-    }
-
-    /**
-     * Get the agentSettings property: Agent settings used to modify agent behavior on a given host.
-     * 
-     * @return the agentSettings value.
-     */
-    public DataCollectionRuleAgentSettings agentSettings() {
-        return this.agentSettings;
-    }
-
-    /**
-     * Set the agentSettings property: Agent settings used to modify agent behavior on a given host.
-     * 
-     * @param agentSettings the agentSettings value to set.
-     * @return the DataCollectionRule object itself.
-     */
-    public DataCollectionRule withAgentSettings(DataCollectionRuleAgentSettings agentSettings) {
-        this.agentSettings = agentSettings;
-        return this;
-    }
-
-    /**
      * Get the streamDeclarations property: Declaration of custom streams used in this rule.
      * 
      * @return the streamDeclarations value.
@@ -284,28 +198,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
     }
 
     /**
-     * Get the directDataSources property: The specification of direct data sources.
-     * This property is optional and can be omitted.
-     * 
-     * @return the directDataSources value.
-     */
-    public DataCollectionRuleDirectDataSources directDataSources() {
-        return this.directDataSources;
-    }
-
-    /**
-     * Set the directDataSources property: The specification of direct data sources.
-     * This property is optional and can be omitted.
-     * 
-     * @param directDataSources the directDataSources value to set.
-     * @return the DataCollectionRule object itself.
-     */
-    public DataCollectionRule withDirectDataSources(DataCollectionRuleDirectDataSources directDataSources) {
-        this.directDataSources = directDataSources;
-        return this;
-    }
-
-    /**
      * Get the destinations property: The specification of destinations.
      * 
      * @return the destinations value.
@@ -346,26 +238,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
     }
 
     /**
-     * Get the ingestionQuotas property: The specification for ingestion limits.
-     * 
-     * @return the ingestionQuotas value.
-     */
-    public DataCollectionRuleIngestionQuotas ingestionQuotas() {
-        return this.ingestionQuotas;
-    }
-
-    /**
-     * Set the ingestionQuotas property: The specification for ingestion limits.
-     * 
-     * @param ingestionQuotas the ingestionQuotas value to set.
-     * @return the DataCollectionRule object itself.
-     */
-    DataCollectionRule withIngestionQuotas(DataCollectionRuleIngestionQuotas ingestionQuotas) {
-        this.ingestionQuotas = ingestionQuotas;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: The resource provisioning state.
      * 
      * @return the provisioningState value.
@@ -394,15 +266,6 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
         if (metadata() != null) {
             metadata().validate();
         }
-        if (endpoints() != null) {
-            endpoints().validate();
-        }
-        if (references() != null) {
-            references().validate();
-        }
-        if (agentSettings() != null) {
-            agentSettings().validate();
-        }
         if (streamDeclarations() != null) {
             streamDeclarations().values().forEach(e -> {
                 if (e != null) {
@@ -413,17 +276,11 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
         if (dataSources() != null) {
             dataSources().validate();
         }
-        if (directDataSources() != null) {
-            directDataSources().validate();
-        }
         if (destinations() != null) {
             destinations().validate();
         }
         if (dataFlows() != null) {
             dataFlows().forEach(e -> e.validate());
-        }
-        if (ingestionQuotas() != null) {
-            ingestionQuotas().validate();
         }
     }
 
@@ -435,12 +292,9 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("dataCollectionEndpointId", this.dataCollectionEndpointId);
-        jsonWriter.writeJsonField("references", this.references);
-        jsonWriter.writeJsonField("agentSettings", this.agentSettings);
         jsonWriter.writeMapField("streamDeclarations", this.streamDeclarations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("dataSources", this.dataSources);
-        jsonWriter.writeJsonField("directDataSources", this.directDataSources);
         jsonWriter.writeJsonField("destinations", this.destinations);
         jsonWriter.writeArrayField("dataFlows", this.dataFlows, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -469,28 +323,17 @@ public class DataCollectionRule implements JsonSerializable<DataCollectionRule> 
                     deserializedDataCollectionRule.dataCollectionEndpointId = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     deserializedDataCollectionRule.metadata = DataCollectionRuleMetadata.fromJson(reader);
-                } else if ("endpoints".equals(fieldName)) {
-                    deserializedDataCollectionRule.endpoints = DataCollectionRuleEndpoints.fromJson(reader);
-                } else if ("references".equals(fieldName)) {
-                    deserializedDataCollectionRule.references = DataCollectionRuleReferences.fromJson(reader);
-                } else if ("agentSettings".equals(fieldName)) {
-                    deserializedDataCollectionRule.agentSettings = DataCollectionRuleAgentSettings.fromJson(reader);
                 } else if ("streamDeclarations".equals(fieldName)) {
                     Map<String, StreamDeclaration> streamDeclarations
                         = reader.readMap(reader1 -> StreamDeclaration.fromJson(reader1));
                     deserializedDataCollectionRule.streamDeclarations = streamDeclarations;
                 } else if ("dataSources".equals(fieldName)) {
                     deserializedDataCollectionRule.dataSources = DataCollectionRuleDataSources.fromJson(reader);
-                } else if ("directDataSources".equals(fieldName)) {
-                    deserializedDataCollectionRule.directDataSources
-                        = DataCollectionRuleDirectDataSources.fromJson(reader);
                 } else if ("destinations".equals(fieldName)) {
                     deserializedDataCollectionRule.destinations = DataCollectionRuleDestinations.fromJson(reader);
                 } else if ("dataFlows".equals(fieldName)) {
                     List<DataFlow> dataFlows = reader.readArray(reader1 -> DataFlow.fromJson(reader1));
                     deserializedDataCollectionRule.dataFlows = dataFlows;
-                } else if ("ingestionQuotas".equals(fieldName)) {
-                    deserializedDataCollectionRule.ingestionQuotas = DataCollectionRuleIngestionQuotas.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataCollectionRule.provisioningState
                         = KnownDataCollectionRuleProvisioningState.fromString(reader.getString());

@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class EmailHookParameterPatch implements JsonSerializable<EmailHook
     /*
      * Email TO: list.
      */
-    @Generated
     private List<String> toList;
 
     /**
      * Creates an instance of EmailHookParameterPatch class.
      */
-    @Generated
     public EmailHookParameterPatch() {
     }
 
@@ -36,7 +33,6 @@ public final class EmailHookParameterPatch implements JsonSerializable<EmailHook
      * 
      * @return the toList value.
      */
-    @Generated
     public List<String> getToList() {
         return this.toList;
     }
@@ -47,16 +43,11 @@ public final class EmailHookParameterPatch implements JsonSerializable<EmailHook
      * @param toList the toList value to set.
      * @return the EmailHookParameterPatch object itself.
      */
-    @Generated
     public EmailHookParameterPatch setToList(List<String> toList) {
         this.toList = toList;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +63,6 @@ public final class EmailHookParameterPatch implements JsonSerializable<EmailHook
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EmailHookParameterPatch.
      */
-    @Generated
     public static EmailHookParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EmailHookParameterPatch deserializedEmailHookParameterPatch = new EmailHookParameterPatch();

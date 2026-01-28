@@ -11,8 +11,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Enables a debugging tool that can be used to further explore your search results. You can enable multiple debug modes
- * simultaneously by separating them with a | character, for example: semantic|queryRewrites.
+ * Enables a debugging tool that can be used to further explore your search results.
  */
 public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     /**
@@ -22,34 +21,10 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     public static final QueryDebugMode DISABLED = fromString("disabled");
 
     /**
-     * Allows the user to further explore their reranked results.
-     */
-    @Generated
-    public static final QueryDebugMode SEMANTIC = fromString("semantic");
-
-    /**
      * Allows the user to further explore their hybrid and vector query results.
      */
     @Generated
     public static final QueryDebugMode VECTOR = fromString("vector");
-
-    /**
-     * Allows the user to explore the list of query rewrites generated for their search request.
-     */
-    @Generated
-    public static final QueryDebugMode QUERY_REWRITES = fromString("queryRewrites");
-
-    /**
-     * Allows the user to retrieve scoring information regarding vectors matched within a collection of complex types.
-     */
-    @Generated
-    public static final QueryDebugMode INNER_HITS = fromString("innerHits");
-
-    /**
-     * Turn on all debug options.
-     */
-    @Generated
-    public static final QueryDebugMode ALL = fromString("all");
 
     /**
      * Creates a new instance of QueryDebugMode value.

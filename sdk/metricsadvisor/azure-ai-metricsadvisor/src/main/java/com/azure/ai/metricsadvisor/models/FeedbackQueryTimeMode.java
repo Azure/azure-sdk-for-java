@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,13 +14,11 @@ public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQu
     /**
      * Static value MetricTimestamp for FeedbackQueryTimeMode.
      */
-    @Generated
     public static final FeedbackQueryTimeMode METRIC_TIMESTAMP = fromString("MetricTimestamp");
 
     /**
      * Static value FeedbackCreatedTime for FeedbackQueryTimeMode.
      */
-    @Generated
     public static final FeedbackQueryTimeMode FEEDBACK_CREATED_TIME = fromString("FeedbackCreatedTime");
 
     /**
@@ -29,7 +26,6 @@ public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQu
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public FeedbackQueryTimeMode() {
     }
@@ -40,7 +36,6 @@ public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQu
      * @param name a name to look for.
      * @return the corresponding FeedbackQueryTimeMode.
      */
-    @Generated
     public static FeedbackQueryTimeMode fromString(String name) {
         return fromString(name, FeedbackQueryTimeMode.class);
     }
@@ -50,7 +45,6 @@ public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQu
      * 
      * @return known FeedbackQueryTimeMode values.
      */
-    @Generated
     public static Collection<FeedbackQueryTimeMode> values() {
         return values(FeedbackQueryTimeMode.class);
     }

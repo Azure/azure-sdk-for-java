@@ -299,8 +299,8 @@ public final class TestHelpers {
     }
 
     public static void waitForIndexing() {
-        // Wait 5 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(5000);
+        // Wait 2 seconds to allow index request to finish.
+        sleepIfRunningAgainstService(2000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
@@ -345,13 +345,6 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
-        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
-        uploadDocuments(client, documents);
-
-        return documents;
-    }
-
-    public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
         uploadDocuments(client, documents);
 

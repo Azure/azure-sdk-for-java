@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,13 +19,11 @@ public final class EntitiesResult extends PreBuiltResult {
     /*
      * Response by document
      */
-    @Generated
     private List<EntitiesResultDocumentsItem> documents;
 
     /**
      * Creates an instance of EntitiesResult class.
      */
-    @Generated
     public EntitiesResult() {
     }
 
@@ -35,7 +32,6 @@ public final class EntitiesResult extends PreBuiltResult {
      * 
      * @return the documents value.
      */
-    @Generated
     public List<EntitiesResultDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -46,7 +42,6 @@ public final class EntitiesResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the EntitiesResult object itself.
      */
-    @Generated
     public EntitiesResult setDocuments(List<EntitiesResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -55,7 +50,6 @@ public final class EntitiesResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -65,7 +59,6 @@ public final class EntitiesResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -75,7 +68,6 @@ public final class EntitiesResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntitiesResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -85,7 +77,6 @@ public final class EntitiesResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +96,6 @@ public final class EntitiesResult extends PreBuiltResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntitiesResult.
      */
-    @Generated
     public static EntitiesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntitiesResult deserializedEntitiesResult = new EntitiesResult();

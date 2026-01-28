@@ -27,19 +27,6 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
     public static final VectorSearchVectorizerKind CUSTOM_WEB_API = fromString("customWebApi");
 
     /**
-     * Generate embeddings for an image or text input at query time using the Azure AI Services Vision Vectorize API.
-     */
-    @Generated
-    public static final VectorSearchVectorizerKind AISERVICES_VISION = fromString("aiServicesVision");
-
-    /**
-     * Generate embeddings using an Azure Machine Learning endpoint deployed via the Azure AI Foundry Model Catalog at
-     * query time.
-     */
-    @Generated
-    public static final VectorSearchVectorizerKind AML = fromString("aml");
-
-    /**
      * Creates a new instance of VectorSearchVectorizerKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
     /*
      * change percentage, value range : [0, +∞)
      */
-    @Generated
     private double changePercentage;
 
     /*
      * shift point, value range : [1, +∞)
      */
-    @Generated
     private int shiftPoint;
 
     /*
@@ -34,25 +31,21 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * anomalyDetectorDirection must be Both
      * if the withinRange = false, detected data is abnormal when the value falls out of the range
      */
-    @Generated
     private boolean withinRange;
 
     /*
      * detection direction
      */
-    @Generated
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
-    @Generated
     private SuppressCondition suppressCondition;
 
     /**
      * Creates an instance of ChangeThresholdCondition class.
      */
-    @Generated
     public ChangeThresholdCondition() {
     }
 
@@ -61,7 +54,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * 
      * @return the changePercentage value.
      */
-    @Generated
     public double getChangePercentage() {
         return this.changePercentage;
     }
@@ -72,7 +64,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @param changePercentage the changePercentage value to set.
      * @return the ChangeThresholdCondition object itself.
      */
-    @Generated
     public ChangeThresholdCondition setChangePercentage(double changePercentage) {
         this.changePercentage = changePercentage;
         return this;
@@ -83,7 +74,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * 
      * @return the shiftPoint value.
      */
-    @Generated
     public int getShiftPoint() {
         return this.shiftPoint;
     }
@@ -94,7 +84,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @param shiftPoint the shiftPoint value to set.
      * @return the ChangeThresholdCondition object itself.
      */
-    @Generated
     public ChangeThresholdCondition setShiftPoint(int shiftPoint) {
         this.shiftPoint = shiftPoint;
         return this;
@@ -107,7 +96,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * 
      * @return the withinRange value.
      */
-    @Generated
     public boolean isWithinRange() {
         return this.withinRange;
     }
@@ -120,7 +108,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @param withinRange the withinRange value to set.
      * @return the ChangeThresholdCondition object itself.
      */
-    @Generated
     public ChangeThresholdCondition setWithinRange(boolean withinRange) {
         this.withinRange = withinRange;
         return this;
@@ -131,7 +118,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * 
      * @return the anomalyDetectorDirection value.
      */
-    @Generated
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
         return this.anomalyDetectorDirection;
     }
@@ -142,7 +128,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the ChangeThresholdCondition object itself.
      */
-    @Generated
     public ChangeThresholdCondition setAnomalyDetectorDirection(AnomalyDetectorDirection anomalyDetectorDirection) {
         this.anomalyDetectorDirection = anomalyDetectorDirection;
         return this;
@@ -153,7 +138,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * 
      * @return the suppressCondition value.
      */
-    @Generated
     public SuppressCondition getSuppressCondition() {
         return this.suppressCondition;
     }
@@ -164,16 +148,11 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @param suppressCondition the suppressCondition value to set.
      * @return the ChangeThresholdCondition object itself.
      */
-    @Generated
     public ChangeThresholdCondition setSuppressCondition(SuppressCondition suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -195,7 +174,6 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChangeThresholdCondition.
      */
-    @Generated
     public static ChangeThresholdCondition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChangeThresholdCondition deserializedChangeThresholdCondition = new ChangeThresholdCondition();

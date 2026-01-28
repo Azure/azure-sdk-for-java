@@ -74,7 +74,7 @@ public final class PrivateLinkScopesClientImpl implements InnerSupportsGet<Azure
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPrivateLinkScopes")
+    @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateLinkScopesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/privateLinkScopes")
@@ -1020,7 +1020,7 @@ public final class PrivateLinkScopesClientImpl implements InnerSupportsGet<Azure
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Monitor PrivateLinkScopes within a subscription along with {@link PagedResponse} on
+     * @return describes the list of Azure Monitor PrivateLinkScope resources along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1047,7 +1047,7 @@ public final class PrivateLinkScopesClientImpl implements InnerSupportsGet<Azure
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Monitor PrivateLinkScopes within a subscription along with {@link PagedResponse} on
+     * @return describes the list of Azure Monitor PrivateLinkScope resources along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1074,7 +1074,7 @@ public final class PrivateLinkScopesClientImpl implements InnerSupportsGet<Azure
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Monitor PrivateLinkScopes within a resource group along with {@link PagedResponse} on
+     * @return describes the list of Azure Monitor PrivateLinkScope resources along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1104,7 +1104,7 @@ public final class PrivateLinkScopesClientImpl implements InnerSupportsGet<Azure
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Monitor PrivateLinkScopes within a resource group along with {@link PagedResponse} on
+     * @return describes the list of Azure Monitor PrivateLinkScope resources along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

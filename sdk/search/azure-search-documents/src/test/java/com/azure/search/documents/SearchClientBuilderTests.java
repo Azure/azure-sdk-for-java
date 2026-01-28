@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class SearchClientBuilderTests {
-    private static final MockTokenCredential SEARCH_CREDENTIAL = new MockTokenCredential();
+    private static final TokenCredential SEARCH_CREDENTIAL = new MockTokenCredential();
     private static final String SEARCH_ENDPOINT = "https://test.search.windows.net";
     private static final String INDEX_NAME = "myindex";
     private static final SearchServiceVersion API_VERSION = SearchServiceVersion.V2020_06_30;

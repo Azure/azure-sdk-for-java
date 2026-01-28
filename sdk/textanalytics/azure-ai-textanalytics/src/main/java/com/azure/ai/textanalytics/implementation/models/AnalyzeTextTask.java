@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,14 +19,13 @@ public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
     /*
      * Enumeration of supported Text Analysis tasks.
      */
-    @Generated
-    private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.fromString("AnalyzeTextTask");
+    private AnalyzeTextTaskKind kind;
 
     /**
      * Creates an instance of AnalyzeTextTask class.
      */
-    @Generated
     public AnalyzeTextTask() {
+        this.kind = AnalyzeTextTaskKind.fromString("AnalyzeTextTask");
     }
 
     /**
@@ -35,7 +33,6 @@ public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
      * 
      * @return the kind value.
      */
-    @Generated
     public AnalyzeTextTaskKind getKind() {
         return this.kind;
     }
@@ -43,7 +40,6 @@ public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,7 +55,6 @@ public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextTask.
      */
-    @Generated
     public static AnalyzeTextTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -95,7 +90,6 @@ public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
         });
     }
 
-    @Generated
     static AnalyzeTextTask fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextTask deserializedAnalyzeTextTask = new AnalyzeTextTask();

@@ -20,7 +20,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.parallel.Execution;
@@ -134,7 +133,6 @@ public class SearchIndexingBufferedSenderUnitTests {
      * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
      */
     @Test
-    @Disabled("Temporarily disabled")
     public void inFlightDocumentsAreRetried() {
         AtomicInteger callCount = new AtomicInteger(0);
         AtomicInteger addedCount = new AtomicInteger();
@@ -180,7 +178,6 @@ public class SearchIndexingBufferedSenderUnitTests {
      * Tests that a batch will retain in-flight documents if the request is cancelled before the response is handled.
      */
     @Test
-    @Disabled("Temporarily disabled")
     public void inFlightDocumentsAreRetriedAsync() {
         AtomicInteger callCount = new AtomicInteger(0);
         AtomicInteger addedCount = new AtomicInteger();

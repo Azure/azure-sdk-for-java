@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation.util;
 
-import com.azure.search.documents.models.QueryAnswerResult;
-import com.azure.search.documents.models.SemanticErrorReason;
-import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResults;
-import com.azure.search.documents.models.SemanticSearchResultsType;
-
-import java.util.List;
+import com.azure.search.documents.util.SearchPagedResponse;
 
 /**
  * Helper class to access internals of {@link SemanticSearchResults}.
@@ -20,18 +15,14 @@ public final class SemanticSearchResultsAccessHelper {
     private static SemanticSearchResultsAccessor accessor;
 
     public interface SemanticSearchResultsAccessor {
-        SemanticSearchResults create(List<QueryAnswerResult> queryAnswers, SemanticErrorReason semanticErrorReason,
-            SemanticSearchResultsType semanticSearchResultsType,
-            SemanticQueryRewritesResultType semanticQueryRewritesResultType);
+        SemanticSearchResults create(SearchPagedResponse pagedResponse);
     }
 
     public static void setAccessor(final SemanticSearchResultsAccessor newAccessor) {
         accessor = newAccessor;
     }
 
-    public static SemanticSearchResults create(List<QueryAnswerResult> queryAnswers,
-        SemanticErrorReason semanticErrorReason, SemanticSearchResultsType semanticSearchResultsType,
-        SemanticQueryRewritesResultType semanticQueryRewritesResultType) {
+    public static SemanticSearchResults create(SearchPagedResponse pagedResponse) {
         if (accessor == null) {
             try {
                 Class.forName(SemanticSearchResults.class.getName(), true,
@@ -42,7 +33,6 @@ public final class SemanticSearchResultsAccessHelper {
         }
 
         assert accessor != null;
-        return accessor.create(queryAnswers, semanticErrorReason, semanticSearchResultsType,
-            semanticQueryRewritesResultType);
+        return accessor.create(pagedResponse);
     }
 }

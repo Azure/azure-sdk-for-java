@@ -330,7 +330,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.55.1</version>
+  <version>2.56.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

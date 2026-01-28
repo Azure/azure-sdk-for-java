@@ -365,7 +365,7 @@ public final class KeyAsyncClient {
     }
 
     static HttpResponseException mapCreateKeyException(HttpResponseException e) {
-        return (e.getResponse() != null && e.getResponse().getStatusCode() == 400)
+        return (e.getResponse().getStatusCode() == 400)
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -983,7 +983,7 @@ public final class KeyAsyncClient {
      * @return The {@link HttpResponseException} that maps from the {@link HttpResponseException}.
      */
     static HttpResponseException mapGetKeyException(HttpResponseException e) {
-        return e.getResponse() != null && e.getResponse().getStatusCode() == 403
+        return e.getResponse().getStatusCode() == 403
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -1177,7 +1177,7 @@ public final class KeyAsyncClient {
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createDeletedKey(response.getValue().toObject(DeletedKeyBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
-                if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1364,7 +1364,7 @@ public final class KeyAsyncClient {
             .map(response -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultKey(response.getValue().toObject(KeyBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
-                if (e.getResponse() != null && e.getResponse().getStatusCode() == 404) {
+                if (e.getResponse().getStatusCode() == 404) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1548,7 +1548,7 @@ public final class KeyAsyncClient {
     }
 
     static HttpResponseException mapRestoreKeyException(HttpResponseException e) {
-        return (e.getResponse() != null && e.getResponse().getStatusCode() == 400)
+        return (e.getResponse().getStatusCode() == 400)
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }

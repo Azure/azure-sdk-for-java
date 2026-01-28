@@ -2,4 +2,29 @@
 
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.AcknowledgeRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.RejectRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.ReleaseRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.RenewLocksRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.models.ReceiveResult" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.models.RejectResult" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.models.ReleaseResult" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.models.RenewLocksResult" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.messaging.eventgrid.namespaces.EventGridReceiverClientBuilder" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.EventGridSenderClientBuilder" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.AcknowledgeRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.RejectRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.ReleaseRequest" />
+      <Class name="com.azure.messaging.eventgrid.namespaces.implementation.models.RenewLocksRequest" />
+    </Or>
+  </Match>
 </FindBugsFilter>

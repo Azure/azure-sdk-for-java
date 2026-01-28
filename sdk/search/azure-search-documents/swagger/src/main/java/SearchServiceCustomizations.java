@@ -92,7 +92,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
         customizeAzureOpenAIModelName(publicCustomization.getClass("AzureOpenAIModelName"));
         // customizeSearchError(implCustomization.getClass("SearchError"));
-        customizeSplitSkillEncoderModelName(publicCustomization.getClass("SplitSkillEncoderModelName"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
@@ -357,16 +356,16 @@ public class SearchServiceCustomizations extends Customization {
 
             clazz.getMethodsByName("getFlags").forEach(method -> method.setType("List<RegexFlags>")
                 .setBody(StaticJavaParser.parseBlock("{ if (this.flags == null) { return null; } else {"
-                        + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
-                        + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
+                    + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
+                    + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
 
             clazz.tryAddImportToParentCompilationUnit(Collectors.class);
 
             clazz.getMethodsByName("setFlags").forEach(method -> method
                 .setParameters(new NodeList<>(new Parameter().setType("List<RegexFlags>").setName("flags")))
                 .setBody(StaticJavaParser.parseBlock("{ if (flags == null) { this.flags = null; } else {"
-                        + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
-                        + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
+                    + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
+                    + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
 
             addVarArgsOverload(clazz, "flags", "RegexFlags").setBody(StaticJavaParser.parseBlock(
                 "{ if (flags == null) { this.flags = null; return this; } else { return setFlags(Arrays.asList(flags)); } }"));
@@ -477,16 +476,16 @@ public class SearchServiceCustomizations extends Customization {
 
             clazz.getMethodsByName("getFlags").forEach(method -> method.setType("List<RegexFlags>")
                 .setBody(StaticJavaParser.parseBlock("{ if (this.flags == null) { return null; } else {"
-                        + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
-                        + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
+                    + "String[] flagStrings = this.flags.toString().split(\"\\\\|\");"
+                    + "return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList()); } }")));
 
             clazz.tryAddImportToParentCompilationUnit(Collectors.class);
 
             clazz.getMethodsByName("setFlags").forEach(method -> method
                 .setParameters(new NodeList<>(new Parameter().setType("List<RegexFlags>").setName("flags")))
                 .setBody(StaticJavaParser.parseBlock("{ if (flags == null) { this.flags = null; } else {"
-                        + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
-                        + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
+                    + "String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));"
+                    + "this.flags = RegexFlags.fromString(flagString); } return this; }")));
 
             addVarArgsOverload(clazz, "flags", "RegexFlags").setBody(StaticJavaParser.parseBlock(
                 "{ if (flags == null) { this.flags = null; return this; } else { return setFlags(Arrays.asList(flags)); } }"));
@@ -595,15 +594,6 @@ public class SearchServiceCustomizations extends Customization {
             clazz.getFieldByName("TEXT_EMBEDDING_ADA002").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_ADA_002"));
             clazz.getFieldByName("TEXT_EMBEDDING3LARGE").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_3_LARGE"));
             clazz.getFieldByName("TEXT_EMBEDDING3SMALL").ifPresent(f -> f.getVariable(0).setName("TEXT_EMBEDDING_3_SMALL"));
-        });
-    }
-
-    private static void customizeSplitSkillEncoderModelName(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            clazz.getFieldByName("R50KBASE").ifPresent(f -> f.getVariable(0).setName("R_50K_BASE"));
-            clazz.getFieldByName("P50KBASE").ifPresent(f -> f.getVariable(0).setName("P_50K_BASE"));
-            clazz.getFieldByName("P50KEDIT").ifPresent(f -> f.getVariable(0).setName("P_50K_EDIT"));
-            clazz.getFieldByName("CL100KBASE").ifPresent(f -> f.getVariable(0).setName("CL_100K_BASE"));
         });
     }
 

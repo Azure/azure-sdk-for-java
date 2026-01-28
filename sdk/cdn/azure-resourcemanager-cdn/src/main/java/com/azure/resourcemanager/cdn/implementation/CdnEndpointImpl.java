@@ -194,8 +194,8 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint, EndpointInn
                     .serviceClient()
                     .getCustomDomains()
                     .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(),
-                        itemToDelete.name())
-                    .then(Mono.just(itemToDelete)), 32, 32);
+                        itemToDelete.name()),
+                    32, 32);
         }
 
         Mono<EndpointInner> customDomainTask

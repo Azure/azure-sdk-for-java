@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.PeriodType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
     /*
      * the type of setting period
      */
-    @Generated
     private PeriodType periodType;
 
     /*
      * the number of intervals a period contains, when no period set to 0
      */
-    @Generated
     private int periodValue;
 
     /**
      * Creates an instance of PeriodFeedbackValue class.
      */
-    @Generated
     public PeriodFeedbackValue() {
     }
 
@@ -42,7 +38,6 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
      * 
      * @return the periodType value.
      */
-    @Generated
     public PeriodType getPeriodType() {
         return this.periodType;
     }
@@ -53,7 +48,6 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
      * @param periodType the periodType value to set.
      * @return the PeriodFeedbackValue object itself.
      */
-    @Generated
     public PeriodFeedbackValue setPeriodType(PeriodType periodType) {
         this.periodType = periodType;
         return this;
@@ -64,7 +58,6 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
      * 
      * @return the periodValue value.
      */
-    @Generated
     public int getPeriodValue() {
         return this.periodValue;
     }
@@ -75,16 +68,11 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
      * @param periodValue the periodValue value to set.
      * @return the PeriodFeedbackValue object itself.
      */
-    @Generated
     public PeriodFeedbackValue setPeriodValue(int periodValue) {
         this.periodValue = periodValue;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +90,6 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PeriodFeedbackValue.
      */
-    @Generated
     public static PeriodFeedbackValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PeriodFeedbackValue deserializedPeriodFeedbackValue = new PeriodFeedbackValue();

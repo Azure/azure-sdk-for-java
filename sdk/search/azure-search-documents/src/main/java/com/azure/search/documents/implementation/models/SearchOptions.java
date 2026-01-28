@@ -8,8 +8,6 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.search.documents.models.QueryDebugMode;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -180,9 +178,7 @@ public final class SearchOptions {
      * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
      * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
      * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
-     * as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     @Generated
     private String answers;
@@ -191,9 +187,7 @@ public final class SearchOptions {
      * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
      * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
      * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
-     * option, such as `extractive|highlight-true`. Defaults to `None`. The maximum character length of captions can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     @Generated
     private String captions;
@@ -207,37 +201,10 @@ public final class SearchOptions {
     private String semanticQuery;
 
     /*
-     * When QueryRewrites is set to `generative`, the query terms are sent to a generate model which will produce 10
-     * (default) rewrites to help increase the recall of the request. The requested count can be configured by appending
-     * the pipe character `|` followed by the `count-<number of rewrites>` option, such as `generative|count-3`.
-     * Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     */
-    @Generated
-    private String queryRewrites;
-
-    /*
      * Enables a debugging tool that can be used to further explore your search results.
      */
     @Generated
     private QueryDebugMode debug;
-
-    /*
-     * The language of the query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * Improve search recall by spell-correcting individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType speller;
-
-    /*
-     * The list of field names used for semantic ranking.
-     */
-    @Generated
-    private List<String> semanticFields;
 
     /**
      * Creates an instance of SearchOptions class.
@@ -778,9 +745,7 @@ public final class SearchOptions {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -795,9 +760,7 @@ public final class SearchOptions {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
@@ -813,8 +776,6 @@ public final class SearchOptions {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      *
      * @return the captions value.
      */
@@ -828,8 +789,6 @@ public final class SearchOptions {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      *
      * @param captions the captions value to set.
      * @return the SearchOptions object itself.
@@ -867,34 +826,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
-     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
-     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option,
-     * such as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public String getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
-     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
-     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option,
-     * such as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQueryRewrites(String queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
      * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
      *
      * @return the debug value.
@@ -913,72 +844,6 @@ public final class SearchOptions {
     @Generated
     public SearchOptions setDebug(QueryDebugMode debug) {
         this.debug = debug;
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: The language of the query.
-     *
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: The language of the query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @return the speller value.
-     */
-    @Generated
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @param speller the speller value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    @Generated
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
         return this;
     }
 

@@ -17,9 +17,9 @@ public class ReturnsAListOfSupportedDocumentFormats {
             = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.ai.translation.document.generated.get-supported-formats.returns-a-list-of-supported-document-formats
+        // BEGIN:com.azure.ai.translation.document.generated.getsupportedformats.returnsalistofsupporteddocumentformats
         RequestOptions requestOptions = new RequestOptions().addQueryParam("type", "document");
         Response<BinaryData> response = documentTranslationClient.getSupportedFormatsWithResponse(requestOptions);
-        // END:com.azure.ai.translation.document.generated.get-supported-formats.returns-a-list-of-supported-document-formats
+        // END:com.azure.ai.translation.document.generated.getsupportedformats.returnsalistofsupporteddocumentformats
     }
 }

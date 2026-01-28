@@ -4,94 +4,81 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * The artifact's platform, consisting of operating system and architecture.
- */
+/** The artifact's platform, consisting of operating system and architecture. */
 @Immutable
 public final class ArtifactManifestPlatform implements JsonSerializable<ArtifactManifestPlatform> {
     /*
      * Manifest digest
      */
-    @Generated
     private String digest;
 
     /*
      * CPU architecture
      */
-    @Generated
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @Generated
     private ArtifactOperatingSystem operatingSystem;
 
-    /**
-     * Creates an instance of ArtifactManifestPlatform class.
-     */
-    @Generated
+    /** Creates an instance of ArtifactManifestPlatform class. */
     public ArtifactManifestPlatform() {
     }
 
     /**
      * Get the digest property: Manifest digest.
-     * 
+     *
      * @return the digest value.
      */
-    @Generated
     public String getDigest() {
         return this.digest;
     }
 
     /**
      * Get the architecture property: CPU architecture.
-     * 
+     *
      * @return the architecture value.
      */
-    @Generated
     public ArtifactArchitecture getArchitecture() {
         return this.architecture;
     }
 
     /**
      * Get the operatingSystem property: Operating system.
-     * 
+     *
      * @return the operatingSystem value.
      */
-    @Generated
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeStringField("architecture", Objects.toString(this.architecture, null));
+        jsonWriter.writeStringField("os", Objects.toString(this.operatingSystem, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ArtifactManifestPlatform from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ArtifactManifestPlatform if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactManifestPlatform.
      */
-    @Generated
     public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();

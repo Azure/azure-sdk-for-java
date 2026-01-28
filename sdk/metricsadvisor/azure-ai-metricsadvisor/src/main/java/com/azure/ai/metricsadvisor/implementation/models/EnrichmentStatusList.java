@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,28 +21,24 @@ public final class EnrichmentStatusList implements JsonSerializable<EnrichmentSt
     /*
      * The @nextLink property.
      */
-    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
-    @Generated
     private List<EnrichmentStatus> value;
 
     /**
      * Creates an instance of EnrichmentStatusList class.
      */
-    @Generated
     public EnrichmentStatusList() {
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -53,15 +48,10 @@ public final class EnrichmentStatusList implements JsonSerializable<EnrichmentSt
      * 
      * @return the value value.
      */
-    @Generated
     public List<EnrichmentStatus> getValue() {
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +66,6 @@ public final class EnrichmentStatusList implements JsonSerializable<EnrichmentSt
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EnrichmentStatusList.
      */
-    @Generated
     public static EnrichmentStatusList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EnrichmentStatusList deserializedEnrichmentStatusList = new EnrichmentStatusList();

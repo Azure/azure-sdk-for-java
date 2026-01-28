@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 12.5.9 (2026-01-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-xml` from `1.2.0` to version `1.2.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+
+
 ## 12.5.8 (2025-10-27)
 
 ### Other Changes

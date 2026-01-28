@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the type of the alert criteria. Previously undocumented values might be returned.
+ * specifies the type of the alert criteria.
  */
 public final class Odatatype extends ExpandableStringEnum<Odatatype> {
     /**
@@ -28,12 +28,6 @@ public final class Odatatype extends ExpandableStringEnum<Odatatype> {
      */
     public static final Odatatype MICROSOFT_AZURE_MONITOR_WEBTEST_LOCATION_AVAILABILITY_CRITERIA
         = fromString("Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria");
-
-    /**
-     * Static value Microsoft.Azure.Monitor.PromQLCriteria for Odatatype.
-     */
-    public static final Odatatype MICROSOFT_AZURE_MONITOR_PROM_QLCRITERIA
-        = fromString("Microsoft.Azure.Monitor.PromQLCriteria");
 
     /**
      * Creates a new instance of Odatatype value.

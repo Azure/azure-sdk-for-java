@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class DataLakeGen2SharedKeyParam implements JsonSerializable<DataLa
     /*
      * The account key to access the Azure Data Lake Storage Gen2.
      */
-    @Generated
     private String accountKey;
 
     /**
      * Creates an instance of DataLakeGen2SharedKeyParam class.
      */
-    @Generated
     public DataLakeGen2SharedKeyParam() {
     }
 
@@ -35,7 +32,6 @@ public final class DataLakeGen2SharedKeyParam implements JsonSerializable<DataLa
      * 
      * @return the accountKey value.
      */
-    @Generated
     public String getAccountKey() {
         return this.accountKey;
     }
@@ -46,16 +42,11 @@ public final class DataLakeGen2SharedKeyParam implements JsonSerializable<DataLa
      * @param accountKey the accountKey value to set.
      * @return the DataLakeGen2SharedKeyParam object itself.
      */
-    @Generated
     public DataLakeGen2SharedKeyParam setAccountKey(String accountKey) {
         this.accountKey = accountKey;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,7 +62,6 @@ public final class DataLakeGen2SharedKeyParam implements JsonSerializable<DataLa
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataLakeGen2SharedKeyParam.
      */
-    @Generated
     public static DataLakeGen2SharedKeyParam fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataLakeGen2SharedKeyParam deserializedDataLakeGen2SharedKeyParam = new DataLakeGen2SharedKeyParam();

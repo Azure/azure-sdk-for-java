@@ -11,7 +11,6 @@
 - Enhanced session creation with new overloads:
   - Added `startSession(String model, VoiceLiveRequestOptions requestOptions)` for model with custom options
   - Added `startSession(VoiceLiveRequestOptions requestOptions)` for custom options without explicit model parameter
-  - Original `startSession(String model)` and `startSession()` methods preserved for backward compatibility
 
 ### Breaking Changes
 

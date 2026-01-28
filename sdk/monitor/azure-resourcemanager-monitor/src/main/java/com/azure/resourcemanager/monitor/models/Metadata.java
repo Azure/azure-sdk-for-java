@@ -21,16 +21,6 @@ public class Metadata implements JsonSerializable<Metadata> {
      */
     private String provisionedBy;
 
-    /*
-     * Resource Id of azure offering managing this resource on-behalf-of customer.
-     */
-    private String provisionedByResourceId;
-
-    /*
-     * Immutable Id of azure offering managing this resource on-behalf-of customer.
-     */
-    private String provisionedByImmutableId;
-
     /**
      * Creates an instance of Metadata class.
      */
@@ -54,50 +44,6 @@ public class Metadata implements JsonSerializable<Metadata> {
      */
     Metadata withProvisionedBy(String provisionedBy) {
         this.provisionedBy = provisionedBy;
-        return this;
-    }
-
-    /**
-     * Get the provisionedByResourceId property: Resource Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @return the provisionedByResourceId value.
-     */
-    public String provisionedByResourceId() {
-        return this.provisionedByResourceId;
-    }
-
-    /**
-     * Set the provisionedByResourceId property: Resource Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @param provisionedByResourceId the provisionedByResourceId value to set.
-     * @return the Metadata object itself.
-     */
-    Metadata withProvisionedByResourceId(String provisionedByResourceId) {
-        this.provisionedByResourceId = provisionedByResourceId;
-        return this;
-    }
-
-    /**
-     * Get the provisionedByImmutableId property: Immutable Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @return the provisionedByImmutableId value.
-     */
-    public String provisionedByImmutableId() {
-        return this.provisionedByImmutableId;
-    }
-
-    /**
-     * Set the provisionedByImmutableId property: Immutable Id of azure offering managing this resource on-behalf-of
-     * customer.
-     * 
-     * @param provisionedByImmutableId the provisionedByImmutableId value to set.
-     * @return the Metadata object itself.
-     */
-    Metadata withProvisionedByImmutableId(String provisionedByImmutableId) {
-        this.provisionedByImmutableId = provisionedByImmutableId;
         return this;
     }
 
@@ -135,10 +81,6 @@ public class Metadata implements JsonSerializable<Metadata> {
 
                 if ("provisionedBy".equals(fieldName)) {
                     deserializedMetadata.provisionedBy = reader.getString();
-                } else if ("provisionedByResourceId".equals(fieldName)) {
-                    deserializedMetadata.provisionedByResourceId = reader.getString();
-                } else if ("provisionedByImmutableId".equals(fieldName)) {
-                    deserializedMetadata.provisionedByImmutableId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

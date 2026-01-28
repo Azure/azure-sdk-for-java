@@ -57,7 +57,7 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPrivateLinkScopeOperationStatus")
+    @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateLinkScopeOperationStatusService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopeOperationStatuses/{asyncOperationId}")

@@ -4,7 +4,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
     /*
      * The metadata response of the table.
      */
-    @Generated
     private String odataMetadata;
 
     /*
      * List of table entities.
      */
-    @Generated
     private List<Map<String, Object>> value;
 
     /**
      * Creates an instance of TableEntityQueryResponse class.
      */
-    @Generated
     public TableEntityQueryResponse() {
     }
 
@@ -43,7 +39,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
      *
      * @return the odataMetadata value.
      */
-    @Generated
     public String getOdataMetadata() {
         return this.odataMetadata;
     }
@@ -54,7 +49,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
      * @param odataMetadata the odataMetadata value to set.
      * @return the TableEntityQueryResponse object itself.
      */
-    @Generated
     public TableEntityQueryResponse setOdataMetadata(String odataMetadata) {
         this.odataMetadata = odataMetadata;
         return this;
@@ -65,7 +59,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
      *
      * @return the value value.
      */
-    @Generated
     public List<Map<String, Object>> getValue() {
         return this.value;
     }
@@ -76,7 +69,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
      * @param value the value value to set.
      * @return the TableEntityQueryResponse object itself.
      */
-    @Generated
     public TableEntityQueryResponse setValue(List<Map<String, Object>> value) {
         this.value = value;
         return this;
@@ -85,7 +77,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,7 +94,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableEntityQueryResponse.
      */
-    @Generated
     public static TableEntityQueryResponse fromJson(JsonReader jsonReader) throws IOException {
         return TablesJacksonSerializer.deserializeTableEntityQueryResponse(jsonReader);
     }

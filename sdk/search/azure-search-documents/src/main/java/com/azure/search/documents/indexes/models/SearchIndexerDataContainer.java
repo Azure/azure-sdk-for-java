@@ -20,15 +20,17 @@ import java.io.IOException;
 @Fluent
 public final class SearchIndexerDataContainer implements JsonSerializable<SearchIndexerDataContainer> {
     /*
-     * The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data source) that will be
-     * indexed.
+     * The name of the table or view (for Azure SQL datasource), collection (for CosmosDB datasource), container (for
+     * Azure Blob and ADLS Gen 2 datasources), Azure Table (for Azure Table datasource), or lakehouse (for Onelake
+     * datasource) that will be indexed.
      */
     @Generated
     private final String name;
 
     /*
-     * A query that is applied to this data container. The syntax and meaning of this parameter is datasource-specific.
-     * Not supported by Azure SQL datasources.
+     * A query that is applied to this data container. For CosmosDB datasource query can flatten and filter data. For
+     * Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by row data. For Onelake
+     * query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      */
     @Generated
     private String query;
@@ -44,8 +46,9 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     }
 
     /**
-     * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
-     * source) that will be indexed.
+     * Get the name property: The name of the table or view (for Azure SQL datasource), collection (for CosmosDB
+     * datasource), container (for Azure Blob and ADLS Gen 2 datasources), Azure Table (for Azure Table datasource), or
+     * lakehouse (for Onelake datasource) that will be indexed.
      * 
      * @return the name value.
      */
@@ -55,8 +58,9 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     }
 
     /**
-     * Get the query property: A query that is applied to this data container. The syntax and meaning of this parameter
-     * is datasource-specific. Not supported by Azure SQL datasources.
+     * Get the query property: A query that is applied to this data container. For CosmosDB datasource query can flatten
+     * and filter data. For Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by
+     * row data. For Onelake query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      * 
      * @return the query value.
      */
@@ -66,8 +70,9 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     }
 
     /**
-     * Set the query property: A query that is applied to this data container. The syntax and meaning of this parameter
-     * is datasource-specific. Not supported by Azure SQL datasources.
+     * Set the query property: A query that is applied to this data container. For CosmosDB datasource query can flatten
+     * and filter data. For Azure Blob and ADLS Gen 2 query can filter by folders. For Azure Table query can filter by
+     * row data. For Onelake query can filter by folder or shortcut. Not supported by Azure SQL datasources.
      * 
      * @param query the query value to set.
      * @return the SearchIndexerDataContainer object itself.

@@ -28,7 +28,6 @@ import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
@@ -38,7 +37,6 @@ import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import com.azure.search.documents.models.QueryRewrites;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -56,7 +54,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -860,43 +857,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
-        return getDocumentWithResponse(key, modelClass, (List<String>) null, (String) null).map(Response::getValue);
-    }
-
-    /**
-     * Retrieves a document from the Azure AI Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Get dynamic SearchDocument. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
-     * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
-     *     .subscribe&#40;result -&gt; &#123;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
-     *
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts to.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * This token is used to enforce security restrictions on documents.
-     * @param <T> Convert document to the generic type.
-     * @return the document object
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<T> getDocument(String key, Class<T> modelClass, String querySourceAuthorization) {
-        return getDocumentWithResponse(key, modelClass, (List<String>) null, querySourceAuthorization)
-            .map(Response::getValue);
+        return getDocumentWithResponse(key, modelClass, null).map(Response::getValue);
     }
 
     /**
@@ -932,84 +893,14 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields) {
-        return withContext(
-            context -> getDocumentWithResponseInternal(key, modelClass, selectedFields, null, null, context));
-    }
-
-    /**
-     * Retrieves a document from the Azure AI Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Get dynamic SearchDocument. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
-     * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
-     *     .subscribe&#40;resultResponse -&gt; &#123;
-     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
-     *
-     * @param <T> Convert document to the generic type.
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts to.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
-     * default as its corresponding property value in the returned object.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * This token is used to enforce security restrictions on documents.
-     * @return a response containing the document object
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
-        String querySourceAuthorization) {
-        return withContext(context -> getDocumentWithResponseInternal(key, modelClass, selectedFields,
-            querySourceAuthorization, null, context));
-    }
-
-    /**
-     * Retrieves a document from the Azure AI Search index.
-     * <p>
-     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
-     * constructing valid document keys.
-     *
-     * @param options Additional options for retrieving the document.
-     * @param <T> Convert document to the generic type.
-     * @return response containing a document object
-     * @throws NullPointerException If {@code options} is null.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options) {
-        return withContext(context -> getDocumentWithResponse(options, context));
-    }
-
-    <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options, Context context) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-        return getDocumentWithResponseInternal(options.getKey(), options.getModelClass(), options.getSelectedFields(),
-            null, options.isElevatedReadEnabled(), context);
+        return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
     }
 
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
-        String querySourceAuthorization, Context context) {
-        return getDocumentWithResponseInternal(key, modelClass, selectedFields, querySourceAuthorization, null,
-            context);
-    }
-
-    <T> Mono<Response<T>> getDocumentWithResponseInternal(String key, Class<T> modelClass, List<String> selectedFields,
-        String querySourceAuthorization, Boolean enableElevatedRead, Context context) {
+        Context context) {
         try {
             return restClient.getDocuments()
-                .getWithResponseAsync(key, selectedFields, querySourceAuthorization, enableElevatedRead, null, context)
+                .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(Utility::exceptionMapper)
                 .map(res -> new SimpleResponse<>(res, serializer
                     .deserializeFromBytes(serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
@@ -1102,8 +993,12 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * searchPagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
+     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *             return true;
+     *         &#125;
+     *
+     *         return false;
      *     &#125;&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
@@ -1124,62 +1019,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText) {
-        return this.search(searchText, null, null);
-    }
-
-    /**
-     * Searches for documents in the Azure AI Search index.
-     * <p>
-     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
-     * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure AI Search</a> for more information about search query syntax.
-     * <p>
-     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
-     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
-     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
-     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
-     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
-     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the limit
-     * you can track the number of documents returned and stop requesting new pages when the limit is reached.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Search text from documents in service. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String -->
-     * <pre>
-     * SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;&#41;;
-     * searchPagedFlux.getTotalCount&#40;&#41;.subscribe&#40;
-     *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
-     *
-     * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
-     * searchPagedFlux.byPage&#40;&#41;
-     *     .takeUntil&#40;page -&gt; &#123;
-     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
-     *     &#125;&#41;
-     *     .subscribe&#40;resultResponse -&gt; &#123;
-     *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
-     *             SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
-     *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
-     *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
-     *             &#125;
-     *         &#125;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.search#String -->
-     *
-     * @param searchText A full-text search query expression.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * This token is used to enforce security restrictions on documents.
-     * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
-     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
-     * information.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SearchPagedFlux search(String searchText, String querySourceAuthorization) {
-        return this.search(searchText, null, querySourceAuthorization, null);
+        return this.search(searchText, null);
     }
 
     /**
@@ -1211,8 +1051,12 @@ public final class SearchAsyncClient {
      * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
      * pagedFlux.byPage&#40;&#41;
      *     .takeUntil&#40;page -&gt; &#123;
-     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
+     *         if &#40;numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT&#41; &#123;
+     *             &#47;&#47; Reached the $skip limit, stop requesting more documents.
+     *             return true;
+     *         &#125;
+     *
+     *         return false;
      *     &#125;&#41;
      *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
@@ -1233,95 +1077,45 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions) {
-        return search(searchText, searchOptions, null);
-    }
-
-    /**
-     * Searches for documents in the Azure AI Search index.
-     * <p>
-     * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
-     * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
-     * syntax in Azure AI Search</a> for more information about search query syntax.
-     * <p>
-     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
-     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
-     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
-     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents">Search Documents REST API</a> and
-     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
-     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit. To prevent exceeding the limit
-     * you can track the number of documents returned and stop requesting new pages when the limit is reached.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Search text from documents in service with option. </p>
-     *
-     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
-     * <pre>
-     * SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;,
-     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;;
-     *
-     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
-     *
-     * AtomicLong numberOfDocumentsReturned = new AtomicLong&#40;&#41;;
-     * pagedFlux.byPage&#40;&#41;
-     *     .takeUntil&#40;page -&gt; &#123;
-     *         &#47;&#47; Reached the $skip limit, stop requesting more documents.
-     *         return numberOfDocumentsReturned.addAndGet&#40;page.getValue&#40;&#41;.size&#40;&#41;&#41; &gt;= SEARCH_SKIP_LIMIT;
-     *     &#125;&#41;
-     *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
-     *             : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
-     *
-     * @param searchText A full-text search query expression.
-     * @param searchOptions Parameters to further refine the search query
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed.
-     * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
-     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
-     * information.
-     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SearchPagedFlux search(String searchText, SearchOptions searchOptions, String querySourceAuthorization) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
-        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context -> search(request,
-            continuationToken, firstPageResponse, querySourceAuthorization, enableElevatedRead, context));
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(
+            context -> search(request, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
-    SearchPagedFlux search(String searchText, SearchOptions searchOptions, String querySourceAuthorization,
-        Context context) {
+    SearchPagedFlux search(String searchText, SearchOptions searchOptions, Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
-        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> search(request, continuationToken,
-            firstPageResponseWrapper, querySourceAuthorization, enableElevatedRead, context);
+        Function<String, Mono<SearchPagedResponse>> func
+            = continuationToken -> search(request, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
-        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization,
-        Boolean enableElevatedRead, Context context) {
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
+            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
+        }
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.getDocuments()
-            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, enableElevatedRead, null, context)
+            .searchPostWithResponseAsync(requestToUse, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
-                SearchPagedResponse page = mapToSearchPagedResponse(response, serializer, serviceVersion);
+                SearchDocumentsResult result = response.getValue();
+
+                SearchPagedResponse page
+                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+                        result.getSemanticPartialResponseType());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1339,16 +1133,6 @@ public final class SearchAsyncClient {
     static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
-    }
-
-    static SearchPagedResponse mapToSearchPagedResponse(Response<SearchDocumentsResult> response,
-        JsonSerializer serializer, SearchServiceVersion serviceVersion) {
-        SearchDocumentsResult result = response.getValue();
-        return new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-            createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-            result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-            result.getSemanticPartialResponseType(), result.getDebugInfo(),
-            result.getSemanticQueryRewritesResultType());
     }
 
     /**
@@ -1537,8 +1321,6 @@ public final class SearchAsyncClient {
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
             .setTop(options.getTop())
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
             .setDebug(options.getDebugMode());
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
@@ -1551,8 +1333,7 @@ public final class SearchAsyncClient {
                 .setSemanticMaxWaitInMilliseconds(waitInMillis)
                 .setAnswers(createSearchRequestAnswers(semanticSearchOptions.getQueryAnswer()))
                 .setCaptions(createSearchRequestCaptions(semanticSearchOptions.getQueryCaption()))
-                .setSemanticQuery(semanticSearchOptions.getSemanticQuery())
-                .setQueryRewrites(createQueryRewrites(semanticSearchOptions.getQueryRewrites()));
+                .setSemanticQuery(semanticSearchOptions.getSemanticQuery());
         }
 
         VectorSearchOptions vectorSearchOptions = options.getVectorSearchOptions();
@@ -1572,39 +1353,23 @@ public final class SearchAsyncClient {
         QueryAnswerType queryAnswerType = queryAnswer.getAnswerType();
         Integer answersCount = queryAnswer.getCount();
         Double answerThreshold = queryAnswer.getThreshold();
-        Integer maxCharLength = queryAnswer.getMaxCharLength();
 
         // No answer has been defined.
         if (queryAnswerType == null) {
             return null;
         }
 
-        String answerType = queryAnswerType.toString();
+        String answerString = queryAnswerType.toString();
 
-        if (queryAnswerType == QueryAnswerType.NONE
-            || (answersCount == null && answerThreshold == null && maxCharLength == null)) {
-            return answerType;
+        if (answersCount != null && answerThreshold != null) {
+            return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
+        } else if (answersCount != null) {
+            return answerString + "|count-" + answersCount;
+        } else if (answerThreshold != null) {
+            return answerString + "|threshold-" + answerThreshold;
+        } else {
+            return answerString;
         }
-
-        StringBuilder answerStringBuilder = new StringBuilder(answerType).append('|');
-
-        if (answersCount != null) {
-            answerStringBuilder.append("count-").append(answersCount).append(",");
-        }
-
-        if (answerThreshold != null) {
-            answerStringBuilder.append("threshold-").append(answerThreshold).append(",");
-        }
-
-        if (maxCharLength != null) {
-            answerStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (answerStringBuilder.charAt(answerStringBuilder.length() - 1) == ',') {
-            answerStringBuilder.deleteCharAt(answerStringBuilder.length() - 1);
-        }
-
-        return answerStringBuilder.toString();
     }
 
     static String createSearchRequestCaptions(QueryCaption queryCaption) {
@@ -1614,41 +1379,15 @@ public final class SearchAsyncClient {
 
         QueryCaptionType queryCaptionType = queryCaption.getCaptionType();
         Boolean highlightEnabled = queryCaption.isHighlightEnabled();
-        Integer maxCharLength = queryCaption.getMaxCharLength();
 
         // No caption has been defined.
         if (queryCaptionType == null) {
             return null;
         }
 
-        String queryCaptionTypeString = queryCaptionType.toString();
-
-        if (queryCaptionType == QueryCaptionType.NONE || (highlightEnabled == null && maxCharLength == null)) {
-            return queryCaptionTypeString;
-        }
-
-        StringBuilder captionStringBuilder = new StringBuilder(queryCaptionTypeString).append('|');
-
-        if (highlightEnabled != null) {
-            captionStringBuilder.append("highlight-").append(highlightEnabled).append(",");
-        }
-
-        if (maxCharLength != null) {
-            captionStringBuilder.append("maxCharLength-").append(maxCharLength).append(",");
-        }
-
-        if (captionStringBuilder.charAt(captionStringBuilder.length() - 1) == ',') {
-            captionStringBuilder.deleteCharAt(captionStringBuilder.length() - 1);
-        }
-
-        return captionStringBuilder.toString();
-    }
-
-    static String createQueryRewrites(QueryRewrites queryRewrites) {
-        if (queryRewrites == null) {
-            return null;
-        }
-        return queryRewrites.toString();
+        return highlightEnabled == null
+            ? queryCaptionType.toString()
+            : queryCaptionType + "|highlight-" + highlightEnabled;
     }
 
     /**

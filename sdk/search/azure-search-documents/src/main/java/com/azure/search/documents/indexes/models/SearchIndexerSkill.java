@@ -255,17 +255,9 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                 } else if ("#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill".equals(discriminatorValue)) {
                     return DocumentIntelligenceLayoutSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
-                    return WebApiSkill.fromJsonKnownDiscriminator(readerToUse.reset());
-                } else if ("#Microsoft.Skills.Custom.ChatCompletionSkill".equals(discriminatorValue)) {
-                    return ChatCompletionSkill.fromJson(readerToUse.reset());
-                } else if ("#Microsoft.Skills.Util.ContentUnderstandingSkill".equals(discriminatorValue)) {
-                    return ContentUnderstandingSkill.fromJson(readerToUse.reset());
-                } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
-                    return AzureMachineLearningSkill.fromJson(readerToUse.reset());
+                    return WebApiSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {
                     return AzureOpenAIEmbeddingSkill.fromJson(readerToUse.reset());
-                } else if ("#Microsoft.Skills.Vision.VectorizeSkill".equals(discriminatorValue)) {
-                    return VisionVectorizeSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
                     return PiiDetectionSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {

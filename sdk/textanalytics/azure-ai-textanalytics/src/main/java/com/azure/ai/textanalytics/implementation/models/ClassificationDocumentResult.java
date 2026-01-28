@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,13 +19,11 @@ public class ClassificationDocumentResult extends DocumentResult {
     /*
      * The class property.
      */
-    @Generated
     private List<ClassificationResult> classProperty;
 
     /**
      * Creates an instance of ClassificationDocumentResult class.
      */
-    @Generated
     public ClassificationDocumentResult() {
     }
 
@@ -35,7 +32,6 @@ public class ClassificationDocumentResult extends DocumentResult {
      * 
      * @return the classProperty value.
      */
-    @Generated
     public List<ClassificationResult> getClassProperty() {
         return this.classProperty;
     }
@@ -46,7 +42,6 @@ public class ClassificationDocumentResult extends DocumentResult {
      * @param classProperty the classProperty value to set.
      * @return the ClassificationDocumentResult object itself.
      */
-    @Generated
     public ClassificationDocumentResult setClassProperty(List<ClassificationResult> classProperty) {
         this.classProperty = classProperty;
         return this;
@@ -55,7 +50,6 @@ public class ClassificationDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ClassificationDocumentResult setId(String id) {
         super.setId(id);
@@ -65,7 +59,6 @@ public class ClassificationDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ClassificationDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -75,7 +68,6 @@ public class ClassificationDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ClassificationDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -85,7 +77,6 @@ public class ClassificationDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +96,6 @@ public class ClassificationDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ClassificationDocumentResult.
      */
-    @Generated
     public static ClassificationDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassificationDocumentResult deserializedClassificationDocumentResult = new ClassificationDocumentResult();

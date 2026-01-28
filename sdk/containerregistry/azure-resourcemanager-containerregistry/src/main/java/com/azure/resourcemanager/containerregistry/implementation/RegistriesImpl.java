@@ -162,8 +162,8 @@ public class RegistriesImpl
     @Override
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName) {
         return this.manager()
-            .taskClient()
-            .getRegistryTasks()
+            .serviceClient()
+            .getRegistries()
             .getBuildSourceUploadUrlAsync(rgName, acrName)
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }

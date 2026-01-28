@@ -99,13 +99,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental modification steps without having to rebuild the
-     * index every time.
-     */
-    @Generated
-    private SearchIndexerCache cache;
-
     /**
      * Creates an instance of SearchIndexer class.
      *
@@ -387,30 +380,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     }
 
     /**
-     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @return the cache value.
-     */
-    @Generated
-    public SearchIndexerCache getCache() {
-        return this.cache;
-    }
-
-    /**
-     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @param cache the cache value to set.
-     * @return the SearchIndexer object itself.
-     */
-    @Generated
-    public SearchIndexer setCache(SearchIndexerCache cache) {
-        this.cache = cache;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -430,7 +399,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
         jsonWriter.writeBooleanField("disabled", this.isDisabled);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
-        jsonWriter.writeJsonField("cache", this.cache);
         return jsonWriter.writeEndObject();
     }
 
@@ -459,7 +427,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
             Boolean isDisabled = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
-            SearchIndexerCache cache = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -488,8 +455,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else if ("cache".equals(fieldName)) {
-                    cache = SearchIndexerCache.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -507,7 +472,6 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                 deserializedSearchIndexer.isDisabled = isDisabled;
                 deserializedSearchIndexer.eTag = eTag;
                 deserializedSearchIndexer.encryptionKey = encryptionKey;
-                deserializedSearchIndexer.cache = cache;
                 return deserializedSearchIndexer;
             }
             throw new IllegalStateException("Missing required property: name");

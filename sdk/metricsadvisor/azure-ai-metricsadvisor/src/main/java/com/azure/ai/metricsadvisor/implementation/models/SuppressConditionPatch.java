@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
     /*
      * min point number, value range : [1, +∞)
      */
-    @Generated
     private Integer minNumber;
 
     /*
      * min point ratio, value range : (0, 100]
      */
-    @Generated
     private Double minRatio;
 
     /**
      * Creates an instance of SuppressConditionPatch class.
      */
-    @Generated
     public SuppressConditionPatch() {
     }
 
@@ -41,7 +37,6 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
      * 
      * @return the minNumber value.
      */
-    @Generated
     public Integer getMinNumber() {
         return this.minNumber;
     }
@@ -52,7 +47,6 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
      * @param minNumber the minNumber value to set.
      * @return the SuppressConditionPatch object itself.
      */
-    @Generated
     public SuppressConditionPatch setMinNumber(Integer minNumber) {
         this.minNumber = minNumber;
         return this;
@@ -63,7 +57,6 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
      * 
      * @return the minRatio value.
      */
-    @Generated
     public Double getMinRatio() {
         return this.minRatio;
     }
@@ -74,16 +67,11 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
      * @param minRatio the minRatio value to set.
      * @return the SuppressConditionPatch object itself.
      */
-    @Generated
     public SuppressConditionPatch setMinRatio(Double minRatio) {
         this.minRatio = minRatio;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +88,6 @@ public final class SuppressConditionPatch implements JsonSerializable<SuppressCo
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SuppressConditionPatch.
      */
-    @Generated
     public static SuppressConditionPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SuppressConditionPatch deserializedSuppressConditionPatch = new SuppressConditionPatch();

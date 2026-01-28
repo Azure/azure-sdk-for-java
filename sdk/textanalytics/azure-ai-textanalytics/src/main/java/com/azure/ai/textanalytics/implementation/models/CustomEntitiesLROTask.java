@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,19 +19,16 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.CUSTOM_ENTITY_RECOGNITION;
 
     /*
      * Supported parameters for a Custom Entities task.
      */
-    @Generated
     private CustomEntitiesTaskParameters parameters;
 
     /**
      * Creates an instance of CustomEntitiesLROTask class.
      */
-    @Generated
     public CustomEntitiesLROTask() {
     }
 
@@ -41,7 +37,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -52,7 +47,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
-    @Generated
     public CustomEntitiesTaskParameters getParameters() {
         return this.parameters;
     }
@@ -63,7 +57,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the CustomEntitiesLROTask object itself.
      */
-    @Generated
     public CustomEntitiesLROTask setParameters(CustomEntitiesTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -72,7 +65,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public CustomEntitiesLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -82,7 +74,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomEntitiesLROTask.
      */
-    @Generated
     public static CustomEntitiesLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomEntitiesLROTask deserializedCustomEntitiesLROTask = new CustomEntitiesLROTask();

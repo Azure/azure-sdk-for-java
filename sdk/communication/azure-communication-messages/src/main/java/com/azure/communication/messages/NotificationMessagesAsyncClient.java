@@ -55,7 +55,7 @@ public final class NotificationMessagesAsyncClient {
      * <pre>
      * {@code
      * {
-     *     kind: String(text/image/image_v0/document/video/audio/template/sticker/reaction/interactive) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)

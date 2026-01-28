@@ -5,57 +5,44 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The AcrRefreshToken model.
- */
+/** The AcrRefreshToken model. */
 @Fluent
 public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> {
     /*
      * The refresh token to be used for generating access tokens
      */
-    @Generated
     private String refreshToken;
 
-    /**
-     * Creates an instance of AcrRefreshToken class.
-     */
-    @Generated
+    /** Creates an instance of AcrRefreshToken class. */
     public AcrRefreshToken() {
     }
 
     /**
      * Get the refreshToken property: The refresh token to be used for generating access tokens.
-     * 
+     *
      * @return the refreshToken value.
      */
-    @Generated
     public String getRefreshToken() {
         return this.refreshToken;
     }
 
     /**
      * Set the refreshToken property: The refresh token to be used for generating access tokens.
-     * 
+     *
      * @param refreshToken the refreshToken value to set.
      * @return the AcrRefreshToken object itself.
      */
-    @Generated
     public AcrRefreshToken setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,13 +52,12 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
 
     /**
      * Reads an instance of AcrRefreshToken from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrRefreshToken if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrRefreshToken.
      */
-    @Generated
     public static AcrRefreshToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcrRefreshToken deserializedAcrRefreshToken = new AcrRefreshToken();

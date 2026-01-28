@@ -56,7 +56,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPrivateLinkResources")
+    @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/privateLinkResources")
