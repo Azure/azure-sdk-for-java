@@ -30,15 +30,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * <p>This class provides a client that works with a specific repository in Azure Container Registry.
- * It allows to get and update repository properties and delete repository.</p>
+ * This class provides helper methods for operations on a given repository in Azure Container Registry.
+ * Operations included are listing, retrieving, deleting, setting writeable properties.
  *
- * <p><strong>Instantiating an asynchronous {@link ContainerRepositoryAsync}</strong></p>
- * <br/>
+ * <p><strong>Instantiating an asynchronous Container Repository Helper class</strong></p>
  *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
  * <pre>
@@ -50,10 +50,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
  *
- * <p>View {@link ContainerRegistryClientBuilder} for additional ways to construct the client.</p>
- *
- * @see ContainerRegistryClientBuilder
- * @see ContainerRegistryAsyncClient
  */
 @ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsync {
@@ -66,7 +62,7 @@ public final class ContainerRepositoryAsync {
     private final String registryLoginServer;
 
     /**
-     * Creates a ContainerRepositoryAsyncClient that sends requests to the current repository in the container registry service at {@code endpoint}.
+     * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
      * Each service call goes through the {@code pipeline}.
      * @param repositoryName The name of the repository on which the service operations are performed.
      * @param endpoint The URL string for the Azure Container Registry service.
@@ -95,27 +91,27 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Gets the current repository name.
-     *
-     * @return The repository name.
+     * Gets the Azure Container Registry service endpoint for the current instance.
+     * @return The service endpoint for the current instance.
      */
     public String getName() {
         return this.repositoryName;
     }
 
     /**
-     * Gets the Azure Container Registry service endpoint.
-     *
-     * @return The service endpoint.
+     * Gets the Azure Container Registry name for the current instance.
+     * @return Return the registry name.
      */
     public String getRegistryEndpoint() {
         return this.endpoint;
     }
 
     /**
-     * Delete the current repository.
+     * Delete the repository in the Azure Container Registry for the given {@link #getName() repository}.
      *
-     * <p><strong>Delete the repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
      * <pre>
@@ -134,7 +130,7 @@ public final class ContainerRepositoryAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(this::deleteWithResponse);
+        return withContext(context -> deleteWithResponse(context));
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -144,9 +140,11 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Delete the current repository.
+     * Delete the repository in the Azure Container Registry for the given {@link #getName() repository}.
      *
-     * <p><strong>Delete the repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
      * <pre>
@@ -180,14 +178,16 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Fetches all manifest properties associated with artifacts in the current repository.
+     * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
-     * <p> If you would like to specify the order in which the properties are returned please
+     * <p> If you would like to specify the order in which the tags are returned please
      * use the overload that takes in the options parameter {@link #listManifestProperties(ArtifactManifestOrder)}  listManifestProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
-     * <p><strong>Retrieve all manifest properties associated with the current repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all artifacts associated with the given repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
      * <pre>
@@ -199,7 +199,7 @@ public final class ContainerRepositoryAsync {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
      *
-     * @return {@link PagedFlux} of ManifestProperties for all the artifacts in the current repository.
+     * @return {@link PagedFlux} of ManifestProperties for all the artifacts in the given repository.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
@@ -209,13 +209,15 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Fetches all manifest properties associated with artifacts in the current repository.
+     * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
-     * <p> The method supports options to select the order in which the manifest properties are returned by the service.
+     * <p> The method supports options to select the order in which the artifacts are returned by the service.
      * Currently the service supports an ascending or descending order based on the last updated time for the artifacts.
      * No assumptions on the order can be made if no options are provided to the service. </p>
      *
-     * <p><strong>List all artifacts within current repository ordered by update time</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      * <pre>
@@ -228,7 +230,7 @@ public final class ContainerRepositoryAsync {
      * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      *
      * @param order The order in which the artifacts are returned by the service.
-     * @return {@link PagedFlux} of the artifacts for the current repository in the order specified by the options.
+     * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
@@ -236,7 +238,7 @@ public final class ContainerRepositoryAsync {
     public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order) {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, order, context)),
-            (token, ignored) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
+            (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
     private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize,
@@ -261,9 +263,11 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
+     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      *
-     * <p><strong>Get the properties for the current repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the properties for the given repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
      * <pre>
@@ -274,14 +278,14 @@ public final class ContainerRepositoryAsync {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
      *
-     * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the current repository.
+     * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        return withContext(context -> this.getPropertiesWithResponse(context));
     }
 
     private Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
@@ -290,9 +294,11 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Gets the {@link ContainerRepositoryProperties properties} associated with the current repository.
+     * Gets the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      *
-     * <p><strong>Get the properties for the current repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the properties for the given repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
      * <pre>
@@ -302,7 +308,7 @@ public final class ContainerRepositoryAsync {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
      *
-     * @return The {@link ContainerRepositoryProperties properties} associated with the current repository.
+     * @return The {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -313,10 +319,12 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Update the repository properties {@link ContainerRepositoryProperties} of the current repository.
+     * Update the repository properties {@link ContainerRepositoryProperties} of the given {@link #getName() repository}.
      * These properties set the update, delete and retrieve options of the repository.
      *
-     * <p><strong>Update the writeable properties for the current repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update the writeable properties for the given repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
      * <pre>
@@ -356,10 +364,12 @@ public final class ContainerRepositoryAsync {
     }
 
     /**
-     * Update the repository properties {@link ContainerRepositoryProperties} of the current repository.
+     * Update the repository properties {@link ContainerRepositoryProperties} of the given {@link #getName() repository}.
      * These properties set the update, delete and retrieve options of the repository.
      *
-     * <p><strong>Update the writeable properties for the current repository</strong></p>
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update the writeable properties for the given repository.</p>
      *
      * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
      * <pre>

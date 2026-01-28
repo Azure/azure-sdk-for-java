@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,65 +12,53 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Docker V2 image layer descriptor including config and layers.
- */
+/** Docker V2 image layer descriptor including config and layers. */
 @Fluent
 public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
     /*
      * Layer media type
      */
-    @Generated
     private String mediaType;
 
     /*
      * Layer size
      */
-    @Generated
     private Long sizeInBytes;
 
     /*
      * Layer digest
      */
-    @Generated
     private String digest;
 
     /*
      * Specifies a list of URIs from which this object may be downloaded.
      */
-    @Generated
     private List<String> urls;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
-    @Generated
     private OciAnnotations annotations;
 
-    /**
-     * Creates an instance of OciDescriptor class.
-     */
-    @Generated
+    /** Creates an instance of OciDescriptor class. */
     public OciDescriptor() {
     }
 
     /**
      * Get the mediaType property: Layer media type.
-     * 
+     *
      * @return the mediaType value.
      */
-    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
 
     /**
      * Set the mediaType property: Layer media type.
-     * 
+     *
      * @param mediaType the mediaType value to set.
      * @return the OciDescriptor object itself.
      */
-    @Generated
     public OciDescriptor setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -79,21 +66,19 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the sizeInBytes property: Layer size.
-     * 
+     *
      * @return the sizeInBytes value.
      */
-    @Generated
     public Long getSizeInBytes() {
         return this.sizeInBytes;
     }
 
     /**
      * Set the sizeInBytes property: Layer size.
-     * 
+     *
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the OciDescriptor object itself.
      */
-    @Generated
     public OciDescriptor setSizeInBytes(Long sizeInBytes) {
         this.sizeInBytes = sizeInBytes;
         return this;
@@ -101,21 +86,19 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the digest property: Layer digest.
-     * 
+     *
      * @return the digest value.
      */
-    @Generated
     public String getDigest() {
         return this.digest;
     }
 
     /**
      * Set the digest property: Layer digest.
-     * 
+     *
      * @param digest the digest value to set.
      * @return the OciDescriptor object itself.
      */
-    @Generated
     public OciDescriptor setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -123,21 +106,19 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the urls property: Specifies a list of URIs from which this object may be downloaded.
-     * 
+     *
      * @return the urls value.
      */
-    @Generated
     public List<String> getUrls() {
         return this.urls;
     }
 
     /**
      * Set the urls property: Specifies a list of URIs from which this object may be downloaded.
-     * 
+     *
      * @param urls the urls value to set.
      * @return the OciDescriptor object itself.
      */
-    @Generated
     public OciDescriptor setUrls(List<String> urls) {
         this.urls = urls;
         return this;
@@ -145,30 +126,24 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Get the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @return the annotations value.
      */
-    @Generated
     public OciAnnotations getAnnotations() {
         return this.annotations;
     }
 
     /**
      * Set the annotations property: Additional information provided through arbitrary metadata.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the OciDescriptor object itself.
      */
-    @Generated
     public OciDescriptor setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -182,13 +157,12 @@ public final class OciDescriptor implements JsonSerializable<OciDescriptor> {
 
     /**
      * Reads an instance of OciDescriptor from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of OciDescriptor if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the OciDescriptor.
      */
-    @Generated
     public static OciDescriptor fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OciDescriptor deserializedOciDescriptor = new OciDescriptor();
