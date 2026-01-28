@@ -16,6 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class DedicatedGatewayRequestOptions implements Serializable {
 
     private static final Pattern SHARD_KEY_PATTERN = Pattern.compile("^[a-zA-Z0-9-]+$");
+    private static final int MAX_SHARD_KEY_LENGTH = 36;
 
     /**
      * The staleness value associated with the request in the Azure CosmosDB service.
@@ -118,12 +119,18 @@ public final class DedicatedGatewayRequestOptions implements Serializable {
      */
     public DedicatedGatewayRequestOptions setShardKey(String shardKey) {
         checkArgument(StringUtils.isNotEmpty(shardKey), "shardKey must not be null or empty");
-        checkArgument(validateShardKey(shardKey), "shardKey contains invalid characters. Only alphanumeric and hyphen (-) are allowed.");
+        checkArgument(validateShardKey(shardKey), "shardKey contains invalid characters. Only alphanumeric and hyphen (-) are allowed. Max length is %s characters.",
+            MAX_SHARD_KEY_LENGTH);
         this.shardKey = shardKey;
         return this;
     }
 
     private boolean validateShardKey(String shardKey) {
+        // Since the pattern only allows ASCII characters (a-z, A-Z, 0-9, hyphen),
+        // each character is 1 byte in UTF-8, so length check is sufficient.
+        if (shardKey.length() > MAX_SHARD_KEY_LENGTH) {
+            return false;
+        }
         return SHARD_KEY_PATTERN.matcher(shardKey).matches();
     }
 }
