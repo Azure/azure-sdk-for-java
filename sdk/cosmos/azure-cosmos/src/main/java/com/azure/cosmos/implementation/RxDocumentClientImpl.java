@@ -2260,6 +2260,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     documentCollectionLink,
                     serializationDiagnosticsContext),
                 null));
+        request.requestContext.setNRegionSynchronousCommitEnabled(this.globalEndpointManager.getNRegionSynchronousCommitEnabled());
 
         return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
             .flatMap(documentCollectionValueHolder -> {
