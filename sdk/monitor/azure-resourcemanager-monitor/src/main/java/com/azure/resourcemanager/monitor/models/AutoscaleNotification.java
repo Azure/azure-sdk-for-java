@@ -20,7 +20,7 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
     /*
      * the operation associated with the notification and its value must be "scale"
      */
-    private final String operation = "Scale";
+    private String operation = "Scale";
 
     /*
      * the email notification.
@@ -45,6 +45,17 @@ public final class AutoscaleNotification implements JsonSerializable<AutoscaleNo
      */
     public String operation() {
         return this.operation;
+    }
+
+    /**
+     * Set the operation property: the operation associated with the notification and its value must be "scale".
+     * 
+     * @param operation the operation value to set.
+     * @return the AutoscaleNotification object itself.
+     */
+    public AutoscaleNotification withOperation(String operation) {
+        this.operation = operation;
+        return this;
     }
 
     /**
