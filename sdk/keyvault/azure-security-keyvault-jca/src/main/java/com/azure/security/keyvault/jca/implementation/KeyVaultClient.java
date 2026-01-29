@@ -197,7 +197,7 @@ public class KeyVaultClient {
             return accessToken.getAccessToken();
         }
 
-        accessToken = getAccessTokenByHttpRequest();
+        accessToken = obtainAccessToken();
         if (accessToken == null) {
             LOGGER.log(WARNING, "Access token not returned.");
             return null;
@@ -207,12 +207,12 @@ public class KeyVaultClient {
     }
 
     /**
-     * Get the access token.
+     * Obtain the access token.
      *
      * @return The access token.
      */
-    private AccessToken getAccessTokenByHttpRequest() {
-        LOGGER.entering("KeyVaultClient", "getAccessTokenByHttpRequest");
+    private AccessToken obtainAccessToken() {
+        LOGGER.entering("KeyVaultClient", "obtainAccessToken");
 
         AccessToken result = null;
 
@@ -245,7 +245,7 @@ public class KeyVaultClient {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
         }
 
-        LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", result);
+        LOGGER.exiting("KeyVaultClient", "obtainAccessToken", result);
 
         return result;
     }
