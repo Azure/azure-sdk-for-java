@@ -196,32 +196,6 @@ System.out.println(result);
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
-#### Authentication with Access Token
-If you want to use a pre-obtained bearer token for authentication, you can use the `azure.keyvault.access-token` property:
-
-```java
-// First, obtain your access token through your authentication flow
-// For example, authenticate with a certificate or other credential
-String accessToken = "<your-pre-obtained-access-token>";
-
-System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
-System.setProperty("azure.keyvault.access-token", accessToken);
-
-KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-Security.addProvider(provider);
-
-KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
-
-// Use the keyStore as needed for your SSL/TLS operations
-```
-
-This approach is useful in scenarios where:
-- You need to use a specific authentication flow (e.g., certificate-based authentication) to obtain a token
-- You want to manage token lifecycle and refresh independently
-- You are working in environments where managed identity or client credentials are not suitable
-
-**Note:** The provided access token is cached and used for approximately 1 hour. After that time, you will need to provide a fresh token through your application's token refresh mechanism.
-
 ### mTLS
 #### Server side mTLS
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
