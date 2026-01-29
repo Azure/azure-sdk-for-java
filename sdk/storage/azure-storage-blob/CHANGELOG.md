@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 12.33.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.33.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.18.0` to version `12.19.0-beta.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+
+
 ## 12.33.0 (2026-01-15)
 - Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs.
 - Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
