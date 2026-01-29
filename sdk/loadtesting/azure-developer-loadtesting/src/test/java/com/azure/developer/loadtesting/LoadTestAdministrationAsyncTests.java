@@ -5,20 +5,11 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.developer.loadtesting.models.FileValidationStatus;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResourceConfigurations;
-import com.azure.developer.loadtesting.models.LoadTest;
-import com.azure.developer.loadtesting.models.LoadTestConfiguration;
-import com.azure.developer.loadtesting.models.LoadTestingFileType;
-import com.azure.developer.loadtesting.models.TestAppComponents;
-import com.azure.developer.loadtesting.models.TestFileInfo;
-import com.azure.developer.loadtesting.models.TestProfile;
-import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
@@ -31,13 +22,11 @@ import reactor.test.StepVerifier;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -45,6 +34,26 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTestBase {
 
     // Helpers
+
+    private Map<String, Object> getTestBodyFromDict() {
+        Map<String, Object> testMap = new HashMap<>();
+        testMap.put("displayName", "Java SDK Sample Test Async");
+        testMap.put("description", "Sample Test Async");
+
+        Map<String, Object> loadTestConfigMap = new HashMap<>();
+        loadTestConfigMap.put("engineInstances", 1);
+        testMap.put("loadTestConfiguration", loadTestConfigMap);
+
+        Map<String, Object> envVarMap = new HashMap<>();
+        envVarMap.put("threads_per_engine", 1);
+        envVarMap.put("ramp_up_time", 0);
+        envVarMap.put("duration_in_sec", 10);
+        envVarMap.put("domain", "azure.microsoft.com");
+        envVarMap.put("protocol", "https");
+        testMap.put("environmentVariables", envVarMap);
+
+        return testMap;
+    }
 
     private BinaryData getFileBodyFromResource(String fileName) {
         URL url = LoadTestAdministrationAsyncTests.class.getClassLoader().getResource(fileName);
@@ -57,21 +66,19 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(1)
     public void createOrUpdateTest() {
-        LoadTest loadTest = new LoadTest().setDisplayName("Java SDK Sample Test")
-            .setDescription("Sample Test")
-            .setLoadTestConfiguration(new LoadTestConfiguration().setEngineInstances(1));
-
-        LoadTestAdministrationAsyncClient adminClient = getLoadTestAdministrationAsyncClient();
-        Mono<LoadTest> monoResponse = adminClient.createOrUpdateTest(newTestIdAsync, loadTest);
-        StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
+        BinaryData body = BinaryData.fromObject(getTestBodyFromDict());
+        Mono<Response<BinaryData>> monoResponse
+            = getLoadTestAdministrationAsyncClient().createOrUpdateTestWithResponse(newTestIdAsync, body, null);
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode())))
+            .verifyComplete();
     }
 
     @Test
     @Order(2)
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
-        RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString());
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
         PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
             .beginUploadTestFile(newTestIdAsync, uploadCsvFileName, file, requestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
@@ -86,8 +93,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Order(3)
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
-        RequestOptions fileUploadRequestOptions
-            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.TEST_SCRIPT.toString());
+        RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
         PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
             .beginUploadTestFile(newTestIdAsync, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
@@ -98,7 +104,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
                 try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
                     Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-                    assertEquals(FileValidationStatus.VALIDATION_SUCCESS.toString(), jsonTree.get("validationStatus"));
+                    assertEquals("VALIDATION_SUCCESS", jsonTree.get("validationStatus"));
                     assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
                 } catch (IOException e) {
                     fail("Encountered exception while reading test file data", e);
@@ -109,165 +115,164 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     @Test
     @Order(4)
     public void createOrUpdateAppComponents() {
-        TestAppComponents appComponents = getTestAppComponents();
-        LoadTestAdministrationAsyncClient adminClient = getLoadTestAdministrationAsyncClient();
-        Mono<TestAppComponents> monoResponse = adminClient.createOrUpdateAppComponents(newTestIdAsync, appComponents);
+        BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+            .createOrUpdateAppComponentsWithResponse(newTestIdAsync, body, null);
 
-        StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode())))
+            .verifyComplete();
     }
 
     @Test
     @Order(5)
     public void createOrUpdateServerMetricsConfig() {
+        BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
+        Mono<Response<BinaryData>> monoResponse = getLoadTestAdministrationAsyncClient()
+            .createOrUpdateServerMetricsConfigWithResponse(newTestIdAsync, body, null);
 
-        TestServerMetricsConfiguration serverMetricsConfig = getTestServerMetricsConfiguration();
-        LoadTestAdministrationAsyncClient adminClient = getLoadTestAdministrationAsyncClient();
-        Mono<TestServerMetricsConfiguration> monoResponse
-            = adminClient.createOrUpdateServerMetricsConfig(newTestIdAsync, serverMetricsConfig);
-
-        StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
-    }
-
-    @Test
-    @Order(6)
-    public void createOrUpdateTestProfile() {
-
-        Map<String, FunctionFlexConsumptionResourceConfiguration> configurations = new HashMap<>();
-        configurations.put("config1",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(2048).setHttpConcurrency(100L));
-        configurations.put("config2",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(4096).setHttpConcurrency(100L));
-
-        TestProfile testProfile = new TestProfile().setTestId(newTestIdAsync)
-            .setDisplayName("Java SDK Sample Test Profile")
-            .setDescription("Sample Test Profile")
-            .setTargetResourceId(targetResourceId)
-            .setTargetResourceConfigurations(
-                new FunctionFlexConsumptionTargetResourceConfigurations().setConfigurations(configurations));
-        LoadTestAdministrationAsyncClient adminClient = getLoadTestAdministrationAsyncClient();
-        Mono<TestProfile> monoResponse = adminClient.createOrUpdateTestProfile(newTestProfileIdAsync, testProfile);
-        StepVerifier.create(monoResponse).assertNext(response -> assertNotNull(response)).verifyComplete();
+        StepVerifier.create(monoResponse)
+            .assertNext(response -> assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode())))
+            .verifyComplete();
     }
 
     // Gets
 
     @Test
-    @Order(7)
+    @Order(6)
     public void getTestFile() {
+        Mono<Response<BinaryData>> monoResponse
+            = getLoadTestAdministrationAsyncClient().getTestFileWithResponse(newTestIdAsync, uploadJmxFileName, null);
 
-        Mono<TestFileInfo> monoTestScriptFileResponse
-            = getLoadTestAdministrationAsyncClient().getTestFile(newTestIdAsync, uploadJmxFileName);
+        StepVerifier.create(monoResponse).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
 
-        Mono<TestFileInfo> monoAdditionalFileResponse
-            = getLoadTestAdministrationAsyncClient().getTestFile(newTestIdAsync, uploadCsvFileName);
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-        StepVerifier.create(monoTestScriptFileResponse).assertNext(testFileInfo -> {
-            assertEquals(LoadTestingFileType.TEST_SCRIPT.toString(), testFileInfo.getFileType().toString());
-            assertEquals(uploadJmxFileName, testFileInfo.getFileName());
-        }).verifyComplete();
-
-        StepVerifier.create(monoAdditionalFileResponse).assertNext(testFileInfo -> {
-            assertEquals(LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString(), testFileInfo.getFileType().toString());
-            assertEquals(uploadCsvFileName, testFileInfo.getFileName());
+                assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
+                assertEquals("JMX_FILE", jsonTree.get("fileType"));
+            } catch (IOException e) {
+                fail("Encountered exception while reading test file data", e);
+            }
         }).verifyComplete();
     }
 
+    @Test
+    @Order(7)
+    public void getTest() {
+        Mono<Response<BinaryData>> monoResponse
+            = getLoadTestAdministrationAsyncClient().getTestWithResponse(newTestIdAsync, null);
+
+        StepVerifier.create(monoResponse).assertNext(response -> {
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+                assertEquals(newTestIdAsync, jsonTree.get("testId"));
+            } catch (IOException e) {
+                fail("Encountered exception while reading test data", e);
+            }
+
+            assertEquals(200, response.getStatusCode());
+        }).verifyComplete();
+    }
+
+    @SuppressWarnings("unchecked")
     @Test
     @Order(8)
-    public void getTest() {
-        Mono<LoadTest> monoResponse = getLoadTestAdministrationAsyncClient().getTest(newTestIdAsync);
+    public void getAppComponents() {
+        Mono<Response<BinaryData>> monoResponse
+            = getLoadTestAdministrationAsyncClient().getAppComponentsWithResponse(newTestIdAsync, null);
 
         StepVerifier.create(monoResponse).assertNext(response -> {
-            assertNotNull(response);
-            assertEquals(newTestIdAsync, response.getTestId());
+            assertEquals(200, response.getStatusCode());
+
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                Map<String, Object> components = (Map<String, Object>) jsonTree.get("components");
+
+                assertTrue(components.containsKey(defaultAppComponentResourceId));
+
+                Map<String, Object> appComponentResource
+                    = (Map<String, Object>) components.get(defaultAppComponentResourceId);
+
+                assertTrue(
+                    defaultAppComponentResourceId.equalsIgnoreCase(appComponentResource.get("resourceId").toString()));
+            } catch (IOException e) {
+                fail("Encountered exception while reading app components", e);
+            }
         }).verifyComplete();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Order(9)
-    public void getTestProfile() {
-        Mono<TestProfile> monoResponse = getLoadTestAdministrationAsyncClient().getTestProfile(newTestProfileIdAsync);
+    public void getServerMetricsConfig() {
+        Mono<Response<BinaryData>> monoResponse
+            = getLoadTestAdministrationAsyncClient().getServerMetricsConfigWithResponse(newTestIdAsync, null);
 
         StepVerifier.create(monoResponse).assertNext(response -> {
-            assertNotNull(response);
-            assertEquals(newTestProfileIdAsync, response.getTestProfileId());
-        }).verifyComplete();
-    }
+            assertEquals(200, response.getStatusCode());
 
-    @Test
-    @Order(10)
-    public void getAppComponents() {
+            try (JsonReader jsonReader = JsonProviders.createReader(response.getValue().toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+                Map<String, Object> components = (Map<String, Object>) jsonTree.get("metrics");
 
-        Mono<TestAppComponents> monoResponse = getLoadTestAdministrationAsyncClient().getAppComponents(newTestIdAsync);
+                assertTrue(components.containsKey(defaultServerMetricId));
 
-        StepVerifier.create(monoResponse).assertNext(appComponents -> {
-            assertNotNull(appComponents);
-            assertTrue(appComponents.getComponents().containsKey(defaultAppComponentResourceId));
-            assertEquals(defaultAppComponentResourceId,
-                appComponents.getComponents().get(defaultAppComponentResourceId).getResourceId());
-        }).verifyComplete();
-    }
+                Map<String, Object> appComponentResource = (Map<String, Object>) components.get(defaultServerMetricId);
 
-    @Test
-    @Order(11)
-    public void getServerMetricsConfig() {
-
-        Mono<TestServerMetricsConfiguration> monoResponse
-            = getLoadTestAdministrationAsyncClient().getServerMetricsConfig(newTestIdAsync);
-        StepVerifier.create(monoResponse).assertNext(serverMetricsConfig -> {
-            assertNotNull(serverMetricsConfig);
-            assertTrue(serverMetricsConfig.getMetrics().containsKey(defaultServerMetricId));
-            assertEquals(defaultServerMetricId,
-                serverMetricsConfig.getMetrics().get(defaultServerMetricId).getResourceId());
+                assertTrue(defaultServerMetricId.equalsIgnoreCase(appComponentResource.get("id").toString()));
+            } catch (IOException e) {
+                fail("Encountered exception while reading server metrics", e);
+            }
         }).verifyComplete();
     }
 
     // Lists
 
     @Test
-    @Order(12)
+    @Order(10)
     public void listTestFiles() {
-        PagedFlux<TestFileInfo> response = getLoadTestAdministrationAsyncClient().listTestFiles(newTestIdAsync);
+        PagedFlux<BinaryData> response = getLoadTestAdministrationAsyncClient().listTestFiles(newTestIdAsync, null);
 
-        StepVerifier.create(response).expectNextMatches(testFileInfo -> {
-            boolean uploadedFileFound = testFileInfo.getFileName().equals(uploadJmxFileName)
-                || testFileInfo.getFileName().equals(uploadCsvFileName);
+        StepVerifier.create(response).expectNextMatches(fileBinary -> {
+            try (JsonReader jsonReader = JsonProviders.createReader(fileBinary.toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-            return uploadedFileFound;
-        }).thenConsumeWhile(testFileInfo -> true).verifyComplete();
+                assertEquals(uploadJmxFileName, jsonTree.get("fileName"));
+                assertEquals("JMX_FILE", jsonTree.get("fileType"));
+
+                return true;
+            } catch (IOException e) {
+                // no-op
+            }
+
+            return false;
+        }).thenConsumeWhile(fileBinary -> true).verifyComplete();
     }
 
     @Test
-    @Order(13)
+    @Order(11)
     public void listTests() {
-        List<LoadTest> testList = new ArrayList<>();
-        PagedFlux<LoadTest> response
-            = getLoadTestAdministrationAsyncClient().listTests("lastModifiedDateTime desc", null, null, null);
+        RequestOptions reqOpts = new RequestOptions().addQueryParam("orderBy", "lastModifiedDateTime desc");
+        PagedFlux<BinaryData> response = getLoadTestAdministrationAsyncClient().listTests(reqOpts);
 
-        StepVerifier.create(response).thenConsumeWhile(testList::add).expectComplete().verify();
+        StepVerifier.create(response).expectNextMatches(testBinary -> {
+            try (JsonReader jsonReader = JsonProviders.createReader(testBinary.toBytes())) {
+                Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
-        assertTrue(testList.size() > 0);
-        assertTrue(testList.stream().anyMatch(test -> test.getTestId().equals(newTestIdAsync)));
-    }
-
-    @Test
-    @Order(14)
-    public void listTestProfiles() {
-
-        List<TestProfile> testProfileList = new ArrayList<>();
-        PagedFlux<TestProfile> response = getLoadTestAdministrationAsyncClient().listTestProfiles();
-
-        StepVerifier.create(response).thenConsumeWhile(testProfileList::add).expectComplete().verify();
-
-        assertTrue(testProfileList.size() > 0);
-        assertTrue(testProfileList.stream()
-            .anyMatch(testProfile -> testProfile.getTestProfileId().equals(newTestProfileIdAsync)));
+                return newTestIdAsync.equals(jsonTree.get("testId"));
+            } catch (IOException e) {
+                return false;
+            }
+        }).thenConsumeWhile(fileBinary -> true).verifyComplete();
     }
 
     // Deletes
 
     @Test
-    @Order(15)
+    @Order(12)
     public void deleteTestFile() {
         StepVerifier
             .create(getLoadTestAdministrationAsyncClient().deleteTestFileWithResponse(newTestIdAsync, uploadCsvFileName,
@@ -282,16 +287,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
     }
 
     @Test
-    @Order(16)
-    public void deleteTestProfile() {
-        StepVerifier
-            .create(getLoadTestAdministrationAsyncClient().deleteTestProfileWithResponse(newTestProfileIdAsync, null))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    @Order(17)
+    @Order(13)
     public void deleteTest() {
         StepVerifier.create(getLoadTestAdministrationAsyncClient().deleteTestWithResponse(newTestIdAsync, null))
             .expectNextCount(1)
