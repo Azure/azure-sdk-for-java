@@ -84,6 +84,7 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.client-id`: The client/application ID used for authentication.
 * `azure.keyvault.client-secret`: The client secret for authentication when using client credentials.
 * `azure.keyvault.managed-identity`: Indicates whether Managed Identity authentication is enabled.
+* `azure.keyvault.access-token`: The access token for authentication. This allows using a pre-obtained bearer token instead of client credentials.
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
