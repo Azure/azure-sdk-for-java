@@ -453,7 +453,7 @@
     "snapshot" : false,
     "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.1.0",
-    "spring-cloud-version" : "2022.0.3-SNAPSHOT"
+    "spring-cloud-version" : "2022.0.4"
   },
   {
     "current" : false,
