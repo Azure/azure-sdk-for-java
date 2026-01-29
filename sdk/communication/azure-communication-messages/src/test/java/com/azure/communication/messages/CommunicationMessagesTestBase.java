@@ -28,7 +28,7 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
             "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret");
 
     protected static final String CHANNEL_REGISTRATION_ID = Configuration.getGlobalConfiguration()
-        .get("SENDER_CHANNEL_REGISTRATION_ID", "77ffd898-ec44-42cd-b560-57a8903d05c7");
+        .get("SENDER_CHANNEL_REGISTRATION_ID", "bc73327d-d246-4983-9e13-284468af7240");
 
     protected static final String RECIPIENT_IDENTIFIER
         = Configuration.getGlobalConfiguration().get("RECIPIENT_IDENTIFIER", "+11234567788");
