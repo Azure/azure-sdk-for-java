@@ -174,13 +174,6 @@ function GetChangeLogContentFromMessage($ContentMessage) {
 function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = GetDependencyUpgradeChangeLogMessage -NewDependencyNameToVersion $NewDependencyNameToVersion -OldDependencyNameToVersion $OldDependencyNameToVersion
 
-  # Check if there are any actual dependency upgrades (filter out empty strings)
-  $actualUpgrades = $content | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
-  if ($actualUpgrades.Count -eq 0) {
-    # No specific dependency changes detected, add a generic message
-    $content = @("- Upgraded core dependencies.", "")
-  }
-
   $content = GetChangeLogContentFromMessage($content)
   return $content
 }
