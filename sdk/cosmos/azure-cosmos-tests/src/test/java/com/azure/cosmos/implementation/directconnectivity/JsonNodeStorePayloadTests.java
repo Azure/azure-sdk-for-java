@@ -15,7 +15,7 @@ public class JsonNodeStorePayloadTests {
     @Test(groups = {"unit"})
     @Ignore("fallbackCharsetDecoder will only be initialized during the first time when JsonNodeStorePayload loaded," +
         " need to figure out a way to reload the class")
-    public void parsingBytesWithInvalidUT8Bytes() {
+    public void parsingBytesWithInvalidUT8Bytes() throws Exception {
         // the hex string represents an json with invalid UTF-8 characters
         // json_obj = {
         //    "id": "example_id",
@@ -28,7 +28,7 @@ public class JsonNodeStorePayloadTests {
         try {
             byte[] bytes = hexStringToByteArray(invalidHexString);
             ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length, new HashMap<>());
+            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length, new HashMap<>(), null);
             jsonNodeStorePayload.getPayload().toString();
         } finally {
             System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT");

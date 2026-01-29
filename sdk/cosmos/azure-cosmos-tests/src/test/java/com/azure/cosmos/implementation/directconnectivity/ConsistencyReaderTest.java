@@ -146,7 +146,7 @@ public class ConsistencyReaderTest {
     }
 
     @Test(groups = "unit")
-    public void readAny() {
+    public void readAny() throws Exception {
         List<Uri> secondaries = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));
         Uri primaryAddress = Uri.create("primary");
         AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
@@ -231,7 +231,7 @@ public class ConsistencyReaderTest {
     }
 
     @Test(groups = "unit")
-    public void readSessionConsistency_SomeReplicasLagBehindAndReturningResponseWithLowerLSN_FindAnotherReplica() {
+    public void readSessionConsistency_SomeReplicasLagBehindAndReturningResponseWithLowerLSN_FindAnotherReplica() throws Exception {
         long slowReplicaLSN = 651176;
         String partitionKeyRangeId = "1";
         long fasterReplicaLSN = 651177;
@@ -355,7 +355,7 @@ public class ConsistencyReaderTest {
      * tries others till we find a replica which can support the given session token
      */
     @Test(groups = "unit")
-    public void sessionNotAvailableFromSomeReplicasThrowingNotFound_FindReplicaSatisfyingRequestedSession() {
+    public void sessionNotAvailableFromSomeReplicasThrowingNotFound_FindReplicaSatisfyingRequestedSession() throws Exception {
         long slowReplicaLSN = 651175;
         long globalCommittedLsn = 651174;
 
@@ -443,7 +443,7 @@ public class ConsistencyReaderTest {
      * tries others till we find a replica which can support the given session token
      */
     @Test(groups = "unit")
-    public void sessionNotAvailableFromAllReplicasThrowingNotFound_FindReplicaSatisfyingRequestedSessionOnRetry() {
+    public void sessionNotAvailableFromAllReplicasThrowingNotFound_FindReplicaSatisfyingRequestedSessionOnRetry() throws Exception {
         long slowReplicaLSN = 651175;
         long globalCommittedLsn = 651174;
 
@@ -776,7 +776,7 @@ public class ConsistencyReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "simpleReadStrongArgProvider")
-    public void basicReadStrong_AllReplicasSameLSN(int replicaCountToRead, ReadMode readMode) {
+    public void basicReadStrong_AllReplicasSameLSN(int replicaCountToRead, ReadMode readMode) throws Exception {
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         Uri primaryReplicaURI = Uri.create("primary");
         ImmutableList<Uri> secondaryReplicaURIs = ImmutableList.of(Uri.create("secondary1"), Uri.create("secondary2"), Uri.create("secondary3"));

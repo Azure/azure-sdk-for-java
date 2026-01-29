@@ -92,11 +92,11 @@ public class StoreResponseBuilder {
         return this;
     }
 
-    public StoreResponse build() {
+    public StoreResponse build() throws Exception {
         ByteBuf buffer = getUTF8BytesOrNull(content);
         if (buffer == null) {
-            return new StoreResponse(null, status, headers, null, 0);
+            return new StoreResponse(null, status, headers, null, 0, null);
         }
-        return new StoreResponse(null, status, headers, new ByteBufInputStream(buffer, true), buffer.readableBytes());
+        return new StoreResponse(null, status, headers, new ByteBufInputStream(buffer, true), buffer.readableBytes(), null);
     }
 }

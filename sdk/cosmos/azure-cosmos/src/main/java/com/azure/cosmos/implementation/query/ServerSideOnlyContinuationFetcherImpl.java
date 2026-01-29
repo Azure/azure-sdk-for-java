@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -51,6 +52,14 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         return this.continuationToken = serverContinuationToken;
+    }
+
+    @Override
+    protected String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request,
+        CosmosException cosmosException) {
+        return serverContinuationToken;
     }
 
     @Override

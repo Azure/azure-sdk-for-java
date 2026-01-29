@@ -76,7 +76,8 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
             .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
-            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
+            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
+            .withResponseInterceptor(this.changeFeedProcessorOptions.getResponseInterceptor());
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 
