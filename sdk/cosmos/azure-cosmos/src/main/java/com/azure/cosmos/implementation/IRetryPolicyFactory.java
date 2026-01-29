@@ -8,5 +8,6 @@ package com.azure.cosmos.implementation;
  */
 public interface IRetryPolicyFactory {
     DocumentClientRetryPolicy getRequestPolicy(DiagnosticsClientContext clientContextOverride);
+    DocumentClientRetryPolicy getRequestPolicy(DiagnosticsClientContext clientContextOverride, boolean disableRetryForThrottledBatchRequest);
     RetryContext getRetryContext();
 }

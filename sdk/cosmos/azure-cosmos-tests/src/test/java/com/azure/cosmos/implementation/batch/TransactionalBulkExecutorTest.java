@@ -1,0 +1,426 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.cosmos.implementation.batch;
+
+import com.azure.cosmos.BatchTestBase;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Field;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class TransactionalBulkExecutorTest extends BatchTestBase {
+
+    private CosmosAsyncClient client;
+    private CosmosAsyncContainer container;
+    private CosmosAsyncDatabase database;
+    private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
+
+    @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
+    public TransactionalBulkExecutorTest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
+
+    @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        logger.info("starting ....");
+        safeDeleteDatabase(database);
+        safeClose(client);
+    }
+
+    @AfterMethod(groups = { "emulator" })
+    public void afterTest() {
+        if (this.container != null) {
+            try {
+                this.container.delete().block();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() != 404) {
+                    throw error;
+                }
+            }
+        }
+    }
+
+    @BeforeMethod(groups = { "emulator" })
+    public void beforeTest() throws Exception {
+        this.container = null;
+    }
+
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosContainerTest() {
+        client = getClientBuilder().buildAsyncClient();
+        database = createDatabase(client, preExistingDatabaseId);
+    }
+
+    static protected CosmosAsyncContainer createContainer(CosmosAsyncDatabase database) {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        database.createContainer(containerProperties).block();
+        return database.getContainer(collectionName);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_cancel() throws InterruptedException {
+        int totalRequest = 100;
+        this.container = createContainer(database);
+
+        List<CosmosBatch> cosmosBatches = new ArrayList<>();
+        for (int i = 0; i < totalRequest; i++) {
+            String partitionKey = UUID.randomUUID().toString();
+            TestDoc testDoc = this.populateTestDoc(partitionKey);
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKey));
+            batch.createItemOperation(testDoc);
+            cosmosBatches.add(batch);
+        }
+
+        CosmosTransactionalBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl();
+        Flux<CosmosBatch> inputFlux = Flux
+            .fromIterable(cosmosBatches)
+            .delayElements(Duration.ofMillis(100));
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            container,
+            inputFlux,
+            cosmosBulkExecutionOptions);
+        Flux<CosmosBulkTransactionalBatchResponse> bulkResponseFlux = Flux.deferContextual(context -> executor.execute());
+
+        Disposable disposable = bulkResponseFlux.subscribe();
+        disposable.dispose();
+
+        int iterations = 0;
+        while (true) {
+            assertThat(iterations < 100);
+            if (executor.isDisposed()) {
+                break;
+            }
+
+            Thread.sleep(10);
+            iterations++;
+        }
+    }
+
+    // Write operations should not be retried on a gone exception because the operation might have succeeded.
+    @Test(groups = { "emulator" }, timeOut =  TIMEOUT)
+    public void executeTransactionalBulk_OnGoneFailure() {
+        this.container = createContainer(database);
+        if (!ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getConnectionMode(this.client)
+            .equals(ConnectionMode.DIRECT.toString())) {
+            throw new SkipException("Failure injection for gone exception only supported for DIRECT mode");
+        }
+
+        List<CosmosBatch> cosmosBatches = new ArrayList<>();
+        String duplicatePK = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
+
+        EventDoc eventDoc = new EventDoc(id, 2, 4, "type1",
+            duplicatePK);
+        CosmosBatch createBatch = CosmosBatch.createCosmosBatch(new PartitionKey(duplicatePK));
+        createBatch.createItemOperation(eventDoc);
+        cosmosBatches.add(createBatch);
+
+        // configure fault injection rules
+        // using response delay to simulate a client generated gone for write operations
+        FaultInjectionRule serverResponseDelayRule =
+            new FaultInjectionRuleBuilder("serverResponseDelay-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .delay(Duration.ofSeconds(6))
+                        .build()
+                )
+                .duration(Duration.ofSeconds(10))
+                .build();
+
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            this.container,
+            Flux.fromIterable(cosmosBatches),
+            new CosmosTransactionalBulkExecutionOptionsImpl());
+
+        try {
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(container, Arrays.asList(serverResponseDelayRule))
+                .block();
+
+            List<CosmosBulkTransactionalBatchResponse> bulkResponse =
+                Flux
+                    .deferContextual(context -> executor.execute())
+                    .collectList()
+                    .block();
+
+            assertThat(bulkResponse.size()).isEqualTo(1);
+
+            CosmosBulkTransactionalBatchResponse operationResponse = bulkResponse.get(0);
+            CosmosBatchResponse batchResponse = operationResponse.getResponse();
+            assertThat(batchResponse).isNull();
+            assertThat(operationResponse.getException()).isNotNull();
+
+        } finally {
+            if (executor != null && !executor.isDisposed()) {
+                executor.dispose();
+            }
+            serverResponseDelayRule.disable();
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_complete() throws InterruptedException {
+        int totalRequest = 10;
+        this.container = createContainer(database);
+
+        List<CosmosBatch> cosmosBatches = new ArrayList<>();
+        for (int i = 0; i < totalRequest; i++) {
+            String partitionKey = UUID.randomUUID().toString();
+            TestDoc testDoc = this.populateTestDoc(partitionKey);
+            CosmosBatch batch1 = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKey));
+            batch1.createItemOperation(testDoc);
+            cosmosBatches.add(batch1);
+
+            partitionKey = UUID.randomUUID().toString();
+            EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1",
+                partitionKey);
+            CosmosBatch batch2 = CosmosBatch.createCosmosBatch(new PartitionKey(partitionKey));
+            batch2.createItemOperation(eventDoc);
+            cosmosBatches.add(batch2);
+        }
+
+        CosmosTransactionalBulkExecutionOptionsImpl cosmosBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl();
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            container,
+            Flux.fromIterable(cosmosBatches),
+            cosmosBulkExecutionOptions);
+        Flux<CosmosBulkTransactionalBatchResponse> bulkResponseFlux =
+            Flux.deferContextual(context -> executor.execute());
+
+        Mono<List<CosmosBulkTransactionalBatchResponse>> convertToListMono = bulkResponseFlux
+            .collect(Collectors.toList());
+        List<CosmosBulkTransactionalBatchResponse> bulkResponse = convertToListMono.block();
+
+        assertThat(bulkResponse.size()).isEqualTo(totalRequest * 2);
+
+        for (CosmosBulkTransactionalBatchResponse response : bulkResponse) {
+            CosmosBatchResponse batchResponse = response.getResponse();
+
+            assertThat(batchResponse).isNotNull();
+            assertThat(batchResponse.getResults().size()).isGreaterThan(0);
+            assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(batchResponse.getRequestCharge()).isGreaterThan(0.0);
+            assertThat(batchResponse.getDiagnostics().toString()).isNotNull();
+        }
+
+        int iterations = 0;
+        while (true) {
+            assertThat(iterations < 100);
+            if (executor.isDisposed()) {
+                break;
+            }
+
+            Thread.sleep(10);
+            iterations++;
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_maxConcurrentOpsLessThanBatchOps_complete() {
+        // test to verify that even CosmosTransactionalBulkExecutionOptionsImpl.maxOperationsConcurrency < CosmosBatch.Operations.size
+        // the executor can still complete
+
+        this.container = createContainer(database);
+
+        List<CosmosBatch> cosmosBatches = new ArrayList<>();
+        String pkValue = UUID.randomUUID().toString();
+
+        CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+        for (int i = 0; i < 10; i++) {
+          TestDoc testDoc = this.populateTestDoc(pkValue);
+          cosmosBatch.createItemOperation(testDoc);
+        }
+        cosmosBatches.add(cosmosBatch);
+
+        CosmosTransactionalBulkExecutionOptionsImpl transactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl();
+        transactionalBulkExecutionOptions.setMaxOperationsConcurrency(1);
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+          container,
+          Flux.fromIterable(cosmosBatches),
+          transactionalBulkExecutionOptions);
+
+        List<CosmosBulkTransactionalBatchResponse> responses = executor.execute().collectList().block();
+        assertThat(responses.size()).isEqualTo(1);
+        assertThat(responses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_concurrencyControl_e2e() {
+        this.container = createContainer(database);
+
+        String pkValue = UUID.randomUUID().toString();
+        int batchCount = 3;
+        int delayMillis = 1000;
+
+        List<CosmosBatch> cosmosBatches = new ArrayList<>();
+        for (int i = 0; i < batchCount; i++) {
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+            TestDoc testDoc = this.populateTestDoc(pkValue);
+            batch.createItemOperation(testDoc);
+            cosmosBatches.add(batch);
+        }
+
+        FaultInjectionRule serverResponseDelayRule =
+            new FaultInjectionRuleBuilder("serverResponseDelay-" + UUID.randomUUID())
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                        .delay(Duration.ofMillis(delayMillis))
+                        .build()
+                )
+                .duration(Duration.ofSeconds(60))
+                .build();
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverResponseDelayRule)).block();
+
+            // run with concurrency = 1 -> batches for same partition should be serialized
+            CosmosTransactionalBulkExecutionOptionsImpl optsSerial = new CosmosTransactionalBulkExecutionOptionsImpl();
+            optsSerial.setMaxOperationsConcurrency(1);
+            final TransactionalBulkExecutor serialExecutor = new TransactionalBulkExecutor(
+                container,
+                Flux.fromIterable(cosmosBatches),
+                optsSerial);
+
+            long startSerial = System.currentTimeMillis();
+            List<CosmosBulkTransactionalBatchResponse> serialResponses = serialExecutor.execute().collectList().block();
+            long endSerial = System.currentTimeMillis();
+
+            long durationSerial = endSerial - startSerial;
+
+            assertThat(serialResponses.size()).isEqualTo(batchCount);
+
+            // run with higher concurrency
+            CosmosTransactionalBulkExecutionOptionsImpl optsParallel = new CosmosTransactionalBulkExecutionOptionsImpl();
+            optsParallel.setMaxOperationsConcurrency(batchCount);
+            final TransactionalBulkExecutor parallelExecutor = new TransactionalBulkExecutor(
+                container,
+                Flux.fromIterable(cosmosBatches),
+                optsParallel);
+
+            long startParallel = System.currentTimeMillis();
+            List<CosmosBulkTransactionalBatchResponse> parallelResponses = parallelExecutor.execute().collectList().block();
+            long endParallel = System.currentTimeMillis();
+
+            long durationParallel = endParallel - startParallel;
+
+            assertThat(parallelResponses.size()).isEqualTo(batchCount);
+
+            // With serialized execution duration should be approximately batchCount * delayMillis
+            assertThat(durationSerial).isGreaterThanOrEqualTo((long)batchCount * delayMillis * 9 / 10);
+
+            // Parallel execution should be faster than serialized execution
+            assertThat(durationParallel).isLessThan(durationSerial);
+
+        } finally {
+            serverResponseDelayRule.disable();
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void executeTransactionalBulk_tooManyRequest_recordInThresholds() throws Exception {
+        this.container = createContainer(database);
+
+        String pkValue = UUID.randomUUID().toString();
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+        TestDoc testDoc = this.populateTestDoc(pkValue);
+        batch.createItemOperation(testDoc);
+
+        FaultInjectionRule tooManyRequestRule =
+            new FaultInjectionRuleBuilder("ttrs-" + UUID.randomUUID())
+                .condition(new FaultInjectionConditionBuilder().operationType(FaultInjectionOperationType.BATCH_ITEM).build())
+                .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST).times(1).build())
+                .duration(Duration.ofSeconds(30))
+                .hitLimit(1)
+                .build();
+
+        final TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            container,
+            Flux.fromIterable(Arrays.asList(batch)),
+            new CosmosTransactionalBulkExecutionOptionsImpl());
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(tooManyRequestRule)).block();
+
+            List<CosmosBulkTransactionalBatchResponse> responses = executor.execute().collectList().block();
+
+            assertThat(responses.size()).isEqualTo(1);
+            CosmosBulkTransactionalBatchResponse resp = responses.get(0);
+            assertThat(resp.getResponse()).isNotNull();
+
+            // inspect partitionScopeThresholds via reflection and verify a retry was recorded
+            Field mapField = TransactionalBulkExecutor.class.getDeclaredField("partitionScopeThresholds");
+            mapField.setAccessible(true);
+            Map<?, ?> thresholdsMap = (Map<?, ?>) mapField.get(executor);
+
+            assertThat(thresholdsMap).isNotEmpty();
+            Object thresholdsObj = thresholdsMap.values().iterator().next();
+            PartitionScopeThresholds thresholds = (PartitionScopeThresholds) thresholdsObj;
+
+            PartitionScopeThresholds.CurrentIntervalThresholds current = thresholds.getCurrentThresholds();
+            long retried = current.currentRetriedOperationCount.get();
+
+            assertThat(retried).isEqualTo(1);
+
+        } finally {
+            tooManyRequestRule.disable();
+            if (executor != null && !executor.isDisposed()) {
+                executor.dispose();
+            }
+        }
+    }
+}

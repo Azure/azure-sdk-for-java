@@ -31,157 +31,161 @@ class SparkE2EBulkWriteITest
   //scalastyle:off magic.number
   //scalastyle:off null
 
-  it should s"support bulk ingestion when BulkWriter needs to get restarted" in {
-    val cosmosEndpoint = TestConfigurations.HOST
-    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  for (enableBulkTransactional <- Seq(true, false)) {
+    it should s"support bulk ingestion when BulkWriter needs to get restarted with transactional bulk enabled $enableBulkTransactional" in {
 
-    val configMapBuilder = scala.collection.mutable.Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
-    )
+      val cosmosEndpoint = TestConfigurations.HOST
+      val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-    var faultInjectionRuleOption : Option[FaultInjectionRule] = None
+      val configMapBuilder = scala.collection.mutable.Map(
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault",
+        "spark.cosmos.write.bulk.transactional" -> enableBulkTransactional.toString
+      )
 
-    try {
-      // set-up logging
-      val logs = scala.collection.mutable.ListBuffer[CosmosDiagnosticsContext]()
+      var faultInjectionRuleOption : Option[FaultInjectionRule] = None
 
-      configMapBuilder += "spark.cosmos.account.clientBuilderInterceptors" -> "com.azure.cosmos.spark.TestCosmosClientBuilderInterceptor"
-      TestCosmosClientBuilderInterceptor.setCallback(builder => {
-        val thresholds = new CosmosDiagnosticsThresholds()
-          .setPointOperationLatencyThreshold(Duration.ZERO)
-          .setNonPointOperationLatencyThreshold(Duration.ZERO)
-        val telemetryCfg = new CosmosClientTelemetryConfig()
-          .showQueryMode(ShowQueryMode.ALL)
-          .diagnosticsHandler(new CompositeLoggingHandler(logs))
-          .diagnosticsThresholds(thresholds)
-        builder.clientTelemetryConfig(telemetryCfg)
-      })
+      try {
+        // set-up logging
+        val logs = scala.collection.mutable.ListBuffer[CosmosDiagnosticsContext]()
 
-      // set-up fault injection
-      configMapBuilder += "spark.cosmos.account.clientInterceptors" -> "com.azure.cosmos.spark.TestFaultInjectionClientInterceptor"
-      configMapBuilder += "spark.cosmos.write.flush.intervalInSeconds" -> "10"
-      configMapBuilder += "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds" -> "30"
-      configMapBuilder += "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds" -> "300"
-      configMapBuilder += "spark.cosmos.write.onRetryCommitInterceptor" -> "com.azure.cosmos.spark.TestWriteOnRetryCommitInterceptor"
-      TestFaultInjectionClientInterceptor.setCallback(client => {
-        val faultInjectionResultBuilder = FaultInjectionResultBuilders
-          .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-          .delay(Duration.ofHours(10000))
-          .times(1)
+        configMapBuilder += "spark.cosmos.account.clientBuilderInterceptors" -> "com.azure.cosmos.spark.TestCosmosClientBuilderInterceptor"
+        TestCosmosClientBuilderInterceptor.setCallback(builder => {
+          val thresholds = new CosmosDiagnosticsThresholds()
+            .setPointOperationLatencyThreshold(Duration.ZERO)
+            .setNonPointOperationLatencyThreshold(Duration.ZERO)
+          val telemetryCfg = new CosmosClientTelemetryConfig()
+            .showQueryMode(ShowQueryMode.ALL)
+            .diagnosticsHandler(new CompositeLoggingHandler(logs))
+            .diagnosticsThresholds(thresholds)
+          builder.clientTelemetryConfig(telemetryCfg)
+        })
 
-        val endpoints = new FaultInjectionEndpointBuilder(
-          FeedRange.forLogicalPartition(new PartitionKey("range_1")))
-          .build()
+        // set-up fault injection
+        configMapBuilder += "spark.cosmos.account.clientInterceptors" -> "com.azure.cosmos.spark.TestFaultInjectionClientInterceptor"
+        configMapBuilder += "spark.cosmos.write.flush.intervalInSeconds" -> "10"
+        configMapBuilder += "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds" -> "30"
+        configMapBuilder += "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds" -> "300"
+        configMapBuilder += "spark.cosmos.write.onRetryCommitInterceptor" -> "com.azure.cosmos.spark.TestWriteOnRetryCommitInterceptor"
+        TestFaultInjectionClientInterceptor.setCallback(client => {
+          val faultInjectionResultBuilder = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(Duration.ofHours(10000))
+            .times(1)
 
-        val result = faultInjectionResultBuilder.build
-        val condition = new FaultInjectionConditionBuilder()
-          .operationType(FaultInjectionOperationType.BATCH_ITEM)
-          .connectionType(FaultInjectionConnectionType.DIRECT)
-          .endpoints(endpoints)
-          .build
+          val endpoints = new FaultInjectionEndpointBuilder(
+            FeedRange.forLogicalPartition(new PartitionKey("range_1")))
+            .build()
 
-        faultInjectionRuleOption = Some(new FaultInjectionRuleBuilder("InjectedEndlessResponseDelay")
-          .condition(condition)
-          .result(result)
-          .build)
+          val result = faultInjectionResultBuilder.build
+          val condition = new FaultInjectionConditionBuilder()
+            .operationType(FaultInjectionOperationType.BATCH_ITEM)
+            .connectionType(FaultInjectionConnectionType.DIRECT)
+            .endpoints(endpoints)
+            .build
 
-        TestWriteOnRetryCommitInterceptor.setCallback(() => faultInjectionRuleOption.get.disable())
+          faultInjectionRuleOption = Some(new FaultInjectionRuleBuilder("InjectedEndlessResponseDelay")
+            .condition(condition)
+            .result(result)
+            .build)
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(
-          client.getDatabase(cosmosDatabase).getContainer(cosmosContainer),
-          List(faultInjectionRuleOption.get).asJava).block
+          TestWriteOnRetryCommitInterceptor.setCallback(() => faultInjectionRuleOption.get.disable())
 
-        client
-      })
+          CosmosFaultInjectionHelper.configureFaultInjectionRules(
+            client.getDatabase(cosmosDatabase).getContainer(cosmosContainer),
+            List(faultInjectionRuleOption.get).asJava).block
 
-      val cfg = configMapBuilder.toMap
+          client
+        })
 
-      val newSpark = getSpark
+        val cfg = configMapBuilder.toMap
 
-      // scalastyle:off underscore.import
-      // scalastyle:off import.grouping
-      import spark.implicits._
-      val spark = newSpark
-      // scalastyle:on underscore.import
-      // scalastyle:on import.grouping
+        val newSpark = getSpark
 
-      val toBeIngested = scala.collection.mutable.ListBuffer[String]()
-      for (i <- 1 to 100) {
-        toBeIngested += s"record_$i"
-      }
+        // scalastyle:off underscore.import
+        // scalastyle:off import.grouping
+        import spark.implicits._
+        val spark = newSpark
+        // scalastyle:on underscore.import
+        // scalastyle:on import.grouping
 
-      val df = toBeIngested.toSeq.toDF("id")
+        val toBeIngested = scala.collection.mutable.ListBuffer[String]()
+        for (i <- 1 to 100) {
+          toBeIngested += s"record_$i"
+        }
 
-      var bytesWrittenSnapshot = 0L
-      var recordsWrittenSnapshot = 0L
-      var totalRequestChargeSnapshot: Option[AccumulableInfo] = None
+        val df = toBeIngested.toSeq.toDF("id")
 
-      val statusStore = spark.sharedState.statusStore
-      val oldCount = statusStore.executionsCount()
+        var bytesWrittenSnapshot = 0L
+        var recordsWrittenSnapshot = 0L
+        var totalRequestChargeSnapshot: Option[AccumulableInfo] = None
 
-      spark.sparkContext
-        .addSparkListener(
-          new SparkListener {
-            override def onTaskEnd(taskEnd: SparkListenerTaskEnd): Unit = {
-              val outputMetrics = taskEnd.taskMetrics.outputMetrics
-              logInfo(s"ON_TASK_END - Records written: ${outputMetrics.recordsWritten}, " +
-                s"Bytes written: ${outputMetrics.bytesWritten}, " +
-                s"${taskEnd.taskInfo.accumulables.mkString(", ")}")
-              bytesWrittenSnapshot = outputMetrics.bytesWritten
+        val statusStore = spark.sharedState.statusStore
+        val oldCount = statusStore.executionsCount()
 
-              recordsWrittenSnapshot = outputMetrics.recordsWritten
+        spark.sparkContext
+          .addSparkListener(
+            new SparkListener {
+              override def onTaskEnd(taskEnd: SparkListenerTaskEnd): Unit = {
+                val outputMetrics = taskEnd.taskMetrics.outputMetrics
+                logInfo(s"ON_TASK_END - Records written: ${outputMetrics.recordsWritten}, " +
+                  s"Bytes written: ${outputMetrics.bytesWritten}, " +
+                  s"${taskEnd.taskInfo.accumulables.mkString(", ")}")
+                bytesWrittenSnapshot = outputMetrics.bytesWritten
 
-              taskEnd
-                .taskInfo
-                .accumulables
-                .filter(accumulableInfo => accumulableInfo.name.isDefined &&
-                  accumulableInfo.name.get.equals(CosmosConstants.MetricNames.TotalRequestCharge))
-                .foreach(
-                  accumulableInfo => {
-                    totalRequestChargeSnapshot = Some(accumulableInfo)
-                  }
-                )
-            }
-          })
+                recordsWrittenSnapshot = outputMetrics.recordsWritten
 
-      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+                taskEnd
+                  .taskInfo
+                  .accumulables
+                  .filter(accumulableInfo => accumulableInfo.name.isDefined &&
+                    accumulableInfo.name.get.equals(CosmosConstants.MetricNames.TotalRequestCharge))
+                  .foreach(
+                    accumulableInfo => {
+                      totalRequestChargeSnapshot = Some(accumulableInfo)
+                    }
+                  )
+              }
+            })
 
-      // Wait until the new execution is started and being tracked.
-      eventually(timeout(10.seconds), interval(10.milliseconds)) {
-        assert(statusStore.executionsCount() > oldCount)
-      }
+        df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
 
-      // Wait for listener to finish computing the metrics for the execution.
-      eventually(timeout(10.seconds), interval(10.milliseconds)) {
-        assert(statusStore.executionsList().nonEmpty &&
-          statusStore.executionsList().last.metricValues != null)
-      }
+        // Wait until the new execution is started and being tracked.
+        eventually(timeout(10.seconds), interval(10.milliseconds)) {
+          assert(statusStore.executionsCount() > oldCount)
+        }
 
-      recordsWrittenSnapshot shouldEqual 100
-      bytesWrittenSnapshot > 0 shouldEqual true
+        // Wait for listener to finish computing the metrics for the execution.
+        eventually(timeout(10.seconds), interval(10.milliseconds)) {
+          assert(statusStore.executionsList().nonEmpty &&
+            statusStore.executionsList().last.metricValues != null)
+        }
 
-      // that the write by spark is visible by the client query
-      // wait for a second to allow replication is completed.
-      Thread.sleep(1000)
+        recordsWrittenSnapshot shouldEqual 100
+        bytesWrittenSnapshot > 0 shouldEqual true
 
-      // the new item will be always persisted
-      val ids = queryItems("SELECT c.id FROM c ORDER by c.id").toArray
-      ids should have size 100
-      val firstDoc = ids(0)
-      firstDoc.get("id").asText() shouldEqual "record_1"
+        // that the write by spark is visible by the client query
+        // wait for a second to allow replication is completed.
+        Thread.sleep(1000)
 
-      // validate logs
-      logs.nonEmpty shouldEqual true
-    } finally {
-      TestCosmosClientBuilderInterceptor.resetCallback()
-      TestFaultInjectionClientInterceptor.resetCallback()
-      faultInjectionRuleOption match {
-        case Some(rule) => rule.disable()
-        case None =>
+        // the new item will be always persisted
+        val ids = queryItems("SELECT c.id FROM c ORDER by c.id").toArray
+        ids should have size 100
+        val firstDoc = ids(0)
+        firstDoc.get("id").asText() shouldEqual "record_1"
+
+        // validate logs
+        logs.nonEmpty shouldEqual true
+      } finally {
+        TestCosmosClientBuilderInterceptor.resetCallback()
+        TestFaultInjectionClientInterceptor.resetCallback()
+        faultInjectionRuleOption match {
+          case Some(rule) => rule.disable()
+          case None =>
+        }
       }
     }
   }

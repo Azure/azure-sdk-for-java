@@ -898,7 +898,8 @@ public final class BulkExecutor<TContext> implements Disposable {
                             serverRequest,
                             options,
                             false,
-                            true) // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true, // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true)
                     .flatMap(cosmosBatchResponse -> {
 
                         cosmosBatchResponseAccessor.setGlobalOpCount(
