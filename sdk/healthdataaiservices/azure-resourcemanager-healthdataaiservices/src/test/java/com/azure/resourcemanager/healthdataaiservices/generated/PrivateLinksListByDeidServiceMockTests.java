@@ -22,7 +22,7 @@ public final class PrivateLinksListByDeidServiceMockTests {
     @Test
     public void testListByDeidService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"axmodfvuef\",\"requiredMembers\":[\"bpfvm\",\"yhrfouyftaakcpw\",\"yzvqt\"],\"requiredZoneNames\":[\"bexkpzksmondj\"]},\"id\":\"uxvypomgkopkwh\",\"name\":\"jvp\",\"type\":\"jqg\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"yuq\",\"requiredMembers\":[\"qlpqwcciuq\",\"bdbutauvf\"],\"requiredZoneNames\":[\"uwhhmhykojoxafn\",\"dlpichkoymkcdyhb\"]},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class PrivateLinksListByDeidServiceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response
-            = manager.privateLinks().listByDeidService("niyqslui", "pdggkzzlvm", com.azure.core.util.Context.NONE);
+            = manager.privateLinks().listByDeidService("ulpiuj", "aasipqi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bexkpzksmondj", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("uwhhmhykojoxafn", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

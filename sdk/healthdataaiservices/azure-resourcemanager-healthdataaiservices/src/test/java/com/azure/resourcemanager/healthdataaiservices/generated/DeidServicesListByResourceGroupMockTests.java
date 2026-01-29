@@ -14,6 +14,7 @@ import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManage
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,7 @@ public final class DeidServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"fvgxbfsmxneh\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"godebfqkkrbmpu\",\"gr\",\"wflzlfbxzpuzy\",\"ispnqzahmgkbrp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"bnuqqkpik\",\"name\":\"drgvtqagn\",\"type\":\"uynhijg\"},{\"properties\":{\"groupIds\":[\"fsiarbutr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"zzmhjrunmpxttd\",\"name\":\"hrbnlankxmyskpbh\",\"type\":\"nbtkcxywnytnr\"},{\"properties\":{\"groupIds\":[\"qidybyx\",\"zfcl\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"babphlwrqlfk\",\"name\":\"sthsu\",\"type\":\"ocmnyyazttbtwwrq\"},{\"properties\":{\"groupIds\":[\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\",\"zyoxaepdkzjan\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"fzab\",\"tenantId\":\"cuh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gu\":{\"principalId\":\"yqiklbbovplwzb\",\"clientId\":\"gy\"},\"mg\":{\"principalId\":\"vmkfssxqu\",\"clientId\":\"fpl\"}}},\"location\":\"nkjzkdeslpvlop\",\"tags\":{\"wzbaiue\":\"ighxpk\",\"a\":\"baumnyqupedeoj\"},\"id\":\"ckhsmtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"bfqkkr\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"riwflzlfb\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"ycispnqzahmgkb\",\"name\":\"pyydhi\",\"type\":\"nuqqkpikadrgvt\"},{\"properties\":{\"groupIds\":[\"buynhijggm\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"arbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"},{\"properties\":{\"groupIds\":[\"myskpbhenbtkcxy\",\"ny\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"nlqidybyxczf\",\"name\":\"lhaaxdbabp\",\"type\":\"lwrq\"},{\"properties\":{\"groupIds\":[\"sthsu\",\"ocmnyyazttbtwwrq\",\"uedck\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"exzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"d\",\"tenantId\":\"avxbniwdjswztsdb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lcuhxwtctyqiklb\":{\"principalId\":\"txhp\",\"clientId\":\"bzpfzab\"},\"uosvmkfssxqukk\":{\"principalId\":\"vplwzbhv\",\"clientId\":\"u\"},\"opwi\":{\"principalId\":\"l\",\"clientId\":\"gsxnkjzkdeslpv\"}}},\"sku\":{\"name\":\"ghxpkdw\",\"tier\":\"Premium\",\"size\":\"uebbaumnyqup\",\"family\":\"eojnabc\",\"capacity\":52556598},\"location\":\"txp\",\"tags\":{\"rdqmhjjdhtldwkyz\":\"btfhvpesaps\",\"cwsvlxotog\":\"uutkncw\",\"o\":\"wrupqsxvnmicykvc\"},\"id\":\"eil\",\"name\":\"vnotyfjfcnj\",\"type\":\"k\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +35,17 @@ public final class DeidServicesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeidService> response
-            = manager.deidServices().listByResourceGroup("bgsncghkjeszzhb", com.azure.core.util.Context.NONE);
+            = manager.deidServices().listByResourceGroup("ec", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nkjzkdeslpvlop", response.iterator().next().location());
-        Assertions.assertEquals("ighxpk", response.iterator().next().tags().get("wzbaiue"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+        Assertions.assertEquals("txp", response.iterator().next().location());
+        Assertions.assertEquals("btfhvpesaps", response.iterator().next().tags().get("rdqmhjjdhtldwkyz"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ghxpkdw", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
+        Assertions.assertEquals("uebbaumnyqup", response.iterator().next().sku().size());
+        Assertions.assertEquals("eojnabc", response.iterator().next().sku().family());
+        Assertions.assertEquals(52556598, response.iterator().next().sku().capacity());
     }
 }

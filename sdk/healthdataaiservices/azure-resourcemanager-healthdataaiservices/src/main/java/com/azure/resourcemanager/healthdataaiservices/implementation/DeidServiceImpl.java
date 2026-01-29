@@ -14,6 +14,7 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceProperti
 import com.azure.resourcemanager.healthdataaiservices.models.DeidUpdate;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityUpdate;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
 import java.util.Collections;
 import java.util.Map;
 
@@ -53,6 +54,10 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
 
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public SystemData systemData() {
@@ -181,6 +186,11 @@ public final class DeidServiceImpl implements DeidService, DeidService.Definitio
 
     public DeidServiceImpl withIdentity(ManagedServiceIdentity identity) {
         this.innerModel().withIdentity(identity);
+        return this;
+    }
+
+    public DeidServiceImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 
