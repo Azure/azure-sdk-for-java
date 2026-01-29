@@ -15,7 +15,7 @@ $StartTime = $( get-date )
 
 try {
     $remoteName = GetRemoteName
-    $branchName = GetBranchName -ArtifactId "patches-for-auto-release"
+    $branchName = GetCurrentBranchName
     $currentBranchName = GetCurrentBranchName
 
     # Generate the list of artifacts to update for a patch release.
