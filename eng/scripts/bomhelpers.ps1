@@ -344,10 +344,8 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       $releaseTag = $oldReleaseTag
     }
 
-    # Exclude CHANGELOG.md from restore to prevent merge conflicts with merge-back PRs.
-    # Changelogs should be updated from main, not rolled back and then updated.
-    Write-Host "git restore --source $releaseTag -W -S -- $artifactDirPath ':!**/CHANGELOG.md'"
-    $cmdOutput = git restore --source $releaseTag -W -S -- $artifactDirPath ':!**/CHANGELOG.md'
+    Write-Host "git restore --source $releaseTag -W -S -- $artifactDirPath"
+    $cmdOutput = git restore --source $releaseTag -W -S -- $artifactDirPath
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not reset sources for $artifactId to the release version $releaseVersion"
       exit $LASTEXITCODE
