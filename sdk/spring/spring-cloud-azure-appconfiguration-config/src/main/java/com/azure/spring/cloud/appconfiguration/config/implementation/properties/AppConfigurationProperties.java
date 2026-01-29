@@ -37,6 +37,11 @@ public class AppConfigurationProperties {
     private Duration refreshInterval;
 
     /**
+     * The timeout duration for retry attempts during startup.
+     */
+    private Duration startupTimeout = Duration.ofSeconds(100);
+
+    /**
      * @return the enabled
      */
     public boolean isEnabled() {
@@ -79,6 +84,20 @@ public class AppConfigurationProperties {
     }
 
     /**
+     * @return the startupTimeout
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
+    }
+
+    /**
+     * @param startupTimeout the startupTimeout to set
+     */
+    public void setStartupTimeout(Duration startupTimeout) {
+        this.startupTimeout = startupTimeout;
+    }
+
+    /**
      * Validates at least one store is configured for use, and that they are valid.
      * @throws IllegalArgumentException when duplicate endpoints are configured
      */
@@ -114,6 +133,9 @@ public class AppConfigurationProperties {
         }
         if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
+        }
+        if (startupTimeout.getSeconds() < 30 || startupTimeout.getSeconds() > 600) {
+            throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
         }
     }
 }

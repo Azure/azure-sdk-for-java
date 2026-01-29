@@ -83,7 +83,6 @@ public class AzureAppConfigDataLoaderTest {
         configStore = new ConfigStore();
         configStore.setEndpoint(ENDPOINT);
         configStore.setEnabled(true);
-        configStore.setStartupTimeout(Duration.ofSeconds(30)); // Minimum allowed value for faster tests
 
         // Setup feature flags
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
@@ -95,9 +94,9 @@ public class AzureAppConfigDataLoaderTest {
         lenient().when(profiles.getActive()).thenReturn(List.of(LABEL_FILTER));
 
         // Startup resource (isRefresh = false)
-        resource = new AzureAppConfigDataResource(true, configStore, profiles, true, Duration.ofMinutes(1));
+        resource = new AzureAppConfigDataResource(true, configStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(30));
         // Refresh resource (isRefresh = true)
-        refreshResource = new AzureAppConfigDataResource(true, configStore, profiles, false, Duration.ofMinutes(1));
+        refreshResource = new AzureAppConfigDataResource(true, configStore, profiles, false, Duration.ofMinutes(1), Duration.ofSeconds(30));
 
         // Setup common mocks for ConfigDataLoaderContext
         lenient().when(configDataLoaderContextMock.getBootstrapContext()).thenReturn(bootstrapContextMock);
@@ -229,13 +228,12 @@ public class AzureAppConfigDataLoaderTest {
         ConfigStore shortTimeoutStore = new ConfigStore();
         shortTimeoutStore.setEndpoint(ENDPOINT);
         shortTimeoutStore.setEnabled(true);
-        shortTimeoutStore.setStartupTimeout(Duration.ofSeconds(1));
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(false);
         shortTimeoutStore.setFeatureFlags(featureFlagStore);
 
         AzureAppConfigDataResource shortTimeoutResource = new AzureAppConfigDataResource(
-            true, shortTimeoutStore, profiles, true, Duration.ofMinutes(1));
+            true, shortTimeoutStore, profiles, true, Duration.ofMinutes(1), Duration.ofSeconds(30));
 
         // Setup selector
         AppConfigurationKeyValueSelector selector = new AppConfigurationKeyValueSelector();
