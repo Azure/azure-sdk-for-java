@@ -18,7 +18,6 @@
 
 - Upgraded `azure-identity` from `1.18.1` to version `1.18.2`.
 
-
 ## 1.2.6 (2025-10-27)
 
 ### Other Changes

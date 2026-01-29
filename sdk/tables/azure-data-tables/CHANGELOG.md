@@ -21,7 +21,6 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-xml` from `1.2.0` to version `1.2.1`.
 
-
 ## 12.5.8 (2025-10-27)
 
 ### Other Changes

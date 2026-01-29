@@ -19,7 +19,6 @@
 - Upgraded `azure-resourcemanager-authorization` from `2.53.5` to version `2.53.6`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.4` to version `2.53.5`.
 
-
 ## 2.55.2 (2025-11-24)
 
 ### Other Changes

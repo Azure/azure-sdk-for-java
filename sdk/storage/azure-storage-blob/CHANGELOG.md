@@ -21,13 +21,11 @@
 - Upgraded `azure-storage-common` from `12.32.0` to version `12.33.0-beta.1`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 12.33.0 (2026-01-15)
 - Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs.
 - Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
 - Added support for Principal-Bound Identity User Delegation SAS.
 - Added support for service version 2026-02-06.
-
 
 ### Other Changes
 - Added support for container names with special characters when using OneLake.

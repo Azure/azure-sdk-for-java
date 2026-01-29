@@ -18,7 +18,6 @@
 
 - Upgraded core dependencies.
 
-
 ## 2.56.0 (2026-01-12)
 
 ### Other Changes

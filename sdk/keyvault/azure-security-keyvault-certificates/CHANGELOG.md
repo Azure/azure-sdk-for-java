@@ -22,7 +22,6 @@
 - Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 4.8.4 (2025-10-27)
 
 ### Other Changes

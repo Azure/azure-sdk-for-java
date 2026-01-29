@@ -21,7 +21,6 @@
 
 - Upgraded core dependencies.
 
-
 ## 2.55.0-beta.1 (2025-12-04)
 
 ### Other Changes

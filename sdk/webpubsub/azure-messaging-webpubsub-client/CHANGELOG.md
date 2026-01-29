@@ -19,7 +19,6 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `netty-codec-http` from `4.1.127.Final` to version `4.1.130.Final`.
 
-
 ## 1.1.6 (2025-10-27)
 
 ### Other Changes

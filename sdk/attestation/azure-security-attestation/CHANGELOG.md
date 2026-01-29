@@ -21,7 +21,6 @@
 
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 1.1.37 (2025-10-27)
 
 ### Other Changes

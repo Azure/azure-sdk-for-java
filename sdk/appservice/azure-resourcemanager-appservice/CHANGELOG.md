@@ -21,7 +21,6 @@
 - Upgraded `azure-resourcemanager-keyvault` from `2.54.0` to version `2.54.1`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.4` to version `2.53.5`.
 
-
 ## 2.54.1 (2025-11-24)
 
 ### Other Changes

@@ -18,7 +18,6 @@
 
 - Upgraded `azure-resourcemanager-storage` from `2.55.1` to version `2.55.2`.
 
-
 ## 2.53.5 (2025-11-24)
 
 ### Other Changes

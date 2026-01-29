@@ -20,7 +20,6 @@
 - Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 12.28.0 (2026-01-15)
 
 ### Features Added

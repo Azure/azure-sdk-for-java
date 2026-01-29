@@ -18,7 +18,6 @@
 
 - Upgraded `azure-resourcemanager-authorization` from `2.53.5` to version `2.53.6`.
 
-
 ## 2.54.1 (2025-11-24)
 
 ### Other Changes

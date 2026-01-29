@@ -20,7 +20,6 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-core-management` from `1.19.2` to version `1.19.3`.
 
-
 ## 2.53.5 (2025-11-17)
 
 ### Other Changes

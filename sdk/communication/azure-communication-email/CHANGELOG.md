@@ -20,7 +20,6 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-communication-common` from `1.4.3` to version `1.4.4`.
 
-
 ## 1.1.1 (2025-10-27)
 
 ### Other Changes

@@ -19,7 +19,6 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.9` to version `1.5.10`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
-
 ## 1.0.6 (2025-10-27)
 
 ### Other Changes

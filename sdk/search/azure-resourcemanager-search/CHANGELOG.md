@@ -18,7 +18,6 @@
 
 - Upgraded core dependencies.
 
-
 ## 2.54.4 (2025-11-24)
 
 ### Other Changes

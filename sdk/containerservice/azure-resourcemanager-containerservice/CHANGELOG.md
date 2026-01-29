@@ -18,7 +18,6 @@
 
 - Upgraded core dependencies.
 
-
 ## 2.58.0-beta.1 (2025-12-15)
 
 ### Other Changes
