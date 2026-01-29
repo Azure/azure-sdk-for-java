@@ -18,9 +18,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.security.confidentialledger.certificate.implementation.ConfidentialLedgerCertificateClientImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ConfidentialLedgerCertificateClient type.
- */
+/** Initializes a new instance of the asynchronous ConfidentialLedgerCertificateClient type. */
 @ServiceClient(builder = ConfidentialLedgerCertificateClientBuilder.class, isAsync = true)
 public final class ConfidentialLedgerCertificateAsyncClient {
     @Generated
@@ -28,7 +26,7 @@ public final class ConfidentialLedgerCertificateAsyncClient {
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -38,17 +36,16 @@ public final class ConfidentialLedgerCertificateAsyncClient {
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     ledgerId: String (Optional)
      *     ledgerTlsCertificate: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param ledgerId Id of the Confidential Ledger instance to get information for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -56,7 +53,7 @@ public final class ConfidentialLedgerCertificateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return identity information for a Confidential Ledger instance along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -16,41 +16,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgerClientImpl;
 
-/**
- * Initializes a new instance of the synchronous ConfidentialLedgerClient type.
- */
+/** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
 @ServiceClient(builder = ConfidentialLedgerClientBuilder.class)
 public final class ConfidentialLedgerClient {
     @Generated
-    private final ConfidentialLedgerClientImpl serviceClient;
+    private final ConfidentialLedgerAsyncClient client;
 
     /**
      * Initializes an instance of ConfidentialLedgerClient class.
-     * 
-     * @param serviceClient the service client implementation.
+     *
+     * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerClient(ConfidentialLedgerClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ConfidentialLedgerClient(ConfidentialLedgerAsyncClient client) {
+        this.client = client;
     }
 
     /**
-     * Gets the constitution used for governance.
-     * 
      * The constitution is a script that assesses and applies proposals from consortium members.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     digest: String (Required)
      *     script: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -61,24 +55,26 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getConstitutionWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConstitutionWithResponse(requestOptions);
+        return this.client.getConstitutionWithResponse(requestOptions).block();
     }
 
     /**
-     * Lists the consortium members.
-     * 
      * Consortium members can manage the Confidential Ledger.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     certificate: String (Required)
-     *     id: String (Required)
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -89,17 +85,15 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listConsortiumMembers(RequestOptions requestOptions) {
-        return this.serviceClient.listConsortiumMembers(requestOptions);
+        return new PagedIterable<>(this.client.listConsortiumMembers(requestOptions));
     }
 
     /**
-     * Gets quotes for all nodes of the Confidential Ledger.
-     * 
      * A quote is an SGX enclave measurement that can be used to verify the validity of a node and its enclave.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     currentNodeId: String (Required)
      *     enclaveQuotes (Required): {
@@ -111,9 +105,8 @@ public final class ConfidentialLedgerClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -124,156 +117,115 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnclaveQuotesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getEnclaveQuotesWithResponse(requestOptions);
+        return this.client.getEnclaveQuotesWithResponse(requestOptions).block();
     }
 
     /**
-     * Retrieves a list of collection ids present in the Confidential Ledger
-     * 
      * Collection ids are user-created collections of ledger entries.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     collectionId: String (Required)
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated collections returned in response to a query as paginated response with {@link PagedIterable}.
+     * @return collections returned in response to a query as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
-        return this.serviceClient.listCollections(requestOptions);
+        return new PagedIterable<>(this.client.listCollections(requestOptions));
     }
 
     /**
-     * Gets ledger entries from a collection corresponding to a range.
-     * 
      * A collection id may optionally be specified. Only entries in the specified (or default) collection will be
      * returned.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
-     * <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a
-     * range.</td></tr>
-     * <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
-     * <tr><td>tag</td><td>String</td><td>No</td><td>Single tag.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
+     *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     contents: String (Required)
-     *     collectionId: String (Optional)
-     *     transactionId: String (Optional)
-     *     preHooks (Optional): [
-     *          (Optional){
-     *             functionId: String (Required)
-     *             properties (Optional): {
-     *                 arguments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 exportedFunctionName: String (Optional)
-     *                 runtimeOptions (Optional): {
-     *                     log_exception_details: Boolean (Optional)
-     *                     max_cached_interpreters: Long (Optional)
-     *                     max_execution_time_ms: Long (Optional)
-     *                     max_heap_bytes: Long (Optional)
-     *                     max_stack_bytes: Long (Optional)
-     *                     return_exception_details: Boolean (Optional)
-     *                 }
-     *             }
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
      *         }
      *     ]
-     *     postHooks (Optional): [
-     *         (recursive schema, see above)
-     *     ]
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated ledger entries returned in response to a query as paginated response with
-     * {@link PagedIterable}.
+     * @return paginated ledger entries returned in response to a query as paginated response with {@link
+     *     PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLedgerEntries(RequestOptions requestOptions) {
-        return this.serviceClient.listLedgerEntries(requestOptions);
+        return new PagedIterable<>(this.client.listLedgerEntries(requestOptions));
     }
 
     /**
-     * Writes a ledger entry.
-     * 
      * A collection id may optionally be specified.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
-     * <tr><td>tags</td><td>String</td><td>No</td><td>Comma separated tags.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     contents: String (Required)
      *     collectionId: String (Optional)
      *     transactionId: String (Optional)
-     *     preHooks (Optional): [
-     *          (Optional){
-     *             functionId: String (Required)
-     *             properties (Optional): {
-     *                 arguments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 exportedFunctionName: String (Optional)
-     *                 runtimeOptions (Optional): {
-     *                     log_exception_details: Boolean (Optional)
-     *                     max_cached_interpreters: Long (Optional)
-     *                     max_execution_time_ms: Long (Optional)
-     *                     max_heap_bytes: Long (Optional)
-     *                     max_stack_bytes: Long (Optional)
-     *                     return_exception_details: Boolean (Optional)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     postHooks (Optional): [
-     *         (recursive schema, see above)
-     *     ]
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     collectionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param entry Ledger entry.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -281,65 +233,42 @@ public final class ConfidentialLedgerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return returned as a result of a write to the Confidential Ledger, the transaction id in the response indicates
-     * when the write will become durable along with {@link Response}.
+     *     when the write will become durable along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
-        return this.serviceClient.createLedgerEntryWithResponse(entry, requestOptions);
+        return this.client.createLedgerEntryWithResponse(entry, requestOptions).block();
     }
 
     /**
-     * Gets the ledger entry at the specified transaction id. A collection id may optionally be specified to indicate
-     * the collection from which to fetch the value.
-     * 
      * To return older ledger entries, the relevant sections of the ledger must be read from disk and validated. To
      * prevent blocking within the enclave, the response will indicate whether the entry is ready and part of the
      * response, or if the loading is still ongoing.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     state: String(Loading/Ready) (Required)
      *     entry (Optional): {
      *         contents: String (Required)
      *         collectionId: String (Optional)
      *         transactionId: String (Optional)
-     *         preHooks (Optional): [
-     *              (Optional){
-     *                 functionId: String (Required)
-     *                 properties (Optional): {
-     *                     arguments (Optional): [
-     *                         String (Optional)
-     *                     ]
-     *                     exportedFunctionName: String (Optional)
-     *                     runtimeOptions (Optional): {
-     *                         log_exception_details: Boolean (Optional)
-     *                         max_cached_interpreters: Long (Optional)
-     *                         max_execution_time_ms: Long (Optional)
-     *                         max_heap_bytes: Long (Optional)
-     *                         max_stack_bytes: Long (Optional)
-     *                         return_exception_details: Boolean (Optional)
-     *                     }
-     *                 }
-     *             }
-     *         ]
-     *         postHooks (Optional): [
-     *             (recursive schema, see above)
-     *         ]
      *     }
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -351,31 +280,16 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLedgerEntryWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerEntryWithResponse(transactionId, requestOptions);
+        return this.client.getLedgerEntryWithResponse(transactionId, requestOptions).block();
     }
 
     /**
      * Gets a receipt certifying ledger contents at a particular transaction id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     applicationClaims (Optional): [
-     *          (Optional){
-     *             digest (Optional): {
-     *                 value: String (Optional)
-     *                 protocol: String(LedgerEntryV1) (Required)
-     *             }
-     *             kind: String(LedgerEntry/ClaimDigest) (Required)
-     *             ledgerEntry (Optional): {
-     *                 collectionId: String (Optional)
-     *                 contents: String (Optional)
-     *                 secretKey: String (Optional)
-     *                 protocol: String(LedgerEntryV1) (Required)
-     *             }
-     *         }
-     *     ]
      *     receipt (Optional): {
      *         cert: String (Optional)
      *         leaf: String (Optional)
@@ -400,9 +314,8 @@ public final class ConfidentialLedgerClient {
      *     state: String(Loading/Ready) (Required)
      *     transactionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -414,22 +327,21 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getReceiptWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getReceiptWithResponse(transactionId, requestOptions);
+        return this.client.getReceiptWithResponse(transactionId, requestOptions).block();
     }
 
     /**
      * Gets the status of an entry identified by a transaction id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     state: String(Committed/Pending) (Required)
      *     transactionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -441,54 +353,32 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTransactionStatusWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        return this.client.getTransactionStatusWithResponse(transactionId, requestOptions).block();
     }
 
     /**
-     * Gets the current value available in the ledger.
-     * 
      * A collection id may optionally be specified.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     contents: String (Required)
      *     collectionId: String (Optional)
      *     transactionId: String (Optional)
-     *     preHooks (Optional): [
-     *          (Optional){
-     *             functionId: String (Required)
-     *             properties (Optional): {
-     *                 arguments (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *                 exportedFunctionName: String (Optional)
-     *                 runtimeOptions (Optional): {
-     *                     log_exception_details: Boolean (Optional)
-     *                     max_cached_interpreters: Long (Optional)
-     *                     max_execution_time_ms: Long (Optional)
-     *                     max_heap_bytes: Long (Optional)
-     *                     max_stack_bytes: Long (Optional)
-     *                     return_exception_details: Boolean (Optional)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     postHooks (Optional): [
-     *         (recursive schema, see above)
-     *     ]
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -499,70 +389,12 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCurrentLedgerEntryWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getCurrentLedgerEntryWithResponse(requestOptions);
-    }
-
-    /**
-     * Gets details on a list of users.
-     * 
-     * All users' object IDs and single role per user will be returned.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     assignedRole: String(Administrator/Contributor/Reader) (Required)
-     *     userId: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated users returned in response to a query as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listUsers(RequestOptions requestOptions) {
-        return this.serviceClient.listUsers(requestOptions);
-    }
-
-    /**
-     * Gets details on a list of users.
-     * 
-     * All users' object IDs and multiple roles will be returned.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     assignedRoles (Required): [
-     *         String(Administrator/Contributor/Reader) (Required)
-     *     ]
-     *     userId: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated users returned in response to a query as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLedgerUsers(RequestOptions requestOptions) {
-        return this.serviceClient.listLedgerUsers(requestOptions);
+        return this.client.getCurrentLedgerEntryWithResponse(requestOptions).block();
     }
 
     /**
      * Deletes a user from the Confidential Ledger.
-     * 
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -574,22 +406,21 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteUserWithResponse(userId, requestOptions);
+        return this.client.deleteUserWithResponse(userId, requestOptions).block();
     }
 
     /**
      * Gets a user.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -601,35 +432,30 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.getUserWithResponse(userId, requestOptions);
+        return this.client.getUserWithResponse(userId, requestOptions).block();
     }
 
     /**
-     * Adds a user or updates a user's fields.
-     * 
      * A JSON merge patch is applied for existing users.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param userDetails Details about a Confidential Ledger user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -643,613 +469,6 @@ public final class ConfidentialLedgerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateUserWithResponse(String userId, BinaryData userDetails,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateUserWithResponse(userId, userDetails, requestOptions);
-    }
-
-    /**
-     * Deletes a user with multiple roles from the Confidential Ledger.
-     * 
-     * @param userId The user id, either an AAD object ID or certificate fingerprint.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteLedgerUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteLedgerUserWithResponse(userId, requestOptions);
-    }
-
-    /**
-     * Gets a user with multiple roles.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     assignedRoles (Required): [
-     *         String(Administrator/Contributor/Reader) (Required)
-     *     ]
-     *     userId: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param userId The user id, either an AAD object ID or certificate fingerprint.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a user with multiple roles along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLedgerUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerUserWithResponse(userId, requestOptions);
-    }
-
-    /**
-     * Adds a user or updates a user's fields.
-     * 
-     * A JSON merge patch is applied for existing users.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     assignedRoles (Required): [
-     *         String(Administrator/Contributor/Reader) (Required)
-     *     ]
-     *     userId: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     assignedRoles (Required): [
-     *         String(Administrator/Contributor/Reader) (Required)
-     *     ]
-     *     userId: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param userId The user id, either an AAD object ID or certificate fingerprint.
-     * @param userMultipleRoles Details about a Confidential Ledger user with multiple roles.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return details about a Confidential Ledger user along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateLedgerUserWithResponse(String userId, BinaryData userMultipleRoles,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateLedgerUserWithResponse(userId, userMultipleRoles, requestOptions);
-    }
-
-    /**
-     * Gets a user defined endpoint.
-     * 
-     * Returns the user defined endpoint in the ACL instance.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         endpoints (Required): {
-     *             String (Required): {
-     *                 get (Optional): {
-     *                     authn_policies (Required): [
-     *                         Object (Required)
-     *                     ]
-     *                     forwarding_required: String(sometimes/always/never) (Required)
-     *                     interpreter_reuse (Optional): {
-     *                         key: String (Required)
-     *                     }
-     *                     js_function: String (Optional)
-     *                     js_module: String (Optional)
-     *                     mode: String(readwrite/readonly/historical) (Optional)
-     *                     openapi: Object (Optional)
-     *                     openapi_hidden: Boolean (Optional)
-     *                     redirection_strategy: String(none/to_primary/to_backup) (Optional)
-     *                 }
-     *                 put (Optional): (recursive schema, see put above)
-     *                 patch (Optional): (recursive schema, see patch above)
-     *                 delete (Optional): (recursive schema, see delete above)
-     *             }
-     *         }
-     *     }
-     *     modules: Object (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return bundle for the user defined endpoints along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDefinedEndpointWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getUserDefinedEndpointWithResponse(requestOptions);
-    }
-
-    /**
-     * Creates a user defined endpoint.
-     * 
-     * Creates the user defined endpoint in the ACL instance.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         endpoints (Required): {
-     *             String (Required): {
-     *                 get (Optional): {
-     *                     authn_policies (Required): [
-     *                         Object (Required)
-     *                     ]
-     *                     forwarding_required: String(sometimes/always/never) (Required)
-     *                     interpreter_reuse (Optional): {
-     *                         key: String (Required)
-     *                     }
-     *                     js_function: String (Optional)
-     *                     js_module: String (Optional)
-     *                     mode: String(readwrite/readonly/historical) (Optional)
-     *                     openapi: Object (Optional)
-     *                     openapi_hidden: Boolean (Optional)
-     *                     redirection_strategy: String(none/to_primary/to_backup) (Optional)
-     *                 }
-     *                 put (Optional): (recursive schema, see put above)
-     *                 patch (Optional): (recursive schema, see patch above)
-     *                 delete (Optional): (recursive schema, see delete above)
-     *             }
-     *         }
-     *     }
-     *     modules: Object (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param bundle bundle parameter description.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createUserDefinedEndpointWithResponse(BinaryData bundle, RequestOptions requestOptions) {
-        return this.serviceClient.createUserDefinedEndpointWithResponse(bundle, requestOptions);
-    }
-
-    /**
-     * Runtime options for user defined endpoints.
-     * 
-     * It returns the runtime options.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     log_exception_details: Boolean (Optional)
-     *     max_cached_interpreters: Long (Optional)
-     *     max_execution_time_ms: Long (Optional)
-     *     max_heap_bytes: Long (Optional)
-     *     max_stack_bytes: Long (Optional)
-     *     return_exception_details: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return jS runtime options for user defined endpoints and functions along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRuntimeOptionsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getRuntimeOptionsWithResponse(requestOptions);
-    }
-
-    /**
-     * Runtime options for user defined endpoints.
-     * 
-     * Updates the runtime options.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     log_exception_details: Boolean (Optional)
-     *     max_cached_interpreters: Long (Optional)
-     *     max_execution_time_ms: Long (Optional)
-     *     max_heap_bytes: Long (Optional)
-     *     max_stack_bytes: Long (Optional)
-     *     return_exception_details: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     log_exception_details: Boolean (Optional)
-     *     max_cached_interpreters: Long (Optional)
-     *     max_execution_time_ms: Long (Optional)
-     *     max_heap_bytes: Long (Optional)
-     *     max_stack_bytes: Long (Optional)
-     *     return_exception_details: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param jSRuntimeOptions JS runtime options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return jS runtime options for user defined endpoints and functions along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateRuntimeOptionsWithResponse(BinaryData jSRuntimeOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateRuntimeOptionsWithResponse(jSRuntimeOptions, requestOptions);
-    }
-
-    /**
-     * Module for user defined endpoints.
-     * 
-     * It gets the module for the user defined endpoint.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     module: String (Required)
-     *     name: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param moduleName module name of the user defined endpoint.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDefinedEndpointsModuleWithResponse(String moduleName,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getUserDefinedEndpointsModuleWithResponse(moduleName, requestOptions);
-    }
-
-    /**
-     * Retrieves a list of user defined functions present in the Confidential Ledger
-     * 
-     * User defined functions stored in the Confidential Ledger.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     code: String (Required)
-     *     id: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated user defined functions returned in response to a query as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listUserDefinedFunctions(RequestOptions requestOptions) {
-        return this.serviceClient.listUserDefinedFunctions(requestOptions);
-    }
-
-    /**
-     * Deletes a user defined function from the Confidential Ledger.
-     * 
-     * @param functionId Identifies a user defined function.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteUserDefinedFunctionWithResponse(String functionId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteUserDefinedFunctionWithResponse(functionId, requestOptions);
-    }
-
-    /**
-     * Gets a user defined function.
-     * 
-     * Returns the user defined function in the Confidential Ledger.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     code: String (Required)
-     *     id: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param functionId Identifies a user defined function.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a user defined function in the ledger along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDefinedFunctionWithResponse(String functionId, RequestOptions requestOptions) {
-        return this.serviceClient.getUserDefinedFunctionWithResponse(functionId, requestOptions);
-    }
-
-    /**
-     * Creates a user defined function.
-     * 
-     * Creates the user defined function in the Confidential Ledger.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     code: String (Required)
-     *     id: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     code: String (Required)
-     *     id: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param functionId Identifies a user defined function.
-     * @param userDefinedFunction Specify a user defined function of a Confidential Ledger.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a user defined function in the ledger along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createUserDefinedFunctionWithResponse(String functionId, BinaryData userDefinedFunction,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createUserDefinedFunctionWithResponse(functionId, userDefinedFunction,
-            requestOptions);
-    }
-
-    /**
-     * Executes a user defined function.
-     * 
-     * Executes the user defined function in the Confidential Ledger.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     arguments (Optional): [
-     *         String (Optional)
-     *     ]
-     *     exportedFunctionName: String (Optional)
-     *     runtimeOptions (Optional): {
-     *         log_exception_details: Boolean (Optional)
-     *         max_cached_interpreters: Long (Optional)
-     *         max_execution_time_ms: Long (Optional)
-     *         max_heap_bytes: Long (Optional)
-     *         max_stack_bytes: Long (Optional)
-     *         return_exception_details: Boolean (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     error (Optional): {
-     *         message: String (Optional)
-     *     }
-     *     result (Optional): {
-     *         returnValue: String (Optional)
-     *     }
-     *     status: String(Succeeded/Failed) (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param functionId Identifies a user defined function.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of a user defined function execution along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> executeUserDefinedFunctionWithResponse(String functionId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.executeUserDefinedFunctionWithResponse(functionId, requestOptions);
-    }
-
-    /**
-     * Gets role actions for user defined roles
-     * 
-     * user defined roles allow users to define and manage app specific AuthZ policy.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         roleName: String (Optional)
-     *         roleActions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     * ]
-     * }
-     * </pre>
-     * 
-     * @param roleName user defined role name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return definition for roles along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUserDefinedRoleWithResponse(String roleName, RequestOptions requestOptions) {
-        return this.serviceClient.getUserDefinedRoleWithResponse(roleName, requestOptions);
-    }
-
-    /**
-     * Creates new roles and their actions
-     * 
-     * User defined roles allow users to define and manage app specific AuthZ policy.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         roleName: String (Optional)
-     *         roleActions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     * ]
-     * }
-     * </pre>
-     * 
-     * @param roles user defined role.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createUserDefinedRoleWithResponse(BinaryData roles, RequestOptions requestOptions) {
-        return this.serviceClient.createUserDefinedRoleWithResponse(roles, requestOptions);
-    }
-
-    /**
-     * Patch replaces the allowed action on existing roles,if the desire is to remove an existing action, the role must
-     * be deleted and recreated.
-     * 
-     * User defined roles allow users to define and manage app specific AuthZ policy.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * [
-     *      (Required){
-     *         roleName: String (Optional)
-     *         roleActions (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     * ]
-     * }
-     * </pre>
-     * 
-     * @param roles user defined role.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateUserDefinedRoleWithResponse(BinaryData roles, RequestOptions requestOptions) {
-        return this.serviceClient.updateUserDefinedRoleWithResponse(roles, requestOptions);
-    }
-
-    /**
-     * Deletes user defined roles
-     * 
-     * A user defined role allows the users to create and manage their own role actions using the API.
-     * 
-     * @param roleName user defined role name.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteUserDefinedRoleWithResponse(String roleName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteUserDefinedRoleWithResponse(roleName, requestOptions);
+        return this.client.createOrUpdateUserWithResponse(userId, userDetails, requestOptions).block();
     }
 }
