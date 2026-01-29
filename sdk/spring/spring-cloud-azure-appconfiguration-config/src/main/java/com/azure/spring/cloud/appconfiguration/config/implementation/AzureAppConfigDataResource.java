@@ -47,6 +47,9 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     /** The interval at which configuration should be refreshed from the store. */
     private final Duration refreshInterval;
 
+    /** The timeout duration for retry attempts during startup. */
+    private final Duration startupTimeout;
+
     /**
      * Constructs a new AzureAppConfigDataResource with the specified configuration store settings.
      * 
@@ -66,6 +69,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.profiles = profiles;
         this.isRefresh = !startup;
         this.refreshInterval = refreshInterval;
+        this.startupTimeout = configStore.getStartupTimeout();
     }
 
     /**
@@ -147,5 +151,14 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
      */
     public Duration getRefreshInterval() {
         return refreshInterval;
+    }
+
+    /**
+     * Gets the timeout duration for retry attempts during startup.
+     * 
+     * @return the startup timeout duration
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
     }
 }

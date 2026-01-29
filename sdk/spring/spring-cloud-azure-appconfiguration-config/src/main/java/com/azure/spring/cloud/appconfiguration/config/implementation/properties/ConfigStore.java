@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.properties
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,11 @@ public final class ConfigStore {
      * across multiple endpoints.
      */
     private boolean loadBalancingEnabled = false;
+
+    /**
+     * The timeout duration for retry attempts during startup.
+     */
+    private Duration startupTimeout = Duration.ofSeconds(100);
 
     /**
      * @return the endpoint
@@ -251,6 +257,20 @@ public final class ConfigStore {
     }
 
     /**
+     * @return the startupTimeout
+     */
+    public Duration getStartupTimeout() {
+        return startupTimeout;
+    }
+
+    /**
+     * @param startupTimeout the startupTimeout to set
+     */
+    public void setStartupTimeout(Duration startupTimeout) {
+        this.startupTimeout = startupTimeout;
+    }
+
+    /**
      * @throws IllegalStateException Connection String URL endpoint is invalid
      */
     @PostConstruct
@@ -263,30 +283,33 @@ public final class ConfigStore {
             selectedKeys.validateAndInit();
         }
 
+        if (startupTimeout.getSeconds() < 30 || startupTimeout.getSeconds() > 600) {
+            throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
+        }
+
         if (StringUtils.hasText(connectionString)) {
-            String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString));
+            String parsedEndpoint = AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connectionString);
             try {
                 // new URI is used to validate the endpoint as a valid URI
-                new URI(endpoint);
-                this.endpoint = endpoint;
+                new URI(parsedEndpoint);
+                this.endpoint = parsedEndpoint;
             } catch (URISyntaxException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
-        } else if (connectionStrings.size() > 0) {
+        } else if (!connectionStrings.isEmpty()) {
             for (String connection : connectionStrings) {
-
-                String endpoint = (AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection));
+                String parsedEndpoint = AppConfigurationReplicaClientsBuilder.getEndpointFromConnectionString(connection);
                 try {
                     // new URI is used to validate the endpoint as a valid URI
-                    new URI(endpoint).toURL();
+                    new URI(parsedEndpoint).toURL();
                     if (!StringUtils.hasText(this.endpoint)) {
-                        this.endpoint = endpoint;
+                        this.endpoint = parsedEndpoint;
                     }
                 } catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
                     throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
                 }
             }
-        } else if (endpoints.size() > 0) {
+        } else if (!endpoints.isEmpty()) {
             endpoint = endpoints.get(0);
         }
 
