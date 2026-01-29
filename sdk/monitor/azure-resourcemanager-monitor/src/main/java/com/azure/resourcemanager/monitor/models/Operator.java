@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The criteria operator. Previously undocumented values might be returned.
+ * the criteria operator.
  */
 public final class Operator extends ExpandableStringEnum<Operator> {
     /**
