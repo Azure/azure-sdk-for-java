@@ -230,9 +230,10 @@ public class KeyVaultClient {
             } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
                 LOGGER.info("Using provided access token for authentication");
                 // Create an AccessToken object from the provided token string
-                // Set expiration to 1 hour (3600 seconds) as a reasonable default since we don't know the actual expiration
-                // The token will be treated as expired after 1 hour and the caller will need to provide a new one
-                result = new AccessToken(providedAccessToken, 3600);
+                // Set expiration to a very large value since we cannot refresh provided tokens.
+                // When the token actually expires, Azure will return authentication errors,
+                // which will inform the user to provide a new token.
+                result = new AccessToken(providedAccessToken, Long.MAX_VALUE / 1000);
             } else if (tenantId != null && clientId != null && clientSecret != null) {
                 LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
