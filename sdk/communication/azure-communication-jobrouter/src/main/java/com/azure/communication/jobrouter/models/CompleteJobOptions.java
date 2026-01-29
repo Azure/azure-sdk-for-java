@@ -5,26 +5,23 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request payload for completing jobs.
  */
 @Fluent
-public final class CompleteJobOptions implements JsonSerializable<CompleteJobOptions> {
+public final class CompleteJobOptions {
 
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
     @Generated
+    @JsonProperty(value = "note")
     private String note;
 
     /**
-     * Creates an instance of CompleteJobOptions class.
+     * Creates an instance of CompleteJobOptionsInternal class.
      */
     @Generated
     public CompleteJobOptions() {
@@ -44,47 +41,11 @@ public final class CompleteJobOptions implements JsonSerializable<CompleteJobOpt
      * Set the note property: A note that will be appended to a job's Notes collection with the current timestamp.
      *
      * @param note the note value to set.
-     * @return the CompleteJobOptions object itself.
+     * @return the CompleteJobOptionsInternal object itself.
      */
     @Generated
     public CompleteJobOptions setNote(String note) {
         this.note = note;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("note", this.note);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CompleteJobOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CompleteJobOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CompleteJobOptions.
-     */
-    @Generated
-    public static CompleteJobOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CompleteJobOptions deserializedCompleteJobOptions = new CompleteJobOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("note".equals(fieldName)) {
-                    deserializedCompleteJobOptions.note = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedCompleteJobOptions;
-        });
     }
 }
