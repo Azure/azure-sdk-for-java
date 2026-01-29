@@ -5,80 +5,61 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Attestation request for Intel SGX enclaves.
- */
+/** Attestation request for Intel SGX enclaves. */
 @Fluent
-public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgxEnclaveRequest> {
+public final class AttestSgxEnclaveRequest {
     /*
      * Quote of the enclave to be attested
      */
-    @Generated
+    @JsonProperty(value = "quote")
     private Base64Url quote;
 
     /*
-     * Runtime data provided by the enclave at the time of quote generation. The MAA will verify that the first 32 bytes
-     * of the report_data field of the quote contains the SHA256 hash of the decoded "data" field of the runtime data.
+     * Runtime data provided by the enclave at the time of quote generation.
+     * The MAA will verify that the first 32 bytes of the report_data field of
+     * the quote contains the SHA256 hash of the decoded "data" field of the
+     * runtime data.
      */
-    @Generated
+    @JsonProperty(value = "runtimeData")
     private RuntimeData runtimeData;
 
     /*
-     * Initialization data provided when the enclave is created. MAA will verify that the init data was known to the
-     * enclave. Note that InitTimeData is invalid for CoffeeLake processors.
+     * Initialization data provided when the enclave is created. MAA will
+     * verify that the init data was known to the enclave. Note that
+     * InitTimeData is invalid for CoffeeLake processors.
      */
-    @Generated
+    @JsonProperty(value = "initTimeData")
     private InitTimeData initTimeData;
 
     /*
-     * Attest against the provided draft policy. Note that the resulting token cannot be validated.
+     * Attest against the provided draft policy. Note that the resulting token
+     * cannot be validated.
      */
-    @Generated
+    @JsonProperty(value = "draftPolicyForAttestation")
     private String draftPolicyForAttestation;
-
-    /*
-     * Nonce for incoming request - emitted in the generated attestation token
-     */
-    @Generated
-    private String nonce;
-
-    /**
-     * Creates an instance of AttestSgxEnclaveRequest class.
-     */
-    @Generated
-    public AttestSgxEnclaveRequest() {
-    }
 
     /**
      * Get the quote property: Quote of the enclave to be attested.
-     * 
+     *
      * @return the quote value.
      */
-    @Generated
     public byte[] getQuote() {
         if (this.quote == null) {
-            return null;
+            return new byte[0];
         }
         return this.quote.decodedBytes();
     }
 
     /**
      * Set the quote property: Quote of the enclave to be attested.
-     * 
+     *
      * @param quote the quote value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    @Generated
     public AttestSgxEnclaveRequest setQuote(byte[] quote) {
         if (quote == null) {
             this.quote = null;
@@ -92,10 +73,9 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * Get the runtimeData property: Runtime data provided by the enclave at the time of quote generation. The MAA will
      * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
      * "data" field of the runtime data.
-     * 
+     *
      * @return the runtimeData value.
      */
-    @Generated
     public RuntimeData getRuntimeData() {
         return this.runtimeData;
     }
@@ -104,11 +84,10 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
      * Set the runtimeData property: Runtime data provided by the enclave at the time of quote generation. The MAA will
      * verify that the first 32 bytes of the report_data field of the quote contains the SHA256 hash of the decoded
      * "data" field of the runtime data.
-     * 
+     *
      * @param runtimeData the runtimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    @Generated
     public AttestSgxEnclaveRequest setRuntimeData(RuntimeData runtimeData) {
         this.runtimeData = runtimeData;
         return this;
@@ -117,10 +96,9 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /**
      * Get the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that the
      * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
-     * 
+     *
      * @return the initTimeData value.
      */
-    @Generated
     public InitTimeData getInitTimeData() {
         return this.initTimeData;
     }
@@ -128,11 +106,10 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /**
      * Set the initTimeData property: Initialization data provided when the enclave is created. MAA will verify that the
      * init data was known to the enclave. Note that InitTimeData is invalid for CoffeeLake processors.
-     * 
+     *
      * @param initTimeData the initTimeData value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    @Generated
     public AttestSgxEnclaveRequest setInitTimeData(InitTimeData initTimeData) {
         this.initTimeData = initTimeData;
         return this;
@@ -141,10 +118,9 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /**
      * Get the draftPolicyForAttestation property: Attest against the provided draft policy. Note that the resulting
      * token cannot be validated.
-     * 
+     *
      * @return the draftPolicyForAttestation value.
      */
-    @Generated
     public String getDraftPolicyForAttestation() {
         return this.draftPolicyForAttestation;
     }
@@ -152,41 +128,18 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
     /**
      * Set the draftPolicyForAttestation property: Attest against the provided draft policy. Note that the resulting
      * token cannot be validated.
-     * 
+     *
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return the AttestSgxEnclaveRequest object itself.
      */
-    @Generated
     public AttestSgxEnclaveRequest setDraftPolicyForAttestation(String draftPolicyForAttestation) {
         this.draftPolicyForAttestation = draftPolicyForAttestation;
         return this;
     }
 
     /**
-     * Get the nonce property: Nonce for incoming request - emitted in the generated attestation token.
-     * 
-     * @return the nonce value.
-     */
-    @Generated
-    public String getNonce() {
-        return this.nonce;
-    }
-
-    /**
-     * Set the nonce property: Nonce for incoming request - emitted in the generated attestation token.
-     * 
-     * @param nonce the nonce value to set.
-     * @return the AttestSgxEnclaveRequest object itself.
-     */
-    @Generated
-    public AttestSgxEnclaveRequest setNonce(String nonce) {
-        this.nonce = nonce;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -196,56 +149,5 @@ public final class AttestSgxEnclaveRequest implements JsonSerializable<AttestSgx
         if (getInitTimeData() != null) {
             getInitTimeData().validate();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("quote", Objects.toString(this.quote, null));
-        jsonWriter.writeJsonField("runtimeData", this.runtimeData);
-        jsonWriter.writeJsonField("initTimeData", this.initTimeData);
-        jsonWriter.writeStringField("draftPolicyForAttestation", this.draftPolicyForAttestation);
-        jsonWriter.writeStringField("nonce", this.nonce);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AttestSgxEnclaveRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AttestSgxEnclaveRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AttestSgxEnclaveRequest.
-     */
-    @Generated
-    public static AttestSgxEnclaveRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AttestSgxEnclaveRequest deserializedAttestSgxEnclaveRequest = new AttestSgxEnclaveRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("quote".equals(fieldName)) {
-                    deserializedAttestSgxEnclaveRequest.quote
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else if ("runtimeData".equals(fieldName)) {
-                    deserializedAttestSgxEnclaveRequest.runtimeData = RuntimeData.fromJson(reader);
-                } else if ("initTimeData".equals(fieldName)) {
-                    deserializedAttestSgxEnclaveRequest.initTimeData = InitTimeData.fromJson(reader);
-                } else if ("draftPolicyForAttestation".equals(fieldName)) {
-                    deserializedAttestSgxEnclaveRequest.draftPolicyForAttestation = reader.getString();
-                } else if ("nonce".equals(fieldName)) {
-                    deserializedAttestSgxEnclaveRequest.nonce = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAttestSgxEnclaveRequest;
-        });
     }
 }
