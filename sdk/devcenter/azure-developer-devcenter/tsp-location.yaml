@@ -1,5 +1,4 @@
 directory: specification/devcenter/DevCenter
-# commit on branch java_temp_fix_DevCenter
-commit: d636ed97d5f61ce65ffb5ff18dc97a4dceffcd83
+commit: d85dc63616d14d9790b224d46aad024e3461955b
 repo: Azure/azure-rest-api-specs
 cleanup: true
