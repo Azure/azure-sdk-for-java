@@ -27,15 +27,15 @@ try {
     git fetch --all --prune
 
     # Checkout a branch to work on based off of main in upstream.
-    if ($currentBranchName -ne $branchName) {
-        Write-Host "git checkout -b $branchName $remoteName/main"
-        git checkout -b $branchName $remoteName/main
-
-        if ($LASTEXITCODE -ne 0) {
-            LogError "Could not checkout branch $branchName, please check if it already exists and delete as necessary. Exiting..."
-            exit $LASTEXITCODE
-        }
-    }
+#     if ($currentBranchName -ne $branchName) {
+#         Write-Host "git checkout -b $branchName $remoteName/main"
+#         git checkout -b $branchName $remoteName/main
+#
+#         if ($LASTEXITCODE -ne 0) {
+#             LogError "Could not checkout branch $branchName, please check if it already exists and delete as necessary. Exiting..."
+#             exit $LASTEXITCODE
+#         }
+#     }
 
     # Add the updated YAML file.
     Write-Host "git add -A"
