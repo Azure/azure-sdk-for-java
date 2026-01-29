@@ -3,24 +3,23 @@
 
 package com.azure.security.keyvault.jca.implementation;
 
+import com.azure.security.keyvault.jca.PropertyConvertorUtils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.security.cert.Certificate;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,7 +39,7 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 0);
+            assertEquals(0, result.size());
         }
     }
 
@@ -64,7 +63,7 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 1);
+            assertEquals(1, result.size());
             assertTrue(result.contains("fakeCertificateItem1"));
         }
     }
@@ -104,42 +103,10 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 3);
+            assertEquals(3, result.size());
             assertTrue(result
                 .containsAll(Arrays.asList("fakeCertificateItem1", "fakeCertificateItem2", "fakeCertificateItem3")));
         }
-    }
-
-    @Test
-    @Disabled
-    public void testGetAliases() {
-        List<String> result = getKeyVaultClient().getAliases();
-        assertNotNull(result);
-    }
-
-    @Test
-    @Disabled
-    public void testGetCertificate() {
-        Certificate certificate = getKeyVaultClient().getCertificate("myalias");
-        assertNotNull(certificate);
-    }
-
-    @Test
-    @Disabled
-    public void testGetKey() {
-        assertNull(getKeyVaultClient().getKey("myalias", null));
-    }
-
-    private KeyVaultClient getKeyVaultClient() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
-
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, null,
-            disableChallengeResourceVerification);
     }
 
     @Test
@@ -270,5 +237,35 @@ public class KeyVaultClientTest {
             assertEquals(1, result.size());
             assertTrue(result.contains("fakeCertificateItem"));
         }
+    }
+
+    @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+    @Test
+    public void testKeuVaultClients() {
+        String accessToken = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ACCESS_TOKEN");
+        KeyVaultClient keyVaultClient;
+        if (accessToken != null && !accessToken.isEmpty()) {
+            keyVaultClient = new KeyVaultClient(
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                null,
+                null,
+                null,
+                null,
+                accessToken,
+                false);
+
+        } else {
+            keyVaultClient = new KeyVaultClient(
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        }
+        String certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+
+        assertTrue(keyVaultClient.getAliases().contains(certificateName));
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
+        assertNotNull(keyVaultClient.getCertificateChain(certificateName));
+        assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 }
