@@ -4,6 +4,7 @@
 
 #### Features Added
 * Initial release of Spark 4.0 connector with Scala 2.13 support
+* Added support for throughput bucket. - See [47856](https://github.com/Azure/azure-sdk-for-java/pull/47856)
 
 #### Breaking Changes
 
