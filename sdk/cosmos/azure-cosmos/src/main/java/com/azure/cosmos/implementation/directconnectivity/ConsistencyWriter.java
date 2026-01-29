@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -110,6 +111,40 @@ public class ConsistencyWriter {
         this.sessionRetryOptions = sessionRetryOptions;
     }
 
+    /**
+     * Constructor for ConsistencyWriter with StoreReader parameter for dependency injection in unit tests.
+     *
+     * @param diagnosticsClientContext the diagnostics client context used to capture diagnostics for requests.
+     * @param addressSelector the address selector used to resolve physical replica addresses for requests.
+     * @param sessionContainer the session container used for managing and maintaining session tokens.
+     * @param transportClient the transport client used to send requests to the backend replicas.
+     * @param authorizationTokenProvider the authorization token provider used to authenticate requests.
+     * @param serviceConfigReader the gateway service configuration reader providing service configuration settings.
+     * @param useMultipleWriteLocations flag indicating whether multiple write locations are enabled for the account.
+     * @param reader the StoreReader instance to use, injected for testing instead of creating a new StoreReader.
+     * @param sessionRetryOptions the session retry options used to handle session token mismatch retries.
+     */
+    public ConsistencyWriter(
+        DiagnosticsClientContext diagnosticsClientContext,
+        AddressSelector addressSelector,
+        ISessionContainer sessionContainer,
+        TransportClient transportClient,
+        IAuthorizationTokenProvider authorizationTokenProvider,
+        GatewayServiceConfigurationReader serviceConfigReader,
+        boolean useMultipleWriteLocations,
+        StoreReader reader,
+        SessionRetryOptions sessionRetryOptions) {
+        this.diagnosticsClientContext = diagnosticsClientContext;
+        this.transportClient = transportClient;
+        this.addressSelector = addressSelector;
+        this.sessionContainer = sessionContainer;
+        this.authorizationTokenProvider = authorizationTokenProvider;
+        this.useMultipleWriteLocations = useMultipleWriteLocations;
+        this.serviceConfigReader = serviceConfigReader;
+        this.storeReader = reader;
+        this.sessionRetryOptions = sessionRetryOptions;
+    }
+
     public Mono<StoreResponse> writeAsync(
         RxDocumentServiceRequest entity,
         TimeoutHelper timeout,
@@ -174,7 +209,7 @@ public class ConsistencyWriter {
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
 
-        if (request.requestContext.globalStrongWriteResponse == null) {
+        if (request.requestContext.cachedWriteResponse == null) {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
@@ -304,18 +339,17 @@ public class ConsistencyWriter {
                 .flatMap(v -> {
 
                     if (!v) {
-                        logger.info("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
+                        logger.warn(this.getErrorMessageForBarrierRequest(request));
 
                         if (cosmosExceptionValueHolder.get() != null) {
                             return Mono.error(cosmosExceptionValueHolder.get());
                         }
 
-                        return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
-                            HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
+                        return Mono.error(getGoneExceptionForBarrierRequest(request));
                     }
 
                     return Mono.just(request);
-                })).map(req -> req.requestContext.globalStrongWriteResponse);
+                })).map(req -> req.requestContext.cachedWriteResponse);
         }
     }
 
@@ -339,7 +373,9 @@ public class ConsistencyWriter {
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
 
         try {
-            if (ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response)) {
+            BarrierType barrierType = getBarrierRequestType(request, response);
+            request.requestContext.setBarrierType(barrierType);
+            if (barrierType == BarrierType.GLOBAL_STRONG_WRITE || barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT) {
                 Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);
                 Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1L);
 
@@ -351,7 +387,7 @@ public class ConsistencyWriter {
                     throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
-                request.requestContext.globalStrongWriteResponse = response;
+                request.requestContext.cachedWriteResponse = response;
                 request.requestContext.globalCommittedSelectedLSN = lsn.v;
 
                 //if necessary we would have already refreshed cache by now.
@@ -372,25 +408,23 @@ public class ConsistencyWriter {
 
                         return barrierWait.flatMap(res -> {
                             if (!res) {
-                                logger.error("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}",
-                                    request.requestContext.globalCommittedSelectedLSN);
+                                logger.error(getErrorMessageForBarrierRequest(request));
 
                                 if (cosmosExceptionValueHolder.get() != null) {
                                     return Mono.error(cosmosExceptionValueHolder.get());
                                 }
 
                                 // Reactor doesn't allow throwing checked exception
-                                return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
-                                    HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
+                                return Mono.error(getGoneExceptionForBarrierRequest(request));
                             }
 
-                            return Mono.just(request.requestContext.globalStrongWriteResponse);
+                            return Mono.just(request.requestContext.cachedWriteResponse);
                         });
 
                     });
 
                 } else {
-                    return Mono.just(request.requestContext.globalStrongWriteResponse);
+                    return Mono.just(request.requestContext.cachedWriteResponse);
                 }
             } else {
                 return Mono.just(response);
@@ -402,7 +436,64 @@ public class ConsistencyWriter {
         }
     }
 
-    private Mono<Boolean> waitForWriteBarrierAsync(
+    private String getErrorMessageForBarrierRequest(RxDocumentServiceRequest request) {
+        if (request.requestContext.getBarrierType() == BarrierType.N_REGION_SYNCHRONOUS_COMMIT) {
+            return String.format("ConsistencyWriter: Write barrier has not been met for n region synchronous commit request. SelectedGlobalCommittedLsn: %s",
+                request.requestContext.globalCommittedSelectedLSN);
+        }
+        return String.format("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: %s",
+            request.requestContext.globalCommittedSelectedLSN);
+    }
+
+    private GoneException getGoneExceptionForBarrierRequest(RxDocumentServiceRequest request){
+        if (request.requestContext.getBarrierType() == BarrierType.N_REGION_SYNCHRONOUS_COMMIT) {
+            return new GoneException(RMResources.NRegionSyncCommitBarrierNotMet,
+                HttpConstants.SubStatusCodes.GLOBAL_N_REGION_COMMIT_WRITE_BARRIER_NOT_MET);
+        }
+        return new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
+            HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET);
+    }
+
+    BarrierType getBarrierRequestType(RxDocumentServiceRequest request, StoreResponse response) {
+        if (isGlobalStrongBarrierRequest(request, response)) {
+            return BarrierType.GLOBAL_STRONG_WRITE;
+        }
+        if (isNRegionSynchronousCommitBarrierRequest(request, response)) {
+            return BarrierType.N_REGION_SYNCHRONOUS_COMMIT;
+        }
+        return BarrierType.NONE;
+    }
+
+    /**
+     * Checks if the request is a Global Strong Write barrier request.
+     */
+    private boolean isGlobalStrongBarrierRequest(RxDocumentServiceRequest request, StoreResponse response) {
+        return ReplicatedResourceClient.isGlobalStrongEnabled() && this.isGlobalStrongRequest(request, response);
+    }
+
+    /**
+     * Checks if the request is a NRegion Synchronous Commit barrier request.
+     */
+    private boolean isNRegionSynchronousCommitBarrierRequest(RxDocumentServiceRequest request, StoreResponse response) {
+        String globalCommittedGlsnHeader =
+            response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN);
+        if (!request.requestContext.getNRegionSynchronousCommitEnabled()
+            || this.useMultipleWriteLocations
+            || StringUtils.isEmpty(globalCommittedGlsnHeader)
+            || response.getNumberOfReadRegions() <= 0) {
+            return false;
+        }
+        try {
+            long globalCommittedGlsnValue = Long.parseLong(globalCommittedGlsnHeader);
+            return globalCommittedGlsnValue != -1;
+        } catch (NumberFormatException e) {
+            // Malformed header value: treating as no barrier instead of throwing.
+            return false;
+        }
+    }
+
+    // visibility set to package-private for testing
+    Mono<Boolean> waitForWriteBarrierAsync(
         RxDocumentServiceRequest barrierRequest,
         long selectedGlobalCommittedLsn,
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
@@ -502,6 +593,9 @@ public class ConsistencyWriter {
         }
 
         if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
+            globalCommittedLsn.v = Long.parseLong(headerValue);
+        }
+        else if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != null) {
             globalCommittedLsn.v = Long.parseLong(headerValue);
         }
     }
