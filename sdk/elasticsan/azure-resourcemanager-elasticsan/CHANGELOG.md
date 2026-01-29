@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2025-11-03)
+## 1.2.0 (2026-01-29)
 
 - Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. (missing-service-description) Add service description. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
