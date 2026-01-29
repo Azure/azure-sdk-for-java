@@ -570,7 +570,7 @@ public final class ContainerRegistryContentAsyncClient {
         return data.flatMapSequential(chunk -> {
             BinaryData chunkData = BinaryData.fromByteBuffer(chunk);
             return blobsImpl.uploadChunkWithResponseAsync(locationRef.get(), chunkData, chunkData.getLength(), context)
-                .map(response -> getLocation(response));
+                .map(UtilsImpl::getLocation);
         }, 1, 1).doOnNext(locationRef::set).last();
     }
 

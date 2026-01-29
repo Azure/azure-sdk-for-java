@@ -34,8 +34,8 @@ public final class VolumesImpl implements Volumes {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Volume> list(Context context) {
-        PagedIterable<VolumeInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Volume> list(Integer top, String skipToken, Context context) {
+        PagedIterable<VolumeInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class VolumesImpl implements Volumes {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Volume> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<VolumeInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Volume> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<VolumeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 

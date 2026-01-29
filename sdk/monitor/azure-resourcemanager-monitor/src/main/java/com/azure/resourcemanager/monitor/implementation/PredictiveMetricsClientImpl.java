@@ -56,7 +56,7 @@ public final class PredictiveMetricsClientImpl implements PredictiveMetricsClien
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientPredict")
+    @ServiceInterface(name = "MonitorClientPredictiveMetrics")
     public interface PredictiveMetricsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}/predictiveMetrics")

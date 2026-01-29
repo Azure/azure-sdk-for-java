@@ -12,8 +12,8 @@ public final class ManagedVMSizesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVMSizesResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"size\":\"vpk\"},\"id\":\"dcvd\",\"name\":\"vo\",\"type\":\"sotbob\"},{\"properties\":{\"size\":\"pcjwv\"},\"id\":\"dldwmgxc\",\"name\":\"slpmutwuo\",\"type\":\"rpkhjwn\"},{\"properties\":{\"size\":\"sluicpdggkzz\"},\"id\":\"mbmpaxmodfvuefy\",\"name\":\"bpfvm\",\"type\":\"hrfou\"}],\"nextLink\":\"taakc\"}")
+            "{\"value\":[{\"properties\":{\"size\":\"s\"},\"id\":\"sytgadgvraea\",\"name\":\"e\",\"type\":\"zar\"},{\"properties\":{\"size\":\"q\"},\"id\":\"ijfqkacewiipfp\",\"name\":\"ji\",\"type\":\"wifto\"},{\"properties\":{\"size\":\"vpuvks\"},\"id\":\"lsa\",\"name\":\"ynfs\",\"type\":\"ljphuopxodl\"},{\"properties\":{\"size\":\"ntorzihleosjswsr\"},\"id\":\"lyzrpzbchckqqzqi\",\"name\":\"iysui\",\"type\":\"ynkedyatrwyhqmib\"}],\"nextLink\":\"hwit\"}")
             .toObject(ManagedVMSizesResult.class);
-        Assertions.assertEquals("taakc", model.nextLink());
+        Assertions.assertEquals("hwit", model.nextLink());
     }
 }

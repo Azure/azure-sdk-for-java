@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class NamespacesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/CreateOrReplace_Namespace_With_Endpoints.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
      */
     /**
      * Sample code: CreateOrReplace_Namespace_With_Endpoints.

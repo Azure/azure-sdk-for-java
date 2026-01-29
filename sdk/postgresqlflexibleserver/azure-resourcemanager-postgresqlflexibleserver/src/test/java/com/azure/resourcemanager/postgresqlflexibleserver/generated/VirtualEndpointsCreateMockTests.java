@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +23,7 @@ public final class VirtualEndpointsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"id\":\"cmmzrrs\",\"name\":\"biwsd\",\"type\":\"pxqwo\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"jrmmuabwib\",\"jogjonmc\"],\"virtualEndpoints\":[\"oyzbamwineofvf\",\"akpoldtvevbo\",\"lz\",\"zjknyuxg\"]}}";
+            = "{\"id\":\"jszlb\",\"name\":\"mnlzijiufehgmvf\",\"type\":\"wyvq\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"iylylyfw\",\"zutgqztwhghmupg\"],\"virtualEndpoints\":[\"tcdxabbujftaben\",\"bklqpxz\",\"cafeddw\",\"nlzafwxudgnh\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VirtualEndpointsCreateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VirtualEndpointResource response = manager.virtualEndpoints()
-            .define("hulrtywikdmhla")
-            .withExistingFlexibleServer("c", "v")
+        VirtualEndpoint response = manager.virtualEndpoints()
+            .define("pt")
+            .withExistingFlexibleServer("abzoghktdpyczhco", "ocnhzqrottjzcfyj")
             .withEndpointType(VirtualEndpointType.READ_WRITE)
-            .withMembers(Arrays.asList("mqjch"))
+            .withMembers(Arrays.asList("psjoqcjenk", "hf"))
             .create();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("jrmmuabwib", response.members().get(0));
+        Assertions.assertEquals("iylylyfw", response.members().get(0));
     }
 }

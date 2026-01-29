@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * userActivity.
+ * Represents an user activity.
  */
 @Fluent
 public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {

@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * timeOffRequest.
+ * Represents a time off request.
  */
 @Fluent
 public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleChangeRequest {

@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * organization
- * 
+ * Represents an organization.
+ * <p>
  * The organization resource represents an instance of global settings and resources which operate and are provisioned
  * at the tenant-level.
  */

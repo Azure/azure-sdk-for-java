@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * driveItem.
+ * Represents a drive item.
  */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {

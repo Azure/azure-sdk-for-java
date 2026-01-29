@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * itemActivityStat.
+ * Represents an item activity stat.
  */
 @Fluent
 public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {

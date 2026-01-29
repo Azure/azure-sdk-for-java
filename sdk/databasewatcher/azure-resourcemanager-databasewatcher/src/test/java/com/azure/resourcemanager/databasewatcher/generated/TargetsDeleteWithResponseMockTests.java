@@ -27,8 +27,7 @@ public final class TargetsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.targets()
-            .deleteWithResponse("ttdumorppxebmnzb", "bhjpglkfgohdne", "el", com.azure.core.util.Context.NONE);
+        manager.targets().deleteWithResponse("v", "slynqwwnc", "zzhxgktrm", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 
 /**
  * Samples for AssociationsInterface Update.
@@ -26,9 +25,9 @@ public final class AssociationsInterfaceUpdateSamples {
             .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .withAssociationType(AssociationType.SUBNETS)
+            .withSubnet(new AssociationSubnetUpdate().withId(
+                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .apply();
     }
 }

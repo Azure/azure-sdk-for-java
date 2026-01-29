@@ -216,6 +216,16 @@ public interface Registry extends GroupableResource<ContainerRegistryManager, Re
              * @return the next stage of the definition
              */
             WithCreate withRegistryNameAsAdminUser();
+
+            /**
+             * Disable admin user.
+             *
+             * @return the next stage of the definition
+             */
+            default WithCreate withoutRegistryNameAsAdminUser() {
+                throw new UnsupportedOperationException(
+                    "[withoutRegistryNameAsAdminUser()] is not supported in " + getClass());
+            }
         }
 
         /** The stage of the container registry definition allowing to add or remove a webhook. */

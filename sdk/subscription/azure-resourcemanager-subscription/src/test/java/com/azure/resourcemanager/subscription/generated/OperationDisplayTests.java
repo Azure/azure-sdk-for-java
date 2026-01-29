@@ -11,21 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model
-            = BinaryData.fromString("{\"provider\":\"ftyxolniw\",\"resource\":\"cukjf\",\"operation\":\"iawxklry\"}")
-                .toObject(OperationDisplay.class);
-        Assertions.assertEquals("ftyxolniw", model.provider());
-        Assertions.assertEquals("cukjf", model.resource());
-        Assertions.assertEquals("iawxklry", model.operation());
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"ktsizntocipaou\",\"resource\":\"psqucmpoyf\",\"operation\":\"fogknygjofjdde\",\"description\":\"rd\"}")
+            .toObject(OperationDisplay.class);
+        Assertions.assertEquals("ktsizntocipaou", model.provider());
+        Assertions.assertEquals("psqucmpoyf", model.resource());
+        Assertions.assertEquals("fogknygjofjdde", model.operation());
+        Assertions.assertEquals("rd", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model
-            = new OperationDisplay().withProvider("ftyxolniw").withResource("cukjf").withOperation("iawxklry");
+        OperationDisplay model = new OperationDisplay().withProvider("ktsizntocipaou")
+            .withResource("psqucmpoyf")
+            .withOperation("fogknygjofjdde")
+            .withDescription("rd");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("ftyxolniw", model.provider());
-        Assertions.assertEquals("cukjf", model.resource());
-        Assertions.assertEquals("iawxklry", model.operation());
+        Assertions.assertEquals("ktsizntocipaou", model.provider());
+        Assertions.assertEquals("psqucmpoyf", model.resource());
+        Assertions.assertEquals("fogknygjofjdde", model.operation());
+        Assertions.assertEquals("rd", model.description());
     }
 }

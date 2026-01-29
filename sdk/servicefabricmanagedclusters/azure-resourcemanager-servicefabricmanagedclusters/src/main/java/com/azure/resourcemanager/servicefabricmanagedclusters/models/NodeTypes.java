@@ -285,8 +285,9 @@ public interface NodeTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters);
 
     /**
@@ -300,8 +301,9 @@ public interface NodeTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context);
 
     /**
@@ -314,8 +316,9 @@ public interface NodeTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters);
 
     /**
@@ -329,8 +332,9 @@ public interface NodeTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context);
 
     /**

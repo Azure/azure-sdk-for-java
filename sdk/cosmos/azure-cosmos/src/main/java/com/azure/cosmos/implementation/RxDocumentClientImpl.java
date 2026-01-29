@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
@@ -190,6 +191,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+
     private static final String tempMachineId = "uuid:" + UUIDs.nonBlockingRandomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -200,6 +204,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
+
+    private static final Object staticLock = new Object();
+
+    // A map containing the clientId with the callstack from where the Client was initialized.
+    // this can help to identify where clients leak.
+    // The leak detection via System property "COSMOS.CLIENT_LEAK_DETECTION_ENABLED" is disabled by
+    // default - CI pipeline tests will enable it.
+    private final static Map<Integer, String> activeClients = new HashMap<>();
 
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final CosmosItemSerializer defaultCustomSerializer;
@@ -506,6 +518,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
+        this.addToActiveClients();
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], readConsistencyStrategy [{}]",
@@ -1262,7 +1275,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             qryOptAccessor.getProperties(nonNullQueryOptions),
             qryOptAccessor.getHeaders(nonNullQueryOptions),
             this.sessionContainer,
-            diagnosticsFactory);
+            diagnosticsFactory,
+            ResourceType.Document
+        );
 
         return
             ObservableHelper.fluxInlineIfPossibleAsObs(
@@ -1367,6 +1382,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private void addToActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            logger.warn(
+                "Cosmos Client leak detection is enabled - "
+                + "this will impact performance negatively - disable it in production scenarios.");
+            synchronized (staticLock) {
+                activeClients.put(this.clientId, StackTraceUtil.currentCallStack());
+            }
+        }
+    }
+
+    private void removeFromActiveClients() {
+        if (Configs.isClientLeakDetectionEnabled()) {
+            synchronized (staticLock) {
+                activeClients.remove(this.clientId);
+            }
+        }
+    }
+
+    /**
+     * Returns a snapshot of the active clients. The key is the clientId, the value is the callstack showing
+     * where the client was created.
+     * @return a snapshot of the active clients.
+     */
+    public static Map<Integer, String> getActiveClientsSnapshot() {
+        synchronized (staticLock) {
+            return new HashMap<>(activeClients);
+        }
     }
 
     private static void applyExceptionToMergedDiagnosticsForQuery(
@@ -1493,6 +1538,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     userAgentFeatureFlags.remove(UserAgentFeatureFlags.Http2);
                 }
             }
+        }
+
+        if (!(this.sessionContainer instanceof RegionScopedSessionContainer)) {
+            userAgentFeatureFlags.remove(UserAgentFeatureFlags.RegionScopedSessionCapturing);
         }
 
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
@@ -2565,7 +2614,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                collectionLink);
+                collectionLink
+            );
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -2952,7 +3002,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                collectionLink);;
+                collectionLink
+            );
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -3094,7 +3145,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                Utils.getCollectionName(documentLink));
+                Utils.getCollectionName(documentLink)
+            );
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
         Consumer<CosmosException> gwModeE2ETimeoutDiagnosticHandler
@@ -3427,7 +3479,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                Utils.getCollectionName(documentLink));
+                Utils.getCollectionName(documentLink)
+            );
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3640,7 +3693,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                Utils.getCollectionName(documentLink));
+                Utils.getCollectionName(documentLink)
+            );
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3832,7 +3886,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.getRetryPolicyForPointOperation(
                 scopedDiagnosticsFactory,
                 nonNullRequestOptions,
-                Utils.getCollectionName(documentLink));
+                Utils.getCollectionName(documentLink)
+            );
 
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
@@ -3981,7 +4036,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             qryOptAccessor.getProperties(state.getQueryOptions()),
             qryOptAccessor.getHeaders(state.getQueryOptions()),
             this.sessionContainer,
-            diagnosticsFactory);
+            diagnosticsFactory,
+            ResourceType.Document
+        );
 
         return ObservableHelper
             .inlineIfPossibleAsObs(
@@ -4678,7 +4735,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             changeFeedOptionsAccessor.getProperties(state.getChangeFeedOptions()),
             changeFeedOptionsAccessor.getHeaders(state.getChangeFeedOptions()),
             this.sessionContainer,
-            diagnosticsFactory);
+            diagnosticsFactory,
+            ResourceType.Document
+        );
 
         return ObservableHelper
             .fluxInlineIfPossibleAsObs(
@@ -4702,7 +4761,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext diagnosticsClientContext) {
 
         return this.getCollectionCache()
-            .resolveByNameAsync(null, collectionLink, null)
+            .resolveByNameAsync(null, collectionLink, null, null, ResourceType.Document)
             .flatMapMany(collection -> {
                 if (collection == null) {
                     throw new IllegalStateException("Collection can not be null");
@@ -4823,7 +4882,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 qryOptAccessor.getProperties(effectiveOptions),
                 qryOptAccessor.getHeaders(effectiveOptions),
                 this.sessionContainer,
-                diagnosticsFactory);
+                diagnosticsFactory,
+                ResourceType.Document
+            );
 
             Flux<FeedResponse<T>> innerFlux = ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
@@ -5152,7 +5213,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullRequestOptions.getProperties(),
                 nonNullRequestOptions.getHeaders(),
                 this.sessionContainer,
-                scopedDiagnosticsFactory);
+                scopedDiagnosticsFactory,
+                ResourceType.Document
+            );
         }
 
         final DocumentClientRetryPolicy finalRetryPolicy = documentClientRetryPolicy;
@@ -6442,6 +6505,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void close() {
         logger.info("Attempting to close client {}", this.clientId);
         if (!closed.getAndSet(true)) {
+            this.removeFromActiveClients();
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
 
@@ -6545,6 +6609,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return this.masterKeyOrResourceToken;
     }
 
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeModel.registerTransportClientInterceptor(transportClientInterceptor);
+    }
+
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
         List<String> partitionKeySelectors) {
@@ -6583,7 +6652,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             new HashMap<>(),
             new HashMap<>(),
             this.sessionContainer,
-            null);
+            null,
+            ResourceType.PartitionKeyRange
+        );
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             this,
@@ -7970,7 +8041,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestOptions.getProperties(),
             requestOptions.getHeaders(),
             this.sessionContainer,
-            diagnosticsClientContext);
+            diagnosticsClientContext,
+            ResourceType.Document
+        );
 
         return requestRetryPolicy;
     }

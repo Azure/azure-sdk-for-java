@@ -133,6 +133,14 @@ public interface BareMetalMachineKeySet {
     BareMetalMachineKeySetPrivilegeLevel privilegeLevel();
 
     /**
+     * Gets the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @return the privilegeLevelName value.
+     */
+    String privilegeLevelName();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the bare metal machine key set.
      * 
      * @return the provisioningState value.
@@ -325,7 +333,7 @@ public interface BareMetalMachineKeySet {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithOsGroupName,
-            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
+            DefinitionStages.WithPrivilegeLevelName, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -368,6 +376,20 @@ public interface BareMetalMachineKeySet {
              * @return the next definition stage.
              */
             WithCreate withOsGroupName(String osGroupName);
+        }
+
+        /**
+         * The stage of the BareMetalMachineKeySet definition allowing to specify privilegeLevelName.
+         */
+        interface WithPrivilegeLevelName {
+            /**
+             * Specifies the privilegeLevelName property: The name of the access level to apply when the privilege level
+             * is set to Other..
+             * 
+             * @param privilegeLevelName The name of the access level to apply when the privilege level is set to Other.
+             * @return the next definition stage.
+             */
+            WithCreate withPrivilegeLevelName(String privilegeLevelName);
         }
 
         /**

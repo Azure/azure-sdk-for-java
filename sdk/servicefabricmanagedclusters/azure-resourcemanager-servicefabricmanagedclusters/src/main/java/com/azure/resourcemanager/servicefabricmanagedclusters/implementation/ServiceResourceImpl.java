@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ServiceResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartReplicaRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceResource;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceResourceProperties;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceUpdateParameters;
@@ -158,6 +159,16 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
             .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context)
             .getValue();
         return this;
+    }
+
+    public void restartReplica(RestartReplicaRequest parameters) {
+        serviceManager.services()
+            .restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters);
+    }
+
+    public void restartReplica(RestartReplicaRequest parameters, Context context) {
+        serviceManager.services()
+            .restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters, context);
     }
 
     public ServiceResourceImpl withRegion(Region location) {

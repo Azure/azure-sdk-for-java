@@ -28,7 +28,7 @@ public class CertificatesTests extends AppServiceTest {
         Vault vault = keyVaultManager.vaults().getByResourceGroup(rgName, "bananagraphwebapp319com");
         AppServiceCertificate certificate = appServiceManager.certificates()
             .define("bananacert")
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withExistingCertificateOrder(
                 appServiceManager.certificateOrders().getByResourceGroup(rgName, "graphwebapp319"))

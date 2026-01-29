@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayClientAuthConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedClientCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewayUnAuthorizedRequestAction;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlConfiguration;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
@@ -49,7 +51,7 @@ import java.util.Map;
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-10-01/examples/ApplicationGatewayCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -147,7 +149,9 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                     .withHttpListener(new SubResource().withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"))
                     .withRewriteRuleSet(new SubResource().withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))))
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))
+                    .withEntraJwtValidationConfig(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/entraJWTValidationConfigs/entraJWTValidationConfig1"))))
                 .withRewriteRuleSets(
                     Arrays
                         .asList(new ApplicationGatewayRewriteRuleSet().withName("rewriteRuleSet1")
@@ -169,6 +173,11 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                             .withHeaderValue("max-age=31536000")))
                                     .withUrlConfiguration(
                                         new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
+                .withEntraJwtValidationConfigs(
+                    Arrays.asList(new ApplicationGatewayEntraJwtValidationConfig().withName("entraJWTValidationConfig1")
+                        .withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction.DENY)
+                        .withTenantId("70a036f6-8e4d-4615-bad6-149c02e7720d")
+                        .withClientId("37293f5a-97b3-451d-b786-f532d711c9ff")))
                 .withGlobalConfiguration(new ApplicationGatewayGlobalConfiguration().withEnableRequestBuffering(true)
                     .withEnableResponseBuffering(true)),
                 com.azure.core.util.Context.NONE);

@@ -27,7 +27,7 @@ public final class ScriptExecutionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.scriptExecutions().delete("tmhqykiz", "d", "saoafcluqvox", com.azure.core.util.Context.NONE);
+        manager.scriptExecutions().delete("taf", "bzf", "ovwmbjlzqsczpgvd", com.azure.core.util.Context.NONE);
 
     }
 }

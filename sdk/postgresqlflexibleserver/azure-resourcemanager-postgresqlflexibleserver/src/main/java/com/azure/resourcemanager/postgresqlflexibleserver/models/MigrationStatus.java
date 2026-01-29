@@ -12,24 +12,24 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Migration status.
+ * State of migration.
  */
 @Immutable
 public final class MigrationStatus implements JsonSerializable<MigrationStatus> {
     /*
-     * State of migration
+     * State of migration.
      */
     private MigrationState state;
 
     /*
-     * Error message, if any, for the migration state
+     * Error message, if any, for the migration state.
      */
     private String error;
 
     /*
-     * Current Migration sub state details.
+     * Current migration sub state details.
      */
-    private MigrationSubStateDetails currentSubStateDetails;
+    private MigrationSubstateDetails currentSubStateDetails;
 
     /**
      * Creates an instance of MigrationStatus class.
@@ -56,11 +56,11 @@ public final class MigrationStatus implements JsonSerializable<MigrationStatus> 
     }
 
     /**
-     * Get the currentSubStateDetails property: Current Migration sub state details.
+     * Get the currentSubStateDetails property: Current migration sub state details.
      * 
      * @return the currentSubStateDetails value.
      */
-    public MigrationSubStateDetails currentSubStateDetails() {
+    public MigrationSubstateDetails currentSubStateDetails() {
         return this.currentSubStateDetails;
     }
 
@@ -104,7 +104,7 @@ public final class MigrationStatus implements JsonSerializable<MigrationStatus> 
                 } else if ("error".equals(fieldName)) {
                     deserializedMigrationStatus.error = reader.getString();
                 } else if ("currentSubStateDetails".equals(fieldName)) {
-                    deserializedMigrationStatus.currentSubStateDetails = MigrationSubStateDetails.fromJson(reader);
+                    deserializedMigrationStatus.currentSubStateDetails = MigrationSubstateDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

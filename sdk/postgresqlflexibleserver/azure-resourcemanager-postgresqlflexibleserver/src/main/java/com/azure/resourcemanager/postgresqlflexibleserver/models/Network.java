@@ -17,21 +17,22 @@ import java.io.IOException;
 @Fluent
 public final class Network implements JsonSerializable<Network> {
     /*
-     * public network access is enabled or not
+     * Indicates if public network access is enabled or not. This is only supported for servers that are not integrated
+     * into a virtual network which is owned and provided by customer when server is deployed.
      */
     private ServerPublicNetworkAccessState publicNetworkAccess;
 
     /*
-     * Delegated subnet arm resource id. This is required to be passed during create, in case we want the server to be
-     * VNET injected, i.e. Private access server. During update, pass this only if we want to update the value for
-     * Private DNS zone.
+     * Resource identifier of the delegated subnet. Required during creation of a new server, in case you want the
+     * server to be integrated into your own virtual network. For an update operation, you only have to provide this
+     * property if you want to change the value assigned for the private DNS zone.
      */
     private String delegatedSubnetResourceId;
 
     /*
-     * Private dns zone arm resource id. This is required to be passed during create, in case we want the server to be
-     * VNET injected, i.e. Private access server. During update, pass this only if we want to update the value for
-     * Private DNS zone.
+     * Identifier of the private DNS zone. Required during creation of a new server, in case you want the server to be
+     * integrated into your own virtual network. For an update operation, you only have to provide this property if you
+     * want to change the value assigned for the private DNS zone.
      */
     private String privateDnsZoneArmResourceId;
 
@@ -42,7 +43,9 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Get the publicNetworkAccess property: public network access is enabled or not.
+     * Get the publicNetworkAccess property: Indicates if public network access is enabled or not. This is only
+     * supported for servers that are not integrated into a virtual network which is owned and provided by customer when
+     * server is deployed.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -51,7 +54,9 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Set the publicNetworkAccess property: public network access is enabled or not.
+     * Set the publicNetworkAccess property: Indicates if public network access is enabled or not. This is only
+     * supported for servers that are not integrated into a virtual network which is owned and provided by customer when
+     * server is deployed.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the Network object itself.
@@ -62,9 +67,10 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Get the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
-     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
-     * this only if we want to update the value for Private DNS zone.
+     * Get the delegatedSubnetResourceId property: Resource identifier of the delegated subnet. Required during creation
+     * of a new server, in case you want the server to be integrated into your own virtual network. For an update
+     * operation, you only have to provide this property if you want to change the value assigned for the private DNS
+     * zone.
      * 
      * @return the delegatedSubnetResourceId value.
      */
@@ -73,9 +79,10 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Set the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
-     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
-     * this only if we want to update the value for Private DNS zone.
+     * Set the delegatedSubnetResourceId property: Resource identifier of the delegated subnet. Required during creation
+     * of a new server, in case you want the server to be integrated into your own virtual network. For an update
+     * operation, you only have to provide this property if you want to change the value assigned for the private DNS
+     * zone.
      * 
      * @param delegatedSubnetResourceId the delegatedSubnetResourceId value to set.
      * @return the Network object itself.
@@ -86,9 +93,9 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Get the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
-     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
-     * this only if we want to update the value for Private DNS zone.
+     * Get the privateDnsZoneArmResourceId property: Identifier of the private DNS zone. Required during creation of a
+     * new server, in case you want the server to be integrated into your own virtual network. For an update operation,
+     * you only have to provide this property if you want to change the value assigned for the private DNS zone.
      * 
      * @return the privateDnsZoneArmResourceId value.
      */
@@ -97,9 +104,9 @@ public final class Network implements JsonSerializable<Network> {
     }
 
     /**
-     * Set the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
-     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
-     * this only if we want to update the value for Private DNS zone.
+     * Set the privateDnsZoneArmResourceId property: Identifier of the private DNS zone. Required during creation of a
+     * new server, in case you want the server to be integrated into your own virtual network. For an update operation,
+     * you only have to provide this property if you want to change the value assigned for the private DNS zone.
      * 
      * @param privateDnsZoneArmResourceId the privateDnsZoneArmResourceId value to set.
      * @return the Network object itself.

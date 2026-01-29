@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
+import com.azure.resourcemanager.deviceregistry.fluent.CredentialsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredDevice
 import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.PoliciesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemaRegistriesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemaVersionsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemasClient;
@@ -223,6 +225,34 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
+     * The CredentialsClient object to access its operations.
+     */
+    private final CredentialsClient credentials;
+
+    /**
+     * Gets the CredentialsClient object to access its operations.
+     * 
+     * @return the CredentialsClient object.
+     */
+    public CredentialsClient getCredentials() {
+        return this.credentials;
+    }
+
+    /**
+     * The PoliciesClient object to access its operations.
+     */
+    private final PoliciesClient policies;
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     * 
+     * @return the PoliciesClient object.
+     */
+    public PoliciesClient getPolicies() {
+        return this.policies;
+    }
+
+    /**
      * The NamespaceAssetsClient object to access its operations.
      */
     private final NamespaceAssetsClient namespaceAssets;
@@ -337,13 +367,15 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-10-01";
+        this.apiVersion = "2025-11-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
         this.billingContainers = new BillingContainersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
+        this.credentials = new CredentialsClientImpl(this);
+        this.policies = new PoliciesClientImpl(this);
         this.namespaceAssets = new NamespaceAssetsClientImpl(this);
         this.namespaceDevices = new NamespaceDevicesClientImpl(this);
         this.namespaceDiscoveredAssets = new NamespaceDiscoveredAssetsClientImpl(this);

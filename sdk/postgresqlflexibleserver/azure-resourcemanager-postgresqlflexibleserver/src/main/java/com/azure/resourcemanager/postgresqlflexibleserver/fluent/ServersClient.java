@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForUpdate;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerForPatch;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,14 +29,14 @@ public interface ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         ServerInner parameters);
 
     /**
@@ -44,29 +44,29 @@ public interface ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a server.
+     * @return the {@link PollerFlux} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(String resourceGroupName, String serverName,
-        ServerInner parameters);
+    PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, ServerInner parameters);
 
     /**
      * Creates a new server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName, String serverName,
         ServerInner parameters);
 
     /**
@@ -74,15 +74,15 @@ public interface ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(String resourceGroupName, String serverName,
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName, String serverName,
         ServerInner parameters, Context context);
 
     /**
@@ -90,157 +90,157 @@ public interface ServersClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server on successful completion of {@link Mono}.
+     * @return properties of a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerInner> createAsync(String resourceGroupName, String serverName, ServerInner parameters);
+    Mono<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters);
 
     /**
      * Creates a new server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner create(String resourceGroupName, String serverName, ServerInner parameters);
+    ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters);
 
     /**
      * Creates a new server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for creating or updating a server.
+     * @param parameters Parameters required to create a new server or to update an existing server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner create(String resourceGroupName, String serverName, ServerInner parameters, Context context);
+    ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters, Context context);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return properties of a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
-        ServerForUpdate parameters);
+        ServerForPatch parameters);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a server.
+     * @return the {@link PollerFlux} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(String resourceGroupName, String serverName,
-        ServerForUpdate parameters);
+        ServerForPatch parameters);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
-        ServerForUpdate parameters);
+        ServerForPatch parameters);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a server.
+     * @return the {@link SyncPoller} for polling of properties of a server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
-        ServerForUpdate parameters, Context context);
+        ServerForPatch parameters, Context context);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server on successful completion of {@link Mono}.
+     * @return properties of a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForUpdate parameters);
+    Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerForPatch parameters);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner update(String resourceGroupName, String serverName, ServerForUpdate parameters);
+    ServerInner update(String resourceGroupName, String serverName, ServerForPatch parameters);
 
     /**
-     * Updates an existing server. The request body can contain one to many of the properties present in the normal
+     * Updates an existing server. The request body can contain one or multiple of the properties present in the normal
      * server definition.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The required parameters for updating a server.
+     * @param parameters Parameters required to update a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server.
+     * @return properties of a server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerInner update(String resourceGroupName, String serverName, ServerForUpdate parameters, Context context);
+    ServerInner update(String resourceGroupName, String serverName, ServerForPatch parameters, Context context);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -253,7 +253,7 @@ public interface ServersClient {
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -266,7 +266,7 @@ public interface ServersClient {
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -279,7 +279,7 @@ public interface ServersClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -293,7 +293,7 @@ public interface ServersClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -306,7 +306,7 @@ public interface ServersClient {
     Mono<Void> deleteAsync(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -318,7 +318,7 @@ public interface ServersClient {
     void delete(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -331,33 +331,34 @@ public interface ServersClient {
     void delete(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about an existing server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String serverName);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server on successful completion of {@link Mono}.
+     * @return information about an existing server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -365,26 +366,26 @@ public interface ServersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response}.
+     * @return information about an existing server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about an existing server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServerInner getByResourceGroup(String resourceGroupName, String serverName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,7 +397,7 @@ public interface ServersClient {
     PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -408,7 +409,7 @@ public interface ServersClient {
     PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -421,7 +422,7 @@ public interface ServersClient {
     PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -431,7 +432,7 @@ public interface ServersClient {
     PagedFlux<ServerInner> listAsync();
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,7 +442,7 @@ public interface ServersClient {
     PagedIterable<ServerInner> list();
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,11 +454,11 @@ public interface ServersClient {
     PagedIterable<ServerInner> list(Context context);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -468,11 +469,11 @@ public interface ServersClient {
         RestartParameter parameters);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -483,7 +484,7 @@ public interface ServersClient {
         RestartParameter parameters);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -496,7 +497,7 @@ public interface ServersClient {
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String serverName);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -509,11 +510,11 @@ public interface ServersClient {
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serverName);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -525,11 +526,11 @@ public interface ServersClient {
         RestartParameter parameters, Context context);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -539,7 +540,7 @@ public interface ServersClient {
     Mono<Void> restartAsync(String resourceGroupName, String serverName, RestartParameter parameters);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -552,7 +553,7 @@ public interface ServersClient {
     Mono<Void> restartAsync(String resourceGroupName, String serverName);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -564,11 +565,11 @@ public interface ServersClient {
     void restart(String resourceGroupName, String serverName);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -578,7 +579,7 @@ public interface ServersClient {
     void restart(String resourceGroupName, String serverName, RestartParameter parameters, Context context);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -591,7 +592,7 @@ public interface ServersClient {
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -604,7 +605,7 @@ public interface ServersClient {
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -617,7 +618,7 @@ public interface ServersClient {
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -631,7 +632,7 @@ public interface ServersClient {
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -644,7 +645,7 @@ public interface ServersClient {
     Mono<Void> startAsync(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -656,7 +657,7 @@ public interface ServersClient {
     void start(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.

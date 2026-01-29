@@ -10,16 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class VirtualEndpointsListByServerSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
      * VirtualEndpointsListByServer.json
      */
     /**
-     * Sample code: VirtualEndpointListByServer.
+     * Sample code: List pair of virtual endpoints associated to a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void
-        virtualEndpointListByServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.virtualEndpoints().listByServer("testrg", "pgtestsvc4", com.azure.core.util.Context.NONE);
+    public static void listPairOfVirtualEndpointsAssociatedToAServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.virtualEndpoints()
+            .listByServer("exampleresourcegroup", "exampleserver", com.azure.core.util.Context.NONE);
     }
 }

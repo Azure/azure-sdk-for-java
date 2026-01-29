@@ -10,16 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ConfigurationsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * ConfigurationGet.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ConfigurationsGet.
+     * json
      */
     /**
-     * Sample code: ConfigurationGet.
+     * Sample code: Get information about a specific configuration (also known as server parameter) of a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void configurationGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void getInformationAboutASpecificConfigurationAlsoKnownAsServerParameterOfAServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.configurations()
-            .getWithResponse("testrg", "testserver", "array_nulls", com.azure.core.util.Context.NONE);
+            .getWithResponse("exampleresourcegroup", "exampleserver", "array_nulls", com.azure.core.util.Context.NONE);
     }
 }

@@ -41,77 +41,85 @@ public interface Configuration {
     SystemData systemData();
 
     /**
-     * Gets the value property: Value of the configuration. Required to update the configuration.
+     * Gets the value property: Value of the configuration (also known as server parameter). Required to update the
+     * value assigned to a specific modifiable configuration.
      * 
      * @return the value value.
      */
     String value();
 
     /**
-     * Gets the description property: Description of the configuration.
+     * Gets the description property: Description of the configuration (also known as server parameter).
      * 
      * @return the description value.
      */
     String description();
 
     /**
-     * Gets the defaultValue property: Default value of the configuration.
+     * Gets the defaultValue property: Value assigned by default to the configuration (also known as server parameter).
      * 
      * @return the defaultValue value.
      */
     String defaultValue();
 
     /**
-     * Gets the dataType property: Data type of the configuration.
+     * Gets the dataType property: Data type of the configuration (also known as server parameter).
      * 
      * @return the dataType value.
      */
     ConfigurationDataType dataType();
 
     /**
-     * Gets the allowedValues property: Allowed values of the configuration.
+     * Gets the allowedValues property: Allowed values of the configuration (also known as server parameter).
      * 
      * @return the allowedValues value.
      */
     String allowedValues();
 
     /**
-     * Gets the source property: Source of the configuration. Required to update the configuration.
+     * Gets the source property: Source of the value assigned to the configuration (also known as server parameter).
+     * Required to update the value assigned to a specific modifiable configuration.
      * 
      * @return the source value.
      */
     String source();
 
     /**
-     * Gets the isDynamicConfig property: Configuration dynamic or static.
+     * Gets the isDynamicConfig property: Indicates if it's a dynamic (true) or static (false) configuration (also known
+     * as server parameter). Static server parameters require a server restart after changing the value assigned to
+     * them, for the change to take effect. Dynamic server parameters do not require a server restart after changing the
+     * value assigned to them, for the change to take effect.
      * 
      * @return the isDynamicConfig value.
      */
     Boolean isDynamicConfig();
 
     /**
-     * Gets the isReadOnly property: Configuration read-only or not.
+     * Gets the isReadOnly property: Indicates if it's a read-only (true) or modifiable (false) configuration (also
+     * known as server parameter).
      * 
      * @return the isReadOnly value.
      */
     Boolean isReadOnly();
 
     /**
-     * Gets the isConfigPendingRestart property: Configuration is pending restart or not.
+     * Gets the isConfigPendingRestart property: Indicates if the value assigned to the configuration (also known as
+     * server parameter) is pending a server restart for it to take effect.
      * 
      * @return the isConfigPendingRestart value.
      */
     Boolean isConfigPendingRestart();
 
     /**
-     * Gets the unit property: Configuration unit.
+     * Gets the unit property: Units in which the configuration (also known as server parameter) value is expressed.
      * 
      * @return the unit value.
      */
     String unit();
 
     /**
-     * Gets the documentationLink property: Configuration documentation link.
+     * Gets the documentationLink property: Link pointing to the documentation of the configuration (also known as
+     * server parameter).
      * 
      * @return the documentationLink value.
      */
@@ -188,9 +196,11 @@ public interface Configuration {
          */
         interface WithValue {
             /**
-             * Specifies the value property: Value of the configuration. Required to update the configuration..
+             * Specifies the value property: Value of the configuration (also known as server parameter). Required to
+             * update the value assigned to a specific modifiable configuration..
              * 
-             * @param value Value of the configuration. Required to update the configuration.
+             * @param value Value of the configuration (also known as server parameter). Required to update the value
+             * assigned to a specific modifiable configuration.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
@@ -201,9 +211,11 @@ public interface Configuration {
          */
         interface WithSource {
             /**
-             * Specifies the source property: Source of the configuration. Required to update the configuration..
+             * Specifies the source property: Source of the value assigned to the configuration (also known as server
+             * parameter). Required to update the value assigned to a specific modifiable configuration..
              * 
-             * @param source Source of the configuration. Required to update the configuration.
+             * @param source Source of the value assigned to the configuration (also known as server parameter).
+             * Required to update the value assigned to a specific modifiable configuration.
              * @return the next definition stage.
              */
             WithCreate withSource(String source);
@@ -246,9 +258,11 @@ public interface Configuration {
          */
         interface WithValue {
             /**
-             * Specifies the value property: Value of the configuration. Required to update the configuration..
+             * Specifies the value property: Value of the configuration (also known as server parameter). Required to
+             * update the value assigned to a specific modifiable configuration..
              * 
-             * @param value Value of the configuration. Required to update the configuration.
+             * @param value Value of the configuration (also known as server parameter). Required to update the value
+             * assigned to a specific modifiable configuration.
              * @return the next definition stage.
              */
             Update withValue(String value);
@@ -259,9 +273,11 @@ public interface Configuration {
          */
         interface WithSource {
             /**
-             * Specifies the source property: Source of the configuration. Required to update the configuration..
+             * Specifies the source property: Source of the value assigned to the configuration (also known as server
+             * parameter). Required to update the value assigned to a specific modifiable configuration..
              * 
-             * @param source Source of the configuration. Required to update the configuration.
+             * @param source Source of the value assigned to the configuration (also known as server parameter).
+             * Required to update the value assigned to a specific modifiable configuration.
              * @return the next definition stage.
              */
             Update withSource(String source);

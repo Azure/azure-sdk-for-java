@@ -26,6 +26,13 @@ public interface ContainerRegistryManagementClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      * 
      * @return the httpPipeline value.
@@ -38,6 +45,20 @@ public interface ContainerRegistryManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the RegistriesClient object to access its operations.
+     * 
+     * @return the RegistriesClient object.
+     */
+    RegistriesClient getRegistries();
 
     /**
      * Gets the CacheRulesClient object to access its operations.
@@ -59,20 +80,6 @@ public interface ContainerRegistryManagementClient {
      * @return the CredentialSetsClient object.
      */
     CredentialSetsClient getCredentialSets();
-
-    /**
-     * Gets the RegistriesClient object to access its operations.
-     * 
-     * @return the RegistriesClient object.
-     */
-    RegistriesClient getRegistries();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     * 
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -108,32 +115,4 @@ public interface ContainerRegistryManagementClient {
      * @return the WebhooksClient object.
      */
     WebhooksClient getWebhooks();
-
-    /**
-     * Gets the AgentPoolsClient object to access its operations.
-     * 
-     * @return the AgentPoolsClient object.
-     */
-    AgentPoolsClient getAgentPools();
-
-    /**
-     * Gets the RunsClient object to access its operations.
-     * 
-     * @return the RunsClient object.
-     */
-    RunsClient getRuns();
-
-    /**
-     * Gets the TaskRunsClient object to access its operations.
-     * 
-     * @return the TaskRunsClient object.
-     */
-    TaskRunsClient getTaskRuns();
-
-    /**
-     * Gets the TasksClient object to access its operations.
-     * 
-     * @return the TasksClient object.
-     */
-    TasksClient getTasks();
 }

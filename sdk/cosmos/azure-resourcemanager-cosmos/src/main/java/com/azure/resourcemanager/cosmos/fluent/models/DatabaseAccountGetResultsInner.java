@@ -22,6 +22,7 @@ import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -1003,6 +1004,66 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
+     * Get the keyVaultKeyUriVersion property: The version of the Customer Managed Key currently being used by the
+     * account.
+     * 
+     * @return the keyVaultKeyUriVersion value.
+     */
+    public String keyVaultKeyUriVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultKeyUriVersion();
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePriorityBasedExecution();
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnablePriorityBasedExecution(enablePriorityBasedExecution);
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPriorityLevel();
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDefaultPriorityLevel(defaultPriorityLevel);
         return this;
     }
 

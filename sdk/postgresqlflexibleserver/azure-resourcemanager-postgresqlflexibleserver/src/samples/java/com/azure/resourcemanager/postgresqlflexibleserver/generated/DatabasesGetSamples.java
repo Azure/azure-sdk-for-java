@@ -10,15 +10,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class DatabasesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/
-     * DatabaseGet.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/DatabasesGet.json
      */
     /**
-     * Sample code: Get a database.
+     * Sample code: Get information about an existing database.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void getADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.databases().getWithResponse("TestGroup", "testserver", "db1", com.azure.core.util.Context.NONE);
+    public static void getInformationAboutAnExistingDatabase(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.databases()
+            .getWithResponse("exampleresourcegroup", "exampleserver", "exampledatabase",
+                com.azure.core.util.Context.NONE);
     }
 }

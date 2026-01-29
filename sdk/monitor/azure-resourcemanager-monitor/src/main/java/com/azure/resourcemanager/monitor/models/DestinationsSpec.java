@@ -23,9 +23,49 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
     private List<LogAnalyticsDestination> logAnalytics;
 
     /*
+     * List of monitoring account destinations.
+     */
+    private List<MonitoringAccountDestination> monitoringAccounts;
+
+    /*
      * Azure Monitor Metrics destination.
      */
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
+
+    /*
+     * List of Event Hubs destinations.
+     */
+    private List<EventHubDestination> eventHubs;
+
+    /*
+     * List of Event Hubs Direct destinations.
+     */
+    private List<EventHubDirectDestination> eventHubsDirect;
+
+    /*
+     * List of Storage Blob Direct destinations. To be used only for sending data directly to store from the agent.
+     */
+    private List<StorageBlobDestination> storageBlobsDirect;
+
+    /*
+     * List of Storage Table Direct destinations.
+     */
+    private List<StorageTableDestination> storageTablesDirect;
+
+    /*
+     * List of storage accounts destinations.
+     */
+    private List<StorageBlobDestination> storageAccounts;
+
+    /*
+     * List of Microsoft Fabric destinations.
+     */
+    private List<MicrosoftFabricDestination> microsoftFabric;
+
+    /*
+     * List of Azure Data Explorer destinations.
+     */
+    private List<AdxDestination> azureDataExplorer;
 
     /**
      * Creates an instance of DestinationsSpec class.
@@ -54,6 +94,26 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
     }
 
     /**
+     * Get the monitoringAccounts property: List of monitoring account destinations.
+     * 
+     * @return the monitoringAccounts value.
+     */
+    public List<MonitoringAccountDestination> monitoringAccounts() {
+        return this.monitoringAccounts;
+    }
+
+    /**
+     * Set the monitoringAccounts property: List of monitoring account destinations.
+     * 
+     * @param monitoringAccounts the monitoringAccounts value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withMonitoringAccounts(List<MonitoringAccountDestination> monitoringAccounts) {
+        this.monitoringAccounts = monitoringAccounts;
+        return this;
+    }
+
+    /**
      * Get the azureMonitorMetrics property: Azure Monitor Metrics destination.
      * 
      * @return the azureMonitorMetrics value.
@@ -74,6 +134,148 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
     }
 
     /**
+     * Get the eventHubs property: List of Event Hubs destinations.
+     * 
+     * @return the eventHubs value.
+     */
+    public List<EventHubDestination> eventHubs() {
+        return this.eventHubs;
+    }
+
+    /**
+     * Set the eventHubs property: List of Event Hubs destinations.
+     * 
+     * @param eventHubs the eventHubs value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withEventHubs(List<EventHubDestination> eventHubs) {
+        this.eventHubs = eventHubs;
+        return this;
+    }
+
+    /**
+     * Get the eventHubsDirect property: List of Event Hubs Direct destinations.
+     * 
+     * @return the eventHubsDirect value.
+     */
+    public List<EventHubDirectDestination> eventHubsDirect() {
+        return this.eventHubsDirect;
+    }
+
+    /**
+     * Set the eventHubsDirect property: List of Event Hubs Direct destinations.
+     * 
+     * @param eventHubsDirect the eventHubsDirect value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withEventHubsDirect(List<EventHubDirectDestination> eventHubsDirect) {
+        this.eventHubsDirect = eventHubsDirect;
+        return this;
+    }
+
+    /**
+     * Get the storageBlobsDirect property: List of Storage Blob Direct destinations. To be used only for sending data
+     * directly to store from the agent.
+     * 
+     * @return the storageBlobsDirect value.
+     */
+    public List<StorageBlobDestination> storageBlobsDirect() {
+        return this.storageBlobsDirect;
+    }
+
+    /**
+     * Set the storageBlobsDirect property: List of Storage Blob Direct destinations. To be used only for sending data
+     * directly to store from the agent.
+     * 
+     * @param storageBlobsDirect the storageBlobsDirect value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withStorageBlobsDirect(List<StorageBlobDestination> storageBlobsDirect) {
+        this.storageBlobsDirect = storageBlobsDirect;
+        return this;
+    }
+
+    /**
+     * Get the storageTablesDirect property: List of Storage Table Direct destinations.
+     * 
+     * @return the storageTablesDirect value.
+     */
+    public List<StorageTableDestination> storageTablesDirect() {
+        return this.storageTablesDirect;
+    }
+
+    /**
+     * Set the storageTablesDirect property: List of Storage Table Direct destinations.
+     * 
+     * @param storageTablesDirect the storageTablesDirect value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withStorageTablesDirect(List<StorageTableDestination> storageTablesDirect) {
+        this.storageTablesDirect = storageTablesDirect;
+        return this;
+    }
+
+    /**
+     * Get the storageAccounts property: List of storage accounts destinations.
+     * 
+     * @return the storageAccounts value.
+     */
+    public List<StorageBlobDestination> storageAccounts() {
+        return this.storageAccounts;
+    }
+
+    /**
+     * Set the storageAccounts property: List of storage accounts destinations.
+     * 
+     * @param storageAccounts the storageAccounts value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withStorageAccounts(List<StorageBlobDestination> storageAccounts) {
+        this.storageAccounts = storageAccounts;
+        return this;
+    }
+
+    /**
+     * Get the microsoftFabric property: List of Microsoft Fabric destinations.
+     * 
+     * @return the microsoftFabric value.
+     */
+    public List<MicrosoftFabricDestination> microsoftFabric() {
+        return this.microsoftFabric;
+    }
+
+    /**
+     * Set the microsoftFabric property: List of Microsoft Fabric destinations.
+     * 
+     * @param microsoftFabric the microsoftFabric value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withMicrosoftFabric(List<MicrosoftFabricDestination> microsoftFabric) {
+        this.microsoftFabric = microsoftFabric;
+        return this;
+    }
+
+    /**
+     * Get the azureDataExplorer property: List of Azure Data Explorer destinations.
+     * 
+     * @return the azureDataExplorer value.
+     */
+    public List<AdxDestination> azureDataExplorer() {
+        return this.azureDataExplorer;
+    }
+
+    /**
+     * Set the azureDataExplorer property: List of Azure Data Explorer destinations.
+     * 
+     * @param azureDataExplorer the azureDataExplorer value to set.
+     * @return the DestinationsSpec object itself.
+     */
+    public DestinationsSpec withAzureDataExplorer(List<AdxDestination> azureDataExplorer) {
+        this.azureDataExplorer = azureDataExplorer;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,8 +284,32 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
         if (logAnalytics() != null) {
             logAnalytics().forEach(e -> e.validate());
         }
+        if (monitoringAccounts() != null) {
+            monitoringAccounts().forEach(e -> e.validate());
+        }
         if (azureMonitorMetrics() != null) {
             azureMonitorMetrics().validate();
+        }
+        if (eventHubs() != null) {
+            eventHubs().forEach(e -> e.validate());
+        }
+        if (eventHubsDirect() != null) {
+            eventHubsDirect().forEach(e -> e.validate());
+        }
+        if (storageBlobsDirect() != null) {
+            storageBlobsDirect().forEach(e -> e.validate());
+        }
+        if (storageTablesDirect() != null) {
+            storageTablesDirect().forEach(e -> e.validate());
+        }
+        if (storageAccounts() != null) {
+            storageAccounts().forEach(e -> e.validate());
+        }
+        if (microsoftFabric() != null) {
+            microsoftFabric().forEach(e -> e.validate());
+        }
+        if (azureDataExplorer() != null) {
+            azureDataExplorer().forEach(e -> e.validate());
         }
     }
 
@@ -94,7 +320,22 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("logAnalytics", this.logAnalytics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("monitoringAccounts", this.monitoringAccounts,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("azureMonitorMetrics", this.azureMonitorMetrics);
+        jsonWriter.writeArrayField("eventHubs", this.eventHubs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventHubsDirect", this.eventHubsDirect,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageBlobsDirect", this.storageBlobsDirect,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageTablesDirect", this.storageTablesDirect,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("storageAccounts", this.storageAccounts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("microsoftFabric", this.microsoftFabric,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("azureDataExplorer", this.azureDataExplorer,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -117,9 +358,41 @@ public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
                     List<LogAnalyticsDestination> logAnalytics
                         = reader.readArray(reader1 -> LogAnalyticsDestination.fromJson(reader1));
                     deserializedDestinationsSpec.logAnalytics = logAnalytics;
+                } else if ("monitoringAccounts".equals(fieldName)) {
+                    List<MonitoringAccountDestination> monitoringAccounts
+                        = reader.readArray(reader1 -> MonitoringAccountDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.monitoringAccounts = monitoringAccounts;
                 } else if ("azureMonitorMetrics".equals(fieldName)) {
                     deserializedDestinationsSpec.azureMonitorMetrics
                         = DestinationsSpecAzureMonitorMetrics.fromJson(reader);
+                } else if ("eventHubs".equals(fieldName)) {
+                    List<EventHubDestination> eventHubs
+                        = reader.readArray(reader1 -> EventHubDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.eventHubs = eventHubs;
+                } else if ("eventHubsDirect".equals(fieldName)) {
+                    List<EventHubDirectDestination> eventHubsDirect
+                        = reader.readArray(reader1 -> EventHubDirectDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.eventHubsDirect = eventHubsDirect;
+                } else if ("storageBlobsDirect".equals(fieldName)) {
+                    List<StorageBlobDestination> storageBlobsDirect
+                        = reader.readArray(reader1 -> StorageBlobDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.storageBlobsDirect = storageBlobsDirect;
+                } else if ("storageTablesDirect".equals(fieldName)) {
+                    List<StorageTableDestination> storageTablesDirect
+                        = reader.readArray(reader1 -> StorageTableDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.storageTablesDirect = storageTablesDirect;
+                } else if ("storageAccounts".equals(fieldName)) {
+                    List<StorageBlobDestination> storageAccounts
+                        = reader.readArray(reader1 -> StorageBlobDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.storageAccounts = storageAccounts;
+                } else if ("microsoftFabric".equals(fieldName)) {
+                    List<MicrosoftFabricDestination> microsoftFabric
+                        = reader.readArray(reader1 -> MicrosoftFabricDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.microsoftFabric = microsoftFabric;
+                } else if ("azureDataExplorer".equals(fieldName)) {
+                    List<AdxDestination> azureDataExplorer
+                        = reader.readArray(reader1 -> AdxDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.azureDataExplorer = azureDataExplorer;
                 } else {
                     reader.skipChildren();
                 }

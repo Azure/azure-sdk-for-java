@@ -19,16 +19,13 @@ import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseReposito
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -40,8 +37,9 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCourseRepositoryIT {
 
@@ -68,7 +66,7 @@ public class ReactiveCourseRepositoryIT {
     private static final Course COURSE_4 = new Course(COURSE_ID_4, COURSE_NAME_4, DEPARTMENT_NAME_1);
     private static final Course COURSE_5 = new Course(COURSE_ID_5, COURSE_NAME_5, DEPARTMENT_NAME_1);
 
-    @ClassRule
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -99,7 +97,7 @@ public class ReactiveCourseRepositoryIT {
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Course.class);
         entityInformation = collectionManager.getEntityInformation(Course.class);
@@ -322,7 +320,7 @@ public class ReactiveCourseRepositoryIT {
         courseResultSet.add(COURSE_1);
         courseResultSet.add(COURSE_2);
         StepVerifier.create(findResult).expectNextCount(2).thenConsumeWhile(value -> {
-            Assertions.assertThat(courseResultSet.contains(value)).isTrue();
+            assertThat(courseResultSet.contains(value)).isTrue();
             return true;
         }).verifyComplete();
     }
@@ -338,9 +336,9 @@ public class ReactiveCourseRepositoryIT {
     public void testFindByNameJsonNode() {
         final Flux<JsonNode> findResult = repository.annotatedFindByName(COURSE_NAME_1);
         StepVerifier.create(findResult).consumeNextWith(result -> {
-            Assert.assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
-            Assert.assertEquals(result.findValue("name").asText(), COURSE_1.getName());
-            Assert.assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
+            assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
+            assertEquals(result.findValue("name").asText(), COURSE_1.getName());
+            assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
         }).verifyComplete();
     }
 

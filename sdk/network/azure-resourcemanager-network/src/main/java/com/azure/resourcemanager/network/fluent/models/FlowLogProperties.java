@@ -31,6 +31,14 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
     private String enabledFilteringCriteria;
 
     /*
+     * Optional field to filter network traffic logs based on flow states. Value of this field could be any comma
+     * separated combination string of letters B,C,E or D. B represents Begin, when a flow is created. C represents
+     * Continue for an ongoing flow generated at every five-minute interval. E represents End, when a flow is
+     * terminated. D represents Deny, when a flow is denied. If not specified, all network traffic will be logged.
+     */
+    private String recordTypes;
+
+    /*
      * Flag to enable/disable flow logging.
      */
     private boolean enabled;
@@ -90,6 +98,34 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
      */
     public FlowLogProperties withEnabledFilteringCriteria(String enabledFilteringCriteria) {
         this.enabledFilteringCriteria = enabledFilteringCriteria;
+        return this;
+    }
+
+    /**
+     * Get the recordTypes property: Optional field to filter network traffic logs based on flow states. Value of this
+     * field could be any comma separated combination string of letters B,C,E or D. B represents Begin, when a flow is
+     * created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End,
+     * when a flow is terminated. D represents Deny, when a flow is denied. If not specified, all network traffic will
+     * be logged.
+     * 
+     * @return the recordTypes value.
+     */
+    public String recordTypes() {
+        return this.recordTypes;
+    }
+
+    /**
+     * Set the recordTypes property: Optional field to filter network traffic logs based on flow states. Value of this
+     * field could be any comma separated combination string of letters B,C,E or D. B represents Begin, when a flow is
+     * created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End,
+     * when a flow is terminated. D represents Deny, when a flow is denied. If not specified, all network traffic will
+     * be logged.
+     * 
+     * @param recordTypes the recordTypes value to set.
+     * @return the FlowLogProperties object itself.
+     */
+    public FlowLogProperties withRecordTypes(String recordTypes) {
+        this.recordTypes = recordTypes;
         return this;
     }
 
@@ -182,6 +218,7 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
         jsonWriter.writeStringField("storageId", this.storageId);
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("enabledFilteringCriteria", this.enabledFilteringCriteria);
+        jsonWriter.writeStringField("recordTypes", this.recordTypes);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         jsonWriter.writeJsonField("format", this.format);
         return jsonWriter.writeEndObject();
@@ -209,6 +246,8 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
                     deserializedFlowLogProperties.enabled = reader.getBoolean();
                 } else if ("enabledFilteringCriteria".equals(fieldName)) {
                     deserializedFlowLogProperties.enabledFilteringCriteria = reader.getString();
+                } else if ("recordTypes".equals(fieldName)) {
+                    deserializedFlowLogProperties.recordTypes = reader.getString();
                 } else if ("retentionPolicy".equals(fieldName)) {
                     deserializedFlowLogProperties.retentionPolicy = RetentionPolicyParameters.fromJson(reader);
                 } else if ("format".equals(fieldName)) {

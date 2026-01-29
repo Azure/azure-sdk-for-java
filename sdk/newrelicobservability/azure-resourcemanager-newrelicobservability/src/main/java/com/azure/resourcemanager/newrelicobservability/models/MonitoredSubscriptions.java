@@ -13,19 +13,24 @@ import com.azure.core.util.Context;
  */
 public interface MonitoredSubscriptions {
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<MonitoredSubscriptionProperties> list(String resourceGroupName, String monitorName);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -33,12 +38,15 @@ public interface MonitoredSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<MonitoredSubscriptionProperties> list(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -47,14 +55,15 @@ public interface MonitoredSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response}.
      */
     Response<MonitoredSubscriptionProperties> getWithResponse(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, Context context);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -62,13 +71,16 @@ public interface MonitoredSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @return a MonitoredSubscriptionProperties.
      */
     MonitoredSubscriptionProperties get(String resourceGroupName, String monitorName,
         ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -80,7 +92,10 @@ public interface MonitoredSubscriptions {
     void delete(String resourceGroupName, String monitorName, ConfigurationName configurationName);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -93,32 +108,37 @@ public interface MonitoredSubscriptions {
     void delete(String resourceGroupName, String monitorName, ConfigurationName configurationName, Context context);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response}.
      */
     MonitoredSubscriptionProperties getById(String id);
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response}.
      */
     Response<MonitoredSubscriptionProperties> getByIdWithResponse(String id, Context context);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,7 +148,10 @@ public interface MonitoredSubscriptions {
     void deleteById(String id);
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

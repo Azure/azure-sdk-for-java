@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * A machine provides detailed information about its configuration and status. A machine may be visible here but not in
- * kubectl get nodes; if so, it may be because the machine has not been registered with the Kubernetes API Server yet.
+ * A machine. Contains details about the underlying virtual machine. A machine may be visible here but not in kubectl
+ * get nodes; if so it may be because the machine has not been registered with the Kubernetes API Server yet.
  */
 @Fluent
 public final class MachineInner extends SubResource {
@@ -55,34 +55,12 @@ public final class MachineInner extends SubResource {
     }
 
     /**
-     * Set the zones property: The Availability zone in which machine is located.
-     * 
-     * @param zones the zones value to set.
-     * @return the MachineInner object itself.
-     */
-    public MachineInner withZones(List<String> zones) {
-        this.zones = zones;
-        return this;
-    }
-
-    /**
      * Get the properties property: The properties of the machine.
      * 
      * @return the properties value.
      */
     public MachineProperties properties() {
         return this.properties;
-    }
-
-    /**
-     * Set the properties property: The properties of the machine.
-     * 
-     * @param properties the properties value to set.
-     * @return the MachineInner object itself.
-     */
-    public MachineInner withProperties(MachineProperties properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**
@@ -131,8 +109,6 @@ public final class MachineInner extends SubResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", id());
-        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 

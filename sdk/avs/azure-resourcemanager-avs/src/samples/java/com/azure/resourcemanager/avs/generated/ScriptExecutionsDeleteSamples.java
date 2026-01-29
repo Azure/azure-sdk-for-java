@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ScriptExecutionsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ScriptExecutions_Delete.json
+     * x-ms-original-file: 2025-09-01/ScriptExecutions_Delete.json
      */
     /**
      * Sample code: ScriptExecutions_Delete.

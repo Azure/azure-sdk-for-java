@@ -10,13 +10,19 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appservice.models.DefaultIdentity;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
+import com.azure.resourcemanager.appservice.models.InstallScript;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
+import com.azure.resourcemanager.appservice.models.RegistryAdapter;
+import com.azure.resourcemanager.appservice.models.ServerFarmNetworkSettings;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
+import com.azure.resourcemanager.appservice.models.StorageMount;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * AppServicePlan resource specific properties.
@@ -146,6 +152,42 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
      * If <code>false</code>, this App Service Plan will only attempt sync scaling.
      */
     private Boolean asyncScalingEnabled;
+
+    /*
+     * Identity to use by platform for various features and integrations using managed identity.
+     */
+    private DefaultIdentity planDefaultIdentity;
+
+    /*
+     * Whether this server farm is in custom mode.
+     */
+    private Boolean isCustomMode;
+
+    /*
+     * Registry adapters associated with this App Service plan.
+     */
+    private List<RegistryAdapter> registryAdapters;
+
+    /*
+     * Install scripts associated with this App Service plan.
+     */
+    private List<InstallScript> installScripts;
+
+    /*
+     * All network settings for the server farm.
+     */
+    private ServerFarmNetworkSettings network;
+
+    /*
+     * Storage mounts associated with this App Service plan.
+     */
+    private List<StorageMount> storageMounts;
+
+    /*
+     * If <code>true</code>, RDP access is enabled for this App Service plan. Only applicable for IsCustomMode ASPs.
+     * If <code>false</code>, RDP access is disabled.
+     */
+    private Boolean rdpEnabled;
 
     /**
      * Creates an instance of AppServicePlanProperties class.
@@ -577,6 +619,152 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
     }
 
     /**
+     * Get the planDefaultIdentity property: Identity to use by platform for various features and integrations using
+     * managed identity.
+     * 
+     * @return the planDefaultIdentity value.
+     */
+    public DefaultIdentity planDefaultIdentity() {
+        return this.planDefaultIdentity;
+    }
+
+    /**
+     * Set the planDefaultIdentity property: Identity to use by platform for various features and integrations using
+     * managed identity.
+     * 
+     * @param planDefaultIdentity the planDefaultIdentity value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withPlanDefaultIdentity(DefaultIdentity planDefaultIdentity) {
+        this.planDefaultIdentity = planDefaultIdentity;
+        return this;
+    }
+
+    /**
+     * Get the isCustomMode property: Whether this server farm is in custom mode.
+     * 
+     * @return the isCustomMode value.
+     */
+    public Boolean isCustomMode() {
+        return this.isCustomMode;
+    }
+
+    /**
+     * Set the isCustomMode property: Whether this server farm is in custom mode.
+     * 
+     * @param isCustomMode the isCustomMode value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withIsCustomMode(Boolean isCustomMode) {
+        this.isCustomMode = isCustomMode;
+        return this;
+    }
+
+    /**
+     * Get the registryAdapters property: Registry adapters associated with this App Service plan.
+     * 
+     * @return the registryAdapters value.
+     */
+    public List<RegistryAdapter> registryAdapters() {
+        return this.registryAdapters;
+    }
+
+    /**
+     * Set the registryAdapters property: Registry adapters associated with this App Service plan.
+     * 
+     * @param registryAdapters the registryAdapters value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withRegistryAdapters(List<RegistryAdapter> registryAdapters) {
+        this.registryAdapters = registryAdapters;
+        return this;
+    }
+
+    /**
+     * Get the installScripts property: Install scripts associated with this App Service plan.
+     * 
+     * @return the installScripts value.
+     */
+    public List<InstallScript> installScripts() {
+        return this.installScripts;
+    }
+
+    /**
+     * Set the installScripts property: Install scripts associated with this App Service plan.
+     * 
+     * @param installScripts the installScripts value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withInstallScripts(List<InstallScript> installScripts) {
+        this.installScripts = installScripts;
+        return this;
+    }
+
+    /**
+     * Get the network property: All network settings for the server farm.
+     * 
+     * @return the network value.
+     */
+    public ServerFarmNetworkSettings network() {
+        return this.network;
+    }
+
+    /**
+     * Set the network property: All network settings for the server farm.
+     * 
+     * @param network the network value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withNetwork(ServerFarmNetworkSettings network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
+     * Get the storageMounts property: Storage mounts associated with this App Service plan.
+     * 
+     * @return the storageMounts value.
+     */
+    public List<StorageMount> storageMounts() {
+        return this.storageMounts;
+    }
+
+    /**
+     * Set the storageMounts property: Storage mounts associated with this App Service plan.
+     * 
+     * @param storageMounts the storageMounts value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withStorageMounts(List<StorageMount> storageMounts) {
+        this.storageMounts = storageMounts;
+        return this;
+    }
+
+    /**
+     * Get the rdpEnabled property: If &lt;code&gt;true&lt;/code&gt;, RDP access is enabled for this App Service plan.
+     * Only applicable for IsCustomMode ASPs.
+     * If &lt;code&gt;false&lt;/code&gt;, RDP access is disabled.
+     * 
+     * @return the rdpEnabled value.
+     */
+    public Boolean rdpEnabled() {
+        return this.rdpEnabled;
+    }
+
+    /**
+     * Set the rdpEnabled property: If &lt;code&gt;true&lt;/code&gt;, RDP access is enabled for this App Service plan.
+     * Only applicable for IsCustomMode ASPs.
+     * If &lt;code&gt;false&lt;/code&gt;, RDP access is disabled.
+     * 
+     * @param rdpEnabled the rdpEnabled value to set.
+     * @return the AppServicePlanProperties object itself.
+     */
+    public AppServicePlanProperties withRdpEnabled(Boolean rdpEnabled) {
+        this.rdpEnabled = rdpEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -587,6 +775,21 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
         }
         if (kubeEnvironmentProfile() != null) {
             kubeEnvironmentProfile().validate();
+        }
+        if (planDefaultIdentity() != null) {
+            planDefaultIdentity().validate();
+        }
+        if (registryAdapters() != null) {
+            registryAdapters().forEach(e -> e.validate());
+        }
+        if (installScripts() != null) {
+            installScripts().forEach(e -> e.validate());
+        }
+        if (network() != null) {
+            network().validate();
+        }
+        if (storageMounts() != null) {
+            storageMounts().forEach(e -> e.validate());
         }
     }
 
@@ -618,6 +821,15 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
         jsonWriter.writeJsonField("kubeEnvironmentProfile", this.kubeEnvironmentProfile);
         jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
         jsonWriter.writeBooleanField("asyncScalingEnabled", this.asyncScalingEnabled);
+        jsonWriter.writeJsonField("planDefaultIdentity", this.planDefaultIdentity);
+        jsonWriter.writeBooleanField("isCustomMode", this.isCustomMode);
+        jsonWriter.writeArrayField("registryAdapters", this.registryAdapters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("installScripts", this.installScripts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("network", this.network);
+        jsonWriter.writeArrayField("storageMounts", this.storageMounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("rdpEnabled", this.rdpEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -693,6 +905,24 @@ public final class AppServicePlanProperties implements JsonSerializable<AppServi
                 } else if ("asyncScalingEnabled".equals(fieldName)) {
                     deserializedAppServicePlanProperties.asyncScalingEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("planDefaultIdentity".equals(fieldName)) {
+                    deserializedAppServicePlanProperties.planDefaultIdentity = DefaultIdentity.fromJson(reader);
+                } else if ("isCustomMode".equals(fieldName)) {
+                    deserializedAppServicePlanProperties.isCustomMode = reader.getNullable(JsonReader::getBoolean);
+                } else if ("registryAdapters".equals(fieldName)) {
+                    List<RegistryAdapter> registryAdapters
+                        = reader.readArray(reader1 -> RegistryAdapter.fromJson(reader1));
+                    deserializedAppServicePlanProperties.registryAdapters = registryAdapters;
+                } else if ("installScripts".equals(fieldName)) {
+                    List<InstallScript> installScripts = reader.readArray(reader1 -> InstallScript.fromJson(reader1));
+                    deserializedAppServicePlanProperties.installScripts = installScripts;
+                } else if ("network".equals(fieldName)) {
+                    deserializedAppServicePlanProperties.network = ServerFarmNetworkSettings.fromJson(reader);
+                } else if ("storageMounts".equals(fieldName)) {
+                    List<StorageMount> storageMounts = reader.readArray(reader1 -> StorageMount.fromJson(reader1));
+                    deserializedAppServicePlanProperties.storageMounts = storageMounts;
+                } else if ("rdpEnabled".equals(fieldName)) {
+                    deserializedAppServicePlanProperties.rdpEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

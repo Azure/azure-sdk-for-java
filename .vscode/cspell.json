@@ -105,6 +105,8 @@
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-5_2-13/**",
+    "sdk/cosmos/azure-cosmos-spark_4-0_2-13/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
     "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
@@ -234,6 +236,7 @@
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
+    "CSDL",
     "Cyclomatic",
     "branchcoverage",
     "cacerts",
@@ -288,10 +291,12 @@
     "Esto",
     "etag",
     "euap",
+    "evals",
     "eventhub",
     "eventhubs",
     "failondeprecatedstatus",
     "FHIR",
+    "FOURX",
     "filereports",
     "gapra",
     "gltf",
@@ -312,6 +317,7 @@
     "includable",
     "includables",
     "idnum",
+    "inpainting",
     "insights",
     "intellij",
     "Intellij",
@@ -400,6 +406,7 @@
     "SERIALVERSIONID",
     "servicebus",
     "sftdl",
+    "SIXX",
     "skus",
     "snomed",
     "sonatype",
@@ -432,7 +439,8 @@
     "windowtitle",
     "wordomatic",
     "xlint",
-    "XLint"
+    "XLint",
+    "xmlparserv"
   ],
   "overrides": [
     {
@@ -863,6 +871,17 @@
         "UBINARY"
       ]
     },
+	{
+      "filename": "/sdk/ai/azure-ai-voicelive/**",
+      "words": [
+        "Dexec",
+        "viseme",
+        "VISEME",
+        "webrtc",
+        "WEBRTC",
+        "aiservices"
+      ]
+    },
     {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
@@ -1076,6 +1095,7 @@
         "itest",
         "itests",
         "jaas",
+        "jandex",
         "janino",
         "jaspi",
         "jaxb",
@@ -1095,6 +1115,7 @@
         "jooq",
         "jpamodelgen",
         "jspc",
+        "jspecify",
         "jstl",
         "jtds",
         "jvnet",
@@ -1176,15 +1197,19 @@
         "uberjar",
         "ultraq",
         "unboundid",
+        "uring",
         "vavr",
         "vertx",
         "vibur",
         "wadl",
         "weaviate",
+        "webauthn",
         "webmvc",
         "xerial",
+        "xmlparserv",
         "xmpp",
         "xsom",
+        "xtend",
         "yasson",
         "yugabytedb",
         "zaxxer",
@@ -1224,6 +1249,7 @@
       "words": [
         "aadb",
         "AADB",
+        "AADSTS",
         "amqps",
         "Authoritys",
         "autoconfiguation",

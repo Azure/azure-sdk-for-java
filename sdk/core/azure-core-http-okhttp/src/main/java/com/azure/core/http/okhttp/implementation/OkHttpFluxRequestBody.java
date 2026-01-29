@@ -83,15 +83,23 @@ public class OkHttpFluxRequestBody extends RequestBody {
                 }
             }, 1, 1).then();
 
-            // The blocking happens on OkHttp thread pool.
-            if (callTimeoutMillis > 0) {
-                /*
-                 * Default call timeout (in milliseconds). By default there is no timeout for complete calls, but
-                 * there is for the connection, write, and read actions within a call.
-                 */
-                requestSendMono.block(Duration.ofMillis(callTimeoutMillis));
-            } else {
-                requestSendMono.block();
+            try {
+                // The blocking happens on OkHttp thread pool.
+                if (callTimeoutMillis > 0) {
+                    /*
+                     * Default call timeout (in milliseconds). By default there is no timeout for complete calls, but
+                     * there is for the connection, write, and read actions within a call.
+                     */
+                    requestSendMono.block(Duration.ofMillis(callTimeoutMillis));
+                } else {
+                    requestSendMono.block();
+                }
+            } catch (RuntimeException e) {
+                if (e.getCause() instanceof IOException) {
+                    throw (IOException) e.getCause();
+                } else {
+                    throw e;
+                }
             }
         } else {
             // Prevent OkHttp from potentially re-sending non-repeatable body outside of retry policies.

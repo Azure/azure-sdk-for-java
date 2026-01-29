@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * sensitivity.
+ * Represents a sensitivity.
  */
 public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<MicrosoftGraphSensitivity> {
     /**

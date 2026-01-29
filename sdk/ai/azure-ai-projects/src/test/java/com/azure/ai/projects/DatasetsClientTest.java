@@ -22,53 +22,15 @@ import java.util.UUID;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
+@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class DatasetsClientTest extends ClientTestBase {
-
-    private AIProjectClientBuilder clientBuilder;
-    private DatasetsClient datasetsClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        datasetsClient = clientBuilder.buildDatasetsClient();
-    }
-
-    /**
-     * Helper method to validate common properties of a DatasetVersion
-     * 
-     * @param datasetVersion The dataset version to validate
-     * @param expectedName The expected name of the dataset
-     * @param expectedVersion The expected version string
-     */
-    private void assertDatasetVersion(DatasetVersion datasetVersion, String expectedName, String expectedVersion) {
-        Assertions.assertNotNull(datasetVersion, "Dataset version should not be null");
-        Assertions.assertEquals(expectedName, datasetVersion.getName(), "Dataset name should match expected value");
-        Assertions.assertEquals(expectedVersion, datasetVersion.getVersion(),
-            "Dataset version should match expected value");
-        Assertions.assertNotNull(datasetVersion.getType(), "Dataset type should not be null");
-    }
-
-    /**
-     * Helper method to validate common properties of a FileDatasetVersion
-     * 
-     * @param fileDatasetVersion The file dataset version to validate
-     * @param expectedName The expected name of the dataset
-     * @param expectedVersion The expected version string
-     * @param expectedDataUri The expected data URI (optional)
-     */
-    private void assertFileDatasetVersion(FileDatasetVersion fileDatasetVersion, String expectedName,
-        String expectedVersion, String expectedDataUri) {
-        assertDatasetVersion(fileDatasetVersion, expectedName, expectedVersion);
-        if (expectedDataUri != null) {
-            Assertions.assertEquals(expectedDataUri, fileDatasetVersion.getDataUri(),
-                "Dataset dataUri should match expected value");
-        }
-    }
 
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testCreateDatasetWithFile(HttpClient httpClient) throws FileNotFoundException, URISyntaxException {
-        setup(httpClient);
+    public void testCreateDatasetWithFile(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws FileNotFoundException, URISyntaxException {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
         String datasetVersionString = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
@@ -84,8 +46,9 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testCreateDatasetWithFolder(HttpClient httpClient) throws IOException, URISyntaxException {
-        setup(httpClient);
+    public void testCreateDatasetWithFolder(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws IOException, URISyntaxException {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "folder-dataset")
             + UUID.randomUUID().toString().substring(0, 8);
@@ -114,11 +77,11 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDatasets(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListDatasets(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         // Verify that listing datasets returns results
-        Iterable<DatasetVersion> datasets = datasetsClient.listLatestDatasetVersions();
+        Iterable<DatasetVersion> datasets = datasetsClient.listLatest();
         Assertions.assertNotNull(datasets);
 
         // Verify that at least one dataset can be retrieved
@@ -131,13 +94,13 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDatasetVersions(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListDatasetVersions(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
 
         // Verify that listing dataset versions returns results
-        Iterable<DatasetVersion> versions = datasetsClient.listDatasetVersions(datasetName);
+        Iterable<DatasetVersion> versions = datasetsClient.listVersions(datasetName);
         Assertions.assertNotNull(versions);
 
         // Verify that at least one dataset version can be retrieved
@@ -150,8 +113,8 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDataset(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDataset(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "my-dataset");
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
@@ -166,8 +129,8 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testCreateOrUpdateDataset(HttpClient httpClient) {
-        setup(httpClient);
+    public void testCreateOrUpdateDataset(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "updated-dataset")
             + UUID.randomUUID().toString().substring(0, 8);
@@ -179,8 +142,8 @@ public class DatasetsClientTest extends ClientTestBase {
             = new FileDatasetVersion().setDataUri(dataUri).setDescription("Test dataset created via SDK tests");
 
         // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient
-            .createOrUpdateDatasetVersion(datasetName, datasetVersion, fileDataset);
+        FileDatasetVersion createdDataset
+            = (FileDatasetVersion) datasetsClient.createOrUpdateVersion(datasetName, datasetVersion, fileDataset);
 
         // Verify the created dataset
         assertFileDatasetVersion(createdDataset, datasetName, datasetVersion, dataUri);
@@ -190,8 +153,8 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testPendingUpload(HttpClient httpClient) {
-        setup(httpClient);
+    public void testPendingUpload(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "pending-upload-dataset")
             + UUID.randomUUID().toString().substring(0, 8);
@@ -214,8 +177,9 @@ public class DatasetsClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testDeleteDataset(HttpClient httpClient) throws FileNotFoundException, URISyntaxException {
-        setup(httpClient);
+    public void testDeleteDataset(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
+        throws FileNotFoundException, URISyntaxException {
+        DatasetsClient datasetsClient = getDatasetsClient(httpClient, serviceVersion);
 
         // First create a dataset that we can then delete
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "delete-test-dataset")
@@ -229,7 +193,7 @@ public class DatasetsClientTest extends ClientTestBase {
         Assertions.assertNotNull(createdDataset);
 
         // Delete the dataset
-        datasetsClient.deleteDatasetVersion(datasetName, datasetVersion);
+        datasetsClient.deleteVersion(datasetName, datasetVersion);
 
         // Verify deletion - this should throw ResourceNotFoundException
         try {

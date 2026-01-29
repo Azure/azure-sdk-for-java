@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class BrokerDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Broker_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/Broker_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Delete.
