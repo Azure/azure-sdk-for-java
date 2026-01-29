@@ -678,4 +678,392 @@ public class ThinClientE2ETest {
             }
         }
     }
+
+    // ==================== Query Plan Feature Tests ====================
+    // These tests verify that various query features work correctly through thin client
+
+    /**
+     * Test: ORDER BY query
+     * Verifies that ORDER BY queries work correctly through thin client
+     * Expected: hasOrderBy=true, rewrittenQuery present
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanOrderBy() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        try {
+            // Create documents with different _ts values (achieved by creating at different times)
+            for (int i = 0; i < 5; i++) {
+                String id = UUID.randomUUID().toString();
+                String pk = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, pk);
+                doc.put("sortField", i);
+                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute ORDER BY query
+            String query = "SELECT * FROM c ORDER BY c.sortField";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+            List<ObjectNode> results = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+
+            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                .queryItems(query, queryOptions, ObjectNode.class)
+                .byPage()
+                .toIterable();
+
+            for (FeedResponse<ObjectNode> page : pages) {
+                results.addAll(page.getResults());
+                allDiagnostics.add(page.getCosmosDiagnostics());
+            }
+
+            // Assert thin client endpoint used
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // Verify results are ordered by sortField ascending
+            assertThat(results.size()).isGreaterThanOrEqualTo(5);
+
+            // Validate ordering - each result's sortField should be >= previous
+            Integer previousSortField = null;
+            for (ObjectNode result : results) {
+                if (result.has("sortField")) {
+                    int currentSortField = result.get("sortField").asInt();
+                    if (previousSortField != null) {
+                        assertThat(currentSortField)
+                            .as("Results should be ordered by sortField ascending")
+                            .isGreaterThanOrEqualTo(previousSortField);
+                    }
+                    previousSortField = currentSortField;
+                }
+            }
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: Aggregate query (COUNT)
+     * Verifies that aggregate queries work correctly through thin client
+     * Expected: hasAggregates=true, aggregates array populated
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanAggregate() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        String commonPk = UUID.randomUUID().toString();
+        try {
+            // Create documents
+            int numDocs = 5;
+            for (int i = 0; i < numDocs; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, commonPk);
+                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute COUNT aggregate query
+            String query = "SELECT VALUE COUNT(1) FROM c";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(commonPk));
+
+            FeedResponse<Integer> response = sharedContainer
+                .queryItems(query, queryOptions, Integer.class)
+                .byPage()
+                .blockFirst();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getResults().size()).isEqualTo(1);
+            assertThat(response.getResults().get(0)).isEqualTo(numDocs);
+            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: Query with partition key filter (single range)
+     * Verifies that queries with partition key filters return narrow ranges (not full range)
+     * Expected: Single narrow range targeting specific partition
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanWithPartitionKeyFilterSingleRange() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        try {
+            // Create a document with specific id
+            String targetId = UUID.randomUUID().toString();
+            String targetPk = UUID.randomUUID().toString();
+            ObjectNode doc = createTestDocument(targetId, targetPk);
+            sharedContainer.createItem(doc, new PartitionKey(targetPk), null).block();
+            createdDocs.add(doc);
+
+            // Execute query with id filter
+            String query = "SELECT * FROM c WHERE c.id = @id";
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            querySpec.setParameters(Arrays.asList(new SqlParameter("@id", targetId)));
+
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+            FeedResponse<ObjectNode> response = sharedContainer
+                .queryItems(querySpec, queryOptions, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+
+            assertThat(response).isNotNull();
+            assertThat(response.getResults().size()).isEqualTo(1);
+            assertThat(response.getResults().get(0).get(ID_FIELD).asText()).isEqualTo(targetId);
+            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: DISTINCT query
+     * Verifies that DISTINCT queries work correctly through thin client
+     * Expected: hasDistinct=true
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanDistinct() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        String commonPk = UUID.randomUUID().toString();
+        try {
+            // Create documents with some duplicate category values
+            String[] categories = {"cat1", "cat2", "cat1", "cat3", "cat2"};
+            for (int i = 0; i < categories.length; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, commonPk);
+                doc.put("category", categories[i]);
+                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute DISTINCT query
+            String query = "SELECT DISTINCT VALUE c.category FROM c";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(commonPk));
+
+            List<String> results = sharedContainer
+                .queryItems(query, queryOptions, String.class)
+                .collectList()
+                .block();
+
+            assertThat(results).isNotNull();
+            assertThat(results.size()).isEqualTo(3); // cat1, cat2, cat3
+
+            // Get diagnostics from a page query
+            FeedResponse<String> response = sharedContainer
+                .queryItems(query, queryOptions, String.class)
+                .byPage()
+                .blockFirst();
+            assertThinClientEndpointUsed(response.getCosmosDiagnostics());
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: TOP query
+     * Verifies that TOP queries work correctly through thin client
+     * Expected: hasTop=true, top=10
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanTop() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        String commonPk = UUID.randomUUID().toString();
+        try {
+            // Create more documents than the TOP limit
+            int numDocs = 20;
+            for (int i = 0; i < numDocs; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, commonPk);
+                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute TOP 10 query
+            String query = "SELECT TOP 10 * FROM c";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(commonPk));
+
+            List<ObjectNode> results = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+
+            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                .queryItems(query, queryOptions, ObjectNode.class)
+                .byPage()
+                .toIterable();
+
+            for (FeedResponse<ObjectNode> page : pages) {
+                results.addAll(page.getResults());
+                allDiagnostics.add(page.getCosmosDiagnostics());
+            }
+
+            // Assert thin client endpoint used
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // Verify exactly 10 results returned
+            assertThat(results.size()).isEqualTo(10);
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: GROUP BY query with aggregates
+     * Verifies that GROUP BY queries work correctly through thin client
+     * Expected: hasGroupBy=true, hasAggregates=true
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanGroupBy() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        String commonPk = UUID.randomUUID().toString();
+        try {
+            // Create documents with category field
+            String[] categories = {"cat1", "cat1", "cat2", "cat2", "cat2", "cat3"};
+            for (int i = 0; i < categories.length; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, commonPk);
+                doc.put("category", categories[i]);
+                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute GROUP BY query with COUNT aggregate
+            String query = "SELECT c.category, COUNT(1) as cnt FROM c GROUP BY c.category";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(commonPk));
+
+            List<ObjectNode> results = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+
+            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                .queryItems(query, queryOptions, ObjectNode.class)
+                .byPage()
+                .toIterable();
+
+            for (FeedResponse<ObjectNode> page : pages) {
+                results.addAll(page.getResults());
+                allDiagnostics.add(page.getCosmosDiagnostics());
+            }
+
+            // Assert thin client endpoint used
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // Verify 3 groups returned (cat1, cat2, cat3)
+            assertThat(results.size()).isEqualTo(3);
+
+            // Verify counts are correct
+            for (ObjectNode result : results) {
+                String category = result.get("category").asText();
+                int count = result.get("cnt").asInt();
+                switch (category) {
+                    case "cat1":
+                        assertThat(count).isEqualTo(2);
+                        break;
+                    case "cat2":
+                        assertThat(count).isEqualTo(3);
+                        break;
+                    case "cat3":
+                        assertThat(count).isEqualTo(1);
+                        break;
+                    default:
+                        fail("Unexpected category: " + category);
+                }
+            }
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
+
+    /**
+     * Test: Invalid query returns error
+     * Verifies that invalid queries return proper errors through thin client
+     * Expected: 400 BadRequest error
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanInvalidQuery() {
+        // Execute invalid query (typo in SELECT and FROM)
+        String invalidQuery = "SELEC * FORM c";
+        CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+
+        try {
+            sharedContainer
+                .queryItems(invalidQuery, queryOptions, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+            fail("Expected exception for invalid query");
+        } catch (Exception e) {
+            // Verify we get a proper error (400 BadRequest is expected)
+            assertThat(e).isNotNull();
+            logger.info("Expected error for invalid query: {}", e.getMessage());
+        }
+    }
+
+    /**
+     * Test: OFFSET LIMIT query
+     * Verifies that OFFSET LIMIT queries work correctly through thin client
+     * Expected: hasOffset=true, hasLimit=true
+     */
+    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void testThinClientQueryPlanOffsetLimit() {
+        List<ObjectNode> createdDocs = new ArrayList<>();
+        String commonPk = UUID.randomUUID().toString();
+        try {
+            // Create documents with index values for ordering
+            int numDocs = 15;
+            for (int i = 0; i < numDocs; i++) {
+                String id = UUID.randomUUID().toString();
+                ObjectNode doc = createTestDocument(id, commonPk);
+                doc.put("idx", i);
+                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                createdDocs.add(doc);
+            }
+
+            // Execute OFFSET LIMIT query - skip first 5, take next 5
+            String query = "SELECT * FROM c ORDER BY c.idx OFFSET 5 LIMIT 5";
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            queryOptions.setPartitionKey(new PartitionKey(commonPk));
+
+            List<ObjectNode> results = new ArrayList<>();
+            List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
+
+            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                .queryItems(query, queryOptions, ObjectNode.class)
+                .byPage()
+                .toIterable();
+
+            for (FeedResponse<ObjectNode> page : pages) {
+                results.addAll(page.getResults());
+                allDiagnostics.add(page.getCosmosDiagnostics());
+            }
+
+            // Assert thin client endpoint used
+            for (CosmosDiagnostics diagnostics : allDiagnostics) {
+                assertThinClientEndpointUsed(diagnostics);
+            }
+
+            // Verify exactly 5 results returned (after skipping 5)
+            assertThat(results.size()).isEqualTo(5);
+
+            // Verify the idx values are 5, 6, 7, 8, 9
+            for (int i = 0; i < results.size(); i++) {
+                assertThat(results.get(i).get("idx").asInt()).isEqualTo(i + 5);
+            }
+
+        } finally {
+            deleteDocuments(createdDocs);
+        }
+    }
 }

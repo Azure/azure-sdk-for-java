@@ -152,6 +152,7 @@ public abstract class SingleGroupAggregator {
             for (Map.Entry<String, AggregateOperator> aliasToAggregate : aggregateAliasToAggregateType.entrySet()) {
                 String alias = aliasToAggregate.getKey();
                 AggregateOperator aggregateOperator = null;
+                Object aliasAggregateOperator = aliasToAggregate.getValue();
                 if (aliasToAggregate.getValue() != null) {
                     aggregateOperator = AggregateOperator.valueOf(String.valueOf(aliasToAggregate.getValue()));
                 }

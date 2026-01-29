@@ -168,7 +168,9 @@ public final class QueryInfo extends JsonSerializable {
 
     public Map<String, AggregateOperator> getGroupByAliasToAggregateType(){
             Map<String, AggregateOperator>  groupByAliasToAggregateMap;
-            groupByAliasToAggregateMap = super.getMap("groupByAliasToAggregateType");
+            // Use getMapWithEmptyStringAsNull to handle thin client responses where
+            // empty strings are returned instead of null values
+            groupByAliasToAggregateMap = super.getMapWithEmptyStringAsNull("groupByAliasToAggregateType");
             return groupByAliasToAggregateMap;
     }
 
