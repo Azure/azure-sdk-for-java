@@ -150,7 +150,7 @@ public final class SingleDocumentTranslationClientImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/translator")
-    @ServiceInterface(name = "SingleDocumentTranslationClient")
+    @ServiceInterface(name = "SingleDocumentTransl")
     public interface SingleDocumentTranslationClientService {
         // @Multipart not supported by RestProxy
         @Post("/document:translate")
