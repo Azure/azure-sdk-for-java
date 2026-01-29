@@ -12,10 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.HybridSearch;
 import com.azure.search.documents.models.QueryDebugMode;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -154,18 +151,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private SearchMode searchMode;
 
     /*
-     * A value that specifies the language of the search query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * A value that specified the type of the speller to use to spell-correct individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType speller;
-
-    /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
@@ -222,9 +207,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
      * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
      * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
-     * as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum character length of answers can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     @Generated
     private String answers;
@@ -233,27 +216,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
      * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
      * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
-     * option, such as `extractive|highlight-true`. Defaults to `None`. The maximum character length of captions can be
-     * configured by appending the pipe character '|' followed by the 'count-<number of maximum character length>', such
-     * as 'extractive|maxcharlength-600'.
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     @Generated
     private String captions;
-
-    /*
-     * This parameter is only valid if the query type is `semantic`. When QueryRewrites is set to `generative`, the
-     * query terms are sent to a generate model which will produce 10 (default) rewrites to help increase the recall of
-     * the request. The requested count can be configured by appending the pipe character `|` followed by the
-     * `count-<number of rewrites>` option, such as `generative|count-3`. Defaults to `None`.
-     */
-    @Generated
-    private String queryRewrites;
-
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    @Generated
-    private String semanticFields;
 
     /*
      * The query parameters for vector and hybrid search queries.
@@ -267,12 +233,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      */
     @Generated
     private VectorFilterMode vectorFilterMode;
-
-    /*
-     * The query parameters to configure hybrid search behaviors.
-     */
-    @Generated
-    private HybridSearch hybridSearch;
 
     /**
      * Creates an instance of SearchRequest class.
@@ -710,52 +670,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the queryLanguage property: A value that specifies the language of the search query.
-     * 
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: A value that specifies the language of the search query.
-     * 
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: A value that specified the type of the speller to use to spell-correct individual
-     * search query terms.
-     * 
-     * @return the speller value.
-     */
-    @Generated
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: A value that specified the type of the speller to use to spell-correct individual
-     * search query terms.
-     * 
-     * @param speller the speller value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
-        return this;
-    }
-
-    /**
      * Get the select property: The comma-separated list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      * 
@@ -935,9 +849,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      * 
      * @return the answers value.
      */
@@ -952,9 +864,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after the
      * answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
      * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
-     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7. The maximum
-     * character length of answers can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      * 
      * @param answers the answers value to set.
      * @return the SearchRequest object itself.
@@ -970,8 +880,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @return the captions value.
      */
@@ -985,8 +893,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
      * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
-     * The maximum character length of captions can be configured by appending the pipe character '|' followed by the
-     * 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      * 
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
@@ -994,56 +900,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     @Generated
     public SearchRequest setCaptions(String captions) {
         this.captions = captions;
-        return this;
-    }
-
-    /**
-     * Get the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
-     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
-     * help increase the recall of the request. The requested count can be configured by appending the pipe character
-     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
-     * 
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public String getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: This parameter is only valid if the query type is `semantic`. When QueryRewrites
-     * is set to `generative`, the query terms are sent to a generate model which will produce 10 (default) rewrites to
-     * help increase the recall of the request. The requested count can be configured by appending the pipe character
-     * `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`. Defaults to `None`.
-     * 
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setQueryRewrites(String queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     * 
-     * @return the semanticFields value.
-     */
-    @Generated
-    public String getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     * 
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setSemanticFields(String semanticFields) {
-        this.semanticFields = semanticFields;
         return this;
     }
 
@@ -1094,28 +950,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     * 
-     * @return the hybridSearch value.
-     */
-    @Generated
-    public HybridSearch getHybridSearch() {
-        return this.hybridSearch;
-    }
-
-    /**
-     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     * 
-     * @param hybridSearch the hybridSearch value to set.
-     * @return the SearchRequest object itself.
-     */
-    @Generated
-    public SearchRequest setHybridSearch(HybridSearch hybridSearch) {
-        this.hybridSearch = hybridSearch;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -1141,8 +975,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("search", this.searchText);
         jsonWriter.writeStringField("searchFields", this.searchFields);
         jsonWriter.writeStringField("searchMode", this.searchMode == null ? null : this.searchMode.toString());
-        jsonWriter.writeStringField("queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString());
-        jsonWriter.writeStringField("speller", this.speller == null ? null : this.speller.toString());
         jsonWriter.writeStringField("select", this.select);
         jsonWriter.writeNumberField("skip", this.skip);
         jsonWriter.writeNumberField("top", this.top);
@@ -1153,12 +985,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("answers", this.answers);
         jsonWriter.writeStringField("captions", this.captions);
-        jsonWriter.writeStringField("queryRewrites", this.queryRewrites);
-        jsonWriter.writeStringField("semanticFields", this.semanticFields);
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
             this.vectorFilterMode == null ? null : this.vectorFilterMode.toString());
-        jsonWriter.writeJsonField("hybridSearch", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -1214,10 +1043,6 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.searchFields = reader.getString();
                 } else if ("searchMode".equals(fieldName)) {
                     deserializedSearchRequest.searchMode = SearchMode.fromString(reader.getString());
-                } else if ("queryLanguage".equals(fieldName)) {
-                    deserializedSearchRequest.queryLanguage = QueryLanguage.fromString(reader.getString());
-                } else if ("speller".equals(fieldName)) {
-                    deserializedSearchRequest.speller = QuerySpellerType.fromString(reader.getString());
                 } else if ("select".equals(fieldName)) {
                     deserializedSearchRequest.select = reader.getString();
                 } else if ("skip".equals(fieldName)) {
@@ -1236,17 +1061,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.answers = reader.getString();
                 } else if ("captions".equals(fieldName)) {
                     deserializedSearchRequest.captions = reader.getString();
-                } else if ("queryRewrites".equals(fieldName)) {
-                    deserializedSearchRequest.queryRewrites = reader.getString();
-                } else if ("semanticFields".equals(fieldName)) {
-                    deserializedSearchRequest.semanticFields = reader.getString();
                 } else if ("vectorQueries".equals(fieldName)) {
                     List<VectorQuery> vectorQueries = reader.readArray(reader1 -> VectorQuery.fromJson(reader1));
                     deserializedSearchRequest.vectorQueries = vectorQueries;
                 } else if ("vectorFilterMode".equals(fieldName)) {
                     deserializedSearchRequest.vectorFilterMode = VectorFilterMode.fromString(reader.getString());
-                } else if ("hybridSearch".equals(fieldName)) {
-                    deserializedSearchRequest.hybridSearch = HybridSearch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
