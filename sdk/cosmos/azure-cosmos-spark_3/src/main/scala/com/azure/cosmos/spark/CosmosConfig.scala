@@ -2452,11 +2452,11 @@ private object CosmosThroughputControlConfig {
 
             assert(groupName.isDefined, s"Parameter '${CosmosConfigNames.ThroughputControlName}' is missing.")
 
-            if (throughputBucket.isDefined) {
+            if (throughputBucket.isDefined && throughputBucket.get > 0) {
                 Some(parseServerThroughputControlConfig(groupName.get, throughputBucket.get, cfg))
             } else {
                 // if throughput bucket is defined, then use server side throughput bucket control
-                // else valida SDK global throughput control config
+                // else validate SDK global throughput control config
                 Some(parseSDKThroughputControlConfig(groupName.get, cfg))
             }
         } else {

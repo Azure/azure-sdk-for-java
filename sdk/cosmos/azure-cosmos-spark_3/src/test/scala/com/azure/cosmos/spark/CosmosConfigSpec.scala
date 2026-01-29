@@ -1559,7 +1559,10 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val throughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
     throughputControlConfig.isDefined shouldEqual true
-    throughputControlConfig.get.asInstanceOf[CosmosServerThroughputControlConfig].throughputBucket shouldEqual 2
+    throughputControlConfig.get match {
+      case serverThroughputControlConfig: CosmosServerThroughputControlConfig => serverThroughputControlConfig.throughputBucket shouldEqual 2
+      case other => fail(s"should get CosmosServerThroughputControlConfig config, but get ${other.getClass} config type")
+    }
   }
 
   private case class PatchColumnConfigParameterTest
