@@ -90,6 +90,11 @@ public class KeyVaultClient {
     private String managedIdentity;
 
     /**
+     * Stores the provided access token.
+     */
+    private String providedAccessToken;
+
+    /**
      * Stores the token.
      */
     private AccessToken accessToken;
@@ -106,7 +111,7 @@ public class KeyVaultClient {
      * @param managedIdentity The user-assigned managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri, null, null, null, managedIdentity, false);
+        this(keyVaultUri, null, null, null, managedIdentity, null, false);
     }
 
     /**
@@ -118,7 +123,7 @@ public class KeyVaultClient {
      * @param clientSecret The client secret.
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, null, false);
+        this(keyVaultUri, tenantId, clientId, clientSecret, null, null, false);
     }
 
     /**
@@ -133,6 +138,22 @@ public class KeyVaultClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity, boolean disableChallengeResourceVerification) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null, disableChallengeResourceVerification);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The user-assigned managed identity object ID.
+     * @param providedAccessToken The access token for authentication.
+     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     */
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity, String providedAccessToken, boolean disableChallengeResourceVerification) {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
@@ -147,6 +168,7 @@ public class KeyVaultClient {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
+        this.providedAccessToken = providedAccessToken;
         this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 
@@ -156,10 +178,11 @@ public class KeyVaultClient {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        String accessToken = System.getProperty("azure.keyvault.access-token");
         boolean disableChallengeResourceVerification
             = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
             disableChallengeResourceVerification);
     }
 
@@ -199,13 +222,21 @@ public class KeyVaultClient {
                 managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
 
-            if (tenantId != null && clientId != null && clientSecret != null) {
+            // Priority: 1. Managed Identity, 2. Provided Access Token, 3. Client ID/Secret
+            if (managedIdentity != null) {
+                LOGGER.info("Using managed identity for authentication");
+                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+            } else if (providedAccessToken != null) {
+                LOGGER.info("Using provided access token for authentication");
+                // Create an AccessToken object from the provided token string
+                // We set an expiration far in the future since we don't know the actual expiration
+                accessToken = new AccessToken(providedAccessToken, Long.MAX_VALUE);
+            } else if (tenantId != null && clientId != null && clientSecret != null) {
+                LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
                 accessToken
                     = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
-            } else {
-                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);

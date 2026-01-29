@@ -84,12 +84,19 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.client-id`: The client/application ID used for authentication.
 * `azure.keyvault.client-secret`: The client secret for authentication when using client credentials.
 * `azure.keyvault.managed-identity`: Indicates whether Managed Identity authentication is enabled.
+* `azure.keyvault.access-token`: The access token for authentication. This allows using a pre-obtained bearer token instead of client credentials.
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
 * `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
+
+**Authentication Priority:**
+When multiple authentication methods are configured, they are used in the following priority order:
+1. Managed Identity (`azure.keyvault.managed-identity`)
+2. Access Token (`azure.keyvault.access-token`)
+3. Client Credentials (`azure.keyvault.client-id` and `azure.keyvault.client-secret`)
 
 You can configure these properties using:
 ```java
@@ -188,6 +195,29 @@ System.out.println(result);
 ```
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+
+#### Authentication with Access Token
+If you want to use a pre-obtained bearer token for authentication (e.g., for multi-factor authentication scenarios), you can use the `azure.keyvault.access-token` property:
+
+```java
+// First, obtain your access token through your authentication flow
+String accessToken = "<your-pre-obtained-access-token>";
+
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.access-token", accessToken);
+
+KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+Security.addProvider(provider);
+
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
+
+// Use the keyStore as needed for your SSL/TLS operations
+```
+
+This approach allows you to programmatically implement multi-factor authentication by:
+1. Authenticating your service principal with a certificate (something you have)
+2. Requesting a temporary access token
+3. Using that temporary access token (something you know) for Key Vault operations
 
 ### mTLS
 #### Server side mTLS
