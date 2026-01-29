@@ -121,7 +121,9 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $ReleaseTag = $OldReleaseTag
   }
 
-  $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
+  # Exclude CHANGELOG.md from restore to prevent merge conflicts with merge-back PRs.
+  # Changelogs should be updated from main, not rolled back and then updated.
+  $cmdOutput = git restore --source $ReleaseTag -W -S -- $ArtifactDirPath ':!**/CHANGELOG.md'
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
     exit 1
