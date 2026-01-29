@@ -548,7 +548,7 @@ public final class SecretClient {
                         .getValue()
                         .toObject(DeletedSecretBundle.class)));
             } catch (HttpResponseException e) {
-                if (e.getResponse() != null && e.getResponse().getStatusCode() == 404) {
+                if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
                 } else {
@@ -720,7 +720,7 @@ public final class SecretClient {
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createKeyVaultSecret(
                     implClient.getSecretWithResponse(name, "", EMPTY_OPTIONS).getValue().toObject(SecretBundle.class)));
             } catch (HttpResponseException e) {
-                if (e.getResponse() != null && e.getResponse().getStatusCode() == 404) {
+                if (e.getResponse().getStatusCode() == 404) {
                     return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue());
                 } else {
