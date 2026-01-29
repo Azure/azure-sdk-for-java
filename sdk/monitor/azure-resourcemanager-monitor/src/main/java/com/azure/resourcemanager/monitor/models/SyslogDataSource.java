@@ -36,11 +36,6 @@ public final class SyslogDataSource implements JsonSerializable<SyslogDataSource
     private List<KnownSyslogDataSourceLogLevels> logLevels;
 
     /*
-     * The KQL query to transform the data source. This is a deprecated property and will be removed in future versions.
-     */
-    private String transformKql;
-
-    /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -117,28 +112,6 @@ public final class SyslogDataSource implements JsonSerializable<SyslogDataSource
     }
 
     /**
-     * Get the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @return the transformKql value.
-     */
-    public String transformKql() {
-        return this.transformKql;
-    }
-
-    /**
-     * Set the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
-     * be removed in future versions.
-     * 
-     * @param transformKql the transformKql value to set.
-     * @return the SyslogDataSource object itself.
-     */
-    public SyslogDataSource withTransformKql(String transformKql) {
-        this.transformKql = transformKql;
-        return this;
-    }
-
-    /**
      * Get the name property: A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
@@ -180,7 +153,6 @@ public final class SyslogDataSource implements JsonSerializable<SyslogDataSource
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("logLevels", this.logLevels,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("transformKql", this.transformKql);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -212,8 +184,6 @@ public final class SyslogDataSource implements JsonSerializable<SyslogDataSource
                     List<KnownSyslogDataSourceLogLevels> logLevels
                         = reader.readArray(reader1 -> KnownSyslogDataSourceLogLevels.fromString(reader1.getString()));
                     deserializedSyslogDataSource.logLevels = logLevels;
-                } else if ("transformKql".equals(fieldName)) {
-                    deserializedSyslogDataSource.transformKql = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedSyslogDataSource.name = reader.getString();
                 } else {

@@ -60,7 +60,7 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientMetricNamespaces")
+    @ServiceInterface(name = "MonitorClientMetricN")
     public interface MetricNamespacesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
