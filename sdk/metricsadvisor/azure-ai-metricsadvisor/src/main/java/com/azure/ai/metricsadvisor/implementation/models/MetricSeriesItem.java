@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,19 +21,16 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
     /*
      * metric unique id
      */
-    @Generated
     private UUID metricId;
 
     /*
      * dimension name and value pair
      */
-    @Generated
     private Map<String, String> dimension;
 
     /**
      * Creates an instance of MetricSeriesItem class.
      */
-    @Generated
     public MetricSeriesItem() {
     }
 
@@ -43,7 +39,6 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
      * 
      * @return the metricId value.
      */
-    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -53,15 +48,10 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
      * 
      * @return the dimension value.
      */
-    @Generated
     public Map<String, String> getDimension() {
         return this.dimension;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,7 +66,6 @@ public final class MetricSeriesItem implements JsonSerializable<MetricSeriesItem
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetricSeriesItem.
      */
-    @Generated
     public static MetricSeriesItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricSeriesItem deserializedMetricSeriesItem = new MetricSeriesItem();

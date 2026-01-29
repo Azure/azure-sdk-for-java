@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +19,26 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
     /*
      * metric id
      */
-    @Generated
     private String metricId;
 
     /*
      * metric name
      */
-    @Generated
     private String metricName;
 
     /*
      * metric display name
      */
-    @Generated
     private String metricDisplayName;
 
     /*
      * metric description
      */
-    @Generated
     private String metricDescription;
 
     /**
      * Creates an instance of DataFeedMetric class.
      */
-    @Generated
     public DataFeedMetric() {
     }
 
@@ -53,7 +47,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * 
      * @return the metricId value.
      */
-    @Generated
     public String getMetricId() {
         return this.metricId;
     }
@@ -63,7 +56,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * 
      * @return the metricName value.
      */
-    @Generated
     public String getMetricName() {
         return this.metricName;
     }
@@ -74,7 +66,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * @param metricName the metricName value to set.
      * @return the DataFeedMetric object itself.
      */
-    @Generated
     public DataFeedMetric setMetricName(String metricName) {
         this.metricName = metricName;
         return this;
@@ -85,7 +76,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * 
      * @return the metricDisplayName value.
      */
-    @Generated
     public String getMetricDisplayName() {
         return this.metricDisplayName;
     }
@@ -96,7 +86,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * @param metricDisplayName the metricDisplayName value to set.
      * @return the DataFeedMetric object itself.
      */
-    @Generated
     public DataFeedMetric setMetricDisplayName(String metricDisplayName) {
         this.metricDisplayName = metricDisplayName;
         return this;
@@ -107,7 +96,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * 
      * @return the metricDescription value.
      */
-    @Generated
     public String getMetricDescription() {
         return this.metricDescription;
     }
@@ -118,16 +106,11 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * @param metricDescription the metricDescription value to set.
      * @return the DataFeedMetric object itself.
      */
-    @Generated
     public DataFeedMetric setMetricDescription(String metricDescription) {
         this.metricDescription = metricDescription;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,7 +129,6 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataFeedMetric.
      */
-    @Generated
     public static DataFeedMetric fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFeedMetric deserializedDataFeedMetric = new DataFeedMetric();
