@@ -24,14 +24,30 @@ public final class TransliterableScript extends LanguageScript {
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
      * @param directionality the directionality value to set.
-     * @param toScripts the toScripts value to set.
+     * @param targetLanguageScripts the targetLanguageScripts value to set.
      */
     @Generated
     private TransliterableScript(String code, String name, String nativeName, LanguageDirectionality directionality,
-        List<LanguageScript> toScripts) {
+        List<LanguageScript> targetLanguageScripts) {
         super(code, name, nativeName, directionality);
-        this.toScripts = toScripts;
+        this.targetLanguageScripts = targetLanguageScripts;
     }
+
+    /**
+     * Get the targetLanguageScripts property: List of scripts available to convert text to.
+     *
+     * @return the targetLanguageScripts value.
+     */
+    @Generated
+    public List<LanguageScript> getTargetLanguageScripts() {
+        return this.targetLanguageScripts;
+    }
+
+    /*
+     * List of scripts available to convert text to.
+     */
+    @Generated
+    private final List<LanguageScript> targetLanguageScripts;
 
     /**
      * {@inheritDoc}
@@ -44,7 +60,8 @@ public final class TransliterableScript extends LanguageScript {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("nativeName", getNativeName());
         jsonWriter.writeStringField("dir", getDirectionality() == null ? null : getDirectionality().toString());
-        jsonWriter.writeArrayField("toScripts", this.toScripts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("toScripts", this.targetLanguageScripts,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -64,7 +81,7 @@ public final class TransliterableScript extends LanguageScript {
             String name = null;
             String nativeName = null;
             LanguageDirectionality directionality = null;
-            List<LanguageScript> toScripts = null;
+            List<LanguageScript> targetLanguageScripts = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -77,28 +94,12 @@ public final class TransliterableScript extends LanguageScript {
                 } else if ("dir".equals(fieldName)) {
                     directionality = LanguageDirectionality.fromString(reader.getString());
                 } else if ("toScripts".equals(fieldName)) {
-                    toScripts = reader.readArray(reader1 -> LanguageScript.fromJson(reader1));
+                    targetLanguageScripts = reader.readArray(reader1 -> LanguageScript.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TransliterableScript(code, name, nativeName, directionality, toScripts);
+            return new TransliterableScript(code, name, nativeName, directionality, targetLanguageScripts);
         });
-    }
-
-    /*
-     * List of scripts available to convert text to.
-     */
-    @Generated
-    private final List<LanguageScript> toScripts;
-
-    /**
-     * Get the toScripts property: List of scripts available to convert text to.
-     *
-     * @return the toScripts value.
-     */
-    @Generated
-    public List<LanguageScript> getToScripts() {
-        return this.toScripts;
     }
 }
