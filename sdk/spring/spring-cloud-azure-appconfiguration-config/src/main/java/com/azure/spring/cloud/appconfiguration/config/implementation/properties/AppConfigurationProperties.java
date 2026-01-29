@@ -134,6 +134,9 @@ public class AppConfigurationProperties {
         if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
         }
+        if (startupTimeout == null) {
+            throw new IllegalArgumentException("startupTimeout cannot be null.");
+        }
         if (startupTimeout.getSeconds() < 30 || startupTimeout.getSeconds() > 600) {
             throw new IllegalArgumentException("startupTimeout must be between 30 and 600 seconds.");
         }

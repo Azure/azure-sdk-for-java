@@ -161,13 +161,15 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             return attemptLoadFromClients(sourceList);
         }
 
-        requestContext = new Context("refresh",false).addData(PUSH_REFRESH, pushRefresh);
+        requestContext = new Context("refresh", false).addData(PUSH_REFRESH, pushRefresh);
 
         // During startup, retry with backoff until deadline
         Instant deadline = Instant.now().plusSeconds(resource.getStartupTimeout().getSeconds());
         Exception lastException = null;
 
         while (Instant.now().isBefore(deadline)) {
+            // Ensure we do not retain partial results from previous failed attempts
+            sourceList.clear();
             replicaClientFactory.findActiveClients(resource.getEndpoint());
             lastException = attemptLoadFromClients(sourceList);
 
