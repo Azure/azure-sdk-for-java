@@ -460,6 +460,7 @@ public final class DocumentIntelligenceClient {
     }
 
     /**
+     * /**
      * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
@@ -471,6 +472,7 @@ public final class DocumentIntelligenceClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -658,6 +660,7 @@ public final class DocumentIntelligenceClient {
     }
 
     /**
+     * /**
      * Analyzes document with document model.
      *
      * @param modelId Unique document model name.
@@ -669,6 +672,7 @@ public final class DocumentIntelligenceClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -751,6 +755,7 @@ public final class DocumentIntelligenceClient {
     }
 
     /**
+     * /**
      * Analyzes batch documents with document model.
      *
      * @param modelId Unique document model name.
@@ -762,6 +767,7 @@ public final class DocumentIntelligenceClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
+     * /
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
