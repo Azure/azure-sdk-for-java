@@ -249,8 +249,8 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     @Override
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync() {
         return this.manager()
-            .taskClient()
-            .getRegistryTasks()
+            .serviceClient()
+            .getRegistries()
             .getBuildSourceUploadUrlAsync(this.resourceGroupName(), this.name())
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }
