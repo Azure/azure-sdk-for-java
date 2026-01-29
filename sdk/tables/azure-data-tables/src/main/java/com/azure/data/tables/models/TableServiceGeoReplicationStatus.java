@@ -4,7 +4,6 @@
 
 package com.azure.data.tables.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
     /**
      * Static value live for TableServiceGeoReplicationStatus.
      */
-    @Generated
     public static final TableServiceGeoReplicationStatus LIVE = fromString("live");
 
     /**
      * Static value bootstrap for TableServiceGeoReplicationStatus.
      */
-    @Generated
     public static final TableServiceGeoReplicationStatus BOOTSTRAP = fromString("bootstrap");
 
     /**
      * Static value unavailable for TableServiceGeoReplicationStatus.
      */
-    @Generated
     public static final TableServiceGeoReplicationStatus UNAVAILABLE = fromString("unavailable");
 
     /**
@@ -35,7 +31,6 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public TableServiceGeoReplicationStatus() {
     }
@@ -46,7 +41,6 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding TableServiceGeoReplicationStatus.
      */
-    @Generated
     public static TableServiceGeoReplicationStatus fromString(String name) {
         return fromString(name, TableServiceGeoReplicationStatus.class);
     }
@@ -56,7 +50,6 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      * 
      * @return known TableServiceGeoReplicationStatus values.
      */
-    @Generated
     public static Collection<TableServiceGeoReplicationStatus> values() {
         return values(TableServiceGeoReplicationStatus.class);
     }
