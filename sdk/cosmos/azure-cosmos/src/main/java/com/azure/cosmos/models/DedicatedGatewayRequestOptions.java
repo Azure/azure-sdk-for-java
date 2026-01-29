@@ -15,6 +15,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  */
 public final class DedicatedGatewayRequestOptions implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Pattern SHARD_KEY_PATTERN = Pattern.compile("^[a-zA-Z0-9-]+$");
     private static final int MAX_SHARD_KEY_LENGTH = 36;
 
