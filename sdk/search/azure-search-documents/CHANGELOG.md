@@ -1,5 +1,15 @@
 # Release History
 
+## 11.9.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 11.8.1 (2026-01-29)
 
 ### Other Changes
