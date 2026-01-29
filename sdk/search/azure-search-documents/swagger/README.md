@@ -1,12 +1,12 @@
 # Azure Search Documents for Java
-    
+
 > see https://aka.ms/autorest
 
 This is the AutoRest configuration file for SearchServiceClient and SearchIndexClient.
 ---
-## Getting Started 
+## Getting Started
 
-To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and 
+To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and
 in this folder, run:
 
 > `autorest`
@@ -22,8 +22,8 @@ npm install -g autorest
 
 ### Generation
 
-There are three swaggers for Azure Search, `searchindex`, `searchservice`, and `knowledgebase`. They always under same
-package version, e.g. `--tag=searchindex`, `--tag=searchservice`, and `--tag=knowledgebase`.
+There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g.
+`--tag=searchindex` and `--tag=searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -35,7 +35,6 @@ e.g.
 cd <swagger-folder>
 autorest --tag=searchindex
 autorest --tag=searchservice
-autorest --tag=knowledgebase
 ```
 
 ## Manual Changes
@@ -46,7 +45,7 @@ contains manual translations of generated code to public API.
 ### SearchPagedFlux, SearchPagedIterable, and SearchPagedResponse
 
 New properties added to `SearchPagedResponse` need to be exposed as getter properties on `SearchPagedFlux` and
-`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and 
+`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and
 `SearchPagedIterable`.
 
 ### Converters
@@ -60,9 +59,9 @@ need to be updated if any of the models that get converted have new properties a
 There is `SearchOptions` in both implementation and public API, any time new properties are added to the implementation
 `SearchOptions` they need to be included in the public API model. Additionally, `List`-based properties use varargs
 setters instead of `List` setters in the public API and `QueryAnswerType` and `QueryCaptionType` properties need special
-handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special 
+handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special
 configurations based on the String value that Autorest cannot generate, `QueryAnswerType` has special configurations
-`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added 
+`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added
 as additional properties on the public `SearchOptions`.
 
 ### AutocompleteOptions and SuggestOptions
@@ -73,7 +72,7 @@ the options-based models are generated into the public API.
 
 ## Configuration
 
-### Basic Information 
+### Basic Information
 These are the global settings for SearchServiceClient and SearchIndexClient.
 
 ``` yaml
@@ -88,10 +87,10 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5fda13cee42cecc2e7da20bb4fd82bec5be9d0c7/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,Speller
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -106,10 +105,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5fda13cee42cecc2e7da20bb4fd82bec5be9d0c7/specification/search/data-plane/Azure.Search/stable/2025-09-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListIndexStatsSummary,ListKnowledgeBasesResult,ListKnowledgeSourcesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -156,19 +155,6 @@ directive:
         to: SearchIndexerDataSourceConnection
 ```
 
-### Tag: knowledgebase
-
-These settings apply only when `--tag=knowledgebase` is specified on the commandSearchServiceCounters line.
-
-``` yaml $(tag) == 'knowledgebase'
-namespace: com.azure.search.documents.knowledgebases
-input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/66088f96b90cc4aaf1b21e9779506e68efcfb2ca/specification/search/data-plane/Azure.Search/preview/2025-11-01-preview/knowledgebase.json
-models-subpackage: models
-custom-types-subpackage: implementation.models
-custom-types: ErrorResponse,ErrorDetail,ErrorAdditionalInfo,ErrorResponseException,RequestOptions
-```
-
 ---
 # Code Generation
 
@@ -181,7 +167,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.62'
+use: '@autorest/java@4.1.52'
 enable-sync-stack: true
 generate-client-as-impl: true
 required-fields-as-ctor-args: true
@@ -294,7 +280,7 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Change Answers, Captions, and QueryRewrites to a string in SearchOptions and SearchRequest
+### Change Answers and Captions to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
   - from: swagger-document
@@ -309,13 +295,6 @@ directive:
       param.type = "string";
       delete param.enum;
       delete param["x-ms-enum"];
-      
-      param = $.find(p => p.name == "queryRewrites");
-      param.type = "string";
-      delete param.enum;
-      delete param["x-ms-enum"];
-      
-      
 ```
 
 ``` yaml $(tag) == 'searchindex'
@@ -331,11 +310,6 @@ directive:
       param = $.SearchRequest.properties.captions;
       param.type = "string";
       param.description = $.Captions.description;
-      delete param["$ref"];
-      
-      param = $.SearchRequest.properties.queryRewrites;
-      param.type = "string";
-      param.description = $.QueryRewrites.description;
       delete param["$ref"];
 ```
 
@@ -471,42 +445,14 @@ directive:
     $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
 
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Make `SearchIndexerStatus.name` and `.runtime` optional
+### Make `SearchIndexerStatus.name` optional
 
 ```yaml $(tag) == 'searchservice'
 directive:
 - from: swagger-document
   where: $.definitions.SearchIndexerStatus
   transform: >
-    $.required = $.required.filter((required) => required !== "name" && required !== "runtime");
-```
-
-### Make `SearchServiceStatistics.indexersRuntime` optional
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.ServiceStatistics
-  transform: >
-    $.required = $.required.filter((required) => required !== "indexersRuntime");
-```
-
-### Remove `KnowledgeBaseOutputOptimization`
-```yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      delete $.KnowledgeBaseOutputOptimization;
+    $.required = $.required.filter((required) => required !== "name");
 ```
 
 ### Retain `rerankWithOriginalVectors` and `defaultOversampling` in `VectorSearchCompressionConfiguration`
