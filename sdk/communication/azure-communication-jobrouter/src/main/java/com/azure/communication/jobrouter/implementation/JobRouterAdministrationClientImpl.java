@@ -156,7 +156,7 @@ public final class JobRouterAdministrationClientImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "JobRouterAdministrationClient")
+    @ServiceInterface(name = "JobRouterAdministrat")
     public interface JobRouterAdministrationClientService {
         @Patch("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({ 200, 201 })
@@ -167,7 +167,7 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertDistributionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("distributionPolicyId") String distributionPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -180,7 +180,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertDistributionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("distributionPolicyId") String distributionPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -192,7 +192,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDistributionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/distributionPolicies/{distributionPolicyId}")
@@ -203,7 +203,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDistributionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/distributionPolicies")
@@ -213,7 +213,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDistributionPolicies(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/distributionPolicies")
@@ -223,7 +223,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDistributionPoliciesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/distributionPolicies/{distributionPolicyId}")
@@ -234,7 +234,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDistributionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/distributionPolicies/{distributionPolicyId}")
@@ -245,7 +245,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDistributionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Patch("/routing/classificationPolicies/{classificationPolicyId}")
@@ -257,7 +257,7 @@ public final class JobRouterAdministrationClientImpl {
         Mono<Response<BinaryData>> upsertClassificationPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("classificationPolicyId") String classificationPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -270,7 +270,7 @@ public final class JobRouterAdministrationClientImpl {
         Response<BinaryData> upsertClassificationPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("classificationPolicyId") String classificationPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -282,7 +282,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getClassificationPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/classificationPolicies/{classificationPolicyId}")
@@ -293,7 +293,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getClassificationPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/classificationPolicies")
@@ -303,7 +303,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listClassificationPolicies(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/classificationPolicies")
@@ -313,7 +313,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listClassificationPoliciesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/classificationPolicies/{classificationPolicyId}")
@@ -324,7 +324,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassificationPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/classificationPolicies/{classificationPolicyId}")
@@ -335,7 +335,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteClassificationPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
+            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Patch("/routing/exceptionPolicies/{exceptionPolicyId}")
@@ -346,7 +346,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertExceptionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -358,7 +358,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertExceptionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -370,7 +370,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getExceptionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({ 200 })
@@ -380,7 +380,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getExceptionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/exceptionPolicies")
         @ExpectedResponses({ 200 })
@@ -389,7 +389,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listExceptionPolicies(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/exceptionPolicies")
@@ -399,7 +399,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listExceptionPoliciesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
@@ -410,7 +410,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteExceptionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({ 204 })
@@ -420,7 +420,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteExceptionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/routing/queues/{queueId}")
         @ExpectedResponses({ 200, 201 })
@@ -430,7 +430,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertQueue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -442,7 +442,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertQueueSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -454,7 +454,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getQueue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/queues/{queueId}")
         @ExpectedResponses({ 200 })
@@ -464,7 +464,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getQueueSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/queues")
         @ExpectedResponses({ 200 })
@@ -473,7 +473,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listQueues(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/queues")
@@ -483,7 +483,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listQueuesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/routing/queues/{queueId}")
@@ -494,7 +494,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteQueue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/queues/{queueId}")
         @ExpectedResponses({ 204 })
@@ -504,7 +504,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteQueueSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -514,7 +514,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listDistributionPoliciesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -524,7 +524,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listDistributionPoliciesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -534,7 +534,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listClassificationPoliciesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -544,7 +544,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listClassificationPoliciesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -554,7 +554,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listExceptionPoliciesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -564,7 +564,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listExceptionPoliciesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -573,7 +573,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listQueuesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -583,59 +583,69 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listQueuesNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 
     /**
      * Creates or updates a distribution policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
@@ -659,53 +669,63 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a distribution policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
@@ -727,24 +747,22 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -765,24 +783,22 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -802,31 +818,41 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -848,31 +874,41 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -912,31 +948,41 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -956,31 +1002,41 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing distribution policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1058,20 +1114,35 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a classification policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1079,25 +1150,20 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1105,20 +1171,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
@@ -1142,20 +1204,35 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a classification policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1163,25 +1240,20 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1189,20 +1261,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
@@ -1224,10 +1292,10 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1235,20 +1303,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1269,10 +1333,10 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1280,20 +1344,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1313,17 +1373,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1331,20 +1403,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1366,17 +1434,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1384,20 +1464,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1437,17 +1513,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1455,20 +1543,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1488,17 +1572,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing classification policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -1506,20 +1602,16 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1597,67 +1689,75 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a exception policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
@@ -1681,67 +1781,75 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a exception policy.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
@@ -1763,31 +1871,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1808,31 +1913,28 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing exception policy by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1852,38 +1954,47 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1905,38 +2016,47 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1976,38 +2096,47 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2027,38 +2156,47 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing exception policies.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2135,20 +2273,35 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a queue.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2159,13 +2312,11 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2176,8 +2327,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of a queue.
      * @param resource The resource instance.
@@ -2200,20 +2350,35 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Creates or updates a queue.
-     * <p><strong>Header Parameters</strong></p>
+     * <p>
+     * <strong>Header Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this
-     * string.</td></tr>
-     * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the
-     * entity was not modified after this time.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2224,13 +2389,11 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2241,8 +2404,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of a queue.
      * @param resource The resource instance.
@@ -2264,10 +2426,10 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2278,8 +2440,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2299,10 +2460,10 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2313,8 +2474,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2333,17 +2493,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2354,8 +2526,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2377,17 +2548,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2398,8 +2581,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2439,17 +2621,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2460,8 +2654,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2481,17 +2674,29 @@ public final class JobRouterAdministrationClientImpl {
 
     /**
      * Retrieves existing queues.
-     * <p><strong>Query Parameters</strong></p>
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>Number of objects to return per page.</td>
+     * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2502,8 +2707,7 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2581,26 +2785,26 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2624,26 +2828,26 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing distribution policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
-     *         kind: String(bestWorker/longestIdle/roundRobin) (Required)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2665,10 +2869,10 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2676,22 +2880,20 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2715,10 +2917,10 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing classification policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2726,22 +2928,20 @@ public final class JobRouterAdministrationClientImpl {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
-     *         kind: String(directMap/expression/function/static/webhook) (Required)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
-     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Required)
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2763,33 +2963,32 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2812,33 +3011,32 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing exception policies.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Optional, Required on create)
-     *             trigger (Optional, Required on create): {
-     *                 kind: String(queueLength/waitTime) (Required)
+     *             id: String (Required)
+     *             trigger (Required): {
      *             }
-     *             actions (Optional, Required on create): [
-     *                  (Optional, Required on create){
-     *                     kind: String(cancel/manualReclassify/reclassify) (Required)
+     *             actions (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                 }
      *             ]
      *         }
      *     ]
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2860,10 +3058,10 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2874,10 +3072,11 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2901,10 +3100,10 @@ public final class JobRouterAdministrationClientImpl {
      * Retrieves existing queues.
      * 
      * Get the next page of items.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
      * {
      *     etag: String (Required)
      *     id: String (Required)
@@ -2915,10 +3114,11 @@ public final class JobRouterAdministrationClientImpl {
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
