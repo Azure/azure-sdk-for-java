@@ -1,80 +1,26 @@
 # Release History
 
-## 11.9.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 11.9.0-beta.1 (2025-11-17)
-
-### Features Added
-
-- Added back all service preview features dropped in `2025-09-01` service version release.
-- Added optional parameter `x-ms-enable-elevated-read` for elevated read access that bypasses document-level permission checks.
-- Added statistical aggregation properties to `FacetResult`: `avg`, `min`, `max`, and `cardinality` for enhanced analytics.
-- Added support for new Azure OpenAI models: `gpt-5`, `gpt-5-mini`, and `gpt-5-nano`.
-- Added support for `sharepoint` data source type in `SearchIndexerDataSourceType`.
-- Added support for new `KnowledgeSourceKind` types: `web`, `remoteSharePoint`, `indexedSharePoint`, and `indexedOneLake`.
-- Added `purviewEnabled` property to `SearchIndex` for Microsoft Purview integration.
-- Added `maxCumulativeIndexerRuntimeSeconds` property to `ServiceLimits` for runtime monitoring.
-- Added required `runtime` property to `SearchIndexerStatus` and `indexersRuntime` property to `ServiceStatistics`.
-- Added `product` enum value to `ScoringFunctionAggregation`.
-- Added enhanced knowledge source parameters: `sourceDataFields`, `searchFields`, `semanticConfigurationName` in `SearchIndexKnowledgeSourceParameters`.
-- Added Azure Data Lake Storage Gen2 support with `isADLSGen2` and `ingestionParameters` in `AzureBlobKnowledgeSourceParameters`.
-- Added partial content response support (HTTP 206) for knowledge base operations.
-- Added `error` property to `KnowledgeBaseActivityRecord` for enhanced error handling.
-- Added enhanced knowledge source parameters: `includeReferences`, `includeReferenceSourceData`, `alwaysQuerySource`, `rerankerThreshold` in `SearchIndexKnowledgeSourceParams`.
-
-### Breaking Changes
-
-- **Knowledge Agent to Knowledge Base Migration**: Complete API rename from Knowledge Agent to Knowledge Base.
-  - All `KnowledgeAgent*` classes renamed to `KnowledgeBase*` (e.g., `KnowledgeAgent` → `KnowledgeBase`).
-  - API paths changed from `/agents` to `/knowledgebases`.
-  - Client parameter `AgentNameParameter` renamed to `KnowledgeBaseNameParameter`.
-  - All agent-related activity record types updated with new naming convention
-- Removed deprecated Knowledge Agent classes: `KnowledgeAgentOutputConfiguration`, `KnowledgeAgentRequestLimits`, `KnowledgeAgentModel`, `KnowledgeAgentModelKind`, `KnowledgeAgentAzureOpenAIModel`.
-- Removed properties from `KnowledgeSourceReference`:`includeReferences`,`includeReferenceSourceData`,`alwaysQuerySource`,`maxSubQueries`,`rerankerThreshold`
-- Removed `sourceDataSelect` property from `SearchIndexKnowledgeSourceParameters`.
-- Removed properties from `AzureBlobKnowledgeSourceParameters`: `identity`, `embeddingModel`, `chatCompletionModel`, `ingestionSchedule`, `disableImageVerbalization`.
-
-- Updated `RescoringOptions` to match what was changed in `11.8.0` release.
-    - `isEnableRescoring` -> `isRescoringEnabled`
-    - `setEnableRescoring` -> `setRescoringEnabled`
-- Changed `RankingOrder.RE_RANKER_SCORE` to `RankingOrder.RERANKER_SCORE`.
-- Changed `SearchOptions.getDebug` and `.setDebug` to `.getDebugMode` and `.setDebugMode`.
-- Default `SearchServiceVersion` changed from `2025_09_01` to `V2025_08_01_PREVIEW`.
-
-### Bugs Fixed
-
-- Fixed a bug where multiple iterations / subscriptions of `SearchPagedFlux` and `SearchPagedIterable` would return the
-  same first page result of the initial iteration / subscription.
-
 ## 11.8.0 (2025-10-10)
 
 ### Features Added
 
 - Added support for `2025-09-01` service version.
-    - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
-      boosted scores in `SemanticConfiguration.rankingOrder`.
-    - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
-      vector when indexing and how vectors are used during rescoring.
-    - Added `SearchIndex.description` to provide a textual description of the index.
-    - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
-      use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
-    - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
-    - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
-      supported for `QueryDebugMode`.
+  - Support for reranker boosted scores in search results and the ability to sort results on either reranker or reranker
+    boosted scores in `SemanticConfiguration.rankingOrder`.
+  - Support for `VectorSearchCompression.RescoringOptions` to configure how vector compression handles the original
+    vector when indexing and how vectors are used during rescoring.
+  - Added `SearchIndex.description` to provide a textual description of the index.
+  - Support for `LexicalNormalizer` when defining `SearchIndex`, `SimpleField`, and `SearchableField` and the ability to
+    use it when analyzing text with `SearchIndexClient.analyzeText` and `SearchIndexAsyncClient.analyzeText`.
+  - Support `DocumentIntelligenceLayoutSkill` skillset skill and `OneLake` `SearchIndexerDataSourceConnection` data source.
+  - Support for `QueryDebugMode` in searching to retrieve detailed information about search processing. Only `vector` is
+    supported for `QueryDebugMode`.
 
 ### Breaking Changes
 
 - All features from `11.8.0-beta.x` versions that weren't GA'd in `2025-09-01` were removed.
 - `VectorSearchCompression.rerankWithOriginalVectors` and `VectorSearchCompression.defaultOversampling` don't work with
-  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and
+  `2025-09-01` and were replaced by `VectorSearchCompression.RescoringOptions.enabledRescoring` and 
   `VectorSearchCompression.RescoringOptions.defaultOversampling`. If using `2024-07-01` continue using the old properties,
   otherwise if using `2025-09-01` use the new properties in `RescoringOptions`.
 
@@ -93,21 +39,6 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.6.0` to version `1.6.1`.
-
-## 11.8.0-beta.8 (2025-09-05)
-
-### Features Added
-
-- Support for `2025-08-01-Preview` service version.
-  - Added support for Knowledge Agent knowledge sources.
-  - Added support for Knowledge Agent answer synthesis.
-  - Added `VectorFilterMode.STRICT_POST_FILTER`.
-
-### Breaking Changes
-
-- Dropped support for `2025-05-01-Preview` service version.
-- Knowledge Agent target indexes were removed as `2025-08-01-Preview` replaced that concept with knowledge sources,
-  a richer concept that allows for knowledge agent to consume information from more than just Search indexes.
 
 ## 11.7.9 (2025-08-21)
 
@@ -129,6 +60,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.9` to version `1.5.10`.
 
+
 ## 11.7.7 (2025-06-11)
 
 ### Other Changes
@@ -138,32 +70,6 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.8` to version `1.5.9`.
-
-## 11.8.0-beta.7 (2025-05-16)
-
-### Features Added
-
-- Added new `KnowledgeAgent` apis to index clients and introduced new `SearchKnowledgeAgentClient` for managing and querying Knowledge Agents,
-enabling multi-index grounding for agentic retrieval.
-- Added a method overloads for search client operations to include the `querySourceAuthentication` parameter, allowing users to specify the authentication method for the query source.
-- Added a `resync` method to indexer clients to resync selective options from the data source to be re-ingested by the indexer.
-- Added `permissionFilter` to Field Builder annotations, indication whether a field should be used as a permission filter.
-- Added `rerankerBoostedScore` to `SemanticSearchResult` and updated `SemanticConfiguration` with a new `rankingOrder` property.
-- Introduced new skill `ChatCompletionSkill` that integrates with Azure AI Foundry.
-- Enhanced `DocumentIntelligenceLayoutSkill` with new properties: `ChunkingProperties`, `ExtractionOptions`, and `OutputFormat`.
-- Added `IndexerPermissionOptions` to `SearchIndexerDataSourceConnection` to support ingestion of various types of permission data.
-- Introduced sub-field vector support (multi-vectors) via `VectorQuery.Fields`, and added new query option `VectorQuery.PerDocumentVectorLimit`.
-
-## 11.8.0-beta.6 (2025-04-17)
-
-### Features Added
-
-- Introduced new api `getIndexStatsSummary` into `SearchIndexClient` and `SearchIndexAsyncClient` to enable the retrieval of index stats summary.
-- Introduced `flightingOptIn` field onto `SemanticConfiguration` to enable flighting opt-in for semantic search.
-
-### Other Changes
-
-- Binary Quantization now supports configuring `rescoringOptions` to `true` with `rescoreStorageMethod` set to `discardOriginals`.
 
 ## 11.7.6 (2025-03-24)
 
@@ -176,6 +82,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.7` to version `1.5.8`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
+
 ## 11.7.5 (2025-02-25)
 
 ### Other Changes
@@ -187,19 +94,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
-## 11.8.0-beta.5 (2025-02-18)
-
-### Bugs Fixed
-
-- Fixed bug that made 2024-11-01-preview service version inaccessible.
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
-- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.6`.
 
 ## 11.7.4 (2024-12-04)
 
@@ -211,41 +105,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
 
-## 11.8.0-beta.4 (2024-11-22)
-
-### Bugs Fixed
-
- - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
- - Fixed missing properties bug in `SemanticSearchResults`.
-   - Added missing properties `debugInfo` and `semanticQueryRewritesResultType`.
-
-## 11.8.0-beta.3 (2024-11-20)
-
-### Bugs Fixed
-
-- Fixed a bug where `SearchOptions` was missing setters for `QueryDebugMode`, `QueryLanguage`, and `QuerySpellerType`.
-
-## 11.8.0-beta.2 (2024-11-18)
-
-### Features Added 
-
-- `FacetResults` is now a recursive data structure to support hierarchical aggregation and facet filtering.
-- `QueryAnswer` now supports a `maxCharLength` option to limit the character length of the answer.
-- `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
-- `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
-- `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
-- `VectorSearchCompression` now supports configuring the `rescoringOptions`.
-- `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
-- Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
-- Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.52.0` to version `1.54.1`.
-- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.7`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.4`.
 
 ## 11.7.3 (2024-10-27)
 
@@ -256,6 +115,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
 
 ## 11.7.2 (2024-09-27)
 
@@ -268,26 +128,6 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-serializer-json-jackson` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 
-## 11.8.0-beta.1 (2024-09-23)
-
-### Features Added
-
-- `VectorSearchCompression` now supports `truncationDimension` which allows for specifying the number of dimensions to 
-  truncate vectors to.
-- `SplitSkill` now supports tokenization.
-- `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
-- `DocumentDebugInfo` is extended with vector scores for the result.
-
-### Other Changes
-
-- Migrate Search test from local auth to Microsoft Entra authentication.
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
-- Upgraded `azure-core-serializer-json-jackson` from `1.5.` to version `1.5.1`.
-- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
 
 ## 11.7.1 (2024-08-24)
 
@@ -299,6 +139,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
 
 ## 11.7.0 (2024-07-17)
 
@@ -585,6 +426,7 @@ enabling multi-index grounding for agentic retrieval.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
 
 ## 11.6.0-beta.7 (2023-07-11)
 

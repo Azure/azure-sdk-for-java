@@ -5,8 +5,11 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
@@ -77,9 +80,6 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
         customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
-        customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
-        customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
-        customizeSearchScoreThreshold(packageCustomization.getClass("SearchScoreThreshold"));
 
         customizeAst(packageCustomization.getClass("QueryAnswerResult"),
             clazz -> clazz.getMethodsByName("setAdditionalProperties").forEach(Node::remove));
@@ -89,10 +89,10 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.findAncestor(CompilationUnit.class).ifPresent(c -> c.addImport("com.azure.json.JsonSerializable")
-                .addImport("com.azure.json.JsonReader")
-                .addImport("com.azure.json.JsonWriter")
-                .addImport("com.azure.json.JsonToken"));
+            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
             clazz.tryAddImportToParentCompilationUnit(IOException.class);
 
             clazz.addImplementedType("JsonSerializable<AutocompleteOptions>");
@@ -154,10 +154,10 @@ public class SearchIndexCustomizations extends Customization {
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> {
-            clazz.findAncestor(CompilationUnit.class).ifPresent(c -> c.addImport("com.azure.json.JsonSerializable")
-                .addImport("com.azure.json.JsonReader")
-                .addImport("com.azure.json.JsonWriter")
-                .addImport("com.azure.json.JsonToken"));
+            clazz.tryAddImportToParentCompilationUnit(JsonSerializable.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonReader.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonWriter.class);
+            clazz.tryAddImportToParentCompilationUnit(JsonToken.class);
             clazz.tryAddImportToParentCompilationUnit(IOException.class);
 
             clazz.addImplementedType("JsonSerializable<SuggestOptions>");
@@ -261,7 +261,7 @@ public class SearchIndexCustomizations extends Customization {
         customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").forEach(method -> method
             .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
             .setBody(StaticJavaParser.parseBlock("{ this.fields = (fields == null) ? null : String.join(\",\", fields);"
-                    + "return this; }"))));
+                + "return this; }"))));
     }
 
     private void customizeVectorizedQuery(ClassCustomization classCustomization) {
@@ -313,26 +313,6 @@ public class SearchIndexCustomizations extends Customization {
                     .ifPresent(doc -> field.setJavadocComment(doc.asBlockComment().getContent())));
             }
         });
-    }
-
-    private void customizeVectorizableImageUrlQuery(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").forEach(method -> method
-            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
-            .setBody(StaticJavaParser.parseBlock("{ super.setFields(fields); return this; }"))));
-    }
-
-    private void customizeVectorizableImageBinaryQuery(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").forEach(method -> method
-            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
-            .setBody(StaticJavaParser.parseBlock("{ super.setFields(fields); return this; }"))));
-    }
-
-    private void customizeSearchScoreThreshold(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("getValue").forEach(method ->
-            method.setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the value property: The threshold "
-                + "will filter based on the '@search.score' value. Note this is the `@search.score` returned as part "
-                + "of the search response. The threshold direction will be chosen for higher `@search.score`."))
-                .addBlockTag("return", "the value."))));
     }
 
     private static void customizeAst(ClassCustomization classCustomization,

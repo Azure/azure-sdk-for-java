@@ -16,7 +16,6 @@ import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
-import com.azure.search.documents.indexes.models.PermissionFilter;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.VectorEncodingFormat;
@@ -278,15 +277,13 @@ public final class FieldBuilder {
         boolean filterable;
         boolean sortable;
         boolean facetable;
-        String permissionFilter = null;
-        boolean sensitivityLabel;
         boolean stored;
         boolean searchable = searchableField != null;
         String analyzerName = null;
         String searchAnalyzerName = null;
         String indexAnalyzerName = null;
-        String[] synonymMapNames = null;
         String normalizerName = null;
+        String[] synonymMapNames = null;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
         String vectorEncodingFormat = null;
@@ -299,8 +296,6 @@ public final class FieldBuilder {
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
             normalizerName = simpleField.normalizerName();
-            permissionFilter = simpleField.permissionFilter();
-            sensitivityLabel = simpleField.isSensitivityLabel();
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
@@ -308,13 +303,11 @@ public final class FieldBuilder {
             filterable = searchableField.isFilterable();
             sortable = searchableField.isSortable();
             facetable = searchableField.isFacetable();
-            permissionFilter = searchableField.permissionFilter();
-            sensitivityLabel = searchableField.isSensitivityLabel();
             analyzerName = searchableField.analyzerName();
             searchAnalyzerName = searchableField.searchAnalyzerName();
             indexAnalyzerName = searchableField.indexAnalyzerName();
-            synonymMapNames = searchableField.synonymMapNames();
             normalizerName = searchableField.normalizerName();
+            synonymMapNames = searchableField.synonymMapNames();
             vectorSearchDimensions
                 = searchableField.vectorSearchDimensions() > 0 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
@@ -337,8 +330,8 @@ public final class FieldBuilder {
         if (searchable) {
             if (!isSearchableType) {
                 errorMessage
-                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', "
-                        + "or 'Collection(Edm.Single)' types. Property '")
+                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
+                        + "'Collection(Edm.Single)' types. Property '")
                     .append(member.getName())
                     .append("' returns a '")
                     .append(searchField.getType())
@@ -388,19 +381,13 @@ public final class FieldBuilder {
             searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
         }
 
-        if (hasNormalizerName) {
+        if (!CoreUtils.isNullOrEmpty(normalizerName)) {
             searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
         }
 
         if (hasVectorEncodingFormat) {
             searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
         }
-
-        if (!CoreUtils.isNullOrEmpty(permissionFilter)) {
-            searchField.setPermissionFilter(PermissionFilter.fromString(permissionFilter));
-        }
-
-        searchField.setSensitivityLabel(sensitivityLabel);
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {
             List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())
