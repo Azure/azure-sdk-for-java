@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -15,16 +13,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
-import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
-@JsonSerialize(using = PartitionLevelFailoverInfo.PartitionLevelFailoverInfoSerializer.class)
-public class PartitionLevelFailoverInfo implements Serializable {
+@JsonSerialize(using = PartitionLevelAutomaticFailoverInfo.PartitionLevelFailoverInfoSerializer.class)
+public class PartitionLevelAutomaticFailoverInfo implements Serializable {
 
     // Set of URIs which have seen 503s (specific to document writes) or 403/3s
     private final Set<RegionalRoutingContext> failedRegionalRoutingContexts = ConcurrentHashMap.newKeySet();
@@ -33,7 +27,7 @@ public class PartitionLevelFailoverInfo implements Serializable {
     private RegionalRoutingContext current;
     private final GlobalEndpointManager globalEndpointManager;
 
-    PartitionLevelFailoverInfo(RegionalRoutingContext current, GlobalEndpointManager globalEndpointManager) {
+    PartitionLevelAutomaticFailoverInfo(RegionalRoutingContext current, GlobalEndpointManager globalEndpointManager) {
         this.current = current;
         this.globalEndpointManager = globalEndpointManager;
     }
@@ -69,10 +63,10 @@ public class PartitionLevelFailoverInfo implements Serializable {
         return this.current;
     }
 
-    static class PartitionLevelFailoverInfoSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PartitionLevelFailoverInfo> {
+    static class PartitionLevelFailoverInfoSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PartitionLevelAutomaticFailoverInfo> {
 
         @Override
-        public void serialize(PartitionLevelFailoverInfo value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        public void serialize(PartitionLevelAutomaticFailoverInfo value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
             gen.writeStartObject();
 

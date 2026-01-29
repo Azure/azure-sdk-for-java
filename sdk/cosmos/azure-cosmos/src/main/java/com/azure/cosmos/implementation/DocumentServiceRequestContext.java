@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ReadConsistencyStrategy;
-import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
-import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -75,9 +75,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
 
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
-
-    private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
-    private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
 
     public DocumentServiceRequestContext() {}
 
@@ -240,30 +237,32 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public PerPartitionCircuitBreakerInfoHolder getPerPartitionCircuitBreakerInfoHolder() {
-        return this.perPartitionCircuitBreakerInfoHolder;
+
+        if (this.crossRegionAvailabilityContextForRequest == null) {
+            return PerPartitionCircuitBreakerInfoHolder.EMPTY;
+        }
+
+        return this.crossRegionAvailabilityContextForRequest.getPerPartitionCircuitBreakerInfoHolder();
     }
 
     public void setPerPartitionCircuitBreakerInfoHolder(Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext) {
-
-        if (this.perPartitionCircuitBreakerInfoHolder == null) {
-            this.perPartitionCircuitBreakerInfoHolder = new PerPartitionCircuitBreakerInfoHolder();
-            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
-        } else {
-            this.perPartitionCircuitBreakerInfoHolder.setPerPartitionCircuitBreakerInfoHolder(locationToLocationSpecificHealthContext);
+        if (this.crossRegionAvailabilityContextForRequest != null) {
+            this.crossRegionAvailabilityContextForRequest.setPerPartitionCircuitBreakerInfo(locationToLocationSpecificHealthContext);
         }
     }
 
-    public PerPartitionFailoverInfoHolder getPerPartitionFailoverContextHolder() {
-        return this.perPartitionFailoverInfoHolder;
+    public PerPartitionAutomaticFailoverInfoHolder getPerPartitionFailoverContextHolder() {
+
+        if (this.crossRegionAvailabilityContextForRequest == null) {
+            return PerPartitionAutomaticFailoverInfoHolder.EMPTY;
+        }
+
+        return this.crossRegionAvailabilityContextForRequest.getPerPartitionAutomaticFailoverInfoHolder();
     }
 
-    public void setPerPartitionAutomaticFailoverInfoHolder(PartitionLevelFailoverInfo partitionLevelFailoverInfo) {
-
-        if (this.perPartitionFailoverInfoHolder == null) {
-            this.perPartitionFailoverInfoHolder = new PerPartitionFailoverInfoHolder();
-            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
-        } else {
-            this.perPartitionFailoverInfoHolder.setPartitionLevelFailoverInfo(partitionLevelFailoverInfo);
+    public void setPerPartitionAutomaticFailoverInfoHolder(PartitionLevelAutomaticFailoverInfo partitionLevelAutomaticFailoverInfo) {
+        if (this.crossRegionAvailabilityContextForRequest != null) {
+            this.crossRegionAvailabilityContextForRequest.setPerPartitionFailoverInfo(partitionLevelAutomaticFailoverInfo);
         }
     }
 }
