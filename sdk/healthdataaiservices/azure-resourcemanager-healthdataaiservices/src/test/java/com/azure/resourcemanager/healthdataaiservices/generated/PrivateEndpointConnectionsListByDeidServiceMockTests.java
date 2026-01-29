@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListByDeidServiceMockTests {
     @Test
     public void testListByDeidService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"lbpodxunk\",\"ebxmubyynt\",\"lrb\"],\"privateEndpoint\":{\"id\":\"oievseotgqrlltm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"uwz\",\"actionsRequired\":\"xbmp\"},\"provisioningState\":\"Failed\"},\"id\":\"fuzmuvpbtt\",\"name\":\"um\",\"type\":\"rp\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"ihgwqapnedgfbcv\",\"cvqvpkeqdcv\",\"rhvoods\"],\"privateEndpoint\":{\"id\":\"obzdopcjwvnhdl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"xcxrsl\",\"actionsRequired\":\"utwu\"},\"provisioningState\":\"Deleting\"},\"id\":\"pkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class PrivateEndpointConnectionsListByDeidServiceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
-            .listByDeidService("bqdxbx", "akbogqxndlkzgxh", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnectionResource> response
+            = manager.privateEndpointConnections().listByDeidService("lxyjr", "sag", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("uwz",
+        Assertions.assertEquals("xcxrsl",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xbmp",
+        Assertions.assertEquals("utwu",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

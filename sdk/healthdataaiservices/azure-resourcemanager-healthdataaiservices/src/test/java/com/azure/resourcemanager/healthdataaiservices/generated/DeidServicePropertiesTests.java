@@ -13,15 +13,15 @@ public final class DeidServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"serviceUrl\":\"fygxgispemvtzfk\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"ofx\",\"eofjaeqjh\"],\"privateEndpoint\":{\"id\":\"asvm\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ulngsntn\",\"actionsRequired\":\"bkzgcwrwclx\"},\"provisioningState\":\"Deleting\"},\"id\":\"jdous\",\"name\":\"cqvkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"groupIds\":[\"sainqpjwnzl\",\"jfm\",\"pee\",\"vmgxsab\"],\"privateEndpoint\":{\"id\":\"duuji\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zdzevndh\",\"actionsRequired\":\"wpdappdsbdkv\"},\"provisioningState\":\"Failed\"},\"id\":\"feusnhut\",\"name\":\"eltmrldhugjzzdat\",\"type\":\"xhocdgeablgphuti\"},{\"properties\":{\"groupIds\":[\"kao\",\"wyiftyhxhur\",\"k\",\"tyxolniwpwc\"],\"privateEndpoint\":{\"id\":\"fkgiawxk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lwckbasyypnddhs\",\"actionsRequired\":\"bacphejko\"},\"provisioningState\":\"Deleting\"},\"id\":\"gou\",\"name\":\"zndlikwy\",\"type\":\"kgfg\"}],\"publicNetworkAccess\":\"Disabled\"}")
+            "{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"qulngsntnbybkzgc\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"xwrljdouskcqvkoc\"],\"privateEndpoint\":{\"id\":\"dkwt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"njbiksqrglssain\",\"actionsRequired\":\"jwnzlljfmp\"},\"provisioningState\":\"Failed\"},\"id\":\"vmgxsab\",\"name\":\"yqduujit\",\"type\":\"jczdzevndh\"},{\"properties\":{\"groupIds\":[\"d\",\"ppdsbdkvwrwj\"],\"privateEndpoint\":{\"id\":\"snhu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"tmrldhugjzzdatq\",\"actionsRequired\":\"oc\"},\"provisioningState\":\"Creating\"},\"id\":\"blgphuticn\",\"name\":\"vkaozwyiftyhxhur\",\"type\":\"k\"}],\"publicNetworkAccess\":\"Enabled\"}")
             .toObject(DeidServiceProperties.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeidServiceProperties model = new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        DeidServiceProperties model = new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(DeidServiceProperties.class);
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

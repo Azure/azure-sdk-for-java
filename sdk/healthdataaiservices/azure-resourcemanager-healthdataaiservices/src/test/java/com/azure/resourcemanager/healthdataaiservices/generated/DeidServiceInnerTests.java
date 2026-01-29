@@ -10,6 +10,8 @@ import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceProperti
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.Sku;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import com.azure.resourcemanager.healthdataaiservices.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,27 +21,42 @@ public final class DeidServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"pzvgnwzsymglzufc\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"bihanuf\",\"fcbjysagithxqha\",\"ifpikxwczby\",\"cnpqxuhivyqniwby\"],\"privateEndpoint\":{\"id\":\"xvd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"rtfw\",\"actionsRequired\":\"k\"},\"provisioningState\":\"Deleting\"},\"id\":\"dcc\",\"name\":\"nhsjcnyej\",\"type\":\"kryhtnapczwlokj\"},{\"properties\":{\"groupIds\":[\"kvnipjoxz\",\"nchgej\",\"podmailzydehojwy\"],\"privateEndpoint\":{\"id\":\"xinpmqnjaq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sprozvcput\",\"actionsRequired\":\"jvwmfda\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"cctazakljlahbc\",\"tenantId\":\"ffdfdosygexpa\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qtrgqjbpfzfsinzg\":{\"principalId\":\"msbzjhcrz\",\"clientId\":\"dphlxaolt\"},\"ofpdvh\":{\"principalId\":\"cjrwzoxxjtfellu\",\"clientId\":\"zitonpeqfpjkjl\"}}},\"location\":\"xxypininmay\",\"tags\":{\"oginuvamiheognar\":\"bbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"pzvgnwzsymglzufc\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"bihanuf\",\"fcbjysagithxqha\",\"ifpikxwczby\",\"cnpqxuhivyqniwby\"],\"privateEndpoint\":{\"id\":\"xvd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"rtfw\",\"actionsRequired\":\"k\"},\"provisioningState\":\"Deleting\"},\"id\":\"dcc\",\"name\":\"nhsjcnyej\",\"type\":\"kryhtnapczwlokj\"},{\"properties\":{\"groupIds\":[\"kvnipjoxz\",\"nchgej\",\"podmailzydehojwy\"],\"privateEndpoint\":{\"id\":\"xinpmqnjaq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sprozvcput\",\"actionsRequired\":\"jvwmfda\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"cctazakljlahbc\",\"tenantId\":\"ffdfdosygexpa\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qtrgqjbpfzfsinzg\":{\"principalId\":\"msbzjhcrz\",\"clientId\":\"dphlxaolt\"},\"ofpdvh\":{\"principalId\":\"cjrwzoxxjtfellu\",\"clientId\":\"zitonpeqfpjkjl\"}}},\"sku\":{\"name\":\"xxypininmay\",\"tier\":\"Free\",\"size\":\"bkpodepooginuv\",\"family\":\"iheogna\",\"capacity\":1893731030},\"location\":\"theotusiv\",\"tags\":{\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"kufubljo\",\"name\":\"xqeofjaeqjhqjba\",\"type\":\"v\"}")
             .toObject(DeidServiceInner.class);
-        Assertions.assertEquals("xxypininmay", model.location());
-        Assertions.assertEquals("bbkpodep", model.tags().get("oginuvamiheognar"));
+        Assertions.assertEquals("theotusiv", model.location());
+        Assertions.assertEquals("cciqihnhungbwjz", model.tags().get("nfygxgispemvtz"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xxypininmay", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("bkpodepooginuv", model.sku().size());
+        Assertions.assertEquals("iheogna", model.sku().family());
+        Assertions.assertEquals(1893731030, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeidServiceInner model = new DeidServiceInner().withLocation("xxypininmay")
-            .withTags(mapOf("oginuvamiheognar", "bbkpodep"))
+        DeidServiceInner model = new DeidServiceInner().withLocation("theotusiv")
+            .withTags(mapOf("nfygxgispemvtz", "cciqihnhungbwjz"))
             .withProperties(new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("qtrgqjbpfzfsinzg", new UserAssignedIdentity(), "ofpdvh", new UserAssignedIdentity())));
+                    mapOf("qtrgqjbpfzfsinzg", new UserAssignedIdentity(), "ofpdvh", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("xxypininmay")
+                .withTier(SkuTier.FREE)
+                .withSize("bkpodepooginuv")
+                .withFamily("iheogna")
+                .withCapacity(1893731030));
         model = BinaryData.fromObject(model).toObject(DeidServiceInner.class);
-        Assertions.assertEquals("xxypininmay", model.location());
-        Assertions.assertEquals("bbkpodep", model.tags().get("oginuvamiheognar"));
+        Assertions.assertEquals("theotusiv", model.location());
+        Assertions.assertEquals("cciqihnhungbwjz", model.tags().get("nfygxgispemvtz"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xxypininmay", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("bkpodepooginuv", model.sku().size());
+        Assertions.assertEquals("iheogna", model.sku().family());
+        Assertions.assertEquals(1893731030, model.sku().capacity());
     }
 
     // Use "Map.of" if available

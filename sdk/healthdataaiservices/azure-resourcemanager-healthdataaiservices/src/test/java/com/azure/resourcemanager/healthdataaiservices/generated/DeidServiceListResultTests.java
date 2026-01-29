@@ -8,18 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthdataaiservices.implementation.models.DeidServiceListResult;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeidServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"serviceUrl\":\"vkmijcmmxdcuf\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"osfqpteehzzv\",\"tenantId\":\"yqrimzin\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dsoifiyipj\":{\"principalId\":\"dkirsoodqxhcr\",\"clientId\":\"ohjtckw\"}}},\"location\":\"qwpgrjbzn\",\"tags\":{\"ocpcy\":\"jxvsnbyxqabn\",\"gpbtoqcjmklj\":\"hurzafblj\",\"qajzyulpkudjkr\":\"vbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}],\"nextLink\":\"c\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"serviceUrl\":\"ymzidn\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"tbzsgfyccs\",\"name\":\"ewmdw\",\"type\":\"jeiachboosfl\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"sfqpteehz\",\"name\":\"vypyqrimzinpv\",\"type\":\"wjdk\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"oodqxhcrm\",\"name\":\"ohjtckw\",\"type\":\"dsoifiyipj\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"wpgrjbzno\",\"name\":\"cjxvsnbyxqab\",\"type\":\"mocpc\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"zafb\",\"tenantId\":\"j\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ulpkudjkrl\":{\"principalId\":\"qcjm\",\"clientId\":\"javbqidtqajz\"},\"scpai\":{\"principalId\":\"bzhfepgzgqexz\",\"clientId\":\"c\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}},\"sku\":{\"name\":\"odgmaajrmvdjwz\",\"tier\":\"Premium\",\"size\":\"mcl\",\"family\":\"ijcoejctb\",\"capacity\":1083194269},\"location\":\"qsycbkbfkgu\",\"tags\":{\"ddtocjjxhvp\":\"exxppofmxaxcfjp\",\"exhd\":\"o\"},\"id\":\"xibqeojnx\",\"name\":\"bzv\",\"type\":\"dntwndeicbtw\"}],\"nextLink\":\"zao\"}")
             .toObject(DeidServiceListResult.class);
-        Assertions.assertEquals("qwpgrjbzn", model.value().get(0).location());
-        Assertions.assertEquals("jxvsnbyxqabn", model.value().get(0).tags().get("ocpcy"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("qsycbkbfkgu", model.value().get(0).location());
+        Assertions.assertEquals("exxppofmxaxcfjp", model.value().get(0).tags().get("ddtocjjxhvp"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
+        Assertions.assertEquals("mcl", model.value().get(0).sku().size());
+        Assertions.assertEquals("ijcoejctb", model.value().get(0).sku().family());
+        Assertions.assertEquals(1083194269, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("zao", model.nextLink());
     }
 }

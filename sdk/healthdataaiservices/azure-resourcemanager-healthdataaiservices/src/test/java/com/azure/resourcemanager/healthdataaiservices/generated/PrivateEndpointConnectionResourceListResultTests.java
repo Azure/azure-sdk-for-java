@@ -13,14 +13,14 @@ public final class PrivateEndpointConnectionResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"ccfwnfnbacfion\",\"ebxetqgtzxdp\"],\"privateEndpoint\":{\"id\":\"qqwx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"al\",\"actionsRequired\":\"wsubisnja\"},\"provisioningState\":\"Deleting\"},\"id\":\"gnzscxaqwo\",\"name\":\"chcbonqvpkvlrxnj\",\"type\":\"ase\"}],\"nextLink\":\"heoflokeyyienjbd\"}")
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"lbjnpgacftadehx\",\"ltyfsop\",\"usue\",\"nzwdejba\"],\"privateEndpoint\":{\"id\":\"xzdmohctb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wxdndnvowgujjug\",\"actionsRequired\":\"kcglhslaz\"},\"provisioningState\":\"Deleting\"},\"id\":\"gdtjixhbkuofqwey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"},{\"properties\":{\"groupIds\":[\"mdectehfiqscjey\",\"vhezrkgqhcj\"],\"privateEndpoint\":{\"id\":\"o\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"qsl\",\"actionsRequired\":\"yvxyqjp\"},\"provisioningState\":\"Failed\"},\"id\":\"tpngjcrcczsqpjh\",\"name\":\"mdajv\",\"type\":\"ysou\"}],\"nextLink\":\"e\"}")
             .toObject(PrivateEndpointConnectionResourceListResult.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("al",
+        Assertions.assertEquals("wxdndnvowgujjug",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("wsubisnja",
+        Assertions.assertEquals("kcglhslaz",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("heoflokeyyienjbd", model.nextLink());
+        Assertions.assertEquals("e", model.nextLink());
     }
 }
