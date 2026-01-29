@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentsafety</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -300,7 +300,7 @@ Azure AI Content Safety client library will raise exceptions defined in [Azure C
 ## Next steps
 ### Additional documentation
 
-For more extensive documentation on Azure Content Safety, see the [Azure AI Content Safety][contentsafety_overview] on learn.microsoft.com.
+For more extensive documentation on Azure Content Safety, see the [Azure AI Content Safety][contentsafety_overview] on docs.microsoft.com.
 
 ## Contributing
 
@@ -315,14 +315,14 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [product_documentation]: https://aka.ms/acs-doc
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://learn.microsoft.com/java/azure/jdk/
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [contentsafety_overview]: https://aka.ms/acs-doc
 [azure_portal]: https://ms.portal.azure.com/
-[azure_cli_endpoint_lookup]: https://learn.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
-[azure_cli_key_lookup]: https://learn.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
+[azure_cli_endpoint_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
+[azure_cli_key_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
 [authenticate_with_microsoft_entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
 [text_severity_levels]: https://learn.microsoft.com/azure/ai-services/content-safety/concepts/harm-categories?tabs=definitions#text-content
 [image_severity_levels]: https://learn.microsoft.com/azure/ai-services/content-safety/concepts/harm-categories?tabs=definitions#image-content
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcontentsafety%2Fazure-ai-contentsafety%2FREADME.png)
