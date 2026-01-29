@@ -64,7 +64,7 @@ If you want to take dependency on a particular version of the library that isn't
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query-metrics</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
@@ -81,7 +81,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.1</version>
+    <version>1.16.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
