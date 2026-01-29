@@ -4,13 +4,11 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,21 +34,21 @@ public class TranslateMultipleSources {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<TranslateInputItem> inputs = Arrays.asList(
-            new TranslateInputItem("This is a test.", Arrays.asList(new TranslationTarget("cs"))),
-            new TranslateInputItem("Esto es una prueba.", Arrays.asList(new TranslationTarget("cs"))),
-            new TranslateInputItem("Dies ist ein Test.", Arrays.asList(new TranslationTarget("cs"))));
+        List<String> content = new ArrayList<>();
+        content.add("This is a test.");
+        content.add("Esto es una prueba.");
+        content.add("Dies ist ein Test.");
 
-        List<TranslatedTextItem> translations = client.translate(inputs);
+        List<TranslatedTextItem> translations = client.translate("cs", content);
 
         for (TranslatedTextItem translation : translations) {
             if (translation.getDetectedLanguage() != null) {
                 DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
-                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getScore() + ".");
+                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getConfidence() + ".");
             }
 
             for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+                System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
             }
         }
     }
