@@ -70,7 +70,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.17.13</version>
+    <version>7.17.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -90,7 +90,7 @@ First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.18.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -265,6 +265,7 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
     .processMessage(processMessage)
     .processError(processError)
+    .disableAutoComplete()
     .buildProcessorClient();
 
 // Starts the processor in the background. Control returns immediately.
@@ -301,6 +302,7 @@ TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Create the processor client via the builder and its sub-builder
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// 'disableAutoComplete()' will opt in to manual settlement (e.g. complete, abandon).
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, tokenCredential)
     .processor()
@@ -308,6 +310,7 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
     .processMessage(processMessage)
     .processError(processError)
+    .disableAutoComplete()
     .buildProcessorClient();
 
 // Starts the processor in the background. Control returns immediately.
@@ -382,6 +385,7 @@ created the same way as shown below. Learn more about dead-letter queue [here][d
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
+// 'disableAutoComplete' indicates that users will explicitly settle their message.
 ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, credential)
     .receiver() // Use this for session or non-session enabled queue or topic/subscriptions
