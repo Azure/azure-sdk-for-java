@@ -5,25 +5,22 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The request to add blocklistItems to a text blocklist.
  */
 @Immutable
-public final class AddOrUpdateTextBlocklistItemsOptions
-    implements JsonSerializable<AddOrUpdateTextBlocklistItemsOptions> {
+public final class AddOrUpdateTextBlocklistItemsOptions {
 
     /*
      * Array of blocklistItems to add.
      */
     @Generated
-    private final List<TextBlocklistItem> blocklistItems;
+    @JsonProperty(value = "blocklistItems")
+    private List<TextBlocklistItem> blocklistItems;
 
     /**
      * Creates an instance of AddOrUpdateTextBlocklistItemsOptions class.
@@ -31,7 +28,9 @@ public final class AddOrUpdateTextBlocklistItemsOptions
      * @param blocklistItems the blocklistItems value to set.
      */
     @Generated
-    public AddOrUpdateTextBlocklistItemsOptions(List<TextBlocklistItem> blocklistItems) {
+    @JsonCreator
+    public AddOrUpdateTextBlocklistItemsOptions(
+        @JsonProperty(value = "blocklistItems") List<TextBlocklistItem> blocklistItems) {
         this.blocklistItems = blocklistItems;
     }
 
@@ -43,43 +42,5 @@ public final class AddOrUpdateTextBlocklistItemsOptions
     @Generated
     public List<TextBlocklistItem> getBlocklistItems() {
         return this.blocklistItems;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("blocklistItems", this.blocklistItems,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AddOrUpdateTextBlocklistItemsOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AddOrUpdateTextBlocklistItemsOptions if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AddOrUpdateTextBlocklistItemsOptions.
-     */
-    @Generated
-    public static AddOrUpdateTextBlocklistItemsOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<TextBlocklistItem> blocklistItems = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("blocklistItems".equals(fieldName)) {
-                    blocklistItems = reader.readArray(reader1 -> TextBlocklistItem.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new AddOrUpdateTextBlocklistItemsOptions(blocklistItems);
-        });
     }
 }

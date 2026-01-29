@@ -1,14 +1,13 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.57.1 (2026-01-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
 
 ## 2.57.0 (2025-11-19)
 

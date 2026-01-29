@@ -1,14 +1,13 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.54.2 (2026-01-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.5` to version `2.53.6`.
+
 
 ## 2.54.1 (2025-11-24)
 
@@ -16,7 +15,9 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.4` to version `2.53.5`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.4` to version `2.53.5`.
+
 
 ## 2.54.0 (2025-11-10)
 

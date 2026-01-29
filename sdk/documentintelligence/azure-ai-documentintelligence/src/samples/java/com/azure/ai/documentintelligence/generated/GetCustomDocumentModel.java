@@ -16,8 +16,8 @@ public class GetCustomDocumentModel {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.get-model.get-custom-document-model
+        // BEGIN:com.azure.ai.documentintelligence.generated.getmodel.getcustomdocumentmodel
         DocumentModelDetails response = documentIntelligenceAdministrationClient.getModel("myCustomModel");
-        // END:com.azure.ai.documentintelligence.generated.get-model.get-custom-document-model
+        // END:com.azure.ai.documentintelligence.generated.getmodel.getcustomdocumentmodel
     }
 }

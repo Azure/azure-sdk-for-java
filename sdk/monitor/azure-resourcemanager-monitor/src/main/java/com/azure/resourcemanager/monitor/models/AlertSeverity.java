@@ -4,133 +4,64 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.core.util.ExpandableEnum;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
  * Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for
  * rules of the kind LogAlert.
  */
-public final class AlertSeverity implements ExpandableEnum<Long>, JsonSerializable<AlertSeverity> {
-    private static final Map<Long, AlertSeverity> VALUES = new ConcurrentHashMap<>();
-
-    private static final Function<Long, AlertSeverity> NEW_INSTANCE = AlertSeverity::new;
-
+public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
     /**
      * Static value 0 for AlertSeverity.
      */
-    public static final AlertSeverity ZERO = fromValue(0L);
+    public static final AlertSeverity ZERO = fromLong(0L);
 
     /**
      * Static value 1 for AlertSeverity.
      */
-    public static final AlertSeverity ONE = fromValue(1L);
+    public static final AlertSeverity ONE = fromLong(1L);
 
     /**
      * Static value 2 for AlertSeverity.
      */
-    public static final AlertSeverity TWO = fromValue(2L);
+    public static final AlertSeverity TWO = fromLong(2L);
 
     /**
      * Static value 3 for AlertSeverity.
      */
-    public static final AlertSeverity THREE = fromValue(3L);
+    public static final AlertSeverity THREE = fromLong(3L);
 
     /**
      * Static value 4 for AlertSeverity.
      */
-    public static final AlertSeverity FOUR = fromValue(4L);
+    public static final AlertSeverity FOUR = fromLong(4L);
 
-    private final Long value;
-
-    private AlertSeverity(Long value) {
-        this.value = value;
+    /**
+     * Creates a new instance of AlertSeverity value.
+     * 
+     * @deprecated Use the {@link #fromLong(long)} factory method.
+     */
+    @Deprecated
+    public AlertSeverity() {
     }
 
     /**
-     * Creates or finds a AlertSeverity.
+     * Creates or finds a AlertSeverity from its string representation.
      * 
-     * @param value a value to look for.
+     * @param name a name to look for.
      * @return the corresponding AlertSeverity.
-     * @throws IllegalArgumentException if value is null.
      */
-    public static AlertSeverity fromValue(Long value) {
-        if (value == null) {
-            throw new IllegalArgumentException("'value' cannot be null.");
-        }
-        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
+    public static AlertSeverity fromLong(long name) {
+        return fromString(String.valueOf(name), AlertSeverity.class);
     }
 
     /**
      * Gets known AlertSeverity values.
      * 
-     * @return Known AlertSeverity values.
+     * @return known AlertSeverity values.
      */
     public static Collection<AlertSeverity> values() {
-        return new ArrayList<>(VALUES.values());
-    }
-
-    /**
-     * Gets the value of the AlertSeverity instance.
-     * 
-     * @return the value of the AlertSeverity instance.
-     */
-    @Override
-    public Long getValue() {
-        return this.value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeLong(getValue());
-    }
-
-    /**
-     * Reads an instance of AlertSeverity from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AlertSeverity if the JsonReader was pointing to an instance of it, or null if the
-     * JsonReader was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AlertSeverity.
-     * @throws IllegalStateException If unexpected JSON token is found.
-     */
-    public static AlertSeverity fromJson(JsonReader jsonReader) throws IOException {
-        JsonToken nextToken = jsonReader.nextToken();
-        if (nextToken == JsonToken.NULL) {
-            return null;
-        }
-        if (nextToken != JsonToken.NUMBER) {
-            throw new IllegalStateException(
-                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
-        }
-        return AlertSeverity.fromValue(jsonReader.getLong());
-    }
-
-    @Override
-    public String toString() {
-        return Objects.toString(this.value);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this == obj;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(this.value);
+        return values(AlertSeverity.class);
     }
 }

@@ -69,7 +69,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientDataCollectionRules")
+    @ServiceInterface(name = "MonitorClientDataCol")
     public interface DataCollectionRulesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules")
@@ -129,8 +129,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
-            @QueryParam("deleteAssociations") Boolean deleteAssociations, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -173,7 +172,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -208,7 +207,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,7 +296,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -326,7 +325,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -418,7 +417,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -458,7 +457,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -548,7 +547,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -591,7 +590,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -683,7 +682,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -726,7 +725,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -789,16 +788,13 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
-     * deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName,
-        Boolean deleteAssociations) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -815,11 +811,11 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, dataCollectionRuleName, deleteAssociations, apiVersion, accept, context))
+                resourceGroupName, dataCollectionRuleName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -828,8 +824,6 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
-     * deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -838,7 +832,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String dataCollectionRuleName,
-        Boolean deleteAssociations, Context context) {
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -855,11 +849,11 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-11";
+        final String apiVersion = "2021-09-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            dataCollectionRuleName, deleteAssociations, apiVersion, accept, context);
+            dataCollectionRuleName, apiVersion, accept, context);
     }
 
     /**
@@ -874,9 +868,7 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String dataCollectionRuleName) {
-        final Boolean deleteAssociations = null;
-        return deleteWithResponseAsync(resourceGroupName, dataCollectionRuleName, deleteAssociations)
-            .flatMap(ignored -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, dataCollectionRuleName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -884,8 +876,6 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
-     * @param deleteAssociations If set to 'true' then all associations of this data collection rule will also be
-     * deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -893,9 +883,8 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionRuleName,
-        Boolean deleteAssociations, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, dataCollectionRuleName, deleteAssociations, context).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionRuleName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, dataCollectionRuleName, context).block();
     }
 
     /**
@@ -909,13 +898,10 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dataCollectionRuleName) {
-        final Boolean deleteAssociations = null;
-        deleteWithResponse(resourceGroupName, dataCollectionRuleName, deleteAssociations, Context.NONE);
+        deleteWithResponse(resourceGroupName, dataCollectionRuleName, Context.NONE);
     }
 
     /**
-     * Lists all data collection rules in the specified resource group.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -944,8 +930,6 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
     }
 
     /**
-     * Lists all data collection rules in the specified resource group.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -973,8 +957,6 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
     }
 
     /**
-     * Lists all data collection rules in the specified subscription.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1003,8 +985,6 @@ public final class DataCollectionRulesClientImpl implements InnerSupportsGet<Dat
     }
 
     /**
-     * Lists all data collection rules in the specified subscription.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

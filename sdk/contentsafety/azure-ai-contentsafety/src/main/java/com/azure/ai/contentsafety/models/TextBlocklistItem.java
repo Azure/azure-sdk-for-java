@@ -5,35 +5,35 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Item in a TextBlocklist.
  */
 @Fluent
-public final class TextBlocklistItem implements JsonSerializable<TextBlocklistItem> {
+public final class TextBlocklistItem {
 
     /*
      * The service will generate a BlocklistItemId, which will be a UUID.
      */
     @Generated
+    @JsonProperty(value = "blocklistItemId", access = JsonProperty.Access.WRITE_ONLY)
     private String blocklistItemId;
 
     /*
      * BlocklistItem description.
      */
     @Generated
+    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * BlocklistItem content. The length is counted using Unicode code point.
+     * BlocklistItem content.
      */
     @Generated
-    private final String text;
+    @JsonProperty(value = "text")
+    private String text;
 
     /**
      * Creates an instance of TextBlocklistItem class.
@@ -41,7 +41,8 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
      * @param text the text value to set.
      */
     @Generated
-    public TextBlocklistItem(String text) {
+    @JsonCreator
+    public TextBlocklistItem(@JsonProperty(value = "text") String text) {
         this.text = text;
     }
 
@@ -78,59 +79,12 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
     }
 
     /**
-     * Get the text property: BlocklistItem content. The length is counted using Unicode code point.
+     * Get the text property: BlocklistItem content.
      *
      * @return the text value.
      */
     @Generated
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("description", this.description);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TextBlocklistItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TextBlocklistItem if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TextBlocklistItem.
-     */
-    @Generated
-    public static TextBlocklistItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String blocklistItemId = null;
-            String text = null;
-            String description = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("blocklistItemId".equals(fieldName)) {
-                    blocklistItemId = reader.getString();
-                } else if ("text".equals(fieldName)) {
-                    text = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            TextBlocklistItem deserializedTextBlocklistItem = new TextBlocklistItem(text);
-            deserializedTextBlocklistItem.blocklistItemId = blocklistItemId;
-            deserializedTextBlocklistItem.description = description;
-            return deserializedTextBlocklistItem;
-        });
     }
 }

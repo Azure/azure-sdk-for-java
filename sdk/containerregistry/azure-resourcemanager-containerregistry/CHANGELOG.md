@@ -1,25 +1,13 @@
 # Release History
 
-## 2.55.0-beta.2 (Unreleased)
-
-### Breaking Changes
-
-#### Changes to `ContainerRegistryManagementClient` Class
-
-- Moved `ContainerRegistryManager.serviceClient().getAgentPools()` to `ContainerRegistryManager.taskClient().getAgentPools()`.
-- Moved `ContainerRegistryManager.serviceClient().getRuns()` to `ContainerRegistryManager.taskClient().getRuns()`.
-- Moved `ContainerRegistryManager.serviceClient().getTaskRuns()` to `ContainerRegistryManager.taskClient().getTaskRuns()`.
-- Moved `ContainerRegistryManager.serviceClient().getTasks()` to `ContainerRegistryManager.taskClient().getTasks()`.
-- Moved `ContainerRegistryManager.serviceClient().getRegistries().scheduleRun(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().scheduleRun(...)`.
-- Moved `ContainerRegistryManager.serviceClient().getRegistries().getBuildSourceUploadUrl(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().getBuildSourceUploadUrl(...)`.
-
-## 2.55.0-beta.1 (2025-12-04)
+## 2.54.2 (2026-01-29)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated `RegistryTasks` to `2025-03-01-preview`.
+- Upgraded core dependencies.
+
 
 ## 2.54.1 (2025-11-24)
 
@@ -27,7 +15,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.4` to version `2.53.5`.
+
 
 ## 2.54.0 (2025-11-05)
 

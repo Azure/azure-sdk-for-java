@@ -178,14 +178,14 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, String taskName) {
-        this.tasksInner = registryManager.taskClient().getTasks();
+        this.tasksInner = registryManager.serviceClient().getTasks();
         this.taskName = taskName;
         this.inner = new TaskInner();
         this.taskUpdateParameters = new TaskUpdateParameters();
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, TaskInner inner) {
-        this.tasksInner = registryManager.taskClient().getTasks();
+        this.tasksInner = registryManager.serviceClient().getTasks();
         this.taskName = inner.name();
         this.inner = inner;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());

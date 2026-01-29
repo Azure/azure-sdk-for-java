@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,6 +48,7 @@ public final class RouterWorkerState extends ExpandableStringEnum<RouterWorkerSt
      * @return the corresponding RouterWorkerState.
      */
     @Generated
+    @JsonCreator
     public static RouterWorkerState fromString(String name) {
         return fromString(name, RouterWorkerState.class);
     }
