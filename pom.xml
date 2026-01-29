@@ -155,6 +155,7 @@
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
+    <module>sdk/managedops</module>
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>
