@@ -56,7 +56,7 @@ com.azure:azure-ai-projects;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-speech-transcription;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.5.11;5.5.12
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-translation-text;1.1.7;2.0.0-beta.2
+com.azure:azure-ai-translation-text;1.1.7;1.1.8
 com.azure:azure-ai-translation-document;1.0.6;1.0.7
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-voicelive;1.0.0-beta.3;1.0.0-beta.4
