@@ -102,8 +102,8 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
 
     public void setMaxBatchesConcurrency(int maxBatchesConcurrency) {
         checkArgument(
-            maxBatchesConcurrency >= 1 && maxBatchesConcurrency <= 10,
-            "maxBatchesConcurrency should be between [1, 10]");
+            maxBatchesConcurrency >= 1 && maxBatchesConcurrency <= 5,
+            "maxBatchesConcurrency should be between [1, 5]");
         this.maxBatchesConcurrency = maxBatchesConcurrency;
     }
 
