@@ -44,19 +44,20 @@ public class DedicatedGatewayRequestOptionsTest {
     @Test(groups = {"unit"})
     public void setShardKey_shouldAcceptMaxLength() {
         DedicatedGatewayRequestOptions opts = new DedicatedGatewayRequestOptions();
-        // 36 chars (max length)
-        String maxLen = "a123456789012345678901234567890123456";
+        // 36 chars (max length) - exactly matches MAX_SHARD_KEY_LENGTH
+        String maxLen = "a12345678901234567890123456789012345";
         opts.setShardKey(maxLen);
         assertThat(opts.getShardKey()).isEqualTo(maxLen);
     }
 
     @Test(groups = {"unit"})
-    public void setShardKey_shouldAcceptMaxBytes() {
+    public void setShardKey_shouldRejectExceedingMaxLength() {
         DedicatedGatewayRequestOptions opts = new DedicatedGatewayRequestOptions();
-        // 72 bytes, all ASCII
-        String seventyTwoAscii = "a123456789012345678901234567890123456789012345678901234567890123456789012";
-        opts.setShardKey(seventyTwoAscii);
-        assertThat(opts.getShardKey()).isEqualTo(seventyTwoAscii);
+        // 37 chars - exceeds MAX_SHARD_KEY_LENGTH of 36
+        String tooLong = "a123456789012345678901234567890123456";
+        assertThatThrownBy(() -> opts.setShardKey(tooLong))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Max length");
     }
 }
 
