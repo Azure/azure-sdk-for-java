@@ -985,12 +985,12 @@ public class SasTests extends DataLakeTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\nencoding\n\n"),
-            Arguments.of(null, null, null, null, null, null, null, null, "type", null, null, null, null, null, null,
-                null,
+            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
+                null, null, null, null, null, "type", null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\ntype"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, "saoid", null, null,
@@ -1000,7 +1000,7 @@ public class SasTests extends DataLakeTestBase {
                     + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, "suoid", null, null,
+                null, null, null, null, null, null, null, null, null, "suoid", null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
