@@ -504,11 +504,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName) {
+    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginDeleteAsync(String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
             this.client.getContext());
     }
 
@@ -525,12 +526,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName, Context context) {
+    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
+        String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
             context);
     }
 
@@ -546,8 +548,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName) {
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginDelete(String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).getSyncPoller();
     }
 
@@ -564,8 +566,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
-        String privateEndpointConnectionName, Context context) {
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginDelete(String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
@@ -582,7 +584,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
+    public Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -600,8 +603,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private endpoint connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String privateEndpointConnectionName,
-        Context context) {
+    private Mono<PrivateEndpointConnectionInner> deleteAsync(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -615,10 +618,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName) {
-        deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).block();
+    public PrivateEndpointConnectionInner delete(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName) {
+        return deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName).block();
     }
 
     /**
@@ -631,11 +636,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vaultName, String privateEndpointConnectionName,
-        Context context) {
-        deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).block();
+    public PrivateEndpointConnectionInner delete(String resourceGroupName, String vaultName,
+        String privateEndpointConnectionName, Context context) {
+        return deleteAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context).block();
     }
 
     /**
