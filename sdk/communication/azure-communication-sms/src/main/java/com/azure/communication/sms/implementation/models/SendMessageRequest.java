@@ -6,68 +6,54 @@ package com.azure.communication.sms.implementation.models;
 
 import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents the properties of a send message request.
- */
+/** The SendMessageRequest model. */
 @Fluent
-public final class SendMessageRequest implements JsonSerializable<SendMessageRequest> {
+public final class SendMessageRequest {
     /*
-     * The sender's phone number in E.164 format that is owned by the authenticated account.
+     * The sender's phone number in E.164 format that is owned by the
+     * authenticated account.
      */
-    @Generated
+    @JsonProperty(value = "from", required = true)
     private String from;
 
     /*
-     * The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100 recipients in the list
-     * are supported.
+     * The recipient's phone number in E.164 format. In this version, a minimum
+     * of 1 and upto 100 recipients in the list are supported.
      */
-    @Generated
+    @JsonProperty(value = "smsRecipients", required = true)
     private List<SmsRecipient> smsRecipients;
 
     /*
-     * The contents of the message that will be sent to the recipient. The allowable content is defined by RFC 5724.
+     * The contents of the message that will be sent to the recipient. The
+     * allowable content is defined by RFC 5724.
      */
-    @Generated
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Optional configuration for sending SMS messages.
      */
-    @Generated
+    @JsonProperty(value = "smsSendOptions")
     private SmsSendOptions smsSendOptions;
 
     /**
-     * Creates an instance of SendMessageRequest class.
-     */
-    @Generated
-    public SendMessageRequest() {
-    }
-
-    /**
      * Get the from property: The sender's phone number in E.164 format that is owned by the authenticated account.
-     * 
+     *
      * @return the from value.
      */
-    @Generated
     public String getFrom() {
         return this.from;
     }
 
     /**
      * Set the from property: The sender's phone number in E.164 format that is owned by the authenticated account.
-     * 
+     *
      * @param from the from value to set.
      * @return the SendMessageRequest object itself.
      */
-    @Generated
     public SendMessageRequest setFrom(String from) {
         this.from = from;
         return this;
@@ -76,10 +62,9 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /**
      * Get the smsRecipients property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and
      * upto 100 recipients in the list are supported.
-     * 
+     *
      * @return the smsRecipients value.
      */
-    @Generated
     public List<SmsRecipient> getSmsRecipients() {
         return this.smsRecipients;
     }
@@ -87,11 +72,10 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /**
      * Set the smsRecipients property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and
      * upto 100 recipients in the list are supported.
-     * 
+     *
      * @param smsRecipients the smsRecipients value to set.
      * @return the SendMessageRequest object itself.
      */
-    @Generated
     public SendMessageRequest setSmsRecipients(List<SmsRecipient> smsRecipients) {
         this.smsRecipients = smsRecipients;
         return this;
@@ -100,10 +84,9 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /**
      * Get the message property: The contents of the message that will be sent to the recipient. The allowable content
      * is defined by RFC 5724.
-     * 
+     *
      * @return the message value.
      */
-    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -111,11 +94,10 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
     /**
      * Set the message property: The contents of the message that will be sent to the recipient. The allowable content
      * is defined by RFC 5724.
-     * 
+     *
      * @param message the message value to set.
      * @return the SendMessageRequest object itself.
      */
-    @Generated
     public SendMessageRequest setMessage(String message) {
         this.message = message;
         return this;
@@ -123,72 +105,21 @@ public final class SendMessageRequest implements JsonSerializable<SendMessageReq
 
     /**
      * Get the smsSendOptions property: Optional configuration for sending SMS messages.
-     * 
+     *
      * @return the smsSendOptions value.
      */
-    @Generated
     public SmsSendOptions getSmsSendOptions() {
         return this.smsSendOptions;
     }
 
     /**
      * Set the smsSendOptions property: Optional configuration for sending SMS messages.
-     * 
+     *
      * @param smsSendOptions the smsSendOptions value to set.
      * @return the SendMessageRequest object itself.
      */
-    @Generated
     public SendMessageRequest setSmsSendOptions(SmsSendOptions smsSendOptions) {
         this.smsSendOptions = smsSendOptions;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("from", this.from);
-        jsonWriter.writeArrayField("smsRecipients", this.smsRecipients, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeJsonField("smsSendOptions", this.smsSendOptions);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SendMessageRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SendMessageRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SendMessageRequest.
-     */
-    @Generated
-    public static SendMessageRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SendMessageRequest deserializedSendMessageRequest = new SendMessageRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("from".equals(fieldName)) {
-                    deserializedSendMessageRequest.from = reader.getString();
-                } else if ("smsRecipients".equals(fieldName)) {
-                    List<SmsRecipient> smsRecipients = reader.readArray(reader1 -> SmsRecipient.fromJson(reader1));
-                    deserializedSendMessageRequest.smsRecipients = smsRecipients;
-                } else if ("message".equals(fieldName)) {
-                    deserializedSendMessageRequest.message = reader.getString();
-                } else if ("smsSendOptions".equals(fieldName)) {
-                    deserializedSendMessageRequest.smsSendOptions = SmsSendOptions.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSendMessageRequest;
-        });
     }
 }
