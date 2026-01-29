@@ -147,6 +147,7 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
   val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
+  val ThroughputControlThroughputBucket = "spark.cosmos.throughputControl.throughputBucket"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
@@ -274,6 +275,7 @@ private[spark] object CosmosConfigNames {
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
     ThroughputControlPriorityLevel,
+    ThroughputControlThroughputBucket,
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
@@ -2328,16 +2330,26 @@ private object CosmosChangeFeedConfig {
   }
 }
 
-private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAccountConfig,
-                                                 groupName: String,
-                                                 targetThroughput: Option[Int],
-                                                 targetThroughputThreshold: Option[Double],
-                                                 priorityLevel: Option[PriorityLevel],
-                                                 globalControlDatabase: Option[String],
-                                                 globalControlContainer: Option[String],
-                                                 globalControlRenewInterval: Option[Duration],
-                                                 globalControlExpireInterval: Option[Duration],
-                                                 globalControlUseDedicatedContainer: Boolean)
+private trait CosmosThroughputControlConfig {
+  def groupName: String
+}
+
+private case class CosmosSDKThroughputControlConfig(
+                                                  override val groupName: String,
+                                                  cosmosAccountConfig: CosmosAccountConfig,
+                                                  targetThroughput: Option[Int],
+                                                  targetThroughputThreshold: Option[Double],
+                                                  priorityLevel: Option[PriorityLevel],
+                                                  globalControlDatabase: Option[String],
+                                                  globalControlContainer: Option[String],
+                                                  globalControlRenewInterval: Option[Duration],
+                                                  globalControlExpireInterval: Option[Duration],
+                                                  globalControlUseDedicatedContainer: Boolean) extends CosmosThroughputControlConfig
+
+private case class CosmosServerThroughputControlConfig(
+                                                  override val groupName: String,
+                                                  throughputBucket: Int,
+                                                  priorityLevel: Option[PriorityLevel]) extends CosmosThroughputControlConfig
 
 private object CosmosThroughputControlConfig {
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
@@ -2389,6 +2401,12 @@ private object CosmosThroughputControlConfig {
         parseFromStringFunction = priorityLevel => CosmosConfigEntry.parseEnumeration(priorityLevel, PriorityLevels),
         helpMessage = "Throughput control group priority level. The value can be High or Low. ")
 
+    private val throughputBucketSupplier = CosmosConfigEntry[Int](
+      key = CosmosConfigNames.ThroughputControlThroughputBucket,
+      mandatory = false,
+      parseFromStringFunction = throughputBucket => throughputBucket.toInt,
+      helpMessage = "Throughput bucket value. Please refer here for full context: https://learn.microsoft.com/azure/cosmos-db/throughput-buckets?tabs=dotnet")
+
     private val globalControlDatabaseSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlGlobalControlDatabase,
         mandatory = false,
@@ -2429,67 +2447,81 @@ private object CosmosThroughputControlConfig {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
         if (throughputControlEnabled) {
-            // we will allow the customer to provide a different database account for throughput control
-            val throughputControlCosmosAccountConfig =
-              CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
-                case Some(_) => parseThroughputControlAccountConfig(cfg)
-                case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
-              }
-
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
-            val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
-            val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
-            val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
-            val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
-            val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
-            val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
-            val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
-            val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
+            val throughputBucket = CosmosConfigEntry.parse(cfg, throughputBucketSupplier)
 
-            if (groupName.isEmpty) {
-              throw new IllegalArgumentException(
-                s"Configuration option '${CosmosConfigNames.ThroughputControlName}' must not be empty.")
-            }
             assert(groupName.isDefined, s"Parameter '${CosmosConfigNames.ThroughputControlName}' is missing.")
 
-            if (globalControlUseDedicatedContainer.isEmpty) {
-              throw new IllegalArgumentException(
-                s"Configuration option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' must not be empty.")
+            if (throughputBucket.isDefined) {
+                Some(parseServerThroughputControlConfig(groupName.get, throughputBucket.get, cfg))
+            } else {
+                // if throughput bucket is defined, then use server side throughput bucket control
+                // else valida SDK global throughput control config
+                Some(parseSDKThroughputControlConfig(groupName.get, cfg))
             }
-            assert(
-              globalControlUseDedicatedContainer.isDefined,
-              s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is missing.")
-
-            if (globalControlUseDedicatedContainer.get) {
-              if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
-                throw new IllegalArgumentException(
-                  s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
-                    s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
-                    s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
-              }
-              assert(
-                globalControlDatabase.isDefined,
-                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' is missing.")
-              assert(
-                globalControlContainer.isDefined,
-                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlContainer}' is missing.")
-            }
-
-            Some(CosmosThroughputControlConfig(
-                throughputControlCosmosAccountConfig,
-                groupName.get,
-                targetThroughput,
-                targetThroughputThreshold,
-                priorityLevel,
-                globalControlDatabase,
-                globalControlContainer,
-                globalControlItemRenewInterval,
-                globalControlItemExpireInterval,
-                globalControlUseDedicatedContainer.get))
         } else {
             None
         }
     }
+
+  private[spark] def parseServerThroughputControlConfig(
+                                                         groupName: String,
+                                                         throughputBucket: Int,
+                                                         cfg: Map[String, String]): CosmosServerThroughputControlConfig = {
+    val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
+    CosmosServerThroughputControlConfig(groupName, throughputBucket, priorityLevel)
+  }
+
+  private[spark] def parseSDKThroughputControlConfig(
+                                                         groupName: String,
+                                                         cfg: Map[String, String]): CosmosSDKThroughputControlConfig = {
+    // we will allow the customer to provide a different database account for throughput control
+    val throughputControlCosmosAccountConfig =
+      CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
+        case Some(_) => parseThroughputControlAccountConfig(cfg)
+        case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
+      }
+
+    val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+    val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+    val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
+    val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
+    val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
+    val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
+    val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+    val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
+
+    assert(
+      globalControlUseDedicatedContainer.isDefined,
+      s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is missing.")
+
+    if (globalControlUseDedicatedContainer.get) {
+      if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
+        throw new IllegalArgumentException(
+          s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
+            s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
+            s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
+      }
+      assert(
+        globalControlDatabase.isDefined,
+        s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' is missing.")
+      assert(
+        globalControlContainer.isDefined,
+        s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlContainer}' is missing.")
+    }
+
+    CosmosSDKThroughputControlConfig(
+      groupName,
+      throughputControlCosmosAccountConfig,
+      targetThroughput,
+      targetThroughputThreshold,
+      priorityLevel,
+      globalControlDatabase,
+      globalControlContainer,
+      globalControlItemRenewInterval,
+      globalControlItemExpireInterval,
+      globalControlUseDedicatedContainer.get)
+  }
 
   private[spark] def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)

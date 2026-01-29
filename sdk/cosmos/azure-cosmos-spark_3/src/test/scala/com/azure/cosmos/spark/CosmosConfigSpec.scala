@@ -1548,6 +1548,20 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     throughputEndpointConfig.userAgentFormat shouldEqual UserAgentFormat.NoSparkEnv
   }
 
+  "CosmosThroughputControlConfig" should "parse throughput bucket" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.throughputControl.throughputBucket" -> "2",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "test"
+    )
+
+    val throughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+    throughputControlConfig.isDefined shouldEqual true
+    throughputControlConfig.get.asInstanceOf[CosmosServerThroughputControlConfig].throughputBucket shouldEqual 2
+  }
+
   private case class PatchColumnConfigParameterTest
   (
    isValid: Boolean,
