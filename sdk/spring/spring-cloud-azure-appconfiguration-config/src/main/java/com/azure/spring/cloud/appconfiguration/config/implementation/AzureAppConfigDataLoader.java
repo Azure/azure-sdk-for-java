@@ -107,7 +107,14 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         this.resource = resource;
         storeState.setNextForcedRefresh(resource.getRefreshInterval());
 
-        initializeFeatureFlagClient(context);
+        if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
+            featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
+        } else {
+            featureFlagClient = new FeatureFlagClient();
+            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
+                InstanceSupplier.from(() -> featureFlagClient));
+        }
+        featureFlagClient.resetTelemetry();
 
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
         if (resource.isConfigStoreEnabled()) {
@@ -135,22 +142,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     }
 
     /**
-     * Initializes or retrieves the feature flag client from the bootstrap context.
-     *
-     * @param context the config data loader context
-     */
-    private void initializeFeatureFlagClient(ConfigDataLoaderContext context) {
-        if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
-            featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
-        } else {
-            featureFlagClient = new FeatureFlagClient();
-            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
-                InstanceSupplier.from(() -> featureFlagClient));
-        }
-        featureFlagClient.resetTelemetry();
-    }
-
-    /**
      * Loads configuration from Azure App Configuration with replica failover support.
      *
      * @param sourceList the list to populate with property sources
@@ -163,8 +154,16 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             || (notification.getSecondaryToken() != null
                 && StringUtils.hasText(notification.getSecondaryToken().getName()));
 
-        requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH, pushRefresh);
+        // During refresh, only attempt once since failures are non-fatal
+        if (resource.isRefresh()) {
+            requestContext = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
+            replicaClientFactory.findActiveClients(resource.getEndpoint());
+            return attemptLoadFromClients(sourceList);
+        }
 
+        requestContext = new Context("refresh",false).addData(PUSH_REFRESH, pushRefresh);
+
+        // During startup, retry with backoff until deadline
         Instant deadline = Instant.now().plusSeconds(resource.getStartupTimeout().getSeconds());
         Exception lastException = null;
 
@@ -221,7 +220,19 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             }
 
             try {
-                loadFromClient(currentClient, sourceList);
+                sourceList.addAll(createSettings(currentClient));
+                List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
+
+                AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
+
+                storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
+                    monitoring.getFeatureFlagRefreshInterval());
+
+                if (monitoring.isEnabled()) {
+                    setupMonitoringState(currentClient, monitoring);
+                }
+
+                storeState.setLoadState(resource.getEndpoint(), true);
                 return null; // Success
             } catch (AppConfigurationStatusException e) {
                 reloadFailed = true;
@@ -234,30 +245,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         return lastException;
-    }
-
-    /**
-     * Loads configuration and feature flags from a specific replica client.
-     *
-     * @param client the replica client to load from
-     * @param sourceList the list to populate with property sources
-     * @throws Exception if loading fails
-     */
-    private void loadFromClient(AppConfigurationReplicaClient client, List<EnumerablePropertySource<?>> sourceList)
-        throws Exception {
-        sourceList.addAll(createSettings(client));
-        List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(client);
-
-        AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
-
-        storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
-            monitoring.getFeatureFlagRefreshInterval());
-
-        if (monitoring.isEnabled()) {
-            setupMonitoringState(client, monitoring);
-        }
-
-        storeState.setLoadState(resource.getEndpoint(), true);
     }
 
     /**
@@ -275,14 +262,14 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 client);
             storeState.setState(resource.getEndpoint(), Collections.emptyList(),
                 watchedConfigurationSettingsList, monitoring.getRefreshInterval());
-        } else {
-            // Use traditional watch key monitoring
-            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), requestContext))
-                .toList();
-
-            storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+            return;
         }
+        // Use traditional watch key monitoring
+        List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+            .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), requestContext))
+            .toList();
+
+        storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
     }
 
     /**
@@ -298,7 +285,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
         AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
             false);
-        logReplicaFailure(client, exceptionType, nextClient != null, exception);
+        
+        String scenario = resource.isRefresh() ? "refresh" : "startup";
+        String nextAction = nextClient != null ? "Trying next replica." : "No more replicas available.";
+        logger.warn("Azure App Configuration replica " + client.getEndpoint()
+            + " failed during " + scenario + " with " + exceptionType + ". "
+            + nextAction + " Store: " + resource.getEndpoint(), exception);
+        
         return nextClient;
     }
 
@@ -400,24 +393,6 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         return watchedConfigurationSettingsList;
-    }
-
-    /**
-     * Logs a replica failure with contextual information about the failure scenario and available replicas.
-     *
-     * @param client the replica client that failed
-     * @param exceptionType a brief description of the exception type (e.g., "status exception", "exception")
-     * @param hasMoreReplicas whether there are additional replicas available to try
-     * @param exception the exception that caused the failure
-     */
-    private void logReplicaFailure(AppConfigurationReplicaClient client, String exceptionType,
-        boolean hasMoreReplicas, Exception exception) {
-        String scenario = resource.isRefresh() ? "refresh" : "startup";
-        String nextAction = hasMoreReplicas ? "Trying next replica." : "No more replicas available.";
-
-        logger.warn("Azure App Configuration replica " + client.getEndpoint()
-            + " failed during " + scenario + " with " + exceptionType + ". "
-            + nextAction + " Store: " + resource.getEndpoint(), exception);
     }
 
     /**
