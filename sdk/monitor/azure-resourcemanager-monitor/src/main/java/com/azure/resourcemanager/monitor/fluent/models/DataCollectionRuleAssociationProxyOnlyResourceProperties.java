@@ -14,34 +14,24 @@ import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleAssociati
 import java.io.IOException;
 
 /**
- * The DataCollectionRuleAssociationProxyOnlyResourceProperties model.
+ * Resource properties.
  */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceProperties extends DataCollectionRuleAssociation {
-    /*
-     * Metadata about the resource
-     */
-    private DataCollectionRuleAssociationMetadata metadata;
-
     /*
      * The resource provisioning state.
      */
     private KnownDataCollectionRuleAssociationProvisioningState provisioningState;
 
+    /*
+     * Metadata about the resource
+     */
+    private DataCollectionRuleAssociationMetadata metadata;
+
     /**
      * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class.
      */
     public DataCollectionRuleAssociationProxyOnlyResourceProperties() {
-    }
-
-    /**
-     * Get the metadata property: Metadata about the resource.
-     * 
-     * @return the metadata value.
-     */
-    @Override
-    public DataCollectionRuleAssociationMetadata metadata() {
-        return this.metadata;
     }
 
     /**
@@ -52,6 +42,16 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceProperties exte
     @Override
     public KnownDataCollectionRuleAssociationProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the metadata property: Metadata about the resource.
+     * 
+     * @return the metadata value.
+     */
+    @Override
+    public DataCollectionRuleAssociationMetadata metadata() {
+        return this.metadata;
     }
 
     /**
@@ -90,9 +90,7 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceProperties exte
      */
     @Override
     public void validate() {
-        if (metadata() != null) {
-            metadata().validate();
-        }
+        super.validate();
     }
 
     /**
