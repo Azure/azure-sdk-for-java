@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,13 +19,11 @@ public final class EntityLinkingResult extends PreBuiltResult {
     /*
      * Response by document
      */
-    @Generated
     private List<EntityLinkingResultDocumentsItem> documents;
 
     /**
      * Creates an instance of EntityLinkingResult class.
      */
-    @Generated
     public EntityLinkingResult() {
     }
 
@@ -35,7 +32,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
      * 
      * @return the documents value.
      */
-    @Generated
     public List<EntityLinkingResultDocumentsItem> getDocuments() {
         return this.documents;
     }
@@ -46,7 +42,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the EntityLinkingResult object itself.
      */
-    @Generated
     public EntityLinkingResult setDocuments(List<EntityLinkingResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
@@ -55,7 +50,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
@@ -65,7 +59,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingResult setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
@@ -75,7 +68,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public EntityLinkingResult setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -85,7 +77,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +96,6 @@ public final class EntityLinkingResult extends PreBuiltResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EntityLinkingResult.
      */
-    @Generated
     public static EntityLinkingResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntityLinkingResult deserializedEntityLinkingResult = new EntityLinkingResult();
