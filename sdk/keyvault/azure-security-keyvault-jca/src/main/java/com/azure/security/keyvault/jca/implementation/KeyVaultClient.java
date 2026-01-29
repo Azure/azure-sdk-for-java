@@ -92,7 +92,7 @@ public class KeyVaultClient {
     /**
      * Stores the provided access token.
      */
-    private String providedAccessToken;
+    private final String providedAccessToken;
 
     /**
      * Stores the token.
@@ -138,7 +138,8 @@ public class KeyVaultClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity, boolean disableChallengeResourceVerification) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null, disableChallengeResourceVerification);
+        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null,
+            disableChallengeResourceVerification);
     }
 
     /**

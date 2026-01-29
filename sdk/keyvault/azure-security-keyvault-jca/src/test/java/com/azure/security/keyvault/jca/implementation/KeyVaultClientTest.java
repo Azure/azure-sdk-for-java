@@ -205,4 +205,70 @@ public class KeyVaultClientTest {
             tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(2));
         }
     }
+
+    @Test
+    public void testAccessTokenAuthentication() {
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class)) {
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            CertificateItem fakeCertificateItem = new CertificateItem();
+            fakeCertificateItem.setId("certificates/fakeCertificateItem");
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
+
+            // Create client with access token
+            String testAccessToken = "test-bearer-token-12345";
+            KeyVaultClient keyVaultClient
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, testAccessToken, false);
+
+            List<String> result = keyVaultClient.getAliases();
+
+            // Verify that the access token was used
+            assertEquals(1, result.size());
+            assertTrue(result.contains("fakeCertificateItem"));
+        }
+    }
+
+    @Test
+    public void testAuthenticationPriority() {
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class);
+            MockedStatic<AccessTokenUtil> tokenUtilMockedStatic = Mockito.mockStatic(AccessTokenUtil.class)) {
+
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            AccessToken accessToken = new AccessToken("fake-token", 3600);
+            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()))
+                .thenReturn(accessToken);
+
+            CertificateItem fakeCertificateItem = new CertificateItem();
+            fakeCertificateItem.setId("certificates/fakeCertificateItem");
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
+
+            // Test 1: Managed Identity should take priority over access token
+            KeyVaultClient client1
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, "managed-id", "bearer-token", false);
+            client1.getAliases();
+            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), eq("managed-id")), times(1));
+
+            // Test 2: Access token should be used when managed identity is not set
+            KeyVaultClient client2
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, "bearer-token", false);
+            List<String> result = client2.getAliases();
+            assertEquals(1, result.size());
+            assertTrue(result.contains("fakeCertificateItem"));
+        }
+    }
 }
