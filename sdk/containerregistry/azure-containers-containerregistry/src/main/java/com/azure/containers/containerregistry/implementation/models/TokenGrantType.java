@@ -4,23 +4,15 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-/**
- * Grant type is expected to be refresh_token.
- */
+/** Grant type is expected to be refresh_token. */
 public enum TokenGrantType {
-    /**
-     * Enum value refresh_token.
-     */
+    /** Enum value refresh_token. */
     REFRESH_TOKEN("refresh_token"),
 
-    /**
-     * Enum value password.
-     */
+    /** Enum value password. */
     PASSWORD("password");
 
-    /**
-     * The actual serialized value for a TokenGrantType instance.
-     */
+    /** The actual serialized value for a TokenGrantType instance. */
     private final String value;
 
     TokenGrantType(String value) {
@@ -29,7 +21,7 @@ public enum TokenGrantType {
 
     /**
      * Parses a serialized value to a TokenGrantType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed TokenGrantType object, or null if unable to parse.
      */
@@ -46,9 +38,7 @@ public enum TokenGrantType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;
