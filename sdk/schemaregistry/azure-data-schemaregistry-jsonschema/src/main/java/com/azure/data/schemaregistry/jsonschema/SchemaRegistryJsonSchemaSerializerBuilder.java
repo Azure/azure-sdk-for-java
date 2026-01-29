@@ -55,7 +55,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
 
     /**
      * Specifies schema group for interacting with Azure Schema Registry service.
-     * <p>
+     *
      * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
      * request schema ID for matching data schema under specified group.
      *
