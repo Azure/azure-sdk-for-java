@@ -1,5 +1,14 @@
 # Release History
 
+## 2.54.5 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+
 ## 2.54.4 (2025-11-24)
 
 ### Other Changes
