@@ -140,6 +140,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
         jsonWriter.writeIntField("lun", this.logicalUnitNumber);
         jsonWriter.writeIntField("diskSizeGB", this.diskSizeGb);
         jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
         jsonWriter.writeStringField("storageAccountType",
             this.storageAccountType == null ? null : this.storageAccountType.toString());
         return jsonWriter.writeEndObject();
@@ -160,6 +161,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
             int logicalUnitNumber = 0;
             int diskSizeGb = 0;
             CachingType caching = null;
+            ManagedDisk managedDisk = null;
             StorageAccountType storageAccountType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -170,6 +172,8 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
                     diskSizeGb = reader.getInt();
                 } else if ("caching".equals(fieldName)) {
                     caching = CachingType.fromString(reader.getString());
+                } else if ("managedDisk".equals(fieldName)) {
+                    managedDisk = ManagedDisk.fromJson(reader);
                 } else if ("storageAccountType".equals(fieldName)) {
                     storageAccountType = StorageAccountType.fromString(reader.getString());
                 } else {
@@ -178,8 +182,37 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
             }
             DataDisk deserializedDataDisk = new DataDisk(logicalUnitNumber, diskSizeGb);
             deserializedDataDisk.caching = caching;
+            deserializedDataDisk.managedDisk = managedDisk;
             deserializedDataDisk.storageAccountType = storageAccountType;
             return deserializedDataDisk;
         });
+    }
+
+    /*
+     * The managed disk parameters.
+     */
+    @Generated
+    private ManagedDisk managedDisk;
+
+    /**
+     * Get the managedDisk property: The managed disk parameters.
+     *
+     * @return the managedDisk value.
+     */
+    @Generated
+    public ManagedDisk getManagedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk property: The managed disk parameters.
+     *
+     * @param managedDisk the managedDisk value to set.
+     * @return the DataDisk object itself.
+     */
+    @Generated
+    public DataDisk setManagedDisk(ManagedDisk managedDisk) {
+        this.managedDisk = managedDisk;
+        return this;
     }
 }
