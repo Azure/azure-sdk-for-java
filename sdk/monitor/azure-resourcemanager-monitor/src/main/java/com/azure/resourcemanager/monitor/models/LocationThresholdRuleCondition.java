@@ -111,9 +111,7 @@ public final class LocationThresholdRuleCondition extends RuleCondition {
      */
     @Override
     public void validate() {
-        if (dataSource() != null) {
-            dataSource().validate();
-        }
+        super.validate();
     }
 
     /**
