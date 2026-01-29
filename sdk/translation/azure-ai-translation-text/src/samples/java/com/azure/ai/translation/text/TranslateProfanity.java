@@ -3,18 +3,15 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.Arrays;
-
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
-import com.azure.ai.translation.text.models.TranslateInputItem;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * Profanity handling:
+ * Profanity handling: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-translate#handle-profanity
  *
  * Normally the Translator service will retain profanity that is present in the source in the translation.
  * The degree of profanity and the context that makes words profane differ between cultures, and as a result
@@ -43,16 +40,16 @@ public class TranslateProfanity {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TranslationTarget target = new TranslationTarget("cs")
+        TranslateOptions translateOptions = new TranslateOptions()
+            .setSourceLanguage("en")
+            .addTargetLanguage("cs")
             .setProfanityAction(ProfanityAction.MARKED)
             .setProfanityMarker(ProfanityMarker.ASTERISK);
-        TranslateInputItem input = new TranslateInputItem("This is ***.", Arrays.asList(target))
-            .setLanguage("en");
 
-        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
+        TranslatedTextItem translation = client.translate("This is ***.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

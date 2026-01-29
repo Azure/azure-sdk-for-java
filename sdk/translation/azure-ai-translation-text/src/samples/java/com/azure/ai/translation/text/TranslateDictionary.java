@@ -3,17 +3,20 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * You can select whether the translated text is plain text or HTML text. Any HTML needs to be a well-formed,
- * complete element. Possible values are: plain (default) or html.
+ * If you already know the translation you want to apply to a word or a phrase, you can supply
+ * it as markup within the request. The dynamic dictionary is safe only for compound nouns
+ * like proper names and product names.
+ *
+ * > Note You must include the From parameter in your API translation request instead of using
+ * the autodetect feature.
  */
-public class TranslateTextType {
+public class TranslateDictionary {
     /**
      * Main method to invoke this demo.
      *
@@ -31,11 +34,10 @@ public class TranslateTextType {
                 .buildClient();
 
         TranslateOptions translateOptions = new TranslateOptions()
-            .addTargetLanguage("en")
-            .setSourceLanguage("cs")
-            .setTextType(TextType.HTML);
+            .setSourceLanguage("en")
+            .addTargetLanguage("cs");
 
-        TranslatedTextItem translation = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+        TranslatedTextItem translation = client.translate("The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
             System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
