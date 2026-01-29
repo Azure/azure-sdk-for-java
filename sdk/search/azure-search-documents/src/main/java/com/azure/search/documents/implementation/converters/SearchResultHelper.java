@@ -31,8 +31,8 @@ public final class SearchResultHelper {
 
         void setJsonSerializer(SearchResult searchResult, JsonSerializer jsonSerializer);
 
-        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-            List<QueryCaptionResult> captions, Double rerankerBoostedScore);
+        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore, Double rerankerBoostedScore,
+            List<QueryCaptionResult> captions);
 
         void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo);
     }
@@ -58,9 +58,9 @@ public final class SearchResultHelper {
         accessor.setJsonSerializer(searchResult, jsonSerializer);
     }
 
-    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-        List<QueryCaptionResult> captions, Double rerankerBoostedScore) {
-        accessor.setSemanticSearchResults(searchResult, rerankerScore, captions, rerankerBoostedScore);
+    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore, Double rerankerBoostedScore,
+        List<QueryCaptionResult> captions) {
+        accessor.setSemanticSearchResults(searchResult, rerankerScore, rerankerBoostedScore, captions);
     }
 
     static void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {

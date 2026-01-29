@@ -594,5 +594,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-
-

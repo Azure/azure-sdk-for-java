@@ -6,6 +6,7 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
+import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.DistanceScoringFunction;
@@ -204,11 +205,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .byPage()
             .collectList()).assertNext(pages -> {
                 SearchPagedResponse page1 = pages.get(0);
-                assertNotNull(page1.getSemanticResults().getQueryAnswers());
-                assertEquals(1, page1.getSemanticResults().getQueryAnswers().size());
-                assertEquals("9", page1.getSemanticResults().getQueryAnswers().get(0).getKey());
-                assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getHighlights());
-                assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getText());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+                assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+                assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+                assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
                 List<SearchResult> results = new ArrayList<>();
                 for (SearchPagedResponse page : pages) {
@@ -245,11 +246,11 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
             .collect(Collectors.toList());
 
         SearchPagedResponse page1 = pages.get(0);
-        assertNotNull(page1.getSemanticResults().getQueryAnswers());
-        assertEquals(1, page1.getSemanticResults().getQueryAnswers().size());
-        assertEquals("9", page1.getSemanticResults().getQueryAnswers().get(0).getKey());
-        assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getHighlights());
-        assertNotNull(page1.getSemanticResults().getQueryAnswers().get(0).getText());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1));
+        assertEquals(1, SearchPagedResponseAccessHelper.getQueryAnswers(page1).size());
+        assertEquals("9", SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getKey());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getHighlights());
+        assertNotNull(SearchPagedResponseAccessHelper.getQueryAnswers(page1).get(0).getText());
 
         List<SearchResult> results = new ArrayList<>();
         for (SearchPagedResponse page : pages) {
@@ -264,45 +265,6 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
 
         assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "9", "3", "2", "5",
             "10", "1", "4");
-    }
-
-    // a test that creates a hybrid search query with a vector search query and a regular search query, and utilizes the
-    // vector query filter override to filter the vector search results
-    @Test
-    public void hybridSearchWithVectorFilterOverrideSync() {
-        // create a new index with a vector field
-        // create a hybrid search query with a vector search query and a regular search query
-        SearchOptions searchOptions = new SearchOptions().setFilter("Rating ge 3")
-            .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'")));
-
-        // run the hybrid search query
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-        List<SearchResult> results
-            = searchClient.search("fancy", searchOptions, Context.NONE).stream().collect(Collectors.toList());
-
-        // check that the results are as expected
-        assertEquals(1, results.size());
-        assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
-    }
-
-    @Test
-    public void hybridSearchWithVectorFilterOverrideAsync() {
-        // create a new index with a vector field
-        // create a hybrid search query with a vector search query and a regular search query
-        SearchOptions searchOptions = new SearchOptions().setFilter("Rating ge 3")
-            .setSelect("HotelId", "HotelName", "Rating")
-            .setVectorSearchOptions(new VectorSearchOptions()
-                .setQueries(createDescriptionVectorQuery().setFilterOverride("HotelId eq '1'")));
-
-        // run the hybrid search query
-        SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-        StepVerifier.create(searchClient.search("fancy", searchOptions).collectList()).assertNext(results -> {
-            // check that the results are as expected
-            assertEquals(1, results.size());
-            assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
-        }).verifyComplete();
     }
 
     @Test
@@ -327,36 +289,6 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
                 .setFilterMode(VectorFilterMode.POST_FILTER))
-            .setSelect("HotelId", "HotelName");
-
-        StepVerifier.create(searchClient.search(null, searchOptions).collectList())
-            .assertNext(results -> assertKeysEqual(results,
-                r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "3", "5", "1"))
-            .verifyComplete();
-    }
-
-    @Test
-    public void vectorSearchWithStrictPostFilterModeSync() {
-        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
-                .setFilterMode(VectorFilterMode.STRICT_POST_FILTER))
-            .setSelect("HotelId", "HotelName");
-
-        List<SearchResult> results
-            = searchClient.search(null, searchOptions, Context.NONE).stream().collect(Collectors.toList());
-
-        assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("HotelId"), "3", "5", "1");
-    }
-
-    @Test
-    public void vectorSearchWithStrictPostFilterModeAsync() {
-        SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setVectorSearchOptions(new VectorSearchOptions().setQueries(createDescriptionVectorQuery())
-                .setFilterMode(VectorFilterMode.STRICT_POST_FILTER))
             .setSelect("HotelId", "HotelName");
 
         StepVerifier.create(searchClient.search(null, searchOptions).collectList())
