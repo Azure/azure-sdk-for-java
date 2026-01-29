@@ -52,28 +52,6 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
-    # IMPORTANT: First, set the dependency versions for ALL libraries that will be patched.
-    # This ensures that when update_versions.py runs during changelog generation for each library,
-    # it will pick up the correct new dependency versions for libraries being patched together.
-    Write-Host "Pre-setting dependency versions for all libraries to be patched..."
-    foreach ($packageData in $packagesData) {
-        $artifactId = $packageData["name"]
-        $groupId = $packageData["groupId"]
-        
-        # Get the latest GA/patch version from Maven and calculate the new patch version
-        $mavenArtifactInfo = GetVersionInfoForAnArtifactId -GroupId $groupId -ArtifactId $artifactId
-        if ($mavenArtifactInfo -and $mavenArtifactInfo.LatestGAOrPatchVersion) {
-            $patchVersion = GetPatchVersion -ReleaseVersion $mavenArtifactInfo.LatestGAOrPatchVersion
-            Write-Host "Setting dependency version for ${groupId}:${artifactId} to ${patchVersion}"
-            SetDependencyVersion -GroupId $groupId -ArtifactId $artifactId -Version $patchVersion
-            if ($LASTEXITCODE -ne 0) {
-                Write-Warning "Failed to set dependency version for ${groupId}:${artifactId}. Continuing with other libraries..."
-            }
-        } else {
-            Write-Warning "Could not retrieve Maven info for ${groupId}:${artifactId}. It may not be available on Maven Central yet. Skipping pre-set for this library."
-        }
-    }
-
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
         . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
