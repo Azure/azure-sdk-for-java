@@ -3,11 +3,8 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.Arrays;
-
-import com.azure.ai.translation.text.models.TranslateInputItem;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -31,14 +28,18 @@ public class TranslateWithTransliteration {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TranslationTarget target = new TranslationTarget("zh-Hans").setScript("Latn");
-        TranslateInputItem input = new TranslateInputItem("hudha akhtabar.", Arrays.asList(target))
-            .setLanguage("ar").setScript("Latn");
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("zh-Hans")
+            .setSourceLanguage("ar")
+            .setSourceLanguageScript("Latn")
+            .setTargetLanguageScript("Latn");
 
-        TranslatedTextItem translation = client.translate(Arrays.asList(input)).get(0);
+        TranslatedTextItem translation = client.translate("hudha akhtabar.", translateOptions);
 
+        System.out.println("Source Text: " + translation.getSourceText().getText());
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
         }
     }
 }

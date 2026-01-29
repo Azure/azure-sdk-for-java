@@ -209,13 +209,15 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     @Generated
     private String endpoint;
 
+    private Boolean isCustomEndpoint = false;
+
     /**
      * {@inheritDoc}.
      */
-    @Generated
     @Override
     public TextTranslationClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        this.isCustomEndpoint = CustomEndpointUtils.isPlatformHost(endpoint);
         return this;
     }
 
@@ -262,7 +264,6 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code credential} is null.
      */
-    @Override
     public TextTranslationClientBuilder credential(KeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
@@ -317,7 +318,6 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public TextTranslationClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
@@ -336,7 +336,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         String serviceEndpoint;
         if (this.endpoint == null) {
             serviceEndpoint = "https://api.cognitive.microsofttranslator.com";
-        } else if (CustomEndpointUtils.isPlatformHost(endpoint)) {
+        } else if (this.isCustomEndpoint) {
             try {
                 URL hostUri = new URL(endpoint);
                 URL fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
@@ -345,7 +345,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
                 serviceEndpoint = endpoint;
             }
         } else {
-            serviceEndpoint = this.endpoint;
+            serviceEndpoint = endpoint;
         }
         if (tokenCredential != null && (this.region != null || this.resourceId != null)) {
             Objects.requireNonNull(this.region, "'region' cannot be null.");
