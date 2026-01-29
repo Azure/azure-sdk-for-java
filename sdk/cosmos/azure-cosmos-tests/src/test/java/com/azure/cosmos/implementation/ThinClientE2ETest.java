@@ -69,8 +69,8 @@ public class ThinClientE2ETest {
     @BeforeClass(groups = {"thinclient"})
     public void beforeClass() {
         // If running locally, uncomment these lines
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+//        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+//        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
         sharedClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
