@@ -1,15 +1,5 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.2.37 (2025-10-27)
 
 ### Other Changes
@@ -18,6 +8,7 @@
 
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 
 ## 1.2.36 (2025-09-25)
 
@@ -28,6 +19,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
+
 ## 1.2.35 (2025-08-21)
 
 ### Other Changes
@@ -36,6 +28,7 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 
 ## 1.2.34 (2025-08-01)
 
@@ -55,6 +48,7 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 
+
 ## 1.2.32 (2025-03-24)
 
 ### Other Changes
@@ -63,6 +57,7 @@
 
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
 
 ## 1.2.31 (2025-02-25)
 
@@ -73,6 +68,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
+
 ## 1.2.30 (2024-12-04)
 
 ### Other Changes
@@ -81,6 +77,7 @@
 
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
 
 ## 1.2.29 (2024-10-27)
 
@@ -100,6 +97,7 @@
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 
+
 ## 1.2.27 (2024-08-24)
 
 ### Other Changes
@@ -108,6 +106,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
 
 ## 1.2.26 (2024-07-26)
 
@@ -118,6 +117,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
+
 ## 1.2.25 (2024-06-27)
 
 ### Other Changes
@@ -126,6 +126,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
 
 ## 1.2.24 (2024-05-28)
 
@@ -136,6 +137,7 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
+
 ## 1.2.23 (2024-04-23)
 
 ### Other Changes
@@ -144,6 +146,7 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
 
 ## 1.2.22 (2024-03-20)
 
@@ -154,6 +157,7 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
+
 ## 1.2.21 (2024-02-20)
 
 ### Other Changes
@@ -162,6 +166,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
 
 ## 1.2.20 (2023-12-04)
 
@@ -172,6 +177,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
+
 ## 1.2.19 (2023-11-20)
 
 ### Other Changes
@@ -180,6 +186,7 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
 
 ## 1.2.18 (2023-10-20)
 
@@ -190,6 +197,7 @@
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 
+
 ## 1.2.17 (2023-09-22)
 
 ### Other Changes
@@ -199,6 +207,7 @@
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
+
 ## 1.2.16 (2023-08-18)
 
 ### Other Changes
@@ -207,6 +216,7 @@
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
 
 ## 1.2.15 (2023-07-25)
 
@@ -226,6 +236,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 1.2.13 (2023-05-23)
 
 ### Other Changes
@@ -234,6 +245,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.2.12 (2023-04-21)
 
@@ -244,6 +256,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
+
 ## 1.2.11 (2023-03-16)
 
 ### Other Changes
@@ -252,6 +265,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 
 ## 1.2.10 (2023-02-10)
 
