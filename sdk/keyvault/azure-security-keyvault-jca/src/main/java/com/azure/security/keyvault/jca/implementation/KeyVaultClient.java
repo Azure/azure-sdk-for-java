@@ -227,11 +227,12 @@ public class KeyVaultClient {
             if (managedIdentity != null) {
                 LOGGER.info("Using managed identity for authentication");
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
-            } else if (providedAccessToken != null) {
+            } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
                 LOGGER.info("Using provided access token for authentication");
                 // Create an AccessToken object from the provided token string
-                // We set an expiration far in the future since we don't know the actual expiration
-                accessToken = new AccessToken(providedAccessToken, Long.MAX_VALUE);
+                // Set expiration to 1 hour (3600 seconds) as a reasonable default since we don't know the actual expiration
+                // The token will be treated as expired after 1 hour and the caller will need to provide a new one
+                accessToken = new AccessToken(providedAccessToken, 3600);
             } else if (tenantId != null && clientId != null && clientSecret != null) {
                 LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
