@@ -90,7 +90,7 @@ public class KeyVaultClient {
     private String managedIdentity;
 
     /**
-     * Stores the provided access token.
+     * Stores the provided access token string.
      */
     private final String providedAccessToken;
 
@@ -214,7 +214,7 @@ public class KeyVaultClient {
     private AccessToken getAccessTokenByHttpRequest() {
         LOGGER.entering("KeyVaultClient", "getAccessTokenByHttpRequest");
 
-        AccessToken accessToken = null;
+        AccessToken result = null;
 
         try {
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
@@ -226,27 +226,27 @@ public class KeyVaultClient {
             // Priority: 1. Managed Identity, 2. Provided Access Token, 3. Client ID/Secret
             if (managedIdentity != null) {
                 LOGGER.info("Using managed identity for authentication");
-                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                result = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
                 LOGGER.info("Using provided access token for authentication");
                 // Create an AccessToken object from the provided token string
                 // Set expiration to 1 hour (3600 seconds) as a reasonable default since we don't know the actual expiration
                 // The token will be treated as expired after 1 hour and the caller will need to provide a new one
-                accessToken = new AccessToken(providedAccessToken, 3600);
+                result = new AccessToken(providedAccessToken, 3600);
             } else if (tenantId != null && clientId != null && clientSecret != null) {
                 LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
-                accessToken
+                result
                     = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
         }
 
-        LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", accessToken);
+        LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", result);
 
-        return accessToken;
+        return result;
     }
 
     /**

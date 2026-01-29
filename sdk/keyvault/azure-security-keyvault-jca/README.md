@@ -92,12 +92,6 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
-**Authentication Priority:**
-When multiple authentication methods are configured, they are used in the following priority order:
-1. Managed Identity (`azure.keyvault.managed-identity`)
-2. Access Token (`azure.keyvault.access-token`)
-3. Client Credentials (`azure.keyvault.client-id` and `azure.keyvault.client-secret`)
-
 You can configure these properties using:
 ```java
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
