@@ -81,12 +81,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-docker-compose</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.20.1</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.20.2</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -101,19 +101,19 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.2</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.3</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.1</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>6.0.2</version> <!-- {x-version-update;springboot4_org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -165,8 +165,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.20.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-docker-compose:[4.0.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.20.2]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-docker-compose:[4.0.2]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-docker-compose;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
