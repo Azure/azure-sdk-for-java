@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,33 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    @Generated
-    private DataSourceType dataSourceType = DataSourceType.AZURE_LOG_ANALYTICS;
-
-    /*
      * The dataSourceParameter property.
      */
-    @Generated
     private AzureLogAnalyticsParameter dataSourceParameter;
 
     /**
      * Creates an instance of AzureLogAnalyticsDataFeed class.
      */
-    @Generated
     public AzureLogAnalyticsDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Generated
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -56,7 +35,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      * 
      * @return the dataSourceParameter value.
      */
-    @Generated
     public AzureLogAnalyticsParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -67,7 +45,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureLogAnalyticsDataFeed object itself.
      */
-    @Generated
     public AzureLogAnalyticsDataFeed setDataSourceParameter(AzureLogAnalyticsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -76,7 +53,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -86,7 +62,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -96,7 +71,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
@@ -106,7 +80,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
@@ -116,7 +89,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
@@ -126,7 +98,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
@@ -136,7 +107,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -146,7 +116,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -156,7 +125,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -166,7 +134,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -176,7 +143,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -186,7 +152,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -196,7 +161,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -206,7 +170,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -216,7 +179,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -226,7 +188,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -236,7 +197,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -246,7 +206,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -256,7 +215,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -266,7 +224,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -276,7 +233,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -286,7 +242,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -296,7 +251,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -306,20 +260,17 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public AzureLogAnalyticsDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.AZURE_LOG_ANALYTICS == null ? null : DataSourceType.AZURE_LOG_ANALYTICS.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -350,8 +301,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -361,10 +310,10 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureLogAnalyticsDataFeed if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureLogAnalyticsDataFeed.
      */
-    @Generated
     public static AzureLogAnalyticsDataFeed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureLogAnalyticsDataFeed deserializedAzureLogAnalyticsDataFeed = new AzureLogAnalyticsDataFeed();
@@ -372,7 +321,14 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"AzureLogAnalytics".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'AzureLogAnalytics'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed
@@ -381,8 +337,8 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureLogAnalyticsDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureLogAnalyticsDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed
                         .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
@@ -437,8 +393,8 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                 } else if ("status".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.setCreatedTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedAzureLogAnalyticsDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -449,9 +405,6 @@ public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureLogAnalyticsDataFeed.dataSourceParameter
                         = AzureLogAnalyticsParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsDataFeed.dataSourceType
-                        = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

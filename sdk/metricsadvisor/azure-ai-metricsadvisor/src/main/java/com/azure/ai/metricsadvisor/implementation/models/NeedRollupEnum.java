@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,19 +14,16 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
     /**
      * Static value NoRollup for NeedRollupEnum.
      */
-    @Generated
     public static final NeedRollupEnum NO_ROLLUP = fromString("NoRollup");
 
     /**
      * Static value NeedRollup for NeedRollupEnum.
      */
-    @Generated
     public static final NeedRollupEnum NEED_ROLLUP = fromString("NeedRollup");
 
     /**
      * Static value AlreadyRollup for NeedRollupEnum.
      */
-    @Generated
     public static final NeedRollupEnum ALREADY_ROLLUP = fromString("AlreadyRollup");
 
     /**
@@ -35,7 +31,6 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public NeedRollupEnum() {
     }
@@ -46,7 +41,6 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
      * @param name a name to look for.
      * @return the corresponding NeedRollupEnum.
      */
-    @Generated
     public static NeedRollupEnum fromString(String name) {
         return fromString(name, NeedRollupEnum.class);
     }
@@ -56,7 +50,6 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
      * 
      * @return known NeedRollupEnum values.
      */
-    @Generated
     public static Collection<NeedRollupEnum> values() {
         return values(NeedRollupEnum.class);
     }
