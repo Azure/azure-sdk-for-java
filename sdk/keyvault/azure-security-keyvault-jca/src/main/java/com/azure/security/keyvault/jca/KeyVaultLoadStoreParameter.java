@@ -66,17 +66,6 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     }
 
     /**
-     * Constructor for access token authentication.
-     *
-     * @param keyVaultUri The Azure Key Vault URI.
-     * @param accessToken The access token.
-     * @param useAccessToken Marker parameter to differentiate from managedIdentity constructor (pass true).
-     */
-    public KeyVaultLoadStoreParameter(String keyVaultUri, String accessToken, boolean useAccessToken) {
-        this(keyVaultUri, null, null, null, null, accessToken);
-    }
-
-    /**
      * Constructor.
      *
      * @param keyVaultUri The Azure Key Vault URI.
