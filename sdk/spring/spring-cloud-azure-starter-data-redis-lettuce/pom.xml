@@ -95,13 +95,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-data-redis</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-data-redis;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
-      <version>6.8.1.RELEASE</version> <!-- {x-version-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
+      <version>6.8.2.RELEASE</version> <!-- {x-version-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
 

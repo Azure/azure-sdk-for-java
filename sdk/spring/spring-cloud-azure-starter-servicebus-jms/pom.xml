@@ -96,12 +96,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-jms</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jms;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>3.1.8</version> <!-- {x-version-update;springboot4_org.messaginghub:pooled-jms;external_dependency} -->
+      <version>3.1.9</version> <!-- {x-version-update;springboot4_org.messaginghub:pooled-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
