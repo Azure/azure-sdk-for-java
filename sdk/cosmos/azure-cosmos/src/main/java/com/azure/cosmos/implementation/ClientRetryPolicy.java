@@ -105,7 +105,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
             this.setPerPartitionAutomaticFailoverOverrideForReads(this.request, true);
-            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request, false, true)) {
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(
+                this.request,
+                false,
+                true)) {
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             }
 
@@ -257,13 +260,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // then force the cross-region retry for reads on partition-set level primary / write region as determined by PPAF
                     if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
                         checkNotNull(request, "Argument 'request' cannot be null!");
-                        checkNotNull(request.requestContext, "Argument 'request' cannot be null!");
+                        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-                        checkNotNull(request.requestContext, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
+                        checkNotNull(request.requestContext.getCrossRegionAvailabilityContext(), "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
                         this.setPerPartitionAutomaticFailoverOverrideForReads(request, true);
                     }
 
-                    if (!this.globalEndpointManager.canUseMultipleWriteLocations(request) && this.isReadRequest) {
+                    if (this.isReadRequest) {
 
                         if (request.requestContext != null) {
 

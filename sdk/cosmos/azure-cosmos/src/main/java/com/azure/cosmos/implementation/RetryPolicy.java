@@ -49,7 +49,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
             this.globalEndpointManager,
             this.enableEndpointDiscovery,
             this.throttlingRetryOptions,
-                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
 
         return clientRetryPolicy;
