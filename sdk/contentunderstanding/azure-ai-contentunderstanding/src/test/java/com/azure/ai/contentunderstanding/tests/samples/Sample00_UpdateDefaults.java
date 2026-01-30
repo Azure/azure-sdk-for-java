@@ -23,11 +23,18 @@ public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase 
 
     @Test
     public void testUpdateDefaults() {
+        // BEGIN:ContentUnderstandingGetDefaults
         // Step 1: Get current defaults to see what's configured
         System.out.println("Getting current default configuration...");
         ContentUnderstandingDefaults currentDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Current defaults retrieved successfully.");
         System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
+        // END:ContentUnderstandingGetDefaults
+
+        // BEGIN:Assertion_ContentUnderstandingGetDefaults
+        assertNotNull(currentDefaults, "Current defaults should not be null");
+        assertNotNull(currentDefaults.getModelDeployments(), "Model deployments should not be null");
+        // END:Assertion_ContentUnderstandingGetDefaults
 
         // Step 2: Configure model deployments from environment variables
         // These map model names to your deployed model names in Azure AI Foundry
@@ -50,6 +57,7 @@ public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase 
         System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
         System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
 
+        // BEGIN:ContentUnderstandingUpdateDefaults
         // Step 3: Update defaults with the new configuration
         System.out.println("\nUpdating default configuration...");
 
@@ -57,12 +65,43 @@ public class Sample00_UpdateDefaults extends ContentUnderstandingClientTestBase 
         ContentUnderstandingDefaults updatedConfig = contentUnderstandingClient.updateDefaults(modelDeployments);
         System.out.println("Defaults updated successfully.");
         System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
+        // END:ContentUnderstandingUpdateDefaults
 
+        // BEGIN:Assertion_ContentUnderstandingUpdateDefaults
+        assertNotNull(updatedConfig, "Updated config should not be null");
+        assertNotNull(updatedConfig.getModelDeployments(), "Updated model deployments should not be null");
+        assertFalse(updatedConfig.getModelDeployments().isEmpty(), "Updated model deployments should not be empty");
+        // END:Assertion_ContentUnderstandingUpdateDefaults
+
+        // BEGIN:ContentUnderstandingVerifyDefaults
         // Step 4: Verify the updated configuration
         System.out.println("\nVerifying updated configuration...");
         ContentUnderstandingDefaults updatedDefaults = contentUnderstandingClient.getDefaults();
         System.out.println("Updated defaults verified successfully.");
         System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
+        // END:ContentUnderstandingVerifyDefaults
+
+        // BEGIN:Assertion_ContentUnderstandingVerifyDefaults
+        assertNotNull(updatedDefaults, "Verified defaults should not be null");
+        assertNotNull(updatedDefaults.getModelDeployments(), "Verified model deployments should not be null");
+        assertFalse(updatedDefaults.getModelDeployments().isEmpty(), "Verified model deployments should not be empty");
+
+        // Verify the model deployments contain the expected keys
+        assertTrue(updatedDefaults.getModelDeployments().containsKey("gpt-4.1"),
+            "Model deployments should contain gpt-4.1");
+        assertTrue(updatedDefaults.getModelDeployments().containsKey("gpt-4.1-mini"),
+            "Model deployments should contain gpt-4.1-mini");
+        assertTrue(updatedDefaults.getModelDeployments().containsKey("text-embedding-3-large"),
+            "Model deployments should contain text-embedding-3-large");
+
+        // Verify the values match what we set
+        assertEquals(gpt41Deployment, updatedDefaults.getModelDeployments().get("gpt-4.1"),
+            "gpt-4.1 deployment should match configured value");
+        assertEquals(gpt41MiniDeployment, updatedDefaults.getModelDeployments().get("gpt-4.1-mini"),
+            "gpt-4.1-mini deployment should match configured value");
+        assertEquals(textEmbedding3LargeDeployment, updatedDefaults.getModelDeployments().get("text-embedding-3-large"),
+            "text-embedding-3-large deployment should match configured value");
+        // END:Assertion_ContentUnderstandingVerifyDefaults
 
         System.out.println("\nConfiguration management completed.");
     }
