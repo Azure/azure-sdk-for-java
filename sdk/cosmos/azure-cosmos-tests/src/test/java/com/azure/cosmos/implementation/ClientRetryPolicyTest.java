@@ -714,7 +714,6 @@ public class ClientRetryPolicyTest {
             endpointManager,
             true,
             throttlingRetryOptions,
-            null,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
             disableRetryForThrottledBatchRequest);
