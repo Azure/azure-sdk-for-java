@@ -3,12 +3,13 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
-import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, TransactionalBulkExecutor}
+import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, CosmosBulkTransactionalBatchResponse, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
 import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse}
-import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, getThreadInfo, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
+import com.azure.cosmos.spark.BulkWriter.getThreadInfo
+import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
 import reactor.core.Scannable
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scheduler.Scheduler
@@ -68,7 +69,9 @@ private class TransactionalBulkWriter
   }
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
     .getOrElse(DefaultMaxPendingOperationPerCore)
-  private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
+
+  private val transactionalBulkExecutionConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteTransactionalBulkExecutionConfigs]
+  private val maxConcurrentPartitions = transactionalBulkExecutionConfigs.maxConcurrentCosmosPartitions match {
     // using the provided maximum of concurrent partitions per Spark partition on the input data
     // multiplied by 2 to leave space for partition splits during ingestion
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
@@ -104,12 +107,18 @@ private class TransactionalBulkWriter
   private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
     .enable(true)
     .build
-  private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl(Map.empty[String, String].asJava)
+  private val cosmosTransactionalBulkExecutionOptions = new CosmosTransactionalBulkExecutionOptionsImpl()
   private val monotonicOperationCounter = new AtomicLong(0)
 
   cosmosTransactionalBulkExecutionOptions.setSchedulerOverride(transactionalBulkWriterRequestsBoundedElastic)
   cosmosTransactionalBulkExecutionOptions.setMaxConcurrentCosmosPartitions(maxConcurrentPartitions)
   cosmosTransactionalBulkExecutionOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndTimeoutPolicy)
+  if (transactionalBulkExecutionConfigs.maxConcurrentOperations.isDefined) {
+    cosmosTransactionalBulkExecutionOptions.setMaxOperationsConcurrency(transactionalBulkExecutionConfigs.maxConcurrentOperations.get)
+  }
+  if (transactionalBulkExecutionConfigs.maxConcurrentBatches.isDefined) {
+    cosmosTransactionalBulkExecutionOptions.setMaxBatchesConcurrency(transactionalBulkExecutionConfigs.maxConcurrentBatches.get)
+  }
 
   private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
     override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
@@ -245,12 +254,12 @@ private class TransactionalBulkWriter
         log.logError(s"Batch input publishing flux failed, Context: ${operationContext.toString} $getThreadInfo", t)
       })
 
-    val transactionalExecutor = new TransactionalBulkExecutor[Object](
+    val transactionalExecutor = new TransactionalBulkExecutor(
       container,
       batchInputFlux,
       cosmosTransactionalBulkExecutionOptions)
 
-    val batchResponseFlux: SFlux[CosmosBatchResponse] = transactionalExecutor.execute().asScala
+    val batchResponseFlux: SFlux[CosmosBulkTransactionalBatchResponse] = transactionalExecutor.execute().asScala
 
     batchResponseFlux.subscribe(
       resp => {
@@ -259,7 +268,7 @@ private class TransactionalBulkWriter
         try {
           // all the operations in the batch will have the same partition key value
           // get the partition key value from the first result
-          val partitionKeyValue = resp.getResults.get(0).getOperation.getPartitionKeyValue
+          val partitionKeyValue = resp.getCosmosBatch.getPartitionKeyValue
           val activeBatchOperationOpt = activeBatches.remove(partitionKeyValue)
           val pendingBatchOperationRetriesOpt = pendingBatchRetries.remove(partitionKeyValue)
 
@@ -277,17 +286,35 @@ private class TransactionalBulkWriter
           if (activeBatchOperationOpt.isDefined || pendingBatchOperationRetriesOpt.isDefined) {
             val batchOperation = activeBatchOperationOpt.orElse(pendingBatchOperationRetriesOpt).get
 
-            if (isSuccessStatusCode(resp.getStatusCode)) {
-              // no error cases
-              outputMetricsPublisher.trackWriteOperation(resp.size(), None) // TODO[Annie]:verify the diagnostics
-              totalSuccessfulIngestionMetrics.addAndGet(resp.size())
-            } else {
+            if (resp.getException != null) {
+              Option(resp.getException) match {
+                case Some(cosmosException: CosmosException) =>
+                  handleNonSuccessfulStatusCode(
+                    batchOperation.operationContext,
+                    batchOperation.cosmosBatch,
+                    None,
+                    isGettingRetried,
+                    Some(cosmosException))
+                case _ =>
+                  log.logWarning(
+                    s"unexpected failure: partitionKeyValue=[" +
+                      s"${batchOperation.operationContext}], encountered , attemptNumber=${batchOperation.operationContext.attemptNumber}, " +
+                      s"exceptionMessage=${resp.getException.getMessage}, " +
+                      s"Context: ${operationContext.toString} $getThreadInfo", resp.getException)
+                  captureIfFirstFailure(resp.getException)
+                  cancelWork()
+              }
+            } else if (!resp.getResponse.isSuccessStatusCode) {
               handleNonSuccessfulStatusCode(
                 batchOperation.operationContext,
                 batchOperation.cosmosBatch,
-                resp,
+                Some(resp.getResponse),
                 isGettingRetried,
                 None)
+            } else {
+              // no error case
+              outputMetricsPublisher.trackWriteOperation(resp.getResponse.size(), None)
+              totalSuccessfulIngestionMetrics.addAndGet(resp.getResponse.size())
             }
           }
         }
@@ -318,8 +345,6 @@ private class TransactionalBulkWriter
       )
     )
   }
-
-  def isSuccessStatusCode(statusCode: Int): Boolean = 200 <= statusCode && statusCode <= 299
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     Preconditions.checkState(!closed.get())
@@ -400,13 +425,34 @@ private class TransactionalBulkWriter
   (
     operationContext: OperationContext,
     cosmosBatch: CosmosBatch,
-    cosmosBatchResponse: CosmosBatchResponse,
+    cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException]
   ) : Unit = {
 
-    val effectiveStatusCode = cosmosBatchResponse.getStatusCode
-    val effectiveSubStatusCode = cosmosBatchResponse.getSubStatusCode
+    val exceptionMessage = cosmosBatchResponse match {
+      case Some(r) => r.getErrorMessage
+      case None => responseException match {
+        case Some(e) => e.getMessage
+        case None => ""
+      }
+    }
+
+    val effectiveStatusCode = cosmosBatchResponse match {
+      case Some(r) => r.getStatusCode
+      case None => responseException match {
+        case Some(e) => e.getStatusCode
+        case None => CosmosConstants.StatusCodes.Timeout
+      }
+    }
+
+    val effectiveSubStatusCode = cosmosBatchResponse match {
+      case Some(r) => r.getSubStatusCode
+      case None => responseException match {
+        case Some(e) => e.getSubStatusCode
+        case None => 0
+      }
+    }
 
     log.logDebug(s"encountered batch operation response with status code " +
       s"$effectiveStatusCode:$effectiveSubStatusCode, " +
@@ -416,7 +462,7 @@ private class TransactionalBulkWriter
       // requeue
       log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', will retry! " +
-        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${cosmosBatchResponse.getErrorMessage},  " +
+        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} $getThreadInfo")
 
       val batchOperationRetry = CosmosBatchOperation(
@@ -428,7 +474,7 @@ private class TransactionalBulkWriter
       )
 
       this.scheduleRetry(
-        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isDefined,
+        trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatch.getPartitionKeyValue, batchOperationRetry).isEmpty,
         clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatch.getPartitionKeyValue).isDefined,
         batchOperationRetry,
         effectiveStatusCode)
@@ -437,7 +483,7 @@ private class TransactionalBulkWriter
     } else {
       log.logError(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', all retries exhausted! " +
-        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${cosmosBatchResponse.getErrorMessage}, " +
+        s"attemptNumber=${operationContext.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
         s"Context: {${operationContext.toString} $getThreadInfo")
 
       val message = s"All retries exhausted for batch operation - " +

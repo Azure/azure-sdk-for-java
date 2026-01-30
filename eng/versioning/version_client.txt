@@ -74,7 +74,7 @@ com.azure:azure-analytics-synapse-spark;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-communication-callautomation;1.5.2;1.6.0
+com.azure:azure-communication-callautomation;1.6.0;1.7.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.6.5;1.7.0-beta.1
 com.azure:azure-communication-common;1.4.5;1.5.0-beta.1
@@ -274,7 +274,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;6.1.0;7.0.0-be
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;6.1.0;7.0.0-beta.2
 com.azure.spring:spring-cloud-azure-testcontainers;6.1.0;7.0.0-beta.2
 com.azure:azure-spring-data-cosmos;6.1.0;7.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager;2.58.0;2.59.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager;2.59.0;2.60.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.54.2;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.7;2.54.0-beta.1
