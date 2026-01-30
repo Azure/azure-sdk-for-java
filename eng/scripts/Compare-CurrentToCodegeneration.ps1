@@ -211,7 +211,7 @@ $generateScript = {
 $scriptTimeoutInSeconds = 60
 $timeout = $scriptTimeoutInSeconds * $generationInformations.Count
 # Ensure a minimum timeout of 5 times the script timeout
-# This is for scenarios where there are only a few scripts to run. One with large TypeSpec source can get a few minutes.
+# This is for scenarios where there are only a few scripts to run. Some script with large TypeSpec source can take a few minutes.
 $minimumTimeout = 5 * $scriptTimeoutInSeconds
 if ($timeout -lt $minimumTimeout) {
   $timeout = $minimumTimeout
