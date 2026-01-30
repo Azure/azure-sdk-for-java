@@ -40,7 +40,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
      * The status property.
      */
     @Generated
-    private InputItemLocalShellToolCallOutputStatus status;
+    private ItemResourceLocalShellToolCallOutputStatus status;
 
     /**
      * Creates an instance of InputItemLocalShellToolCallOutput class.
@@ -91,20 +91,8 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
      * @return the status value.
      */
     @Generated
-    public InputItemLocalShellToolCallOutputStatus getStatus() {
+    public ItemResourceLocalShellToolCallOutputStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status property.
-     *
-     * @param status the status value to set.
-     * @return the InputItemLocalShellToolCallOutput object itself.
-     */
-    @Generated
-    public InputItemLocalShellToolCallOutput setStatus(InputItemLocalShellToolCallOutputStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -136,7 +124,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
             String id = null;
             String output = null;
             InputItemType type = InputItemType.LOCAL_SHELL_CALL_OUTPUT;
-            InputItemLocalShellToolCallOutputStatus status = null;
+            ItemResourceLocalShellToolCallOutputStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -147,7 +135,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    status = InputItemLocalShellToolCallOutputStatus.fromString(reader.getString());
+                    status = ItemResourceLocalShellToolCallOutputStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -158,5 +146,17 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
             deserializedInputItemLocalShellToolCallOutput.status = status;
             return deserializedInputItemLocalShellToolCallOutput;
         });
+    }
+
+    /**
+     * Set the status property: The status property.
+     *
+     * @param status the status value to set.
+     * @return the InputItemLocalShellToolCallOutput object itself.
+     */
+    @Generated
+    public InputItemLocalShellToolCallOutput setStatus(ItemResourceLocalShellToolCallOutputStatus status) {
+        this.status = status;
+        return this;
     }
 }

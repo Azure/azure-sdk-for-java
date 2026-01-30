@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for InputItemLocalShellToolCallOutputStatus.
+ * Defines values for ItemResourceImageGenToolCallStatus.
  */
-public enum InputItemLocalShellToolCallOutputStatus {
+public enum ItemResourceImageGenToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -19,31 +19,36 @@ public enum InputItemLocalShellToolCallOutputStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value incomplete.
+     * Enum value generating.
      */
-    INCOMPLETE("incomplete");
+    GENERATING("generating"),
 
     /**
-     * The actual serialized value for a InputItemLocalShellToolCallOutputStatus instance.
+     * Enum value failed.
+     */
+    FAILED("failed");
+
+    /**
+     * The actual serialized value for a ItemResourceImageGenToolCallStatus instance.
      */
     private final String value;
 
-    InputItemLocalShellToolCallOutputStatus(String value) {
+    ItemResourceImageGenToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a InputItemLocalShellToolCallOutputStatus instance.
+     * Parses a serialized value to a ItemResourceImageGenToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed InputItemLocalShellToolCallOutputStatus object, or null if unable to parse.
+     * @return the parsed ItemResourceImageGenToolCallStatus object, or null if unable to parse.
      */
-    public static InputItemLocalShellToolCallOutputStatus fromString(String value) {
+    public static ItemResourceImageGenToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        InputItemLocalShellToolCallOutputStatus[] items = InputItemLocalShellToolCallOutputStatus.values();
-        for (InputItemLocalShellToolCallOutputStatus item : items) {
+        ItemResourceImageGenToolCallStatus[] items = ItemResourceImageGenToolCallStatus.values();
+        for (ItemResourceImageGenToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -5,18 +5,13 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for OutputItemWebSearchToolCallStatus.
+ * Defines values for ItemReasoningItemStatus.
  */
-public enum OutputItemWebSearchToolCallStatus {
+public enum ItemReasoningItemStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
-
-    /**
-     * Enum value searching.
-     */
-    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -24,31 +19,31 @@ public enum OutputItemWebSearchToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value failed.
+     * Enum value incomplete.
      */
-    FAILED("failed");
+    INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a OutputItemWebSearchToolCallStatus instance.
+     * The actual serialized value for a ItemReasoningItemStatus instance.
      */
     private final String value;
 
-    OutputItemWebSearchToolCallStatus(String value) {
+    ItemReasoningItemStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemWebSearchToolCallStatus instance.
+     * Parses a serialized value to a ItemReasoningItemStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemWebSearchToolCallStatus object, or null if unable to parse.
+     * @return the parsed ItemReasoningItemStatus object, or null if unable to parse.
      */
-    public static OutputItemWebSearchToolCallStatus fromString(String value) {
+    public static ItemReasoningItemStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemWebSearchToolCallStatus[] items = OutputItemWebSearchToolCallStatus.values();
-        for (OutputItemWebSearchToolCallStatus item : items) {
+        ItemReasoningItemStatus[] items = ItemReasoningItemStatus.values();
+        for (ItemReasoningItemStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -17,6 +17,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ContainerLogKind;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
+import com.azure.ai.agents.models.FoundryPreviewOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -26,6 +27,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -90,6 +92,14 @@ public final class AgentsClient {
 
     /**
      * Deletes an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -186,6 +196,14 @@ public final class AgentsClient {
 
     /**
      * Create a new agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -250,6 +268,14 @@ public final class AgentsClient {
 
     /**
      * Deletes a specific version of an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -470,6 +496,14 @@ public final class AgentsClient {
 
     /**
      * Creates the agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -538,6 +572,15 @@ public final class AgentsClient {
     /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -667,6 +710,14 @@ public final class AgentsClient {
 
     /**
      * Creates an agent from a manifest.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -734,6 +785,15 @@ public final class AgentsClient {
     /**
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -953,41 +1013,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Creates the agent.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgent(String name, AgentDefinition definition, Map<String, String> metadata,
-        String description) {
-        // Generated convenience method for createAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
-    }
-
-    /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
      *
@@ -1018,44 +1043,6 @@ public final class AgentsClient {
             = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
         BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
         return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Creates an agent from a manifest.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgentFromManifest(String name, String manifestId, Map<String, BinaryData> parameterValues,
-        Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
-                .setDescription(description);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -1094,42 +1081,6 @@ public final class AgentsClient {
         return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
             .getValue()
             .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
-        Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
-            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
     }
 
     /**
@@ -1359,6 +1310,15 @@ public final class AgentsClient {
      * 20</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent.
@@ -1400,11 +1360,6 @@ public final class AgentsClient {
      *
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent.
-     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
-     * console.
-     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
-     * specific replica.
-     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1414,20 +1369,187 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void streamAgentContainerLogs(String agentName, String agentVersion, ContainerLogKind kind,
-        String replicaName, Integer tail) {
+    public void streamAgentContainerLogs(String agentName, String agentVersion) {
         // Generated convenience method for streamAgentContainerLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (kind != null) {
-            requestOptions.addQueryParam("kind", kind.toString(), false);
-        }
-        if (replicaName != null) {
-            requestOptions.addQueryParam("replica_name", replicaName, false);
-        }
-        if (tail != null) {
-            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
-        }
         streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
+    }
+
+    /**
+     * Creates the agent.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentDetails createAgent(String name, AgentDefinition definition, BinaryData foundryBeta,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentRequest1 createAgentRequest1Obj
+            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
+        }
+        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
+    }
+
+    /**
+     * Creates an agent from a manifest.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentDetails createAgentFromManifest(String name, String manifestId, Map<String, BinaryData> parameterValues,
+        BinaryData foundryBeta, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
+            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
+        }
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
+            .toObject(AgentDetails.class);
+    }
+
+    /**
+     * Deletes an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted agent Object.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteAgentResponse deleteAgent(String agentName, BinaryData foundryBeta) {
+        // Generated convenience method for deleteAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
+        }
+        return deleteAgentWithResponse(agentName, requestOptions).getValue().toObject(DeleteAgentResponse.class);
+    }
+
+    /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition, BinaryData foundryBeta,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
+            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Deletes a specific version of an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted agent version Object.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeleteAgentVersionResponse deleteAgentVersion(String agentName, String agentVersion,
+        BinaryData foundryBeta) {
+        // Generated convenience method for deleteAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
+        }
+        return deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).getValue()
+            .toObject(DeleteAgentVersionResponse.class);
     }
 
     /**
@@ -1454,6 +1576,13 @@ public final class AgentsClient {
      *
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
+     * console.
+     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
+     * specific replica.
+     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1463,9 +1592,22 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void streamAgentContainerLogs(String agentName, String agentVersion) {
+    public void streamAgentContainerLogs(String agentName, String agentVersion, FoundryPreviewOptInKeys foundryBeta,
+        ContainerLogKind kind, String replicaName, Integer tail) {
         // Generated convenience method for streamAgentContainerLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), foundryBeta.toString());
+        }
+        if (kind != null) {
+            requestOptions.addQueryParam("kind", kind.toString(), false);
+        }
+        if (replicaName != null) {
+            requestOptions.addQueryParam("replica_name", replicaName, false);
+        }
+        if (tail != null) {
+            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
+        }
         streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
     }
 }

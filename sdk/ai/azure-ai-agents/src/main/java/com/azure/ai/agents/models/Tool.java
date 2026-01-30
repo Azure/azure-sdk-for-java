@@ -97,7 +97,7 @@ public class Tool implements JsonSerializable<Tool> {
                     return CaptureStructuredOutputsTool.fromJson(readerToUse.reset());
                 } else if ("a2a_preview".equals(discriminatorValue)) {
                     return A2APreviewTool.fromJson(readerToUse.reset());
-                } else if ("memory_search".equals(discriminatorValue)) {
+                } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());

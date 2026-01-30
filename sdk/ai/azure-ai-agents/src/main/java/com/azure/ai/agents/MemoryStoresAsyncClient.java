@@ -65,7 +65,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Create a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -80,9 +80,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -121,7 +121,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Update a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -132,9 +132,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -174,7 +174,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Retrieve a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -232,7 +232,7 @@ public final class MemoryStoresAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -268,7 +268,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -296,7 +296,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Search for relevant memories from a memory store based on conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -313,9 +313,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -366,7 +366,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Update memory store with conversation memories.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -381,9 +381,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -454,7 +454,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Get memory store update result.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -719,7 +719,7 @@ public final class MemoryStoresAsyncClient {
     /**
      * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -727,9 +727,9 @@ public final class MemoryStoresAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

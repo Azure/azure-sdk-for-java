@@ -37,7 +37,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
      * `searching`, `incomplete` or `failed`,
      */
     @Generated
-    private final OutputItemFileSearchToolCallStatus status;
+    private final ItemResourceFileSearchToolCallStatus status;
 
     /*
      * The queries used to search for files.
@@ -50,20 +50,6 @@ public final class InputItemFileSearchToolCall extends InputItem {
      */
     @Generated
     private List<FileSearchToolCallResults> results;
-
-    /**
-     * Creates an instance of InputItemFileSearchToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param queries the queries value to set.
-     */
-    @Generated
-    public InputItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
-        this.id = id;
-        this.status = status;
-        this.queries = queries;
-    }
 
     /**
      * Get the type property: The type property.
@@ -93,7 +79,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemFileSearchToolCallStatus getStatus() {
+    public ItemResourceFileSearchToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -157,7 +143,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
     public static InputItemFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            OutputItemFileSearchToolCallStatus status = null;
+            ItemResourceFileSearchToolCallStatus status = null;
             List<String> queries = null;
             InputItemType type = InputItemType.FILE_SEARCH_CALL;
             List<FileSearchToolCallResults> results = null;
@@ -167,7 +153,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemFileSearchToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceFileSearchToolCallStatus.fromString(reader.getString());
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("type".equals(fieldName)) {
@@ -184,5 +170,19 @@ public final class InputItemFileSearchToolCall extends InputItem {
             deserializedInputItemFileSearchToolCall.results = results;
             return deserializedInputItemFileSearchToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemFileSearchToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param queries the queries value to set.
+     */
+    @Generated
+    public InputItemFileSearchToolCall(String id, ItemResourceFileSearchToolCallStatus status, List<String> queries) {
+        this.id = id;
+        this.status = status;
+        this.queries = queries;
     }
 }

@@ -85,7 +85,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAgent(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}")
@@ -95,7 +95,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAgentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/agents")
@@ -127,7 +127,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAgent(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateAgentRequest1, RequestOptions requestOptions,
             Context context);
@@ -139,7 +139,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateAgentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateAgentRequest1, RequestOptions requestOptions,
             Context context);
@@ -175,7 +175,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateAgentFromManifest(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions,
             Context context);
@@ -187,7 +187,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateAgentFromManifestSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions,
             Context context);
@@ -199,7 +199,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteAgent(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}")
@@ -209,7 +209,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteAgentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agents")
@@ -239,7 +239,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAgentVersion(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData createAgentVersionRequest1, RequestOptions requestOptions,
             Context context);
@@ -251,7 +251,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createAgentVersionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData createAgentVersionRequest1, RequestOptions requestOptions,
             Context context);
@@ -263,7 +263,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAgentVersionFromManifest(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData createAgentVersionFromManifestRequest1,
             RequestOptions requestOptions, Context context);
@@ -275,7 +275,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createAgentVersionFromManifestSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData createAgentVersionFromManifestRequest1,
             RequestOptions requestOptions, Context context);
@@ -287,8 +287,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAgentVersionDetails(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, @HeaderParam("Accept") String accept,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/versions/{agent_version}")
@@ -298,8 +298,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAgentVersionDetailsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, @HeaderParam("Accept") String accept,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}/versions/{agent_version}")
@@ -309,8 +309,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteAgentVersion(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, @HeaderParam("Accept") String accept,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Delete("/agents/{agent_name}/versions/{agent_version}")
@@ -320,8 +320,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> deleteAgentVersionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, @HeaderParam("Accept") String accept,
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/versions")
@@ -331,7 +331,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAgentVersions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/agents/{agent_name}/versions")
@@ -341,7 +341,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAgentVersionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
+            @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/agents/{agent_name}/versions/{agent_version}/containers/default:logstream")
@@ -351,8 +351,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> streamAgentContainerLogs(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, RequestOptions requestOptions, Context context);
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/agents/{agent_name}/versions/{agent_version}/containers/default:logstream")
         @ExpectedResponses({ 200 })
@@ -361,8 +361,8 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> streamAgentContainerLogsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("agent_name") String agentName,
-            @PathParam("agent_version") String agentVersion, RequestOptions requestOptions, Context context);
+            @PathParam("agent_name") String agentName, @PathParam("agent_version") String agentVersion,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -409,8 +409,8 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAgent(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -457,12 +457,20 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAgentWithResponse(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), agentName,
+        return service.getAgentSync(this.client.getEndpoint(), agentName, this.client.getServiceVersion().getVersion(),
             accept, requestOptions, Context.NONE);
     }
 
     /**
      * Creates the agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -534,6 +542,14 @@ public final class AgentsImpl {
 
     /**
      * Creates the agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -604,6 +620,15 @@ public final class AgentsImpl {
     /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -668,14 +693,23 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.updateAgent(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                agentName, contentType, accept, updateAgentRequest1, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateAgentRequest1, requestOptions,
+            context));
     }
 
     /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -740,12 +774,21 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            agentName, contentType, accept, updateAgentRequest1, requestOptions, Context.NONE);
+        return service.updateAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateAgentRequest1, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Creates an agent from a manifest.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -815,6 +858,14 @@ public final class AgentsImpl {
 
     /**
      * Creates an agent from a manifest.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -885,6 +936,15 @@ public final class AgentsImpl {
     /**
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -947,14 +1007,23 @@ public final class AgentsImpl {
         BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateAgentFromManifest(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, contentType, accept,
-            updateAgentFromManifestRequest1, requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateAgentFromManifest(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateAgentFromManifestRequest1,
+            requestOptions, context));
     }
 
     /**
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1017,13 +1086,21 @@ public final class AgentsImpl {
         BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateAgentFromManifestSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, contentType, accept,
-            updateAgentFromManifestRequest1, requestOptions, Context.NONE);
+        return service.updateAgentFromManifestSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, updateAgentFromManifestRequest1,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Deletes an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1047,12 +1124,20 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteAgentWithResponseAsync(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAgent(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteAgent(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Deletes an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1076,8 +1161,8 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAgentSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            agentName, accept, requestOptions, Context.NONE);
+        return service.deleteAgentSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1360,6 +1445,14 @@ public final class AgentsImpl {
 
     /**
      * Create a new agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1420,13 +1513,21 @@ public final class AgentsImpl {
         BinaryData createAgentVersionRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createAgentVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, contentType, accept, createAgentVersionRequest1,
+        return FluxUtil.withContext(context -> service.createAgentVersion(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createAgentVersionRequest1,
             requestOptions, context));
     }
 
     /**
      * Create a new agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1487,8 +1588,9 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createAgentVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            agentName, contentType, accept, createAgentVersionRequest1, requestOptions, Context.NONE);
+        return service.createAgentVersionSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createAgentVersionRequest1,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1552,7 +1654,7 @@ public final class AgentsImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createAgentVersionFromManifest(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, contentType, accept,
+            agentName, this.client.getServiceVersion().getVersion(), contentType, accept,
             createAgentVersionFromManifestRequest1, requestOptions, context));
     }
 
@@ -1616,9 +1718,9 @@ public final class AgentsImpl {
         BinaryData createAgentVersionFromManifestRequest1, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createAgentVersionFromManifestSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, contentType, accept,
-            createAgentVersionFromManifestRequest1, requestOptions, Context.NONE);
+        return service.createAgentVersionFromManifestSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), contentType, accept, createAgentVersionFromManifestRequest1,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1660,8 +1762,8 @@ public final class AgentsImpl {
     public Mono<Response<BinaryData>> getAgentVersionDetailsWithResponseAsync(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAgentVersionDetails(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, agentVersion, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getAgentVersionDetails(this.client.getEndpoint(), agentName,
+            agentVersion, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1703,13 +1805,20 @@ public final class AgentsImpl {
     public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getAgentVersionDetailsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, agentVersion, accept, requestOptions,
-            Context.NONE);
+        return service.getAgentVersionDetailsSync(this.client.getEndpoint(), agentName, agentVersion,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Deletes a specific version of an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1736,12 +1845,20 @@ public final class AgentsImpl {
     public Mono<Response<BinaryData>> deleteAgentVersionWithResponseAsync(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteAgentVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, agentVersion, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.deleteAgentVersion(this.client.getEndpoint(), agentName,
+            agentVersion, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Deletes a specific version of an agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1768,8 +1885,8 @@ public final class AgentsImpl {
     public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteAgentVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            agentName, agentVersion, accept, requestOptions, Context.NONE);
+        return service.deleteAgentVersionSync(this.client.getEndpoint(), agentName, agentVersion,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1832,8 +1949,8 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAgentVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), agentName, accept, requestOptions, context))
+            .withContext(context -> service.listAgentVersions(this.client.getEndpoint(), agentName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -1954,8 +2071,8 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAgentVersionsSinglePage(String agentName, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listAgentVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listAgentVersionsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -2052,6 +2169,15 @@ public final class AgentsImpl {
      * 20</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent.
@@ -2065,8 +2191,8 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> streamAgentContainerLogsWithResponseAsync(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.streamAgentContainerLogs(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, agentVersion, requestOptions, context));
+        return FluxUtil.withContext(context -> service.streamAgentContainerLogs(this.client.getEndpoint(), agentName,
+            agentVersion, this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -2102,6 +2228,15 @@ public final class AgentsImpl {
      * 20</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param agentName The name of the agent.
      * @param agentVersion The version of the agent.
@@ -2115,8 +2250,8 @@ public final class AgentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> streamAgentContainerLogsWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
-        return service.streamAgentContainerLogsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), agentName, agentVersion, requestOptions, Context.NONE);
+        return service.streamAgentContainerLogsSync(this.client.getEndpoint(), agentName, agentVersion,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

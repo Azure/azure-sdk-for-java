@@ -55,26 +55,7 @@ public final class InputItemComputerToolCall extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private final OutputItemComputerToolCallStatus status;
-
-    /**
-     * Creates an instance of InputItemComputerToolCall class.
-     *
-     * @param id the id value to set.
-     * @param callId the callId value to set.
-     * @param action the action value to set.
-     * @param pendingSafetyChecks the pendingSafetyChecks value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    public InputItemComputerToolCall(String id, String callId, ComputerAction action,
-        List<ComputerCallSafetyCheckParam> pendingSafetyChecks, OutputItemComputerToolCallStatus status) {
-        this.id = id;
-        this.callId = callId;
-        this.action = action;
-        this.pendingSafetyChecks = pendingSafetyChecks;
-        this.status = status;
-    }
+    private final ItemResourceComputerToolCallStatus status;
 
     /**
      * Get the type property: The type property.
@@ -134,7 +115,7 @@ public final class InputItemComputerToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemComputerToolCallStatus getStatus() {
+    public ItemResourceComputerToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -171,7 +152,7 @@ public final class InputItemComputerToolCall extends InputItem {
             String callId = null;
             ComputerAction action = null;
             List<ComputerCallSafetyCheckParam> pendingSafetyChecks = null;
-            OutputItemComputerToolCallStatus status = null;
+            ItemResourceComputerToolCallStatus status = null;
             InputItemType type = InputItemType.COMPUTER_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -185,7 +166,7 @@ public final class InputItemComputerToolCall extends InputItem {
                 } else if ("pending_safety_checks".equals(fieldName)) {
                     pendingSafetyChecks = reader.readArray(reader1 -> ComputerCallSafetyCheckParam.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemComputerToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceComputerToolCallStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else {
@@ -197,5 +178,24 @@ public final class InputItemComputerToolCall extends InputItem {
             deserializedInputItemComputerToolCall.type = type;
             return deserializedInputItemComputerToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemComputerToolCall class.
+     *
+     * @param id the id value to set.
+     * @param callId the callId value to set.
+     * @param action the action value to set.
+     * @param pendingSafetyChecks the pendingSafetyChecks value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    public InputItemComputerToolCall(String id, String callId, ComputerAction action,
+        List<ComputerCallSafetyCheckParam> pendingSafetyChecks, ItemResourceComputerToolCallStatus status) {
+        this.id = id;
+        this.callId = callId;
+        this.action = action;
+        this.pendingSafetyChecks = pendingSafetyChecks;
+        this.status = status;
     }
 }

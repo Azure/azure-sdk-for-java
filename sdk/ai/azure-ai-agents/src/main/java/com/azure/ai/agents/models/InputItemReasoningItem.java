@@ -57,7 +57,7 @@ public final class InputItemReasoningItem extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private OutputItemReasoningItemStatus status;
+    private ItemReasoningItemStatus status;
 
     /**
      * Creates an instance of InputItemReasoningItem class.
@@ -153,21 +153,8 @@ public final class InputItemReasoningItem extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemReasoningItemStatus getStatus() {
+    public ItemReasoningItemStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
-     * `incomplete`. Populated when items are returned via API.
-     *
-     * @param status the status value to set.
-     * @return the InputItemReasoningItem object itself.
-     */
-    @Generated
-    public InputItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -203,7 +190,7 @@ public final class InputItemReasoningItem extends InputItem {
             InputItemType type = InputItemType.REASONING;
             String encryptedContent = null;
             List<ReasoningTextContent> content = null;
-            OutputItemReasoningItemStatus status = null;
+            ItemReasoningItemStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -218,7 +205,7 @@ public final class InputItemReasoningItem extends InputItem {
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ReasoningTextContent.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemReasoningItemStatus.fromString(reader.getString());
+                    status = ItemReasoningItemStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -230,5 +217,18 @@ public final class InputItemReasoningItem extends InputItem {
             deserializedInputItemReasoningItem.status = status;
             return deserializedInputItemReasoningItem;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
+     * `incomplete`. Populated when items are returned via API.
+     *
+     * @param status the status value to set.
+     * @return the InputItemReasoningItem object itself.
+     */
+    @Generated
+    public InputItemReasoningItem setStatus(ItemReasoningItemStatus status) {
+        this.status = status;
+        return this;
     }
 }

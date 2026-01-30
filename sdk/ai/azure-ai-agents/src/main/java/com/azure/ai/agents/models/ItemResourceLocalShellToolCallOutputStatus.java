@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for OutputItemImageGenToolCallStatus.
+ * Defines values for ItemResourceLocalShellToolCallOutputStatus.
  */
-public enum OutputItemImageGenToolCallStatus {
+public enum ItemResourceLocalShellToolCallOutputStatus {
     /**
      * Enum value in_progress.
      */
@@ -19,36 +19,31 @@ public enum OutputItemImageGenToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value generating.
+     * Enum value incomplete.
      */
-    GENERATING("generating"),
+    INCOMPLETE("incomplete");
 
     /**
-     * Enum value failed.
-     */
-    FAILED("failed");
-
-    /**
-     * The actual serialized value for a OutputItemImageGenToolCallStatus instance.
+     * The actual serialized value for a ItemResourceLocalShellToolCallOutputStatus instance.
      */
     private final String value;
 
-    OutputItemImageGenToolCallStatus(String value) {
+    ItemResourceLocalShellToolCallOutputStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemImageGenToolCallStatus instance.
+     * Parses a serialized value to a ItemResourceLocalShellToolCallOutputStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemImageGenToolCallStatus object, or null if unable to parse.
+     * @return the parsed ItemResourceLocalShellToolCallOutputStatus object, or null if unable to parse.
      */
-    public static OutputItemImageGenToolCallStatus fromString(String value) {
+    public static ItemResourceLocalShellToolCallOutputStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemImageGenToolCallStatus[] items = OutputItemImageGenToolCallStatus.values();
-        for (OutputItemImageGenToolCallStatus item : items) {
+        ItemResourceLocalShellToolCallOutputStatus[] items = ItemResourceLocalShellToolCallOutputStatus.values();
+        for (ItemResourceLocalShellToolCallOutputStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

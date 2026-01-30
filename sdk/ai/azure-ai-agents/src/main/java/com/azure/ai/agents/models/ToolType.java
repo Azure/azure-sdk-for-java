@@ -121,12 +121,6 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
     public static final ToolType AZURE_FUNCTION = fromString("azure_function");
 
     /**
-     * Static value memory_search for ToolType.
-     */
-    @Generated
-    public static final ToolType MEMORY_SEARCH = fromString("memory_search");
-
-    /**
      * Creates a new instance of ToolType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -180,4 +174,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType APPLY_PATCH = fromString("apply_patch");
+
+    /**
+     * Static value memory_search_preview for ToolType.
+     */
+    @Generated
+    public static final ToolType MEMORY_SEARCH_PREVIEW = fromString("memory_search_preview");
 }

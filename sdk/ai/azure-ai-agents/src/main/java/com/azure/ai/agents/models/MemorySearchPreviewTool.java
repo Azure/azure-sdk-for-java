@@ -20,7 +20,7 @@ public final class MemorySearchPreviewTool extends Tool {
      * The type property.
      */
     @Generated
-    private ToolType type = ToolType.MEMORY_SEARCH;
+    private ToolType type = ToolType.MEMORY_SEARCH_PREVIEW;
 
     /*
      * The name of the memory store to use.
@@ -166,7 +166,7 @@ public final class MemorySearchPreviewTool extends Tool {
         return jsonReader.readObject(reader -> {
             String memoryStoreName = null;
             String scope = null;
-            ToolType type = ToolType.MEMORY_SEARCH;
+            ToolType type = ToolType.MEMORY_SEARCH_PREVIEW;
             MemorySearchOptions searchOptions = null;
             Integer updateDelay = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {

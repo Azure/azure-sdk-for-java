@@ -46,24 +46,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
      * The status of the local shell call.
      */
     @Generated
-    private final OutputItemLocalShellToolCallStatus status;
-
-    /**
-     * Creates an instance of InputItemLocalShellToolCall class.
-     *
-     * @param id the id value to set.
-     * @param callId the callId value to set.
-     * @param action the action value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
-        OutputItemLocalShellToolCallStatus status) {
-        this.id = id;
-        this.callId = callId;
-        this.action = action;
-        this.status = status;
-    }
+    private final ItemResourceLocalShellToolCallStatus status;
 
     /**
      * Get the type property: The type property.
@@ -112,7 +95,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemLocalShellToolCallStatus getStatus() {
+    public ItemResourceLocalShellToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -146,7 +129,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
             String id = null;
             String callId = null;
             LocalShellExecAction action = null;
-            OutputItemLocalShellToolCallStatus status = null;
+            ItemResourceLocalShellToolCallStatus status = null;
             InputItemType type = InputItemType.LOCAL_SHELL_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -158,7 +141,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
                 } else if ("action".equals(fieldName)) {
                     action = LocalShellExecAction.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemLocalShellToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceLocalShellToolCallStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else {
@@ -170,5 +153,22 @@ public final class InputItemLocalShellToolCall extends InputItem {
             deserializedInputItemLocalShellToolCall.type = type;
             return deserializedInputItemLocalShellToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemLocalShellToolCall class.
+     *
+     * @param id the id value to set.
+     * @param callId the callId value to set.
+     * @param action the action value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
+        ItemResourceLocalShellToolCallStatus status) {
+        this.id = id;
+        this.callId = callId;
+        this.action = action;
+        this.status = status;
     }
 }

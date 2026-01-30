@@ -54,7 +54,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private OutputItemFunctionToolCallStatus status;
+    private ItemResourceFunctionToolCallResourceStatus status;
 
     /**
      * Creates an instance of InputItemFunctionToolCall class.
@@ -140,21 +140,8 @@ public final class InputItemFunctionToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemFunctionToolCallStatus getStatus() {
+    public ItemResourceFunctionToolCallResourceStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
-     * `incomplete`. Populated when items are returned via API.
-     *
-     * @param status the status value to set.
-     * @return the InputItemFunctionToolCall object itself.
-     */
-    @Generated
-    public InputItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -190,7 +177,7 @@ public final class InputItemFunctionToolCall extends InputItem {
             String arguments = null;
             InputItemType type = InputItemType.FUNCTION_CALL;
             String id = null;
-            OutputItemFunctionToolCallStatus status = null;
+            ItemResourceFunctionToolCallResourceStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -205,7 +192,7 @@ public final class InputItemFunctionToolCall extends InputItem {
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemFunctionToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceFunctionToolCallResourceStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -217,5 +204,18 @@ public final class InputItemFunctionToolCall extends InputItem {
             deserializedInputItemFunctionToolCall.status = status;
             return deserializedInputItemFunctionToolCall;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. One of `in_progress`, `completed`, or
+     * `incomplete`. Populated when items are returned via API.
+     *
+     * @param status the status value to set.
+     * @return the InputItemFunctionToolCall object itself.
+     */
+    @Generated
+    public InputItemFunctionToolCall setStatus(ItemResourceFunctionToolCallResourceStatus status) {
+        this.status = status;
+        return this;
     }
 }

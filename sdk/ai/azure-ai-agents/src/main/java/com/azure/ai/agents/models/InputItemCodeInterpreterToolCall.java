@@ -37,7 +37,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      * `interpreting`, and `failed`.
      */
     @Generated
-    private final OutputItemCodeInterpreterToolCallStatus status;
+    private final ItemResourceCodeInterpreterToolCallStatus status;
 
     /*
      * The ID of the container used to run the code.
@@ -56,25 +56,6 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      */
     @Generated
     private final List<BinaryData> outputs;
-
-    /**
-     * Creates an instance of InputItemCodeInterpreterToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param containerId the containerId value to set.
-     * @param code the code value to set.
-     * @param outputs the outputs value to set.
-     */
-    @Generated
-    public InputItemCodeInterpreterToolCall(String id, OutputItemCodeInterpreterToolCallStatus status,
-        String containerId, String code, List<BinaryData> outputs) {
-        this.id = id;
-        this.status = status;
-        this.containerId = containerId;
-        this.code = code;
-        this.outputs = outputs;
-    }
 
     /**
      * Get the type property: The type property.
@@ -104,7 +85,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemCodeInterpreterToolCallStatus getStatus() {
+    public ItemResourceCodeInterpreterToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -168,7 +149,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
     public static InputItemCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            OutputItemCodeInterpreterToolCallStatus status = null;
+            ItemResourceCodeInterpreterToolCallStatus status = null;
             String containerId = null;
             String code = null;
             List<BinaryData> outputs = null;
@@ -179,7 +160,7 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemCodeInterpreterToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceCodeInterpreterToolCallStatus.fromString(reader.getString());
                 } else if ("container_id".equals(fieldName)) {
                     containerId = reader.getString();
                 } else if ("code".equals(fieldName)) {
@@ -198,5 +179,24 @@ public final class InputItemCodeInterpreterToolCall extends InputItem {
             deserializedInputItemCodeInterpreterToolCall.type = type;
             return deserializedInputItemCodeInterpreterToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemCodeInterpreterToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param containerId the containerId value to set.
+     * @param code the code value to set.
+     * @param outputs the outputs value to set.
+     */
+    @Generated
+    public InputItemCodeInterpreterToolCall(String id, ItemResourceCodeInterpreterToolCallStatus status,
+        String containerId, String code, List<BinaryData> outputs) {
+        this.id = id;
+        this.status = status;
+        this.containerId = containerId;
+        this.code = code;
+        this.outputs = outputs;
     }
 }

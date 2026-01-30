@@ -5,13 +5,18 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for OutputItemCodeInterpreterToolCallStatus.
+ * Defines values for ItemResourceFileSearchToolCallStatus.
  */
-public enum OutputItemCodeInterpreterToolCallStatus {
+public enum ItemResourceFileSearchToolCallStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
+
+    /**
+     * Enum value searching.
+     */
+    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -24,36 +29,31 @@ public enum OutputItemCodeInterpreterToolCallStatus {
     INCOMPLETE("incomplete"),
 
     /**
-     * Enum value interpreting.
-     */
-    INTERPRETING("interpreting"),
-
-    /**
      * Enum value failed.
      */
     FAILED("failed");
 
     /**
-     * The actual serialized value for a OutputItemCodeInterpreterToolCallStatus instance.
+     * The actual serialized value for a ItemResourceFileSearchToolCallStatus instance.
      */
     private final String value;
 
-    OutputItemCodeInterpreterToolCallStatus(String value) {
+    ItemResourceFileSearchToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemCodeInterpreterToolCallStatus instance.
+     * Parses a serialized value to a ItemResourceFileSearchToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemCodeInterpreterToolCallStatus object, or null if unable to parse.
+     * @return the parsed ItemResourceFileSearchToolCallStatus object, or null if unable to parse.
      */
-    public static OutputItemCodeInterpreterToolCallStatus fromString(String value) {
+    public static ItemResourceFileSearchToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemCodeInterpreterToolCallStatus[] items = OutputItemCodeInterpreterToolCallStatus.values();
-        for (OutputItemCodeInterpreterToolCallStatus item : items) {
+        ItemResourceFileSearchToolCallStatus[] items = ItemResourceFileSearchToolCallStatus.values();
+        for (ItemResourceFileSearchToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
