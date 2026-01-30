@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -82,6 +81,16 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
      * Pre-kill time in seconds for delaying exceptions during startup.
      */
     private static final Integer PREKILL_TIME = 5;
+
+    /**
+     * Fixed backoff intervals for startup retries: (elapsed_time_threshold_seconds, backoff_duration_seconds).
+     * Defines fixed backoff durations based on how long startup has been attempting.
+     */
+    private static final int[][] STARTUP_BACKOFF_INTERVALS = {
+        {100, 5},   // 0-100 seconds elapsed: 5 second backoff
+        {200, 10},  // 100-200 seconds elapsed: 10 second backoff
+        {600, 30}   // 200-600 seconds elapsed: 30 second backoff
+    };
 
     /**
      * Constructs a new AzureAppConfigDataLoader with the specified logger factory.
@@ -164,8 +173,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         requestContext = new Context("refresh", false).addData(PUSH_REFRESH, pushRefresh);
 
         // During startup, retry with backoff until deadline
-        Instant deadline = Instant.now().plusSeconds(resource.getStartupTimeout().getSeconds());
+        Instant startTime = Instant.now();
+        Instant deadline = startTime.plusSeconds(resource.getStartupTimeout().getSeconds());
         Exception lastException = null;
+        int postFixedWindowAttempts = 0;
 
         while (Instant.now().isBefore(deadline)) {
             // Ensure we do not retain partial results from previous failed attempts
@@ -177,19 +188,27 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                 return null; // Success
             }
 
-            // All clients failed, wait until next client is available or minimum delay
+            // All clients failed, use fixed backoff based on elapsed time
             if (Instant.now().isBefore(deadline)) {
-                long waitTime = replicaClientFactory.getMillisUntilNextClientAvailable(resource.getEndpoint());
+                long elapsedSeconds = Instant.now().getEpochSecond() - startTime.getEpochSecond();
+                Long backoffSeconds = getBackoffDuration(elapsedSeconds);
+                
+                // If backoff is null, elapsed time exceeds fixed intervals - use exponential backoff
+                if (backoffSeconds == null) {
+                    postFixedWindowAttempts++;
+                    // Convert nanoseconds to seconds
+                    backoffSeconds = BackoffTimeCalculator.calculateBackoff(postFixedWindowAttempts) / 1_000_000_000L;
+                }
                 
                 // Don't wait longer than remaining time until deadline
-                long remainingTime = deadline.toEpochMilli() - Instant.now().toEpochMilli();
-                waitTime = Math.min(waitTime, remainingTime);
+                long remainingSeconds = deadline.getEpochSecond() - Instant.now().getEpochSecond();
+                long waitSeconds = Math.min(backoffSeconds, remainingSeconds);
 
-                if (waitTime > 0) {
+                if (waitSeconds > 0) {
                     logger.debug("All replicas in backoff for store: " + resource.getEndpoint() 
-                        + ". Waiting " + waitTime + "ms before retry.");
+                        + ". Waiting " + waitSeconds + "s before retry (elapsed: " + elapsedSeconds + "s).");
                     try {
-                        Thread.sleep(waitTime);
+                        Thread.sleep(waitSeconds * 1000);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         return lastException;
@@ -199,6 +218,22 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         }
 
         return lastException;
+    }
+
+    /**
+     * Gets the backoff duration based on elapsed time since startup began.
+     *
+     * @param elapsedSeconds the number of seconds elapsed since startup began
+     * @return the backoff duration in seconds, or null if elapsed time exceeds all thresholds
+     */
+    private Long getBackoffDuration(long elapsedSeconds) {
+        for (int[] interval : STARTUP_BACKOFF_INTERVALS) {
+            if (elapsedSeconds < interval[0]) {
+                return (long) interval[1];
+            }
+        }
+        // Return null when elapsed time exceeds all defined thresholds
+        return null;
     }
 
     /**

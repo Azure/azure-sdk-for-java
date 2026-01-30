@@ -7,11 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -181,8 +179,6 @@ public class AzureAppConfigDataLoaderTest {
         assertNotNull(result);
         verify(replicaClientFactoryMock, times(1)).findActiveClients(ENDPOINT);
         verify(replicaClientFactoryMock, times(1)).getNextActiveClient(eq(ENDPOINT), eq(true));
-        // getMillisUntilNextClientAvailable should not be called when no exception occurred
-        verify(replicaClientFactoryMock, never()).getMillisUntilNextClientAvailable(anyString());
     }
 
     @Test
@@ -206,7 +202,6 @@ public class AzureAppConfigDataLoaderTest {
             .thenReturn(null);       // Second attempt - no clients, treated as success
         when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false)))
             .thenReturn(null); // No more replicas
-        when(replicaClientFactoryMock.getMillisUntilNextClientAvailable(ENDPOINT)).thenReturn(0L);
         when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
         when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
 
@@ -244,8 +239,6 @@ public class AzureAppConfigDataLoaderTest {
         // Setup mocks - client always fails
         when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(true))).thenReturn(clientMock);
         when(replicaClientFactoryMock.getNextActiveClient(eq(ENDPOINT), eq(false))).thenReturn(null);
-        when(replicaClientFactoryMock.getMillisUntilNextClientAvailable(ENDPOINT))
-            .thenReturn(60000L); // Large backoff, will exceed deadline
         when(clientMock.getEndpoint()).thenReturn(ENDPOINT);
         when(clientMock.listSettings(any(), any())).thenThrow(new RuntimeException("Simulated failure"));
 
@@ -280,8 +273,6 @@ public class AzureAppConfigDataLoaderTest {
         // Verify - only one findActiveClients call (no retry loop for refresh)
         assertNotNull(result);
         verify(replicaClientFactoryMock, times(1)).findActiveClients(ENDPOINT);
-        // getMillisUntilNextClientAvailable should never be called during refresh
-        verify(replicaClientFactoryMock, never()).getMillisUntilNextClientAvailable(anyString());
     }
 
     @Test
