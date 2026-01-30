@@ -40,6 +40,14 @@ public class RetryPolicy implements IRetryPolicyFactory {
 
     @Override
     public DocumentClientRetryPolicy getRequestPolicy(DiagnosticsClientContext clientContextOverride) {
+        return getRequestPolicy(clientContextOverride, false);
+    }
+
+    @Override
+    public DocumentClientRetryPolicy getRequestPolicy(
+        DiagnosticsClientContext clientContextOverride,
+        boolean disableRetryForThrottledBatchRequest) {
+
         DiagnosticsClientContext effectiveClientContext = this.diagnosticsClientContext;
         if (clientContextOverride != null) {
             effectiveClientContext = clientContextOverride;
@@ -50,7 +58,8 @@ public class RetryPolicy implements IRetryPolicyFactory {
             this.enableEndpointDiscovery,
             this.throttlingRetryOptions,
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+            disableRetryForThrottledBatchRequest);
 
         return clientRetryPolicy;
     }

@@ -210,7 +210,8 @@ public class ApplicableRegionEvaluatorTest {
                 true,
                 new ThrottlingRetryOptions(),
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                false);
 
             for (int i = 0; i < expectedApplicableRegionalRoutingContexts.size(); i++) {
                 Assertions.assertThat(actualApplicableRegionalRoutingContexts.get(i)).isEqualTo(expectedApplicableRegionalRoutingContexts.get(i));
