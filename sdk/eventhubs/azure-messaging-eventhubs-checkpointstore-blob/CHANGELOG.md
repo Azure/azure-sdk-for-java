@@ -16,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-storage-blob` from `12.32.0` to version `12.33.0`.
+- Upgraded `azure-storage-blob` from `12.33.0` to version `12.33.1`.
 - Upgraded `azure-messaging-eventhubs` from `5.21.2` to version `5.21.3`.
 
 ## 1.21.2 (2025-10-27)
