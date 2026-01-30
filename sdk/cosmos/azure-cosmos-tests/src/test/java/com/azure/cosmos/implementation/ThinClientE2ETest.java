@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
@@ -22,20 +20,18 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -50,82 +46,45 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
 // End to end sanity tests for basic thin client functionality.
-public class ThinClientE2ETest {
-    private static final Logger logger = LoggerFactory.getLogger(ThinClientE2ETest.class);
-    private static final String thinClientEndpointIndicator = ":10250/";
-    private static final String DATABASE_NAME = "db1";
-    private static final String CONTAINER_NAME = "ct1";
-    private static final String PARTITION_KEY_PATH = "/partitionKey";
+public class ThinClientE2ETest extends TestSuiteBase {
+
+    private static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final String ID_FIELD = "id";
-    private static final String PARTITION_KEY_FIELD = "partitionKey";
-    private static final int THROUGHPUT_RU = 35_000;
+    private static final String PARTITION_KEY_FIELD = "mypk";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static CosmosAsyncClient sharedClient;
-    private static CosmosAsyncDatabase sharedDatabase;
-    private static CosmosAsyncContainer sharedContainer;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private CosmosAsyncClient client;
+    private CosmosAsyncContainer container;
 
-    @BeforeClass(groups = {"thinclient"})
-    public void beforeClass() {
+    @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
+    public ThinClientE2ETest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
+
+    @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT)
+    public void before_ThinClientE2ETest() {
+        assertThat(this.client).isNull();
         // If running locally, uncomment these lines
-//        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-//        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
-
-        sharedClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode()
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .buildAsyncClient();
-
-        // Create database if not exists
-        sharedClient.createDatabaseIfNotExists(DATABASE_NAME).block();
-        sharedDatabase = sharedClient.getDatabase(DATABASE_NAME);
-
-        // Create container with 35,000 RU/s manual throughput
-        CosmosContainerProperties containerDef = new CosmosContainerProperties(CONTAINER_NAME, PARTITION_KEY_PATH);
-        ThroughputProperties throughputConfig = ThroughputProperties.createManualThroughput(THROUGHPUT_RU);
-        sharedDatabase.createContainerIfNotExists(containerDef, throughputConfig).block();
-        sharedContainer = sharedDatabase.getContainer(CONTAINER_NAME);
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+        this.client = getClientBuilder().buildAsyncClient();
+        this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
-    @AfterClass(groups = {"thinclient"})
+    @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        if (sharedClient != null) {
-            sharedClient.close();
+        if (this.client != null) {
+            this.client.close();
         }
     }
 
     /**
-     * Helper method to create a test document with id and partitionKey fields.
+     * Helper method to create a test document with id and mypk fields (matching shared container partition key).
      */
-    private ObjectNode createTestDocument(String id, String partitionKey) {
-        ObjectNode doc = mapper.createObjectNode();
+    private ObjectNode createTestDocument(String id, String mypk) {
+        ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         doc.put(ID_FIELD, id);
-        doc.put(PARTITION_KEY_FIELD, partitionKey);
+        doc.put(PARTITION_KEY_FIELD, mypk);
         return doc;
-    }
-
-    /**
-     * Helper method to delete all documents from the container.
-     */
-    private void emptyContainer() {
-        List<ObjectNode> allDocs = sharedContainer
-            .queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(), ObjectNode.class)
-            .collectList()
-            .block();
-
-        if (allDocs != null && !allDocs.isEmpty()) {
-            for (ObjectNode doc : allDocs) {
-                String id = doc.get(ID_FIELD).asText();
-                String pk = doc.get(PARTITION_KEY_FIELD).asText();
-                try {
-                    sharedContainer.deleteItem(id, new PartitionKey(pk)).block();
-                } catch (Exception e) {
-                    logger.warn("Failed to delete document with id: {}", id, e);
-                }
-            }
-        }
     }
 
     /**
@@ -136,7 +95,7 @@ public class ThinClientE2ETest {
             String id = doc.get(ID_FIELD).asText();
             String pk = doc.get(PARTITION_KEY_FIELD).asText();
             try {
-                sharedContainer.deleteItem(id, new PartitionKey(pk)).block();
+                container.deleteItem(id, new PartitionKey(pk)).block();
             } catch (Exception e) {
                 logger.warn("Failed to delete document with id: {}", id, e);
             }
@@ -152,7 +111,7 @@ public class ThinClientE2ETest {
         String continuationToken = null;
 
         do {
-            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+            Iterable<FeedResponse<ObjectNode>> pages = container
                 .queryItems(query, options, ObjectNode.class)
                 .byPage(continuationToken, 10)
                 .toIterable();
@@ -174,35 +133,31 @@ public class ThinClientE2ETest {
 
     /**
      * Test: SELECT * FROM C type query
-     * 1. Empty the container
-     * 2. Create N documents
-     * 3. Execute SELECT * FROM C with continuation token draining
-     * 4. Assert only thin-client endpoint is used
-     * 5. Assert all documents are drained
+     * 1. Create N documents
+     * 2. Execute SELECT * FROM C with continuation token draining
+     * 3. Assert only thin-client endpoint is used
+     * 4. Assert all documents are drained
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQuerySelectAll() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
-            // 1. Empty container
-            emptyContainer();
-
-            // 2. Create N documents
+            // Create N documents
             int numDocs = 25;
             for (int i = 0; i < numDocs; i++) {
                 String id = UUID.randomUUID().toString();
                 String pk = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, pk);
-                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                container.createItem(doc, new PartitionKey(pk), null).block();
                 createdDocs.add(doc);
             }
 
-            // 3. Execute SELECT * FROM C query with draining
+            // Execute SELECT * FROM C query with draining
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
             List<ObjectNode> results = drainQueryWithContinuation("SELECT * FROM c", queryOptions);
 
-            // 5. Assert all documents are drained
-            assertThat(results.size()).isEqualTo(numDocs);
+            // Assert at least all created documents are returned (shared container may have more)
+            assertThat(results.size()).isGreaterThanOrEqualTo(numDocs);
 
             // Verify all created document ids are in results
             List<String> createdIds = createdDocs.stream()
@@ -227,12 +182,12 @@ public class ThinClientE2ETest {
      * 4. Assert only thin-client endpoint is used
      * 5. Assert only the document with specified id is obtained
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQuerySelectById() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
             // 1. Empty container
-            emptyContainer();
+
 
             // 2. Create N documents
             int numDocs = 10;
@@ -243,7 +198,7 @@ public class ThinClientE2ETest {
                 String id = UUID.randomUUID().toString();
                 String pk = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, pk);
-                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                container.createItem(doc, new PartitionKey(pk), null).block();
                 createdDocs.add(doc);
 
                 // Pick the 5th document as our target
@@ -265,7 +220,7 @@ public class ThinClientE2ETest {
             String continuationToken = null;
 
             do {
-                Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                Iterable<FeedResponse<ObjectNode>> pages = container
                     .queryItems(querySpec, queryOptions, ObjectNode.class)
                     .byPage(continuationToken, 10)
                     .toIterable();
@@ -301,12 +256,12 @@ public class ThinClientE2ETest {
      * 4. Assert only thin-client endpoint is used
      * 5. Assert only documents with specified partition key are obtained
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryWithPartitionKeyOption() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
             // 1. Empty container
-            emptyContainer();
+
 
             // 2. Create N documents - some with a common partition key
             String targetPk = UUID.randomUUID().toString();
@@ -317,7 +272,7 @@ public class ThinClientE2ETest {
             for (int i = 0; i < docsWithTargetPk; i++) {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, targetPk);
-                sharedContainer.createItem(doc, new PartitionKey(targetPk), null).block();
+                container.createItem(doc, new PartitionKey(targetPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -326,7 +281,7 @@ public class ThinClientE2ETest {
                 String id = UUID.randomUUID().toString();
                 String pk = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, pk);
-                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                container.createItem(doc, new PartitionKey(pk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -339,7 +294,7 @@ public class ThinClientE2ETest {
             String continuationToken = null;
 
             do {
-                Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+                Iterable<FeedResponse<ObjectNode>> pages = container
                     .queryItems("SELECT * FROM c", queryOptions, ObjectNode.class)
                     .byPage(continuationToken, 10)
                     .toIterable();
@@ -368,19 +323,19 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryLegacy() {
         String idValue = UUID.randomUUID().toString();
         try {
             ObjectNode doc = createTestDocument(idValue, idValue);
-            sharedContainer.createItem(doc, new PartitionKey(idValue), null).block();
+            container.createItem(doc, new PartitionKey(idValue), null).block();
 
             String query = "select * from c WHERE c." + PARTITION_KEY_FIELD + "=@id";
             SqlQuerySpec querySpec = new SqlQuerySpec(query);
             querySpec.setParameters(Arrays.asList(new SqlParameter("@id", idValue)));
             CosmosQueryRequestOptions requestOptions =
                 new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(idValue));
-            FeedResponse<ObjectNode> response = sharedContainer
+            FeedResponse<ObjectNode> response = container
                 .queryItems(querySpec, requestOptions, ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -393,20 +348,20 @@ public class ThinClientE2ETest {
         } finally {
             // Cleanup
             try {
-                sharedContainer.deleteItem(idValue, new PartitionKey(idValue)).block();
+                container.deleteItem(idValue, new PartitionKey(idValue)).block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup document: {}", idValue, e);
             }
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientBulk() {
         String idValue = UUID.randomUUID().toString();
         try {
             ObjectNode doc = createTestDocument(idValue, idValue);
 
-            Flux<CosmosBulkOperationResponse<Object>> responsesFlux = sharedContainer.executeBulkOperations(Flux.just(
+            Flux<CosmosBulkOperationResponse<Object>> responsesFlux = container.executeBulkOperations(Flux.just(
                 CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(idValue))
             ));
 
@@ -420,14 +375,14 @@ public class ThinClientE2ETest {
         } finally {
             // Cleanup
             try {
-                sharedContainer.deleteItem(idValue, new PartitionKey(idValue)).block();
+                container.deleteItem(idValue, new PartitionKey(idValue)).block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup document: {}", idValue, e);
             }
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientBatch() {
         String pkValue = UUID.randomUUID().toString();
         String idValue1 = UUID.randomUUID().toString();
@@ -440,7 +395,7 @@ public class ThinClientE2ETest {
             batch.createItemOperation(doc1);
             batch.createItemOperation(doc2);
 
-            CosmosBatchResponse response = sharedContainer
+            CosmosBatchResponse response = container
                 .executeCosmosBatch(batch)
                 .block();
 
@@ -449,15 +404,15 @@ public class ThinClientE2ETest {
         } finally {
             // Cleanup
             try {
-                sharedContainer.deleteItem(idValue1, new PartitionKey(pkValue)).block();
-                sharedContainer.deleteItem(idValue2, new PartitionKey(pkValue)).block();
+                container.deleteItem(idValue1, new PartitionKey(pkValue)).block();
+                container.deleteItem(idValue2, new PartitionKey(pkValue)).block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup documents", e);
             }
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientIncrementalChangeFeed() {
         String pkValue = UUID.randomUUID().toString();
         String idValue1 = UUID.randomUUID().toString();
@@ -470,9 +425,9 @@ public class ThinClientE2ETest {
             batch.createItemOperation(doc1);
             batch.createItemOperation(doc2);
 
-            sharedContainer.executeCosmosBatch(batch).block();
+            container.executeCosmosBatch(batch).block();
 
-            FeedResponse<ObjectNode> changeFeedResponse = sharedContainer
+            FeedResponse<ObjectNode> changeFeedResponse = container
                 .queryChangeFeed(CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()), ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -484,8 +439,8 @@ public class ThinClientE2ETest {
         } finally {
             // Cleanup
             try {
-                sharedContainer.deleteItem(idValue1, new PartitionKey(pkValue)).block();
-                sharedContainer.deleteItem(idValue2, new PartitionKey(pkValue)).block();
+                container.deleteItem(idValue1, new PartitionKey(pkValue)).block();
+                container.deleteItem(idValue2, new PartitionKey(pkValue)).block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup documents", e);
             }
@@ -513,7 +468,7 @@ public class ThinClientE2ETest {
                 requestInfo.getPartitionKeyRangeId(),
                 requestInfo.getActivityId());
 
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
+            if (requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
                 requestCountAgainstThinClientEndpoint++;
             }
         }
@@ -522,7 +477,7 @@ public class ThinClientE2ETest {
     }
 
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientDocumentPointOperations() {
         String idValue = UUID.randomUUID().toString();
         String idValue2 = null;
@@ -530,13 +485,13 @@ public class ThinClientE2ETest {
             ObjectNode doc = createTestDocument(idValue, idValue);
 
             // create
-            CosmosItemResponse<ObjectNode> createResponse = sharedContainer.createItem(doc).block();
+            CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
             assertThat(createResponse.getStatusCode()).isEqualTo(201);
             assertThat(createResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(createResponse.getDiagnostics());
 
             // read
-            CosmosItemResponse<ObjectNode> readResponse = sharedContainer.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readResponse = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readResponse.getStatusCode()).isEqualTo(200);
             assertThat(readResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(readResponse.getDiagnostics());
@@ -545,12 +500,12 @@ public class ThinClientE2ETest {
             ObjectNode doc2 = createTestDocument(idValue2, idValue);
 
             // replace
-            CosmosItemResponse<ObjectNode> replaceResponse = sharedContainer.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
+            CosmosItemResponse<ObjectNode> replaceResponse = container.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
             assertThat(replaceResponse.getStatusCode()).isEqualTo(200);
             assertThat(replaceResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(replaceResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterReplaceResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterReplaceResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readAfterReplaceResponse.getStatusCode()).isEqualTo(200);
             ObjectNode replacedItemFromRead = readAfterReplaceResponse.getItem();
             assertThat(replacedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
@@ -561,12 +516,12 @@ public class ThinClientE2ETest {
             doc3.put("newField", "newValue");
 
             // upsert
-            CosmosItemResponse<ObjectNode> upsertResponse = sharedContainer.upsertItem(doc3, new PartitionKey(idValue), new CosmosItemRequestOptions()).block();
+            CosmosItemResponse<ObjectNode> upsertResponse = container.upsertItem(doc3, new PartitionKey(idValue), new CosmosItemRequestOptions()).block();
             assertThat(upsertResponse.getStatusCode()).isEqualTo(200);
             assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(upsertResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterUpsertResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterUpsertResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode upsertedItemFromRead = readAfterUpsertResponse.getItem();
             assertThat(upsertedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
             assertThat(upsertedItemFromRead.get(PARTITION_KEY_FIELD).asText()).isEqualTo(idValue);
@@ -577,12 +532,12 @@ public class ThinClientE2ETest {
             CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
             patchOperations.add("/anotherNewField", "anotherNewValue");
             patchOperations.replace("/newField", "patchedNewField");
-            CosmosItemResponse<ObjectNode> patchResponse = sharedContainer.patchItem(idValue2, new PartitionKey(idValue), patchOperations, ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> patchResponse = container.patchItem(idValue2, new PartitionKey(idValue), patchOperations, ObjectNode.class).block();
             assertThat(patchResponse.getStatusCode()).isEqualTo(200);
             assertThat(patchResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(patchResponse.getDiagnostics());
 
-            CosmosItemResponse<ObjectNode> readAfterPatchResponse = sharedContainer.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readAfterPatchResponse = container.readItem(idValue2, new PartitionKey(idValue), ObjectNode.class).block();
             ObjectNode patchedItemFromRead = readAfterPatchResponse.getItem();
             assertThat(patchedItemFromRead.get(ID_FIELD).asText()).isEqualTo(idValue2);
             assertThat(patchedItemFromRead.get(PARTITION_KEY_FIELD).asText()).isEqualTo(idValue);
@@ -591,7 +546,7 @@ public class ThinClientE2ETest {
             assertThinClientEndpointUsed(readAfterPatchResponse.getDiagnostics());
 
             // delete
-            CosmosItemResponse<Object> deleteResponse = sharedContainer.deleteItem(idValue2, new PartitionKey(idValue)).block();
+            CosmosItemResponse<Object> deleteResponse = container.deleteItem(idValue2, new PartitionKey(idValue)).block();
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
             assertThinClientEndpointUsed(deleteResponse.getDiagnostics());
@@ -600,7 +555,7 @@ public class ThinClientE2ETest {
             // Cleanup - only if not already deleted in the test
             if (idValue2 != null) {
                 try {
-                    sharedContainer.deleteItem(idValue2, new PartitionKey(idValue)).block();
+                    container.deleteItem(idValue2, new PartitionKey(idValue)).block();
                 } catch (Exception e) {
                     logger.warn("Failed to cleanup document: {}", idValue2, e);
                 }
@@ -608,7 +563,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientStoredProcedure() {
         String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
         String pkValue = UUID.randomUUID().toString();
@@ -634,7 +589,7 @@ public class ThinClientE2ETest {
             );
 
             // Create stored procedure
-            CosmosStoredProcedureResponse createResponse = sharedContainer.getScripts()
+            CosmosStoredProcedureResponse createResponse = container.getScripts()
                 .createStoredProcedure(storedProcedureDef)
                 .block();
             assertThat(createResponse).isNotNull();
@@ -646,7 +601,7 @@ public class ThinClientE2ETest {
 
             String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", ID_FIELD, docId, PARTITION_KEY_FIELD, pkValue);
 
-            CosmosStoredProcedureResponse executeResponse = sharedContainer.getScripts()
+            CosmosStoredProcedureResponse executeResponse = container.getScripts()
                 .getStoredProcedure(sprocId)
                 .execute(Arrays.asList(docToCreate), options)
                 .block();
@@ -657,7 +612,7 @@ public class ThinClientE2ETest {
             assertThinClientEndpointUsed(executeResponse.getDiagnostics());
 
             // Verify the document was created by reading it
-            CosmosItemResponse<ObjectNode> readResponse = sharedContainer.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
+            CosmosItemResponse<ObjectNode> readResponse = container.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
             assertThat(readResponse).isNotNull();
             assertThat(readResponse.getStatusCode()).isEqualTo(200);
             assertThat(readResponse.getItem().get(ID_FIELD).asText()).isEqualTo(docId);
@@ -666,12 +621,12 @@ public class ThinClientE2ETest {
         } finally {
             // Cleanup - delete the created document and stored procedure
             try {
-                sharedContainer.deleteItem(docId, new PartitionKey(pkValue)).block();
+                container.deleteItem(docId, new PartitionKey(pkValue)).block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup document: {}", docId, e);
             }
             try {
-                sharedContainer.getScripts().getStoredProcedure(sprocId).delete().block();
+                container.getScripts().getStoredProcedure(sprocId).delete().block();
             } catch (Exception e) {
                 logger.warn("Failed to cleanup stored procedure: {}", sprocId, e);
             }
@@ -686,7 +641,7 @@ public class ThinClientE2ETest {
      * Verifies that ORDER BY queries work correctly through thin client
      * Expected: hasOrderBy=true, rewrittenQuery present
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanOrderBy() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -696,7 +651,7 @@ public class ThinClientE2ETest {
                 String pk = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, pk);
                 doc.put("sortField", i);
-                sharedContainer.createItem(doc, new PartitionKey(pk), null).block();
+                container.createItem(doc, new PartitionKey(pk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -707,7 +662,7 @@ public class ThinClientE2ETest {
             List<ObjectNode> results = new ArrayList<>();
             List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
 
-            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+            Iterable<FeedResponse<ObjectNode>> pages = container
                 .queryItems(query, queryOptions, ObjectNode.class)
                 .byPage()
                 .toIterable();
@@ -749,7 +704,7 @@ public class ThinClientE2ETest {
      * Verifies that aggregate queries work correctly through thin client
      * Expected: hasAggregates=true, aggregates array populated
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanAggregate() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -759,7 +714,7 @@ public class ThinClientE2ETest {
             for (int i = 0; i < numDocs; i++) {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, commonPk);
-                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                container.createItem(doc, new PartitionKey(commonPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -768,7 +723,7 @@ public class ThinClientE2ETest {
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
             queryOptions.setPartitionKey(new PartitionKey(commonPk));
 
-            FeedResponse<Integer> response = sharedContainer
+            FeedResponse<Integer> response = container
                 .queryItems(query, queryOptions, Integer.class)
                 .byPage()
                 .blockFirst();
@@ -788,7 +743,7 @@ public class ThinClientE2ETest {
      * Verifies that queries with partition key filters return narrow ranges (not full range)
      * Expected: Single narrow range targeting specific partition
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanWithPartitionKeyFilterSingleRange() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -796,7 +751,7 @@ public class ThinClientE2ETest {
             String targetId = UUID.randomUUID().toString();
             String targetPk = UUID.randomUUID().toString();
             ObjectNode doc = createTestDocument(targetId, targetPk);
-            sharedContainer.createItem(doc, new PartitionKey(targetPk), null).block();
+            container.createItem(doc, new PartitionKey(targetPk), null).block();
             createdDocs.add(doc);
 
             // Execute query with id filter
@@ -806,7 +761,7 @@ public class ThinClientE2ETest {
 
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
 
-            FeedResponse<ObjectNode> response = sharedContainer
+            FeedResponse<ObjectNode> response = container
                 .queryItems(querySpec, queryOptions, ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -826,7 +781,7 @@ public class ThinClientE2ETest {
      * Verifies that DISTINCT queries work correctly through thin client
      * Expected: hasDistinct=true
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanDistinct() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -837,7 +792,7 @@ public class ThinClientE2ETest {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, commonPk);
                 doc.put("category", categories[i]);
-                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                container.createItem(doc, new PartitionKey(commonPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -846,7 +801,7 @@ public class ThinClientE2ETest {
             CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
             queryOptions.setPartitionKey(new PartitionKey(commonPk));
 
-            List<String> results = sharedContainer
+            List<String> results = container
                 .queryItems(query, queryOptions, String.class)
                 .collectList()
                 .block();
@@ -855,7 +810,7 @@ public class ThinClientE2ETest {
             assertThat(results.size()).isEqualTo(3); // cat1, cat2, cat3
 
             // Get diagnostics from a page query
-            FeedResponse<String> response = sharedContainer
+            FeedResponse<String> response = container
                 .queryItems(query, queryOptions, String.class)
                 .byPage()
                 .blockFirst();
@@ -871,7 +826,7 @@ public class ThinClientE2ETest {
      * Verifies that TOP queries work correctly through thin client
      * Expected: hasTop=true, top=10
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanTop() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -881,7 +836,7 @@ public class ThinClientE2ETest {
             for (int i = 0; i < numDocs; i++) {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, commonPk);
-                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                container.createItem(doc, new PartitionKey(commonPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -893,7 +848,7 @@ public class ThinClientE2ETest {
             List<ObjectNode> results = new ArrayList<>();
             List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
 
-            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+            Iterable<FeedResponse<ObjectNode>> pages = container
                 .queryItems(query, queryOptions, ObjectNode.class)
                 .byPage()
                 .toIterable();
@@ -921,7 +876,7 @@ public class ThinClientE2ETest {
      * Verifies that GROUP BY queries work correctly through thin client
      * Expected: hasGroupBy=true, hasAggregates=true
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanGroupBy() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -932,7 +887,7 @@ public class ThinClientE2ETest {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, commonPk);
                 doc.put("category", categories[i]);
-                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                container.createItem(doc, new PartitionKey(commonPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -944,7 +899,7 @@ public class ThinClientE2ETest {
             List<ObjectNode> results = new ArrayList<>();
             List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
 
-            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+            Iterable<FeedResponse<ObjectNode>> pages = container
                 .queryItems(query, queryOptions, ObjectNode.class)
                 .byPage()
                 .toIterable();
@@ -991,14 +946,14 @@ public class ThinClientE2ETest {
      * Verifies that invalid queries return proper errors through thin client
      * Expected: 400 BadRequest error
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanInvalidQuery() {
         // Execute invalid query (typo in SELECT and FROM)
         String invalidQuery = "SELEC * FORM c";
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
 
         try {
-            sharedContainer
+            container
                 .queryItems(invalidQuery, queryOptions, ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -1015,7 +970,7 @@ public class ThinClientE2ETest {
      * Verifies that OFFSET LIMIT queries work correctly through thin client
      * Expected: hasOffset=true, hasLimit=true
      */
-    @Test(groups = {"thinclient"})
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientQueryPlanOffsetLimit() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -1026,7 +981,7 @@ public class ThinClientE2ETest {
                 String id = UUID.randomUUID().toString();
                 ObjectNode doc = createTestDocument(id, commonPk);
                 doc.put("idx", i);
-                sharedContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+                container.createItem(doc, new PartitionKey(commonPk), null).block();
                 createdDocs.add(doc);
             }
 
@@ -1038,7 +993,7 @@ public class ThinClientE2ETest {
             List<ObjectNode> results = new ArrayList<>();
             List<CosmosDiagnostics> allDiagnostics = new ArrayList<>();
 
-            Iterable<FeedResponse<ObjectNode>> pages = sharedContainer
+            Iterable<FeedResponse<ObjectNode>> pages = container
                 .queryItems(query, queryOptions, ObjectNode.class)
                 .byPage()
                 .toIterable();

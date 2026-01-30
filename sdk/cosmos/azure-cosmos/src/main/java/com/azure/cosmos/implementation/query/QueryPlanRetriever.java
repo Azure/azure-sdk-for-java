@@ -110,8 +110,6 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
 
-        // queryPlanRequest.useGatewayMode = true;
-
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
