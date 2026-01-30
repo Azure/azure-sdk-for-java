@@ -50,12 +50,6 @@ public final class KeyVaultCertificates implements AzureCertificates {
     private final long refreshInterval;
 
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, boolean disableChallengeResourceVerification) {
-        this(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null,
-            disableChallengeResourceVerification);
-    }
-
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
 
         this.refreshInterval = refreshInterval;
@@ -67,22 +61,6 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
         this.refreshInterval = refreshInterval;
         this.keyVaultClient = keyVaultClient;
-    }
-
-    /**
-     * Update KeyVaultClient.
-     *
-     * @param keyVaultUri Key Vault URI.
-     * @param tenantId Tenant ID.
-     * @param clientId Client ID.
-     * @param clientSecret Client secret.
-     * @param managedIdentity Managed identity.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
-     */
-    public void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, boolean disableChallengeResourceVerification) {
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null,
-            disableChallengeResourceVerification);
     }
 
     /**
