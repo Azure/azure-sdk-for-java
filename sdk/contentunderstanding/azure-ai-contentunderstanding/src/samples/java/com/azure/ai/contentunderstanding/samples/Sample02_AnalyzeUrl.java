@@ -37,7 +37,6 @@ import java.util.List;
  */
 public class Sample02_AnalyzeUrl {
 
-    private static ContentUnderstandingClient client;
 
     public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample02.buildClient
@@ -47,6 +46,7 @@ public class Sample02_AnalyzeUrl {
         // Build the client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
 
+        ContentUnderstandingClient client;
         if (key != null && !key.trim().isEmpty()) {
             // Use API key authentication
             client = builder.credential(new AzureKeyCredential(key)).buildClient();
@@ -168,7 +168,7 @@ public class Sample02_AnalyzeUrl {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 
@@ -215,7 +215,7 @@ public class Sample02_AnalyzeUrl {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 
@@ -265,7 +265,7 @@ public class Sample02_AnalyzeUrl {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 

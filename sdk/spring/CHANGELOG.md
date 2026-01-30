@@ -1,7 +1,8 @@
 # Release History
 
-## 6.2.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.5.9 and Spring Cloud dependencies version to 2025.0.1
+## 7.0.0-beta.2 (Unreleased)
+Upgrade Spring Boot dependencies version to 4.0.2 and Spring Cloud dependencies version to 2025.1.0
+Upgrade Spring Boot dependencies version to 4.0.1 and Spring Cloud dependencies version to 2025.1.0
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -16,6 +17,14 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 #### Bugs Fixed
 
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
+
+## 7.0.0-beta.1 (2025-12-23)
+- This release is compatible with Spring Boot 4.0.0. (Note: 4.0.x (x>0) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0. (Note: 2025.1.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#700-beta1-2025-12-23) for more details.
 
 ## 6.1.0 (2025-12-16)
 - This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)

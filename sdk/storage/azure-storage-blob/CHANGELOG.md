@@ -1,6 +1,6 @@
 # Release History
 
-## 12.33.0-beta.2 (Unreleased)
+## 12.34.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.33.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.0` to version `12.18.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.33.0 (2026-01-15)
+- Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs.
+- Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-storage`-internal-avro` from `12.17.0` to version `12.18.0`.
 
 ## 12.33.0-beta.1 (2025-12-03)
 

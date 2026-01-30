@@ -18,6 +18,17 @@ import java.io.IOException;
 public final class ContentAnalyzerAnalyzeOperationStatus
     implements JsonSerializable<ContentAnalyzerAnalyzeOperationStatus> {
 
+    static {
+        ContentAnalyzerAnalyzeOperationStatusHelper.setAccessor(
+            new ContentAnalyzerAnalyzeOperationStatusHelper.ContentAnalyzerAnalyzeOperationStatusAccessor() {
+
+                @Override
+                public void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {
+                    status.setOperationId(operationId);
+                }
+            });
+    }
+
     /*
      * The unique ID of the operation.
      */
@@ -166,17 +177,6 @@ public final class ContentAnalyzerAnalyzeOperationStatus
             deserializedContentAnalyzerAnalyzeOperationStatus.usage = usage;
             return deserializedContentAnalyzerAnalyzeOperationStatus;
         });
-    }
-
-    static {
-        ContentAnalyzerAnalyzeOperationStatusHelper.setAccessor(
-            new ContentAnalyzerAnalyzeOperationStatusHelper.ContentAnalyzerAnalyzeOperationStatusAccessor() {
-
-                @Override
-                public void setOperationId(ContentAnalyzerAnalyzeOperationStatus status, String operationId) {
-                    status.setOperationId(operationId);
-                }
-            });
     }
 
     private String operationId;

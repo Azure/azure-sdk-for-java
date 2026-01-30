@@ -114,7 +114,7 @@ class SparkE2EBulkWriteITest
         toBeIngested += s"record_$i"
       }
 
-      val df = toBeIngested.toDF("id")
+      val df = toBeIngested.toSeq.toDF("id")
 
       var bytesWrittenSnapshot = 0L
       var recordsWrittenSnapshot = 0L
@@ -178,6 +178,99 @@ class SparkE2EBulkWriteITest
       logs.nonEmpty shouldEqual true
     } finally {
       TestCosmosClientBuilderInterceptor.resetCallback()
+      TestFaultInjectionClientInterceptor.resetCallback()
+      faultInjectionRuleOption match {
+        case Some(rule) => rule.disable()
+        case None =>
+      }
+    }
+  }
+
+  it should "successfully patch item with retries" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val config = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.write.bulk.enabled" -> "false", // in order to not trigger the fault injection, just use point write here
+      "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+    )
+
+    val configPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatch.toString,
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.patch.defaultOperationType" -> CosmosPatchOperationTypes.Set.toString,
+      "spark.cosmos.account.clientInterceptors" -> "com.azure.cosmos.spark.TestFaultInjectionClientInterceptor" //setup fault injection
+    )
+
+    var faultInjectionRuleOption : Option[FaultInjectionRule] = None
+
+    try {
+      TestFaultInjectionClientInterceptor.setCallback(client => {
+        faultInjectionRuleOption = Some(
+          new FaultInjectionRuleBuilder("path-500")
+          .condition(
+            new FaultInjectionConditionBuilder()
+              .operationType(FaultInjectionOperationType.BATCH_ITEM)
+              .build())
+          .result(
+            FaultInjectionResultBuilders
+              .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+              .build())
+          .hitLimit(1)
+          .build()
+        )
+
+        TestWriteOnRetryCommitInterceptor.setCallback(() => faultInjectionRuleOption.get.disable())
+
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(
+          client.getDatabase(cosmosDatabase).getContainer(cosmosContainer),
+          List(faultInjectionRuleOption.get).asJava).block
+
+        client
+      })
+
+      val newSpark = getSpark
+
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
+
+      val df = Seq(
+        ("Quark", "Quark", "Red", 1.0 / 2, "")
+      ).toDF("particle name", "id", "color", "spin", "empty")
+
+      df.write.format("cosmos.oltp").mode("Append").options(config).save()
+
+      val patchDf = Seq(
+        ("Quark", "green", 0.03)
+      ).toDF("id", "color", "spin")
+
+      patchDf.write.format("cosmos.oltp").mode("Append").options(configPatch).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be updated based on the patch config
+      val quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      val quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("color").asText() shouldEqual "green"
+      quark.get("spin").asDouble() shouldEqual 0.03
+
+    } finally {
       TestFaultInjectionClientInterceptor.resetCallback()
       faultInjectionRuleOption match {
         case Some(rule) => rule.disable()

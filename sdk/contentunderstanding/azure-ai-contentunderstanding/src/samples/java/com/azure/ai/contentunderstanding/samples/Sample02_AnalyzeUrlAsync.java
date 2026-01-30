@@ -199,7 +199,7 @@ public class Sample02_AnalyzeUrlAsync {
         input.setUrl(uriSource);
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -281,7 +281,7 @@ public class Sample02_AnalyzeUrlAsync {
         input.setUrl(uriSource);
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -366,7 +366,7 @@ public class Sample02_AnalyzeUrlAsync {
         input.setUrl(uriSource);
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = client.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+            = client.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
         CountDownLatch latch = new CountDownLatch(1);
 

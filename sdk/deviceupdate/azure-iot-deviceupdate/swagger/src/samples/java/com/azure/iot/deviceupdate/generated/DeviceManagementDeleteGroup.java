@@ -17,9 +17,9 @@ public class DeviceManagementDeleteGroup {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementdeletegroup.devicemanagementdeletegroup
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-delete-group.device-management-delete-group
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = deviceManagementClient.deleteGroupWithResponse("group1", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementdeletegroup.devicemanagementdeletegroup
+        // END:com.azure.iot.deviceupdate.generated.device-management-delete-group.device-management-delete-group
     }
 }

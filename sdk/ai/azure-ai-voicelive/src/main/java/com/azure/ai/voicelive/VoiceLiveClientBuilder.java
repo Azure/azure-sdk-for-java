@@ -3,6 +3,10 @@
 
 package com.azure.ai.voicelive;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Objects;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.KeyCredentialTrait;
@@ -13,10 +17,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 /**
  * Builder for creating instances of {@link VoiceLiveAsyncClient}.

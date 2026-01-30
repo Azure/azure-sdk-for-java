@@ -38,7 +38,7 @@ foreach ($rootFolder in $rootFolders) {
     # For each artifact root folder try to find maven-metadata-central.xml as that will determine which versions
     # of the artifact to retain in the DevOps cache.
     $mavenMetadataCentralPath = Join-Path -Path $artifactRootFolder -ChildPath "maven-metadata-central.xml"
-    $mavenCentralVersions = {}
+    $mavenCentralVersions = @()
     if (Test-Path -Path $mavenMetadataCentralPath) {
       # Folder contains a 'maven-metadata-central.xml' file, parse it to determine which subfolders should be deleted.
       #
@@ -47,7 +47,7 @@ foreach ($rootFolder in $rootFolders) {
       # folders which is constant with the previous design where the root folders were indiscriminately cleaned, best case
       # this only deletes built from source folders.
       $metadataXml = [XML](Get-Content $mavenMetadataCentralPath)
-      $mavenCentralVersions = Select-Xml -Xml $metadataXml -XPath "/metadata/versioning/versions/version" | ForEach-Object {$_.Node.InnerXml}
+      $mavenCentralVersions = @(Select-Xml -Xml $metadataXml -XPath "/metadata/versioning/versions/version" | ForEach-Object {$_.Node.InnerXml})
     } else {
       # Folder doesn't contain a 'maven-metadata-central.xml' file, delete the entire folder as it cannot be determined
       # what was built from source vs resolved from Maven central.
@@ -57,7 +57,7 @@ foreach ($rootFolder in $rootFolders) {
     }
 
     $mavenMetadataLocalPath = Join-Path -Path $artifactRootFolder -ChildPath "maven-metadata-local.xml"
-    $mavenLocalVersions = {}
+    $mavenLocalVersions = @()
     if (Test-Path -Path $mavenMetadataLocalPath) {
       # Folder contains a 'maven-metadata-local.xml' file, parse it to determine which subfolders should be deleted.
       #
@@ -65,13 +65,14 @@ foreach ($rootFolder in $rootFolders) {
       # all folders will be deleted as Maven built those versions locally. Worst case, this over deletes folders which is constant
       # with the previous design where the root folders were indiscriminately cleaned, best case this only deletes built from source folders.
       $metadataXml = [XML](Get-Content $mavenMetadataLocalPath)
-      $mavenLocalVersions = Select-Xml -Xml $metadataXml -XPath "/metadata/versioning/versions/version" | ForEach-Object {$_.Node.InnerXml}
+      $mavenLocalVersions = @(Select-Xml -Xml $metadataXml -XPath "/metadata/versioning/versions/version" | ForEach-Object {$_.Node.InnerXml})
 
       # Additionally, since we know the file exists, delete it. We don't want to cache information about what packages were built
       # locally as this could change build-to-build. For example, in one job 1.30.0 could be built locally while releasing, but
       # in the next job 1.31.0-beta.1 could be built locally as the version incremented. We don't want the file to then state both
       # 1.30.0 and 1.31.0-beta.1 were built locally.
       Write-Host "Deleting maven-metadata-local.xml '$mavenMetadataLocalPath'."
+      Remove-Item $mavenMetadataLocalPath -ErrorAction Ignore
     }
 
     # Now loop over each directory in this package. These directories should be the versions built locally or resolved from

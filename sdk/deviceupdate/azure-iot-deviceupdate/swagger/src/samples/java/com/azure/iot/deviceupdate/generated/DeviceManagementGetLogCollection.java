@@ -18,10 +18,10 @@ public class DeviceManagementGetLogCollection {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollection.devicemanagementgetlogcollection
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-get-log-collection.device-management-get-log-collection
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceManagementClient.getLogCollectionWithResponse("LogCollectionId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollection.devicemanagementgetlogcollection
+        // END:com.azure.iot.deviceupdate.generated.device-management-get-log-collection.device-management-get-log-collection
     }
 }
