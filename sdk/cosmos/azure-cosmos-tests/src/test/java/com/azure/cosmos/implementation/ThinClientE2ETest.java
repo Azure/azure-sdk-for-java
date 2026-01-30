@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
-import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
@@ -181,7 +180,7 @@ public class ThinClientE2ETest {
      * 4. Assert only thin-client endpoint is used
      * 5. Assert all documents are drained
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQuerySelectAll() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -228,7 +227,7 @@ public class ThinClientE2ETest {
      * 4. Assert only thin-client endpoint is used
      * 5. Assert only the document with specified id is obtained
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQuerySelectById() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -302,7 +301,7 @@ public class ThinClientE2ETest {
      * 4. Assert only thin-client endpoint is used
      * 5. Assert only documents with specified partition key are obtained
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryWithPartitionKeyOption() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -369,7 +368,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryLegacy() {
         String idValue = UUID.randomUUID().toString();
         try {
@@ -401,7 +400,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientBulk() {
         String idValue = UUID.randomUUID().toString();
         try {
@@ -428,7 +427,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientBatch() {
         String pkValue = UUID.randomUUID().toString();
         String idValue1 = UUID.randomUUID().toString();
@@ -458,7 +457,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientIncrementalChangeFeed() {
         String pkValue = UUID.randomUUID().toString();
         String idValue1 = UUID.randomUUID().toString();
@@ -523,7 +522,7 @@ public class ThinClientE2ETest {
     }
 
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         String idValue = UUID.randomUUID().toString();
         String idValue2 = null;
@@ -609,7 +608,7 @@ public class ThinClientE2ETest {
         }
     }
 
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientStoredProcedure() {
         String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
         String pkValue = UUID.randomUUID().toString();
@@ -687,7 +686,7 @@ public class ThinClientE2ETest {
      * Verifies that ORDER BY queries work correctly through thin client
      * Expected: hasOrderBy=true, rewrittenQuery present
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanOrderBy() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -750,7 +749,7 @@ public class ThinClientE2ETest {
      * Verifies that aggregate queries work correctly through thin client
      * Expected: hasAggregates=true, aggregates array populated
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanAggregate() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -789,7 +788,7 @@ public class ThinClientE2ETest {
      * Verifies that queries with partition key filters return narrow ranges (not full range)
      * Expected: Single narrow range targeting specific partition
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanWithPartitionKeyFilterSingleRange() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         try {
@@ -827,7 +826,7 @@ public class ThinClientE2ETest {
      * Verifies that DISTINCT queries work correctly through thin client
      * Expected: hasDistinct=true
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanDistinct() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -872,7 +871,7 @@ public class ThinClientE2ETest {
      * Verifies that TOP queries work correctly through thin client
      * Expected: hasTop=true, top=10
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanTop() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -922,7 +921,7 @@ public class ThinClientE2ETest {
      * Verifies that GROUP BY queries work correctly through thin client
      * Expected: hasGroupBy=true, hasAggregates=true
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanGroupBy() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
@@ -992,7 +991,7 @@ public class ThinClientE2ETest {
      * Verifies that invalid queries return proper errors through thin client
      * Expected: 400 BadRequest error
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanInvalidQuery() {
         // Execute invalid query (typo in SELECT and FROM)
         String invalidQuery = "SELEC * FORM c";
@@ -1016,7 +1015,7 @@ public class ThinClientE2ETest {
      * Verifies that OFFSET LIMIT queries work correctly through thin client
      * Expected: hasOffset=true, hasLimit=true
      */
-    @Test(groups = {"thinclient"}, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"thinclient"})
     public void testThinClientQueryPlanOffsetLimit() {
         List<ObjectNode> createdDocs = new ArrayList<>();
         String commonPk = UUID.randomUUID().toString();
