@@ -19,7 +19,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
@@ -77,7 +76,6 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
-    public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
@@ -400,10 +398,6 @@ public final class TestHelpers {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
-    }
-
-    public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
-        return SERIALIZER.deserializeFromBytes(SERIALIZER.serializeToBytes(value), TypeReference.createInstance(clazz));
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName, String indexDefinition, String indexData) {

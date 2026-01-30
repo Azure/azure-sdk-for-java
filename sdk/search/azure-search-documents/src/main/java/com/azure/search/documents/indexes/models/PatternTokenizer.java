@@ -199,14 +199,16 @@ public final class PatternTokenizer extends LexicalTokenizer {
                 } else if ("pattern".equals(fieldName)) {
                     pattern = reader.getString();
                 } else if ("flags".equals(fieldName)) {
-                    String flagsEncodedAsString = reader.getString();
-                    flags = flagsEncodedAsString == null
-                        ? null
-                        : flagsEncodedAsString.isEmpty()
+                    flags = reader.getNullable(nonNullReader -> {
+                        String flagsEncodedAsString = nonNullReader.getString();
+                        return flagsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.stream(flagsEncodedAsString.split("\\|", -1))
-                                .map(valueAsString -> RegexFlags.fromString(valueAsString))
+                                .map(valueAsString -> valueAsString == null
+                                    ? null
+                                    : RegexFlags.fromString(valueAsString))
                                 .collect(Collectors.toList()));
+                    });
                 } else if ("group".equals(fieldName)) {
                     group = reader.getNullable(JsonReader::getInt);
                 } else {

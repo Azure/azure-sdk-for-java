@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
@@ -15,6 +16,8 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchServiceTests extends SearchTestBase {
+    private static final HttpHeaderName REQUEST_ID = HttpHeaderName.fromString("request-id");
+    private static final HttpHeaderName CLIENT_REQUEST_ID = HttpHeaderName.fromString("client-request-id");
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionSync() {
@@ -61,8 +64,8 @@ public class SearchServiceTests extends SearchTestBase {
          * have the same value. This test validates that client-request-id is returned and that request-id is equal to
          * it.
          */
-        String actualRequestId = response.getHeaders().getValue("request-id");
-        String actualClientRequestId = response.getHeaders().getValue("client-request-id");
+        String actualRequestId = response.getHeaders().getValue(REQUEST_ID);
+        String actualClientRequestId = response.getHeaders().getValue(CLIENT_REQUEST_ID);
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
@@ -81,8 +84,8 @@ public class SearchServiceTests extends SearchTestBase {
                  * will have the same value. This test validates that client-request-id is returned and that request-id
                  * is equal to it.
                  */
-                String actualRequestId = response.getHeaders().getValue("request-id");
-                String actualClientRequestId = response.getHeaders().getValue("client-request-id");
+                String actualRequestId = response.getHeaders().getValue(REQUEST_ID);
+                String actualClientRequestId = response.getHeaders().getValue(CLIENT_REQUEST_ID);
 
                 Assertions.assertNotNull(actualClientRequestId);
                 Assertions.assertEquals(actualClientRequestId, actualRequestId);

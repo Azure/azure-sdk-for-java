@@ -808,7 +808,7 @@ public class IndexManagementTests extends SearchTestBase {
 
         HttpResponseException ex = assertThrows(HttpResponseException.class,
             () -> client.createOrUpdateIndexWithResponse(original,
-                new RequestOptions().addQueryParam("allowIndexDowntime", "true")),
+                ifMatch(original.getETag()).addQueryParam("allowIndexDowntime", "true")),
             "createOrUpdateDefinition should have failed due to precondition.");
 
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
@@ -831,7 +831,7 @@ public class IndexManagementTests extends SearchTestBase {
             })
                 .doOnNext(etags -> validateETagUpdate(etags.getT1(), etags.getT2()))
                 .flatMap(original -> asyncClient.createOrUpdateIndexWithResponse(original.getT3(),
-                    new RequestOptions().addQueryParam("allowIndexDowntime", "true")));
+                    ifMatch(original.getT1()).addQueryParam("allowIndexDowntime", "true")));
 
         StepVerifier.create(createUpdateThenFailUpdateMono).verifyErrorSatisfies(throwable -> {
             HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);

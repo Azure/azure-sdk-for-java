@@ -6,14 +6,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.SuggestDocumentsResult;
-import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.test.environment.models.Author;
-import com.azure.search.documents.test.environment.models.Book;
-import com.azure.search.documents.test.environment.models.Hotel;
+import com.azure.search.documents.models.*;
+import com.azure.search.documents.testingmodels.Author;
+import com.azure.search.documents.testingmodels.Book;
+import com.azure.search.documents.testingmodels.Hotel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,24 +19,11 @@ import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.TestHelpers.convertFromMapStringObject;
-import static com.azure.search.documents.TestHelpers.convertToMapStringObject;
-import static com.azure.search.documents.TestHelpers.createIndexAction;
-import static com.azure.search.documents.TestHelpers.readJsonFileToList;
-import static com.azure.search.documents.TestHelpers.setupSharedIndex;
-import static com.azure.search.documents.TestHelpers.waitForIndexing;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.azure.search.documents.TestHelpers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class SuggestTests extends SearchTestBase {

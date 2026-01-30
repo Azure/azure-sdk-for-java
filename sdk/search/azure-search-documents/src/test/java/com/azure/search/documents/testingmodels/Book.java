@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -15,19 +15,19 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 public class Book implements JsonSerializable<Book> {
-    @SimpleField(name = "ISBN")
+    @BasicField(name = "ISBN")
     @JsonProperty(value = "ISBN")
     private String ISBN;
 
-    @SimpleField(name = "Title")
+    @BasicField(name = "Title")
     @JsonProperty(value = "Title")
     private String title;
 
-    @SimpleField(name = "Author")
+    @BasicField(name = "Author")
     @JsonProperty(value = "Author")
     private Author author;
 
-    @SimpleField(name = "PublishDate")
+    @BasicField(name = "PublishDate")
     @JsonProperty(value = "PublishDate")
     private OffsetDateTime publishDate;
 

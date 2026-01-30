@@ -12,9 +12,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
@@ -39,6 +41,33 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} used to communicate with the Azure AI Search service.
+     *
+     * @return the pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return serviceClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the endpoint used to communicate with the Azure AI Search service.
+     *
+     * @return The endpoint.
+     */
+    public String getEndpoint() {
+        return serviceClient.getEndpoint();
+    }
+
+    /**
+     * Gets the {@link SearchServiceVersion} used to communicate with the Azure AI Search service.
+     *
+     * @return The service version.
+     */
+    public SearchServiceVersion getServiceVersion() {
+        return serviceClient.getServiceVersion();
+    }
+
+    /**
      * KnowledgeBase retrieves relevant data from backing stores.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -49,7 +78,7 @@ public final class KnowledgeBaseRetrievalClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -88,9 +117,9 @@ public final class KnowledgeBaseRetrievalClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

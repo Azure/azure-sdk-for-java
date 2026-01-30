@@ -20,6 +20,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
+import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteMode;
@@ -72,7 +73,7 @@ public final class SearchClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
+     * Gets the {@link HttpPipeline} used to communicate with the Azure AI Search service.
      *
      * @return the pipeline.
      */
@@ -81,27 +82,36 @@ public final class SearchClient {
     }
 
     /**
-     * Gets the endpoint for the Azure AI Search service.
+     * Gets the endpoint used to communicate with the Azure AI Search service.
      *
-     * @return the endpoint value.
+     * @return The endpoint.
      */
-    String getEndpoint() {
+    public String getEndpoint() {
         return serviceClient.getEndpoint();
     }
 
     /**
      * Gets the name of the Azure AI Search index.
      *
-     * @return the indexName value.
+     * @return The index name.
      */
     public String getIndexName() {
         return serviceClient.getIndexName();
     }
 
     /**
+     * Gets the {@link SearchServiceVersion} used to communicate with the Azure AI Search service.
+     *
+     * @return The service version.
+     */
+    public SearchServiceVersion getServiceVersion() {
+        return serviceClient.getServiceVersion();
+    }
+
+    /**
      * Queries the number of documents in the index.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * long
@@ -244,7 +254,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -474,7 +484,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -535,7 +545,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -573,7 +583,7 @@ public final class SearchClient {
     /**
      * Sends a batch of document write actions to the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -588,9 +598,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -652,7 +662,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1002,7 +1012,9 @@ public final class SearchClient {
         return new SearchPagedIterable(() -> (continuationToken, pageSize) -> {
             Response<BinaryData> response;
             if (continuationToken == null) {
-                response = searchWithResponse(BinaryData.fromObject(options), requestOptions);
+                BinaryData binaryData
+                    = (options == null) ? null : BinaryData.fromObject(SearchUtils.fromSearchOptions(options));
+                response = searchWithResponse(binaryData, SearchUtils.addSearchHeaders(requestOptions, options));
             } else {
                 if (continuationToken.getApiVersion() != serviceClient.getServiceVersion()) {
                     throw LOGGER.atError()
@@ -1373,7 +1385,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1444,9 +1456,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1658,7 +1670,7 @@ public final class SearchClient {
     /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1682,9 +1694,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1711,14 +1723,14 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
+    Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
         return this.serviceClient.suggestWithResponse(suggestPostRequest, requestOptions);
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1737,9 +1749,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1764,8 +1776,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> autocompleteWithResponse(BinaryData autocompletePostRequest,
-        RequestOptions requestOptions) {
+    Response<BinaryData> autocompleteWithResponse(BinaryData autocompletePostRequest, RequestOptions requestOptions) {
         return this.serviceClient.autocompleteWithResponse(autocompletePostRequest, requestOptions);
     }
 
@@ -1802,6 +1813,36 @@ public final class SearchClient {
     }
 
     /**
+     * Suggests documents in the index that match the given partial query text.
+     *
+     * @param options Options for suggest API.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing suggestion query results from an index along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SuggestDocumentsResult> suggestWithResponse(SuggestOptions options, RequestOptions requestOptions) {
+        SuggestPostRequest suggestPostRequestObj
+            = new SuggestPostRequest(options.getSearchText(), options.getSuggesterName()).setFilter(options.getFilter())
+                .setUseFuzzyMatching(options.isUseFuzzyMatching())
+                .setHighlightPostTag(options.getHighlightPostTag())
+                .setHighlightPreTag(options.getHighlightPreTag())
+                .setMinimumCoverage(options.getMinimumCoverage())
+                .setOrderBy(options.getOrderBy())
+                .setSearchFields(options.getSearchFields())
+                .setSelect(options.getSelect())
+                .setTop(options.getTop());
+        BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
+        Response<BinaryData> response = suggestWithResponse(suggestPostRequest, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(SuggestDocumentsResult.class));
+    }
+
+    /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      *
      * @param options Options for autocomplete API.
@@ -1831,5 +1872,36 @@ public final class SearchClient {
         BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
         return autocompleteWithResponse(autocompletePostRequest, requestOptions).getValue()
             .toObject(AutocompleteResult.class);
+    }
+
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     *
+     * @param options Options for autocomplete API.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of Autocomplete query along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AutocompleteResult> autocompleteWithResponse(AutocompleteOptions options,
+        RequestOptions requestOptions) {
+        AutocompletePostRequest autocompletePostRequestObj
+            = new AutocompletePostRequest(options.getSearchText(), options.getSuggesterName())
+                .setAutocompleteMode(options.getAutocompleteMode())
+                .setFilter(options.getFilter())
+                .setUseFuzzyMatching(options.isUseFuzzyMatching())
+                .setHighlightPostTag(options.getHighlightPostTag())
+                .setHighlightPreTag(options.getHighlightPreTag())
+                .setMinimumCoverage(options.getMinimumCoverage())
+                .setSearchFields(options.getSearchFields())
+                .setTop(options.getTop());
+        BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
+        Response<BinaryData> response = autocompleteWithResponse(autocompletePostRequest, requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(AutocompleteResult.class));
     }
 }

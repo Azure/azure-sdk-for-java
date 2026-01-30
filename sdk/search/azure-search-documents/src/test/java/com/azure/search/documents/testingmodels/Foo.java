@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 
 public class Foo {
-    @SimpleField(name = "IntValue", isKey = true)
+    @BasicField(name = "IntValue", isKey = BasicField.BooleanHelper.TRUE)
     private String intValue;
-    @SimpleField(name = "StringValue")
+    @BasicField(name = "StringValue")
     private String stringValue;
 
     public Foo() {

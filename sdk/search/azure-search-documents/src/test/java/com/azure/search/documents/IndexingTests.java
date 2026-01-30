@@ -18,12 +18,12 @@ import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
-import com.azure.search.documents.test.environment.models.Author;
-import com.azure.search.documents.test.environment.models.Book;
-import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.test.environment.models.HotelAddress;
-import com.azure.search.documents.test.environment.models.HotelRoom;
-import com.azure.search.documents.test.environment.models.LoudHotel;
+import com.azure.search.documents.testingmodels.Author;
+import com.azure.search.documents.testingmodels.Book;
+import com.azure.search.documents.testingmodels.Hotel;
+import com.azure.search.documents.testingmodels.HotelAddress;
+import com.azure.search.documents.testingmodels.HotelRoom;
+import com.azure.search.documents.testingmodels.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +34,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -42,7 +41,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -647,7 +645,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundtripBoundaryValuesSync() {
+    public void canRoundTripBoundaryValuesSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
@@ -665,7 +663,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundtripBoundaryValuesAsync() {
+    public void canRoundTripBoundaryValuesAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
@@ -1256,17 +1254,13 @@ public class IndexingTests extends SearchTestBase {
         assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
-    @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "deprecation" })
     List<Hotel> getBoundaryValues() {
-        Date maxEpoch = Date.from(Instant.ofEpochMilli(253402300799000L));
-        Date minEpoch = Date.from(Instant.ofEpochMilli(-2208988800000L));
         return Arrays.asList(
             // Minimum values
             new Hotel().hotelId(getRandomDocumentKey())
                 .category("")
-                .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(),
-                    minEpoch.getHours(), minEpoch.getMinutes(), minEpoch.getSeconds()))
-                .location(new GeoPoint(-180.0, -90.0))   // South pole, date line from the west
+                .lastRenovationDate(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+                .location(new GeoPoint(-180.0, -90.0))   // South Pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
                 .tags(Collections.emptyList())
@@ -1275,9 +1269,8 @@ public class IndexingTests extends SearchTestBase {
             // Maximum values
             new Hotel().hotelId(getRandomDocumentKey())
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(),
-                    maxEpoch.getHours(), maxEpoch.getMinutes(), maxEpoch.getSeconds()))
-                .location(new GeoPoint(180.0, 90.0))     // North pole, date line from the east
+                .lastRenovationDate(OffsetDateTime.of(9999, 12, 31, 23, 59, 59, 0, ZoneOffset.UTC))
+                .location(new GeoPoint(180.0, 90.0))     // North Pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)
                 .tags(Collections.singletonList("test"))    // No meaningful string max; see above.

@@ -6,7 +6,7 @@ package com.azure.search.documents.indexes;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.azure.search.documents.test.environment.models.Hotel;
+import com.azure.search.documents.testingmodels.Hotel;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;

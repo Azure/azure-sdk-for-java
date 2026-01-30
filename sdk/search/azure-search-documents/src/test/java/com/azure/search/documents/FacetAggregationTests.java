@@ -10,6 +10,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -82,7 +83,7 @@ public class FacetAggregationTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max",
             "Rating, metric: avg", "Rating, metric: sum", "Category, metric: cardinality");
 
-        String serialized = BinaryData.fromObject(searchOptions).toString();
+        String serialized = BinaryData.fromObject(SearchUtils.fromSearchOptions(searchOptions)).toString();
         assertTrue(serialized.contains("Rating, metric: min"), "Should serialize min metric");
         assertTrue(serialized.contains("Rating, metric: max"), "Should serialize max metric");
         assertTrue(serialized.contains("Rating, metric: avg"), "Should serialize avg metric");

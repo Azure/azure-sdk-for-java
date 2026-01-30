@@ -8,11 +8,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchClientBuilder;
+import com.azure.search.documents.indexes.BasicField;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -100,12 +100,16 @@ public class SearchPackageInfoJavaDocSnippets {
         private String hotelId;
         private String hotelName;
 
-        @SimpleField(name = "HotelId", isKey = true)
+        @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE)
         public String getHotelId() {
             return this.hotelId;
         }
 
-        @SimpleField(name = "HotelName")
+        @BasicField(
+            name = "HotelName",
+            isSearchable = BasicField.BooleanHelper.TRUE,
+            isFilterable = BasicField.BooleanHelper.TRUE,
+            analyzerName = "en.lucene")
         public String getHotelName() {
             return this.hotelName;
         }

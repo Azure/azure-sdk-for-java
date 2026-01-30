@@ -1,21 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelWithUnsupportedField {
-    @SimpleField(name = "HotelId")
+    @BasicField(name = "HotelId")
     private String hotelId;
 
-    @SimpleField(name = "SomeByte")
+    @BasicField(name = "SomeByte")
     private Byte someByte;
 
-    @SimpleField(name = "SomeListBytes")
+    @BasicField(name = "SomeListBytes")
     private List<Byte> someListBytes;
 
     public String getHotelId() {

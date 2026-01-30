@@ -433,26 +433,26 @@ public final class SuggestPostRequest implements JsonSerializable<SuggestPostReq
                 } else if ("minimumCoverage".equals(fieldName)) {
                     minimumCoverage = reader.getNullable(JsonReader::getDouble);
                 } else if ("orderby".equals(fieldName)) {
-                    String orderByEncodedAsString = reader.getString();
-                    orderBy = orderByEncodedAsString == null
-                        ? null
-                        : orderByEncodedAsString.isEmpty()
+                    orderBy = reader.getNullable(nonNullReader -> {
+                        String orderByEncodedAsString = nonNullReader.getString();
+                        return orderByEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(orderByEncodedAsString.split(",", -1)));
+                    });
                 } else if ("searchFields".equals(fieldName)) {
-                    String searchFieldsEncodedAsString = reader.getString();
-                    searchFields = searchFieldsEncodedAsString == null
-                        ? null
-                        : searchFieldsEncodedAsString.isEmpty()
+                    searchFields = reader.getNullable(nonNullReader -> {
+                        String searchFieldsEncodedAsString = nonNullReader.getString();
+                        return searchFieldsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(searchFieldsEncodedAsString.split(",", -1)));
+                    });
                 } else if ("select".equals(fieldName)) {
-                    String selectEncodedAsString = reader.getString();
-                    select = selectEncodedAsString == null
-                        ? null
-                        : selectEncodedAsString.isEmpty()
+                    select = reader.getNullable(nonNullReader -> {
+                        String selectEncodedAsString = nonNullReader.getString();
+                        return selectEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(selectEncodedAsString.split(",", -1)));
+                    });
                 } else if ("top".equals(fieldName)) {
                     top = reader.getNullable(JsonReader::getInt);
                 } else {

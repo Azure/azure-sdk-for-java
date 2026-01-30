@@ -6,51 +6,79 @@ package com.azure.search.documents.implementation;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.search.documents.indexes.BasicField;
 import com.azure.search.documents.indexes.ComplexField;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
-import com.azure.search.documents.indexes.models.PermissionFilter;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
-import com.azure.search.documents.indexes.models.VectorEncodingFormat;
+import com.azure.search.documents.indexes.models.*;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
- * Helper to convert model class to Search {@link SearchField fields}.
+ * Helper to convert model class to {@link SearchField SearchFields}.
  * <p>
- * {@link FieldBuilder} currently only read fields of Java model class. If passed a custom {@link ObjectSerializer} in
- * API, please remember the helper class is only able to read the rename annotation on the field instead of
- * getter/setter methods.
+ * {@link FieldBuilder} only inspects {@link Field fields} and {@link Method methods} declared by the model, and uses
+ * the following rules for creating {@link SearchField SearchFields}:
+ * <ul>
+ *     <li>If the field or method is annotated with {@link BasicField} the {@link SearchFieldDataType} inferred by the
+ *     type of the field or return type of the method cannot be {@link SearchFieldDataType#COMPLEX}. It may be a
+ *     {@link SearchFieldDataType#collection(SearchFieldDataType)} though.</li>
+ *     <li>If the field or method is annotated with {@link ComplexField} the {@link SearchFieldDataType} inferred by the
+ *     type of the field or return type of the method must be {@link SearchFieldDataType#COMPLEX}. It may be a
+ *     {@link SearchFieldDataType#collection(SearchFieldDataType)} of {@link SearchFieldDataType#COMPLEX}.</li>
+ *     <li>If the field or method isn't annotated with either {@link BasicField} or {@link ComplexField} it will be
+ *     ignored.</li>
+ * </ul>
+ * <p>
+ * If the type of the field or return type of the method is an array or {@link Iterable} it will be considered a
+ * {@link SearchFieldDataType#collection(SearchFieldDataType)} type. Nested
+ * {@link SearchFieldDataType#collection(SearchFieldDataType)} aren't allowed and will throw an exception, ex.
+ * {@code String[][]} or {@code List<List<String>>}.
+ *
+ * <table border="1">
+ *     <caption>Conversion of Java type to {@link SearchFieldDataType}</caption>
+ *     <thead>
+ *         <tr><th>Java type</th><th>{@link SearchFieldDataType}</th></tr>
+ *     </thead>
+ *     <tbody>
+ *         <tr><td>{@code byte}</td><td>{@link SearchFieldDataType#SBYTE}</td></tr>
+ *         <tr><td>{@link Byte}</td><td>{@link SearchFieldDataType#SBYTE}</td></tr>
+ *         <tr><td>{@code boolean}</td><td>{@link SearchFieldDataType#BOOLEAN}</td></tr>
+ *         <tr><td>{@link Boolean}</td><td>{@link SearchFieldDataType#BOOLEAN}</td></tr>
+ *         <tr><td>{@code short}</td><td>{@link SearchFieldDataType#INT16}</td></tr>
+ *         <tr><td>{@link Short}</td><td>{@link SearchFieldDataType#INT16}</td></tr>
+ *         <tr><td>{@code int}</td><td>{@link SearchFieldDataType#INT32}</td></tr>
+ *         <tr><td>{@link Integer}</td><td>{@link SearchFieldDataType#INT32}</td></tr>
+ *         <tr><td>{@code long}</td><td>{@link SearchFieldDataType#INT64}</td></tr>
+ *         <tr><td>{@link Long}</td><td>{@link SearchFieldDataType#INT64}</td></tr>
+ *         <tr><td>{@code float}</td><td>{@link SearchFieldDataType#SINGLE}</td></tr>
+ *         <tr><td>{@link Float}</td><td>{@link SearchFieldDataType#SINGLE}</td></tr>
+ *         <tr><td>{@code double}</td><td>{@link SearchFieldDataType#DOUBLE}</td></tr>
+ *         <tr><td>{@link Double}</td><td>{@link SearchFieldDataType#DOUBLE}</td></tr>
+ *         <tr><td>{@code char}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+ *         <tr><td>{@link Character}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+ *         <tr><td>{@link CharSequence}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+ *         <tr><td>{@link String}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+ *         <tr><td>{@link Date}</td><td>{@link SearchFieldDataType#DATE_TIME_OFFSET}</td></tr>
+ *         <tr><td>{@link OffsetDateTime}</td><td>{@link SearchFieldDataType#DATE_TIME_OFFSET}</td></tr>
+ *         <tr><td>{@link GeoPoint}</td><td>{@link SearchFieldDataType#GEOGRAPHY_POINT}</td></tr>
+ *         <tr><td>Any other type</td><td>Attempted to be consumed as {@link SearchFieldDataType#COMPLEX}</td></tr>
+ *     </tbody>
+ * </table>
+ * <p>
+ * {@link SearchFieldDataType#HALF} and {@link SearchFieldDataType#BYTE} aren't supported by {@link Field} given there
+ * isn't a built-in Java type that represents them.
+ * <p>
+ * When generating {@link SearchField SearchFields} there is a maximum class depth limit of {@code 1000} before an
+ * exception will be thrown.
  */
 public final class FieldBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(FieldBuilder.class);
 
-    private static final int MAX_DEPTH = 10000;
+    private static final int MAX_DEPTH = 1000;
     private static final Map<Type, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
-    private static final Set<Type> UNSUPPORTED_TYPES = new HashSet<>();
-    private static final Set<SearchFieldDataType> UNSUPPORTED_SERVICE_TYPES = new HashSet<>();
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
@@ -70,17 +98,16 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(CharSequence.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Character.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(char.class, SearchFieldDataType.STRING);
-        //noinspection UseOfObsoleteDateTimeApi
-        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Float.class, SearchFieldDataType.SINGLE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(float.class, SearchFieldDataType.SINGLE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(byte.class, SearchFieldDataType.SBYTE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Byte.class, SearchFieldDataType.SBYTE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(short.class, SearchFieldDataType.INT16);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Short.class, SearchFieldDataType.INT16);
-        UNSUPPORTED_SERVICE_TYPES.add(SearchFieldDataType.BYTE);
+        //noinspection UseOfObsoleteDateTimeApi
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
     }
 
     /**
@@ -97,7 +124,7 @@ public final class FieldBuilder {
      * Recursive class to build complex data type.
      *
      * @param currentClass Current class to be built.
-     * @param classChain A class chain from {@code modelClass} to prior of {@code currentClass}.
+     * @param classChain   A class chain from {@code modelClass} to prior of {@code currentClass}.
      * @return A list of {@link SearchField} that currentClass is built to.
      */
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain) {
@@ -107,70 +134,118 @@ public final class FieldBuilder {
         }
 
         if (classChain.size() > MAX_DEPTH) {
-            throw LOGGER.logExceptionAsError(
-                new RuntimeException("The dependency graph is too deep. Please review your schema."));
+            throw LOGGER.atError()
+                .log(new IllegalStateException("The dependency graph is too deep. Please review your schema."));
         }
 
         classChain.push(currentClass);
-        List<SearchField> searchFields
-            = getDeclaredFieldsAndMethods(currentClass).map(classField -> buildSearchField(classField, classChain))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        List<SearchField> searchFields = new ArrayList<>();
+        for (Field field : currentClass.getDeclaredFields()) {
+            SearchField searchField = createSearchField(field, Field::getGenericType, classChain);
+            if (searchField != null) {
+                searchFields.add(searchField);
+            }
+        }
+        for (Method method : currentClass.getDeclaredMethods()) {
+            SearchField searchField = createSearchField(method, Method::getGenericReturnType, classChain);
+            if (searchField != null) {
+                searchFields.add(searchField);
+            }
+        }
         classChain.pop();
         return searchFields;
     }
 
-    /*
-     * Retrieves all declared fields and methods from the passed Class.
-     */
-    private static Stream<Member> getDeclaredFieldsAndMethods(Class<?> model) {
-        return Stream.concat(Arrays.stream(model.getDeclaredFields()), Arrays.stream(model.getDeclaredMethods()));
-    }
+    private static <T extends AccessibleObject & Member> SearchField createSearchField(T fieldOrMethod,
+        Function<T, Type> typeGetter, Stack<Class<?>> stack) {
+        BasicField basicField = fieldOrMethod.getAnnotation(BasicField.class);
+        ComplexField complexField = fieldOrMethod.getAnnotation(ComplexField.class);
 
-    private static SearchField buildSearchField(Member member, Stack<Class<?>> classChain) {
-        AnnotationData annotationData = AnnotationData.create(member);
-        if (annotationData == null) {
-            return null;
+        if (basicField != null && complexField != null) {
+            throw LOGGER.atError()
+                .addKeyValue("fieldOrMethodName", fieldOrMethod.getName())
+                .addKeyValue("fieldOrMemberDeclaringClass", fieldOrMethod.getDeclaringClass())
+                .log(new IllegalStateException("Field or method may only be annotated with one of 'BasicField', "
+                    + "or 'ComplexField' at a time."));
+        } else if (basicField != null) {
+            return generateBasicField(typeGetter.apply(fieldOrMethod), basicField, fieldOrMethod);
+        } else if (complexField != null) {
+            return generateComplexField(typeGetter.apply(fieldOrMethod), complexField, fieldOrMethod, stack);
         }
 
-        Type type = getFieldOrMethodReturnType(member);
+        return null;
+    }
+
+    private static SearchField generateBasicField(Type type, BasicField basicField, Member member) {
+        SearchFieldDataType basicDataType = SUPPORTED_NONE_PARAMETERIZED_TYPE.get(type);
+        if (basicDataType != null) {
+            SearchField searchField = new SearchField(basicField.name(), basicDataType);
+            return enrichBasicSearchField(searchField, basicField, member);
+        }
+
+        Type collectionType = getCollectionType(type, member);
+        if (collectionType != null) {
+            SearchFieldDataType collectionDataType = SUPPORTED_NONE_PARAMETERIZED_TYPE.get(collectionType);
+            if (collectionDataType != null) {
+                SearchField searchField
+                    = new SearchField(basicField.name(), SearchFieldDataType.collection(collectionDataType));
+                return enrichBasicSearchField(searchField, basicField, member);
+            }
+        }
+
+        throw LOGGER.atError()
+            .addKeyValue("fieldOrMethodName", member.getName())
+            .addKeyValue("fieldOrMemberDeclaringClass", member.getDeclaringClass())
+            .log(new IllegalStateException(
+                "'BasicField' cannot be used on fields or methods which result in 'SearchFieldDataType.COMPLEX'."));
+    }
+
+    private static SearchField generateComplexField(Type type, ComplexField complexField, Member member,
+        Stack<Class<?>> stack) {
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
-            return buildNoneParameterizedType(annotationData.getFieldName(), annotationData, type);
+            throw LOGGER.atError()
+                .addKeyValue("fieldOrMethodName", member.getName())
+                .addKeyValue("fieldOrMemberDeclaringClass", member.getDeclaringClass())
+                .log(new IllegalStateException("'ComplexField' cannot be used on fields or methods which don't result "
+                    + "in 'SearchFieldDataType.COMPLEX'."));
         }
 
-        if (isArrayOrList(type)) {
-            return buildCollectionField(annotationData.getFieldName(), annotationData, type, classChain);
+        Type collectionType = getCollectionType(type, member);
+        if (collectionType != null) {
+            if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(collectionType)) {
+                throw LOGGER.atError()
+                    .addKeyValue("fieldOrMethodName", member.getName())
+                    .addKeyValue("fieldOrMemberDeclaringClass", member.getDeclaringClass())
+                    .log(new IllegalStateException("'ComplexField' cannot be used on fields or methods which don't "
+                        + "result in 'SearchFieldDataType.COMPLEX'."));
+            }
+
+            return new SearchField(complexField.name(), SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
+                .setFields(build((Class<?>) collectionType, stack));
         }
 
-        return getSearchField(type, classChain, annotationData.getFieldName(), (Class<?>) type);
+        return new SearchField(complexField.name(), SearchFieldDataType.COMPLEX)
+            .setFields(build((Class<?>) type, stack));
     }
 
-    private static Type getFieldOrMethodReturnType(Member member) {
-        if (member instanceof Field) {
-            return ((Field) member).getGenericType();
-        } else if (member instanceof Method) {
-            return ((Method) member).getGenericReturnType();
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Member isn't instance of Field or Method."));
-        }
-    }
-
-    private static SearchField getSearchField(Type type, Stack<Class<?>> classChain, String fieldName, Class<?> clazz) {
-        SearchField searchField = convertToBasicSearchField(fieldName, type);
-        if (searchField == null) {
-            return null;
+    private static Type getCollectionType(Type type, Member member) {
+        Type collectionType = null;
+        if (isArrayOrIterable(type)) {
+            collectionType = getComponentOrElementType(type);
         }
 
-        return searchField.setFields(build(clazz, classChain));
+        if (collectionType != null && isArrayOrIterable(collectionType)) {
+            throw LOGGER.atError()
+                .addKeyValue("fieldOrMethodName", member.getName())
+                .addKeyValue("fieldOrMemberDeclaringClass", member.getDeclaringClass())
+                .log(new IllegalStateException("Field or method annotated with 'BasicField' or 'ComplexField' cannot "
+                    + "be a nested array or Iterable."));
+        }
+
+        return collectionType;
     }
 
-    private static SearchField buildNoneParameterizedType(String fieldName, AnnotationData annotationData, Type type) {
-        SearchField searchField = convertToBasicSearchField(fieldName, type);
-
-        return (searchField == null) ? null : annotationData.enrichWithAnnotation(searchField);
-    }
-
-    private static boolean isArrayOrList(Type type) {
+    private static boolean isArrayOrIterable(Type type) {
         return isList(type) || ((Class<?>) type).isArray();
     }
 
@@ -181,22 +256,7 @@ public final class FieldBuilder {
 
         Type rawType = ((ParameterizedType) type).getRawType();
 
-        return List.class.isAssignableFrom((Class<?>) rawType);
-    }
-
-    private static SearchField buildCollectionField(String fieldName, AnnotationData annotationData, Type type,
-        Stack<Class<?>> classChain) {
-        Type componentOrElementType = getComponentOrElementType(type);
-
-        validateType(componentOrElementType, true);
-        if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
-            SearchField searchField = convertToBasicSearchField(fieldName, type);
-            if (searchField == null) {
-                return null;
-            }
-            return annotationData.enrichWithAnnotation(searchField);
-        }
-        return getSearchField(type, classChain, fieldName, (Class<?>) componentOrElementType);
+        return Iterable.class.isAssignableFrom((Class<?>) rawType);
     }
 
     private static Type getComponentOrElementType(Type arrayOrListType) {
@@ -213,268 +273,100 @@ public final class FieldBuilder {
             .logExceptionAsError(new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
     }
 
-    private static SearchField convertToBasicSearchField(String fieldName, Type type) {
-        SearchFieldDataType dataType = covertToSearchFieldDataType(type, false);
+    private static SearchField enrichBasicSearchField(SearchField searchField, BasicField basicField, Member member) {
+        searchField.setKey(toBoolean(basicField.isKey()))
+            .setHidden(toBoolean(basicField.isHidden()))
+            .setRetrievable(toBoolean(basicField.isRetrievable()))
+            .setStored(toBoolean(basicField.isStored()))
+            .setSearchable(toBoolean(basicField.isSearchable()))
+            .setFilterable(toBoolean(basicField.isFilterable()))
+            .setSortable(toBoolean(basicField.isSortable()))
+            .setFacetable(toBoolean(basicField.isFacetable()))
+            .setPermissionFilter(nullOrT(basicField.permissionFilter(), PermissionFilter::fromString))
+            .setSensitivityLabel(toBoolean(basicField.isSensitivityLabel()))
+            .setAnalyzerName(nullOrT(basicField.analyzerName(), LexicalAnalyzerName::fromString))
+            .setSearchAnalyzerName(nullOrT(basicField.searchAnalyzerName(), LexicalAnalyzerName::fromString))
+            .setIndexAnalyzerName(nullOrT(basicField.indexAnalyzerName(), LexicalAnalyzerName::fromString))
+            .setNormalizerName(nullOrT(basicField.normalizerName(), LexicalNormalizerName::fromString))
+            .setVectorSearchDimensions(
+                basicField.vectorSearchDimensions() > 0 ? basicField.vectorSearchDimensions() : null)
+            .setVectorSearchProfileName(nullOrT(basicField.vectorSearchProfileName(), Function.identity()))
+            .setVectorEncodingFormat(nullOrT(basicField.vectorEncodingFormat(), VectorEncodingFormat::fromString))
+            .setSynonymMapNames(synonymMapNames(basicField.synonymMapNames()));
 
-        return (dataType == null) ? null : new SearchField(fieldName, dataType);
-    }
-
-    private static void validateType(Type type, boolean hasArrayOrCollectionWrapped) {
-        if (!(type instanceof ParameterizedType)) {
-            if (UNSUPPORTED_TYPES.contains(type)) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Type '" + type + "' is not supported. Please use @FieldIgnore to exclude the field and manually "
-                        + "build SearchField to the list if the field is needed. For more information, refer to link: "
-                        + "aka.ms/azsdk/java/search/fieldbuilder"));
-            }
-            return;
+        StringBuilder errorMessage = new StringBuilder();
+        boolean isStringOrCollectionString
+            = searchField.getType() == SearchFieldDataType.STRING || searchField.getType() == COLLECTION_STRING;
+        boolean isSearchableType = isStringOrCollectionString || searchField.getType() == COLLECTION_SINGLE;
+        boolean hasAnalyzerName = searchField.getAnalyzerName() != null;
+        boolean hasSearchAnalyzerName = searchField.getSearchAnalyzerName() != null;
+        boolean hasIndexAnalyzerName = searchField.getIndexAnalyzerName() != null;
+        if (searchField.isHidden() != null
+            && searchField.isRetrievable() != null
+            && searchField.isHidden() == searchField.isRetrievable()) {
+            errorMessage.append("'isHidden' and 'isRetrievable' were set to the same boolean value, this is "
+                + "invalid as they have opposite meanings and therefore the configuration is ambiguous.");
         }
-
-        ParameterizedType parameterizedType = (ParameterizedType) type;
-        if (Map.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Map and its subclasses are not supported"));
-        }
-
-        if (hasArrayOrCollectionWrapped) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Only single-dimensional array is supported."));
-        }
-
-        if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Collection type '" + type + "' is not supported"));
-        }
-    }
-
-    private static SearchFieldDataType covertToSearchFieldDataType(Type type, boolean hasArrayOrCollectionWrapped) {
-        validateType(type, hasArrayOrCollectionWrapped);
-
-        if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
-            return SUPPORTED_NONE_PARAMETERIZED_TYPE.get(type);
-        }
-
-        if (isArrayOrList(type)) {
-            Type componentOrElementType = getComponentOrElementType(type);
-            return SearchFieldDataType.collection(covertToSearchFieldDataType(componentOrElementType, true));
-        }
-
-        return SearchFieldDataType.COMPLEX;
-    }
-
-    private static final class AnnotationData {
-        private final Member member;
-        private final SimpleField simpleField;
-        private final SearchableField searchableField;
-        private final ComplexField complexField;
-
-        private AnnotationData(Member member, SimpleField simpleField, SearchableField searchableField,
-            ComplexField complexField) {
-            this.member = member;
-            this.simpleField = simpleField;
-            this.searchableField = searchableField;
-            this.complexField = complexField;
-        }
-
-        private static AnnotationData create(Member member) {
-            AnnotatedElement annotatedElement;
-            if (member instanceof Field) {
-                annotatedElement = (Field) member;
-            } else if (member instanceof Method) {
-                annotatedElement = (Method) member;
-            } else {
-                return null;
-            }
-
-            SimpleField simpleField = annotatedElement.getAnnotation(SimpleField.class);
-            SearchableField searchableField = annotatedElement.getAnnotation(SearchableField.class);
-            ComplexField complexField = annotatedElement.getAnnotation(ComplexField.class);
-
-            List<String> contains = new ArrayList<>(3);
-            if (simpleField != null) {
-                contains.add("SimpleField");
-            }
-            if (searchableField != null) {
-                contains.add("SearchableField");
-            }
-            if (complexField != null) {
-                contains.add("ComplexField");
-            }
-
-            if (contains.size() > 1) {
-                throw LOGGER.atError()
-                    .addKeyValue("annotations", CoreUtils.stringJoin(",", contains))
-                    .addKeyValue("fieldOrMethodName", member.getName())
-                    .addKeyValue("fieldOrMemberDeclaringClass", member.getDeclaringClass())
-                    .log(new IllegalStateException("Field or method may only be annotated with one of 'SimpleField', "
-                        + "'SearchableField', or 'ComplexField' at a time."));
-            } else if (contains.isEmpty()) {
-                return null;
-            } else {
-                return new AnnotationData(member, simpleField, searchableField, complexField);
-            }
-        }
-
-        private String getFieldName() {
-            if (simpleField != null) {
-                return simpleField.name();
-            } else if (searchableField != null) {
-                return searchableField.name();
-            } else {
-                return complexField.name();
-            }
-        }
-
-        private SearchField enrichWithAnnotation(SearchField searchField) {
-            if (complexField != null) {
-                // ComplexFields have no enrichments.
-                return searchField;
-            }
-            boolean key;
-            boolean hidden;
-            boolean retrievable;
-            boolean filterable;
-            boolean sortable;
-            boolean facetable;
-            String permissionFilter;
-            boolean sensitivityLabel;
-            boolean stored;
-            boolean searchable = searchableField != null;
-            String analyzerName = null;
-            String searchAnalyzerName = null;
-            String indexAnalyzerName = null;
-            String[] synonymMapNames = null;
-            String normalizerName = null;
-            Integer vectorSearchDimensions = null;
-            String vectorSearchProfileName = null;
-            String vectorEncodingFormat = null;
-
-            if (simpleField != null) {
-                key = simpleField.isKey();
-                hidden = simpleField.isHidden();
-                retrievable = simpleField.isRetrievable();
-                stored = true;
-                filterable = simpleField.isFilterable();
-                sortable = simpleField.isSortable();
-                facetable = simpleField.isFacetable();
-                normalizerName = simpleField.normalizerName();
-                permissionFilter = simpleField.permissionFilter();
-                sensitivityLabel = simpleField.isSensitivityLabel();
-            } else {
-                key = searchableField.isKey();
-                hidden = searchableField.isHidden();
-                retrievable = searchableField.isRetrievable();
-                stored = searchableField.isStored();
-                filterable = searchableField.isFilterable();
-                sortable = searchableField.isSortable();
-                facetable = searchableField.isFacetable();
-                permissionFilter = searchableField.permissionFilter();
-                sensitivityLabel = searchableField.isSensitivityLabel();
-                analyzerName = searchableField.analyzerName();
-                searchAnalyzerName = searchableField.searchAnalyzerName();
-                indexAnalyzerName = searchableField.indexAnalyzerName();
-                synonymMapNames = searchableField.synonymMapNames();
-                normalizerName = searchableField.normalizerName();
-                vectorSearchDimensions
-                    = searchableField.vectorSearchDimensions() > 0 ? searchableField.vectorSearchDimensions() : null;
-                vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
-                    ? null
-                    : searchableField.vectorSearchProfileName();
-                vectorEncodingFormat = CoreUtils.isNullOrEmpty(searchableField.vectorEncodingFormat())
-                    ? null
-                    : searchableField.vectorEncodingFormat();
-            }
-
-            StringBuilder errorMessage = new StringBuilder();
-            boolean isStringOrCollectionString
-                = searchField.getType() == SearchFieldDataType.STRING || searchField.getType() == COLLECTION_STRING;
-            boolean isSearchableType = isStringOrCollectionString || searchField.getType() == COLLECTION_SINGLE;
-            boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
-            boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
-            boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
-            boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
-            boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
-            if (retrievable == hidden) {
-                errorMessage.append("'isHidden' and 'isRetrievable' were set to the same boolean value, this is "
-                    + "invalid as they have opposite meanings and therefore the configuration is ambiguous.");
-            }
-            if (searchable) {
-                if (!isSearchableType) {
-                    errorMessage
-                        .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', "
-                            + "or 'Collection(Edm.Single)' types. Property '")
-                        .append(member.getName())
-                        .append("' returns a '")
-                        .append(searchField.getType())
-                        .append("' value. ");
-                }
-
-                // Searchable fields are allowed to have either no analyzer names configure or one of the following
-                // analyzerName is set and searchAnalyzerName and indexAnalyzerName are not set
-                // searchAnalyzerName and indexAnalyzerName are set and analyzerName is not set
-                if ((!hasAnalyzerName && (hasSearchAnalyzerName != hasIndexAnalyzerName))
-                    || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
-                    errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
-                }
-            }
-
-            if (searchField.getType() == COLLECTION_SINGLE
-                && (vectorSearchDimensions == null || vectorSearchProfileName == null)) {
-                errorMessage.append(
-                    "Please specify both vectorSearchDimensions and vectorSearchProfileName for Collection(Edm.Single) type. ");
-            }
-
-            // Any field is allowed to have a normalizer, but it must be either a STRING or Collection(STRING) and have one
-            // of filterable, sortable, or facetable set to true.
-            if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
+        if (Boolean.TRUE.equals(searchField.isSearchable())) {
+            if (!isSearchableType) {
                 errorMessage
-                    .append("A field with a normalizer name can only be used on string properties and must have ")
-                    .append("one of filterable, sortable, or facetable set to true. ");
+                    .append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', "
+                        + "or 'Collection(Edm.Single)' types. Property '")
+                    .append(member.getName())
+                    .append("' returns a '")
+                    .append(searchField.getType())
+                    .append("' value. ");
             }
 
-            if (errorMessage.length() > 0) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage.toString()));
+            // Searchable fields are allowed to have either no analyzer names configure or one of the following
+            // analyzerName is set and searchAnalyzerName and indexAnalyzerName are not set
+            // searchAnalyzerName and indexAnalyzerName are set and analyzerName is not set
+            if ((!hasAnalyzerName && (hasSearchAnalyzerName != hasIndexAnalyzerName))
+                || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
+                errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
             }
-
-            searchField.setKey(key)
-                .setHidden(hidden)
-                .setRetrievable(retrievable)
-                .setSearchable(searchable)
-                .setFilterable(filterable)
-                .setSortable(sortable)
-                .setFacetable(facetable)
-                .setStored(stored)
-                .setVectorSearchDimensions(vectorSearchDimensions)
-                .setVectorSearchProfileName(vectorSearchProfileName);
-
-            if (hasAnalyzerName) {
-                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
-            } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
-                searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
-                searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
-            }
-
-            if (hasNormalizerName) {
-                searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
-            }
-
-            if (hasVectorEncodingFormat) {
-                searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
-            }
-
-            if (!CoreUtils.isNullOrEmpty(permissionFilter)) {
-                searchField.setPermissionFilter(PermissionFilter.fromString(permissionFilter));
-            }
-
-            searchField.setSensitivityLabel(sensitivityLabel);
-
-            if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {
-                List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())
-                    .filter(synonym -> !synonym.trim().isEmpty())
-                    .collect(Collectors.toList());
-                searchField.setSynonymMapNames(synonymMaps);
-            }
-
-            return searchField;
         }
+
+        // Any field is allowed to have a normalizer, but it must be either a STRING or Collection(STRING) and have one
+        // of filterable, sortable, or facetable set to true.
+        if (searchField.getNormalizerName() != null
+            && (!isStringOrCollectionString
+                || !(Boolean.TRUE.equals(searchField.isFilterable())
+                    || Boolean.TRUE.equals(searchField.isSortable())
+                    || Boolean.TRUE.equals(searchField.isFacetable())))) {
+            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
+                .append("one of filterable, sortable, or facetable set to true. ");
+        }
+
+        if ((searchField.getVectorSearchDimensions() != null && searchField.getVectorSearchProfileName() == null)
+            || (searchField.getVectorSearchDimensions() == null && searchField.getVectorSearchProfileName() != null)) {
+            errorMessage
+                .append("Please specify both vectorSearchDimensions and vectorSearchProfileName for vector field. ");
+        }
+
+        if (errorMessage.length() > 0) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage.toString()));
+        }
+
+        return searchField;
+    }
+
+    private static Boolean toBoolean(BasicField.BooleanHelper booleanHelper) {
+        if (booleanHelper == null || booleanHelper == BasicField.BooleanHelper.NULL) {
+            return null;
+        } else {
+            return booleanHelper == BasicField.BooleanHelper.TRUE;
+        }
+    }
+
+    private static <T> T nullOrT(String raw, Function<String, T> converter) {
+        return CoreUtils.isNullOrEmpty(raw) ? null : converter.apply(raw);
+    }
+
+    private static List<String> synonymMapNames(String[] synonyms) {
+        if (CoreUtils.isNullOrEmpty(synonyms)) {
+            return null;
+        }
+        return Arrays.stream(synonyms).filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
     }
 }

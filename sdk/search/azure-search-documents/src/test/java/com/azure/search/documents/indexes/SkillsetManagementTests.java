@@ -951,30 +951,6 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void contentUnderstandingSkillWithInvalidChunkingUnitThrows() {
-        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
-            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")));
-
-        assertThrows(IllegalArgumentException.class,
-            () -> skill.setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-                .setUnit(ContentUnderstandingSkillChunkingUnit.fromString("INVALID_UNIT"))
-                .setMaximumLength(1000)));
-    }
-
-    @Test
-    public void contentUnderstandingSkillWithNegativeChunkingLengthThrows() {
-        ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
-            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
-            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")));
-
-        assertThrows(IllegalArgumentException.class,
-            () -> skill.setChunkingProperties(new ContentUnderstandingSkillChunkingProperties()
-                .setUnit(ContentUnderstandingSkillChunkingUnit.CHARACTERS)
-                .setMaximumLength(-1)));
-    }
-
-    @Test
     @Disabled("Test proxy issues")
     public void contentUnderstandingSkillWorksWithPreviewApiVersion() {
         SearchIndexerClient indexerClient

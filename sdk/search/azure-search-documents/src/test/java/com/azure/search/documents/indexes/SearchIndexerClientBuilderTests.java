@@ -119,11 +119,6 @@ public class SearchIndexerClientBuilderTests {
     }
 
     @Test
-    public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder().endpoint(""));
-    }
-
-    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
             () -> new SearchIndexerClientBuilder().credential(new AzureKeyCredential("")));

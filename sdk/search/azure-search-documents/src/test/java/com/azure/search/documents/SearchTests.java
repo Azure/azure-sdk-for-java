@@ -24,9 +24,9 @@ import com.azure.search.documents.models.SearchPagedFlux;
 import com.azure.search.documents.models.SearchPagedIterable;
 import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.test.environment.models.Bucket;
-import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.test.environment.models.NonNullableModel;
+import com.azure.search.documents.testingmodels.Bucket;
+import com.azure.search.documents.testingmodels.Hotel;
+import com.azure.search.documents.testingmodels.NonNullableModel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,11 +39,11 @@ import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,7 +59,6 @@ import java.util.stream.Stream;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertFromMapStringObject;
-import static com.azure.search.documents.TestHelpers.convertMapToValue;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
@@ -350,7 +349,7 @@ public class SearchTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         Map<String, Hotel> expectedHotels = hotels.stream()
-            .map(hotel -> convertMapToValue(hotel, Hotel.class))
+            .map(hotel -> convertFromMapStringObject(hotel, Hotel::fromJson))
             .collect(Collectors.toMap(Hotel::hotelId, Function.identity()));
 
         for (SearchPagedResponse response : client.search(new SearchOptions()).iterableByPage()) {
@@ -378,7 +377,7 @@ public class SearchTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = readJsonFileToList(HOTELS_DATA_JSON);
         Map<String, Hotel> expectedHotels = hotels.stream()
-            .map(hotel -> convertMapToValue(hotel, Hotel.class))
+            .map(hotel -> convertFromMapStringObject(hotel, Hotel::fromJson))
             .collect(Collectors.toMap(Hotel::hotelId, Function.identity()));
 
         StepVerifier.create(asyncClient.search(new SearchOptions()).byPage()).thenConsumeWhile(response -> {
@@ -402,21 +401,19 @@ public class SearchTests extends SearchTestBase {
         assertEquals(0, expectedHotels.size());
     }
 
-    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canRoundTripNonNullableValueTypesSyncAndAsync() {
         String indexName = createIndexWithNonNullableTypes();
         indexesToDelete.add(indexName);
         SearchClient client = getSearchClientBuilder(indexName, true).buildClient();
 
-        Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel().key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
             .ratio(3.25)
-            .startDate(new Date(startEpoch.getTime()))
-            .endDate(new Date(startEpoch.getTime()))
+            .startDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1275346800000L), ZoneOffset.UTC))
+            .endDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1275346800000L), ZoneOffset.UTC))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
             .buckets(new Bucket[] { new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7) });
 
@@ -444,8 +441,8 @@ public class SearchTests extends SearchTestBase {
             .isEnabled(true)
             .rating(5)
             .ratio(3.25)
-            .startDate(new Date(startEpoch.getTime()))
-            .endDate(new Date(startEpoch.getTime()))
+            .startDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1275346800000L), ZoneOffset.UTC))
+            .endDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1275346800000L), ZoneOffset.UTC))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
             .buckets(new Bucket[] { new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7) });
 
@@ -469,7 +466,6 @@ public class SearchTests extends SearchTestBase {
         }).verifyComplete();
     }
 
-    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canSearchWithDateInStaticModelSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
@@ -481,16 +477,14 @@ public class SearchTests extends SearchTestBase {
 
         SearchPagedResponse result = iterator.next();
         assertEquals(1, result.getElements().stream().count());
-        Date actual = result.getElements()
+        OffsetDateTime actual = result.getElements()
             .stream()
             .findFirst()
             .map(sr -> convertFromMapStringObject(sr.getAdditionalProperties(), Hotel::fromJson).lastRenovationDate())
             .get();
-        long epochMilli = expected.toInstant().toEpochMilli();
-        assertEquals(new Date(epochMilli), actual);
+        assertEquals(expected, actual);
     }
 
-    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canSearchWithDateInStaticModelAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
@@ -500,14 +494,13 @@ public class SearchTests extends SearchTestBase {
         StepVerifier.create(asyncClient.search(new SearchOptions().setSearchText("Fancy")).byPage())
             .assertNext(response -> {
                 assertEquals(1, response.getElements().stream().count());
-                Date actual = response.getElements()
+                OffsetDateTime actual = response.getElements()
                     .stream()
                     .findFirst()
                     .map(sr -> convertFromMapStringObject(sr.getAdditionalProperties(), Hotel::fromJson)
                         .lastRenovationDate())
                     .get();
-                long epochMilli = expected.toInstant().toEpochMilli();
-                assertEquals(new Date(epochMilli), actual);
+                assertEquals(expected, actual);
             })
             .verifyComplete();
     }

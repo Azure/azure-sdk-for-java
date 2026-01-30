@@ -1,40 +1,46 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.VectorSearchEmbeddings;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
+import com.azure.search.documents.indexes.ComplexField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("UseOfObsoleteDateTimeApi")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VectorHotel implements JsonSerializable<VectorHotel> {
-    @SimpleField(name = "HotelId", isKey = true, isSortable = true)
+public class Hotel implements JsonSerializable<Hotel> {
+    @BasicField(
+        name = "HotelId",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        isKey = BasicField.BooleanHelper.TRUE,
+        isSortable = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "HotelId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String hotelId;
 
-    @SearchableField(name = "HotelName", isSortable = true, analyzerName = "en.lucene")
+    @BasicField(
+        name = "HotelName",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        isSortable = BasicField.BooleanHelper.TRUE,
+        analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String hotelName;
 
-    @SimpleField(name = "Description")
+    @BasicField(name = "Description")
     @JsonProperty(value = "Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
@@ -43,49 +49,52 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
-    @JsonProperty(value = "DescriptionVector")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Float> descriptionVector = VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION; // Default DescriptionVector: "Hotel"
-
-    @SimpleField(name = "Category")
+    @BasicField(name = "Category")
     @JsonProperty(value = "Category")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String category;
 
-    @SearchableField(name = "Tags")
+    @BasicField(name = "Tags", isSearchable = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> tags;
 
+    @BasicField(name = "ParkingIncluded")
     @JsonProperty(value = "ParkingIncluded")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean parkingIncluded;
 
+    @BasicField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
+    @BasicField(name = "LastRenovationDate")
     @JsonProperty(value = "LastRenovationDate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Date lastRenovationDate;
+    private OffsetDateTime lastRenovationDate;
 
+    @BasicField(name = "Rating")
     @JsonProperty(value = "Rating")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer rating;
 
+    @BasicField(name = "Location")
     @JsonProperty(value = "Location")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private GeoPoint location;
 
+    @ComplexField(name = "Address")
     @JsonProperty(value = "Address")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private HotelAddress address;
 
+    @ComplexField(name = "Rooms")
     @JsonProperty(value = "Rooms")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<HotelRoom> rooms;
 
-    public VectorHotel() {
+    public Hotel() {
         this.tags = new ArrayList<>();
         this.rooms = new ArrayList<>();
     }
@@ -94,7 +103,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.hotelId;
     }
 
-    public VectorHotel hotelId(String hotelId) {
+    public Hotel hotelId(String hotelId) {
         this.hotelId = hotelId;
         return this;
     }
@@ -103,7 +112,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.hotelName;
     }
 
-    public VectorHotel hotelName(String hotelName) {
+    public Hotel hotelName(String hotelName) {
         this.hotelName = hotelName;
         return this;
     }
@@ -112,7 +121,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.description;
     }
 
-    public VectorHotel description(String description) {
+    public Hotel description(String description) {
         this.description = description;
         return this;
     }
@@ -121,17 +130,8 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.descriptionFr;
     }
 
-    public VectorHotel descriptionFr(String descriptionFr) {
+    public Hotel descriptionFr(String descriptionFr) {
         this.descriptionFr = descriptionFr;
-        return this;
-    }
-
-    public List<Float> descriptionVector() {
-        return (this.descriptionVector == null) ? null : new ArrayList<>(this.descriptionVector);
-    }
-
-    public VectorHotel descriptionVector(List<Float> descriptionVector) {
-        this.descriptionVector = (descriptionVector == null) ? null : new ArrayList<>(descriptionVector);
         return this;
     }
 
@@ -139,7 +139,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.category;
     }
 
-    public VectorHotel category(String category) {
+    public Hotel category(String category) {
         this.category = category;
         return this;
     }
@@ -148,7 +148,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return (this.tags == null) ? null : new ArrayList<>(this.tags);
     }
 
-    public VectorHotel tags(List<String> tags) {
+    public Hotel tags(List<String> tags) {
         this.tags = (tags == null) ? null : new ArrayList<>(tags);
         return this;
     }
@@ -157,7 +157,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.parkingIncluded;
     }
 
-    public VectorHotel parkingIncluded(Boolean parkingIncluded) {
+    public Hotel parkingIncluded(Boolean parkingIncluded) {
         this.parkingIncluded = parkingIncluded;
         return this;
     }
@@ -166,17 +166,17 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.smokingAllowed;
     }
 
-    public VectorHotel smokingAllowed(Boolean smokingAllowed) {
+    public Hotel smokingAllowed(Boolean smokingAllowed) {
         this.smokingAllowed = smokingAllowed;
         return this;
     }
 
-    public Date lastRenovationDate() {
-        return (this.lastRenovationDate == null) ? null : (Date) this.lastRenovationDate.clone();
+    public OffsetDateTime lastRenovationDate() {
+        return this.lastRenovationDate;
     }
 
-    public VectorHotel lastRenovationDate(Date lastRenovationDate) {
-        this.lastRenovationDate = (lastRenovationDate == null) ? null : (Date) lastRenovationDate.clone();
+    public Hotel lastRenovationDate(OffsetDateTime lastRenovationDate) {
+        this.lastRenovationDate = lastRenovationDate;
         return this;
     }
 
@@ -184,7 +184,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return location;
     }
 
-    public VectorHotel location(GeoPoint location) {
+    public Hotel location(GeoPoint location) {
         this.location = location;
         return this;
     }
@@ -193,7 +193,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.rating;
     }
 
-    public VectorHotel rating(Integer rating) {
+    public Hotel rating(Integer rating) {
         this.rating = rating;
         return this;
     }
@@ -202,7 +202,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.address;
     }
 
-    public VectorHotel address(HotelAddress address) {
+    public Hotel address(HotelAddress address) {
         this.address = address;
         return this;
     }
@@ -211,7 +211,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
         return this.rooms;
     }
 
-    public VectorHotel rooms(List<HotelRoom> rooms) {
+    public Hotel rooms(List<HotelRoom> rooms) {
         this.rooms = rooms;
         return this;
     }
@@ -223,7 +223,6 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
             .writeStringField("HotelName", hotelName)
             .writeStringField("Description", description)
             .writeStringField("Description_fr", descriptionFr)
-            .writeArrayField("DescriptionVector", descriptionVector, JsonWriter::writeFloat)
             .writeStringField("Category", category)
             .writeArrayField("Tags", tags, JsonWriter::writeString)
             .writeBooleanField("ParkingIncluded", parkingIncluded)
@@ -236,10 +235,9 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
             .writeEndObject();
     }
 
-    @SuppressWarnings("deprecation")
-    public static VectorHotel fromJson(JsonReader jsonReader) throws IOException {
+    public static Hotel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VectorHotel hotel = new VectorHotel();
+            Hotel hotel = new Hotel();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -253,8 +251,6 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
                     hotel.description = reader.getString();
                 } else if ("Description_fr".equals(fieldName)) {
                     hotel.descriptionFr = reader.getString();
-                } else if ("DescriptionVector".equals(fieldName)) {
-                    hotel.descriptionVector = reader.readArray(JsonReader::getFloat);
                 } else if ("Category".equals(fieldName)) {
                     hotel.category = reader.getString();
                 } else if ("Tags".equals(fieldName)) {
@@ -264,7 +260,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
                 } else if ("SmokingAllowed".equals(fieldName)) {
                     hotel.smokingAllowed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("LastRenovationDate".equals(fieldName)) {
-                    hotel.lastRenovationDate = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                    hotel.lastRenovationDate = reader.getNullable(nonNull -> OffsetDateTime.parse(nonNull.getString()));
                 } else if ("Rating".equals(fieldName)) {
                     hotel.rating = reader.getNullable(JsonReader::getInt);
                 } else if ("Location".equals(fieldName)) {
@@ -277,6 +273,7 @@ public class VectorHotel implements JsonSerializable<VectorHotel> {
                     reader.skipChildren();
                 }
             }
+
             return hotel;
         });
     }

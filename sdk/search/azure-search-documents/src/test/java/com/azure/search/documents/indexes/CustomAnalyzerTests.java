@@ -8,69 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.AnalyzeResult;
-import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
-import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
-import com.azure.search.documents.indexes.models.CharFilter;
-import com.azure.search.documents.indexes.models.CharFilterName;
-import com.azure.search.documents.indexes.models.CjkBigramTokenFilter;
-import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
-import com.azure.search.documents.indexes.models.ClassicTokenizer;
-import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
-import com.azure.search.documents.indexes.models.CustomAnalyzer;
-import com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter;
-import com.azure.search.documents.indexes.models.EdgeNGramTokenFilter;
-import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
-import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
-import com.azure.search.documents.indexes.models.ElisionTokenFilter;
-import com.azure.search.documents.indexes.models.KeepTokenFilter;
-import com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter;
-import com.azure.search.documents.indexes.models.KeywordTokenizer;
-import com.azure.search.documents.indexes.models.LengthTokenFilter;
-import com.azure.search.documents.indexes.models.LexicalAnalyzer;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalTokenizer;
-import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-import com.azure.search.documents.indexes.models.LimitTokenFilter;
-import com.azure.search.documents.indexes.models.LuceneStandardAnalyzer;
-import com.azure.search.documents.indexes.models.LuceneStandardTokenizer;
-import com.azure.search.documents.indexes.models.MappingCharFilter;
-import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
-import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
-import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
-import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
-import com.azure.search.documents.indexes.models.NGramTokenFilter;
-import com.azure.search.documents.indexes.models.NGramTokenizer;
-import com.azure.search.documents.indexes.models.PathHierarchyTokenizerV2;
-import com.azure.search.documents.indexes.models.PatternAnalyzer;
-import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
-import com.azure.search.documents.indexes.models.PatternReplaceCharFilter;
-import com.azure.search.documents.indexes.models.PatternReplaceTokenFilter;
-import com.azure.search.documents.indexes.models.PatternTokenizer;
-import com.azure.search.documents.indexes.models.PhoneticEncoder;
-import com.azure.search.documents.indexes.models.PhoneticTokenFilter;
-import com.azure.search.documents.indexes.models.RegexFlags;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
-import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.ShingleTokenFilter;
-import com.azure.search.documents.indexes.models.SnowballTokenFilter;
-import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
-import com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter;
-import com.azure.search.documents.indexes.models.StemmerTokenFilter;
-import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
-import com.azure.search.documents.indexes.models.StopAnalyzer;
-import com.azure.search.documents.indexes.models.StopwordsList;
-import com.azure.search.documents.indexes.models.StopwordsTokenFilter;
-import com.azure.search.documents.indexes.models.SynonymTokenFilter;
-import com.azure.search.documents.indexes.models.TokenCharacterKind;
-import com.azure.search.documents.indexes.models.TokenFilter;
-import com.azure.search.documents.indexes.models.TokenFilterName;
-import com.azure.search.documents.indexes.models.TruncateTokenFilter;
-import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
-import com.azure.search.documents.indexes.models.UniqueTokenFilter;
-import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
+import com.azure.search.documents.indexes.models.*;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.SearchOptions;
@@ -298,7 +236,8 @@ public class CustomAnalyzerTests extends SearchTestBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
         SearchIndex updatedIndex = searchIndexClient
-            .createOrUpdateIndexWithResponse(index.getName(), BinaryData.fromObject(index), ifMatch(index.getETag()))
+            .createOrUpdateIndexWithResponse(index.getName(), BinaryData.fromObject(index),
+                ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true"))
             .getValue()
             .toObject(SearchIndex.class);
 
@@ -315,7 +254,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
 
         StepVerifier
             .create(searchIndexAsyncClient.createOrUpdateIndexWithResponse(index.getName(),
-                BinaryData.fromObject(index), ifMatch(index.getETag())))
+                BinaryData.fromObject(index), ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true")))
             .assertNext(
                 response -> assertAnalysisComponentsEqual(index, response.getValue().toObject(SearchIndex.class)))
             .verifyComplete();
@@ -438,18 +377,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Test
     public void canUseAllRegexFlagsEmptyTokenizerAsync() {
         createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyFlagsTokenizerSyncAndAsync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()));
-
-        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
-            "Values of property \\\"flags\\\" must belong to the set of allowed values");
-
-        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
-            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
-                "Values of property \\\"flags\\\" must belong to the set of allowed values"));
     }
 
     @Test
@@ -580,7 +507,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .setOutputUnigrams(true));
 
         for (EdgeNGramTokenFilterSide filter : EdgeNGramTokenFilterSide.values()) {
-            tokenFilters.add(new EdgeNGramTokenFilter(generateName()).setMinGram(1).setMaxGram(2).setSide(filter));
+            tokenFilters.add(new EdgeNGramTokenFilterV2(generateName()).setMinGram(1).setMaxGram(2).setSide(filter));
         }
 
         for (PhoneticEncoder filter : PhoneticEncoder.values()) {
@@ -656,7 +583,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
         String nameBase = generateName();
 
-        List<LexicalTokenizerName> analyzerNames = LEXICAL_TOKENIZER_NAMES;
+        List<LexicalTokenizerName> analyzerNames = new ArrayList<>(LEXICAL_TOKENIZER_NAMES);
         analyzerNames.sort(Comparator.comparing(LexicalTokenizerName::toString));
 
         analyzerNames.stream().map(tn -> new CustomAnalyzer(nameBase + tn, tn)).forEach(analyzers::add);
@@ -745,7 +672,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setTokenChars(TokenCharacterKind.LETTER),
                 new NGramTokenizer(generateName()).setMinGram(2).setMaxGram(4).setTokenChars(TokenCharacterKind.LETTER),
                 new ClassicTokenizer(generateName()).setMaxTokenLength(100),
-                new KeywordTokenizer(generateName()).setBufferSize(100),
+                new KeywordTokenizerV2(generateName()).setMaxTokenLength(100),
                 new MicrosoftLanguageStemmingTokenizer(generateName()).setMaxTokenLength(100)
                     .setIsSearchTokenizer(true)
                     .setLanguage(MicrosoftStemmingTokenizerLanguage.CROATIAN),
@@ -758,7 +685,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setReverseTokenOrder(true)
                     .setNumberOfTokensToSkip(2),
                 new PatternTokenizer(generateName()).setPattern(".*").setFlags(RegexFlags.MULTILINE).setGroup(0),
-                new LuceneStandardTokenizer(generateName()).setMaxTokenLength(100),
+                new LuceneStandardTokenizerV2(generateName()).setMaxTokenLength(100),
                 new UaxUrlEmailTokenizer(generateName()).setMaxTokenLength(100))
             .setTokenFilters(new CjkBigramTokenFilter(customTokenFilterName.toString()),  // One custom token filter for CustomAnalyzer above.
                 new CjkBigramTokenFilter(generateName()).setIgnoreScripts(CjkBigramTokenFilterScripts.HAN)
@@ -772,7 +699,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setMinSubwordSize(5)
                     .setMaxSubwordSize(13)
                     .setOnlyLongestMatch(true),
-                new EdgeNGramTokenFilter(generateName()).setMinGram(2)
+                new EdgeNGramTokenFilterV2(generateName()).setMinGram(2)
                     .setMaxGram(10)
                     .setSide(EdgeNGramTokenFilterSide.BACK),
                 new ElisionTokenFilter(generateName()).setArticles("a"), new ElisionTokenFilter(generateName()),
@@ -781,7 +708,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                 new KeywordMarkerTokenFilter(generateName(), "essential"),
                 new LengthTokenFilter(generateName()).setMinLength(5).setMaxLength(10),
                 new LimitTokenFilter(generateName()).setMaxTokenCount(10).setConsumeAllTokens(true),
-                new NGramTokenFilter(generateName()).setMinGram(2).setMaxGram(3),
+                new NGramTokenFilterV2(generateName()).setMinGram(2).setMaxGram(3),
                 new PatternCaptureTokenFilter(generateName(), ".*").setPreserveOriginal(false),
                 new PatternReplaceTokenFilter(generateName(), "abc", "123"),
                 new PhoneticTokenFilter(generateName()).setEncoder(PhoneticEncoder.SOUNDEX)
@@ -827,14 +754,15 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .setAnalyzers(new PatternAnalyzer(generateSimpleName(i++)),
                 new LuceneStandardAnalyzer(generateSimpleName(i++)))
             .setTokenizers(new EdgeNGramTokenizer(generateSimpleName(i++)), new NGramTokenizer(generateSimpleName(i++)),
-                new ClassicTokenizer(generateSimpleName(i++)), new KeywordTokenizer(generateSimpleName(i++)),
+                new ClassicTokenizer(generateSimpleName(i++)), new KeywordTokenizerV2(generateSimpleName(i++)),
                 new MicrosoftLanguageStemmingTokenizer(generateSimpleName(i++)),
                 new MicrosoftLanguageTokenizer(generateSimpleName(i++)),
                 new PathHierarchyTokenizerV2(generateSimpleName(i++)), new PatternTokenizer(generateSimpleName(i++)),
-                new LuceneStandardTokenizer(generateSimpleName(i++)), new UaxUrlEmailTokenizer(generateSimpleName(i++)))
+                new LuceneStandardTokenizerV2(generateSimpleName(i++)),
+                new UaxUrlEmailTokenizer(generateSimpleName(i++)))
             .setTokenFilters(new DictionaryDecompounderTokenFilter(generateSimpleName(i++), "Bahnhof"),
-                new EdgeNGramTokenFilter(generateSimpleName(i++)), new LengthTokenFilter(generateSimpleName(i++)),
-                new LimitTokenFilter(generateSimpleName(i++)), new NGramTokenFilter(generateSimpleName(i++)),
+                new EdgeNGramTokenFilterV2(generateSimpleName(i++)), new LengthTokenFilter(generateSimpleName(i++)),
+                new LimitTokenFilter(generateSimpleName(i++)), new NGramTokenFilterV2(generateSimpleName(i++)),
                 new PatternCaptureTokenFilter(generateSimpleName(i++), "[a-z]*"),
                 new PhoneticTokenFilter(generateSimpleName(i++)), new ShingleTokenFilter(generateSimpleName(i++)),
                 new StopwordsTokenFilter(generateSimpleName(i++)),
@@ -851,7 +779,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .setTokenizers(new EdgeNGramTokenizer(generateSimpleName(i++)).setMinGram(1).setMaxGram(2),
                 new NGramTokenizer(generateSimpleName(i++)).setMinGram(1).setMaxGram(2),
                 new ClassicTokenizer(generateSimpleName(i++)).setMaxTokenLength(255),
-                new KeywordTokenizer(generateSimpleName(i++)).setBufferSize(256),
+                new KeywordTokenizerV2(generateSimpleName(i++)).setMaxTokenLength(256),
                 new MicrosoftLanguageStemmingTokenizer(generateSimpleName(i++)).setMaxTokenLength(255)
                     .setIsSearchTokenizer(false)
                     .setLanguage(MicrosoftStemmingTokenizerLanguage.ENGLISH),
@@ -862,18 +790,18 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setReplacement("/")
                     .setMaxTokenLength(300),
                 new PatternTokenizer(generateSimpleName(i++)).setPattern("\\W+").setGroup(-1),
-                new LuceneStandardTokenizer(generateSimpleName(i++)).setMaxTokenLength(255),
+                new LuceneStandardTokenizerV2(generateSimpleName(i++)).setMaxTokenLength(255),
                 new UaxUrlEmailTokenizer(generateSimpleName(i++)).setMaxTokenLength(255))
             .setTokenFilters(
                 new DictionaryDecompounderTokenFilter(generateSimpleName(i++), "Bahnhof").setMinWordSize(5)
                     .setMinSubwordSize(2)
                     .setMaxSubwordSize(15),
-                new EdgeNGramTokenFilter(generateSimpleName(i++)).setMinGram(1)
+                new EdgeNGramTokenFilterV2(generateSimpleName(i++)).setMinGram(1)
                     .setMaxGram(2)
                     .setSide(EdgeNGramTokenFilterSide.FRONT),
                 new LengthTokenFilter(generateSimpleName(i++)).setMaxLength(300),
                 new LimitTokenFilter(generateSimpleName(i++)).setMaxTokenCount(1),
-                new NGramTokenFilter(generateSimpleName(i++)).setMinGram(1).setMaxGram(2),
+                new NGramTokenFilterV2(generateSimpleName(i++)).setMinGram(1).setMaxGram(2),
                 new PatternCaptureTokenFilter(generateSimpleName(i++), "[a-z]*").setPreserveOriginal(true),
                 new PhoneticTokenFilter(generateSimpleName(i++)).setEncoder(PhoneticEncoder.METAPHONE)
                     .setReplaceOriginalTokens(true),

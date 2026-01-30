@@ -33,7 +33,9 @@ public final class SearchPagedResponse
     public SearchPagedResponse(Response<BinaryData> response, SearchServiceVersion serviceVersion) {
         this.response = response;
         this.page = response.getValue().toObject(SearchDocumentsResult.class);
-        this.continuationToken = new SearchContinuationToken(this.page.getNextPageParameters(), serviceVersion);
+        this.continuationToken = (this.page.getNextPageParameters() != null)
+            ? new SearchContinuationToken(this.page.getNextPageParameters(), serviceVersion)
+            : null;
     }
 
     /**

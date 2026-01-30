@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * The class is to test unsupported two-dimensional type.
  */
 public class HotelTwoDimensional {
-    @SimpleField(name = "Matrix")
+    @BasicField(name = "Matrix")
     private List<List<String>> matrix;
 
     /**

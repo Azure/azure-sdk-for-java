@@ -12,8 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -169,13 +167,9 @@ public class SemanticSearchExample {
      * Hotel model.
      */
     public static final class Hotel implements JsonSerializable<Hotel> {
-        @SimpleField(name = "HotelId", isKey = true)
         private String hotelId;
-        @SearchableField(name = "HotelName", isFilterable = true, analyzerName = "en.lucene")
         private String hotelName;
-        @SearchableField(name = "Description", analyzerName = "en.lucene")
         private String description;
-        @SearchableField(name = "Category", isFilterable = true, isFacetable = true, isSortable = true)
         private String category;
 
         public Hotel() {

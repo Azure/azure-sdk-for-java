@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,42 +17,42 @@ import java.util.List;
 
 @JsonPropertyOrder({ "Description", "Description_fr", "Type", "BaseRate", "BedOptions", "BedOptions", "SleepsCount", })
 public class HotelRoom implements JsonSerializable<HotelRoom> {
-    @SimpleField(name = "Description")
+    @BasicField(name = "Description")
     @JsonProperty(value = "Description")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
-    @SimpleField(name = "Description_fr")
+    @BasicField(name = "Description_fr")
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
-    @SimpleField(name = "Type")
+    @BasicField(name = "Type")
     @JsonProperty(value = "Type")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String type;
 
-    @SimpleField(name = "BaseRate")
+    @BasicField(name = "BaseRate")
     @JsonProperty(value = "BaseRate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Double baseRate;
 
-    @SimpleField(name = "BedOptions")
+    @BasicField(name = "BedOptions")
     @JsonProperty(value = "BedOptions")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String bedOptions;
 
-    @SimpleField(name = "SleepsCount")
+    @BasicField(name = "SleepsCount")
     @JsonProperty(value = "SleepsCount")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer sleepsCount;
 
-    @SimpleField(name = "SmokingAllowed")
+    @BasicField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean smokingAllowed;
 
-    @SimpleField(name = "Tags")
+    @BasicField(name = "Tags")
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String[] tags;
@@ -137,7 +137,7 @@ public class HotelRoom implements JsonSerializable<HotelRoom> {
             .writeStringField("Type", type)
             .writeNumberField("BaseRate", baseRate)
             .writeStringField("BedOptions", bedOptions)
-            .writeNumberField("SleepCount", sleepsCount)
+            .writeNumberField("SleepsCount", sleepsCount)
             .writeBooleanField("SmokingAllowed", smokingAllowed)
             .writeArrayField("Tags", tags, JsonWriter::writeString)
             .writeEndObject();
@@ -158,10 +158,23 @@ public class HotelRoom implements JsonSerializable<HotelRoom> {
                 } else if ("Type".equals(fieldName)) {
                     hotelRoom.type = reader.getString();
                 } else if ("BaseRate".equals(fieldName)) {
-                    hotelRoom.baseRate = reader.getNullable(JsonReader::getDouble);
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String str = reader.getString();
+                        if ("INF".equals(str) || "+INF".equals(str)) {
+                            hotelRoom.baseRate = Double.POSITIVE_INFINITY;
+                        } else if ("-INF".equals(str)) {
+                            hotelRoom.baseRate = Double.NEGATIVE_INFINITY;
+                        } else if ("NaN".equals(str)) {
+                            hotelRoom.baseRate = Double.NaN;
+                        } else {
+                            hotelRoom.baseRate = Double.parseDouble(str);
+                        }
+                    } else {
+                        hotelRoom.baseRate = reader.getNullable(JsonReader::getDouble);
+                    }
                 } else if ("BedOptions".equals(fieldName)) {
                     hotelRoom.bedOptions = reader.getString();
-                } else if ("SleepCount".equals(fieldName)) {
+                } else if ("SleepsCount".equals(fieldName)) {
                     hotelRoom.sleepsCount = reader.getNullable(JsonReader::getInt);
                 } else if ("SmokingAllowed".equals(fieldName)) {
                     hotelRoom.smokingAllowed = reader.getNullable(JsonReader::getBoolean);

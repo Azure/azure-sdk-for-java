@@ -1171,12 +1171,12 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                 } else if ("filter".equals(fieldName)) {
                     deserializedSearchPostRequest.filter = reader.getString();
                 } else if ("highlight".equals(fieldName)) {
-                    String highlightFieldsEncodedAsString = reader.getString();
-                    List<String> highlightFields = highlightFieldsEncodedAsString == null
-                        ? null
-                        : highlightFieldsEncodedAsString.isEmpty()
+                    List<String> highlightFields = reader.getNullable(nonNullReader -> {
+                        String highlightFieldsEncodedAsString = nonNullReader.getString();
+                        return highlightFieldsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(highlightFieldsEncodedAsString.split(",", -1)));
+                    });
                     deserializedSearchPostRequest.highlightFields = highlightFields;
                 } else if ("highlightPostTag".equals(fieldName)) {
                     deserializedSearchPostRequest.highlightPostTag = reader.getString();
@@ -1185,12 +1185,12 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                 } else if ("minimumCoverage".equals(fieldName)) {
                     deserializedSearchPostRequest.minimumCoverage = reader.getNullable(JsonReader::getDouble);
                 } else if ("orderby".equals(fieldName)) {
-                    String orderByEncodedAsString = reader.getString();
-                    List<String> orderBy = orderByEncodedAsString == null
-                        ? null
-                        : orderByEncodedAsString.isEmpty()
+                    List<String> orderBy = reader.getNullable(nonNullReader -> {
+                        String orderByEncodedAsString = nonNullReader.getString();
+                        return orderByEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(orderByEncodedAsString.split(",", -1)));
+                    });
                     deserializedSearchPostRequest.orderBy = orderBy;
                 } else if ("queryType".equals(fieldName)) {
                     deserializedSearchPostRequest.queryType = QueryType.fromString(reader.getString());
@@ -1208,12 +1208,12 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                 } else if ("search".equals(fieldName)) {
                     deserializedSearchPostRequest.searchText = reader.getString();
                 } else if ("searchFields".equals(fieldName)) {
-                    String searchFieldsEncodedAsString = reader.getString();
-                    List<String> searchFields = searchFieldsEncodedAsString == null
-                        ? null
-                        : searchFieldsEncodedAsString.isEmpty()
+                    List<String> searchFields = reader.getNullable(nonNullReader -> {
+                        String searchFieldsEncodedAsString = nonNullReader.getString();
+                        return searchFieldsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(searchFieldsEncodedAsString.split(",", -1)));
+                    });
                     deserializedSearchPostRequest.searchFields = searchFields;
                 } else if ("searchMode".equals(fieldName)) {
                     deserializedSearchPostRequest.searchMode = SearchMode.fromString(reader.getString());
@@ -1222,12 +1222,12 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                 } else if ("speller".equals(fieldName)) {
                     deserializedSearchPostRequest.querySpeller = QuerySpellerType.fromString(reader.getString());
                 } else if ("select".equals(fieldName)) {
-                    String selectEncodedAsString = reader.getString();
-                    List<String> select = selectEncodedAsString == null
-                        ? null
-                        : selectEncodedAsString.isEmpty()
+                    List<String> select = reader.getNullable(nonNullReader -> {
+                        String selectEncodedAsString = nonNullReader.getString();
+                        return selectEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(selectEncodedAsString.split(",", -1)));
+                    });
                     deserializedSearchPostRequest.select = select;
                 } else if ("skip".equals(fieldName)) {
                     deserializedSearchPostRequest.skip = reader.getNullable(JsonReader::getInt);
@@ -1250,12 +1250,12 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
                 } else if ("queryRewrites".equals(fieldName)) {
                     deserializedSearchPostRequest.queryRewrites = QueryRewritesType.fromString(reader.getString());
                 } else if ("semanticFields".equals(fieldName)) {
-                    String semanticFieldsEncodedAsString = reader.getString();
-                    List<String> semanticFields = semanticFieldsEncodedAsString == null
-                        ? null
-                        : semanticFieldsEncodedAsString.isEmpty()
+                    List<String> semanticFields = reader.getNullable(nonNullReader -> {
+                        String semanticFieldsEncodedAsString = nonNullReader.getString();
+                        return semanticFieldsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(semanticFieldsEncodedAsString.split(",", -1)));
+                    });
                     deserializedSearchPostRequest.semanticFields = semanticFields;
                 } else if ("vectorQueries".equals(fieldName)) {
                     List<VectorQuery> vectorQueries = reader.readArray(reader1 -> VectorQuery.fromJson(reader1));

@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.BasicField;
 
 /**
  * The data object model is to test exception case.
@@ -16,7 +16,7 @@ public class HotelSearchException extends RuntimeException {
      *
      * @return Get hotel id
      */
-    @SearchableField(name = "HotelId")
+    @BasicField(name = "HotelId", isSearchable = BasicField.BooleanHelper.TRUE)
     public int getHotelId() {
         return hotelId;
     }

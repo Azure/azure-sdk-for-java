@@ -19,6 +19,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
@@ -56,7 +57,7 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
+     * Gets the {@link HttpPipeline} used to communicate with the Azure AI Search service.
      *
      * @return the pipeline.
      */
@@ -65,12 +66,21 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Gets the endpoint for the Azure AI Search service.
+     * Gets the endpoint used to communicate with the Azure AI Search service.
      *
-     * @return the endpoint value.
+     * @return The endpoint.
      */
-    String getEndpoint() {
+    public String getEndpoint() {
         return serviceClient.getEndpoint();
+    }
+
+    /**
+     * Gets the {@link SearchServiceVersion} used to communicate with the Azure AI Search service.
+     *
+     * @return The service version.
+     */
+    public SearchServiceVersion getServiceVersion() {
+        return serviceClient.getServiceVersion();
     }
 
     /**
@@ -93,7 +103,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -134,9 +144,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -312,11 +322,15 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
-        return this.serviceClient
-            .createOrUpdateDataSourceConnectionWithResponseAsync(dataSource.getName(),
-                BinaryData.fromObject(dataSource), requestOptions)
-            .map(response -> new SimpleResponse<>(response,
-                response.getValue().toObject(SearchIndexerDataSourceConnection.class)));
+        try {
+            return this.serviceClient
+                .createOrUpdateDataSourceConnectionWithResponseAsync(dataSource.getName(),
+                    BinaryData.fromObject(dataSource), requestOptions)
+                .map(response -> new SimpleResponse<>(response,
+                    response.getValue().toObject(SearchIndexerDataSourceConnection.class)));
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**
@@ -348,7 +362,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -417,7 +431,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -480,7 +494,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new datasource.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -521,9 +535,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -601,7 +615,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -647,7 +661,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -714,7 +728,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -793,9 +807,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1085,9 +1099,14 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         RequestOptions requestOptions) {
-        return this.serviceClient
-            .createOrUpdateIndexerWithResponseAsync(indexer.getName(), BinaryData.fromObject(indexer), requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexer.class)));
+        try {
+            return this.serviceClient
+                .createOrUpdateIndexerWithResponseAsync(indexer.getName(), BinaryData.fromObject(indexer),
+                    requestOptions)
+                .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexer.class)));
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**
@@ -1119,7 +1138,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1225,7 +1244,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1343,7 +1362,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new indexer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1422,9 +1441,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1521,7 +1540,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Returns the current status and execution history of an indexer.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1628,7 +1647,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1746,9 +1765,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2155,10 +2174,15 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        return this.serviceClient
-            .createOrUpdateSkillsetWithResponseAsync(skillset.getName(), BinaryData.fromObject(skillset),
-                requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(SearchIndexerSkillset.class)));
+        try {
+            return this.serviceClient
+                .createOrUpdateSkillsetWithResponseAsync(skillset.getName(), BinaryData.fromObject(skillset),
+                    requestOptions)
+                .map(response -> new SimpleResponse<>(response,
+                    response.getValue().toObject(SearchIndexerSkillset.class)));
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**
@@ -2190,7 +2214,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Retrieves a skillset in a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2335,7 +2359,7 @@ public final class SearchIndexerAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2475,7 +2499,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2593,9 +2617,9 @@ public final class SearchIndexerAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2731,7 +2755,7 @@ public final class SearchIndexerAsyncClient {
     /**
      * Reset an existing skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2814,7 +2838,11 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection>
         createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSource) {
-        return createOrUpdateDataSourceConnection(dataSource.getName(), dataSource);
+        try {
+            return createOrUpdateDataSourceConnection(dataSource.getName(), dataSource);
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**
@@ -3185,7 +3213,11 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
-        return createOrUpdateIndexer(indexer.getName(), indexer);
+        try {
+            return createOrUpdateIndexer(indexer.getName(), indexer);
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**
@@ -3482,7 +3514,11 @@ public final class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
-        return createOrUpdateSkillset(skillset.getName(), skillset);
+        try {
+            return createOrUpdateSkillset(skillset.getName(), skillset);
+        } catch (Exception ex) {
+            return Mono.error(ex);
+        }
     }
 
     /**

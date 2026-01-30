@@ -328,9 +328,7 @@ Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
 public static class Hotel {
-    @SimpleField(name = "Id", isKey = true, isFilterable = true, isSortable = true)
     private String id;
-    @SearchableField(name = "Name", isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {

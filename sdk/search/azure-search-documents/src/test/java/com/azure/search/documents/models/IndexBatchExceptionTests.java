@@ -14,6 +14,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -123,23 +124,25 @@ public class IndexBatchExceptionTests {
         return exception.findFailedActionsToRetry(originalBatch, "HotelId");
     }
 
-    private static IndexingResult createSucceededResult() {
+    private static String createSucceededResult() {
         return createResult("1", true, 200, null);
     }
 
-    private static IndexingResult createResult(String key) {
+    private static String createResult(String key) {
         return createResult(key, true, 201, null);
     }
 
-    private IndexingResult createFailedResult(String key, int statusCode) {
+    private String createFailedResult(String key, int statusCode) {
         return createResult(key, false, statusCode, "Something went wrong");
     }
 
-    private static IndexDocumentsResult createResults(IndexingResult... results) {
+    private static IndexDocumentsResult createResults(String... results) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-                jsonWriter.writeStartObject().writeArrayField("value", results, JsonWriter::writeJson).writeEndObject();
+                jsonWriter.writeStartObject()
+                    .writeArrayField("value", results, JsonWriter::writeRawValue)
+                    .writeEndObject();
             }
 
             try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
@@ -150,7 +153,7 @@ public class IndexBatchExceptionTests {
         }
     }
 
-    private static IndexingResult createResult(String key, boolean status, int statusCode, String errorMessage) {
+    private static String createResult(String key, boolean status, int statusCode, String errorMessage) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
@@ -162,9 +165,7 @@ public class IndexBatchExceptionTests {
                     .writeEndObject();
             }
 
-            try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
-                return IndexingResult.fromJson(jsonReader);
-            }
+            return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

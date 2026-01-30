@@ -4,6 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
@@ -451,16 +452,11 @@ public class AutocompleteTests extends SearchTestBase {
     }
 
     private AutocompleteResult autocompleteWithResponseSync(AutocompleteOptions options) {
-        return client
-            .autocompleteWithResponse(BinaryData.fromObject(options), new RequestOptions().setContext(Context.NONE))
-            .getValue()
-            .toObject(AutocompleteResult.class);
+        return client.autocompleteWithResponse(options, new RequestOptions()).getValue();
     }
 
     private Mono<AutocompleteResult> autocompleteWithResponseAsync(AutocompleteOptions options) {
-        return asyncClient
-            .autocompleteWithResponse(BinaryData.fromObject(options), new RequestOptions().setContext(Context.NONE))
-            .map(response -> response.getValue().toObject(AutocompleteResult.class));
+        return asyncClient.autocompleteWithResponse(options, new RequestOptions()).map(Response::getValue);
     }
 
     private static void autocompleteAndValidateSync(AutocompleteResult autocomplete, List<String> expectedTexts,

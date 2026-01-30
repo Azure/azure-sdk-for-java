@@ -130,12 +130,12 @@ public final class SearchIndexingAsyncPublisher {
             } catch (InterruptedException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-
+            
             return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions),
-                Semaphore::release);
+                Semaphore::release, true);
         } else if (processingSemaphore.tryAcquire()) {
             return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions),
-                Semaphore::release);
+                Semaphore::release, true);
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();

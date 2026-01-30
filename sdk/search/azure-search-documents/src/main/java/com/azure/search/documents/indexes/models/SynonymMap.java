@@ -208,12 +208,12 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("synonyms".equals(fieldName)) {
-                    String synonymsEncodedAsString = reader.getString();
-                    synonyms = synonymsEncodedAsString == null
-                        ? null
-                        : synonymsEncodedAsString.isEmpty()
+                    synonyms = reader.getNullable(nonNullReader -> {
+                        String synonymsEncodedAsString = nonNullReader.getString();
+                        return synonymsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(synonymsEncodedAsString.split("\n", -1)));
+                    });
                 } else if ("encryptionKey".equals(fieldName)) {
                     encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {

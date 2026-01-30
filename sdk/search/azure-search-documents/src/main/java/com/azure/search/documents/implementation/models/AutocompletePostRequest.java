@@ -390,12 +390,12 @@ public final class AutocompletePostRequest implements JsonSerializable<Autocompl
                 } else if ("minimumCoverage".equals(fieldName)) {
                     minimumCoverage = reader.getNullable(JsonReader::getDouble);
                 } else if ("searchFields".equals(fieldName)) {
-                    String searchFieldsEncodedAsString = reader.getString();
-                    searchFields = searchFieldsEncodedAsString == null
-                        ? null
-                        : searchFieldsEncodedAsString.isEmpty()
+                    searchFields = reader.getNullable(nonNullReader -> {
+                        String searchFieldsEncodedAsString = nonNullReader.getString();
+                        return searchFieldsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.asList(searchFieldsEncodedAsString.split(",", -1)));
+                    });
                 } else if ("top".equals(fieldName)) {
                     top = reader.getNullable(JsonReader::getInt);
                 } else {

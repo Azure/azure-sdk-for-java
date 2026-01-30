@@ -49,19 +49,14 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBui
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
-import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -317,19 +312,19 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             new SearchField("ParkingIncluded", SearchFieldDataType.BOOLEAN).setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE)
-                .setSearchable(Boolean.TRUE),
+                .setRetrievable(Boolean.TRUE),
             new SearchField("SmokingAllowed", SearchFieldDataType.BOOLEAN).setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE)
-                .setSearchable(Boolean.TRUE),
+                .setRetrievable(Boolean.TRUE),
             new SearchField("LastRenovationDate", SearchFieldDataType.DATE_TIME_OFFSET).setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE)
-                .setSearchable(Boolean.TRUE),
+                .setRetrievable(Boolean.TRUE),
             new SearchField("Rating", SearchFieldDataType.INT32).setFilterable(Boolean.TRUE)
                 .setSortable(Boolean.TRUE)
                 .setFacetable(Boolean.TRUE)
-                .setSearchable(Boolean.TRUE),
+                .setRetrievable(Boolean.TRUE),
             new SearchField("Address", SearchFieldDataType.COMPLEX).setFields(
                 new SearchField("StreetAddress", SearchFieldDataType.STRING).setSearchable(Boolean.TRUE)
                     .setSearchable(Boolean.TRUE),
@@ -493,14 +488,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     }
 
     @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
-    protected static Date parseDate(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        try {
-            return dateFormat.parse(dateString);
-        } catch (ParseException ex) {
-            throw new RuntimeException(ex);
-        }
+    protected static OffsetDateTime parseDate(String dateString) {
+        return OffsetDateTime.parse(dateString);
     }
 }

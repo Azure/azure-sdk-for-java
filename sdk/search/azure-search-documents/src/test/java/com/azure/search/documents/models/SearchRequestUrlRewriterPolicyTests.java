@@ -3,28 +3,17 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Context;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchRequestUrlRewriterPolicy;
-import com.azure.search.documents.indexes.SearchIndexAsyncClient;
-import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
-import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.DataSourceCredentials;
-import com.azure.search.documents.indexes.models.SearchAlias;
-import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.SkillNames;
-import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.*;
+import com.azure.search.documents.indexes.models.*;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,8 +44,17 @@ public class SearchRequestUrlRewriterPolicyTests {
 
     public static Stream<Arguments> correctUrlRewriteSupplier() {
         String endpoint = "https://test.search.windows.net";
-        HttpClient urlRewriteHttpClient
-            = request -> Mono.error(new UrlRewriteException("Url rewritten", request.getUrl().toString()));
+        HttpClient urlRewriteHttpClient = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.error(new UrlRewriteException("Url rewritten", request.getUrl().toString()));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                throw new UrlRewriteException("Url rewritten", request.getUrl().toString());
+            }
+        };
 
         SearchIndexClientBuilder indexClientBuilder = new SearchIndexClientBuilder().endpoint(endpoint)
             .credential(new MockTokenCredential())
@@ -78,11 +76,11 @@ public class SearchRequestUrlRewriterPolicyTests {
         SearchIndexerAsyncClient indexerAsyncClient = indexerClientBuilder.buildAsyncClient();
 
         String indexesUrl = endpoint + "/indexes";
-        String docsUrl = indexesUrl + "/indexes/test/docs";
+        String docsUrl = indexesUrl + "/test/docs";
+        String indexUrl = indexesUrl + "/index";
 
         String indexersUrl = endpoint + "/indexers";
         SearchIndex index = new SearchIndex("index");
-        String indexUrl = indexersUrl + "/index";
 
         String synonymMapsUrl = endpoint + "/synonymmaps";
         SynonymMap synonymMap = new SynonymMap("synonym");
@@ -115,7 +113,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(() -> searchClient.search(null).iterator().hasNext()),
                 docsUrl + "/search.post.search"),
             Arguments.of(toCallable(() -> searchClient.suggest(new SuggestOptions("suggest", "suggester"))),
-                docsUrl + "/seach.post.suggest"),
+                docsUrl + "/search.post.suggest"),
             Arguments.of(
                 toCallable(() -> searchClient.autocomplete(new AutocompleteOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
@@ -140,7 +138,8 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(() -> indexClient.listIndexNames().iterator().hasNext()), indexesUrl),
             Arguments.of(toCallable(() -> indexClient.createOrUpdateIndexWithResponse(index, null)), indexUrl),
             Arguments.of(toCallable(() -> indexClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
-            Arguments.of(toCallable(() -> indexClient.analyzeText("index", null)), indexUrl + "/search.analyze"),
+            Arguments.of(toCallable(() -> indexClient.analyzeText("index", new AnalyzeTextOptions("text"))),
+                indexUrl + "/search.analyze"),
             Arguments.of(toCallable(() -> indexClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
                 synonymMapsUrl),
             Arguments.of(toCallable(() -> indexClient.getSynonymMapWithResponse("synonym", null)), synonymUrl),
@@ -166,7 +165,8 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(indexAsyncClient.listIndexNames()), indexesUrl),
             Arguments.of(toCallable(indexAsyncClient.createOrUpdateIndexWithResponse(index, null)), indexUrl),
             Arguments.of(toCallable(indexAsyncClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
-            Arguments.of(toCallable(indexAsyncClient.analyzeText("index", null)), indexUrl + "/search.analyze"),
+            Arguments.of(toCallable(indexAsyncClient.analyzeText("index", new AnalyzeTextOptions("text"))),
+                indexUrl + "/search.analyze"),
             Arguments.of(toCallable(indexAsyncClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
                 synonymMapsUrl),
             Arguments.of(toCallable(indexAsyncClient.getSynonymMapWithResponse("synonym", null)), synonymUrl),
@@ -268,7 +268,7 @@ public class SearchRequestUrlRewriterPolicyTests {
     }
 
     private static Callable<?> toCallable(Supplier<?> apiCall) {
-        return () -> apiCall;
+        return apiCall::get;
     }
 
     private static Callable<?> toCallable(Mono<?> apiCall) {

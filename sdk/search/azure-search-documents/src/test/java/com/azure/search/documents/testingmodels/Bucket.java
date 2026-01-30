@@ -1,22 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
 public class Bucket implements JsonSerializable<Bucket> {
-    @SimpleField(name = "BucketName")
+    @BasicField(name = "BucketName")
     @JsonProperty(value = "BucketName")
     private String bucketName;
 
-    @SimpleField(name = "Count")
+    @BasicField(name = "Count")
     @JsonProperty(value = "Count")
     private int count;
 

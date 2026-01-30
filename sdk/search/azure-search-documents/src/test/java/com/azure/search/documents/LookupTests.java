@@ -15,10 +15,10 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.LookupDocument;
-import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.test.environment.models.HotelAddress;
-import com.azure.search.documents.test.environment.models.HotelRoom;
-import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
+import com.azure.search.documents.testingmodels.Hotel;
+import com.azure.search.documents.testingmodels.HotelAddress;
+import com.azure.search.documents.testingmodels.HotelRoom;
+import com.azure.search.documents.testingmodels.ModelWithPrimitiveCollections;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -349,13 +348,13 @@ public class LookupTests extends SearchTestBase {
 
         Map<String, Object> originalDoc = new LinkedHashMap<>();
         originalDoc.put("Key", docKey);
-        originalDoc.put("Dates", new Object[] { });
-        originalDoc.put("Doubles", new Double[] { });
-        originalDoc.put("Bools", new boolean[] { });
-        originalDoc.put("Longs", new Long[] { });
-        originalDoc.put("Strings", new String[] { });
-        originalDoc.put("Ints", new int[] { });
-        originalDoc.put("Points", new Object[] { });
+        originalDoc.put("Dates", new Object[0]);
+        originalDoc.put("Doubles", new Double[0]);
+        originalDoc.put("Bools", new Boolean[0]);
+        originalDoc.put("Longs", new Long[0]);
+        originalDoc.put("Strings", new String[0]);
+        originalDoc.put("Ints", new Integer[0]);
+        originalDoc.put("Points", new Object[0]);
 
         Map<String, Object> expectedDoc = new LinkedHashMap<>();
         expectedDoc.put("Key", docKey);
@@ -380,13 +379,13 @@ public class LookupTests extends SearchTestBase {
 
         Map<String, Object> originalDoc = new LinkedHashMap<>();
         originalDoc.put("Key", docKey);
-        originalDoc.put("Dates", new Object[] { });
-        originalDoc.put("Doubles", new Double[] { });
-        originalDoc.put("Bools", new boolean[] { });
-        originalDoc.put("Longs", new Long[] { });
-        originalDoc.put("Strings", new String[] { });
-        originalDoc.put("Ints", new int[] { });
-        originalDoc.put("Points", new Object[] { });
+        originalDoc.put("Dates", new Object[0]);
+        originalDoc.put("Doubles", new Double[0]);
+        originalDoc.put("Bools", new Boolean[0]);
+        originalDoc.put("Longs", new Long[0]);
+        originalDoc.put("Strings", new String[0]);
+        originalDoc.put("Ints", new Integer[0]);
+        originalDoc.put("Points", new Object[0]);
 
         Map<String, Object> expectedDoc = new LinkedHashMap<>();
         expectedDoc.put("Key", docKey);
@@ -706,7 +705,7 @@ public class LookupTests extends SearchTestBase {
         indexedDoc.put("Bools", new Boolean[] { true, false });
         indexedDoc.put("Longs", new Long[] { 9999999999999999L, 832372345832523L });
         indexedDoc.put("Strings", new String[] { "hello", "bye" });
-        indexedDoc.put("Ints", new int[] { 1, 2, 3, 4, -13, 5, 0 });
+        indexedDoc.put("Ints", new Integer[] { 1, 2, 3, 4, -13, 5, 0 });
         indexedDoc.put("Points", new GeoPoint[] { geoPoint });
 
         // This is the expected document when querying the document later
@@ -717,7 +716,7 @@ public class LookupTests extends SearchTestBase {
         expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
         expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-        //expectedDoc.put("Points", Collections.singletonList(geoPoint));
+        expectedDoc.put("Points", Collections.singletonList(geoPoint));
         expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
         uploadDocumentRaw(client, indexedDoc);
@@ -741,7 +740,7 @@ public class LookupTests extends SearchTestBase {
         indexedDoc.put("Bools", new Boolean[] { true, false });
         indexedDoc.put("Longs", new Long[] { 9999999999999999L, 832372345832523L });
         indexedDoc.put("Strings", new String[] { "hello", "bye" });
-        indexedDoc.put("Ints", new int[] { 1, 2, 3, 4, -13, 5, 0 });
+        indexedDoc.put("Ints", new Integer[] { 1, 2, 3, 4, -13, 5, 0 });
         indexedDoc.put("Points", new GeoPoint[] { geoPoint });
 
         // This is the expected document when querying the document later
@@ -752,7 +751,7 @@ public class LookupTests extends SearchTestBase {
         expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
         expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-        //expectedDoc.put("Points", Collections.singletonList(geoPoint));
+        expectedDoc.put("Points", Collections.singletonList(geoPoint));
         expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
         uploadDocumentRaw(asyncClient, indexedDoc);
@@ -761,9 +760,7 @@ public class LookupTests extends SearchTestBase {
             (expected, actual) -> assertMapEquals(expected, actual, true, "properties"));
     }
 
-    @SuppressWarnings({ "deprecation", "UseOfObsoleteDateTimeApi" })
     static Hotel prepareExpectedHotel(String key) {
-        Date expectDate = Date.from(Instant.ofEpochMilli(1277582400000L));
         return new Hotel().hotelId(key)
             .hotelName("Fancy Stay")
             .description("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and "
@@ -776,8 +773,7 @@ public class LookupTests extends SearchTestBase {
             .tags(Arrays.asList("pool", "view", "wifi", "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
-            .lastRenovationDate(new Date(expectDate.getYear(), expectDate.getMonth(), expectDate.getDate(),
-                expectDate.getHours(), expectDate.getMinutes(), expectDate.getSeconds()))
+            .lastRenovationDate(OffsetDateTime.ofInstant(Instant.ofEpochMilli(1277582400000L), ZoneOffset.UTC))
             .rating(5)
             .location(new GeoPoint(-122.131577, 47.678581))
             .rooms(new ArrayList<>());
@@ -868,7 +864,6 @@ public class LookupTests extends SearchTestBase {
         return new Hotel().hotelId(key).hotelName("Lord of the Rings").description("J.R.R").descriptionFr("Tolkien");
     }
 
-    @SuppressWarnings({ "deprecation", "UseOfObsoleteDateTimeApi" })
     static Hotel prepareSelectedFieldsHotel(String key) {
         // Since Date doesn't have time zone information to make this test durable against time zones create the Date
         // from an OffsetDateTime.
@@ -887,8 +882,7 @@ public class LookupTests extends SearchTestBase {
             .tags(Arrays.asList("24-hour front desk service", "coffee in lobby", "restaurant"))
             .parkingIncluded(false)
             .smokingAllowed(true)
-            .lastRenovationDate(new Date(dateTime.getYear() - 1900, dateTime.getMonth().ordinal(),
-                dateTime.getDayOfMonth(), dateTime.getHour(), dateTime.getMinute()))
+            .lastRenovationDate(dateTime)
             .rating(3)
             .location(new GeoPoint(-78.940483, 35.904160))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd")

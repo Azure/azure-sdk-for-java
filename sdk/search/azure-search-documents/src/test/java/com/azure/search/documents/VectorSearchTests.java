@@ -78,7 +78,8 @@ public class VectorSearchTests extends SearchTestBase {
         document.put("Name", "Countryside Hotel");
 
         SearchAsyncClient searchClient = searchIndexClient.getSearchAsyncClient(indexName);
-        searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)));
+        searchClient.indexDocuments(new IndexDocumentsBatch(createIndexAction(IndexActionType.UPLOAD, document)))
+            .block();
 
         waitForIndexing();
 

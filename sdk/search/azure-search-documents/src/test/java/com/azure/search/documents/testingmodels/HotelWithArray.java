@@ -1,22 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 
 public class HotelWithArray {
     private String hotelId;
     private String[] tags;
 
-    @SimpleField(name = "HotelId", isKey = true, isSortable = true)
+    @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE, isSortable = BasicField.BooleanHelper.TRUE)
     public String getHotelId() {
         return hotelId;
     }
 
-    @SearchableField(name = "Tags")
+    @BasicField(name = "Tags", isSearchable = BasicField.BooleanHelper.TRUE)
     public String[] getTags() {
         return CoreUtils.clone(tags);
     }

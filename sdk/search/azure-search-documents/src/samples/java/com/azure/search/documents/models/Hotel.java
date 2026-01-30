@@ -4,8 +4,7 @@ package com.azure.search.documents.models;
 
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class Hotel implements JsonSerializable<Hotel> {
     }
 
     @JsonProperty(value = "HotelId")
-    @SimpleField(name = "HotelId", isKey = true)
+    @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE)
     public String getHotelId() {
         return this.hotelId;
     }
@@ -33,7 +32,11 @@ public class Hotel implements JsonSerializable<Hotel> {
     }
 
     @JsonProperty(value = "Tags")
-    @SearchableField(name = "Tags", isFilterable = true, analyzerName = "en.lucene")
+    @BasicField(
+        name = "Tags",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        isFilterable = BasicField.BooleanHelper.TRUE,
+        analyzerName = "en.lucene")
     public List<String> getTags() {
         return this.tags;
     }

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
@@ -8,7 +8,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,35 +20,35 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWithPrimitiveCollections> {
-    @SimpleField(name = "Key", isKey = true)
+    @BasicField(name = "Key", isKey = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "Key")
     private String key;
 
-    @SimpleField(name = "Bools")
+    @BasicField(name = "Bools")
     @JsonProperty(value = "Bools")
     private Boolean[] bools;
 
-    @SimpleField(name = "Dates")
+    @BasicField(name = "Dates")
     @JsonProperty(value = "Dates")
     private OffsetDateTime[] dates;
 
-    @SimpleField(name = "Doubles")
+    @BasicField(name = "Doubles")
     @JsonProperty(value = "Doubles")
     private Double[] doubles;
 
-    @SimpleField(name = "Ints")
+    @BasicField(name = "Ints")
     @JsonProperty(value = "Ints")
     private int[] ints;
 
-    @SimpleField(name = "Longs")
+    @BasicField(name = "Longs")
     @JsonProperty(value = "Longs")
     private Long[] longs;
 
-    @SimpleField(name = "Points")
+    @BasicField(name = "Points")
     @JsonProperty(value = "Points")
     private GeoPoint[] points;
 
-    @SimpleField(name = "Strings")
+    @BasicField(name = "Strings")
     @JsonProperty(value = "Strings")
     private String[] strings;
 
@@ -166,7 +166,22 @@ public class ModelWithPrimitiveCollections implements JsonSerializable<ModelWith
                         model.dates = dates.toArray(new OffsetDateTime[0]);
                     }
                 } else if ("Doubles".equals(fieldName)) {
-                    List<Double> doubles = reader.readArray(elem -> elem.getNullable(JsonReader::getDouble));
+                    List<Double> doubles = reader.readArray(elem -> elem.getNullable(nonNull -> {
+                        if (nonNull.currentToken() == JsonToken.STRING) {
+                            String str = nonNull.getString();
+                            if ("INF".equals(str) || "+INF".equals(str)) {
+                                return Double.POSITIVE_INFINITY;
+                            } else if ("-INF".equals(str)) {
+                                return Double.NEGATIVE_INFINITY;
+                            } else if ("NaN".equals(str)) {
+                                return Double.NaN;
+                            } else {
+                                return Double.parseDouble(str);
+                            }
+                        } else {
+                            return nonNull.getDouble();
+                        }
+                    }));
                     if (doubles != null) {
                         model.doubles = doubles.toArray(new Double[0]);
                     }

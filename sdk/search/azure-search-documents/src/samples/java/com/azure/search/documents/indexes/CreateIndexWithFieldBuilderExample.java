@@ -30,9 +30,10 @@ public class CreateIndexWithFieldBuilderExample {
             .buildClient();
 
         // Use the SearchIndexClient to create SearchFields from your own model that has fields or methods annotated
-        // with @SimpleField or @SearchableField.
+        // with @BasicField or @ComplexField.
         List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class);
-        indexFields.add(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true).setFilterable(true).setSortable(true));
+        indexFields.add(
+            new SearchField("HotelId", SearchFieldDataType.STRING).setKey(true).setFilterable(true).setSortable(true));
         String indexName = "hotels";
         SearchIndex newIndex = new SearchIndex(indexName, indexFields);
         // Create index.
@@ -45,19 +46,22 @@ public class CreateIndexWithFieldBuilderExample {
      * A hotel.
      */
     public static final class Hotel {
-        @SimpleField(name = "HotelId", isKey = true, isFilterable = true, isSortable = true)
         private final String hotelId;
 
-        @SearchableField(name = "HotelName", isFilterable = true, isSortable = true)
+        @BasicField(
+            name = "HotelName",
+            isSearchable = BasicField.BooleanHelper.TRUE,
+            isSortable = BasicField.BooleanHelper.TRUE)
         private String hotelName;
 
-        @SearchableField(name = "Description", analyzerName = "en.lucene")
+        @BasicField(name = "Description", isSearchable = BasicField.BooleanHelper.TRUE)
         private String description;
 
-        @SearchableField(name = "DescriptionFr", analyzerName = "fr.lucene")
+        @BasicField(name = "DescriptionFr")
         private String descriptionFr;
 
-        @SearchableField(name = "Tags", isFilterable = true, isFacetable = true)
+        @BasicField(
+            name = "Tags", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private List<String> tags;
 
         @ComplexField(name = "Address")
@@ -186,24 +190,27 @@ public class CreateIndexWithFieldBuilderExample {
      * An address.
      */
     public static final class Address {
-        @SearchableField(name = "StreetAddress")
+        @BasicField(name = "StreetAddress")
         private String streetAddress;
 
-        @SearchableField(name = "City", isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "City", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private String city;
 
-        @SearchableField(name = "StateProvince", isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "StateProvince",
+            isFacetable = BasicField.BooleanHelper.TRUE,
+            isFilterable = BasicField.BooleanHelper.TRUE)
         private String stateProvince;
 
-        @SearchableField(
-            name = "Country",
-            synonymMapNames = { "synonymMapName" },
-            isFilterable = true,
-            isSortable = true,
-            isFacetable = true)
+        @BasicField(
+            name = "Country", isFacetable = BasicField.BooleanHelper.TRUE, isFilterable = BasicField.BooleanHelper.TRUE)
         private String country;
 
-        @SearchableField(name = "PostalCode", isFilterable = true, isSortable = true, isFacetable = true)
+        @BasicField(
+            name = "PostalCode",
+            isFacetable = BasicField.BooleanHelper.TRUE,
+            isFilterable = BasicField.BooleanHelper.TRUE)
         private String postalCode;
 
         /**

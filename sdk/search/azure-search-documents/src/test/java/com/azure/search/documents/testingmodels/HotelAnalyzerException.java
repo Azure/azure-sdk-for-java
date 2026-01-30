@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.BasicField;
 
 public class HotelAnalyzerException extends RuntimeException {
     private String tag;
@@ -13,7 +13,11 @@ public class HotelAnalyzerException extends RuntimeException {
      *
      * @return The tag of hotel.
      */
-    @SearchableField(name = "Tag", analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
+    @BasicField(
+        name = "Tag",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        analyzerName = "en.microsoft",
+        indexAnalyzerName = "whitespce")
     public String getTag() {
         return tag;
     }

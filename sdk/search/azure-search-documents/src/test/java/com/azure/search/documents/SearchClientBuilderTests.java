@@ -113,18 +113,8 @@ public class SearchClientBuilderTests {
     }
 
     @Test
-    public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().endpoint(""));
-    }
-
-    @Test
     public void nullIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(null));
-    }
-
-    @Test
-    public void emptyIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(""));
+        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().indexName(null).buildClient());
     }
 
     @Test

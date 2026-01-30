@@ -1,40 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
+import com.azure.search.documents.indexes.BasicField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
 public class HotelAddress implements JsonSerializable<HotelAddress> {
-    @SimpleField(name = "StreetAddress", isFacetable = true)
+    @BasicField(name = "StreetAddress", isFacetable = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "StreetAddress")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String streetAddress;
 
-    @SearchableField(name = "City", isFilterable = true)
+    @BasicField(
+        name = "City",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        isFilterable = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "City")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String city;
 
-    @SearchableField(name = "StateProvince")
+    @BasicField(name = "StateProvince", isSearchable = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "StateProvince")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String stateProvince;
 
-    @SearchableField(name = "Country", synonymMapNames = { "fieldbuilder" })
+    @BasicField(name = "Country", isSearchable = BasicField.BooleanHelper.TRUE, synonymMapNames = { "fieldbuilder" })
     @JsonProperty(value = "Country")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String country;
 
-    @SimpleField(name = "PostalCode")
+    @BasicField(name = "PostalCode")
     @JsonProperty(value = "PostalCode")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String postalCode;

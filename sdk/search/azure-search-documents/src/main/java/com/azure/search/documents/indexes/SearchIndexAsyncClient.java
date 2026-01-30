@@ -20,28 +20,21 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.indexes.models.AnalyzeResult;
-import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
-import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
-import com.azure.search.documents.indexes.models.KnowledgeBase;
-import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.SearchAlias;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchServiceStatistics;
-import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.*;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -68,7 +61,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets the {@link HttpPipeline} powering this client.
+     * Gets the {@link HttpPipeline} used to communicate with the Azure AI Search service.
      *
      * @return the pipeline.
      */
@@ -77,22 +70,109 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets the endpoint for the Azure AI Search service.
+     * Gets the endpoint used to communicate with the Azure AI Search service.
      *
-     * @return the endpoint value.
+     * @return The endpoint.
      */
-    String getEndpoint() {
+    public String getEndpoint() {
         return serviceClient.getEndpoint();
     }
 
     /**
+     * Gets the {@link SearchServiceVersion} used to communicate with the Azure AI Search service.
+     *
+     * @return The service version.
+     */
+    public SearchServiceVersion getServiceVersion() {
+        return serviceClient.getServiceVersion();
+    }
+
+    /**
      * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} annotated
-     * with either {@link SimpleField} or {@link SearchableField} into {@link SearchField SearchFields} to help aid the
+     * with either {@link BasicField} or {@link ComplexField} into {@link SearchField SearchFields} to help aid the
      * creation of a {@link SearchField} which represents the {@link Class}.
+     * <p>
+     * This helper only inspects {@link Field fields} and {@link Method methods} declared by the model, and uses
+     * the following rules for creating {@link SearchField SearchFields}:
+     * <ul>
+     *     <li>If the field or method is annotated with {@link BasicField} the {@link SearchFieldDataType} inferred by the
+     *     type of the field or return type of the method cannot be {@link SearchFieldDataType#COMPLEX}. It may be a
+     *     {@link SearchFieldDataType#collection(SearchFieldDataType)} though.</li>
+     *     <li>If the field or method is annotated with {@link ComplexField} the {@link SearchFieldDataType} inferred by the
+     *     type of the field or return type of the method must be {@link SearchFieldDataType#COMPLEX}. It may be a
+     *     {@link SearchFieldDataType#collection(SearchFieldDataType)} of {@link SearchFieldDataType#COMPLEX}.</li>
+     *     <li>If the field or method isn't annotated with either {@link BasicField} or {@link ComplexField} it will be
+     *     ignored.</li>
+     * </ul>
+     * <p>
+     * If the type of the field or return type of the method is an array or {@link Iterable} it will be considered a
+     * {@link SearchFieldDataType#collection(SearchFieldDataType)} type. Nested
+     * {@link SearchFieldDataType#collection(SearchFieldDataType)} aren't allowed and will throw an exception, ex.
+     * {@code String[][]}, {@code List<List<String>>}, {@code List<String[]>}, {@code List<String>[]}, etc.
+     *
+     * <table border="1">
+     *     <caption>Conversion of Java type to {@link SearchFieldDataType}</caption>
+     *     <thead>
+     *         <tr><th>Java type</th><th>{@link SearchFieldDataType}</th></tr>
+     *     </thead>
+     *     <tbody>
+     *         <tr><td>{@code byte}</td><td>{@link SearchFieldDataType#SBYTE}</td></tr>
+     *         <tr><td>{@link Byte}</td><td>{@link SearchFieldDataType#SBYTE}</td></tr>
+     *         <tr><td>{@code boolean}</td><td>{@link SearchFieldDataType#BOOLEAN}</td></tr>
+     *         <tr><td>{@link Boolean}</td><td>{@link SearchFieldDataType#BOOLEAN}</td></tr>
+     *         <tr><td>{@code short}</td><td>{@link SearchFieldDataType#INT16}</td></tr>
+     *         <tr><td>{@link Short}</td><td>{@link SearchFieldDataType#INT16}</td></tr>
+     *         <tr><td>{@code int}</td><td>{@link SearchFieldDataType#INT32}</td></tr>
+     *         <tr><td>{@link Integer}</td><td>{@link SearchFieldDataType#INT32}</td></tr>
+     *         <tr><td>{@code long}</td><td>{@link SearchFieldDataType#INT64}</td></tr>
+     *         <tr><td>{@link Long}</td><td>{@link SearchFieldDataType#INT64}</td></tr>
+     *         <tr><td>{@code float}</td><td>{@link SearchFieldDataType#SINGLE}</td></tr>
+     *         <tr><td>{@link Float}</td><td>{@link SearchFieldDataType#SINGLE}</td></tr>
+     *         <tr><td>{@code double}</td><td>{@link SearchFieldDataType#DOUBLE}</td></tr>
+     *         <tr><td>{@link Double}</td><td>{@link SearchFieldDataType#DOUBLE}</td></tr>
+     *         <tr><td>{@code char}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+     *         <tr><td>{@link Character}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+     *         <tr><td>{@link CharSequence}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+     *         <tr><td>{@link String}</td><td>{@link SearchFieldDataType#STRING}</td></tr>
+     *         <tr><td>{@link Date}</td><td>{@link SearchFieldDataType#DATE_TIME_OFFSET}</td></tr>
+     *         <tr><td>{@link OffsetDateTime}</td><td>{@link SearchFieldDataType#DATE_TIME_OFFSET}</td></tr>
+     *         <tr><td>{@link GeoPoint}</td><td>{@link SearchFieldDataType#GEOGRAPHY_POINT}</td></tr>
+     *         <tr><td>Any other type</td><td>Attempted to be consumed as {@link SearchFieldDataType#COMPLEX}</td></tr>
+     *     </tbody>
+     * </table>
+     * <p>
+     * {@link SearchFieldDataType#HALF} and {@link SearchFieldDataType#BYTE} aren't supported by {@link Field} given there
+     * isn't a built-in Java type that represents them.
+     * <p>
+     * When generating {@link SearchField SearchFields} there is a maximum class depth limit of {@code 1000} before an
+     * exception will be thrown.
+     * <p>
+     * This helper method performs a few basic validation on the created {@link SearchField SearchFields}, they are the
+     * following:
+     * <ul>
+     *     <li>If {@link BasicField#isHidden()} and {@link BasicField#isRetrievable()} must have different
+     *     {@link BasicField.BooleanHelper} values or both be set to {@link BasicField.BooleanHelper#NULL}.</li>
+     *     <li>If {@link BasicField#isSearchable()} is true, then the inferred {@link SearchFieldDataType} must be one
+     *     of {@link SearchFieldDataType#STRING}, {@link SearchFieldDataType#collection(SearchFieldDataType)} of
+     *     {@link SearchFieldDataType#STRING}, or {@link SearchFieldDataType#collection(SearchFieldDataType)}
+     *     of {@link SearchFieldDataType#SINGLE}.</li>
+     *     <li>If {@link BasicField#analyzerName()} is set, both {@link BasicField#searchAnalyzerName()} and
+     *     {@link BasicField#indexAnalyzerName()} must be empty.</li>
+     *     <li>If {@link BasicField#searchAnalyzerName()} is set then {@link BasicField#indexAnalyzerName()} must be
+     *     set and vice versa.</li>
+     *     <li>If {@link BasicField#normalizerName()} is set the inferred {@link SearchFieldDataType} must be either
+     *     {@link SearchFieldDataType#STRING} or {@link SearchFieldDataType#collection(SearchFieldDataType)} of
+     *     {@link SearchFieldDataType#STRING} and have one or more of {@link BasicField#isFacetable()} ,
+     *     {@link BasicField#isFilterable()}, or {@link BasicField#isSortable()} set to true.</li>
+     *     <li>If one of {@link BasicField#vectorSearchDimensions()} or {@link BasicField#vectorSearchProfileName()} is
+     *     set the other must be set as well.</li>
+     * </ul>
      *
      * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
      * structure.
      * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     * @throws IllegalStateException If fields or methods are annotated with an improper {@link BasicField} or
+     * {@link ComplexField} annotation, the model exceeds the nesting limit, or {@link SearchField} validation fails.
      */
     public static List<SearchField> buildSearchFields(Class<?> model) {
         return FieldBuilder.build(model);
@@ -126,7 +206,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -151,9 +231,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -307,7 +387,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a synonym map definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -359,7 +439,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -406,7 +486,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new synonym map.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -431,9 +511,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -497,7 +577,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -672,9 +752,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1291,7 +1371,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an index definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1494,7 +1574,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1686,7 +1766,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1861,9 +1941,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2057,7 +2137,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2085,7 +2165,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Shows how an analyzer breaks text into tokens.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2102,9 +2182,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2150,7 +2230,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2162,9 +2242,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2281,7 +2361,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2312,7 +2392,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all aliases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2341,7 +2421,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search alias.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2353,9 +2433,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2396,7 +2476,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2434,9 +2514,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2521,7 +2601,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a knowledge base definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2578,7 +2658,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all knowledge bases available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2633,7 +2713,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new knowledge base.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2671,9 +2751,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2741,7 +2821,7 @@ public final class SearchIndexAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2764,9 +2844,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2836,7 +2916,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2878,7 +2958,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Lists all knowledge sources available for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2918,7 +2998,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new knowledge source.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2941,9 +3021,9 @@ public final class SearchIndexAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2986,7 +3066,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves the status of a knowledge source.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3032,7 +3112,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Gets service level statistics for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3085,7 +3165,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {

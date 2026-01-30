@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -10,7 +10,7 @@ import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,10 +33,10 @@ public class NonNullableModel implements JsonSerializable<NonNullableModel> {
     private double ratio;
 
     @JsonProperty(value = "StartDate")
-    private Date startDate;
+    private OffsetDateTime startDate;
 
     @JsonProperty(value = "EndDate")
-    private Date endDate;
+    private OffsetDateTime endDate;
 
     @JsonProperty(value = "TopLevelBucket")
     private Bucket topLevelBucket;
@@ -73,13 +73,13 @@ public class NonNullableModel implements JsonSerializable<NonNullableModel> {
         return this;
     }
 
-    public NonNullableModel startDate(Date startDate) {
-        this.startDate = (startDate == null) ? null : (Date) startDate.clone();
+    public NonNullableModel startDate(OffsetDateTime startDate) {
+        this.startDate = startDate;
         return this;
     }
 
-    public NonNullableModel endDate(Date endDate) {
-        this.endDate = (endDate == null) ? null : (Date) endDate.clone();
+    public NonNullableModel endDate(OffsetDateTime endDate) {
+        this.endDate = endDate;
         return this;
     }
 
@@ -127,9 +127,9 @@ public class NonNullableModel implements JsonSerializable<NonNullableModel> {
                 } else if ("Ratio".equals(fieldName)) {
                     model.ratio = reader.getDouble();
                 } else if ("StartDate".equals(fieldName)) {
-                    model.startDate = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                    model.startDate = reader.getNullable(nonNull -> OffsetDateTime.parse(nonNull.getString()));
                 } else if ("EndDate".equals(fieldName)) {
-                    model.endDate = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                    model.endDate = reader.getNullable(nonNull -> OffsetDateTime.parse(nonNull.getString()));
                 } else if ("TopLevelBucket".equals(fieldName)) {
                     model.topLevelBucket = Bucket.fromJson(reader);
                 } else if ("Buckets".equals(fieldName)) {

@@ -40,10 +40,22 @@ public class SearchCustomizations extends Customization {
     // don't want. This customization hides the searchPost APIs that were exposed.
     private static void hideGeneratedSearchApis(PackageCustomization documents) {
         for (String className : Arrays.asList("SearchClient", "SearchAsyncClient")) {
-            documents.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz ->
-                clazz.getMethodsByName("searchWithResponse").stream()
+            documents.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                clazz.getMethodsByName("searchWithResponse")
+                    .stream()
                     .filter(method -> method.isAnnotationPresent("Generated"))
-                    .forEach(MethodDeclaration::setModifiers)));
+                    .forEach(MethodDeclaration::setModifiers);
+
+                clazz.getMethodsByName("autocompleteWithResponse")
+                    .stream()
+                    .filter(method -> method.isAnnotationPresent("Generated"))
+                    .forEach(MethodDeclaration::setModifiers);
+
+                clazz.getMethodsByName("suggestWithResponse")
+                    .stream()
+                    .filter(method -> method.isAnnotationPresent("Generated"))
+                    .forEach(MethodDeclaration::setModifiers);
+            }));
         }
     }
 

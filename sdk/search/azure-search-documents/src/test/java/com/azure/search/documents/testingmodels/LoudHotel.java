@@ -1,77 +1,77 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.BasicField;
 import com.azure.search.documents.indexes.ComplexField;
-import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "unused" })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel implements JsonSerializable<LoudHotel> {
-    @SimpleField(name = "HotelId", isKey = true)
+    @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE)
     @JsonProperty(value = "HotelId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELID;
 
-    @SimpleField(name = "HotelName")
+    @BasicField(name = "HotelName")
     @JsonProperty(value = "HotelName")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String HOTELNAME;
 
-    @SimpleField(name = "Description")
+    @BasicField(name = "Description")
     @JsonProperty(value = "Description")
     private String DESCRIPTION;
 
-    @SimpleField(name = "Description_fr")
+    @BasicField(name = "Description_fr")
     @JsonProperty(value = "Description_fr")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String DESCRIPTIONFRENCH;
 
-    @SimpleField(name = "Category")
+    @BasicField(name = "Category")
     @JsonProperty(value = "Category")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String CATEGORY;
 
-    @SimpleField(name = "Tags")
+    @BasicField(name = "Tags")
     @JsonProperty(value = "Tags")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> TAGS;
 
-    @SimpleField(name = "ParkingIncluded")
+    @BasicField(name = "ParkingIncluded")
     @JsonProperty(value = "ParkingIncluded")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean PARKINGINCLUDED;
 
-    @SimpleField(name = "SmokingAllowed")
+    @BasicField(name = "SmokingAllowed")
     @JsonProperty(value = "SmokingAllowed")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean SMOKINGALLOWED;
 
-    @SimpleField(name = "LastRenovationDate")
+    @BasicField(name = "LastRenovationDate")
     @JsonProperty(value = "LastRenovationDate")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Date LASTRENOVATIONDATE;
+    private OffsetDateTime LASTRENOVATIONDATE;
 
-    @SimpleField(name = "Rating")
+    @BasicField(name = "Rating")
     @JsonProperty(value = "Rating")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer RATING;
 
-    @SimpleField(name = "Location")
+    @BasicField(name = "Location")
     @JsonProperty(value = "Location")
     private GeoPoint LOCATION;
 
@@ -162,12 +162,12 @@ public class LoudHotel implements JsonSerializable<LoudHotel> {
         return this;
     }
 
-    public Date LASTRENOVATIONDATE() {
-        return (this.LASTRENOVATIONDATE == null) ? null : (Date) this.LASTRENOVATIONDATE.clone();
+    public OffsetDateTime LASTRENOVATIONDATE() {
+        return this.LASTRENOVATIONDATE;
     }
 
-    public LoudHotel LASTRENOVATIONDATE(Date lastRenovationDate) {
-        this.LASTRENOVATIONDATE = (lastRenovationDate == null) ? null : (Date) lastRenovationDate.clone();
+    public LoudHotel LASTRENOVATIONDATE(OffsetDateTime lastRenovationDate) {
+        this.LASTRENOVATIONDATE = lastRenovationDate;
         return this;
     }
 
@@ -252,7 +252,7 @@ public class LoudHotel implements JsonSerializable<LoudHotel> {
                 } else if ("SmokingAllowed".equals(fieldName)) {
                     hotel.SMOKINGALLOWED = reader.getNullable(JsonReader::getBoolean);
                 } else if ("LastRenovationDate".equals(fieldName)) {
-                    hotel.LASTRENOVATIONDATE = reader.getNullable(nonNull -> new Date(nonNull.getString()));
+                    hotel.LASTRENOVATIONDATE = reader.getNullable(nonNull -> OffsetDateTime.parse(nonNull.getString()));
                 } else if ("Rating".equals(fieldName)) {
                     hotel.RATING = reader.getNullable(JsonReader::getInt);
                 } else if ("Location".equals(fieldName)) {

@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.BasicField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,10 @@ public class HotelWithEmptyInSynonymMaps {
      *
      * @return The tags of hotel.
      */
-    @SearchableField(name = "Tags", synonymMapNames = { "asynonymMaps", "", "  ", "maps" })
+    @BasicField(
+        name = "Tags",
+        isSearchable = BasicField.BooleanHelper.TRUE,
+        synonymMapNames = { "asynonymMaps", "", "  ", "maps" })
     public List<String> getTags() {
         return (tags == null) ? null : new ArrayList<>(tags);
     }

@@ -236,14 +236,16 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                 } else if ("pattern".equals(fieldName)) {
                     pattern = reader.getString();
                 } else if ("flags".equals(fieldName)) {
-                    String flagsEncodedAsString = reader.getString();
-                    flags = flagsEncodedAsString == null
-                        ? null
-                        : flagsEncodedAsString.isEmpty()
+                    flags = reader.getNullable(nonNullReader -> {
+                        String flagsEncodedAsString = nonNullReader.getString();
+                        return flagsEncodedAsString.isEmpty()
                             ? new LinkedList<>()
                             : new LinkedList<>(Arrays.stream(flagsEncodedAsString.split("\\|", -1))
-                                .map(valueAsString -> RegexFlags.fromString(valueAsString))
+                                .map(valueAsString -> valueAsString == null
+                                    ? null
+                                    : RegexFlags.fromString(valueAsString))
                                 .collect(Collectors.toList()));
+                    });
                 } else if ("stopwords".equals(fieldName)) {
                     stopwords = reader.readArray(reader1 -> reader1.getString());
                 } else {

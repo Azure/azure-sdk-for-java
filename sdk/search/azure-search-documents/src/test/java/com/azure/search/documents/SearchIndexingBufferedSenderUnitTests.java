@@ -612,7 +612,6 @@ public class SearchIndexingBufferedSenderUnitTests {
                 }
             }, false))
                 .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .autoFlush(false)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .buildAsyncSender();
 
@@ -636,7 +635,8 @@ public class SearchIndexingBufferedSenderUnitTests {
          */
         assertEquals(1, batchingClient.getActions().size());
 
-        StepVerifier.create(batchingClient.flush().then(batchingClient.close())).verifyComplete();
+        StepVerifier.create(batchingClient.flush()).verifyComplete();
+        StepVerifier.create(batchingClient.close()).verifyComplete();
 
         /*
          * No documents should remain as no duplicate keys exists.

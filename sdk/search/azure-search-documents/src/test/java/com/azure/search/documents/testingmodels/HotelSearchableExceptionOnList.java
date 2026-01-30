@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.test.environment.models;
+package com.azure.search.documents.testingmodels;
 
-import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.BasicField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class HotelSearchableExceptionOnList {
      * Gets passcode.
      * @return the passcode of hotel.
      */
-    @SearchableField(name = "Passcode")
+    @BasicField(name = "Passcode", isSearchable = BasicField.BooleanHelper.TRUE)
     public List<Integer> getPasscode() {
         return (passcode == null) ? null : new ArrayList<>(passcode);
     }

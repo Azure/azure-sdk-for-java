@@ -16,8 +16,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.SearchableField;
-import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizer;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
@@ -153,17 +151,11 @@ public class VectorSearchReducedEmbeddings {
      * Hotel model with an additional field for the vector description.
      */
     public static final class VectorHotel implements JsonSerializable<VectorHotel> {
-        @SimpleField(name = "HotelId", isKey = true)
         private String hotelId;
-        @SearchableField(name = "HotelName", isFilterable = true, isSortable = true, analyzerName = "en.lucene")
         private String hotelName;
-        @SearchableField(name = "Description", analyzerName = "en.lucene")
         private String description;
-        @SearchableField(name = "DescriptionVector", vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
         private List<Float> descriptionVector;
-        @SearchableField(name = "Category", isFilterable = true, isFacetable = true, isSortable = true)
         private String category;
-        @SearchableField(name = "CategoryVector", vectorSearchDimensions = 256, vectorSearchProfileName = "my-vector-profile")
         private List<Float> categoryVector;
 
         public VectorHotel() {
