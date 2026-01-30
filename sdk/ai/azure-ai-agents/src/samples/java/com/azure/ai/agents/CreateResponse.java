@@ -16,7 +16,7 @@ public class CreateResponse {
         ResponsesClient responsesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.V2025_11_15_PREVIEW)
+                .serviceVersion(AgentsServiceVersion.getLatest())
                 .buildResponsesClient();
 
         ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()

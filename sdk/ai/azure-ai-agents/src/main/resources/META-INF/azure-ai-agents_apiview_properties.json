@@ -180,6 +180,7 @@
     "com.azure.ai.agents.models.FilePath": "OpenAI.FilePath",
     "com.azure.ai.agents.models.FileSearchTool": "OpenAI.FileSearchTool",
     "com.azure.ai.agents.models.FileSearchToolCallResults": "OpenAI.FileSearchToolCallResults",
+    "com.azure.ai.agents.models.FoundryPreviewOptInKeys": "Azure.AI.Projects.FoundryPreviewOptInKeys",
     "com.azure.ai.agents.models.FunctionAndCustomToolCallOutput": "OpenAI.FunctionAndCustomToolCallOutput",
     "com.azure.ai.agents.models.FunctionAndCustomToolCallOutputInputFileContent": "OpenAI.FunctionAndCustomToolCallOutputInputFileContent",
     "com.azure.ai.agents.models.FunctionAndCustomToolCallOutputInputImageContent": "OpenAI.FunctionAndCustomToolCallOutputInputImageContent",

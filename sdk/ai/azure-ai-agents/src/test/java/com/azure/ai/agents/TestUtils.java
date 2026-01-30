@@ -33,7 +33,7 @@ public class TestUtils {
     static Stream<Arguments> getTestParameters() {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients().forEach(
-            httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V2025_11_15_PREVIEW)));
+            httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V1)));
         return argumentsList.stream();
     }
 
