@@ -204,6 +204,9 @@ public class KeyVaultClient {
                     disableChallengeResourceVerification);
                 accessToken
                     = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+            } else if (AccessTokenUtil.isWorkloadIdentityAvailable()) {
+                accessToken
+                    = AccessTokenUtil.getAccessTokenWithWorkloadIdentity(keyVaultBaseUri, tenantId, clientId, null);
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }

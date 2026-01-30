@@ -118,9 +118,9 @@ System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
 ### Exposed Options
 The JCA library supports configuring the following options:
 * `azure.keyvault.uri`: **(Required)** The Azure Key Vault endpoint to retrieve certificates.
-* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID (required for Service Principal authentication).
-* `azure.keyvault.client-id`: The client/application ID (required for Service Principal authentication).
-* `azure.keyvault.client-secret`: The client secret (required for Service Principal authentication).
+* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID (only required when using Service Principal authentication).
+* `azure.keyvault.client-id`: The client/application ID (only required when using Service Principal authentication).
+* `azure.keyvault.client-secret`: The client secret (only required when using Service Principal authentication).
 * `azure.keyvault.managed-identity`: The user-assigned managed identity object ID (optional, for user-assigned managed identity).
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
@@ -177,10 +177,7 @@ while (true) {
 }
 ```
 
-**Note:** 
-- **For Service Principal authentication**: Set all four properties (`uri`, `tenant-id`, `client-id`, `client-secret`)
-- **For Managed Identity authentication**: Only set `azure.keyvault.uri` (and optionally `managed-identity` for user-assigned identity)
-- **For Workload Identity authentication (AKS)**: Only set `azure.keyvault.uri` - the provider automatically detects Workload Identity environment variables
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
@@ -228,10 +225,7 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(mana
 System.out.println(result);
 ```
 
-**Note:** 
-- **For Service Principal authentication**: Set all four properties (`uri`, `tenant-id`, `client-id`, `client-secret`)
-- **For Managed Identity authentication**: Only set `azure.keyvault.uri` (and optionally `managed-identity` for user-assigned identity)
-- **For Workload Identity authentication (AKS)**: Only set `azure.keyvault.uri` - the provider automatically detects Workload Identity environment variables
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 ### mTLS
 #### Server side mTLS
@@ -281,10 +275,7 @@ while (true) {
 }
 ```
 
-**Note:** 
-- **For Service Principal authentication**: Set all four properties (`uri`, `tenant-id`, `client-id`, `client-secret`)
-- **For Managed Identity authentication**: Only set `azure.keyvault.uri` (and optionally `managed-identity` for user-assigned identity)
-- **For Workload Identity authentication (AKS)**: Only set `azure.keyvault.uri` - the provider automatically detects Workload Identity environment variables
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 #### Client side mTLS
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
@@ -338,10 +329,7 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(mana
 System.out.println(result);
 ```
 
-**Note:** 
-- **For Service Principal authentication**: Set all four properties (`uri`, `tenant-id`, `client-id`, `client-secret`)
-- **For Managed Identity authentication**: Only set `azure.keyvault.uri` (and optionally `managed-identity` for user-assigned identity)
-- **For Workload Identity authentication (AKS)**: Only set `azure.keyvault.uri` - the provider automatically detects Workload Identity environment variables
+**Note:** See [Authentication Methods](#authentication-methods) for configuration details.
 
 ### Jarsigner
 You can use the JCA provider to sign JAR files using certificates stored in Azure Key Vault by the following commands:
