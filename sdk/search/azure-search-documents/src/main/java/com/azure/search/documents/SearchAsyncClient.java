@@ -1835,7 +1835,8 @@ public final class SearchAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SuggestDocumentsResult>> suggest(SuggestOptions options, RequestOptions requestOptions) {
+    public Mono<Response<SuggestDocumentsResult>> suggestWithResponse(SuggestOptions options,
+        RequestOptions requestOptions) {
         SuggestPostRequest suggestPostRequestObj
             = new SuggestPostRequest(options.getSearchText(), options.getSuggesterName()).setFilter(options.getFilter())
                 .setUseFuzzyMatching(options.isUseFuzzyMatching())

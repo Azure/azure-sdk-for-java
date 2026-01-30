@@ -3,15 +3,17 @@
 
 package com.azure.search.perf;
 
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.perf.core.DocumentGenerator;
 import com.azure.search.perf.core.DocumentSize;
-import com.azure.search.perf.core.Hotel;
 import com.azure.search.perf.core.SearchPerfStressOptions;
 import com.azure.search.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class IndexDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
     private static volatile AtomicInteger ID_COUNT = new AtomicInteger();
-    private final List<Hotel> hotels;
+    private final List<Map<String, Object>> hotels;
 
     /**
      * Creates the document indexing operations performance test.
@@ -37,15 +39,22 @@ public class IndexDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
     @Override
     public void run() {
         int[] idOffset = new int[] { ID_COUNT.getAndAdd(options.getCount()) };
-        searchClient.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(
-            hotels.stream().peek(hotel -> hotel.hotelId = String.valueOf(idOffset[0]++)).collect(Collectors.toList())));
+        searchClient.indexDocuments(createBatch(idOffset));
     }
 
     @Override
     public Mono<Void> runAsync() {
         int[] idOffset = new int[] { ID_COUNT.getAndAdd(options.getCount()) };
-        return searchAsyncClient.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(
-            hotels.stream().peek(hotel -> hotel.hotelId = String.valueOf(idOffset[0]++)).collect(Collectors.toList())))
-            .then();
+        return searchAsyncClient.indexDocuments(createBatch(idOffset)).then();
+    }
+
+    private IndexDocumentsBatch createBatch(int[] idOffset) {
+        return new IndexDocumentsBatch(hotels.stream()
+            .map(hotel -> {
+                hotel.put("HotelId", idOffset[0]++);
+                return new IndexAction().setActionType(IndexActionType.UPLOAD)
+                    .setAdditionalProperties(hotel);
+            })
+            .collect(Collectors.toList()));
     }
 }

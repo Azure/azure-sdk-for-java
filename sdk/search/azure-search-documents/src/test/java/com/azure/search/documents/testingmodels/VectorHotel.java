@@ -17,11 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("UseOfObsoleteDateTimeApi")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VectorHotel implements JsonSerializable<VectorHotel> {
     @BasicField(name = "HotelId", isKey = BasicField.BooleanHelper.TRUE, isSortable = BasicField.BooleanHelper.TRUE)

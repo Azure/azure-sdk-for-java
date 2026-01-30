@@ -1,6 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.indexes.models.*;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

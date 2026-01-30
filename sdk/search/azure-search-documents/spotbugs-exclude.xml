@@ -26,16 +26,16 @@
     <Class name="com.azure.search.documents.KnowledgeSourceTests" />
   </Match>
   <Match>
+    <Bug pattern="NP_BOOLEAN_RETURN_NULL" />
+    <Class name="com.azure.search.documents.implementation.FieldBuilder" />
+  </Match>
+  <Match>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Or>
       <Class name="com.azure.search.documents.indexes.IndexManagementTests" />
       <Class name="com.azure.search.documents.indexes.IndexersManagementTests" />
       <Class name="com.azure.search.documents.indexes.SkillsetManagementTests" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
-    <Class name="com.azure.search.documents.indexes.NonRestCallTests" />
   </Match>
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />

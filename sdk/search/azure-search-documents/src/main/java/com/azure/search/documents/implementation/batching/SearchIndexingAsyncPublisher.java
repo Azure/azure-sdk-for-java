@@ -130,7 +130,7 @@ public final class SearchIndexingAsyncPublisher {
             } catch (InterruptedException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            
+
             return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, requestOptions),
                 Semaphore::release, true);
         } else if (processingSemaphore.tryAcquire()) {
